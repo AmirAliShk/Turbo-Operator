@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/colorPrimaryLighter"
+    android:clickable="true"
+    android:orientation="vertical"
+    tools:context=".fragment.ShiftFragment">
+
+   <RelativeLayout
+       android:id="@+id/rlActionBar"
+       android:layout_width="match_parent"
+       android:layout_height="?android:attr/actionBarSize"
+       android:layoutDirection="ltr"
+       android:background="#792ca9">
+
+      <ImageView
+          android:id="@+id/imgBack"
+          android:padding="15dp"
+          android:src="@drawable/ic_back"
+          android:layout_width="?android:attr/actionBarSize"
+          android:layout_height="match_parent"/>
+
+      <TextView
+          android:id="@+id/txtConnectionStatus"
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:layout_centerInParent="true"
+          android:text="@string/shifts"
+          android:textColor="@color/colorWhite"
+          android:textSize="@dimen/text_header" />
+
+   </RelativeLayout>
+
+   <ViewFlipper
+       android:id="@+id/vfShift"
+       android:layout_below="@id/rlActionBar"
+       android:layout_width="match_parent"
+       android:layout_height="match_parent">
+
+      <ProgressBar
+          android:layout_width="40dp"
+          android:layout_height="40dp"
+          android:layout_gravity="center"
+          android:progressTint="@color/colorAccent" />
+
+      <ListView
+          android:id="@+id/gridShift"
+          android:numColumns="2"
+          android:divider="@null"
+          android:listSelector="@android:color/transparent"
+          android:layout_below="@id/rlActionBar"
+          android:layout_width="match_parent"
+          android:layout_height="match_parent"/>
+
+      <TextView
+          android:id="@+id/txtNull"
+          android:layout_centerInParent="true"
+          android:gravity="center"
+          android:textSize="@dimen/text_title"
+          android:textColor="@color/colorBlack"
+          android:visibility="gone"
+          android:text="هنوز هیچ شیفتی ثبت نشده!"
+          android:layout_width="match_parent"
+          android:layout_height="match_parent"/>
+
+   </ViewFlipper>
+
+</RelativeLayout>

@@ -1,0 +1,28 @@
+<resources>
+    <string name="app_name">توربو تاکسی</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+
+    <string name="log_in">ورود</string>
+    <string name="username">نام کاربری</string>
+    <string name="password">رمز عبور</string>
+    <string name="notification">اطلاعیه ها</string>
+    <string name="shifts">شیفت ها</string>
+    <string name="replacement">جا به جایی</string>
+    <string name="get_request">درخواست های دریافتی</string>
+    <string name="send_request">درخواست های ارسالی</string>
+    <string name="message">پیام ها</string>
+    <string name="ok_notify">متوجه شدم</string>
+    <string name="date">تاریخ : </string>
+    <string name="shift">شیفت : </string>
+    <string name="operator">اپراتور : </string>
+    <string name="hint_date">تاریخ</string>
+    <string name="hint_shift">شیفت</string>
+    <string name="hint_operator">اپراتور</string>
+    <string name="point"> : </string>
+    <string name="submit">ارسال</string>
+    <string name="confirm">تایید</string>
+    <string name="reject">رد</string>
+    <string name="txt_please_for_exit_reenter_back">برای خروج دوباره کلید بازگشت را بزنید</string>
+</resources>

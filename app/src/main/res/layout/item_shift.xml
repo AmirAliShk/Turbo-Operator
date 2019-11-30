@@ -1,0 +1,131 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:padding="1dp"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="20dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginRight="20dp"
+        android:layout_marginBottom="5dp"
+        android:elevation="3dp"
+        android:gravity="center"
+        android:background="@drawable/bg_blue_border_edge"
+        android:orientation="vertical">
+
+        <RelativeLayout
+            android:id="@+id/rlBack"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/bg_shift_morning"
+            android:padding="5dp">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:layoutDirection="rtl"
+                android:orientation="horizontal">
+
+                <ImageView
+                    android:layout_width="40dp"
+                    android:layout_height="match_parent"
+                    android:src="@drawable/ic_date" />
+
+                <TextView
+                    android:id="@+id/txtShiftDate"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:text="1398/08/08"
+                    android:textColor="@color/colorBlack"
+                    android:textSize="@dimen/text_title"
+                    android:textStyle="bold" />
+
+            </LinearLayout>
+
+        </RelativeLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="5dp"
+            android:elevation="3dp"
+            android:layoutDirection="rtl"
+            android:orientation="horizontal"
+            android:padding="15dp">
+
+            <LinearLayout
+                android:id="@+id/llTime"
+                android:layout_width="0dp"
+                android:visibility="gone"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:orientation="horizontal">
+
+                <ImageView
+                    android:padding="3dp"
+                    android:src="@drawable/ic_enterexit"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"/>
+
+                <TextView
+                    android:id="@+id/txtShiftTime"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:text="ثبت نشده"
+                    android:textDirection="ltr"
+                    android:textColor="@color/colorBlack"
+                    android:textSize="@dimen/text_title"
+                    android:textStyle="bold" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:orientation="horizontal">
+
+                <ImageView
+                    android:padding="5dp"
+                    android:src="@drawable/ic_time"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"/>
+
+
+                <TextView
+                    android:id="@+id/txtShiftName"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:text="صبح"
+                    android:textColor="@color/colorBlack"
+                    android:textSize="@dimen/text_title"
+                    android:textStyle="bold" />
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+        <Button
+            android:id="@+id/btnReplacementRequest"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="10dp"
+            android:padding="10dp"
+            android:textColor="@color/colorBlack"
+            android:textSize="@dimen/text_title"
+            android:textStyle="bold"
+            android:text="درخواست جابه جایی"/>
+
+    </LinearLayout>
+
+</LinearLayout>
