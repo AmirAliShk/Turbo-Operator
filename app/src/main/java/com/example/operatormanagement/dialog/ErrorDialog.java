@@ -108,6 +108,7 @@ public class ErrorDialog {
     btnTryAgain.setOnClickListener(v -> {
       if (tryAgainRunnable != null)
         tryAgainRunnable.run();
+      dismiss();
     });
 
     dialog.setOnDismissListener(dialogInterface -> {

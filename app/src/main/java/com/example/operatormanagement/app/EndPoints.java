@@ -3,17 +3,13 @@ package com.example.operatormanagement.app;
 import com.example.operatormanagement.BuildConfig;
 
 
-/**
- * Created by mohsen1 on 5/13/2016.
- */
-
 public class EndPoints {
 
 //    http://172.16.2.201:1881/api/operator/*****
 //    http://api.parsian.ir:1881/api/operator/
 
     public static final String IP = (BuildConfig.DEBUG)
-            ? "http://172.16.2.10"
+            ? "http://172.16.2.210"
             : "http://turbotaxi.ir";
 
     public static final String APIPort = (BuildConfig.DEBUG) ? "1881" : "1881";

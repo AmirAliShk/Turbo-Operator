@@ -119,6 +119,7 @@ public class LoginActivity extends AppCompatActivity {
                                 .setAddToBackStack(false)
                                 .replace();
                         MyApplication.prefManager.setUserCode(Integer.parseInt(edtUserName.getText().toString()));
+                        MyApplication.prefManager.setPassword(edtPassword.getText().toString());
                         MyApplication.prefManager.isLoggedIn(true);
 
                     } else {
@@ -167,20 +168,6 @@ public class LoginActivity extends AppCompatActivity {
     protected void onDestroy() {
         super.onDestroy();
         unbinder.unbind();
-    }
-
-    private boolean removeCurrentFragment(Fragment fragment, boolean withAnimation) {
-        FragmentTransaction transaction = MyApplication.fragmentManagerV4.beginTransaction();
-        if (fragment != null) {
-            if (fragment.isVisible()) {
-                if (withAnimation)
-                    transaction.setCustomAnimations(R.anim.slide_in_right, R.anim.slide_out_right, R.anim.slide_in_left, R.anim.slide_out_left);
-                transaction.remove(fragment).commit();
-                MyApplication.fragmentManagerV4.popBackStack();
-                return true;
-            }
-        }
-        return false;
     }
 
     @Override

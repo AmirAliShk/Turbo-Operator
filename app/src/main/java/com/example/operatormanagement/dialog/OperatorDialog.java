@@ -109,6 +109,7 @@ public class OperatorDialog {
                 OperatorModel operatorModel = new OperatorModel();
                 operatorModel.setOperatorId(object.getInt("id"));
                 operatorModel.setOperatorName(object.getString("name"));
+                operatorModel.setOperatorShift(object.getString("shift"));
                 operatorModels.add(operatorModel);
             }
         } catch (JSONException e) {

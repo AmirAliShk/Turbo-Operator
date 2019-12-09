@@ -6,6 +6,7 @@ import android.os.Bundle;
 import androidx.fragment.app.Fragment;
 
 import android.view.LayoutInflater;
+import android.view.Menu;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
@@ -19,6 +20,7 @@ import com.example.operatormanagement.R;
 import com.example.operatormanagement.adapter.ShiftAdapter;
 import com.example.operatormanagement.app.EndPoints;
 import com.example.operatormanagement.app.MyApplication;
+import com.example.operatormanagement.helper.FragmentHelper;
 import com.example.operatormanagement.helper.TypefaceUtil;
 import com.example.operatormanagement.model.NotificationModel;
 import com.example.operatormanagement.model.ReplacementModel;
@@ -49,8 +51,8 @@ public class ShiftFragment extends Fragment {
         MyApplication.currentActivity.onBackPressed();
     }
 
-    @BindView(R.id.gridShift)
-    ListView gridShift;
+    @BindView(R.id.listShift)
+    ListView listShift;
 
     @BindView(R.id.txtNull)
     TextView txtNull;
@@ -106,7 +108,7 @@ public class ShiftFragment extends Fragment {
                     }
                     vfShift.setDisplayedChild(1);
                     shiftAdapter = new ShiftAdapter(shiftModels, MyApplication.context);
-                    gridShift.setAdapter(shiftAdapter);
+                    listShift.setAdapter(shiftAdapter);
 
                     if (shiftModels.size()==0){
                         vfShift.setDisplayedChild(3);

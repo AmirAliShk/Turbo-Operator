@@ -35,8 +35,8 @@ import butterknife.Unbinder;
  * A simple {@link Fragment} subclass.
  */
 public class NotificationFragment extends Fragment {
-    public static final String TAG= NotificationFragment.class.getSimpleName();
     Unbinder unbinder;
+    public static final String TAG= NotificationFragment.class.getSimpleName();
     ArrayList<NotificationModel> notificationModels;
     NotificationAdapter notificationAdapter;
 

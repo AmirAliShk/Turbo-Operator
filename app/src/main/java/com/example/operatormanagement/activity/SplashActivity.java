@@ -68,9 +68,9 @@ public class SplashActivity extends AppCompatActivity {
         unbinder = ButterKnife.bind(this, view);
         TypefaceUtil.overrideFonts(view);
 
-        txtVersion.setText("version "+new AppVersionHelper(MyApplication.context).getVerionName() + "");
+        txtVersion.setText("version " + new AppVersionHelper(MyApplication.context).getVerionName() + "");
         MyApplication.handler.postDelayed(() -> {
-            getAppInfo(new AppVersionHelper(MyApplication.context).getVerionCode(), MyApplication.prefManager.getUserCode());
+            getAppInfo(new AppVersionHelper(MyApplication.context).getVerionCode(), MyApplication.prefManager.getUserCode(), MyApplication.prefManager.getUserName(), MyApplication.prefManager.getPassword());
         }, 1500);
 
     }
@@ -105,12 +105,14 @@ public class SplashActivity extends AppCompatActivity {
         MyApplication.currentActivity = this;
     }
 
-    private void getAppInfo(int versionCode, int operatorId) {
+    private void getAppInfo(int versionCode, int operatorId, String userName, String password) {
         JSONObject params = new JSONObject();
         try {
 
             params.put("versionCode", versionCode);
             params.put("operatorId", operatorId);
+            params.put("userName", userName);
+            params.put("password", password);
 
             RequestHelper.builder(EndPoints.GET_APP_INFO)
                     .params(params)
@@ -132,7 +134,8 @@ public class SplashActivity extends AppCompatActivity {
                     int block = object.getInt("isBlock");
                     int updateAvailable = object.getInt("updateAvailable");
                     int forceUpdate = object.getInt("forceUpdate");
-                    final String updateUrl = object.getString("updateUrl");
+                    String updateUrl = object.getString("updateUrl");
+                    int changePass = object.getInt("changePassword");
 
                     if (block == 1) {
                         new GeneralDialog()
@@ -141,6 +144,13 @@ public class SplashActivity extends AppCompatActivity {
                                 .firstButton("خروج", () -> MyApplication.currentActivity.finish())
                                 .show();
                         return;
+                    }
+
+                    if (changePass == 1) {
+                        FragmentHelper
+                                .toFragment(MyApplication.currentActivity, new MenuFragment())
+                                .setAddToBackStack(false)
+                                .replace();
                     }
 
                     if (updateAvailable == 1) {
@@ -217,23 +227,25 @@ public class SplashActivity extends AppCompatActivity {
     public void onBackPressed() {
         try {
 //            Fragment fragment;
-//            fragment = getSupportFragmentManager().findFragmentByTag(MenuFragment.TAG);
-//            if (removeCurrentFragment(fragment, true)) return;
-//
 //            fragment = getSupportFragmentManager().findFragmentByTag(ShiftFragment.TAG);
+//            if (removeCurrentFragment(fragment, true)) return;
+////
+//            fragment = getSupportFragmentManager().findFragmentByTag(ReplacementFragment.TAG);
 //            if (removeCurrentFragment(fragment, true)) return;
 
 //            fragment = getSupportFragmentManager().findFragmentByTag(NotificationFragment.TAG);
 //            if (removeCurrentFragment(fragment, true)) return;
 //
 //            fragment = getSupportFragmentManager().findFragmentByTag(ReplacementFragment.TAG);
-//            if (removeCurrentFragment(fragment, true)) return;
-//
+//            if (removeCurrentFragment(fragment, true)) {
+//                FragmentHelper.toFragment(this, new ShiftFragment())
+//                        .replace();
+//            };
+
 //            fragment = getSupportFragmentManager().findFragmentByTag(ReplacementWaitingFragment.TAG);
 //            if (removeCurrentFragment(fragment, true)) return;
 
-            if (getFragmentManager().getBackStackEntryCount() > 0 || getSupportFragmentManager().getBackStackEntryCount() > 0) {
-//                getSupportFragmentManager().popBackStack();
+            if (getSupportFragmentManager().getBackStackEntryCount() > 0 || getFragmentManager().getBackStackEntryCount() > 0) {
                 super.onBackPressed();
             } else {
                 if (doubleBackToExitPressedOnce) {

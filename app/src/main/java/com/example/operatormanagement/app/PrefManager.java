@@ -23,6 +23,8 @@ public class PrefManager {
     private static final String PREF_NAME = MyApplication.context.getApplicationInfo().name;
     private static final String KEY_KEY = "key";
     private static final String KEY_USER_CODE = "userCode";
+    private static final String KEY_USER_NAME = "userName";
+    private static final String KEY_PASSWORD = "password";
     private static final String KEY_IS_LOGGED_IN = "isLoggedIn";
     private static final String KEY_COUNT_NOTIFICATION = "countNotification";
     private static final String KEY_COUNT_REQUEST = "countRquest";
@@ -54,6 +56,24 @@ public class PrefManager {
 
     public int getUserCode() {
         return pref.getInt(KEY_USER_CODE, 0);
+    }
+
+    public void setPassword(String pass) {
+        editor.putString(KEY_PASSWORD, pass);
+        editor.commit();
+    }
+
+    public String getPassword() {
+        return pref.getString(KEY_PASSWORD, "0");
+    }
+
+    public void setUserName(String userName) {
+        editor.putString(KEY_USER_NAME, userName);
+        editor.commit();
+    }
+
+    public String getUserName() {
+        return pref.getString(KEY_USER_NAME, "0");
     }
 
     public void isLoggedIn(boolean login) {

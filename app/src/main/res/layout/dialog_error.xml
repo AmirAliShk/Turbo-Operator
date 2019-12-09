@@ -54,7 +54,7 @@
                 android:background="@android:color/transparent"
                 android:textSize="18dp"
                 android:textColor="@color/colorWhite"
-                android:text="تلاش مجدد"/>
+                android:text="بستن"/>
 
             <ImageView
                 android:layout_width="1.5dp"
@@ -69,7 +69,7 @@
                 android:background="@android:color/transparent"
                 android:textSize="18dp"
                 android:textColor="@color/colorWhite"
-                android:text="بستن"/>
+                android:text="تلاش مجدد"/>
 
         </LinearLayout>
 

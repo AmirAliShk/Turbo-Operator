@@ -64,8 +64,10 @@ public class OperatorAdapter extends BaseAdapter implements Filterable {
                 TypefaceUtil.overrideFonts(myView);
             }
             TextView txtOperatorName = myView.findViewById(R.id.txtOperatorName);
+            TextView txtOperatorShift = myView.findViewById(R.id.txtOperatorShift);
 
             txtOperatorName.setText(operatorModel.getOperatorName());
+            txtOperatorShift.setText(operatorModel.getOperatorShift());
 
         } catch (Exception e) {
             e.printStackTrace();

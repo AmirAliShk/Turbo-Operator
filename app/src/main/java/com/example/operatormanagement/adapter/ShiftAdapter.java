@@ -62,10 +62,11 @@ public class ShiftAdapter extends BaseAdapter {
                 viewHolder = (ViewHolder) convertView.getTag();
             }
 
+            Bundle bundle = new Bundle();
+            bundle.putString("shiftDate", shiftModel.getShiftDate());
+            bundle.putString("shiftName", shiftModel.getShiftName());
+
             viewHolder.btnReplacementRequest.setOnClickListener(v -> {
-                Bundle bundle = new Bundle();
-                bundle.putString("shiftDate", shiftModel.getShiftDate());
-                bundle.putString("shiftName", shiftModel.getShiftName());
                 FragmentHelper.toFragment(MyApplication.currentActivity, new ReplacementFragment())
                         .setArguments(bundle)
                         .replace();

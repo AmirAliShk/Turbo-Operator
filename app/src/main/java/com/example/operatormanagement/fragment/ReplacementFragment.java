@@ -32,6 +32,7 @@ import com.example.operatormanagement.app.MyApplication;
 import com.example.operatormanagement.dialog.GeneralDialog;
 import com.example.operatormanagement.dialog.OperatorDialog;
 import com.example.operatormanagement.helper.DateHelper;
+import com.example.operatormanagement.helper.FragmentHelper;
 import com.example.operatormanagement.helper.KeyBoardHelper;
 import com.example.operatormanagement.helper.TypefaceUtil;
 import com.example.operatormanagement.model.OperatorModel;
@@ -66,6 +67,12 @@ public class ReplacementFragment extends android.app.Fragment {
 
     @BindView(R.id.llLoader)
     LinearLayout llLoader;
+
+    @BindView(R.id.llDate)
+    LinearLayout llDate;
+
+    @BindView(R.id.llShift)
+    LinearLayout llShift;
 
     @BindView(R.id.edtDate)
     TextView edtDate;
@@ -133,8 +140,13 @@ public class ReplacementFragment extends android.app.Fragment {
         TypefaceUtil.overrideFonts(view);
 
         Bundle bundle = getArguments();
-        edtDate.setText(bundle.getString("shiftDate"));
-        spinnerShift.setText(bundle.getString("shiftName"));
+        if (bundle.getString("shiftName").equals("استراحت")) {
+            llDate.setVisibility(View.GONE);
+            llShift.setVisibility(View.GONE);
+        } else {
+            spinnerShift.setText(bundle.getString("shiftName"));
+            edtDate.setText(bundle.getString("shiftDate"));
+        }
 
         return view;
     }

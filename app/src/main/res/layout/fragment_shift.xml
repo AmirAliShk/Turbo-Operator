@@ -46,8 +46,7 @@
           android:progressTint="@color/colorAccent" />
 
       <ListView
-          android:id="@+id/gridShift"
-          android:numColumns="2"
+          android:id="@+id/listShift"
           android:divider="@null"
           android:listSelector="@android:color/transparent"
           android:layout_below="@id/rlActionBar"
