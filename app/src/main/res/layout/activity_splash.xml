@@ -7,7 +7,7 @@
     android:gravity="bottom"
     android:background="#EEE9F1"
     android:orientation="vertical"
-    tools:context=".activity.SplashActivity">
+    tools:context="ir.taxi1880.operatormanagement.activity.SplashActivity">
 
     <LinearLayout
         android:layout_width="match_parent"

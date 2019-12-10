@@ -6,7 +6,7 @@
     android:background="#EEE9F1"
     android:clickable="true"
     android:orientation="vertical"
-    tools:context=".fragment.ReplacementWaitingFragment">
+    tools:context="ir.taxi1880.operatormanagement.fragment.ReplacementWaitingFragment">
 
     <RelativeLayout
         android:id="@+id/rlActionBar"

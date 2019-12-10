@@ -6,7 +6,7 @@
     android:background="#EEE9F1"
     android:clickable="true"
     android:orientation="vertical"
-    tools:context=".fragment.NotificationFragment">
+    tools:context="ir.taxi1880.operatormanagement.fragment.NotificationFragment">
 
     <RelativeLayout
         android:id="@+id/rlActionBar"

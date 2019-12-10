@@ -6,7 +6,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:background="@color/colorWhite"
     android:clickable="true"
-    tools:context=".fragment.MessageFragment">
+    tools:context="ir.taxi1880.operatormanagement.fragment.MessageFragment">
 
         <LinearLayout
             android:orientation="vertical"

@@ -5,7 +5,7 @@
     android:layout_height="match_parent"
     android:background="@color/colorWhite"
     android:clickable="true"
-    tools:context=".fragment.SendReplacementReqFragment">
+    tools:context="ir.taxi1880.operatormanagement.fragment.SendReplacementReqFragment">
 
     <RelativeLayout
         android:id="@+id/rlActionBar"

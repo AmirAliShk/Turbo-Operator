@@ -1,14 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    package="com.example.operatormanagement">
+    package="ir.taxi1880.operatormanagement">
 
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
     <uses-permission android:name="android.permission.READ_PHONE_STATE"/>
 
     <application
-        android:name=".app.MyApplication"
+        android:name="ir.taxi1880.operatormanagement.app.MyApplication"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
@@ -18,14 +18,14 @@
         android:theme="@style/AppTheme"
         tools:ignore="GoogleAppIndexingWarning">
 
-        <activity android:name=".activity.SplashActivity">
+        <activity android:name="ir.taxi1880.operatormanagement.activity.SplashActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
 
-        <activity android:name=".activity.LoginActivity" android:windowSoftInputMode="adjustNothing|stateHidden">
+        <activity android:name="ir.taxi1880.operatormanagement.activity.LoginActivity" android:windowSoftInputMode="adjustNothing|stateHidden">
         </activity>
 
     </application>

@@ -6,7 +6,7 @@
     android:background="#EEE9F1"
     android:clickable="true"
     android:orientation="vertical"
-    tools:context=".fragment.ReplacementFragment">
+    tools:context="ir.taxi1880.operatormanagement.fragment.ReplacementFragment">
 
     <RelativeLayout
         android:layout_width="match_parent"
@@ -70,7 +70,6 @@
                         android:layout_weight="0.09" />
 
                     <LinearLayout
-
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
@@ -80,11 +79,12 @@
                         android:layout_margin="4dp"
                         android:layoutDirection="rtl"
                         android:orientation="horizontal"
-                        android:padding="15dp">
+                        android:padding="10dp">
 
                         <ImageView
-                            android:layout_width="30dp"
-                            android:layout_height="30dp"
+                            android:layout_width="25dp"
+                            android:layout_height="25dp"
+                            android:layout_margin="3dp"
                             android:src="@drawable/ic_date" />
 
                         <ImageView
@@ -124,7 +124,6 @@
                         android:layout_weight="0.09" />
 
                     <LinearLayout
-
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
@@ -134,11 +133,12 @@
                         android:layout_margin="4dp"
                         android:layoutDirection="rtl"
                         android:orientation="horizontal"
-                        android:padding="15dp">
+                        android:padding="10dp">
 
                         <ImageView
-                            android:layout_width="30dp"
-                            android:layout_height="30dp"
+                            android:layout_width="25dp"
+                            android:layout_height="25dp"
+                            android:layout_margin="3dp"
                             android:src="@drawable/ic_time" />
 
                         <ImageView
@@ -201,16 +201,17 @@
                         android:layout_margin="4dp"
                         android:layoutDirection="rtl"
                         android:orientation="horizontal"
-                        android:padding="15dp">
+                        android:padding="10dp">
 
                         <ViewFlipper
                             android:id="@+id/vfOperator"
+                            android:layout_margin="3dp"
                             android:layout_width="30dp"
                             android:layout_height="30dp">
 
                             <ImageView
-                                android:layout_width="30dp"
-                                android:layout_height="30dp"
+                                android:layout_width="25dp"
+                                android:layout_height="25dp"
                                 android:src="@drawable/ic_operator" />
 
                             <ProgressBar
