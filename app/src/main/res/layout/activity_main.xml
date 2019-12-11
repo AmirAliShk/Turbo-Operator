@@ -1,13 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#EEE9F1"
     android:clickable="true"
     android:orientation="vertical"
-    tools:context="ir.taxi1880.operatormanagement.fragment.MenuFragment">
+    tools:context="ir.taxi1880.operatormanagement.activity.MainActivity">
 
     <RelativeLayout
         android:layout_width="match_parent"
@@ -295,4 +294,4 @@
 
     </RelativeLayout>
 
-</LinearLayout>
+</RelativeLayout>

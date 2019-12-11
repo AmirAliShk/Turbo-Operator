@@ -6,6 +6,7 @@ import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -36,7 +37,7 @@ import butterknife.Unbinder;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class ReplacementFragment extends android.app.Fragment {
+public class ReplacementFragment extends Fragment {
     public static final String TAG = ReplacementFragment.class.getSimpleName();
     Unbinder unbinder;
     String[] shift = {"صبح", "عصر", "شب", "استراحت"};
@@ -124,6 +125,8 @@ public class ReplacementFragment extends android.app.Fragment {
 
         Bundle bundle = getArguments();
         if (bundle.getString("shiftName").equals("استراحت")) {
+            spinnerShift.setText(bundle.getString("shiftName"));
+            edtDate.setText(bundle.getString("shiftDate"));
             llDate.setVisibility(View.GONE);
             llShift.setVisibility(View.GONE);
         } else {
@@ -203,6 +206,8 @@ public class ReplacementFragment extends android.app.Fragment {
             params.put("date", date);
             params.put("shiftId", shiftId);
             params.put("operatorId", operatorId);
+
+            Log.i(TAG, "getOnlineOperator: "+params);
 
             RequestHelper.builder(EndPoints.GET_SHIFT_OPERATOR)
                     .params(params)

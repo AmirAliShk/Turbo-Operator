@@ -19,7 +19,7 @@ import ir.taxi1880.operatormanagement.R;
 import ir.taxi1880.operatormanagement.app.EndPoints;
 import ir.taxi1880.operatormanagement.app.MyApplication;
 import ir.taxi1880.operatormanagement.dialog.GeneralDialog;
-import ir.taxi1880.operatormanagement.fragment.MenuFragment;
+import ir.taxi1880.operatormanagement.fragment.LoginFragment;
 import ir.taxi1880.operatormanagement.helper.AppVersionHelper;
 import ir.taxi1880.operatormanagement.helper.FragmentHelper;
 import ir.taxi1880.operatormanagement.helper.TypefaceUtil;
@@ -58,7 +58,7 @@ public class SplashActivity extends AppCompatActivity {
         unbinder = ButterKnife.bind(this, view);
         TypefaceUtil.overrideFonts(view);
 
-        txtVersion.setText("version " + new AppVersionHelper(MyApplication.context).getVerionName() + "");
+        txtVersion.setText("نسخه " + new AppVersionHelper(MyApplication.context).getVerionName() + "");
         MyApplication.handler.postDelayed(() -> {
             getAppInfo(new AppVersionHelper(MyApplication.context).getVerionCode(), MyApplication.prefManager.getUserCode(), MyApplication.prefManager.getUserName(), MyApplication.prefManager.getPassword());
         }, 1500);
@@ -67,13 +67,13 @@ public class SplashActivity extends AppCompatActivity {
 
     private void continueProcessing() {
         if (MyApplication.prefManager.getLoggedIn()) {
+            startActivity(new Intent(MyApplication.currentActivity, MainActivity.class));
+            finish();
+        } else {
             FragmentHelper
-                    .toFragment(MyApplication.currentActivity, new MenuFragment())
+                    .toFragment(MyApplication.currentActivity, new LoginFragment())
                     .setAddToBackStack(false)
                     .replace();
-        } else {
-            startActivity(new Intent(MyApplication.context, LoginActivity.class));
-            finish();
         }
     }
 
@@ -138,7 +138,7 @@ public class SplashActivity extends AppCompatActivity {
 
                     if (changePass == 1) {
                         FragmentHelper
-                                .toFragment(MyApplication.currentActivity, new MenuFragment())
+                                .toFragment(MyApplication.currentActivity, new LoginFragment())
                                 .setAddToBackStack(false)
                                 .replace();
                     }

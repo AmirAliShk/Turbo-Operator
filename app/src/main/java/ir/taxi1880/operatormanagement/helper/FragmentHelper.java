@@ -37,7 +37,8 @@ public class FragmentHelper {
 
   private androidx.fragment.app.FragmentManager fragmentManagerV4 = null;
   private @IdRes
-  int frame = R.id.frame_container;
+  int frame = android.R.id.content;
+
 
 
   /**

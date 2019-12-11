@@ -66,6 +66,7 @@ public class ShiftAdapter extends BaseAdapter {
             viewHolder.btnReplacementRequest.setOnClickListener(v -> {
                 FragmentHelper.toFragment(MyApplication.currentActivity, new ReplacementFragment())
                         .setArguments(bundle)
+                        .setAddToBackStack(true)
                         .replace();
             });
 

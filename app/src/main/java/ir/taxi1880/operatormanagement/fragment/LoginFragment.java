@@ -1,39 +1,45 @@
-package ir.taxi1880.operatormanagement.activity;
+package ir.taxi1880.operatormanagement.fragment;
 
-import androidx.appcompat.app.AppCompatActivity;
 
-import android.os.Build;
+import android.annotation.SuppressLint;
+import android.content.Intent;
 import android.os.Bundle;
-import android.os.Handler;
+
+import androidx.fragment.app.Fragment;
+
+import android.view.LayoutInflater;
 import android.view.View;
-import android.view.Window;
-import android.view.WindowManager;
+import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
-
-import ir.taxi1880.operatormanagement.OkHttp.RequestHelper;
-import ir.taxi1880.operatormanagement.R;
-import ir.taxi1880.operatormanagement.app.EndPoints;
-import ir.taxi1880.operatormanagement.app.MyApplication;
-import ir.taxi1880.operatormanagement.dialog.ErrorDialog;
-import ir.taxi1880.operatormanagement.fragment.MenuFragment;
-import ir.taxi1880.operatormanagement.helper.FragmentHelper;
-import ir.taxi1880.operatormanagement.helper.KeyBoardHelper;
-import ir.taxi1880.operatormanagement.helper.TypefaceUtil;
 
 import org.json.JSONException;
 import org.json.JSONObject;
+
+import ir.taxi1880.operatormanagement.OkHttp.RequestHelper;
+import ir.taxi1880.operatormanagement.R;
+import ir.taxi1880.operatormanagement.activity.MainActivity;
+import ir.taxi1880.operatormanagement.app.EndPoints;
+import ir.taxi1880.operatormanagement.app.MyApplication;
+import ir.taxi1880.operatormanagement.dialog.ErrorDialog;
+import ir.taxi1880.operatormanagement.helper.FragmentHelper;
+import ir.taxi1880.operatormanagement.helper.KeyBoardHelper;
+import ir.taxi1880.operatormanagement.helper.TypefaceUtil;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import butterknife.Unbinder;
 
-public class LoginActivity extends AppCompatActivity {
+/**
+ * A simple {@link Fragment} subclass.
+ */
+public class LoginFragment extends Fragment {
 
+    public static final String TAG = LoginFragment.class.getSimpleName();
     Unbinder unbinder;
-    boolean doubleBackToExitPressedOnce=false;
 
     @BindView(R.id.edtUserName)
     EditText edtUserName;
@@ -57,28 +63,20 @@ public class LoginActivity extends AppCompatActivity {
 
         logIn(edtUserName.getText().toString(), edtPassword.getText().toString());
 //        FragmentHelper
-//                .toFragment(MyApplication.currentActivity, new MenuFragment())
+//                .toFragment(MyApplication.currentActivity, new LoginFragment())
 //                .setAddToBackStack(false)
 //                .replace();
         KeyBoardHelper.hideKeyboard();
     }
 
+    @SuppressLint("SetTextI18n")
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_login);
-        View view = getWindow().getDecorView();
-        getSupportActionBar().hide();
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            Window window = getWindow();
-            window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
-            window.setNavigationBarColor(getResources().getColor(R.color.colorPrimaryLighter));
-            window.setStatusBarColor(getResources().getColor(R.color.colorPrimaryDark));
-            window.addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
-        }
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        View view = inflater.inflate(R.layout.fragment_login, container, false);
         unbinder = ButterKnife.bind(this, view);
         TypefaceUtil.overrideFonts(view);
 
+        return view;
     }
 
     private void logIn(String userName, String password) {
@@ -107,14 +105,11 @@ public class LoginActivity extends AppCompatActivity {
                     int status = object.getInt("status");
                     MyApplication.prefManager.setOperatorName(object.getString("name"));
                     if (status == 1) {
-                        FragmentHelper
-                                .toFragment(MyApplication.currentActivity, new MenuFragment())
-                                .setAddToBackStack(false)
-                                .replace();
                         MyApplication.prefManager.setUserCode(Integer.parseInt(edtUserName.getText().toString()));
                         MyApplication.prefManager.setPassword(edtPassword.getText().toString());
                         MyApplication.prefManager.isLoggedIn(true);
-
+                        startActivity(new Intent(MyApplication.currentActivity, MainActivity.class));
+                        MyApplication.currentActivity.finish();
                     } else {
                         ErrorDialog errorDialog = new ErrorDialog();
                         errorDialog.titleText("خطایی رخ داده");
@@ -146,39 +141,9 @@ public class LoginActivity extends AppCompatActivity {
     };
 
     @Override
-    protected void onResume() {
-        super.onResume();
-        MyApplication.currentActivity = this;
-    }
-
-    @Override
-    protected void onStart() {
-        super.onStart();
-        MyApplication.currentActivity = this;
-    }
-
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
+    public void onDestroyView() {
+        super.onDestroyView();
         unbinder.unbind();
     }
 
-    @Override
-    public void onBackPressed() {
-        try {
-            if (getFragmentManager().getBackStackEntryCount() > 0 || getSupportFragmentManager().getBackStackEntryCount() > 0) {
-                super.onBackPressed();
-            } else {
-                if (doubleBackToExitPressedOnce) {
-                    super.onBackPressed();
-                } else {
-                    this.doubleBackToExitPressedOnce = true;
-                    MyApplication.Toast(getString(R.string.txt_please_for_exit_reenter_back), Toast.LENGTH_SHORT);
-                    new Handler().postDelayed(() -> doubleBackToExitPressedOnce = false, 1500);
-                }
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
 }
