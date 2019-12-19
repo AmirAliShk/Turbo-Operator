@@ -2,9 +2,7 @@ package ir.taxi1880.operatormanagement.fragment;
 
 
 import android.os.Bundle;
-
-import androidx.fragment.app.Fragment;
-
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,6 +10,17 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.ViewFlipper;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.util.ArrayList;
+
+import androidx.fragment.app.Fragment;
+import butterknife.BindView;
+import butterknife.ButterKnife;
+import butterknife.OnClick;
+import butterknife.Unbinder;
 import ir.taxi1880.operatormanagement.OkHttp.RequestHelper;
 import ir.taxi1880.operatormanagement.R;
 import ir.taxi1880.operatormanagement.adapter.ShiftAdapter;
@@ -19,17 +28,6 @@ import ir.taxi1880.operatormanagement.app.EndPoints;
 import ir.taxi1880.operatormanagement.app.MyApplication;
 import ir.taxi1880.operatormanagement.helper.TypefaceUtil;
 import ir.taxi1880.operatormanagement.model.ShiftModel;
-
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
-
-import java.util.ArrayList;
-
-import butterknife.BindView;
-import butterknife.ButterKnife;
-import butterknife.OnClick;
-import butterknife.Unbinder;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -74,6 +72,8 @@ public class ShiftFragment extends Fragment {
 
             params.put("operatorId", operatorId);
 
+            Log.i(TAG, "getShifts: "+params);
+
             RequestHelper.builder(EndPoints.GET_SHIFTS)
                     .params(params)
                     .method(RequestHelper.POST)
@@ -105,7 +105,7 @@ public class ShiftFragment extends Fragment {
                     listShift.setAdapter(shiftAdapter);
 
                     if (shiftModels.size()==0){
-                        vfShift.setDisplayedChild(3);
+                        vfShift.setDisplayedChild(2);
                     }
                 } catch (Exception e) {
                     e.printStackTrace();

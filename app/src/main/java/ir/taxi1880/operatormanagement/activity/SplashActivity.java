@@ -1,19 +1,26 @@
 package ir.taxi1880.operatormanagement.activity;
 
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
+import android.util.Log;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import androidx.appcompat.app.AppCompatActivity;
+import butterknife.BindView;
+import butterknife.ButterKnife;
+import butterknife.Unbinder;
 import ir.taxi1880.operatormanagement.OkHttp.RequestHelper;
 import ir.taxi1880.operatormanagement.R;
 import ir.taxi1880.operatormanagement.app.EndPoints;
@@ -23,14 +30,6 @@ import ir.taxi1880.operatormanagement.fragment.LoginFragment;
 import ir.taxi1880.operatormanagement.helper.AppVersionHelper;
 import ir.taxi1880.operatormanagement.helper.FragmentHelper;
 import ir.taxi1880.operatormanagement.helper.TypefaceUtil;
-
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
-
-import butterknife.BindView;
-import butterknife.ButterKnife;
-import butterknife.Unbinder;
 
 public class SplashActivity extends AppCompatActivity {
 
@@ -68,7 +67,7 @@ public class SplashActivity extends AppCompatActivity {
     private void continueProcessing() {
         if (MyApplication.prefManager.getLoggedIn()) {
             startActivity(new Intent(MyApplication.currentActivity, MainActivity.class));
-            finish();
+            MyApplication.currentActivity.finish();
         } else {
             FragmentHelper
                     .toFragment(MyApplication.currentActivity, new LoginFragment())
@@ -103,6 +102,8 @@ public class SplashActivity extends AppCompatActivity {
             params.put("operatorId", operatorId);
             params.put("userName", userName);
             params.put("password", password);
+
+            Log.i("TAG", "getAppInfo: "+params);
 
             RequestHelper.builder(EndPoints.GET_APP_INFO)
                     .params(params)

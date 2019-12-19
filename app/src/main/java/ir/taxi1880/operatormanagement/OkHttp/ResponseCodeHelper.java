@@ -49,7 +49,7 @@ public class ResponseCodeHelper {
             errorDialog.titleText("خطایی رخ داده است");
             errorDialog.messageText(message);
             errorDialog.cancelable(false);
-            errorDialog.closeBtnRunnable("بستن", () -> errorDialog.dismiss());
+            errorDialog.closeBtnRunnable("بستن", ()->MyApplication.currentActivity.finish());
             errorDialog.tryAgainBtnRunnable("تلاش مجدد", () -> runnable.run());
 
           }

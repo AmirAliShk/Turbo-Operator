@@ -4,34 +4,29 @@ package ir.taxi1880.operatormanagement.fragment;
 import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
-
-import androidx.fragment.app.Fragment;
-
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import androidx.fragment.app.Fragment;
+import butterknife.BindView;
+import butterknife.ButterKnife;
+import butterknife.OnClick;
+import butterknife.Unbinder;
 import ir.taxi1880.operatormanagement.OkHttp.RequestHelper;
 import ir.taxi1880.operatormanagement.R;
 import ir.taxi1880.operatormanagement.activity.MainActivity;
 import ir.taxi1880.operatormanagement.app.EndPoints;
 import ir.taxi1880.operatormanagement.app.MyApplication;
 import ir.taxi1880.operatormanagement.dialog.ErrorDialog;
-import ir.taxi1880.operatormanagement.helper.FragmentHelper;
 import ir.taxi1880.operatormanagement.helper.KeyBoardHelper;
 import ir.taxi1880.operatormanagement.helper.TypefaceUtil;
-
-import butterknife.BindView;
-import butterknife.ButterKnife;
-import butterknife.OnClick;
-import butterknife.Unbinder;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -103,9 +98,11 @@ public class LoginFragment extends Fragment {
                 try {
                     JSONObject object = new JSONObject(args[0].toString());
                     int status = object.getInt("status");
+                    int userId = object.getInt("userId");
                     MyApplication.prefManager.setOperatorName(object.getString("name"));
                     if (status == 1) {
-                        MyApplication.prefManager.setUserCode(Integer.parseInt(edtUserName.getText().toString()));
+                        MyApplication.prefManager.setUserCode(userId);
+                        MyApplication.prefManager.setUserName((edtUserName.getText().toString()));
                         MyApplication.prefManager.setPassword(edtPassword.getText().toString());
                         MyApplication.prefManager.isLoggedIn(true);
                         startActivity(new Intent(MyApplication.currentActivity, MainActivity.class));
@@ -114,21 +111,21 @@ public class LoginFragment extends Fragment {
                         ErrorDialog errorDialog = new ErrorDialog();
                         errorDialog.titleText("خطایی رخ داده");
                         errorDialog.messageText("نام کاربری یا رمز عبور اشتباه است");
-                        errorDialog.tryAgainBtnRunnable("تلاش مجدد", () -> errorDialog.dismiss());
-                        errorDialog.closeBtnRunnable("بستن", () -> MyApplication.currentActivity.finish());
+                        errorDialog.tryAgainBtnRunnable("تلاش مجدد", () -> logIn(edtUserName.getText().toString(),edtPassword.getText().toString()));
+                        errorDialog.closeBtnRunnable("بستن", null);
+                        errorDialog.cancelable(true);
                         errorDialog.show();
-
                     }
                 } catch (Exception e) {
-                    new ErrorDialog()
-                            .messageText("پردازش داده های ورودی با مشکل مواجه شد")
-                            .closeBtnRunnable("بستن", () -> {
-
-                            })
-                            .tryAgainBtnRunnable("تلاش مجدد", () -> {
-
-                            })
-                            .show();
+//                    new ErrorDialog()
+//                            .messageText("پردازش داده های ورودی با مشکل مواجه شد")
+//                            .closeBtnRunnable("بستن", () -> {
+//
+//                            })
+//                            .tryAgainBtnRunnable("تلاش مجدد", () -> {
+//
+//                            })
+//                            .show();
                     e.printStackTrace();
                 }
             });

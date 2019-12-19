@@ -9,7 +9,7 @@ public class EndPoints {
 //    http://api.parsian.ir:1881/api/operator/
 
     public static final String IP = (BuildConfig.DEBUG)
-            ? "http://turbotaxi.ir"
+            ? "http://172.16.2.210"
             : "http://turbotaxi.ir";
 
     public static final String APIPort = (BuildConfig.DEBUG) ? "1881" : "1881";

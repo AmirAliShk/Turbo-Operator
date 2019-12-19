@@ -65,7 +65,6 @@ public class ErrorDialog {
   }
 
   public void show() {
-
     dialog = new Dialog(MyApplication.currentActivity);
     dialog.getWindow().requestFeature(Window.FEATURE_NO_TITLE);
     dialog.getWindow().getAttributes().windowAnimations = R.style.ExpandAnimation;
@@ -75,7 +74,7 @@ public class ErrorDialog {
     dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
     WindowManager.LayoutParams wlp = dialog.getWindow().getAttributes();
     wlp.gravity = Gravity.BOTTOM;
-    wlp.windowAnimations = R.style.ExpandAnimation;
+//    wlp.windowAnimations = R.style.ExpandAnimation;
     dialog.getWindow().setAttributes(wlp);
 
     dialog.setCancelable(cancelable);
@@ -103,6 +102,8 @@ public class ErrorDialog {
     btnClose.setOnClickListener(v -> {
       if (closeRunnable != null)
         closeRunnable.run();
+      else
+        dismiss();
     });
 
     btnTryAgain.setOnClickListener(v -> {
