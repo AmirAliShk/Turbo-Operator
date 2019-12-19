@@ -18,14 +18,14 @@
         android:theme="@style/AppTheme"
         tools:ignore="GoogleAppIndexingWarning">
 
-        <activity android:name="ir.taxi1880.operatormanagement.activity.SplashActivity">
+        <activity android:name=".activity.SplashActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
 
-        <activity android:name="ir.taxi1880.operatormanagement.activity.MainActivity" android:windowSoftInputMode="adjustNothing|stateHidden">
+        <activity android:name=".activity.MainActivity" android:windowSoftInputMode="adjustResize|stateHidden">
         </activity>
 
     </application>

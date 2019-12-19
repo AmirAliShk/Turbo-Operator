@@ -9,6 +9,7 @@ import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.Button;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import ir.taxi1880.operatormanagement.R;
@@ -74,10 +75,14 @@ public class ErrorDialog {
     dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
     WindowManager.LayoutParams wlp = dialog.getWindow().getAttributes();
     wlp.gravity = Gravity.BOTTOM;
+    wlp.width = LinearLayout.LayoutParams.MATCH_PARENT;
 //    wlp.windowAnimations = R.style.ExpandAnimation;
     dialog.getWindow().setAttributes(wlp);
 
     dialog.setCancelable(cancelable);
+
+//    LinearLayout llParent=dialog.findViewById(R.id.llParent);
+//    llParent.setLayoutParams(new LinearLayout.LayoutParams(300, 150));
 
     TextView txtMessage = (TextView) dialog.findViewById(R.id.txtMessage);
     txtMessage.setText(messageText);
