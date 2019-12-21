@@ -131,8 +131,8 @@ public class SplashActivity extends AppCompatActivity {
                     if (block == 1) {
                         new GeneralDialog()
                                 .title("هشدار")
-                                .message("شما به امکانات این نرم افزار دسترسی ندارید")
-                                .firstButton("خروج", () -> MyApplication.currentActivity.finish())
+                                .message("اکانت شما توسط سیستم مسدود شده است")
+                                .firstButton("خروج از برنامه", () -> MyApplication.currentActivity.finish())
                                 .show();
                         return;
                     }
@@ -142,6 +142,7 @@ public class SplashActivity extends AppCompatActivity {
                                 .toFragment(MyApplication.currentActivity, new LoginFragment())
                                 .setAddToBackStack(false)
                                 .replace();
+                        return;
                     }
 
                     if (updateAvailable == 1) {
@@ -202,8 +203,6 @@ public class SplashActivity extends AppCompatActivity {
     @Override
     public void onBackPressed() {
         try {
-
-
             if (getSupportFragmentManager().getBackStackEntryCount() > 0 || getFragmentManager().getBackStackEntryCount() > 0) {
                 super.onBackPressed();
             } else {

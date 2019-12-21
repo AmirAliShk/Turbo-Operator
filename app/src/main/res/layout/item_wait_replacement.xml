@@ -18,7 +18,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="5dp"
-            android:background="@drawable/bg_blue_border_edge"
+            android:background="@drawable/bg_edit_text"
             android:elevation="3dp"
             android:layoutDirection="rtl"
             android:orientation="vertical"

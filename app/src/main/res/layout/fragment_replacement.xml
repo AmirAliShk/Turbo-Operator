@@ -52,12 +52,21 @@
 
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:gravity="center"
+                android:layout_height="wrap_content"
+                android:gravity="top"
                 android:orientation="vertical">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="اپراتور مورد نظر خود را با کلیک روی باکس زیر انتخاب کنید"
+                    android:gravity="center"
+                    android:textSize="@dimen/text_title"
+                    android:textColor="@color/colorAccent" />
 
                 <LinearLayout
                     android:id="@+id/llDate"
+                    android:visibility="gone"
                     android:layout_width="match_parent"
                     android:layout_height="0dp"
                     android:layout_weight="0.25"
@@ -75,6 +84,7 @@
                         android:layout_weight="1"
                         android:background="@drawable/bg_edit_text"
                         android:gravity="center"
+                        android:visibility="gone"
                         android:elevation="3dp"
                         android:layout_margin="4dp"
                         android:layoutDirection="rtl"
@@ -114,12 +124,14 @@
                     android:id="@+id/llShift"
                     android:layout_width="match_parent"
                     android:layout_height="0dp"
+                    android:visibility="gone"
                     android:layout_weight="0.25"
                     android:gravity="bottom"
                     android:orientation="horizontal">
 
                     <ImageView
                         android:layout_width="0dp"
+                        android:visibility="gone"
                         android:layout_height="match_parent"
                         android:layout_weight="0.09" />
 
@@ -130,6 +142,7 @@
                         android:background="@drawable/bg_edit_text"
                         android:gravity="center"
                         android:elevation="3dp"
+                        android:visibility="gone"
                         android:layout_margin="4dp"
                         android:layoutDirection="rtl"
                         android:orientation="horizontal"
@@ -173,6 +186,7 @@
 
                     <ImageView
                         android:layout_width="0dp"
+                        android:visibility="gone"
                         android:layout_height="match_parent"
                         android:layout_weight="0.09" />
 
@@ -181,8 +195,8 @@
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="0dp"
-                    android:layout_weight="0.25"
-                    android:gravity="bottom"
+                    android:layout_weight="0.50"
+                    android:gravity="center"
                     android:orientation="horizontal">
 
                     <ImageView
@@ -193,7 +207,7 @@
                     <LinearLayout
                         android:id="@+id/llOperator"
                         android:layout_width="0dp"
-                        android:layout_height="wrap_content"
+                        android:layout_height="?android:attr/actionBarSize"
                         android:layout_weight="1"
                         android:background="@drawable/bg_edit_text"
                         android:gravity="center"
@@ -230,6 +244,7 @@
                             android:layout_height="match_parent"
                             android:background="@android:color/transparent"
                             android:hint="@string/hint_operator"
+                            android:gravity="center_vertical"
                             android:nextFocusDown="@id/btnSubmit"
                             android:singleLine="true"
                             android:textColor="@color/colorBlack"
@@ -247,7 +262,7 @@
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="0dp"
-                    android:layout_weight="0.75"
+                    android:layout_weight="0.70"
                     android:gravity="center"
                     android:orientation="horizontal">
 

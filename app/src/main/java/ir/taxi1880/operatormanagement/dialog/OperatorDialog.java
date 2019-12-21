@@ -12,17 +12,18 @@ import android.view.WindowManager;
 import android.widget.EditText;
 import android.widget.ListView;
 
-import ir.taxi1880.operatormanagement.R;
-import ir.taxi1880.operatormanagement.adapter.OperatorAdapter;
-import ir.taxi1880.operatormanagement.app.MyApplication;
-import ir.taxi1880.operatormanagement.helper.TypefaceUtil;
-import ir.taxi1880.operatormanagement.model.OperatorModel;
-
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+
+import ir.taxi1880.operatormanagement.R;
+import ir.taxi1880.operatormanagement.adapter.OperatorAdapter;
+import ir.taxi1880.operatormanagement.app.MyApplication;
+import ir.taxi1880.operatormanagement.helper.KeyBoardHelper;
+import ir.taxi1880.operatormanagement.helper.TypefaceUtil;
+import ir.taxi1880.operatormanagement.model.OperatorModel;
 
 public class OperatorDialog {
 
@@ -57,12 +58,12 @@ public class OperatorDialog {
 
         EditText edtSearchOperator = dialog.findViewById(R.id.edtSearchOperator);
         listOperator = dialog.findViewById(R.id.listOperator);
-
         operatorModels = getOperatorList();
 
         listOperator.setOnItemClickListener((parent, view, position, id) -> {
             OperatorModel op = operatorAdapter.getOperator(position);
             listener.selected(op);
+            KeyBoardHelper.hideKeyboard();
             dismiss();
         });
 
@@ -85,10 +86,12 @@ public class OperatorDialog {
         dialog.show();
     }
 
-    public static void dismiss() {
+    private static void dismiss() {
         try {
-            if (dialog != null)
+            if (dialog != null){
                 dialog.dismiss();
+                KeyBoardHelper.hideKeyboard();
+            }
         } catch (Exception e) {
             Log.e("TAG", "dismiss: " + e.getMessage());
         }

@@ -3,7 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/colorWhite"
+    android:background="#EEE9F1"
     android:clickable="true"
     tools:context="ir.taxi1880.operatormanagement.fragment.SendReplacementReqFragment">
 

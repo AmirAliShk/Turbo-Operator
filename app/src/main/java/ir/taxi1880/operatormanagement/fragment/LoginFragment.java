@@ -4,6 +4,7 @@ package ir.taxi1880.operatormanagement.fragment;
 import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -25,6 +26,7 @@ import ir.taxi1880.operatormanagement.activity.MainActivity;
 import ir.taxi1880.operatormanagement.app.EndPoints;
 import ir.taxi1880.operatormanagement.app.MyApplication;
 import ir.taxi1880.operatormanagement.dialog.ErrorDialog;
+import ir.taxi1880.operatormanagement.dialog.GeneralDialog;
 import ir.taxi1880.operatormanagement.helper.KeyBoardHelper;
 import ir.taxi1880.operatormanagement.helper.TypefaceUtil;
 
@@ -33,90 +35,105 @@ import ir.taxi1880.operatormanagement.helper.TypefaceUtil;
  */
 public class LoginFragment extends Fragment {
 
-    public static final String TAG = LoginFragment.class.getSimpleName();
-    Unbinder unbinder;
+  public static final String TAG = LoginFragment.class.getSimpleName();
+  Unbinder unbinder;
 
-    @BindView(R.id.edtUserName)
-    EditText edtUserName;
+  @BindView(R.id.edtUserName)
+  EditText edtUserName;
 
-    @BindView(R.id.edtPassword)
-    EditText edtPassword;
+  @BindView(R.id.edtPassword)
+  EditText edtPassword;
 
-    @BindView(R.id.btnLogin)
-    Button btnLogin;
+  @BindView(R.id.btnLogin)
+  Button btnLogin;
 
-    @OnClick(R.id.btnLogin)
-    void onLogin() {
-        if (edtUserName.getText().toString().isEmpty()) {
-            MyApplication.Toast("لطفا نام کاربری خود را وارد نمایید", Toast.LENGTH_SHORT);
-            return;
-        }
-        if (edtPassword.getText().toString().isEmpty()) {
-            MyApplication.Toast("لطفا رمز عبور خود را وارد نمایید", Toast.LENGTH_SHORT);
-            return;
-        }
+  @OnClick(R.id.btnLogin)
+  void onLogin() {
+    if (edtUserName.getText().toString().isEmpty()) {
+      MyApplication.Toast("لطفا نام کاربری خود را وارد نمایید", Toast.LENGTH_SHORT);
+      return;
+    }
+    if (edtPassword.getText().toString().isEmpty()) {
+      MyApplication.Toast("لطفا رمز عبور خود را وارد نمایید", Toast.LENGTH_SHORT);
+      return;
+    }
 
-        logIn(edtUserName.getText().toString(), edtPassword.getText().toString());
+    logIn(edtUserName.getText().toString(), edtPassword.getText().toString());
 //        FragmentHelper
 //                .toFragment(MyApplication.currentActivity, new LoginFragment())
 //                .setAddToBackStack(false)
 //                .replace();
-        KeyBoardHelper.hideKeyboard();
-    }
+    KeyBoardHelper.hideKeyboard();
+  }
 
-    @SuppressLint("SetTextI18n")
+  @SuppressLint("SetTextI18n")
+  @Override
+  public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+    View view = inflater.inflate(R.layout.fragment_login, container, false);
+    unbinder = ButterKnife.bind(this, view);
+    TypefaceUtil.overrideFonts(view);
+
+    return view;
+  }
+
+  private void logIn(String userName, String password) {
+    JSONObject params = new JSONObject();
+    try {
+      params.put("userName", userName);
+      params.put("password", password);
+
+      Log.i(TAG, "logIn: " + params);
+
+      RequestHelper.builder(EndPoints.LOGIN)
+              .params(params)
+              .method(RequestHelper.POST)
+              .listener(onLogIn)
+              .request();
+
+    } catch (JSONException e) {
+      e.printStackTrace();
+    }
+  }
+
+  RequestHelper.Callback onLogIn = new RequestHelper.Callback() {
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_login, container, false);
-        unbinder = ButterKnife.bind(this, view);
-        TypefaceUtil.overrideFonts(view);
-
-        return view;
-    }
-
-    private void logIn(String userName, String password) {
-        JSONObject params = new JSONObject();
+    public void onResponse(Runnable reCall, Object... args) {
+      MyApplication.handler.post(() -> {
         try {
-            params.put("userName", userName);
-            params.put("password", password);
+          JSONObject object = new JSONObject(args[0].toString());
+          int status = object.getInt("status");
+          int userId = object.getInt("userId");
+          int block = object.getInt("isBlock");
+          MyApplication.prefManager.setOperatorName(object.getString("name"));
 
-            RequestHelper.builder(EndPoints.LOGIN)
-                    .params(params)
-                    .method(RequestHelper.POST)
-                    .listener(onLogIn)
-                    .request();
+          if (status == 1) {
 
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-    }
+            if (block == 1) {
+              new GeneralDialog()
+                      .title("هشدار")
+                      .message("اکانت شما توسط سیستم مسدود شده است")
+                      .firstButton("خروج از برنامه", () -> MyApplication.currentActivity.finish())
+                      .show();
+              return;
+            }
 
-    RequestHelper.Callback onLogIn = new RequestHelper.Callback() {
-        @Override
-        public void onResponse(Runnable reCall, Object... args) {
-            MyApplication.handler.post(() -> {
-                try {
-                    JSONObject object = new JSONObject(args[0].toString());
-                    int status = object.getInt("status");
-                    int userId = object.getInt("userId");
-                    MyApplication.prefManager.setOperatorName(object.getString("name"));
-                    if (status == 1) {
-                        MyApplication.prefManager.setUserCode(userId);
-                        MyApplication.prefManager.setUserName((edtUserName.getText().toString()));
-                        MyApplication.prefManager.setPassword(edtPassword.getText().toString());
-                        MyApplication.prefManager.isLoggedIn(true);
-                        startActivity(new Intent(MyApplication.currentActivity, MainActivity.class));
-                        MyApplication.currentActivity.finish();
-                    } else {
-                        ErrorDialog errorDialog = new ErrorDialog();
-                        errorDialog.titleText("خطایی رخ داده");
-                        errorDialog.messageText("نام کاربری یا رمز عبور اشتباه است");
-                        errorDialog.tryAgainBtnRunnable("تلاش مجدد", () -> logIn(edtUserName.getText().toString(),edtPassword.getText().toString()));
-                        errorDialog.closeBtnRunnable("بستن", null);
-                        errorDialog.cancelable(true);
-                        errorDialog.show();
-                    }
-                } catch (Exception e) {
+            MyApplication.prefManager.setUserCode(userId);
+            MyApplication.prefManager.setUserName((edtUserName.getText().toString()));
+            MyApplication.prefManager.setPassword(edtPassword.getText().toString());
+            MyApplication.prefManager.isLoggedIn(true);
+            startActivity(new Intent(MyApplication.currentActivity, MainActivity.class));
+            MyApplication.currentActivity.finish();
+          } else {
+            ErrorDialog errorDialog = new ErrorDialog();
+            errorDialog.titleText("خطایی رخ داده");
+            errorDialog.messageText("نام کاربری یا رمز عبور اشتباه است");
+            errorDialog.tryAgainBtnRunnable("تلاش مجدد", () -> logIn(edtUserName.getText().toString(), edtPassword.getText().toString()));
+            errorDialog.closeBtnRunnable("بستن", null);
+            errorDialog.cancelable(true);
+            errorDialog.show();
+          }
+
+        } catch (Exception e) {
 //                    new ErrorDialog()
 //                            .messageText("پردازش داده های ورودی با مشکل مواجه شد")
 //                            .closeBtnRunnable("بستن", () -> {
@@ -126,21 +143,21 @@ public class LoginFragment extends Fragment {
 //
 //                            })
 //                            .show();
-                    e.printStackTrace();
-                }
-            });
+          e.printStackTrace();
         }
-
-        @Override
-        public void onFailure(Runnable reCall, Exception e) {
-
-        }
-    };
+      });
+    }
 
     @Override
-    public void onDestroyView() {
-        super.onDestroyView();
-        unbinder.unbind();
+    public void onFailure(Runnable reCall, Exception e) {
+
     }
+  };
+
+  @Override
+  public void onDestroyView() {
+    super.onDestroyView();
+    unbinder.unbind();
+  }
 
 }
