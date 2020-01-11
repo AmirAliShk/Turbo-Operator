@@ -67,6 +67,7 @@
                     android:id="@+id/txtNotification"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:textColor="@color/colorBlack"
                     android:text=" بروزرسانی وضعیت راننده فقط در فراگمنت نقشه انجام شود و وقتی یوزر بین صفحات نویگیشن انجام می دهد و به فرگمنت نقشه باز میگردد در صورتی که از مدت زمان لود قبلی بیشتر از 10 ثانیه گذشته باشد دوباره درخواست وضعیت از سرور انجام شود "
                     android:textSize="16sp" />
 
