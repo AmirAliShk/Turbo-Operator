@@ -11,6 +11,11 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.util.ArrayList;
+
 import ir.taxi1880.operatormanagement.OkHttp.RequestHelper;
 import ir.taxi1880.operatormanagement.R;
 import ir.taxi1880.operatormanagement.app.EndPoints;
@@ -18,11 +23,6 @@ import ir.taxi1880.operatormanagement.app.MyApplication;
 import ir.taxi1880.operatormanagement.dialog.ErrorDialog;
 import ir.taxi1880.operatormanagement.helper.TypefaceUtil;
 import ir.taxi1880.operatormanagement.model.NotificationModel;
-
-import org.json.JSONException;
-import org.json.JSONObject;
-
-import java.util.ArrayList;
 
 public class NotificationAdapter extends BaseAdapter {
 
@@ -78,6 +78,7 @@ public class NotificationAdapter extends BaseAdapter {
             });
 
             viewHolder.txtNotification.setText(notificationModel.getText());
+            viewHolder.txtDate.setText(notificationModel.getSendDate());
 
         } catch (Exception e) {
             e.printStackTrace();
@@ -87,6 +88,7 @@ public class NotificationAdapter extends BaseAdapter {
 
     static class ViewHolder {
         TextView txtNotification;
+        TextView txtDate;
         ImageView imgNotify;
         Button btnSeenNotify;
 
@@ -97,6 +99,7 @@ public class NotificationAdapter extends BaseAdapter {
             txtNotification = convertView.findViewById(R.id.txtNotification);
             imgNotify = convertView.findViewById(R.id.imgNotify);
             btnSeenNotify = convertView.findViewById(R.id.btnSeenNotify);
+            txtDate=convertView.findViewById(R.id.txtDate);
         }
     }
 
