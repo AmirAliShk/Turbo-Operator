@@ -37,15 +37,6 @@
                     android:src="@drawable/ic_operator_user" />
 
                 <TextView
-                    android:id="@+id/txtOperatorName"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:gravity="center"
-                    android:padding="5dp"
-                    android:textColor="@color/colorWhite"
-                    android:textSize="24sp" />
-
-                <TextView
                     android:id="@+id/txtOperatorCode"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -60,6 +51,28 @@
                     android:layout_height="match_parent"
                     style="@style/padding_except_bottom"
                     android:orientation="vertical">
+
+                    <LinearLayout
+                        android:id="@+id/llTripRegister"
+                        android:layout_width="match_parent"
+                        android:layout_height="0dp"
+                        android:layout_margin="5dp"
+                        android:layout_weight="0.25"
+                        android:background="@drawable/bg_white_edge"
+                        android:elevation="3dp"
+                        android:gravity="center"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:gravity="center"
+                            android:text="ثبت سفر"
+                            android:textColor="@color/colorBlack"
+                            android:textSize="@dimen/text_header"
+                            android:textStyle="bold" />
+
+                    </LinearLayout>
 
                     <LinearLayout
                         android:id="@+id/llShift"

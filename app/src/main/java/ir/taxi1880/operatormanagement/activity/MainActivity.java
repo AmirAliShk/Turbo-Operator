@@ -21,6 +21,7 @@ import ir.taxi1880.operatormanagement.fragment.NotificationFragment;
 import ir.taxi1880.operatormanagement.fragment.ReplacementWaitingFragment;
 import ir.taxi1880.operatormanagement.fragment.SendReplacementReqFragment;
 import ir.taxi1880.operatormanagement.fragment.ShiftFragment;
+import ir.taxi1880.operatormanagement.fragment.TripRegisterFragment;
 import ir.taxi1880.operatormanagement.helper.FragmentHelper;
 import ir.taxi1880.operatormanagement.helper.TypefaceUtil;
 
@@ -40,6 +41,14 @@ public class MainActivity extends AppCompatActivity {
     void onShifts() {
         FragmentHelper
                 .toFragment(MyApplication.currentActivity, new ShiftFragment())
+                .setAddToBackStack(true)
+                .replace();
+    }
+
+    @OnClick(R.id.llTripRegister)
+    void onTripRegister() {
+        FragmentHelper
+                .toFragment(MyApplication.currentActivity, new TripRegisterFragment())
                 .setAddToBackStack(true)
                 .replace();
     }
