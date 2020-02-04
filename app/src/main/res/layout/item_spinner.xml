@@ -1,11 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
-<TextView xmlns:android="http://schemas.android.com/apk/res/android"
-    android:ellipsize="marquee"
-    android:gravity="center_vertical"
-    android:text="صبح"
-    android:padding="10dp"
-    android:typeface="normal"
-    android:textSize="@dimen/text_title"
-    android:theme="@style/SpinnerTheme"
+<TextView android:layout_height="wrap_content"
+    xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="?android:attr/actionBarSize" />
+    android:textColor="#000000"
+    android:gravity="center"
+    android:text="تست"
+    android:layout_gravity="center"
+    android:textAppearance="?android:attr/textAppearanceMedium" />

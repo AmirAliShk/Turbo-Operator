@@ -3,8 +3,8 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:clickable="true"
-    android:layoutDirection="ltr"
-    android:background="@color/colorWhite"
+    android:layoutDirection="rtl"
+    android:background="#EEE9F1"
     android:orientation="vertical"
     tools:context="ir.taxi1880.operatormanagement.fragment.TripRegisterFragment">
 
@@ -14,434 +14,686 @@
         android:layout_height="?android:attr/actionBarSize"
         android:background="@drawable/bg_action_bar_purple">
 
-        <ImageView
-            android:id="@+id/imgBack"
-            android:layout_width="?android:attr/actionBarSize"
-            android:layout_height="match_parent"
-            android:padding="15dp"
-            android:src="@drawable/ic_back" />
-
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:gravity="center">
 
-            <info.hoang8f.android.segmented.SegmentedGroup
-                xmlns:segmentedgroup="http://schemas.android.com/apk/res-auto"
-                android:layout_width="200dp"
+            <RadioGroup
+                android:id="@+id/rdoPageTitle"
+                android:layout_width="180dp"
                 android:layout_height="40dp"
                 android:gravity="center"
-                android:orientation="horizontal"
-                segmentedgroup:sc_tint_color="#54157A"
-                segmentedgroup:sc_checked_text_color="@color/colorWhite"
-                segmentedgroup:sc_border_width="2dp"
-                segmentedgroup:sc_corner_radius="5dp">
+                android:background="@drawable/bg_button_purple"
+                android:orientation="horizontal">
 
                 <RadioButton
-                    android:id="@+id/button22"
-                    android:layout_width="0dp"
-                    android:layout_weight="1"
-                    android:gravity="center"
-                    android:layout_height="match_parent"
-                    android:textColor="@color/colorWhite"
-                    android:text="غیر فعال"
-                    android:button="@null" />
-
-                <RadioButton
-                    android:id="@+id/button21"
                     android:layout_width="0dp"
                     android:layout_weight="1"
                     android:layout_height="match_parent"
                     android:text="فعال"
                     android:checked="true"
+                    android:textAppearance="?android:attr/textAppearanceMedium"
+                    android:layout_margin="3dp"
                     android:textColor="@color/colorWhite"
+                    android:background="@drawable/bg_trip_type"
                     android:gravity="center"
                     android:button="@null" />
 
-            </info.hoang8f.android.segmented.SegmentedGroup>
+                <RadioButton
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:layout_margin="3dp"
+                    android:textAppearance="?android:attr/textAppearanceMedium"
+                    android:layout_height="match_parent"
+                    android:textColor="@color/colorWhite"
+                    android:background="@drawable/bg_trip_type"
+                    android:text="غیر فعال"
+                    android:button="@null" />
+
+            </RadioGroup>
 
         </LinearLayout>
 
-<!--        <TextView-->
-<!--            android:id="@+id/txtConnectionStatus"-->
-<!--            android:layout_width="wrap_content"-->
-<!--            android:layout_height="wrap_content"-->
-<!--            android:layout_centerInParent="true"-->
-<!--            android:text="ثبت سفر"-->
-<!--            android:textColor="@color/colorWhite"-->
-<!--            android:textSize="@dimen/text_header" />-->
+        <ImageView
+            android:id="@+id/imgBack"
+            android:layout_width="?android:attr/actionBarSize"
+            android:layout_height="match_parent"
+            android:padding="15dp"
+            android:layout_alignParentLeft="true"
+            android:src="@drawable/ic_back" />
 
     </RelativeLayout>
 
-    <LinearLayout
+    <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical">
+        android:fillViewport="true">
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:padding="15dp"
-            android:layout_weight="1"
+            android:layout_height="match_parent"
             android:orientation="vertical">
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal">
-
-                <LinearLayout
-                    android:layout_width="wrap_content"
-                    android:layout_weight="1"
-                    android:padding="5dp"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical">
-
-                    <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:text="تلفن"
-                        android:textAppearance="?android:attr/textAppearanceMedium"
-                        android:textColor="@color/grayDark"/>
-
-                    <EditText
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:padding="5dp"
-                        android:background="@drawable/bg_strock_corner"/>
-
-                </LinearLayout>
-
-                <LinearLayout
-                    android:layout_width="wrap_content"
-                    android:layout_weight="0.5"
-                    android:padding="5dp"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical">
-
-                    <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:text="شهر"
-                        android:textAppearance="?android:attr/textAppearanceMedium"
-                        android:textColor="@color/grayDark"/>
-
-                    <EditText
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:background="@drawable/bg_strock_corner"
-                        android:padding="5dp"
-                        android:hint="نیشابور"/>
-
-                </LinearLayout>
-
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal">
-
-                <LinearLayout
-                    android:layout_width="wrap_content"
-                    android:layout_weight="1"
-                    android:padding="5dp"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical">
-
-                    <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:text="همراه"
-                        android:textAppearance="?android:attr/textAppearanceMedium"
-                        android:textColor="@color/grayDark"/>
-
-                    <EditText
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:padding="5dp"
-                        android:background="@drawable/bg_strock_corner"/>
-
-                </LinearLayout>
-
-                <LinearLayout
-                    android:layout_width="wrap_content"
-                    android:layout_weight="0.5"
-                    android:padding="5dp"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical">
-
-                    <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:text="تخفیف"
-                        android:textAppearance="?android:attr/textAppearanceMedium"
-                        android:textColor="@color/grayDark"/>
-
-                    <EditText
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:background="@drawable/bg_strock_corner"
-                        android:padding="5dp" />
-
-                </LinearLayout>
-
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal">
-
-                <LinearLayout
-                    android:layout_width="wrap_content"
-                    android:layout_weight="1"
-                    android:padding="5dp"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical">
-
-                    <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:text="نام خانوادگی"
-                        android:textAppearance="?android:attr/textAppearanceMedium"
-                        android:textColor="@color/grayDark"/>
-
-                    <EditText
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:padding="5dp"
-                        android:background="@drawable/bg_strock_corner"/>
-
-                </LinearLayout>
-
-                <LinearLayout
-                    android:layout_width="wrap_content"
-                    android:layout_weight="0.5"
-                    android:padding="5dp"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical">
-
-                    <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:text="نوع سرویس"
-                        android:textAppearance="?android:attr/textAppearanceMedium"
-                        android:textColor="@color/grayDark"/>
-
-                    <EditText
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:background="@drawable/bg_strock_corner"
-                        android:padding="5dp"
-                        android:hint="بانوان"/>
-
-                </LinearLayout>
-
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-               android:padding="5dp"
-                android:layout_height="wrap_content"
+                android:padding="15dp"
+                android:layout_weight="1"
                 android:orientation="vertical">
 
-                <TextView
+                <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="آدرس"
-                    android:textAppearance="?android:attr/textAppearanceMedium"
-                    android:textColor="@color/grayDark"/>
+                    android:layout_weight="1"
+                    android:orientation="horizontal">
 
-                <EditText
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_weight="0.60"
+                        android:padding="5dp"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="شهر"
+                            android:paddingRight="5dp"
+                            android:textAppearance="?android:attr/textAppearanceMedium"
+                            android:textColor="@color/grayMedium"/>
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:gravity="center"
+                            android:background="@drawable/bg_edit_text">
+
+                            <Spinner
+                                android:id="@+id/spCity"
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                android:nextFocusDown="@id/edtTell"
+                                android:dropDownWidth="100dp"
+                                android:gravity="center"
+                                android:backgroundTint="@color/colorPrimaryDark"
+                                android:paddingTop="5dp"
+                                android:paddingBottom="5dp" />
+
+                        </LinearLayout>
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_weight="1"
+                        android:padding="5dp"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="تلفن"
+                            android:paddingRight="5dp"
+                            android:textAppearance="?android:attr/textAppearanceMedium"
+                            android:textColor="@color/grayMedium"/>
+
+                        <EditText
+                            android:id="@+id/edtTell"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:padding="5dp"
+                            android:singleLine="true"
+                            android:inputType="number"
+                            android:nextFocusDown="@id/edtDiscount"
+                            android:background="@drawable/bg_strock_corner"/>
+
+                    </LinearLayout>
+
+                </LinearLayout>
+
+                <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:orientation="horizontal">
+
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_weight="0.5"
+                        android:padding="5dp"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="تخفیف"
+                            android:paddingRight="5dp"
+                            android:textAppearance="?android:attr/textAppearanceMedium"
+                            android:textColor="@color/grayMedium"/>
+
+                        <EditText
+                            android:id="@+id/edtDiscount"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:inputType="number"
+                            android:background="@drawable/bg_strock_corner"
+                            android:nextFocusDown="@id/edtMobile"
+                            android:singleLine="true"
+                            android:padding="5dp" />
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_weight="1"
+                        android:padding="5dp"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="همراه"
+                            android:paddingRight="5dp"
+                            android:textAppearance="?android:attr/textAppearanceMedium"
+                            android:textColor="@color/grayMedium"/>
+
+                        <EditText
+                            android:id="@+id/edtMobile"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:padding="5dp"
+                            android:singleLine="true"
+                            android:inputType="number"
+                            android:nextFocusDown="@id/spServiceType"
+                            android:background="@drawable/bg_strock_corner"/>
+
+                    </LinearLayout>
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:orientation="horizontal">
+
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_weight="0.5"
+                        android:padding="5dp"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="نوع سرویس"
+                            android:paddingRight="5dp"
+                            android:textAppearance="?android:attr/textAppearanceMedium"
+                            android:textColor="@color/grayMedium"/>
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:gravity="center"
+                            android:background="@drawable/bg_edit_text">
+
+                            <Spinner
+                                android:id="@+id/spServiceType"
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                android:backgroundTint="@color/colorPrimaryDark"
+                                android:dropDownWidth="80dp"
+                                android:gravity="center"
+                                android:nextFocusDown="@id/edtFamily"
+                                android:paddingBottom="5dp"
+                                android:paddingTop="5dp" />
+
+                        </LinearLayout>
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_weight="1"
+                        android:padding="5dp"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="نام خانوادگی"
+                            android:paddingRight="5dp"
+                            android:textAppearance="?android:attr/textAppearanceMedium"
+                            android:textColor="@color/grayMedium"/>
+
+                        <EditText
+                            android:id="@+id/edtFamily"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:padding="5dp"
+                            android:singleLine="true"
+                            android:nextFocusDown="@id/edtAddress"
+                            android:background="@drawable/bg_strock_corner"/>
+
+                    </LinearLayout>
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:padding="5dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="آدرس"
+                        android:paddingRight="5dp"
+                        android:textAppearance="?android:attr/textAppearanceMedium"
+                        android:textColor="@color/grayMedium"/>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:background="@drawable/bg_strock_corner"
+                        android:gravity="center_vertical"
+                        android:orientation="horizontal"
+                        android:layout_height="wrap_content">
+
+                        <EditText
+                            android:id="@+id/edtAddress"
+                            android:layout_width="match_parent"
+                            android:layout_weight="1"
+                            android:layout_height="wrap_content"
+                            android:background="@android:color/transparent"
+                            android:singleLine="true"
+                            android:padding="5dp" />
+
+                        <LinearLayout
+                            android:layout_width="50dp"
+                            android:layout_height="35dp"
+                            android:gravity="left">
+
+                            <ImageView
+                                android:layout_width="30dp"
+                                android:layout_height="match_parent"
+                                android:layout_margin="5dp"
+                                android:src="@drawable/ic_search"/>
+
+                        </LinearLayout>
+
+                    </LinearLayout>
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:orientation="horizontal">
+
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_weight="1"
+                        android:padding="5dp"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="منطقه مبدا"
+                            android:gravity="right"
+                            android:paddingRight="5dp"
+                            android:textAppearance="?android:attr/textAppearanceMedium"
+                            android:textColor="@color/grayMedium"/>
+
+                        <TextView
+                            android:id="@+id/txtOrigin"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:background="@drawable/bg_strock_corner"
+                            android:text="فدائیان اسلام"
+                            android:padding="8dp" />
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_weight="1"
+                        android:padding="5dp"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="منطقه مقصد"
+                            android:gravity="right"
+                            android:paddingRight="5dp"
+                            android:textAppearance="?android:attr/textAppearanceMedium"
+                            android:textColor="@color/grayMedium"/>
+
+                        <TextView
+                            android:id="@+id/txtDestination"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:text="فدائیان اسلام"
+                            android:padding="8dp"
+                            android:background="@drawable/bg_strock_corner"/>
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_weight="0.30"
+                        android:padding="5dp"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="طرح"
+                            android:gravity="right"
+                            android:paddingRight="5dp"
+                            android:textAppearance="?android:attr/textAppearanceMedium"
+                            android:textColor="@color/grayMedium"/>
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:gravity="center"
+                            android:padding="3dp"
+                            android:background="@drawable/bg_strock_corner">
+
+                            <CheckBox
+                                android:id="@+id/chbShowPassword"
+                                android:layout_width="35dp"
+                                android:layout_height="30dp"
+                                android:checked="false"
+                                android:background="@drawable/traffic"
+                                android:button="@null"/>
+
+                        </LinearLayout>
+
+                    </LinearLayout>
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:orientation="horizontal">
+
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_weight="0.30"
+                        android:padding="5dp"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="تعداد"
+                            android:gravity="right"
+                            android:paddingRight="5dp"
+                            android:textAppearance="?android:attr/textAppearanceMedium"
+                            android:textColor="@color/grayMedium"/>
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:gravity="center"
+                            android:background="@drawable/bg_edit_text">
+
+                            <Spinner
+                                android:id="@+id/spServiceCount"
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                android:nextFocusDown="@id/edtFamily"
+                                android:dropDownWidth="50dp"
+                                android:gravity="center"
+                                android:backgroundTint="@color/colorPrimaryDark"
+                                android:paddingRight="5dp"
+                                android:paddingTop="5dp"
+                                android:paddingBottom="5dp" />
+
+                        </LinearLayout>
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_weight="1"
+                        android:padding="5dp"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="توضیحات"
+                            android:paddingRight="5dp"
+                            android:textAppearance="?android:attr/textAppearanceMedium"
+                            android:textColor="@color/grayMedium"/>
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:background="@drawable/bg_strock_corner"
+                            android:gravity="center_vertical"
+                            android:orientation="horizontal"
+                            android:layout_height="wrap_content">
+
+                            <EditText
+                                android:id="@+id/edtDescription"
+                                android:layout_width="match_parent"
+                                android:layout_weight="1"
+                                android:layout_height="wrap_content"
+                                android:background="@android:color/transparent"
+                                android:padding="5dp"
+                                android:singleLine="true"/>
+
+                            <LinearLayout
+                                android:layout_width="80dp"
+                                android:gravity="center"
+                                android:layout_height="35dp">
+
+                                <TextView
+                                    android:layout_width="match_parent"
+                                    android:layout_height="match_parent"
+                                    android:layout_margin="5dp"
+                                    android:background="@drawable/bg_ripple"
+                                    android:gravity="left|center_vertical"
+                                    android:text="جزئیات"
+                                    android:textColor="@color/colorPrimaryDark"
+                                    android:textStyle="bold" />
+
+                            </LinearLayout>
+
+                    </LinearLayout>
+
+                    </LinearLayout>
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:orientation="horizontal">
+
+                    <LinearLayout
+                    android:layout_width="0dp"
+                    android:padding="5dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="کلاس خودرو"
+                        android:paddingRight="5dp"
+                        android:textAppearance="?android:attr/textAppearanceMedium"
+                        android:textColor="@color/grayMedium" />
+
+                        <com.yuxingxin.library.MultiRadioGroup
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:background="@drawable/bg_strock_corner"
+                            android:paddingTop="5dp"
+                            android:paddingBottom="5dp"
+                            android:gravity="center">
+
+                            <RadioGroup
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:paddingTop="5dp"
+                                android:paddingBottom="5dp"
+                                android:gravity="center"
+                                android:orientation="horizontal">
+
+                                <RadioButton
+                                    android:layout_width="0dp"
+                                    android:layout_weight="0.75"
+                                    android:checked="true"
+                                    android:textSize="12sp"
+                                    android:layout_height="wrap_content"
+                                    android:buttonTint="@color/colorPrimaryDark"
+                                    android:text="همه"/>
+
+                                <RadioButton
+                                    android:layout_width="0dp"
+                                    android:layout_weight="1"
+                                    android:textSize="12sp"
+                                    android:layout_height="wrap_content"
+                                    android:buttonTint="@color/colorPrimaryDark"
+                                    android:text="اقتصادی"/>
+
+                                <RadioButton
+                                    android:layout_width="0dp"
+                                    android:layout_weight="0.75"
+                                    android:textSize="12sp"
+                                    android:layout_height="wrap_content"
+                                    android:buttonTint="@color/colorPrimaryDark"
+                                    android:text="ممتاز"/>
+
+                            </RadioGroup>
+
+                            <RadioGroup
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:paddingTop="5dp"
+                                android:paddingBottom="5dp"
+                                android:gravity="center"
+                                android:orientation="horizontal">
+
+                                <RadioButton
+                                    android:layout_width="0dp"
+                                    android:layout_weight="1"
+                                    android:layout_height="wrap_content"
+                                    android:textSize="12sp"
+                                    android:buttonTint="@color/colorPrimaryDark"
+                                    android:text="تشریفات"/>
+
+                                <RadioButton
+                                    android:layout_width="0dp"
+                                    android:layout_weight="1"
+                                    android:textSize="12sp"
+                                    android:layout_height="wrap_content"
+                                    android:buttonTint="@color/colorPrimaryDark"
+                                    android:text="تاکسی"/>
+
+                            </RadioGroup>
+
+                        </com.yuxingxin.library.MultiRadioGroup>
+
+                </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_weight="0.15"
+                        android:padding="5dp"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="دائم"
+                            android:gravity="right"
+                            android:paddingRight="5dp"
+                            android:textAppearance="?android:attr/textAppearanceMedium"
+                            android:textColor="@color/grayMedium"/>
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:gravity="center"
+                            android:padding="3dp"
+                            android:background="@drawable/bg_strock_corner">
+
+                            <CheckBox
+                                android:id="@+id/chbAlways"
+                                android:layout_width="35dp"
+                                android:layout_height="30dp"
+                                android:checked="false"
+                                android:background="@drawable/traffic"
+                                android:button="@null"/>
+
+                        </LinearLayout>
+
+
+                    </LinearLayout>
+
+                </LinearLayout>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <Button
+                    android:id="@+id/btnSubmit"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="20dp"
+                    android:layout_weight="1"
+                    android:background="@drawable/bg_light_pink_edge"
+                    android:text="ثبت"
+                    android:textColor="@color/colorWhite"
+                    android:textSize="@dimen/text_header"
+                    android:textStyle="bold" />
+
+                <Button
+                    android:id="@+id/btnMoreOption"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="20dp"
+                    android:layout_weight="1"
                     android:background="@drawable/bg_strock_corner"
-                    android:padding="5dp" />
-
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal">
-
-                <LinearLayout
-                    android:layout_width="wrap_content"
-                    android:layout_weight="1"
-                    android:padding="5dp"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical">
-
-                    <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:text="منطقه مقصد"
-                        android:textAppearance="?android:attr/textAppearanceMedium"
-                        android:textColor="@color/grayDark"/>
-
-                    <EditText
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:padding="5dp"
-                        android:background="@drawable/bg_strock_corner"/>
-
-                </LinearLayout>
-
-                <LinearLayout
-                    android:layout_width="wrap_content"
-                    android:layout_weight="0.5"
-                    android:padding="5dp"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical">
-
-                    <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:text="منطقه مبدا"
-                        android:textAppearance="?android:attr/textAppearanceMedium"
-                        android:textColor="@color/grayDark"/>
-
-                    <EditText
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:background="@drawable/bg_strock_corner"
-                        android:padding="5dp" />
-
-                </LinearLayout>
-
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal">
-
-                <LinearLayout
-                    android:layout_width="wrap_content"
-                    android:layout_weight="1"
-                    android:padding="5dp"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical">
-
-                    <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:textAppearance="?android:attr/textAppearanceMedium"
-                        android:textColor="@color/grayDark"/>
-
-                    <EditText
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:padding="5dp"
-                        android:hint="توضیحات"
-                        android:background="@drawable/bg_strock_corner"/>
-
-                </LinearLayout>
-
-                <LinearLayout
-                    android:layout_width="wrap_content"
-                    android:layout_weight="0.5"
-                    android:padding="5dp"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical">
-
-                    <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:text="تعداد سرویس"
-                        android:textAppearance="?android:attr/textAppearanceMedium"
-                        android:textColor="@color/grayDark"/>
-
-                    <EditText
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:background="@drawable/bg_strock_corner"
-                        android:padding="5dp"
-                        android:hint="نیشابور"/>
-
-                </LinearLayout>
-
-                <LinearLayout
-                    android:layout_width="wrap_content"
-                    android:layout_weight="0.5"
-                    android:padding="5dp"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical">
-
-                    <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:text="طرح ترافیک"
-                        android:textAppearance="?android:attr/textAppearanceMedium"
-                        android:textColor="@color/grayDark"/>
-
-                    <EditText
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:background="@drawable/bg_strock_corner"
-                        android:padding="5dp"
-                        android:hint="نیشابور"/>
-
-                </LinearLayout>
-
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:padding="5dp"
-                android:layout_height="wrap_content"
-                android:orientation="vertical">
-
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="کلاس خودرو"
-                    android:textAppearance="?android:attr/textAppearanceMedium"
-                    android:textColor="@color/grayDark"/>
-
-                <EditText
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:padding="5dp"
-                    android:background="@drawable/bg_strock_corner"/>
+                    android:text="گزینه ها"
+                    android:textColor="@color/colorBlack"
+                    android:textSize="@dimen/text_header"
+                    android:textStyle="bold" />
 
             </LinearLayout>
 
         </LinearLayout>
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal">
-
-            <Button
-                android:id="@+id/btnSubmit"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_margin="20dp"
-                android:layout_weight="1"
-                android:background="@drawable/bg_light_pink_edge"
-                android:text="گزینه ها"
-                android:textColor="@color/colorWhite"
-                android:textSize="@dimen/text_header"
-                android:textStyle="bold" />
-
-            <Button
-                android:id="@+id/btnMoreOption"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_margin="20dp"
-                android:layout_weight="1"
-                android:background="@drawable/bg_light_pink_edge"
-                android:text="ثبت"
-                android:textColor="@color/colorWhite"
-                android:textSize="@dimen/text_header"
-                android:textStyle="bold" />
-
-
-        </LinearLayout>
-
-    </LinearLayout>
+    </ScrollView>
 
 </LinearLayout>

@@ -80,9 +80,6 @@ public class MainActivity extends AppCompatActivity {
     @BindView(R.id.txtRequestCount)
     TextView txtRequestCount;
 
-    @BindView(R.id.txtOperatorCode)
-    TextView txtOperatorCode;
-
     @BindView(R.id.txtOperatorName)
     TextView txtOperatorName;
 
