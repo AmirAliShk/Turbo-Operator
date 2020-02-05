@@ -136,6 +136,9 @@ public class GeneralDialog {
   @BindView(R.id.txtTitle)
   TextView txtTitle;
 
+  @BindView(R.id.llTitle)
+  LinearLayout llTitle;
+
   @BindView(R.id.txtMessage)
   TextView txtMessage;
 

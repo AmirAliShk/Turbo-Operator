@@ -15,7 +15,7 @@
         android:orientation="vertical">
 
         <LinearLayout
-            android:id="@+id/llColor"
+            android:id="@+id/llTitle"
             android:layout_width="match_parent"
             android:layout_height="50dp"
             android:background="@drawable/bg_dialog_header"
@@ -36,7 +36,7 @@
             android:id="@+id/llMsg"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@id/llColor"
+            android:layout_below="@id/llTitle"
             android:gravity="center"
             android:orientation="vertical"
             android:padding="5dp">
@@ -92,7 +92,7 @@
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:layout_weight="1"
-                    android:background="#00ffffff"
+                    android:background="@drawable/bg_ripple"
                     android:gravity="center"
                     android:textAppearance="?android:attr/textAppearanceMedium"
                     android:textColor="@color/colorBlack"
@@ -109,9 +109,8 @@
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:layout_weight="1"
-                    android:background="#00ffffff"
+                    android:background="@drawable/bg_ripple"
                     android:gravity="center"
-
                     android:paddingBottom="5dip"
                     android:textAppearance="?android:attr/textAppearanceMedium"
                     android:textColor="@color/colorBlack"
@@ -128,7 +127,7 @@
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:layout_weight="1"
-                    android:background="#00ffffff"
+                    android:background="@drawable/bg_ripple"
                     android:gravity="center"
                     android:paddingBottom="5dip"
                     android:textAppearance="?android:attr/textAppearanceMedium"

@@ -19,40 +19,45 @@
             android:layout_height="match_parent"
             android:gravity="center">
 
-            <RadioGroup
-                android:id="@+id/rdoPageTitle"
+            <com.yuxingxin.library.MultiRadioGroup
                 android:layout_width="180dp"
                 android:layout_height="40dp"
-                android:gravity="center"
-                android:background="@drawable/bg_button_purple"
                 android:orientation="horizontal">
 
-                <RadioButton
-                    android:layout_width="0dp"
-                    android:layout_weight="1"
+                <RadioGroup
+                    android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:text="فعال"
-                    android:checked="true"
-                    android:textAppearance="?android:attr/textAppearanceMedium"
-                    android:layout_margin="3dp"
-                    android:textColor="@color/colorWhite"
-                    android:background="@drawable/bg_trip_type"
-                    android:gravity="center"
-                    android:button="@null" />
+                    android:background="@drawable/bg_button_purple"
+                    android:orientation="horizontal">
 
-                <RadioButton
-                    android:layout_width="0dp"
-                    android:layout_weight="1"
-                    android:gravity="center"
-                    android:layout_margin="3dp"
-                    android:textAppearance="?android:attr/textAppearanceMedium"
-                    android:layout_height="match_parent"
-                    android:textColor="@color/colorWhite"
-                    android:background="@drawable/bg_trip_type"
-                    android:text="غیر فعال"
-                    android:button="@null" />
+                    <RadioButton
+                        android:layout_width="0dp"
+                        android:layout_weight="1"
+                        android:layout_height="match_parent"
+                        android:text="فعال"
+                        android:checked="true"
+                        android:textAppearance="?android:attr/textAppearanceMedium"
+                        android:layout_margin="3dp"
+                        android:textColor="@color/colorWhite"
+                        android:background="@drawable/bg_trip_type"
+                        android:gravity="center"
+                        android:button="@null" />
 
-            </RadioGroup>
+                    <RadioButton
+                        android:layout_width="0dp"
+                        android:layout_weight="1"
+                        android:gravity="center"
+                        android:layout_margin="3dp"
+                        android:textAppearance="?android:attr/textAppearanceMedium"
+                        android:layout_height="match_parent"
+                        android:textColor="@color/colorWhite"
+                        android:background="@drawable/bg_trip_type"
+                        android:text="غیر فعال"
+                        android:button="@null" />
+
+                </RadioGroup>
+
+            </com.yuxingxin.library.MultiRadioGroup>
 
         </LinearLayout>
 
@@ -90,6 +95,7 @@
                     android:orientation="horizontal">
 
                     <LinearLayout
+                        android:id="@+id/llCity"
                         android:layout_width="0dp"
                         android:layout_weight="0.60"
                         android:padding="5dp"
@@ -115,7 +121,7 @@
                                 android:layout_width="match_parent"
                                 android:layout_height="match_parent"
                                 android:nextFocusDown="@id/edtTell"
-                                android:dropDownWidth="100dp"
+                                android:dropDownWidth="match_parent"
                                 android:gravity="center"
                                 android:backgroundTint="@color/colorPrimaryDark"
                                 android:paddingTop="5dp"
@@ -126,6 +132,7 @@
                     </LinearLayout>
 
                     <LinearLayout
+                        android:id="@+id/llTell"
                         android:layout_width="0dp"
                         android:layout_weight="1"
                         android:padding="5dp"
@@ -145,6 +152,8 @@
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
                             android:padding="5dp"
+                            android:textAppearance="?android:attr/textAppearanceMedium"
+                            android:textColor="@color/colorBlack"
                             android:singleLine="true"
                             android:inputType="number"
                             android:nextFocusDown="@id/edtDiscount"
@@ -161,6 +170,7 @@
                     android:orientation="horizontal">
 
                     <LinearLayout
+                        android:id="@+id/llDiscount"
                         android:layout_width="0dp"
                         android:layout_weight="0.5"
                         android:padding="5dp"
@@ -182,12 +192,15 @@
                             android:inputType="number"
                             android:background="@drawable/bg_strock_corner"
                             android:nextFocusDown="@id/edtMobile"
+                            android:textAppearance="?android:attr/textAppearanceMedium"
+                            android:textColor="@color/colorBlack"
                             android:singleLine="true"
                             android:padding="5dp" />
 
                     </LinearLayout>
 
                     <LinearLayout
+                        android:id="@+id/llMobile"
                         android:layout_width="0dp"
                         android:layout_weight="1"
                         android:padding="5dp"
@@ -208,6 +221,8 @@
                             android:layout_height="match_parent"
                             android:padding="5dp"
                             android:singleLine="true"
+                            android:textAppearance="?android:attr/textAppearanceMedium"
+                            android:textColor="@color/colorBlack"
                             android:inputType="number"
                             android:nextFocusDown="@id/spServiceType"
                             android:background="@drawable/bg_strock_corner"/>
@@ -223,6 +238,7 @@
                     android:orientation="horizontal">
 
                     <LinearLayout
+                        android:id="@+id/llServiceType"
                         android:layout_width="0dp"
                         android:layout_weight="0.5"
                         android:padding="5dp"
@@ -248,7 +264,7 @@
                                 android:layout_width="match_parent"
                                 android:layout_height="match_parent"
                                 android:backgroundTint="@color/colorPrimaryDark"
-                                android:dropDownWidth="80dp"
+                                android:dropDownWidth="match_parent"
                                 android:gravity="center"
                                 android:nextFocusDown="@id/edtFamily"
                                 android:paddingBottom="5dp"
@@ -259,6 +275,7 @@
                     </LinearLayout>
 
                     <LinearLayout
+                        android:id="@+id/llFamily"
                         android:layout_width="0dp"
                         android:layout_weight="1"
                         android:padding="5dp"
@@ -278,6 +295,8 @@
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
                             android:padding="5dp"
+                            android:textAppearance="?android:attr/textAppearanceMedium"
+                            android:textColor="@color/colorBlack"
                             android:singleLine="true"
                             android:nextFocusDown="@id/edtAddress"
                             android:background="@drawable/bg_strock_corner"/>
@@ -287,6 +306,7 @@
                 </LinearLayout>
 
                 <LinearLayout
+                    android:id="@+id/llAddress"
                     android:layout_width="match_parent"
                     android:padding="5dp"
                     android:layout_height="wrap_content"
@@ -313,20 +333,28 @@
                             android:layout_width="match_parent"
                             android:layout_weight="1"
                             android:layout_height="wrap_content"
+                            android:textAppearance="?android:attr/textAppearanceMedium"
+                            android:textColor="@color/colorBlack"
                             android:background="@android:color/transparent"
                             android:singleLine="true"
+                            android:nextFocusDown="@id/edtDescription"
                             android:padding="5dp" />
 
                         <LinearLayout
-                            android:layout_width="50dp"
+                            android:id="@+id/llSearchAddress"
+                            android:layout_width="80dp"
                             android:layout_height="35dp"
+                            android:background="@drawable/bg_ripple"
                             android:gravity="left">
 
-                            <ImageView
-                                android:layout_width="30dp"
+                            <TextView
+                                android:layout_width="match_parent"
                                 android:layout_height="match_parent"
                                 android:layout_margin="5dp"
-                                android:src="@drawable/ic_search"/>
+                                android:gravity="left|center_vertical"
+                                android:text="بیشتر"
+                                android:textColor="@color/colorPrimaryDark"
+                                android:textStyle="bold" />
 
                         </LinearLayout>
 
@@ -341,6 +369,7 @@
                     android:orientation="horizontal">
 
                     <LinearLayout
+                        android:id="@+id/llOrigin"
                         android:layout_width="0dp"
                         android:layout_weight="1"
                         android:padding="5dp"
@@ -360,16 +389,20 @@
                             android:id="@+id/txtOrigin"
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
+                            android:textAppearance="?android:attr/textAppearanceMedium"
+                            android:textColor="@color/colorBlack"
+                            android:clickable="true"
                             android:background="@drawable/bg_strock_corner"
-                            android:text="فدائیان اسلام"
                             android:padding="8dp" />
 
                     </LinearLayout>
 
                     <LinearLayout
+                        android:id="@+id/llDestination"
                         android:layout_width="0dp"
                         android:layout_weight="1"
                         android:padding="5dp"
+                        android:clickable="true"
                         android:layout_height="wrap_content"
                         android:orientation="vertical">
 
@@ -386,13 +419,15 @@
                             android:id="@+id/txtDestination"
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
-                            android:text="فدائیان اسلام"
                             android:padding="8dp"
+                            android:textAppearance="?android:attr/textAppearanceMedium"
+                            android:textColor="@color/colorBlack"
                             android:background="@drawable/bg_strock_corner"/>
 
                     </LinearLayout>
 
                     <LinearLayout
+                        android:id="@+id/llTraffic"
                         android:layout_width="0dp"
                         android:layout_weight="0.30"
                         android:padding="5dp"
@@ -403,22 +438,21 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:text="طرح"
-                            android:gravity="right"
-                            android:paddingRight="5dp"
+                            android:gravity="center"
                             android:textAppearance="?android:attr/textAppearanceMedium"
                             android:textColor="@color/grayMedium"/>
 
                         <LinearLayout
                             android:layout_width="match_parent"
-                            android:layout_height="match_parent"
+                            android:layout_height="45dp"
                             android:gravity="center"
                             android:padding="3dp"
                             android:background="@drawable/bg_strock_corner">
 
                             <CheckBox
-                                android:id="@+id/chbShowPassword"
-                                android:layout_width="35dp"
-                                android:layout_height="30dp"
+                                android:id="@+id/chbTraffic"
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
                                 android:checked="false"
                                 android:background="@drawable/traffic"
                                 android:button="@null"/>
@@ -436,6 +470,7 @@
                     android:orientation="horizontal">
 
                     <LinearLayout
+                        android:id="@+id/llServiceCount"
                         android:layout_width="0dp"
                         android:layout_weight="0.30"
                         android:padding="5dp"
@@ -474,6 +509,7 @@
                     </LinearLayout>
 
                     <LinearLayout
+                        android:id="@+id/llDescription"
                         android:layout_width="0dp"
                         android:layout_weight="1"
                         android:padding="5dp"
@@ -501,19 +537,23 @@
                                 android:layout_weight="1"
                                 android:layout_height="wrap_content"
                                 android:background="@android:color/transparent"
+                                android:textAppearance="?android:attr/textAppearanceMedium"
+                                android:textColor="@color/colorBlack"
                                 android:padding="5dp"
+                                android:nextFocusDown="@id/btnSubmit"
                                 android:singleLine="true"/>
 
                             <LinearLayout
+                                android:id="@+id/llDescriptionDetail"
                                 android:layout_width="80dp"
                                 android:gravity="center"
+                                android:background="@drawable/bg_ripple"
                                 android:layout_height="35dp">
 
                                 <TextView
                                     android:layout_width="match_parent"
                                     android:layout_height="match_parent"
                                     android:layout_margin="5dp"
-                                    android:background="@drawable/bg_ripple"
                                     android:gravity="left|center_vertical"
                                     android:text="جزئیات"
                                     android:textColor="@color/colorPrimaryDark"
@@ -534,11 +574,11 @@
                     android:orientation="horizontal">
 
                     <LinearLayout
-                    android:layout_width="0dp"
-                    android:padding="5dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:orientation="vertical">
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:orientation="vertical"
+                        android:padding="5dp">
 
                     <TextView
                         android:layout_width="match_parent"
@@ -548,7 +588,7 @@
                         android:textAppearance="?android:attr/textAppearanceMedium"
                         android:textColor="@color/grayMedium" />
 
-                        <com.yuxingxin.library.MultiRadioGroup
+                    <com.yuxingxin.library.MultiRadioGroup
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:background="@drawable/bg_strock_corner"
@@ -566,9 +606,9 @@
 
                                 <RadioButton
                                     android:layout_width="0dp"
-                                    android:layout_weight="0.75"
+                                    android:layout_weight="1"
                                     android:checked="true"
-                                    android:textSize="12sp"
+                                    android:textAppearance="?android:attr/textAppearanceSmall"
                                     android:layout_height="wrap_content"
                                     android:buttonTint="@color/colorPrimaryDark"
                                     android:text="همه"/>
@@ -576,15 +616,15 @@
                                 <RadioButton
                                     android:layout_width="0dp"
                                     android:layout_weight="1"
-                                    android:textSize="12sp"
+                                    android:textAppearance="?android:attr/textAppearanceSmall"
                                     android:layout_height="wrap_content"
                                     android:buttonTint="@color/colorPrimaryDark"
-                                    android:text="اقتصادی"/>
+                                    android:text="تاکسی"/>
 
                                 <RadioButton
                                     android:layout_width="0dp"
-                                    android:layout_weight="0.75"
-                                    android:textSize="12sp"
+                                    android:layout_weight="1"
+                                    android:textAppearance="?android:attr/textAppearanceSmall"
                                     android:layout_height="wrap_content"
                                     android:buttonTint="@color/colorPrimaryDark"
                                     android:text="ممتاز"/>
@@ -601,16 +641,25 @@
 
                                 <RadioButton
                                     android:layout_width="0dp"
+                                    android:layout_height="wrap_content"
+                                    android:layout_weight="1"
+                                    android:buttonTint="@color/colorPrimaryDark"
+                                    android:text="اقتصادی"
+                                    android:textAppearance="?android:attr/textAppearanceSmall" />
+
+                                <RadioButton
+                                    android:layout_width="0dp"
                                     android:layout_weight="1"
                                     android:layout_height="wrap_content"
-                                    android:textSize="12sp"
+                                    android:textAppearance="?android:attr/textAppearanceSmall"
                                     android:buttonTint="@color/colorPrimaryDark"
                                     android:text="تشریفات"/>
 
                                 <RadioButton
                                     android:layout_width="0dp"
                                     android:layout_weight="1"
-                                    android:textSize="12sp"
+                                    android:visibility="invisible"
+                                    android:textAppearance="?android:attr/textAppearanceSmall"
                                     android:layout_height="wrap_content"
                                     android:buttonTint="@color/colorPrimaryDark"
                                     android:text="تاکسی"/>
@@ -622,6 +671,7 @@
                 </LinearLayout>
 
                     <LinearLayout
+                        android:id="@+id/llAlways"
                         android:layout_width="0dp"
                         android:layout_weight="0.15"
                         android:padding="5dp"
@@ -632,14 +682,13 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:text="دائم"
-                            android:gravity="right"
-                            android:paddingRight="5dp"
+                            android:gravity="center"
                             android:textAppearance="?android:attr/textAppearanceMedium"
                             android:textColor="@color/grayMedium"/>
 
                         <LinearLayout
                             android:layout_width="match_parent"
-                            android:layout_height="match_parent"
+                            android:layout_height="45dp"
                             android:gravity="center"
                             android:padding="3dp"
                             android:background="@drawable/bg_strock_corner">
@@ -647,7 +696,7 @@
                             <CheckBox
                                 android:id="@+id/chbAlways"
                                 android:layout_width="35dp"
-                                android:layout_height="30dp"
+                                android:layout_height="35dp"
                                 android:checked="false"
                                 android:background="@drawable/traffic"
                                 android:button="@null"/>

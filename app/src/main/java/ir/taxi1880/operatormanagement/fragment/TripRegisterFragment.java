@@ -1,11 +1,16 @@
 package ir.taxi1880.operatormanagement.fragment;
 
 
+import android.app.Activity;
+import android.content.Context;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
+import android.widget.CheckBox;
+import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TextView;
 
@@ -23,7 +28,9 @@ import butterknife.Unbinder;
 import ir.taxi1880.operatormanagement.R;
 import ir.taxi1880.operatormanagement.adapter.SpinnerAdapter;
 import ir.taxi1880.operatormanagement.app.MyApplication;
+import ir.taxi1880.operatormanagement.dialog.DescriptionDialog;
 import ir.taxi1880.operatormanagement.dialog.GeneralDialog;
+import ir.taxi1880.operatormanagement.dialog.SearchLocationDialog;
 import ir.taxi1880.operatormanagement.helper.TypefaceUtil;
 
 /**
@@ -33,17 +40,23 @@ public class TripRegisterFragment extends Fragment {
 
   public static final String TAG = TripRegisterFragment.class.getSimpleName();
   Unbinder unbinder;
-  String cityName;
-  String ServiceType;
-  String ServiceCount;
+  View view;
+  private String cityName;
+  private String ServiceType;
+  private String ServiceCount;
+  InputMethodManager inputMethodManager;
 
   @OnClick(R.id.imgBack)
   void onBack() {
     MyApplication.currentActivity.onBackPressed();
+    hideKeyboard(MyApplication.currentActivity);
   }
 
   @BindView(R.id.spCity)
   Spinner spCity;
+
+  @BindView(R.id.edtDescription)
+  EditText edtDescription;
 
   @BindView(R.id.spServiceCount)
   Spinner spServiceCount;
@@ -54,8 +67,112 @@ public class TripRegisterFragment extends Fragment {
   @BindView(R.id.txtOrigin)
   TextView txtOrigin;
 
+  @BindView(R.id.edtDiscount)
+  EditText edtDiscount;
+
+  @BindView(R.id.edtTell)
+  EditText edtTell;
+
+  @BindView(R.id.edtMobile)
+  EditText edtMobile;
+
+  @BindView(R.id.edtFamily)
+  EditText edtFamily;
+
+  @BindView(R.id.edtAddress)
+  EditText edtAddress;
+
+  @OnClick(R.id.llCity)
+  void onPressllCity() {
+    spCity.performClick();
+  }
+
+  @OnClick(R.id.llServiceType)
+  void onPressllServiceType() {
+    spServiceType.performClick();
+  }
+
+  @OnClick(R.id.llServiceCount)
+  void onPressllServiceCount() {
+    spServiceCount.performClick();
+  }
+
+  @OnClick(R.id.llTell)
+  void onPressllTell() {
+    edtTell.requestFocus();
+    openKeyBoaredAuto();
+  }
+
+  @OnClick(R.id.llDiscount)
+  void onPressllDiscount() {
+    edtDiscount.requestFocus();
+    openKeyBoaredAuto();
+  }
+
+  @OnClick(R.id.llMobile)
+  void onPressllMobile() {
+    edtMobile.requestFocus();
+    openKeyBoaredAuto();
+  }
+
+  @OnClick(R.id.llFamily)
+  void onPressllFamily() {
+    edtFamily.requestFocus();
+    openKeyBoaredAuto();
+  }
+
+  @OnClick(R.id.llAddress)
+  void onPressllAddress() {
+    edtAddress.requestFocus();
+    openKeyBoaredAuto();
+  }
+
+  @OnClick(R.id.llDescription)
+  void onPressllDescription() {
+    edtDescription.requestFocus();
+    openKeyBoaredAuto();
+  }
+
+  @OnClick(R.id.llTraffic)
+  void onPressllTraffic() {
+    chbTraffic.setChecked(!chbTraffic.isChecked());
+  }
+
+  @OnClick(R.id.llAlways)
+  void onPressllAlways() {
+    chbAlways.setChecked(!chbAlways.isChecked());
+  }
+
+  @BindView(R.id.chbTraffic)
+  CheckBox chbTraffic;
+
+  @BindView(R.id.chbAlways)
+  CheckBox chbAlways;
+
+  @OnClick(R.id.llOrigin)
+  void onPressllOrigin() {
+    new SearchLocationDialog().show(description -> {
+      txtOrigin.setText(description+"test");
+      hideKeyboard(MyApplication.currentActivity);
+    }, "جست و جوی مبدا");
+  }
+
+  @OnClick(R.id.llDestination)
+  void onPressllDestination() {
+    new SearchLocationDialog().show(description -> {
+      txtDestination.setText(description+"test");
+      hideKeyboard(MyApplication.currentActivity);
+    }, "جست و جوی مقصد");
+  }
+
   @OnClick(R.id.txtOrigin)
   void onPressOrigin() {
+
+  }
+
+  @OnClick(R.id.llDescriptionDetail)
+  void onPressllDescriptionDetail() {
+    new DescriptionDialog().show(description -> edtDescription.setText(description));
   }
 
   @OnClick(R.id.txtDestination)
@@ -63,12 +180,23 @@ public class TripRegisterFragment extends Fragment {
 
   }
 
+  @OnClick(R.id.llSearchAddress)
+  void onPressSearchAddress() {
+    new SearchLocationDialog().show(description -> {
+    }, "جست و جوی آدرس");
+  }
+
   @OnClick(R.id.btnSubmit)
   void onPressSubmit() {
     new GeneralDialog()
             .title("ثبت اطلاعات")
             .message("آیا از ثبت اطلاعات اطمینان دارید؟")
-            .firstButton("بله", null)
+            .firstButton("بله", () ->
+                    new GeneralDialog()
+                            .title("ثبت شد")
+                            .message("اطلاعات با موفقیت ثبت شد")
+                            .firstButton("باشه", null)
+                            .show())
             .secondButton("خیر", null)
             .show();
   }
@@ -85,32 +213,44 @@ public class TripRegisterFragment extends Fragment {
 
   @Override
   public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-    View view = inflater.inflate(R.layout.fragment_trip_register, container, false);
+    view = inflater.inflate(R.layout.fragment_trip_register, container, false);
     unbinder = ButterKnife.bind(this, view);
     TypefaceUtil.overrideFonts(view);
+    inputMethodManager = (InputMethodManager) MyApplication.currentActivity.getSystemService(Context.INPUT_METHOD_SERVICE);
 
-    ArrayList<String> cityList = new ArrayList<String>();
+    initCitySpinner();
+    initServiceTypeSpinner();
+    initServiceCountSpinner();
+
+    return view;
+  }
+
+  private void initServiceCountSpinner() {
+    ArrayList<String> serviceCountList = new ArrayList<String>();
     try {
-      JSONArray cityArr = new JSONArray(city);
-      for (int i = 0; i < cityArr.length(); i++) {
-        JSONObject cityObj = cityArr.getJSONObject(i);
-        cityList.add(cityObj.getString("name"));
+      JSONArray serviceCountArr = new JSONArray(serviceCount);
+      for (int i = 0; i < serviceCountArr.length(); i++) {
+        JSONObject serviceCountObj = serviceCountArr.getJSONObject(i);
+        serviceCountList.add(serviceCountObj.getString("name"));
       }
-      spCity.setAdapter(new SpinnerAdapter(MyApplication.currentActivity, R.layout.item_spinner, cityList));
-      spCity.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+      spServiceCount.setAdapter(new SpinnerAdapter(MyApplication.currentActivity, R.layout.item_spinner, serviceCountList));
+      spServiceCount.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
         @Override
         public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-          cityName = spCity.getSelectedItem().toString();
+          ServiceCount = spServiceCount.getSelectedItem().toString();
         }
 
         @Override
         public void onNothingSelected(AdapterView<?> parent) {
         }
       });
+
     } catch (JSONException e) {
       e.printStackTrace();
     }
+  }
 
+  private void initServiceTypeSpinner() {
     ArrayList<String> serviceList = new ArrayList<String>();
     try {
       JSONArray serviceArr = new JSONArray(serviceType);
@@ -133,18 +273,21 @@ public class TripRegisterFragment extends Fragment {
       e.printStackTrace();
     }
 
-    ArrayList<String> serviceCountList = new ArrayList<String>();
+  }
+
+  private void initCitySpinner() {
+    ArrayList<String> cityList = new ArrayList<String>();
     try {
-      JSONArray serviceCountArr = new JSONArray(serviceCount);
-      for (int i = 0; i < serviceCountArr.length(); i++) {
-        JSONObject serviceCountObj = serviceCountArr.getJSONObject(i);
-        serviceCountList.add(serviceCountObj.getString("name"));
+      JSONArray cityArr = new JSONArray(city);
+      for (int i = 0; i < cityArr.length(); i++) {
+        JSONObject cityObj = cityArr.getJSONObject(i);
+        cityList.add(cityObj.getString("name"));
       }
-      spServiceCount.setAdapter(new SpinnerAdapter(MyApplication.currentActivity, R.layout.item_spinner, serviceCountList));
-      spServiceCount.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+      spCity.setAdapter(new SpinnerAdapter(MyApplication.currentActivity, R.layout.item_spinner, cityList));
+      spCity.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
         @Override
         public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-          ServiceCount = spServiceCount.getSelectedItem().toString();
+          cityName = spCity.getSelectedItem().toString();
         }
 
         @Override
@@ -154,14 +297,26 @@ public class TripRegisterFragment extends Fragment {
     } catch (JSONException e) {
       e.printStackTrace();
     }
+  }
 
-    return view;
+  private void openKeyBoaredAuto() {
+    inputMethodManager.toggleSoftInput(InputMethodManager.SHOW_FORCED, InputMethodManager.HIDE_IMPLICIT_ONLY);
+  }
+
+  private static void hideKeyboard(Activity activity) {
+    InputMethodManager imm = (InputMethodManager) activity.getSystemService(Activity.INPUT_METHOD_SERVICE);
+    View view = activity.getCurrentFocus();
+    if (view == null) {
+      view = new View(activity);
+    }
+    imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
   }
 
   @Override
   public void onDestroyView() {
     super.onDestroyView();
     unbinder.unbind();
+    hideKeyboard(MyApplication.currentActivity);
   }
 
 }
