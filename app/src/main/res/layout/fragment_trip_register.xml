@@ -266,6 +266,7 @@
                                 android:backgroundTint="@color/colorPrimaryDark"
                                 android:dropDownWidth="match_parent"
                                 android:gravity="center"
+                                android:focusable="true"
                                 android:nextFocusDown="@id/edtFamily"
                                 android:paddingBottom="5dp"
                                 android:paddingTop="5dp" />
@@ -342,7 +343,7 @@
 
                         <LinearLayout
                             android:id="@+id/llSearchAddress"
-                            android:layout_width="80dp"
+                            android:layout_width="50dp"
                             android:layout_height="35dp"
                             android:background="@drawable/bg_ripple"
                             android:gravity="left">
@@ -545,7 +546,7 @@
 
                             <LinearLayout
                                 android:id="@+id/llDescriptionDetail"
-                                android:layout_width="80dp"
+                                android:layout_width="50dp"
                                 android:gravity="center"
                                 android:background="@drawable/bg_ripple"
                                 android:layout_height="35dp">

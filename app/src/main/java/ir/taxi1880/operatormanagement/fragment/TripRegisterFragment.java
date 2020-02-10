@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.CheckBox;
@@ -44,7 +45,7 @@ public class TripRegisterFragment extends Fragment {
   private String cityName;
   private String ServiceType;
   private String ServiceCount;
-  InputMethodManager inputMethodManager;
+ public static InputMethodManager inputMethodManager;
 
   @OnClick(R.id.imgBack)
   void onBack() {
@@ -151,17 +152,53 @@ public class TripRegisterFragment extends Fragment {
 
   @OnClick(R.id.llOrigin)
   void onPressllOrigin() {
-    new SearchLocationDialog().show(description -> {
-      txtOrigin.setText(description+"test");
-      hideKeyboard(MyApplication.currentActivity);
+    new SearchLocationDialog().show(new SearchLocationDialog.Listener() {
+      @Override
+      public void description(String address) {
+        txtOrigin.setText(address);
+      }
+
+      @Override
+      public void selectedAddress(boolean b) {
+        if (b) {
+
+          hideKeyboard(MyApplication.currentActivity);
+
+          new SearchLocationDialog().show(new SearchLocationDialog.Listener() {
+            @Override
+            public void description(String address) {
+              txtDestination.setText(address);
+            }
+
+            @Override
+            public void selectedAddress(boolean b) {
+              if (b) {
+
+                spServiceCount.requestFocus();
+                spServiceCount.performClick();
+              }
+            }
+          }, "جست و جوی مقصد");
+
+        }
+      }
     }, "جست و جوی مبدا");
   }
 
   @OnClick(R.id.llDestination)
   void onPressllDestination() {
-    new SearchLocationDialog().show(description -> {
-      txtDestination.setText(description+"test");
-      hideKeyboard(MyApplication.currentActivity);
+    new SearchLocationDialog().show(new SearchLocationDialog.Listener() {
+      @Override
+      public void description(String address) {
+        txtDestination.setText(address);
+      }
+
+      @Override
+      public void selectedAddress(boolean b) {
+        if (b) {
+
+        }
+      }
     }, "جست و جوی مقصد");
   }
 
@@ -182,7 +219,16 @@ public class TripRegisterFragment extends Fragment {
 
   @OnClick(R.id.llSearchAddress)
   void onPressSearchAddress() {
-    new SearchLocationDialog().show(description -> {
+    new SearchLocationDialog().show(new SearchLocationDialog.Listener() {
+      @Override
+      public void description(String address) {
+
+      }
+
+      @Override
+      public void selectedAddress(boolean b) {
+
+      }
     }, "جست و جوی آدرس");
   }
 
@@ -204,12 +250,16 @@ public class TripRegisterFragment extends Fragment {
   @BindView(R.id.txtDestination)
   TextView txtDestination;
 
-  String city = "[{\"name\":\"مشهد\"},{\"name\":\"نیشابور\"},{\"name\":\"تربت حیدریه\"},{\"name\":\"تربت جام\"},{\"name\":\"گناباد\"}," +
+  private boolean serviceTypeFlag = false;
+  private boolean cityFlag = false;
+  private boolean serviceCountFlag = false;
+
+  private String city = "[{\"name\":\"مشهد\"},{\"name\":\"نیشابور\"},{\"name\":\"تربت حیدریه\"},{\"name\":\"تربت جام\"},{\"name\":\"گناباد\"}," +
           "{\"name\":\"کاشمر\"},{\"name\":\"تایباد\"}]";
 
-  String serviceType = "[{\"name\":\"سرویس\"},{\"name\":\"دراختیار\"},{\"name\":\"بانوان\"}]";
+  private String serviceType = "[{\"name\":\"سرویس\"},{\"name\":\"دراختیار\"},{\"name\":\"بانوان\"}]";
 
-  String serviceCount = "[{\"name\":\"1\"},{\"name\":\"2\"},{\"name\":\"3\"},{\"name\":\"4\"}]";
+  private String serviceCount = "[{\"name\":\"1\"},{\"name\":\"2\"},{\"name\":\"3\"},{\"name\":\"4\"}]";
 
   @Override
   public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -221,6 +271,44 @@ public class TripRegisterFragment extends Fragment {
     initCitySpinner();
     initServiceTypeSpinner();
     initServiceCountSpinner();
+
+//    spCity.requestFocus();
+//    spCity.performClick();
+
+    edtMobile.setOnEditorActionListener((v, actionId, event) -> {
+      if (actionId == EditorInfo.IME_ACTION_NEXT) {
+        hideKeyboard(MyApplication.currentActivity);
+        v.clearFocus();
+        spServiceType.requestFocus();
+        spServiceType.performClick();
+      }
+      return true;
+    });
+
+    edtAddress.setOnEditorActionListener((v, actionId, event) -> {
+      if (actionId == EditorInfo.IME_ACTION_NEXT) {
+        hideKeyboard(MyApplication.currentActivity);
+        v.clearFocus();
+
+        new SearchLocationDialog().show(new SearchLocationDialog.Listener() {
+          @Override
+          public void description(String address) {
+            txtOrigin.setText(address);
+          }
+
+          @Override
+          public void selectedAddress(boolean b) {
+            if (b) {
+
+            }
+          }
+        }, "جست و جوی مبدا");
+
+//        spServiceCount.requestFocus();
+//        spServiceCount.performClick();
+      }
+      return true;
+    });
 
     return view;
   }
@@ -237,7 +325,14 @@ public class TripRegisterFragment extends Fragment {
       spServiceCount.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
         @Override
         public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-          ServiceCount = spServiceCount.getSelectedItem().toString();
+          if (!serviceCountFlag) {
+            ServiceCount = spServiceCount.getSelectedItem().toString();
+            serviceCountFlag = true;
+          } else {
+            openKeyBoaredAuto();
+            spServiceCount.clearFocus();
+            edtDescription.requestFocus();
+          }
         }
 
         @Override
@@ -259,10 +354,18 @@ public class TripRegisterFragment extends Fragment {
         serviceList.add(serviceObj.getString("name"));
       }
       spServiceType.setAdapter(new SpinnerAdapter(MyApplication.currentActivity, R.layout.item_spinner, serviceList));
+
       spServiceType.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
         @Override
         public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-          ServiceType = spServiceType.getSelectedItem().toString();
+          if (!serviceTypeFlag) {
+            ServiceType = spServiceType.getSelectedItem().toString();
+            serviceTypeFlag = true;
+          } else {
+            openKeyBoaredAuto();
+            edtFamily.requestFocus();
+            spServiceType.clearFocus();
+          }
         }
 
         @Override
@@ -287,7 +390,14 @@ public class TripRegisterFragment extends Fragment {
       spCity.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
         @Override
         public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-          cityName = spCity.getSelectedItem().toString();
+          if (!cityFlag) {
+            cityName = spCity.getSelectedItem().toString();
+            cityFlag = true;
+          } else {
+            openKeyBoaredAuto();
+            edtTell.requestFocus();
+            spCity.clearFocus();
+          }
         }
 
         @Override
@@ -299,11 +409,11 @@ public class TripRegisterFragment extends Fragment {
     }
   }
 
-  private void openKeyBoaredAuto() {
+  public static void openKeyBoaredAuto() {
     inputMethodManager.toggleSoftInput(InputMethodManager.SHOW_FORCED, InputMethodManager.HIDE_IMPLICIT_ONLY);
   }
 
-  private static void hideKeyboard(Activity activity) {
+  public static void hideKeyboard(Activity activity) {
     InputMethodManager imm = (InputMethodManager) activity.getSystemService(Activity.INPUT_METHOD_SERVICE);
     View view = activity.getCurrentFocus();
     if (view == null) {

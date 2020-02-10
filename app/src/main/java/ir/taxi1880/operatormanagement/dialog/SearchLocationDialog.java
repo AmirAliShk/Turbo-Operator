@@ -1,8 +1,6 @@
 package ir.taxi1880.operatormanagement.dialog;
 
-import android.app.Activity;
 import android.app.Dialog;
-import android.content.Context;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.util.Log;
@@ -10,27 +8,42 @@ import android.view.Gravity;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
-import android.view.inputmethod.InputMethodManager;
+import android.widget.AdapterView;
 import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.util.ArrayList;
+
 import ir.taxi1880.operatormanagement.R;
+import ir.taxi1880.operatormanagement.adapter.AddressAdapter;
 import ir.taxi1880.operatormanagement.app.MyApplication;
 import ir.taxi1880.operatormanagement.helper.TypefaceUtil;
+import ir.taxi1880.operatormanagement.model.AddressModel;
+
+import static ir.taxi1880.operatormanagement.fragment.TripRegisterFragment.hideKeyboard;
+import static ir.taxi1880.operatormanagement.fragment.TripRegisterFragment.openKeyBoaredAuto;
 
 public class SearchLocationDialog {
 
   private static final String TAG = SearchLocationDialog.class.getSimpleName();
 
   public interface Listener {
-    void description(String description);
+    void description(String address);
+
+    void selectedAddress(boolean b);
   }
 
-  private Listener listener;
+  private ArrayList<AddressModel> addressModels;
+  private AddressAdapter addressAdapter;
+  private ListView listPlace;
 
- static InputMethodManager inputMethodManager;
-  static Dialog dialog;
+  private Listener listener;
+  private static Dialog dialog;
 
   public void show(Listener listener, String title) {
     dialog = new Dialog(MyApplication.currentActivity);
@@ -46,8 +59,9 @@ public class SearchLocationDialog {
     dialog.setCancelable(true);
     this.listener = listener;
 
-    inputMethodManager = (InputMethodManager) MyApplication.currentActivity.getSystemService(Context.INPUT_METHOD_SERVICE);
+    listPlace = dialog.findViewById(R.id.listPlace);
 
+    addressModels = address();
 
     openKeyBoaredAuto();
 
@@ -60,10 +74,11 @@ public class SearchLocationDialog {
     edtSearchPlace.setHint(title);
     txtTitle.setText(title);
 
-    txtTitle.setOnClickListener(new View.OnClickListener() {
+    listPlace.setOnItemClickListener(new AdapterView.OnItemClickListener() {
       @Override
-      public void onClick(View v) {
-        listener.description("ttt");
+      public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+        listener.description(addressModels.get(position).getAddress());
+        listener.selectedAddress(true);
         dismiss();
       }
     });
@@ -72,28 +87,38 @@ public class SearchLocationDialog {
 
   }
 
-  private void openKeyBoaredAuto() {
-
-    inputMethodManager.toggleSoftInput(InputMethodManager.SHOW_FORCED, InputMethodManager.HIDE_IMPLICIT_ONLY);
-  }
-
-  private static void hideKeyboard(Activity activity) { View view = activity.getCurrentFocus();
-    if (view == null) {
-      view = new View(activity);
-    }
-    inputMethodManager.hideSoftInputFromWindow(view.getWindowToken(), 0);
-  }
-
   private static void dismiss() {
     try {
       if (dialog != null) {
         dialog.dismiss();
+    hideKeyboard(MyApplication.currentActivity);
       }
     } catch (Exception e) {
       Log.e("TAG", "dismiss: " + e.getMessage());
     }
     dialog = null;
-    hideKeyboard(MyApplication.currentActivity);
   }
+
+  private String city = "[{\"name\":\"مشهد\"},{\"name\":\"نیشابور\"},{\"name\":\"تربت حیدریه\"},{\"name\":\"تربت جام\"},{\"name\":\"گناباد\"}," +
+          "{\"name\":\"کاشمر\"},{\"name\":\"تایباد\"}]";
+
+  private ArrayList<AddressModel> address() {
+    addressModels = new ArrayList<>();
+    try {
+      JSONArray arr = new JSONArray(city);
+      for (int i = 0; i < arr.length(); i++) {
+        JSONObject object = arr.getJSONObject(i);
+        AddressModel addressModel = new AddressModel();
+        addressModel.setAddress(object.getString("name"));
+        addressModels.add(addressModel);
+      }
+    } catch (JSONException e) {
+      e.printStackTrace();
+    }
+    addressAdapter = new AddressAdapter(addressModels, MyApplication.context);
+    listPlace.setAdapter(addressAdapter);
+    return addressModels;
+  }
+
 
 }
