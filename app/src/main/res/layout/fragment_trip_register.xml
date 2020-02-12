@@ -224,7 +224,7 @@
                             android:textAppearance="?android:attr/textAppearanceMedium"
                             android:textColor="@color/colorBlack"
                             android:inputType="number"
-                            android:nextFocusDown="@id/spServiceType"
+                            android:nextFocusDown="@id/edtFamily"
                             android:background="@drawable/bg_strock_corner"/>
 
                     </LinearLayout>
@@ -332,14 +332,14 @@
                         <EditText
                             android:id="@+id/edtAddress"
                             android:layout_width="match_parent"
-                            android:layout_weight="1"
                             android:layout_height="wrap_content"
-                            android:textAppearance="?android:attr/textAppearanceMedium"
-                            android:textColor="@color/colorBlack"
+                            android:layout_weight="1"
                             android:background="@android:color/transparent"
-                            android:singleLine="true"
                             android:nextFocusDown="@id/edtDescription"
-                            android:padding="5dp" />
+                            android:padding="5dp"
+                            android:singleLine="true"
+                            android:textAppearance="?android:attr/textAppearanceMedium"
+                            android:textColor="@color/colorBlack" />
 
                         <LinearLayout
                             android:id="@+id/llSearchAddress"
@@ -375,7 +375,9 @@
                         android:layout_weight="1"
                         android:padding="5dp"
                         android:layout_height="wrap_content"
-                        android:orientation="vertical">
+                        android:orientation="vertical"
+                        android:clickable="true"
+                        android:focusable="true">
 
                         <TextView
                             android:layout_width="match_parent"
@@ -392,7 +394,6 @@
                             android:layout_height="match_parent"
                             android:textAppearance="?android:attr/textAppearanceMedium"
                             android:textColor="@color/colorBlack"
-                            android:clickable="true"
                             android:background="@drawable/bg_strock_corner"
                             android:padding="8dp" />
 
@@ -403,9 +404,10 @@
                         android:layout_width="0dp"
                         android:layout_weight="1"
                         android:padding="5dp"
-                        android:clickable="true"
                         android:layout_height="wrap_content"
-                        android:orientation="vertical">
+                        android:orientation="vertical"
+                        android:clickable="true"
+                        android:focusable="true">
 
                         <TextView
                             android:layout_width="match_parent"
@@ -614,6 +616,11 @@
                                     android:buttonTint="@color/colorPrimaryDark"
                                     android:text="همه"/>
 
+                                <ImageView
+                                    android:layout_width="0dp"
+                                    android:layout_height="match_parent"
+                                    android:layout_weight="0.5"/>
+
                                 <RadioButton
                                     android:layout_width="0dp"
                                     android:layout_weight="1"
@@ -622,6 +629,11 @@
                                     android:buttonTint="@color/colorPrimaryDark"
                                     android:text="تاکسی"/>
 
+                                <ImageView
+                                    android:layout_width="0dp"
+                                    android:layout_height="match_parent"
+                                    android:layout_weight="0.5"/>
+
                                 <RadioButton
                                     android:layout_width="0dp"
                                     android:layout_weight="1"
@@ -629,6 +641,11 @@
                                     android:layout_height="wrap_content"
                                     android:buttonTint="@color/colorPrimaryDark"
                                     android:text="ممتاز"/>
+
+                                <ImageView
+                                    android:layout_width="0dp"
+                                    android:layout_height="match_parent"
+                                    android:layout_weight="0.5"/>
 
                             </RadioGroup>
 
@@ -648,6 +665,11 @@
                                     android:text="اقتصادی"
                                     android:textAppearance="?android:attr/textAppearanceSmall" />
 
+                                <ImageView
+                                    android:layout_width="0dp"
+                                    android:layout_height="match_parent"
+                                    android:layout_weight="0.25"/>
+
                                 <RadioButton
                                     android:layout_width="0dp"
                                     android:layout_weight="1"
@@ -655,6 +677,11 @@
                                     android:textAppearance="?android:attr/textAppearanceSmall"
                                     android:buttonTint="@color/colorPrimaryDark"
                                     android:text="تشریفات"/>
+
+                                <ImageView
+                                    android:layout_width="0dp"
+                                    android:layout_height="match_parent"
+                                    android:layout_weight="0.25"/>
 
                                 <RadioButton
                                     android:layout_width="0dp"
@@ -664,6 +691,11 @@
                                     android:layout_height="wrap_content"
                                     android:buttonTint="@color/colorPrimaryDark"
                                     android:text="تاکسی"/>
+
+                                <ImageView
+                                    android:layout_width="0dp"
+                                    android:layout_height="match_parent"
+                                    android:layout_weight="0.25"/>
 
                             </RadioGroup>
 

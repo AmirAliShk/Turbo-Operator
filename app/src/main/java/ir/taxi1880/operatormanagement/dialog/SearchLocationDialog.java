@@ -35,7 +35,7 @@ public class SearchLocationDialog {
   public interface Listener {
     void description(String address);
 
-    void selectedAddress(boolean b);
+//    void selectedAddress(boolean b);
   }
 
   private ArrayList<AddressModel> addressModels;
@@ -78,7 +78,7 @@ public class SearchLocationDialog {
       @Override
       public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
         listener.description(addressModels.get(position).getAddress());
-        listener.selectedAddress(true);
+//        listener.selectedAddress(true);
         dismiss();
       }
     });
@@ -91,7 +91,7 @@ public class SearchLocationDialog {
     try {
       if (dialog != null) {
         dialog.dismiss();
-    hideKeyboard(MyApplication.currentActivity);
+        hideKeyboard(MyApplication.currentActivity);
       }
     } catch (Exception e) {
       Log.e("TAG", "dismiss: " + e.getMessage());

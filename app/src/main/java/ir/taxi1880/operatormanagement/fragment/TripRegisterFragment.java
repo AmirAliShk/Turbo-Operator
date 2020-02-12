@@ -1,13 +1,11 @@
 package ir.taxi1880.operatormanagement.fragment;
 
-
 import android.app.Activity;
 import android.content.Context;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.CheckBox;
@@ -32,6 +30,7 @@ import ir.taxi1880.operatormanagement.app.MyApplication;
 import ir.taxi1880.operatormanagement.dialog.DescriptionDialog;
 import ir.taxi1880.operatormanagement.dialog.GeneralDialog;
 import ir.taxi1880.operatormanagement.dialog.SearchLocationDialog;
+import ir.taxi1880.operatormanagement.helper.CheckEmptyView;
 import ir.taxi1880.operatormanagement.helper.TypefaceUtil;
 
 /**
@@ -45,7 +44,7 @@ public class TripRegisterFragment extends Fragment {
   private String cityName;
   private String ServiceType;
   private String ServiceCount;
- public static InputMethodManager inputMethodManager;
+  public static InputMethodManager inputMethodManager;
 
   @OnClick(R.id.imgBack)
   void onBack() {
@@ -157,31 +156,6 @@ public class TripRegisterFragment extends Fragment {
       public void description(String address) {
         txtOrigin.setText(address);
       }
-
-      @Override
-      public void selectedAddress(boolean b) {
-        if (b) {
-
-          hideKeyboard(MyApplication.currentActivity);
-
-          new SearchLocationDialog().show(new SearchLocationDialog.Listener() {
-            @Override
-            public void description(String address) {
-              txtDestination.setText(address);
-            }
-
-            @Override
-            public void selectedAddress(boolean b) {
-              if (b) {
-
-                spServiceCount.requestFocus();
-                spServiceCount.performClick();
-              }
-            }
-          }, "جست و جوی مقصد");
-
-        }
-      }
     }, "جست و جوی مبدا");
   }
 
@@ -192,19 +166,27 @@ public class TripRegisterFragment extends Fragment {
       public void description(String address) {
         txtDestination.setText(address);
       }
-
-      @Override
-      public void selectedAddress(boolean b) {
-        if (b) {
-
-        }
-      }
     }, "جست و جوی مقصد");
   }
 
   @OnClick(R.id.txtOrigin)
   void onPressOrigin() {
+    new SearchLocationDialog().show(new SearchLocationDialog.Listener() {
+      @Override
+      public void description(String address) {
+        txtOrigin.setText(address);
+      }
+    }, "جست و جوی مبدا");
+  }
 
+  @OnClick(R.id.txtDestination)
+  void onPressDestonation() {
+    new SearchLocationDialog().show(new SearchLocationDialog.Listener() {
+      @Override
+      public void description(String address) {
+        txtDestination.setText(address);
+      }
+    }, "جست و جوی مقصد");
   }
 
   @OnClick(R.id.llDescriptionDetail)
@@ -212,22 +194,12 @@ public class TripRegisterFragment extends Fragment {
     new DescriptionDialog().show(description -> edtDescription.setText(description));
   }
 
-  @OnClick(R.id.txtDestination)
-  void onPressDestonation() {
-
-  }
-
   @OnClick(R.id.llSearchAddress)
   void onPressSearchAddress() {
     new SearchLocationDialog().show(new SearchLocationDialog.Listener() {
       @Override
       public void description(String address) {
-
-      }
-
-      @Override
-      public void selectedAddress(boolean b) {
-
+        edtAddress.setText(address);
       }
     }, "جست و جوی آدرس");
   }
@@ -238,11 +210,12 @@ public class TripRegisterFragment extends Fragment {
             .title("ثبت اطلاعات")
             .message("آیا از ثبت اطلاعات اطمینان دارید؟")
             .firstButton("بله", () ->
-                    new GeneralDialog()
-                            .title("ثبت شد")
-                            .message("اطلاعات با موفقیت ثبت شد")
-                            .firstButton("باشه", null)
-                            .show())
+                    new CheckEmptyView().setText("empty").setCheck(0).setEmptyView(view))
+//                    new GeneralDialog()
+//                            .title("ثبت شد")
+//                            .message("اطلاعات با موفقیت ثبت شد")
+//                            .firstButton("باشه", () ->
+//                            .show())
             .secondButton("خیر", null)
             .show();
   }
@@ -275,40 +248,33 @@ public class TripRegisterFragment extends Fragment {
 //    spCity.requestFocus();
 //    spCity.performClick();
 
-    edtMobile.setOnEditorActionListener((v, actionId, event) -> {
-      if (actionId == EditorInfo.IME_ACTION_NEXT) {
-        hideKeyboard(MyApplication.currentActivity);
-        v.clearFocus();
-        spServiceType.requestFocus();
-        spServiceType.performClick();
-      }
-      return true;
-    });
-
-    edtAddress.setOnEditorActionListener((v, actionId, event) -> {
-      if (actionId == EditorInfo.IME_ACTION_NEXT) {
-        hideKeyboard(MyApplication.currentActivity);
-        v.clearFocus();
-
-        new SearchLocationDialog().show(new SearchLocationDialog.Listener() {
-          @Override
-          public void description(String address) {
-            txtOrigin.setText(address);
-          }
-
-          @Override
-          public void selectedAddress(boolean b) {
-            if (b) {
-
-            }
-          }
-        }, "جست و جوی مبدا");
-
-//        spServiceCount.requestFocus();
-//        spServiceCount.performClick();
-      }
-      return true;
-    });
+//    edtMobile.setOnEditorActionListener((v, actionId, event) -> {
+//      if (actionId == EditorInfo.IME_ACTION_NEXT) {
+//        hideKeyboard(MyApplication.currentActivity);
+//        v.clearFocus();
+//        spServiceType.requestFocus();
+//        spServiceType.performClick();
+//      }
+//      return true;
+//    });
+//
+//    edtAddress.setOnEditorActionListener((v, actionId, event) -> {
+//      if (actionId == EditorInfo.IME_ACTION_NEXT) {
+//        hideKeyboard(MyApplication.currentActivity);
+//        v.clearFocus();
+//
+//        new SearchLocationDialog().show(new SearchLocationDialog.Listener() {
+//          @Override
+//          public void description(String address) {
+//            txtOrigin.setText(address);
+//          }
+//        }, "جست و جوی مبدا");
+//
+////        spServiceCount.requestFocus();
+////        spServiceCount.performClick();
+//      }
+//      return true;
+//    });
 
     return view;
   }
