@@ -206,16 +206,32 @@ public class TripRegisterFragment extends Fragment {
 
   @OnClick(R.id.btnSubmit)
   void onPressSubmit() {
+//
+//    if (edtMobile.getText().toString().isEmpty()){
+//      MyApplication.Toast("شماره همراه را وارد کنید", Toast.LENGTH_SHORT);
+//      return;
+//    }
+//    if (txtOrigin.getText().toString().isEmpty()){
+//      MyApplication.Toast(" مبدا را مشخص کنید",Toast.LENGTH_SHORT);
+//      return;
+//    }
+//    if (txtDestination.getText().toString().isEmpty()){
+//      MyApplication.Toast(" مقصد را مشخص کنید",Toast.LENGTH_SHORT);
+//      return;
+//    }
+//    if (edtAddress.getText().toString().isEmpty()){
+//      MyApplication.Toast("آدرس را مشخص کنید",Toast.LENGTH_SHORT);
+//      return;
+//    }
     new GeneralDialog()
             .title("ثبت اطلاعات")
             .message("آیا از ثبت اطلاعات اطمینان دارید؟")
             .firstButton("بله", () ->
-                    new CheckEmptyView().setText("empty").setCheck(0).setEmptyView(view))
-//                    new GeneralDialog()
-//                            .title("ثبت شد")
-//                            .message("اطلاعات با موفقیت ثبت شد")
-//                            .firstButton("باشه", () ->
-//                            .show())
+                    new GeneralDialog()
+                            .title("ثبت شد")
+                            .message("اطلاعات با موفقیت ثبت شد")
+                            .firstButton("باشه", () -> new CheckEmptyView().setText("empty").setCheck(2).setValue(view))
+                            .show())
             .secondButton("خیر", null)
             .show();
   }
@@ -291,14 +307,7 @@ public class TripRegisterFragment extends Fragment {
       spServiceCount.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
         @Override
         public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-          if (!serviceCountFlag) {
             ServiceCount = spServiceCount.getSelectedItem().toString();
-            serviceCountFlag = true;
-          } else {
-            openKeyBoaredAuto();
-            spServiceCount.clearFocus();
-            edtDescription.requestFocus();
-          }
         }
 
         @Override
@@ -324,14 +333,14 @@ public class TripRegisterFragment extends Fragment {
       spServiceType.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
         @Override
         public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-          if (!serviceTypeFlag) {
+//          if (!serviceTypeFlag) {
             ServiceType = spServiceType.getSelectedItem().toString();
-            serviceTypeFlag = true;
-          } else {
-            openKeyBoaredAuto();
-            edtFamily.requestFocus();
-            spServiceType.clearFocus();
-          }
+//            serviceTypeFlag = true;
+//          } else {
+//            openKeyBoaredAuto();
+//            edtFamily.requestFocus();
+//            spServiceType.clearFocus();
+//          }
         }
 
         @Override
@@ -356,14 +365,14 @@ public class TripRegisterFragment extends Fragment {
       spCity.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
         @Override
         public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-          if (!cityFlag) {
+//          if (!cityFlag) {
             cityName = spCity.getSelectedItem().toString();
-            cityFlag = true;
-          } else {
-            openKeyBoaredAuto();
-            edtTell.requestFocus();
-            spCity.clearFocus();
-          }
+//            cityFlag = true;
+//          } else {
+//            openKeyBoaredAuto();
+//            edtTell.requestFocus();
+//            spCity.clearFocus();
+//          }
         }
 
         @Override

@@ -40,6 +40,7 @@ dependencies {
     implementation "com.android.support:appcompat-v7:$version"
     implementation "com.android.support:design:$version"
     implementation 'androidx.legacy:legacy-support-v4:1.0.0'
+    implementation 'com.android.tools.build:gradle:3.3.1'
     androidTestImplementation 'androidx.test:runner:1.2.0'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.2.0'
 

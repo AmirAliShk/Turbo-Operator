@@ -18,11 +18,11 @@ public class CheckEmptyView {
   private int radioButtonId = -1;
   private EditText editText;
 
-//  public CheckEmptyView setLength(int length, EditText editText) {
-//    this.length = length;
-//    this.editText = editText;
-//    return this;
-//  }
+  public CheckEmptyView setLength(int length, EditText editText) {
+    this.length = length;
+    this.editText = editText;
+    return this;
+  }
 
   public CheckEmptyView checkEmptyEditText(boolean empty) {
     this.emptyEditText = empty;
@@ -89,7 +89,7 @@ public class CheckEmptyView {
     return true;
   }
 
-  public void setEmptyView(View v) {
+  public void setValue(View v) {
     try {
 
       if (v instanceof ViewGroup) {
