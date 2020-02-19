@@ -51,6 +51,7 @@ dependencies {
     implementation 'com.mohamadamin:persianmaterialdatetimepicker:1.2.1'
     implementation 'info.hoang8f:android-segmented:1.0.6'
     implementation 'com.yuxingxin.multiradiogroup:library:1.0.0'
-
+    debugImplementation "org.linphone.minimal:linphone-sdk-android-debug:4.3+"
+    releaseImplementation "org.linphone.minimal:linphone-sdk-android:4.3+"
 
 }

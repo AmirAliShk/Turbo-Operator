@@ -30,6 +30,7 @@ import ir.taxi1880.operatormanagement.fragment.LoginFragment;
 import ir.taxi1880.operatormanagement.helper.AppVersionHelper;
 import ir.taxi1880.operatormanagement.helper.FragmentHelper;
 import ir.taxi1880.operatormanagement.helper.TypefaceUtil;
+import ir.taxi1880.operatormanagement.services.LinphoneService;
 
 public class SplashActivity extends AppCompatActivity {
 
@@ -149,7 +150,7 @@ public class SplashActivity extends AppCompatActivity {
                         updatePart(forceUpdate, updateUrl);
                         return;
                     } else {
-                        continueProcessing();
+                        startVoipService();
                     }
 
                     JSONArray shiftArr = object.getJSONArray("shifs");
@@ -195,7 +196,7 @@ public class SplashActivity extends AppCompatActivity {
                 MyApplication.currentActivity.startActivity(i);
                 MyApplication.currentActivity.finish();
             });
-            generalDialog.secondButton("فعلا نه", () -> continueProcessing());
+            generalDialog.secondButton("فعلا نه", () ->         startVoipService());
             generalDialog.show();
         }
     }
@@ -216,6 +217,40 @@ public class SplashActivity extends AppCompatActivity {
             }
         } catch (Exception e) {
             e.printStackTrace();
+        }
+    }
+
+
+    // This thread will periodically check if the Service is ready, and then call onServiceReady
+    private class ServiceWaitThread extends Thread {
+        public void run() {
+            while (!LinphoneService.isReady()) {
+                try {
+                    sleep(30);
+                } catch (InterruptedException e) {
+                    throw new RuntimeException("waiting thread sleep() has been interrupted");
+                }
+            }
+            // As we're in a thread, we can't do UI stuff in it, must post a runnable in UI thread
+            MyApplication.handler.post(
+                    new Runnable() {
+                        @Override
+                        public void run() {
+                            continueProcessing();
+                        }
+                    });
+        }
+    }
+
+    private void startVoipService(){
+        if (LinphoneService.isReady()) {
+            continueProcessing();
+        } else {
+            // If it's not, let's start it
+            startService(
+                    new Intent().setClass(this, LinphoneService.class));
+            // And wait for it to be ready, so we can safely use it afterwards
+            new ServiceWaitThread().start();
         }
     }
 }

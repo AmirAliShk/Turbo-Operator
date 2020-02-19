@@ -13,12 +13,16 @@ import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import androidx.fragment.app.FragmentManager;
-
-import ir.taxi1880.operatormanagement.R;
-import ir.taxi1880.operatormanagement.helper.TypefaceUtil;
+import org.linphone.core.AccountCreator;
+import org.linphone.core.ProxyConfig;
+import org.linphone.core.TransportType;
 
 import java.util.Locale;
+
+import androidx.fragment.app.FragmentManager;
+import ir.taxi1880.operatormanagement.R;
+import ir.taxi1880.operatormanagement.helper.TypefaceUtil;
+import ir.taxi1880.operatormanagement.services.LinphoneService;
 
 public class MyApplication extends Application {
 
@@ -50,7 +54,6 @@ public class MyApplication extends Application {
         Configuration config = new Configuration();
         config.locale = locale;
         context.getResources().updateConfiguration(config, context.getResources().getDisplayMetrics());
-
     }
 
     private void initTypeface() {
@@ -84,5 +87,22 @@ public class MyApplication extends Application {
         toast.setView(v);
         toast.show();
     }
+
+
+    public static void configureAccount() {
+        // At least the 3 below values are required
+        AccountCreator mAccountCreator = LinphoneService.getCore().createAccountCreator(null);
+
+        mAccountCreator.setDomain("172.16.2.222");
+        mAccountCreator.setUsername("410");
+        mAccountCreator.setPassword("410");
+        mAccountCreator.setTransport(TransportType.Udp);
+
+        // This will automatically create the proxy config and auth info and add them to the Core
+        ProxyConfig cfg = mAccountCreator.createProxyConfig();
+        // Make sure the newly created one is the default
+        LinphoneService.getCore().setDefaultProxyConfig(cfg);
+    }
+
 
 }

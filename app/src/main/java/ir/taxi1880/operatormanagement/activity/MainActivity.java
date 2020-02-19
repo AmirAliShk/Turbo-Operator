@@ -106,6 +106,9 @@ public class MainActivity extends AppCompatActivity {
       window.setStatusBarColor(getResources().getColor(R.color.colorPrimaryDark));
       window.addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
     }
+
+    MyApplication.configureAccount();
+
     unbinder = ButterKnife.bind(this, view);
     TypefaceUtil.overrideFonts(view);
 
