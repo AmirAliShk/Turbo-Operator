@@ -84,8 +84,9 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:padding="15dp"
                 android:layout_weight="1"
+                android:paddingRight="15dp"
+                android:paddingLeft="15dp"
                 android:orientation="vertical">
 
                 <LinearLayout
@@ -114,6 +115,8 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:gravity="center"
+                            android:layout_margin="3dp"
+                            android:elevation="2dp"
                             android:background="@drawable/bg_edit_text">
 
                             <Spinner
@@ -152,6 +155,8 @@
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
                             android:padding="5dp"
+                            android:layout_margin="3dp"
+                            android:elevation="2dp"
                             android:textAppearance="?android:attr/textAppearanceMedium"
                             android:textColor="@color/colorBlack"
                             android:singleLine="true"
@@ -190,6 +195,8 @@
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
                             android:inputType="number"
+                            android:layout_margin="3dp"
+                            android:elevation="2dp"
                             android:background="@drawable/bg_strock_corner"
                             android:nextFocusDown="@id/edtMobile"
                             android:textAppearance="?android:attr/textAppearanceMedium"
@@ -220,6 +227,8 @@
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
                             android:padding="5dp"
+                            android:layout_margin="3dp"
+                            android:elevation="2dp"
                             android:singleLine="true"
                             android:textAppearance="?android:attr/textAppearanceMedium"
                             android:textColor="@color/colorBlack"
@@ -257,6 +266,8 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:gravity="center"
+                            android:layout_margin="3dp"
+                            android:elevation="2dp"
                             android:background="@drawable/bg_edit_text">
 
                             <Spinner
@@ -296,6 +307,8 @@
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
                             android:padding="5dp"
+                            android:layout_margin="3dp"
+                            android:elevation="2dp"
                             android:textAppearance="?android:attr/textAppearanceMedium"
                             android:textColor="@color/colorBlack"
                             android:singleLine="true"
@@ -325,6 +338,8 @@
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:background="@drawable/bg_strock_corner"
+                        android:layout_margin="3dp"
+                        android:elevation="2dp"
                         android:gravity="center_vertical"
                         android:orientation="horizontal"
                         android:layout_height="wrap_content">
@@ -376,8 +391,7 @@
                         android:padding="5dp"
                         android:layout_height="wrap_content"
                         android:orientation="vertical"
-                        android:clickable="true"
-                        android:focusable="true">
+                        android:clickable="true">
 
                         <TextView
                             android:layout_width="match_parent"
@@ -392,6 +406,8 @@
                             android:id="@+id/txtOrigin"
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
+                            android:layout_margin="3dp"
+                            android:elevation="2dp"
                             android:textAppearance="?android:attr/textAppearanceMedium"
                             android:textColor="@color/colorBlack"
                             android:background="@drawable/bg_strock_corner"
@@ -406,8 +422,7 @@
                         android:padding="5dp"
                         android:layout_height="wrap_content"
                         android:orientation="vertical"
-                        android:clickable="true"
-                        android:focusable="true">
+                        android:clickable="true">
 
                         <TextView
                             android:layout_width="match_parent"
@@ -423,6 +438,8 @@
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
                             android:padding="8dp"
+                            android:layout_margin="3dp"
+                            android:elevation="2dp"
                             android:textAppearance="?android:attr/textAppearanceMedium"
                             android:textColor="@color/colorBlack"
                             android:background="@drawable/bg_strock_corner"/>
@@ -450,6 +467,8 @@
                             android:layout_height="45dp"
                             android:gravity="center"
                             android:padding="3dp"
+                            android:layout_margin="3dp"
+                            android:elevation="2dp"
                             android:background="@drawable/bg_strock_corner">
 
                             <CheckBox
@@ -493,6 +512,8 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:gravity="center"
+                            android:layout_margin="3dp"
+                            android:elevation="2dp"
                             android:background="@drawable/bg_edit_text">
 
                             <Spinner
@@ -531,6 +552,8 @@
                             android:layout_width="match_parent"
                             android:background="@drawable/bg_strock_corner"
                             android:gravity="center_vertical"
+                            android:layout_margin="3dp"
+                            android:elevation="2dp"
                             android:orientation="horizontal"
                             android:layout_height="wrap_content">
 
@@ -592,12 +615,14 @@
                         android:textColor="@color/grayMedium" />
 
                     <com.yuxingxin.library.MultiRadioGroup
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:background="@drawable/bg_strock_corner"
-                            android:paddingTop="5dp"
-                            android:paddingBottom="5dp"
-                            android:gravity="center">
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="3dp"
+                        android:background="@drawable/bg_strock_corner"
+                        android:elevation="2dp"
+                        android:gravity="center"
+                        android:paddingBottom="5dp"
+                        android:paddingTop="5dp">
 
                             <RadioGroup
                                 android:layout_width="match_parent"
@@ -724,6 +749,8 @@
                             android:layout_height="45dp"
                             android:gravity="center"
                             android:padding="3dp"
+                            android:layout_margin="3dp"
+                            android:elevation="2dp"
                             android:background="@drawable/bg_strock_corner">
 
                             <CheckBox

@@ -230,7 +230,10 @@ public class TripRegisterFragment extends Fragment {
                     new GeneralDialog()
                             .title("ثبت شد")
                             .message("اطلاعات با موفقیت ثبت شد")
-                            .firstButton("باشه", () -> new CheckEmptyView().setText("empty").setCheck(2).setValue(view))
+                            .firstButton("باشه", () -> {
+                              new CheckEmptyView().setText("empty").setCheck(2).setValue(view);
+                              hideKeyboard(MyApplication.currentActivity);
+                            })
                             .show())
             .secondButton("خیر", null)
             .show();
@@ -255,42 +258,15 @@ public class TripRegisterFragment extends Fragment {
     view = inflater.inflate(R.layout.fragment_trip_register, container, false);
     unbinder = ButterKnife.bind(this, view);
     TypefaceUtil.overrideFonts(view);
+
     inputMethodManager = (InputMethodManager) MyApplication.currentActivity.getSystemService(Context.INPUT_METHOD_SERVICE);
 
     initCitySpinner();
     initServiceTypeSpinner();
     initServiceCountSpinner();
 
-//    spCity.requestFocus();
-//    spCity.performClick();
-
-//    edtMobile.setOnEditorActionListener((v, actionId, event) -> {
-//      if (actionId == EditorInfo.IME_ACTION_NEXT) {
-//        hideKeyboard(MyApplication.currentActivity);
-//        v.clearFocus();
-//        spServiceType.requestFocus();
-//        spServiceType.performClick();
-//      }
-//      return true;
-//    });
-//
-//    edtAddress.setOnEditorActionListener((v, actionId, event) -> {
-//      if (actionId == EditorInfo.IME_ACTION_NEXT) {
-//        hideKeyboard(MyApplication.currentActivity);
-//        v.clearFocus();
-//
-//        new SearchLocationDialog().show(new SearchLocationDialog.Listener() {
-//          @Override
-//          public void description(String address) {
-//            txtOrigin.setText(address);
-//          }
-//        }, "جست و جوی مبدا");
-//
-////        spServiceCount.requestFocus();
-////        spServiceCount.performClick();
-//      }
-//      return true;
-//    });
+    edtTell.requestFocus();
+    openKeyBoaredAuto();
 
     return view;
   }
