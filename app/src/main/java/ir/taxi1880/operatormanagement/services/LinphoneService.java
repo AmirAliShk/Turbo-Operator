@@ -10,7 +10,6 @@ import android.os.IBinder;
 import android.widget.Toast;
 
 import org.linphone.core.Call;
-import org.linphone.core.CallParams;
 import org.linphone.core.Core;
 import org.linphone.core.CoreListenerStub;
 import org.linphone.core.Factory;
@@ -27,6 +26,7 @@ import java.util.TimerTask;
 
 import androidx.annotation.Nullable;
 import ir.taxi1880.operatormanagement.R;
+import ir.taxi1880.operatormanagement.activity.CallIncomingActivity;
 
 public class LinphoneService extends Service {
     private static final String START_LINPHONE_LOGS = " ==== Device information dump ====";
@@ -84,25 +84,28 @@ public class LinphoneService extends Service {
                 android.util.Log.i("AMIRREZA", "****************** : ");
 
                 if (state == Call.State.IncomingReceived) {
-                    android.util.Log.i("AMIRREZA", "onCallStateChanged  :): "+state);
 
-                    Toast.makeText(LinphoneService.this, "Incoming call received, answering it automatically", Toast.LENGTH_LONG).show();
-                    // For this sample we will automatically answer incoming calls
-                    mHandler.postDelayed(new Runnable() {
-                        @Override
-                        public void run() {
-                            CallParams params = getCore().createCallParams(call);
-//                            params.enableVideo(true);
-                            call.acceptWithParams(params);
-                            mHandler.postDelayed(new Runnable() {
-                                @Override
-                                public void run() {
-                                    call.transfer("402");
+                  onIncomingReceived();
 
-                                }
-                            }, 5000);
-                        }
-                    }, 10000);
+//                    android.util.Log.i("AMIRREZA", "onCallStateChanged  :): "+state);
+//
+//                    Toast.makeText(LinphoneService.this, "Incoming call received, answering it automatically", Toast.LENGTH_LONG).show();
+//                    // For this sample we will automatically answer incoming calls
+//                    mHandler.postDelayed(new Runnable() {
+//                        @Override
+//                        public void run() {
+//                            CallParams params = getCore().createCallParams(call);
+////                            params.enableVideo(true);
+//                            call.acceptWithParams(params);
+//                            mHandler.postDelayed(new Runnable() {
+//                                @Override
+//                                public void run() {
+//                                    call.transfer("402");
+//
+//                                }
+//                            }, 5000);
+//                        }
+//                    }, 10000);
 
                 } else if (state == Call.State.Connected) {
                     //TODO show accept call page
@@ -256,4 +259,12 @@ public class LinphoneService extends Service {
         lOutputStream.close();
         lInputStream.close();
     }
+
+  private void onIncomingReceived() {
+    Intent intent = new Intent(this, CallIncomingActivity.class);
+    // This flag is required to start an Activity from a Service context
+    intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+    startActivity(intent);
+  }
+
 }
