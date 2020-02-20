@@ -1,8 +1,10 @@
 package ir.taxi1880.operatormanagement.fragment;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,6 +12,7 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.CheckBox;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
 
@@ -31,6 +34,7 @@ import ir.taxi1880.operatormanagement.dialog.DescriptionDialog;
 import ir.taxi1880.operatormanagement.dialog.GeneralDialog;
 import ir.taxi1880.operatormanagement.dialog.SearchLocationDialog;
 import ir.taxi1880.operatormanagement.helper.CheckEmptyView;
+import ir.taxi1880.operatormanagement.helper.FragmentHelper;
 import ir.taxi1880.operatormanagement.helper.TypefaceUtil;
 
 /**
@@ -239,8 +243,20 @@ public class TripRegisterFragment extends Fragment {
             .show();
   }
 
+  @OnClick(R.id.btnOptions)
+  void onPressOptions() {
+    hideKeyboard(MyApplication.currentActivity);
+    FragmentHelper
+            .toFragment(MyApplication.currentActivity,new InnerCallFragment())
+            .setNavigationBarColor(MyApplication.currentActivity.getResources().getColor(R.color.colorLightPurple))
+            .add();
+  }
+
   @BindView(R.id.txtDestination)
   TextView txtDestination;
+
+  @BindView(R.id.llAddress2)
+  LinearLayout llAddress2;
 
   private boolean serviceTypeFlag = false;
   private boolean cityFlag = false;
@@ -253,6 +269,7 @@ public class TripRegisterFragment extends Fragment {
 
   private String serviceCount = "[{\"name\":\"1\"},{\"name\":\"2\"},{\"name\":\"3\"},{\"name\":\"4\"}]";
 
+  @SuppressLint("ClickableViewAccessibility")
   @Override
   public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
     view = inflater.inflate(R.layout.fragment_trip_register, container, false);
@@ -267,6 +284,14 @@ public class TripRegisterFragment extends Fragment {
 
     edtTell.requestFocus();
     openKeyBoaredAuto();
+
+    if (spCity.performClick()){
+      Log.i(TAG, "onCreateView: sssssssss");
+    }
+    
+    if (edtAddress.hasFocus()){
+      Log.i(TAG, "onCreateView: wwwwwwwwwwwww");
+    }
 
     return view;
   }

@@ -128,7 +128,6 @@ public class MainActivity extends AppCompatActivity {
 
     txtOperatorName.setText(MyApplication.prefManager.getOperatorName());
 
-
   }
 
   @Override
@@ -151,6 +150,7 @@ public class MainActivity extends AppCompatActivity {
 
   @Override
   public void onBackPressed() {
+
     try {
       if (getFragmentManager().getBackStackEntryCount() > 0 || getSupportFragmentManager().getBackStackEntryCount() > 0) {
         super.onBackPressed();

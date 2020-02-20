@@ -118,16 +118,16 @@ public class LinphoneService extends Service {
             }
         };
 
-        try {
+//        try {
 
             // Let's copy some RAW resources to the device
             // The default config file must only be installed once (the first time)
-            copyIfNotExist(R.raw.linphonerc_default, basePath + "/.linphonerc");
+//            copyIfNotExist(R.raw.linphonerc_default, basePath + "/.linphonerc");
             // The factory config is used to override any other setting, let's copy it each time
-            copyFromPackage(R.raw.linphonerc_factory, "linphonerc");
-        } catch (IOException ioe) {
-            Log.e(ioe);
-        }
+//            copyFromPackage(R.raw.linphonerc_factory, "linphonerc");
+//        } catch (IOException ioe) {
+//            Log.e(ioe);
+//        }
 
         // Create the Core and add our listener
         mCore = Factory.instance()
