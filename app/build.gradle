@@ -54,4 +54,7 @@ dependencies {
     debugImplementation "org.linphone.minimal:linphone-sdk-android-debug:4.3+"
     releaseImplementation "org.linphone.minimal:linphone-sdk-android:4.3+"
 
+    implementation 'com.eightbitlab:blurview:1.6.1'
+
+
 }

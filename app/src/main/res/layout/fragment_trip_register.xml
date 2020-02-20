@@ -123,10 +123,9 @@
                                 android:id="@+id/spCity"
                                 android:layout_width="match_parent"
                                 android:layout_height="match_parent"
-                                android:nextFocusDown="@id/edtTell"
                                 android:dropDownWidth="match_parent"
                                 android:gravity="center"
-                                android:backgroundTint="@color/colorPrimaryDark"
+                                android:background="@android:color/transparent"
                                 android:paddingTop="5dp"
                                 android:paddingBottom="5dp" />
 
@@ -162,7 +161,7 @@
                             android:singleLine="true"
                             android:inputType="number"
                             android:nextFocusDown="@id/edtDiscount"
-                            android:background="@drawable/bg_strock_corner"/>
+                            android:background="@drawable/edit_text_style"/>
 
                     </LinearLayout>
 
@@ -197,7 +196,7 @@
                             android:inputType="number"
                             android:layout_margin="3dp"
                             android:elevation="2dp"
-                            android:background="@drawable/bg_strock_corner"
+                            android:background="@drawable/edit_text_style"
                             android:nextFocusDown="@id/edtMobile"
                             android:textAppearance="?android:attr/textAppearanceMedium"
                             android:textColor="@color/colorBlack"
@@ -234,7 +233,7 @@
                             android:textColor="@color/colorBlack"
                             android:inputType="number"
                             android:nextFocusDown="@id/edtFamily"
-                            android:background="@drawable/bg_strock_corner"/>
+                            android:background="@drawable/edit_text_style"/>
 
                     </LinearLayout>
 
@@ -274,13 +273,11 @@
                                 android:id="@+id/spServiceType"
                                 android:layout_width="match_parent"
                                 android:layout_height="match_parent"
-                                android:backgroundTint="@color/colorPrimaryDark"
                                 android:dropDownWidth="match_parent"
                                 android:gravity="center"
-                                android:focusable="true"
-                                android:nextFocusDown="@id/edtFamily"
-                                android:paddingBottom="5dp"
-                                android:paddingTop="5dp" />
+                                android:background="@android:color/transparent"
+                                android:paddingTop="5dp"
+                                android:paddingBottom="5dp"  />
 
                         </LinearLayout>
 
@@ -313,7 +310,7 @@
                             android:textColor="@color/colorBlack"
                             android:singleLine="true"
                             android:nextFocusDown="@id/edtAddress"
-                            android:background="@drawable/bg_strock_corner"/>
+                            android:background="@drawable/edit_text_style"/>
 
                     </LinearLayout>
 
@@ -336,8 +333,11 @@
                         android:textColor="@color/grayMedium"/>
 
                     <LinearLayout
+                        android:id="@+id/llAddress2"
                         android:layout_width="match_parent"
-                        android:background="@drawable/bg_strock_corner"
+                        style="@style/linearLayout"
+                        android:clickable="true"
+                        android:focusable="true"
                         android:layout_margin="3dp"
                         android:elevation="2dp"
                         android:gravity="center_vertical"
@@ -474,7 +474,7 @@
                             <CheckBox
                                 android:id="@+id/chbTraffic"
                                 android:layout_width="match_parent"
-                                android:layout_height="match_parent"
+                                android:layout_height="30dp"
                                 android:checked="false"
                                 android:background="@drawable/traffic"
                                 android:button="@null"/>
@@ -520,11 +520,9 @@
                                 android:id="@+id/spServiceCount"
                                 android:layout_width="match_parent"
                                 android:layout_height="match_parent"
-                                android:nextFocusDown="@id/edtFamily"
-                                android:dropDownWidth="50dp"
+                                android:dropDownWidth="match_parent"
                                 android:gravity="center"
-                                android:backgroundTint="@color/colorPrimaryDark"
-                                android:paddingRight="5dp"
+                                android:background="@android:color/transparent"
                                 android:paddingTop="5dp"
                                 android:paddingBottom="5dp" />
 
@@ -550,7 +548,7 @@
 
                         <LinearLayout
                             android:layout_width="match_parent"
-                            android:background="@drawable/bg_strock_corner"
+                            android:background="@drawable/edit_text_style"
                             android:gravity="center_vertical"
                             android:layout_margin="3dp"
                             android:elevation="2dp"
@@ -755,14 +753,13 @@
 
                             <CheckBox
                                 android:id="@+id/chbAlways"
-                                android:layout_width="35dp"
-                                android:layout_height="35dp"
+                                android:layout_width="match_parent"
+                                android:layout_height="30dp"
                                 android:checked="false"
                                 android:background="@drawable/traffic"
                                 android:button="@null"/>
 
                         </LinearLayout>
-
 
                     </LinearLayout>
 
@@ -788,7 +785,7 @@
                     android:textStyle="bold" />
 
                 <Button
-                    android:id="@+id/btnMoreOption"
+                    android:id="@+id/btnOptions"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_margin="20dp"

@@ -5,14 +5,16 @@ import android.app.Activity;
 import android.app.Fragment;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.util.Log;
+import android.view.Window;
+
 import androidx.annotation.AnimRes;
+import androidx.annotation.ColorInt;
 import androidx.annotation.IdRes;
 import androidx.fragment.app.FragmentActivity;
-
-import ir.taxi1880.operatormanagement.R;
 
 /***********************************************
  * Created by AmirReza Erfanian at 23 jun 2019 *
@@ -34,12 +36,12 @@ public class FragmentHelper {
   private int exitAnim = 0;
   private int popEnterAnim = 0;
   private int popExitAnim = 0;
+  private int statusBarColor = -1;
+  private int navigationBarColor = -1;
 
   private androidx.fragment.app.FragmentManager fragmentManagerV4 = null;
   private @IdRes
   int frame = android.R.id.content;
-
-
 
   /**
    * use android.app.fragment library
@@ -98,6 +100,7 @@ public class FragmentHelper {
     instance.popExitAnim = popExitAnim;
     return instance;
   }
+
   public FragmentHelper setUseAnimation(@AnimRes int enterAnim, @AnimRes int exitAnim) {
     instance.enterAnim = enterAnim;
     instance.exitAnim = exitAnim;
@@ -170,6 +173,7 @@ public class FragmentHelper {
 
         }
       }, 100);
+      setWindowStyle();
     } catch (Exception e) {
       e.printStackTrace();
       Log.e(TAG, "can't add " + flag + " to " + frame);
@@ -206,6 +210,7 @@ public class FragmentHelper {
           }
         }
       }, 100);
+      setWindowStyle();
     } catch (Exception e) {
       e.printStackTrace();
       Log.e(TAG, "can't replace " + flag + " to " + frame);
@@ -258,6 +263,35 @@ public class FragmentHelper {
       e.printStackTrace();
     }
 
+  }
+
+  public FragmentHelper setNavigationBarColor(@ColorInt int color) {
+    instance.navigationBarColor = color;
+    return instance;
+  }
+
+  public FragmentHelper setStatusBarColor(@ColorInt int color) {
+    instance.statusBarColor = color;
+    return instance;
+  }
+
+  private void setWindowStyle() {
+    try {
+      Window window = activity.getWindow();
+      if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+//        if (darkMode)
+//          if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M)
+//            window.getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);
+        if (statusBarColor != -1) {
+          window.setStatusBarColor(statusBarColor);
+        }
+        if (navigationBarColor != -1) {
+          window.setNavigationBarColor(navigationBarColor);
+        }
+      }
+    } catch (Exception e) {
+      e.printStackTrace();
+    }
   }
 
 }

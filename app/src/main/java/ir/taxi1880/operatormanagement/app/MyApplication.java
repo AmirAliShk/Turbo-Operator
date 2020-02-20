@@ -31,7 +31,13 @@ public class MyApplication extends Application {
     public static Activity currentActivity;
     public static Handler handler;
     private static final String IRANSANS = "fonts/IRANSans.otf";
+    private static final String IRANSANS_MEDUME = "fonts/IRANSANSMOBILE_MEDIUM.TTF";
+    private static final String IRANSANS_BOLD = "fonts/IRANSANSMOBILE_BOLD.TTF";
+    private static final String IRANSANS_LIGHT = "fonts/IRANSANSMOBILE_LIGHT.TTF";
     public static Typeface iranSance;
+    public static Typeface IraSanSMedume;
+    public static Typeface IraSanSBold;
+    public static Typeface IraSanSLight;
     public static PrefManager prefManager;
     public static final String DIR_SDCARD = Environment.getExternalStorageDirectory().getAbsolutePath();
     public static String DIR_DOWNLOAD;
@@ -58,6 +64,9 @@ public class MyApplication extends Application {
 
     private void initTypeface() {
         iranSance = Typeface.createFromAsset(getAssets(), IRANSANS);
+        IraSanSMedume = Typeface.createFromAsset(getAssets(), IRANSANS_MEDUME);
+        IraSanSLight = Typeface.createFromAsset(getAssets(), IRANSANS_LIGHT);
+        IraSanSBold = Typeface.createFromAsset(getAssets(), IRANSANS_BOLD);
     }
 
     public static void ErrorToast(String message, int duration) {
@@ -88,7 +97,6 @@ public class MyApplication extends Application {
         toast.show();
     }
 
-
     public static void configureAccount() {
         // At least the 3 below values are required
         AccountCreator mAccountCreator = LinphoneService.getCore().createAccountCreator(null);
@@ -103,6 +111,5 @@ public class MyApplication extends Application {
         // Make sure the newly created one is the default
         LinphoneService.getCore().setDefaultProxyConfig(cfg);
     }
-
 
 }
