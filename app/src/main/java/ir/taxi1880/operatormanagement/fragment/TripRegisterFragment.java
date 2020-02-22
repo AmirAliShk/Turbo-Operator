@@ -4,7 +4,6 @@ import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -285,14 +284,6 @@ public class TripRegisterFragment extends Fragment {
     edtTell.requestFocus();
     openKeyBoaredAuto();
 
-    if (spCity.performClick()){
-      Log.i(TAG, "onCreateView: sssssssss");
-    }
-    
-    if (edtAddress.hasFocus()){
-      Log.i(TAG, "onCreateView: wwwwwwwwwwwww");
-    }
-
     return view;
   }
 
@@ -405,4 +396,9 @@ public class TripRegisterFragment extends Fragment {
     hideKeyboard(MyApplication.currentActivity);
   }
 
+  @Override
+  public void onPause() {
+    super.onPause();
+    hideKeyboard(MyApplication.currentActivity);
+  }
 }

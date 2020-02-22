@@ -65,7 +65,9 @@
                         <EditText
                             android:id="@+id/edtDescription"
                             android:layout_width="match_parent"
-                            android:layout_height="80dp"
+                            android:layout_height="wrap_content"
+                            android:gravity="top"
+                            android:minHeight="100dp"
                             android:background="@drawable/bg_strock_corner"
                             android:padding="5dp" />
 
@@ -90,7 +92,9 @@
                         <EditText
                             android:id="@+id/edtAlwaysDescription"
                             android:layout_width="match_parent"
-                            android:layout_height="80dp"
+                            android:layout_height="wrap_content"
+                            android:gravity="top"
+                            android:minHeight="100dp"
                             android:background="@drawable/bg_strock_corner"
                             android:padding="5dp" />
 
