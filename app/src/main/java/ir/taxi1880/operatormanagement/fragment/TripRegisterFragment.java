@@ -1,9 +1,11 @@
 package ir.taxi1880.operatormanagement.fragment;
 
 import android.annotation.SuppressLint;
-import android.app.Activity;
 import android.content.Context;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -34,6 +36,8 @@ import ir.taxi1880.operatormanagement.dialog.GeneralDialog;
 import ir.taxi1880.operatormanagement.dialog.SearchLocationDialog;
 import ir.taxi1880.operatormanagement.helper.CheckEmptyView;
 import ir.taxi1880.operatormanagement.helper.FragmentHelper;
+import ir.taxi1880.operatormanagement.helper.KeyBoardHelper;
+import ir.taxi1880.operatormanagement.helper.PhoneNumberValidation;
 import ir.taxi1880.operatormanagement.helper.TypefaceUtil;
 
 /**
@@ -52,7 +56,7 @@ public class TripRegisterFragment extends Fragment {
   @OnClick(R.id.imgBack)
   void onBack() {
     MyApplication.currentActivity.onBackPressed();
-    hideKeyboard(MyApplication.currentActivity);
+    KeyBoardHelper.hideKeyboard();
   }
 
   @BindView(R.id.spCity)
@@ -103,37 +107,37 @@ public class TripRegisterFragment extends Fragment {
   @OnClick(R.id.llTell)
   void onPressllTell() {
     edtTell.requestFocus();
-    openKeyBoaredAuto();
+    KeyBoardHelper.showKeyboard(MyApplication.context);
   }
 
   @OnClick(R.id.llDiscount)
   void onPressllDiscount() {
     edtDiscount.requestFocus();
-    openKeyBoaredAuto();
+    KeyBoardHelper.showKeyboard(MyApplication.context);
   }
 
   @OnClick(R.id.llMobile)
   void onPressllMobile() {
     edtMobile.requestFocus();
-    openKeyBoaredAuto();
+    KeyBoardHelper.showKeyboard(MyApplication.context);
   }
 
   @OnClick(R.id.llFamily)
   void onPressllFamily() {
     edtFamily.requestFocus();
-    openKeyBoaredAuto();
+    KeyBoardHelper.showKeyboard(MyApplication.context);
   }
 
   @OnClick(R.id.llAddress)
   void onPressllAddress() {
     edtAddress.requestFocus();
-    openKeyBoaredAuto();
+    KeyBoardHelper.showKeyboard(MyApplication.context);
   }
 
   @OnClick(R.id.llDescription)
   void onPressllDescription() {
     edtDescription.requestFocus();
-    openKeyBoaredAuto();
+    KeyBoardHelper.showKeyboard(MyApplication.context);
   }
 
   @OnClick(R.id.llTraffic)
@@ -235,7 +239,7 @@ public class TripRegisterFragment extends Fragment {
                             .message("اطلاعات با موفقیت ثبت شد")
                             .firstButton("باشه", () -> {
                               new CheckEmptyView().setText("empty").setCheck(2).setValue(view);
-                              hideKeyboard(MyApplication.currentActivity);
+                              KeyBoardHelper.hideKeyboard();
                             })
                             .show())
             .secondButton("خیر", null)
@@ -244,7 +248,7 @@ public class TripRegisterFragment extends Fragment {
 
   @OnClick(R.id.btnOptions)
   void onPressOptions() {
-    hideKeyboard(MyApplication.currentActivity);
+    KeyBoardHelper.hideKeyboard();
     FragmentHelper
             .toFragment(MyApplication.currentActivity,new InnerCallFragment())
             .setNavigationBarColor(MyApplication.currentActivity.getResources().getColor(R.color.colorLightPurple))
@@ -261,7 +265,7 @@ public class TripRegisterFragment extends Fragment {
   private boolean cityFlag = false;
   private boolean serviceCountFlag = false;
 
-  private String city = "[{\"name\":\"مشهد\"},{\"name\":\"نیشابور\"},{\"name\":\"تربت حیدریه\"},{\"name\":\"تربت جام\"},{\"name\":\"گناباد\"}," +
+  private String city = "[{\"name\":\"انتخاب شهر\"},{\"name\":\"مشهد\"},{\"name\":\"نیشابور\"},{\"name\":\"حیدریه\"},{\"name\":\"جام\"},{\"name\":\"گناباد\"}," +
           "{\"name\":\"کاشمر\"},{\"name\":\"تایباد\"}]";
 
   private String serviceType = "[{\"name\":\"سرویس\"},{\"name\":\"دراختیار\"},{\"name\":\"بانوان\"}]";
@@ -282,7 +286,29 @@ public class TripRegisterFragment extends Fragment {
     initServiceCountSpinner();
 
     edtTell.requestFocus();
-    openKeyBoaredAuto();
+    KeyBoardHelper.showKeyboard(MyApplication.context);
+
+    edtTell.addTextChangedListener(new TextWatcher() {
+      @Override
+      public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+      }
+
+      @Override
+      public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+      }
+
+      @Override
+      public void afterTextChanged(Editable editable) {
+        Log.i(TAG, "afterTextChanged: Hiiiiiiiiiiiii"+editable.toString());
+        if (PhoneNumberValidation.isValid(editable.toString())){
+          edtMobile.setText(editable.toString());
+        }else {
+          edtMobile.setText("");
+        }
+      }
+    });
 
     return view;
   }
@@ -376,29 +402,29 @@ public class TripRegisterFragment extends Fragment {
     }
   }
 
-  public static void openKeyBoaredAuto() {
-    inputMethodManager.toggleSoftInput(InputMethodManager.SHOW_FORCED, InputMethodManager.HIDE_IMPLICIT_ONLY);
-  }
-
-  public static void hideKeyboard(Activity activity) {
-    InputMethodManager imm = (InputMethodManager) activity.getSystemService(Activity.INPUT_METHOD_SERVICE);
-    View view = activity.getCurrentFocus();
-    if (view == null) {
-      view = new View(activity);
-    }
-    imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
-  }
+//  public static void openKeyBoaredAuto() {
+//    inputMethodManager.toggleSoftInput(InputMethodManager.SHOW_FORCED, InputMethodManager.HIDE_IMPLICIT_ONLY);
+//  }
+//
+//  public static void hideKeyboard(Activity activity) {
+//    InputMethodManager imm = (InputMethodManager) activity.getSystemService(Activity.INPUT_METHOD_SERVICE);
+//    View view = activity.getCurrentFocus();
+//    if (view == null) {
+//      view = new View(activity);
+//    }
+//    imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
+//  }
 
   @Override
   public void onDestroyView() {
     super.onDestroyView();
     unbinder.unbind();
-    hideKeyboard(MyApplication.currentActivity);
+    KeyBoardHelper.hideKeyboard();
   }
 
   @Override
   public void onPause() {
     super.onPause();
-    hideKeyboard(MyApplication.currentActivity);
+    KeyBoardHelper.hideKeyboard();
   }
 }

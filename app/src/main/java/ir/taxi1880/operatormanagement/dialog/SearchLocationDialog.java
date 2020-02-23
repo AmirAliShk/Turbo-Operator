@@ -22,11 +22,9 @@ import java.util.ArrayList;
 import ir.taxi1880.operatormanagement.R;
 import ir.taxi1880.operatormanagement.adapter.AddressAdapter;
 import ir.taxi1880.operatormanagement.app.MyApplication;
+import ir.taxi1880.operatormanagement.helper.KeyBoardHelper;
 import ir.taxi1880.operatormanagement.helper.TypefaceUtil;
 import ir.taxi1880.operatormanagement.model.AddressModel;
-
-import static ir.taxi1880.operatormanagement.fragment.TripRegisterFragment.hideKeyboard;
-import static ir.taxi1880.operatormanagement.fragment.TripRegisterFragment.openKeyBoaredAuto;
 
 public class SearchLocationDialog {
 
@@ -63,7 +61,7 @@ public class SearchLocationDialog {
 
     addressModels = address();
 
-    openKeyBoaredAuto();
+    KeyBoardHelper.showKeyboard(MyApplication.context);
 
     EditText edtSearchPlace = dialog.findViewById(R.id.edtSearchPlace);
     TextView txtTitle = dialog.findViewById(R.id.txtTitle);
@@ -91,7 +89,7 @@ public class SearchLocationDialog {
     try {
       if (dialog != null) {
         dialog.dismiss();
-        hideKeyboard(MyApplication.currentActivity);
+        KeyBoardHelper.hideKeyboard();
       }
     } catch (Exception e) {
       Log.e("TAG", "dismiss: " + e.getMessage());

@@ -125,7 +125,6 @@
                                 android:layout_height="match_parent"
                                 android:dropDownWidth="match_parent"
                                 android:gravity="center"
-                                android:background="@android:color/transparent"
                                 android:paddingTop="5dp"
                                 android:paddingBottom="5dp" />
 
@@ -156,6 +155,7 @@
                             android:padding="5dp"
                             android:layout_margin="3dp"
                             android:elevation="2dp"
+                            android:maxLength="11"
                             android:textAppearance="?android:attr/textAppearanceMedium"
                             android:textColor="@color/colorBlack"
                             android:singleLine="true"
@@ -228,6 +228,7 @@
                             android:padding="5dp"
                             android:layout_margin="3dp"
                             android:elevation="2dp"
+                            android:maxLength="11"
                             android:singleLine="true"
                             android:textAppearance="?android:attr/textAppearanceMedium"
                             android:textColor="@color/colorBlack"
@@ -275,7 +276,6 @@
                                 android:layout_height="match_parent"
                                 android:dropDownWidth="match_parent"
                                 android:gravity="center"
-                                android:background="@android:color/transparent"
                                 android:paddingTop="5dp"
                                 android:paddingBottom="5dp"  />
 
@@ -353,6 +353,7 @@
                             android:nextFocusDown="@id/edtDescription"
                             android:padding="5dp"
                             android:singleLine="true"
+                            android:maxLength="40"
                             android:textAppearance="?android:attr/textAppearanceMedium"
                             android:textColor="@color/colorBlack" />
 
@@ -522,7 +523,6 @@
                                 android:layout_height="match_parent"
                                 android:dropDownWidth="match_parent"
                                 android:gravity="center"
-                                android:background="@android:color/transparent"
                                 android:paddingTop="5dp"
                                 android:paddingBottom="5dp" />
 
@@ -637,12 +637,12 @@
                                     android:textAppearance="?android:attr/textAppearanceSmall"
                                     android:layout_height="wrap_content"
                                     android:buttonTint="@color/colorPrimaryDark"
-                                    android:text="همه"/>
+                                    android:text="نامشخص"/>
 
                                 <ImageView
                                     android:layout_width="0dp"
                                     android:layout_height="match_parent"
-                                    android:layout_weight="0.5"/>
+                                    android:layout_weight="0.25"/>
 
                                 <RadioButton
                                     android:layout_width="0dp"
@@ -655,7 +655,7 @@
                                 <ImageView
                                     android:layout_width="0dp"
                                     android:layout_height="match_parent"
-                                    android:layout_weight="0.5"/>
+                                    android:layout_weight="0.25"/>
 
                                 <RadioButton
                                     android:layout_width="0dp"
@@ -668,7 +668,7 @@
                                 <ImageView
                                     android:layout_width="0dp"
                                     android:layout_height="match_parent"
-                                    android:layout_weight="0.5"/>
+                                    android:layout_weight="0.25"/>
 
                             </RadioGroup>
 

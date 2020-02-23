@@ -68,6 +68,7 @@
                             android:layout_height="wrap_content"
                             android:gravity="top"
                             android:minHeight="100dp"
+                            android:maxLength="40"
                             android:background="@drawable/bg_strock_corner"
                             android:padding="5dp" />
 
@@ -94,6 +95,7 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:gravity="top"
+                            android:maxLength="50"
                             android:minHeight="100dp"
                             android:background="@drawable/bg_strock_corner"
                             android:padding="5dp" />

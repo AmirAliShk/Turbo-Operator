@@ -1,7 +1,10 @@
 package ir.taxi1880.operatormanagement.activity;
 
+import android.os.Build;
 import android.os.Bundle;
 import android.view.View;
+import android.view.Window;
+import android.view.WindowManager;
 
 import org.linphone.core.Call;
 import org.linphone.core.CallParams;
@@ -17,7 +20,6 @@ import ir.taxi1880.operatormanagement.R;
 import ir.taxi1880.operatormanagement.app.MyApplication;
 import ir.taxi1880.operatormanagement.services.LinphoneService;
 import ir.taxi1880.operatormanagement.services.LinphoneUtils;
-
 public class CallIncomingActivity extends AppCompatActivity {
   private CoreListenerStub mListener;
   private Call mCall;
@@ -47,8 +49,15 @@ public class CallIncomingActivity extends AppCompatActivity {
     super.onCreate(savedInstanceState);
     setContentView(R.layout.activity_call_incoming);
     View view = getWindow().getDecorView();
-
-    unbinder = ButterKnife.bind(this, view);
+    getSupportActionBar().hide();
+    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+      Window window = getWindow();
+      window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
+      window.setNavigationBarColor(getResources().getColor(R.color.colorPrimaryLighter));
+      window.setStatusBarColor(getResources().getColor(R.color.colorPrimaryDark));
+      window.addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
+    }
+    unbinder = ButterKnife.bind(this);
 
     mListener =
             new CoreListenerStub() {
@@ -83,6 +92,8 @@ public class CallIncomingActivity extends AppCompatActivity {
 
 
   public boolean acceptCall(Call call) {
+
+    android.util.Log.i("LOG", "acceptCall ");
     if (call == null) return false;
 
     Core core = LinphoneService.getCore();

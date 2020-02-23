@@ -102,8 +102,8 @@ public class MyApplication extends Application {
         AccountCreator mAccountCreator = LinphoneService.getCore().createAccountCreator(null);
 
         mAccountCreator.setDomain("172.16.2.222");
-        mAccountCreator.setUsername("410");
-        mAccountCreator.setPassword("410");
+        mAccountCreator.setUsername("423");
+        mAccountCreator.setPassword("423");
         mAccountCreator.setTransport(TransportType.Udp);
 
         // This will automatically create the proxy config and auth info and add them to the Core

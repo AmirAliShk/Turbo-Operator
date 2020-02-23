@@ -10,7 +10,7 @@
 
     <eightbitlab.com.blurview.BlurView
         android:id="@+id/blurView"
-        app:blurOverlayColor="#97570E3B"
+        app:blurOverlayColor="#653D264B"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 

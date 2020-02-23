@@ -4,14 +4,102 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@android:color/transparent"
     tools:context=".activity.CallIncomingActivity">
 
-    <Button
-        android:layout_centerInParent="true"
-        android:layout_width="120dp"
-        android:layout_height="120dp"
-        android:text="accept"
-        android:id="@+id/btnAccept"/>
+<!--    <eightbitlab.com.blurview.BlurView-->
+<!--        android:id="@+id/blurView"-->
+<!--        app:blurOverlayColor="#653D264B"-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="match_parent">-->
 
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:padding="15dp"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/txtCallerName"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="فاطمه نوری"
+                    android:padding="10dp"
+                    android:gravity="center"
+                    android:textAppearance="?android:attr/textAppearanceLarge"
+                    android:textColor="@color/colorPrimaryDark"
+                    android:textStyle="bold"/>
+
+                <TextView
+                    android:id="@+id/txtCallerNum"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="09015693808"
+                    android:padding="10dp"
+                    android:gravity="center"
+                    android:textAppearance="?android:attr/textAppearanceLarge"
+                    android:textColor="@color/colorPrimaryDark"
+                    android:textStyle="bold"/>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="bottom"
+                android:orientation="vertical"
+                android:paddingBottom="50dp">
+
+                <LinearLayout
+                    android:id="@+id/rlCall"
+                    android:layout_width="match_parent"
+                    android:layout_height="100dp"
+                    android:gravity="center"
+                    android:orientation="horizontal">
+
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:layout_weight="0.5"/>
+
+                    <ImageView
+                        android:id="@+id/imgReject"
+                        android:layout_width="80dp"
+                        android:layout_height="match_parent"
+                        android:layout_gravity="center"
+                        android:src="@drawable/ic_call_end"/>
+
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"/>
+
+                    <Button
+                        android:id="@+id/btnAccept"
+                        android:layout_width="80dp"
+                        android:layout_height="80dp"
+                        android:background="@drawable/ic_call_answer"
+                        android:visibility="visible" />
+
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:layout_weight="0.5"/>
+
+                </LinearLayout>
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+<!--    </eightbitlab.com.blurview.BlurView>-->
 
 </RelativeLayout>
