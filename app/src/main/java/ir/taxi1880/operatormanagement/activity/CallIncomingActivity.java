@@ -28,7 +28,18 @@ public class CallIncomingActivity extends AppCompatActivity {
   void onAcceptPress() {
 //    CallParams params = LinphoneService.getCore().createCallParams(LinphoneService.getInstance().getCall());
 //    LinphoneService.getInstance().getCall().acceptWithParams(params);
-    acceptCall(mCall);
+//    acceptCall(mCall);
+    Call call = LinphoneService.getCore().getCurrentCall();
+    call.accept();
+  }
+
+  @OnClick(R.id.imgReject)
+  void onRejectPress() {
+//    CallParams params = LinphoneService.getCore().createCallParams(LinphoneService.getInstance().getCall());
+//    LinphoneService.getInstance().getCall().acceptWithParams(params);
+//    acceptCall(mCall);
+    Call call = LinphoneService.getCore().getCurrentCall();
+    call.terminate();
   }
 
   Unbinder unbinder;
