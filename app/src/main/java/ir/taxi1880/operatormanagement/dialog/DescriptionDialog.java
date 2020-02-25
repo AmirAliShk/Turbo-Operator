@@ -28,7 +28,7 @@ public class DescriptionDialog {
 
     static Dialog dialog;
 
-    public void show(Listener listener) {
+    public void show(Listener listener,String description) {
         dialog = new Dialog(MyApplication.currentActivity);
         dialog.getWindow().requestFeature(Window.FEATURE_NO_TITLE);
         dialog.getWindow().getAttributes().windowAnimations = R.style.ExpandAnimation;
@@ -45,6 +45,8 @@ public class DescriptionDialog {
         EditText edtAlwaysDescription = dialog.findViewById(R.id.edtAlwaysDescription);
         EditText edtDescription = dialog.findViewById(R.id.edtDescription);
         Button btnSubmit = dialog.findViewById(R.id.btnSubmit);
+
+        edtDescription.setText(description);
 
         btnSubmit.setOnClickListener(new View.OnClickListener() {
           @Override

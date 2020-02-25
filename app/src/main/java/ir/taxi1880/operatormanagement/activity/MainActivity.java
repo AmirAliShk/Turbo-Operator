@@ -1,5 +1,6 @@
 package ir.taxi1880.operatormanagement.activity;
 
+import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
@@ -21,7 +22,6 @@ import ir.taxi1880.operatormanagement.fragment.NotificationFragment;
 import ir.taxi1880.operatormanagement.fragment.ReplacementWaitingFragment;
 import ir.taxi1880.operatormanagement.fragment.SendReplacementReqFragment;
 import ir.taxi1880.operatormanagement.fragment.ShiftFragment;
-import ir.taxi1880.operatormanagement.fragment.TripRegisterFragment;
 import ir.taxi1880.operatormanagement.helper.FragmentHelper;
 import ir.taxi1880.operatormanagement.helper.TypefaceUtil;
 
@@ -47,10 +47,11 @@ public class MainActivity extends AppCompatActivity {
 
   @OnClick(R.id.llTripRegister)
   void onTripRegister() {
-    FragmentHelper
-            .toFragment(MyApplication.currentActivity, new TripRegisterFragment())
-            .setAddToBackStack(true)
-            .replace();
+//    FragmentHelper
+//            .toFragment(MyApplication.currentActivity, new TripRegisterFragment())
+//            .setAddToBackStack(true)
+//            .replace();
+    startActivity(new Intent(MyApplication.context, TripRegisterActivity.class));
   }
 
   @OnClick(R.id.llReplacement)
