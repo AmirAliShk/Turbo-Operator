@@ -61,5 +61,7 @@ dependencies {
         exclude group: 'org.json', module: 'json'
     }
 
+    implementation 'com.gauravbhola.ripplepulsebackground:library:1.0.0'
+
 
 }

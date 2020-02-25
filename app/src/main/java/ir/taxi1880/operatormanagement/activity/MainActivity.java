@@ -16,7 +16,6 @@ import butterknife.OnClick;
 import butterknife.Unbinder;
 import ir.taxi1880.operatormanagement.R;
 import ir.taxi1880.operatormanagement.app.MyApplication;
-import ir.taxi1880.operatormanagement.fragment.AccountFragment;
 import ir.taxi1880.operatormanagement.fragment.MessageFragment;
 import ir.taxi1880.operatormanagement.fragment.NotificationFragment;
 import ir.taxi1880.operatormanagement.fragment.ReplacementWaitingFragment;
@@ -86,10 +85,10 @@ public class MainActivity extends AppCompatActivity {
 
   @OnClick(R.id.llProfile)
   void onPressProfile() {
-
-    FragmentHelper
-            .toFragment(MyApplication.currentActivity, new AccountFragment())
-            .replace();
+//
+//    FragmentHelper
+//            .toFragment(MyApplication.currentActivity, new AccountFragment())
+//            .replace();
 
   }
 
@@ -107,7 +106,7 @@ public class MainActivity extends AppCompatActivity {
       window.addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
     }
 
-    MyApplication.configureAccount();
+//    MyApplication.configureAccount();
 
     unbinder = ButterKnife.bind(this, view);
     TypefaceUtil.overrideFonts(view);

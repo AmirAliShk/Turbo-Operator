@@ -15,7 +15,6 @@ import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.Spinner;
-import android.widget.TextView;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -35,7 +34,6 @@ import ir.taxi1880.operatormanagement.dialog.DescriptionDialog;
 import ir.taxi1880.operatormanagement.dialog.GeneralDialog;
 import ir.taxi1880.operatormanagement.dialog.SearchLocationDialog;
 import ir.taxi1880.operatormanagement.helper.CheckEmptyView;
-import ir.taxi1880.operatormanagement.helper.FragmentHelper;
 import ir.taxi1880.operatormanagement.helper.KeyBoardHelper;
 import ir.taxi1880.operatormanagement.helper.PhoneNumberValidation;
 import ir.taxi1880.operatormanagement.helper.TypefaceUtil;
@@ -71,8 +69,8 @@ public class TripRegisterFragment extends Fragment {
   @BindView(R.id.spServiceType)
   Spinner spServiceType;
 
-  @BindView(R.id.txtOrigin)
-  TextView txtOrigin;
+  @BindView(R.id.edtOrigin)
+  EditText edtOrigin;
 
   @BindView(R.id.edtDiscount)
   EditText edtDiscount;
@@ -88,6 +86,32 @@ public class TripRegisterFragment extends Fragment {
 
   @BindView(R.id.edtAddress)
   EditText edtAddress;
+
+  @BindView(R.id.llSearchOrigin)
+  LinearLayout llSearchOrigin;
+
+  @BindView(R.id.llSearchDestination)
+  LinearLayout llSearchDestination;
+
+  @OnClick(R.id.llSearchOrigin)
+  void onOrigin(){
+    new SearchLocationDialog().show(new SearchLocationDialog.Listener() {
+      @Override
+      public void description(String address) {
+
+      }
+    },"جست و جوی مبدا");
+  }
+
+  @OnClick(R.id.llSearchDestination)
+  void onDestination(){
+    new SearchLocationDialog().show(new SearchLocationDialog.Listener() {
+      @Override
+      public void description(String address) {
+
+      }
+    },"جست و جوی مقصد");
+  }
 
   @OnClick(R.id.llCity)
   void onPressllCity() {
@@ -156,46 +180,6 @@ public class TripRegisterFragment extends Fragment {
   @BindView(R.id.chbAlways)
   CheckBox chbAlways;
 
-  @OnClick(R.id.llOrigin)
-  void onPressllOrigin() {
-    new SearchLocationDialog().show(new SearchLocationDialog.Listener() {
-      @Override
-      public void description(String address) {
-        txtOrigin.setText(address);
-      }
-    }, "جست و جوی مبدا");
-  }
-
-  @OnClick(R.id.llDestination)
-  void onPressllDestination() {
-    new SearchLocationDialog().show(new SearchLocationDialog.Listener() {
-      @Override
-      public void description(String address) {
-        txtDestination.setText(address);
-      }
-    }, "جست و جوی مقصد");
-  }
-
-  @OnClick(R.id.txtOrigin)
-  void onPressOrigin() {
-    new SearchLocationDialog().show(new SearchLocationDialog.Listener() {
-      @Override
-      public void description(String address) {
-        txtOrigin.setText(address);
-      }
-    }, "جست و جوی مبدا");
-  }
-
-  @OnClick(R.id.txtDestination)
-  void onPressDestonation() {
-    new SearchLocationDialog().show(new SearchLocationDialog.Listener() {
-      @Override
-      public void description(String address) {
-        txtDestination.setText(address);
-      }
-    }, "جست و جوی مقصد");
-  }
-
   @OnClick(R.id.llDescriptionDetail)
   void onPressllDescriptionDetail() {
     new DescriptionDialog().show(description -> edtDescription.setText(description));
@@ -248,15 +232,10 @@ public class TripRegisterFragment extends Fragment {
 
   @OnClick(R.id.btnOptions)
   void onPressOptions() {
-    KeyBoardHelper.hideKeyboard();
-    FragmentHelper
-            .toFragment(MyApplication.currentActivity,new InnerCallFragment())
-            .setNavigationBarColor(MyApplication.currentActivity.getResources().getColor(R.color.colorLightPurple))
-            .add();
   }
 
-  @BindView(R.id.txtDestination)
-  TextView txtDestination;
+  @BindView(R.id.edtDestination)
+  EditText edtDestination;
 
   @BindView(R.id.llAddress2)
   LinearLayout llAddress2;

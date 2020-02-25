@@ -103,13 +103,26 @@
                         android:layout_height="wrap_content"
                         android:orientation="vertical">
 
-                        <TextView
+                        <LinearLayout
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:text="شهر"
-                            android:paddingRight="5dp"
-                            android:textAppearance="?android:attr/textAppearanceMedium"
-                            android:textColor="@color/grayMedium"/>
+                            android:orientation="horizontal">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:text="شهر"
+                                android:paddingRight="5dp"
+                                android:textAppearance="?android:attr/textAppearanceMedium"
+                                android:textColor="@color/grayMedium"/>
+
+                            <ImageView
+                                android:layout_width="20dp"
+                                android:layout_height="match_parent"
+                                android:src="@drawable/ic_drop_down"/>
+
+                        </LinearLayout>
 
                         <LinearLayout
                             android:layout_width="match_parent"
@@ -124,6 +137,7 @@
                                 android:layout_width="match_parent"
                                 android:layout_height="match_parent"
                                 android:dropDownWidth="match_parent"
+                                android:background="@drawable/bg_edit_text"
                                 android:gravity="center"
                                 android:paddingTop="5dp"
                                 android:paddingBottom="5dp" />
@@ -254,13 +268,26 @@
                         android:layout_height="wrap_content"
                         android:orientation="vertical">
 
-                        <TextView
+                        <LinearLayout
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:text="نوع سرویس"
-                            android:paddingRight="5dp"
-                            android:textAppearance="?android:attr/textAppearanceMedium"
-                            android:textColor="@color/grayMedium"/>
+                            android:orientation="horizontal">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:text="نوع سرویس"
+                                android:paddingRight="5dp"
+                                android:textAppearance="?android:attr/textAppearanceMedium"
+                                android:textColor="@color/grayMedium"/>
+
+                            <ImageView
+                                android:layout_width="20dp"
+                                android:layout_height="match_parent"
+                                android:src="@drawable/ic_drop_down"/>
+
+                        </LinearLayout>
 
                         <LinearLayout
                             android:layout_width="match_parent"
@@ -275,6 +302,7 @@
                                 android:layout_width="match_parent"
                                 android:layout_height="match_parent"
                                 android:dropDownWidth="match_parent"
+                                android:background="@android:color/transparent"
                                 android:gravity="center"
                                 android:paddingTop="5dp"
                                 android:paddingBottom="5dp"  />
@@ -350,7 +378,7 @@
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
                             android:background="@android:color/transparent"
-                            android:nextFocusDown="@id/edtDescription"
+                            android:nextFocusDown="@id/edtOrigin"
                             android:padding="5dp"
                             android:singleLine="true"
                             android:maxLength="40"
@@ -403,16 +431,50 @@
                             android:textAppearance="?android:attr/textAppearanceMedium"
                             android:textColor="@color/grayMedium"/>
 
-                        <TextView
-                            android:id="@+id/txtOrigin"
+                        <LinearLayout
+                            android:id="@+id/llOrigin1"
                             android:layout_width="match_parent"
-                            android:layout_height="match_parent"
+                            style="@style/linearLayout"
+                            android:clickable="true"
+                            android:focusable="true"
                             android:layout_margin="3dp"
                             android:elevation="2dp"
-                            android:textAppearance="?android:attr/textAppearanceMedium"
-                            android:textColor="@color/colorBlack"
-                            android:background="@drawable/bg_strock_corner"
-                            android:padding="8dp" />
+                            android:gravity="center_vertical"
+                            android:orientation="horizontal"
+                            android:layout_height="wrap_content">
+
+                            <EditText
+                                android:id="@+id/edtOrigin"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:background="@android:color/transparent"
+                                android:nextFocusDown="@id/edtDestination"
+                                android:padding="5dp"
+                                android:singleLine="true"
+                                android:maxLength="3"
+                                android:inputType="number"
+                                android:textAppearance="?android:attr/textAppearanceMedium"
+                                android:textColor="@color/colorBlack" />
+
+                            <LinearLayout
+                                android:id="@+id/llSearchOrigin"
+                                android:layout_width="30dp"
+                                android:layout_height="match_parent"
+                                android:background="@drawable/bg_ripple"
+                                android:gravity="center">
+
+                                <ImageView
+                                    android:layout_width="20dp"
+                                    android:layout_height="20dp"
+                                    android:layout_margin="5dp"
+                                    android:gravity="left|center_vertical"
+                                    android:src="@drawable/ic_search"
+                                    android:textStyle="bold" />
+
+                            </LinearLayout>
+
+                        </LinearLayout>
 
                     </LinearLayout>
 
@@ -434,16 +496,61 @@
                             android:textAppearance="?android:attr/textAppearanceMedium"
                             android:textColor="@color/grayMedium"/>
 
-                        <TextView
-                            android:id="@+id/txtDestination"
+                        <LinearLayout
+                            android:id="@+id/llDestination1"
                             android:layout_width="match_parent"
-                            android:layout_height="match_parent"
-                            android:padding="8dp"
+                            style="@style/linearLayout"
+                            android:clickable="true"
+                            android:focusable="true"
                             android:layout_margin="3dp"
                             android:elevation="2dp"
-                            android:textAppearance="?android:attr/textAppearanceMedium"
-                            android:textColor="@color/colorBlack"
-                            android:background="@drawable/bg_strock_corner"/>
+                            android:gravity="center_vertical"
+                            android:orientation="horizontal"
+                            android:layout_height="wrap_content">
+
+                            <EditText
+                                android:id="@+id/edtDestination"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:background="@android:color/transparent"
+                                android:nextFocusDown="@id/edtDescription"
+                                android:padding="5dp"
+                                android:singleLine="true"
+                                android:maxLength="3"
+                                android:inputType="number"
+                                android:textAppearance="?android:attr/textAppearanceMedium"
+                                android:textColor="@color/colorBlack" />
+
+                            <LinearLayout
+                                android:id="@+id/llSearchDestination"
+                                android:layout_width="30dp"
+                                android:layout_height="match_parent"
+                                android:background="@drawable/bg_ripple"
+                                android:gravity="center">
+
+                                <ImageView
+                                    android:layout_width="20dp"
+                                    android:layout_height="20dp"
+                                    android:layout_margin="5dp"
+                                    android:gravity="left|center_vertical"
+                                    android:src="@drawable/ic_search"
+                                    android:textStyle="bold" />
+
+                            </LinearLayout>
+
+                        </LinearLayout>
+
+<!--                        <TextView-->
+<!--                            android:id="@+id/txtDestination"-->
+<!--                            android:layout_width="match_parent"-->
+<!--                            android:layout_height="match_parent"-->
+<!--                            android:padding="8dp"-->
+<!--                            android:layout_margin="3dp"-->
+<!--                            android:elevation="2dp"-->
+<!--                            android:textAppearance="?android:attr/textAppearanceMedium"-->
+<!--                            android:textColor="@color/colorBlack"-->
+<!--                            android:background="@drawable/bg_strock_corner"/>-->
 
                     </LinearLayout>
 
@@ -500,14 +607,26 @@
                         android:layout_height="wrap_content"
                         android:orientation="vertical">
 
-                        <TextView
+                        <LinearLayout
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:text="تعداد"
-                            android:gravity="right"
-                            android:paddingRight="5dp"
-                            android:textAppearance="?android:attr/textAppearanceMedium"
-                            android:textColor="@color/grayMedium"/>
+                            android:orientation="horizontal">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:text="تعداد"
+                                android:paddingRight="5dp"
+                                android:textAppearance="?android:attr/textAppearanceMedium"
+                                android:textColor="@color/grayMedium"/>
+
+                            <ImageView
+                                android:layout_width="20dp"
+                                android:layout_height="match_parent"
+                                android:src="@drawable/ic_drop_down"/>
+
+                        </LinearLayout>
 
                         <LinearLayout
                             android:layout_width="match_parent"
@@ -521,6 +640,7 @@
                                 android:id="@+id/spServiceCount"
                                 android:layout_width="match_parent"
                                 android:layout_height="match_parent"
+                                android:background="@android:color/transparent"
                                 android:dropDownWidth="match_parent"
                                 android:gravity="center"
                                 android:paddingTop="5dp"
@@ -665,10 +785,10 @@
                                     android:buttonTint="@color/colorPrimaryDark"
                                     android:text="ممتاز"/>
 
-                                <ImageView
-                                    android:layout_width="0dp"
-                                    android:layout_height="match_parent"
-                                    android:layout_weight="0.25"/>
+<!--                                <ImageView-->
+<!--                                    android:layout_width="0dp"-->
+<!--                                    android:layout_height="match_parent"-->
+<!--                                    android:layout_weight="0.25"/>-->
 
                             </RadioGroup>
 
@@ -715,10 +835,10 @@
                                     android:buttonTint="@color/colorPrimaryDark"
                                     android:text="تاکسی"/>
 
-                                <ImageView
-                                    android:layout_width="0dp"
-                                    android:layout_height="match_parent"
-                                    android:layout_weight="0.25"/>
+<!--                                <ImageView-->
+<!--                                    android:layout_width="0dp"-->
+<!--                                    android:layout_height="match_parent"-->
+<!--                                    android:layout_weight="0.25"/>-->
 
                             </RadioGroup>
 

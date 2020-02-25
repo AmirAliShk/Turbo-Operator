@@ -1,16 +1,21 @@
 package ir.taxi1880.operatormanagement.activity;
 
+import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
 
+import com.gauravbhola.ripplepulsebackground.RipplePulseLayout;
+
 import org.linphone.core.Call;
 import org.linphone.core.CallParams;
 import org.linphone.core.Core;
 import org.linphone.core.CoreListenerStub;
 import org.linphone.core.tools.Log;
+
+import java.util.Timer;
 
 import androidx.appcompat.app.AppCompatActivity;
 import butterknife.ButterKnife;
@@ -20,24 +25,26 @@ import ir.taxi1880.operatormanagement.R;
 import ir.taxi1880.operatormanagement.app.MyApplication;
 import ir.taxi1880.operatormanagement.services.LinphoneService;
 import ir.taxi1880.operatormanagement.services.LinphoneUtils;
-public class CallIncomingActivity extends AppCompatActivity {
-  private CoreListenerStub mListener;
-  private Call mCall;
 
-  @OnClick(R.id.btnAccept)
+public class CallIncomingActivity extends AppCompatActivity {
+  public static final String TAG = CallIncomingActivity.class.getSimpleName();
+  private CoreListenerStub mListener;
+  Timer timer;
+  int timercount;
+
+  @OnClick(R.id.imgAccept)
   void onAcceptPress() {
-//    CallParams params = LinphoneService.getCore().createCallParams(LinphoneService.getInstance().getCall());
-//    LinphoneService.getInstance().getCall().acceptWithParams(params);
-//    acceptCall(mCall);
     Call call = LinphoneService.getCore().getCurrentCall();
     call.accept();
+//    txtTimer.setVisibility(View.VISIBLE);
+//    startTimer();
   }
+
+//  @BindView(R.id.txtTimer)
+//  TextView txtTimer;
 
   @OnClick(R.id.imgReject)
   void onRejectPress() {
-//    CallParams params = LinphoneService.getCore().createCallParams(LinphoneService.getInstance().getCall());
-//    LinphoneService.getInstance().getCall().acceptWithParams(params);
-//    acceptCall(mCall);
     Call call = LinphoneService.getCore().getCurrentCall();
     call.terminate();
   }
@@ -74,14 +81,23 @@ public class CallIncomingActivity extends AppCompatActivity {
             new CoreListenerStub() {
               @Override
               public void onCallStateChanged(Core core, Call call, Call.State state, String message) {
-                mCall = call;
                 if (state == Call.State.End || state == Call.State.Released) {
-                  mCall = null;
+//                  stopTimer();
                   finish();
+                }else if(state == Call.State.Connected){
+                  gotoCalling();
                 }
               }
             };
-
+    RipplePulseLayout mRipplePulseLayout = findViewById(R.id.layout_ripplepulse);
+    mRipplePulseLayout.startRippleAnimation();
+  }
+  private void gotoCalling() {
+    Intent intent = new Intent(this, TripRegisterActivity.class);
+    // This flag is required to start an Activity from a Service context
+    intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+    startActivity(intent);
+    finish();
 
   }
 
@@ -90,6 +106,33 @@ public class CallIncomingActivity extends AppCompatActivity {
     super.onDestroy();
     unbinder.unbind();
   }
+
+//  void startTimer() {
+//    timercount = 0;
+//    timer = new Timer();
+//    timer.schedule(new TimerTask() {
+//      @Override
+//      public void run() {
+//        runOnUiThread(new Runnable() {
+//          @Override
+//          public void run() {
+//            timercount++;
+////            Call call = LinphoneService.getCore().getCurrentCall();
+////            int min = call.getDuration() / 60;
+////            int sec = call.getDuration() % 60;
+////            String time = String.format("%02d:%02d", min, sec);
+////            txtTimer.setText(time);
+//          }
+//        });
+//      }
+//    }, 0, 1000);
+//  }
+
+//  public void stopTimer() {
+//    if (timer == null) return;
+//    timer.cancel();
+//    timer = null;
+//  }
 
 
   @Override

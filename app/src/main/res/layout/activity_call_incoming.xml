@@ -48,6 +48,16 @@
                     android:textColor="@color/colorPrimaryDark"
                     android:textStyle="bold"/>
 
+                <TextView
+                    android:id="@+id/txtTimer"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="5dp"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+                    android:textColor="#044064"
+                    android:textStyle="bold"
+                    android:visibility="gone"/>
+
             </LinearLayout>
 
             <LinearLayout
@@ -70,24 +80,53 @@
                         android:layout_height="match_parent"
                         android:layout_weight="0.5"/>
 
-                    <ImageView
-                        android:id="@+id/imgReject"
-                        android:layout_width="80dp"
-                        android:layout_height="match_parent"
-                        android:layout_gravity="center"
-                        android:src="@drawable/ic_call_end"/>
+                    <RelativeLayout
+                        android:layout_width="120dp"
+                        android:layout_height="120dp"
+                        android:gravity="center">
+
+                        <ImageView
+                            android:id="@+id/imgReject"
+                            android:layout_width="80dp"
+                            android:layout_height="match_parent"
+                            android:layout_gravity="center"
+                            android:src="@drawable/ic_call_end" />
+
+                    </RelativeLayout>
 
                     <ImageView
                         android:layout_width="wrap_content"
                         android:layout_height="match_parent"
                         android:layout_weight="1"/>
 
-                    <Button
-                        android:id="@+id/btnAccept"
-                        android:layout_width="80dp"
-                        android:layout_height="80dp"
-                        android:background="@drawable/ic_call_answer"
-                        android:visibility="visible" />
+                    <RelativeLayout
+                        android:layout_width="120dp"
+                        android:gravity="center"
+                        android:layout_height="120dp">
+
+                        <com.gauravbhola.ripplepulsebackground.RipplePulseLayout
+                            android:layout_width="100dp"
+                            android:layout_height="100dp"
+                            android:clipChildren="false"
+                            app:rippleColor="#12530A"
+                            android:gravity="center"
+                            android:layout_centerInParent="true"
+                            app:rippleType="stroke"
+                            app:strokeWidth="3dp"
+                            app:startRadius="20dp"
+                            app:endRadius="45dp"
+                            app:duration="2000"
+                            android:id="@+id/layout_ripplepulse"/>
+
+                        <ImageView
+                            android:id="@+id/imgAccept"
+                            android:layout_width="80dp"
+                            android:layout_height="80dp"
+                            android:layout_centerInParent="true"
+                            android:src="@drawable/ic_call_answer"
+                            android:visibility="visible" />
+
+                    </RelativeLayout>
 
                     <ImageView
                         android:layout_width="wrap_content"
