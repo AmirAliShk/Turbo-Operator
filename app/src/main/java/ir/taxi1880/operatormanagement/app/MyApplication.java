@@ -18,6 +18,7 @@ import java.util.Locale;
 import androidx.fragment.app.FragmentManager;
 import ir.taxi1880.operatormanagement.R;
 import ir.taxi1880.operatormanagement.helper.TypefaceUtil;
+import ir.taxi1880.operatormanagement.push.AvaFactory;
 
 public class MyApplication extends Application {
 
@@ -55,6 +56,20 @@ public class MyApplication extends Application {
         Configuration config = new Configuration();
         config.locale = locale;
         context.getResources().updateConfiguration(config, context.getResources().getDisplayMetrics());
+        avaStart();
+
+    }
+    public static void avaStart() {
+//        if (prefManager.getLineCode().equals("0")) return;
+//        if (prefManager.getAvaPID()==0) return;
+//        if (prefManager.getAvaToken()==null) return;
+
+        AvaFactory.getInstance(context)
+                .setUserID("3")
+                .setProjectID(5)
+                .setToken("turboOperatorAABMohsen")
+                .setAddress(EndPoints.PUSH_ADDRESS)
+                .start();
     }
 
     private void initTypeface() {

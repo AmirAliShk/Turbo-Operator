@@ -1,11 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
-<shape xmlns:android="http://schemas.android.com/apk/res/android">
+<ripple android:color="#B9B9B9" xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <item android:gravity="center">
+    <item android:id="@android:id/mask"
+        android:gravity="center">
         <shape android:shape="rectangle">
             <corners android:radius="0dp"/>
             <solid android:color="#fff"/>
         </shape>
     </item>
 
-</shape>
+</ripple>

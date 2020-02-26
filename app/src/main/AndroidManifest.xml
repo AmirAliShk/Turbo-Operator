@@ -2,6 +2,12 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     package="ir.taxi1880.operatormanagement">
+    <uses-permission android:name="android.permission.READ_PHONE_STATE" />
+    <uses-permission android:name="android.permission.WAKE_LOCK" />
+    <uses-permission android:name="android.permission.RECORD_AUDIO" />
+    <uses-permission android:name="android.permission.CAMERA" />
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
 
     <application
         android:name=".app.MyApplication"
@@ -30,14 +36,31 @@
         <service
             android:name=".services.LinphoneService"
             android:label="@string/app_name" />
+
+
+
+        <!-- Ava PUSH -->
+        <receiver android:name=".push.AutoStart"
+            android:exported="true"
+            android:enabled="true"
+            >
+            <intent-filter>
+                <action android:name="android.intent.action.BOOT_COMPLETED" />
+                <action android:name="android.net.conn.CONNECTIVITY_CHANGE" />
+
+            </intent-filter>
+        </receiver>
+
+        <service android:name=".push.AvaService"
+            android:exported="false"
+            android:enabled="true"/>
+
+        <receiver android:name=".receiver.PushReceiver"
+            android:exported="false"
+            android:enabled="true"
+            />
     </application>
 
-    <uses-permission android:name="android.permission.READ_PHONE_STATE" />
-    <uses-permission android:name="android.permission.WAKE_LOCK" />
-    <uses-permission android:name="android.permission.RECORD_AUDIO" />
-    <uses-permission android:name="android.permission.CAMERA" />
-    <uses-permission android:name="android.permission.INTERNET" />
 
-    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
 
 </manifest>

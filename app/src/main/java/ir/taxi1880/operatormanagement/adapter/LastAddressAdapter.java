@@ -11,26 +11,26 @@ import java.util.ArrayList;
 
 import ir.taxi1880.operatormanagement.R;
 import ir.taxi1880.operatormanagement.helper.TypefaceUtil;
-import ir.taxi1880.operatormanagement.model.AddressModel;
+import ir.taxi1880.operatormanagement.model.LastAddressModel;
 
-public class AddressAdapter extends BaseAdapter {
+public class LastAddressAdapter extends BaseAdapter {
 
-  private ArrayList<AddressModel> addressModels;
+  private ArrayList<LastAddressModel> lastAddressModels;
   private LayoutInflater layoutInflater;
 
-  public AddressAdapter(ArrayList<AddressModel> addressModels, Context context) {
-    this.addressModels = addressModels;
+  public LastAddressAdapter(ArrayList<LastAddressModel> lastAddressModels, Context context) {
+    this.lastAddressModels = lastAddressModels;
     this.layoutInflater=LayoutInflater.from(context);
   }
 
   @Override
   public int getCount() {
-    return addressModels.size();
+    return lastAddressModels.size();
   }
 
   @Override
   public Object getItem(int position) {
-    return addressModels.get(position);
+    return lastAddressModels.get(position);
   }
 
   @Override
@@ -43,15 +43,17 @@ public class AddressAdapter extends BaseAdapter {
     View myView = convertView;
 
     try {
-      final AddressModel addressModel = addressModels.get(position);
+      final LastAddressModel lastAddressModel = lastAddressModels.get(position);
       if (myView == null) {
-        myView = layoutInflater.inflate(R.layout.item_address, null);
+        myView = layoutInflater.inflate(R.layout.item_last_address, null);
         TypefaceUtil.overrideFonts(myView);
       }
 
       TextView txtAddress=myView.findViewById(R.id.txtAddress);
+      TextView txtStation=myView.findViewById(R.id.txtStationCode);
 
-      txtAddress.setText(addressModel.getAddress());
+      txtAddress.setText(lastAddressModel.getAddress());
+      txtStation.setText(lastAddressModel.getCode());
 
     } catch (Exception e) {
       e.printStackTrace();

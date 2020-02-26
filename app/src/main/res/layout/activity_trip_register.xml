@@ -6,6 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
+    android:background="@color/colorPrimaryLighter"
     android:layoutDirection="rtl"
     tools:context=".activity.TripRegisterActivity">
 
@@ -14,13 +15,6 @@
         android:layout_width="match_parent"
         android:layout_height="?android:attr/actionBarSize"
         android:background="@drawable/bg_action_bar_purple">
-
-        <ImageView
-            android:id="@+id/imgClear"
-            android:layout_width="?android:attr/actionBarSize"
-            android:layout_height="match_parent"
-            android:padding="8dp"
-            android:src="@drawable/ic_trash" />
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -106,7 +100,7 @@
                     <LinearLayout
                         android:id="@+id/llCity"
                         android:layout_width="0dp"
-                        android:layout_weight="0.5"
+                        android:layout_weight="0.65"
                         android:padding="5dp"
                         android:layout_height="wrap_content"
                         android:orientation="vertical">
@@ -187,6 +181,42 @@
 
                     </LinearLayout>
 
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_weight="0.25"
+                        android:padding="5dp"
+                        android:id="@+id/llClear"
+
+                        android:clickable="true"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="حذف"
+                            android:gravity="center"
+                            android:textAppearance="?android:attr/textAppearanceMedium"
+                            android:textColor="@color/grayMedium"/>
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="38dp"
+                            android:gravity="center"
+                            android:layout_margin="3dp"
+                            android:elevation="2dp"
+                            android:background="@drawable/bg_strock_corner">
+
+                            <ImageView
+                                android:id="@+id/imgClear"
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                android:src="@drawable/ic_trash"/>
+
+                        </LinearLayout>
+
+                    </LinearLayout>
+
                 </LinearLayout>
 
                 <LinearLayout
@@ -215,7 +245,6 @@
                             android:id="@+id/edtDiscount"
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
-                            android:inputType="number"
                             android:layout_margin="3dp"
                             android:elevation="2dp"
                             android:background="@drawable/edit_text_style"
@@ -580,7 +609,7 @@
 
                         <LinearLayout
                             android:layout_width="match_parent"
-                            android:layout_height="45dp"
+                            android:layout_height="38dp"
                             android:gravity="center"
                             android:padding="3dp"
                             android:layout_margin="3dp"
@@ -873,7 +902,7 @@
 
                         <LinearLayout
                             android:layout_width="match_parent"
-                            android:layout_height="45dp"
+                            android:layout_height="38dp"
                             android:gravity="center"
                             android:padding="3dp"
                             android:layout_margin="3dp"

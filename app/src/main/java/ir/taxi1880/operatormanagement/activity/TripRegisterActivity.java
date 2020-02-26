@@ -29,9 +29,11 @@ import butterknife.Unbinder;
 import ir.taxi1880.operatormanagement.R;
 import ir.taxi1880.operatormanagement.adapter.SpinnerAdapter;
 import ir.taxi1880.operatormanagement.app.MyApplication;
+import ir.taxi1880.operatormanagement.dialog.AddressListDialog;
 import ir.taxi1880.operatormanagement.dialog.DescriptionDialog;
 import ir.taxi1880.operatormanagement.dialog.GeneralDialog;
 import ir.taxi1880.operatormanagement.dialog.SearchLocationDialog;
+import ir.taxi1880.operatormanagement.helper.CheckEmptyView;
 import ir.taxi1880.operatormanagement.helper.KeyBoardHelper;
 import ir.taxi1880.operatormanagement.helper.PhoneNumberValidation;
 import ir.taxi1880.operatormanagement.helper.TypefaceUtil;
@@ -48,9 +50,8 @@ public class TripRegisterActivity extends AppCompatActivity {
 
   @OnClick(R.id.imgBack)
   void onBack() {
-//    MyApplication.currentActivity.onBackPressed();
+    MyApplication.currentActivity.onBackPressed();
 //    KeyBoardHelper.hideKeyboard();
-
   }
 
   @BindView(R.id.spCity)
@@ -94,7 +95,7 @@ public class TripRegisterActivity extends AppCompatActivity {
     new SearchLocationDialog().show(new SearchLocationDialog.Listener() {
       @Override
       public void description(String address) {
-
+        edtOrigin.setText(address);
       }
     }, "جست و جوی مبدا");
   }
@@ -104,7 +105,7 @@ public class TripRegisterActivity extends AppCompatActivity {
     new SearchLocationDialog().show(new SearchLocationDialog.Listener() {
       @Override
       public void description(String address) {
-
+        edtDestination.setText(address);
       }
     }, "جست و جوی مقصد");
   }
@@ -188,12 +189,12 @@ public class TripRegisterActivity extends AppCompatActivity {
 
   @OnClick(R.id.llSearchAddress)
   void onPressSearchAddress() {
-    new SearchLocationDialog().show(new SearchLocationDialog.Listener() {
-      @Override
-      public void description(String address) {
-        edtAddress.setText(address);
-      }
-    }, "جست و جوی آدرس");
+  new AddressListDialog().show(new AddressListDialog.Listener() {
+    @Override
+    public void description(String address) {
+      edtAddress.setText(address);
+    }
+  });
   }
 
   @OnClick(R.id.btnSubmit)
@@ -239,7 +240,7 @@ public class TripRegisterActivity extends AppCompatActivity {
   @BindView(R.id.edtDestination)
   EditText edtDestination;
 
-  @OnClick(R.id.imgClear)
+  @OnClick(R.id.llClear)
   void onClear() {
     new GeneralDialog()
             .title("هشدار")
@@ -248,13 +249,11 @@ public class TripRegisterActivity extends AppCompatActivity {
               @Override
               public void run() {
                 //TODO check value
-//                new CheckEmptyView().setText("empty").setCheck(2).setValue(view);
+                new CheckEmptyView().setText("empty").setCheck(2).setValue(view);
               }
-            }).secondButton("خیر", null);
+            }).secondButton("خیر", null)
+    .show();
   }
-
-  @BindView(R.id.llAddress2)
-  LinearLayout llAddress2;
 
   private boolean serviceTypeFlag = false;
   private boolean cityFlag = false;
@@ -266,12 +265,12 @@ public class TripRegisterActivity extends AppCompatActivity {
   private String serviceType = "[{\"name\":\"سرویس\"},{\"name\":\"دراختیار\"},{\"name\":\"بانوان\"}]";
 
   private String serviceCount = "[{\"name\":\"1\"},{\"name\":\"2\"},{\"name\":\"3\"},{\"name\":\"4\"},{\"name\":\"5\"}]";
-
+  View view;
   @Override
   protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
     setContentView(R.layout.activity_trip_register);
-    View view = getWindow().getDecorView();
+     view = getWindow().getDecorView();
     getSupportActionBar().hide();
     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
       Window window = getWindow();
@@ -308,8 +307,10 @@ public class TripRegisterActivity extends AppCompatActivity {
         Log.i(TAG, "afterTextChanged: Hiiiiiiiiiiiii" + editable.toString());
         if (PhoneNumberValidation.isValid(editable.toString())) {
           edtMobile.setText(editable.toString());
+          edtTell.setNextFocusDownId(R.id.edtFamily);
         } else {
           edtMobile.setText("");
+          edtTell.setNextFocusDownId(R.id.edtMobile);
         }
       }
     });
@@ -421,10 +422,12 @@ public class TripRegisterActivity extends AppCompatActivity {
   protected void onDestroy() {
     super.onDestroy();
     unbinder.unbind();
+//    KeyBoardHelper.hideKeyboard();
   }
 
   @Override
   public void onBackPressed() {
+    KeyBoardHelper.hideKeyboard();
     super.onBackPressed();
   }
 }

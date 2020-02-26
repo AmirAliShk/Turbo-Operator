@@ -5,13 +5,18 @@ import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.util.Log;
 import android.view.Gravity;
+import android.view.KeyEvent;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
+import android.view.inputmethod.EditorInfo;
 import android.widget.AdapterView;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
+import android.widget.ViewFlipper;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -19,12 +24,14 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 
+import ir.taxi1880.operatormanagement.OkHttp.RequestHelper;
 import ir.taxi1880.operatormanagement.R;
-import ir.taxi1880.operatormanagement.adapter.AddressAdapter;
+import ir.taxi1880.operatormanagement.adapter.StationAdapter;
+import ir.taxi1880.operatormanagement.app.EndPoints;
 import ir.taxi1880.operatormanagement.app.MyApplication;
 import ir.taxi1880.operatormanagement.helper.KeyBoardHelper;
 import ir.taxi1880.operatormanagement.helper.TypefaceUtil;
-import ir.taxi1880.operatormanagement.model.AddressModel;
+import ir.taxi1880.operatormanagement.model.StationModel;
 
 public class SearchLocationDialog {
 
@@ -36,9 +43,10 @@ public class SearchLocationDialog {
 //    void selectedAddress(boolean b);
   }
 
-  private ArrayList<AddressModel> addressModels;
-  private AddressAdapter addressAdapter;
+  private ArrayList<StationModel> stationModels;
+  private StationAdapter addressAdapter;
   private ListView listPlace;
+  private ViewFlipper vfLocation;
 
   private Listener listener;
   private static Dialog dialog;
@@ -58,28 +66,60 @@ public class SearchLocationDialog {
     this.listener = listener;
 
     listPlace = dialog.findViewById(R.id.listPlace);
+    vfLocation = dialog.findViewById(R.id.vfLocation);
 
-    addressModels = address();
 
-    KeyBoardHelper.showKeyboard(MyApplication.context);
-
-    EditText edtSearchPlace = dialog.findViewById(R.id.edtSearchPlace);
+    EditText edtSearch = dialog.findViewById(R.id.edtSearch);
     TextView txtTitle = dialog.findViewById(R.id.txtTitle);
-    ListView listPlace = dialog.findViewById(R.id.listPlace);
+    ImageView imgSearch = dialog.findViewById(R.id.imgSearch);
 
-    edtSearchPlace.requestFocus();
+    edtSearch.requestFocus();
 
-    edtSearchPlace.setHint(title);
+    edtSearch.setHint(title);
     txtTitle.setText(title);
 
     listPlace.setOnItemClickListener(new AdapterView.OnItemClickListener() {
       @Override
       public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-        listener.description(addressModels.get(position).getAddress());
+        listener.description(stationModels.get(position).getCode());
 //        listener.selectedAddress(true);
         dismiss();
       }
     });
+
+    imgSearch.setOnClickListener(new View.OnClickListener() {
+      @Override
+      public void onClick(View view) {
+        if (edtSearch.getText().toString().isEmpty()) {
+          MyApplication.Toast("لطفا نام منطقه را وارد نمایید", Toast.LENGTH_SHORT);
+          return;
+        }
+        findWay("mashhad", edtSearch.getText().toString());
+      }
+    });
+
+    edtSearch.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+      @Override
+      public boolean onEditorAction(TextView textView, int i, KeyEvent keyEvent) {
+        if (i == EditorInfo.IME_ACTION_NEXT) {
+          findWay("mashhad", edtSearch.getText().toString());
+          Toast.makeText(MyApplication.context, "جست و جوی ایستگاه", Toast.LENGTH_LONG).show();
+          return true;
+        } else if (i == EditorInfo.IME_ACTION_DONE) {
+          findWay("mashhad", edtSearch.getText().toString());
+          Toast.makeText(MyApplication.context, "جست و جوی ایستگاه", Toast.LENGTH_LONG).show();
+          return true;
+        }
+        return false;
+      }
+    });
+    MyApplication.handler.postDelayed(new Runnable() {
+      @Override
+      public void run() {
+        KeyBoardHelper.showKeyboard(MyApplication.context);
+
+      }
+    }, 200);
 
     dialog.show();
 
@@ -97,26 +137,96 @@ public class SearchLocationDialog {
     dialog = null;
   }
 
-  private String city = "[{\"name\":\"مشهد\"},{\"name\":\"نیشابور\"},{\"name\":\"تربت حیدریه\"},{\"name\":\"تربت جام\"},{\"name\":\"گناباد\"}," +
-          "{\"name\":\"کاشمر\"},{\"name\":\"تایباد\"}]";
+  private void findWay(String cityLName, String address) {
+    vfLocation.setDisplayedChild(1);
+    JSONObject params = new JSONObject();
+//    try {
+//      params.put("citylatinname", );
+//      params.put("address", );
+//
+//      Log.i(TAG, "findWay: "+params);
 
-  private ArrayList<AddressModel> address() {
-    addressModels = new ArrayList<>();
-    try {
-      JSONArray arr = new JSONArray(city);
-      for (int i = 0; i < arr.length(); i++) {
-        JSONObject object = arr.getJSONObject(i);
-        AddressModel addressModel = new AddressModel();
-        addressModel.setAddress(object.getString("name"));
-        addressModels.add(addressModel);
-      }
-    } catch (JSONException e) {
-      e.printStackTrace();
-    }
-    addressAdapter = new AddressAdapter(addressModels, MyApplication.context);
-    listPlace.setAdapter(addressAdapter);
-    return addressModels;
+    RequestHelper.builder(EndPoints.FIND_WAY + "/" + cityLName + "/" + address)
+            .params(params)
+            .method(RequestHelper.GET)
+            .listener(onFindWay)
+            .request();
+//
+//    } catch (JSONException e) {
+//      e.printStackTrace();
+//    }
+
   }
+
+  RequestHelper.Callback onFindWay = new RequestHelper.Callback() {
+    @Override
+    public void onResponse(Runnable reCall, Object... args) {
+      MyApplication.handler.post(new Runnable() {
+        @Override
+        public void run() {
+          try {
+            JSONArray arr = new JSONArray(args[0].toString());
+            for (int i = 0; i < arr.length(); i++) {
+              JSONObject object = arr.getJSONObject(i);
+              for (int j = 0; j < object.length(); j++) {
+                JSONObject objWay = object.getJSONObject("way");
+                JSONObject obgStation = object.getJSONObject("station");
+                StationModel stationModel = new StationModel();
+                stationModel.setAddress(objWay.getString("name"));
+                stationModel.setName(obgStation.getString("stationName"));
+                stationModel.setCode(obgStation.getString("stationCode"));
+                stationModel.setStatus(obgStation.getInt("countryside"));
+                stationModels.add(stationModel);
+              }
+            }
+
+            vfLocation.setDisplayedChild(2);
+            addressAdapter = new StationAdapter(stationModels, MyApplication.context);
+            listPlace.setAdapter(addressAdapter);
+
+            if (stationModels.size() == 0) {
+              vfLocation.setDisplayedChild(0);
+            }
+
+          } catch (JSONException e) {
+            e.printStackTrace();
+          }
+        }
+      });
+    }
+
+    @Override
+    public void onFailure(Runnable reCall, Exception e) {
+
+    }
+  };
+
+//  private ArrayList<StationModel> stations() {
+//    stationModels = new ArrayList<>();
+//    try {
+//      JSONArray arr = new JSONArray(city);
+//      for (int i = 0; i < arr.length(); i++) {
+//        JSONObject object = arr.getJSONObject(i);
+//        StationModel stationModel = new StationModel();
+//        stationModel.setAddress(object.getString("address"));
+//        stationModel.setCode(object.getString("stationCode"));
+//        stationModel.setName(object.getString("stationName"));
+//        stationModel.setStatus(object.getInt("status"));
+//        stationModels.add(stationModel);
+//      }
+//      addressAdapter = new StationAdapter(stationModels, MyApplication.context);
+//      listPlace.setAdapter(addressAdapter);
+//
+//      if (stationModels.size() == 0) {
+//        vfLocation.setDisplayedChild(0);
+//      }
+//
+//    } catch (JSONException e) {
+//      e.printStackTrace();
+//    }
+//
+//    return stationModels;
+//  }
 
 
 }

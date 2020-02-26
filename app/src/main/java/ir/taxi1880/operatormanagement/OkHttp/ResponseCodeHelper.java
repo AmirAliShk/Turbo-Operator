@@ -50,7 +50,7 @@ public class ResponseCodeHelper {
             errorDialog.messageText(message);
             errorDialog.cancelable(false);
             errorDialog.closeBtnRunnable("بستن", ()->{
-              MyApplication.currentActivity.onBackPressed();
+//              MyApplication.currentActivity.onBackPressed();
               ErrorDialog.dismiss();
             });
             errorDialog.tryAgainBtnRunnable("تلاش مجدد", () -> runnable.run());

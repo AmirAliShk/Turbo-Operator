@@ -96,7 +96,7 @@ public class CheckEmptyView {
         ViewGroup vg = (ViewGroup) v;
         for (int i = 0; i < vg.getChildCount(); i++) {
           View child = vg.getChildAt(i);
-          checkView(child);
+          setValue(child);
         }
       }
 

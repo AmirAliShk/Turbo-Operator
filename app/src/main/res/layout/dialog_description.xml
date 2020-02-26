@@ -5,6 +5,11 @@
     android:gravity="center"
     android:orientation="vertical">
 
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:fillViewport="false">
+
         <LinearLayout
             android:layout_width="300dp"
             android:background="@drawable/bg_edit_text"
@@ -69,6 +74,8 @@
                             android:gravity="top"
                             android:minHeight="100dp"
                             android:maxLength="40"
+                            android:maxLines="3"
+                            android:minLines="3"
                             android:background="@drawable/bg_strock_corner"
                             android:padding="5dp" />
 
@@ -95,6 +102,8 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:gravity="top"
+                            android:maxLines="3"
+                            android:minLines="3"
                             android:maxLength="50"
                             android:minHeight="100dp"
                             android:background="@drawable/bg_strock_corner"
@@ -127,5 +136,8 @@
             </ScrollView>
 
         </LinearLayout>
+
+    </ScrollView>
+
 
 </LinearLayout>

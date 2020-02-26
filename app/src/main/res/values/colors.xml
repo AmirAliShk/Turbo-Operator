@@ -24,8 +24,10 @@
     <color name="transparent">#00424242</color>
     <color name="colorOrange">#FF9800</color>
     <color name="colorBlue">#2196F3</color>
+    <color name="colorBlueLight">#8DC6F3</color>
     <color name="colorGreen">#4CAF50</color>
     <color name="colorPurple">#673AB7</color>
+    <color name="colorPurpleLight">#D8C9F3</color>
     <color name="colorRed">#D50D0D</color>
 
 

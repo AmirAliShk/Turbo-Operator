@@ -48,6 +48,21 @@ public class DescriptionDialog {
 
         edtDescription.setText(description);
 
+//        InputFilter filter = new InputFilter() {
+//            public CharSequence filter(CharSequence source, int start, int end, Spanned dest, int dstart, int dend) {
+//                boolean temp = false;
+//                for (int i = start; i < end; i++) {
+//                    if (StringHelper.charCheck(source.charAt(i))) {
+//                        temp = true;
+//                    }
+//
+//                }
+//                if (!temp) return "";
+//                return null;
+//            }
+//        };
+//        edtAlwaysDescription.setFilters(new InputFilter[]{filter});
+
         btnSubmit.setOnClickListener(new View.OnClickListener() {
           @Override
           public void onClick(View v) {
