@@ -16,10 +16,10 @@
             android:layout_width="match_parent"
             android:background="@drawable/bg_edit_text"
             android:layout_height="wrap_content"
-            android:minHeight="500dp"
+            android:minHeight="550dp"
             android:layout_gravity="center"
             android:gravity="top"
-            android:layout_margin="20dp"
+            android:layout_margin="15dp"
             android:minWidth="400dp"
             android:orientation="vertical">
 

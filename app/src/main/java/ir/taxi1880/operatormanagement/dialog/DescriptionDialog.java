@@ -78,6 +78,13 @@ public class DescriptionDialog {
 
           }
       });
+        MyApplication.handler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                KeyBoardHelper.showKeyboard(MyApplication.context);
+
+            }
+        }, 200);
 
         dialog.show();
     }

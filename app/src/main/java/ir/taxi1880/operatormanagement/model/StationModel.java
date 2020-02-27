@@ -5,14 +5,14 @@ public class StationModel {
  private String name;
  private String code;
  private String address;
- private int status;
+ private int countrySide;
 
-  public int getStatus() {
-    return status;
+  public int getCountrySide() {
+    return countrySide;
   }
 
-  public void setStatus(int status) {
-    this.status = status;
+  public void setCountrySide(int countrySide) {
+    this.countrySide = countrySide;
   }
 
   public String getName() {

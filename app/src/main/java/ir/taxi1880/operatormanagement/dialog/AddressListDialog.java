@@ -12,10 +12,6 @@ import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.ViewFlipper;
 
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
-
 import java.util.ArrayList;
 
 import ir.taxi1880.operatormanagement.R;
@@ -35,7 +31,6 @@ public class AddressListDialog {
 //    void selectedAddress(boolean b);
   }
 
-  private ArrayList<LastAddressModel> lastAddressModels;
   private LastAddressAdapter lastAddressAdapter;
   private ListView listLastAddress;
   private ViewFlipper vfLastAddress;
@@ -43,7 +38,7 @@ public class AddressListDialog {
   private Listener listener;
   private static Dialog dialog;
 
-  public void show(Listener listener) {
+  public void show(Listener listener,ArrayList<LastAddressModel> lastAddressModels) {
     dialog = new Dialog(MyApplication.currentActivity);
     dialog.getWindow().requestFeature(Window.FEATURE_NO_TITLE);
     dialog.getWindow().getAttributes().windowAnimations = R.style.ExpandAnimation;
@@ -59,8 +54,6 @@ public class AddressListDialog {
 
     listLastAddress = dialog.findViewById(R.id.listLastAddress);
     vfLastAddress=dialog.findViewById(R.id.vfLastAddress);
-
-    lastAddressModels = address();
 
     listLastAddress.setOnItemClickListener(new AdapterView.OnItemClickListener() {
       @Override
@@ -100,30 +93,81 @@ public class AddressListDialog {
           "{\"address\":\"حر17\",\"stationName\":\"وکیل آباداز سیدرضی تا دانشجو-دانشجو فرد تا معلم\",\"stationCode\":\"100\",\"status\":\"1\"}," +
           "{\"address\":\"پیروزی6\",\"stationName\":\"وکیل آباداز سیدرضی تا دانشجو-دانشجو فرد تا معلم\",\"stationCode\":\"10\",\"status\":\"0\"}]";
 
-  private ArrayList<LastAddressModel> address() {
-    lastAddressModels = new ArrayList<>();
-    try {
-      JSONArray arr = new JSONArray(city);
-      for (int i = 0; i < arr.length(); i++) {
-        JSONObject object = arr.getJSONObject(i);
-        LastAddressModel stationModel = new LastAddressModel();
-        stationModel.setAddress(object.getString("address"));
-        stationModel.setCode(object.getString("stationCode"));
-        lastAddressModels.add(stationModel);
-      }
-      lastAddressAdapter = new LastAddressAdapter(lastAddressModels, MyApplication.context);
-      listLastAddress.setAdapter(lastAddressAdapter);
 
-      if (lastAddressModels.size()==0){
-        vfLastAddress.setDisplayedChild(0);
-      }
-
-    } catch (JSONException e) {
-      e.printStackTrace();
-    }
-
-    return lastAddressModels;
-  }
-
+//  private void getPassengerAddress(String phoneNumber) {
+//    RequestHelper.builder(EndPoints.PASSENGER_ADDRESS + "/" + phoneNumber)
+//            .method(RequestHelper.GET)
+//            .listener(getPassengerAddress)
+//            .request();
+//
+//  }
+//
+//  RequestHelper.Callback getPassengerAddress = new RequestHelper.Callback() {
+//    @Override
+//    public void onResponse(Runnable reCall, Object... args) {
+//      MyApplication.handler.post(new Runnable() {
+//        @Override
+//        public void run() {
+//          try {
+//            stationModels=new ArrayList<>();
+//            JSONArray arr = new JSONArray(args[0].toString());
+//            for (int i = 0; i < arr.length(); i++) {
+//              JSONObject object = arr.getJSONObject(i);
+//              JSONObject objWay = object.getJSONObject("way");
+//              JSONObject obgStation = object.getJSONObject("station");
+//              StationModel stationModel = new StationModel();
+//              stationModel.setAddress(objWay.getString("name"));
+//              stationModel.setName(obgStation.getString("stationName"));
+//              stationModel.setCode(obgStation.getString("stationCode"));
+//              stationModel.setCountrySide(obgStation.getInt("countryside"));
+//              stationModels.add(stationModel);
+//            }
+//
+//            vfLocation.setDisplayedChild(2);
+//            addressAdapter = new StationAdapter(stationModels, MyApplication.context);
+//            listPlace.setAdapter(addressAdapter);
+//
+//            if (stationModels.size() == 0) {
+//              vfLocation.setDisplayedChild(0);
+//            }
+//
+//          } catch (JSONException e) {
+//            e.printStackTrace();
+//          }
+//        }
+//      });
+//    }
+//
+//    @Override
+//    public void onFailure(Runnable reCall, Exception e) {
+//
+//    }
+//  };
+//
+//  private ArrayList<LastAddressModel> address() {
+//    lastAddressModels = new ArrayList<>();
+//    try {
+//      JSONArray arr = new JSONArray(city);
+//      for (int i = 0; i < arr.length(); i++) {
+//        JSONObject object = arr.getJSONObject(i);
+//        LastAddressModel stationModel = new LastAddressModel();
+//        stationModel.setAddress(object.getString("address"));
+//        stationModel.setCode(object.getString("stationCode"));
+//        lastAddressModels.add(stationModel);
+//      }
+//      lastAddressAdapter = new LastAddressAdapter(lastAddressModels, MyApplication.context);
+//      listLastAddress.setAdapter(lastAddressAdapter);
+//
+//      if (lastAddressModels.size()==0){
+//        vfLastAddress.setDisplayedChild(0);
+//      }
+//
+//    } catch (JSONException e) {
+//      e.printStackTrace();
+//    }
+//
+//    return lastAddressModels;
+//  }
+//
 
 }

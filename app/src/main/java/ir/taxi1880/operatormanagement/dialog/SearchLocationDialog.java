@@ -30,6 +30,7 @@ import ir.taxi1880.operatormanagement.adapter.StationAdapter;
 import ir.taxi1880.operatormanagement.app.EndPoints;
 import ir.taxi1880.operatormanagement.app.MyApplication;
 import ir.taxi1880.operatormanagement.helper.KeyBoardHelper;
+import ir.taxi1880.operatormanagement.helper.StringHelper;
 import ir.taxi1880.operatormanagement.helper.TypefaceUtil;
 import ir.taxi1880.operatormanagement.model.StationModel;
 
@@ -68,7 +69,6 @@ public class SearchLocationDialog {
     listPlace = dialog.findViewById(R.id.listPlace);
     vfLocation = dialog.findViewById(R.id.vfLocation);
 
-
     EditText edtSearch = dialog.findViewById(R.id.edtSearch);
     TextView txtTitle = dialog.findViewById(R.id.txtTitle);
     ImageView imgSearch = dialog.findViewById(R.id.imgSearch);
@@ -94,7 +94,7 @@ public class SearchLocationDialog {
           MyApplication.Toast("لطفا نام منطقه را وارد نمایید", Toast.LENGTH_SHORT);
           return;
         }
-        findWay("mashhad", edtSearch.getText().toString());
+        findWay("mashhad", StringHelper.toEnglishDigits(edtSearch.getText().toString()));
       }
     });
 
@@ -102,12 +102,18 @@ public class SearchLocationDialog {
       @Override
       public boolean onEditorAction(TextView textView, int i, KeyEvent keyEvent) {
         if (i == EditorInfo.IME_ACTION_NEXT) {
-          findWay("mashhad", edtSearch.getText().toString());
-          Toast.makeText(MyApplication.context, "جست و جوی ایستگاه", Toast.LENGTH_LONG).show();
+          if (edtSearch.getText().toString().isEmpty()) {
+            MyApplication.Toast("لطفا نام منطقه را وارد نمایید", Toast.LENGTH_SHORT);
+            return false;
+          }
+          findWay("mashhad", StringHelper.toEnglishDigits(edtSearch.getText().toString()));
           return true;
         } else if (i == EditorInfo.IME_ACTION_DONE) {
-          findWay("mashhad", edtSearch.getText().toString());
-          Toast.makeText(MyApplication.context, "جست و جوی ایستگاه", Toast.LENGTH_LONG).show();
+          if (edtSearch.getText().toString().isEmpty()) {
+            MyApplication.Toast("لطفا نام منطقه را وارد نمایید", Toast.LENGTH_SHORT);
+            return false;
+          }
+          findWay("mashhad", StringHelper.toEnglishDigits(edtSearch.getText().toString()));
           return true;
         }
         return false;
@@ -147,7 +153,6 @@ public class SearchLocationDialog {
 //      Log.i(TAG, "findWay: "+params);
 
     RequestHelper.builder(EndPoints.FIND_WAY + "/" + cityLName + "/" + address)
-            .params(params)
             .method(RequestHelper.GET)
             .listener(onFindWay)
             .request();
@@ -165,19 +170,18 @@ public class SearchLocationDialog {
         @Override
         public void run() {
           try {
+            stationModels=new ArrayList<>();
             JSONArray arr = new JSONArray(args[0].toString());
             for (int i = 0; i < arr.length(); i++) {
               JSONObject object = arr.getJSONObject(i);
-              for (int j = 0; j < object.length(); j++) {
-                JSONObject objWay = object.getJSONObject("way");
-                JSONObject obgStation = object.getJSONObject("station");
-                StationModel stationModel = new StationModel();
-                stationModel.setAddress(objWay.getString("name"));
-                stationModel.setName(obgStation.getString("stationName"));
-                stationModel.setCode(obgStation.getString("stationCode"));
-                stationModel.setStatus(obgStation.getInt("countryside"));
-                stationModels.add(stationModel);
-              }
+              JSONObject objWay = object.getJSONObject("way");
+              JSONObject obgStation = object.getJSONObject("station");
+              StationModel stationModel = new StationModel();
+              stationModel.setAddress(objWay.getString("name"));
+              stationModel.setName(obgStation.getString("stationName"));
+              stationModel.setCode(obgStation.getString("stationCode"));
+              stationModel.setCountrySide(obgStation.getInt("countryside"));
+              stationModels.add(stationModel);
             }
 
             vfLocation.setDisplayedChild(2);

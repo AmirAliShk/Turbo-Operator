@@ -59,7 +59,7 @@ public class StationAdapter extends BaseAdapter {
       txtAddress.setText(stationModel.getAddress());
       txtStationName.setText(stationModel.getName());
       txtStationCode.setText(stationModel.getCode());
-      if (stationModel.getStatus()==1){
+      if (stationModel.getCountrySide()==1){
         llStation.setBackgroundColor(MyApplication.currentActivity.getResources().getColor(R.color.colorPurpleLight));
       }else {
         llStation.setBackgroundColor(MyApplication.currentActivity.getResources().getColor(R.color.colorWhite));

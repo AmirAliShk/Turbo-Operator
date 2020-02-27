@@ -27,7 +27,7 @@ public class AutoStart extends BroadcastReceiver {
           AvaLog.i("start push service by boot completed");
           ServiceHelper.start(context, AvaService.class);
           break;
-        case "ir.taxi1880.driver.PUSH_SERVICE_DESTROY":
+        case "ir.taxi1880.operatormanagement.PUSH_SERVICE_DESTROY":
           MyApplication.handler.postDelayed(new Runnable() {
             @Override
             public void run() {

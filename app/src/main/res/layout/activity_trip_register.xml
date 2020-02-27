@@ -71,6 +71,32 @@
             android:layout_alignParentLeft="true"
             android:src="@drawable/ic_back" />
 
+        <LinearLayout
+            android:id="@+id/llEndCall"
+            android:layout_width="100dp"
+            android:gravity="right"
+            android:paddingRight="10dp"
+            android:orientation="vertical"
+            android:layout_height="match_parent">
+
+            <TextView
+                android:textColor="@color/colorWhite"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingRight="10dp"
+                android:textAppearance="?android:attr/textAppearanceSmall"
+                android:text="00:58"/>
+
+            <ImageView
+                android:id="@+id/imgEndCall"
+                android:layout_width="?android:attr/actionBarSize"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:padding="8dp"
+                android:src="@drawable/ic_end_call" />
+
+        </LinearLayout>
+
     </RelativeLayout>
 
     <ScrollView
@@ -186,7 +212,6 @@
                         android:layout_weight="0.25"
                         android:padding="5dp"
                         android:id="@+id/llClear"
-
                         android:clickable="true"
                         android:layout_height="wrap_content"
                         android:orientation="vertical">
@@ -272,10 +297,22 @@
                             android:textAppearance="?android:attr/textAppearanceMedium"
                             android:textColor="@color/grayMedium"/>
 
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            style="@style/linearLayout"
+                            android:clickable="true"
+                            android:focusable="true"
+                            android:layout_margin="3dp"
+                            android:elevation="2dp"
+                            android:gravity="center_vertical"
+                            android:orientation="horizontal"
+                            android:layout_height="wrap_content">
+
                         <EditText
                             android:id="@+id/edtMobile"
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
+                            android:layout_weight="1"
                             android:padding="5dp"
                             android:layout_margin="3dp"
                             android:elevation="2dp"
@@ -285,7 +322,25 @@
                             android:textColor="@color/colorBlack"
                             android:inputType="number"
                             android:nextFocusDown="@id/edtFamily"
-                            android:background="@drawable/edit_text_style"/>
+                            android:background="@android:color/transparent"/>
+
+                        <LinearLayout
+                            android:id="@+id/llDownload"
+                            android:layout_width="50dp"
+                            android:layout_height="35dp"
+                            android:background="@drawable/bg_ripple"
+                            android:gravity="left">
+
+                            <ImageView
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                android:layout_margin="5dp"
+                                android:gravity="left|center_vertical"
+                                android:src="@drawable/ic_download" />
+
+                        </LinearLayout>
+
+                        </LinearLayout>
 
                     </LinearLayout>
 
@@ -364,18 +419,18 @@
                             android:textAppearance="?android:attr/textAppearanceMedium"
                             android:textColor="@color/grayMedium"/>
 
-                        <EditText
-                            android:id="@+id/edtFamily"
-                            android:layout_width="match_parent"
-                            android:layout_height="match_parent"
-                            android:padding="5dp"
-                            android:layout_margin="3dp"
-                            android:elevation="2dp"
-                            android:textAppearance="?android:attr/textAppearanceMedium"
-                            android:textColor="@color/colorBlack"
-                            android:singleLine="true"
-                            android:nextFocusDown="@id/edtAddress"
-                            android:background="@drawable/edit_text_style"/>
+                            <EditText
+                                android:id="@+id/edtFamily"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:background="@drawable/edit_text_style"
+                                android:nextFocusDown="@id/edtAddress"
+                                android:padding="5dp"
+                                android:singleLine="true"
+                                android:maxLength="40"
+                                android:textAppearance="?android:attr/textAppearanceMedium"
+                                android:textColor="@color/colorBlack" />
 
                     </LinearLayout>
 

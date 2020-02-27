@@ -14,6 +14,7 @@ import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.Spinner;
+import android.widget.Toast;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -29,7 +30,6 @@ import butterknife.Unbinder;
 import ir.taxi1880.operatormanagement.R;
 import ir.taxi1880.operatormanagement.adapter.SpinnerAdapter;
 import ir.taxi1880.operatormanagement.app.MyApplication;
-import ir.taxi1880.operatormanagement.dialog.AddressListDialog;
 import ir.taxi1880.operatormanagement.dialog.DescriptionDialog;
 import ir.taxi1880.operatormanagement.dialog.GeneralDialog;
 import ir.taxi1880.operatormanagement.dialog.SearchLocationDialog;
@@ -189,12 +189,12 @@ public class TripRegisterActivity extends AppCompatActivity {
 
   @OnClick(R.id.llSearchAddress)
   void onPressSearchAddress() {
-  new AddressListDialog().show(new AddressListDialog.Listener() {
-    @Override
-    public void description(String address) {
-      edtAddress.setText(address);
-    }
-  });
+//  new AddressListDialog().show(new AddressListDialog.Listener() {
+//    @Override
+//    public void description(String address) {
+//      edtAddress.setText(address);
+//    }
+//  });
   }
 
   @OnClick(R.id.btnSubmit)
@@ -250,9 +250,20 @@ public class TripRegisterActivity extends AppCompatActivity {
               public void run() {
                 //TODO check value
                 new CheckEmptyView().setText("empty").setCheck(2).setValue(view);
+                Toast.makeText(MyApplication.context,"dont work currently for now :((",Toast.LENGTH_LONG).show();
               }
             }).secondButton("خیر", null)
     .show();
+  }
+
+  @OnClick(R.id.llDownload)
+  void onPressDownload() {
+    Toast.makeText(MyApplication.context,"Download",Toast.LENGTH_LONG).show();
+  }
+
+  @OnClick(R.id.llEndCall)
+  void onPressEndCall() {
+    Toast.makeText(MyApplication.context,"this item is not visible(this is test)",Toast.LENGTH_LONG).show();
   }
 
   private boolean serviceTypeFlag = false;
