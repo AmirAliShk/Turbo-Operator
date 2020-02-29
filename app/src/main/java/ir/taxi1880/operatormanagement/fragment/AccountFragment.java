@@ -8,6 +8,7 @@ import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
@@ -37,8 +38,20 @@ public class AccountFragment extends Fragment {
   @BindView(R.id.txtOperatorName)
   TextView txtOperatorName;
 
+  @BindView(R.id.txtOperatorCharge)
+  TextView txtOperatorCharge;
+
   @BindView(R.id.edtCardNumber)
   EditText edtCardNumber;
+
+  @BindView(R.id.edtIben)
+  EditText edtIben;
+
+  @BindView(R.id.edtAccountNum)
+  EditText edtAccountNum;
+
+  @BindView(R.id.btnCheckOut)
+  Button btnCheckOut;
 
 
   @Override
@@ -48,6 +61,7 @@ public class AccountFragment extends Fragment {
     TypefaceUtil.overrideFonts(view);
 
     txtOperatorName.setText(MyApplication.prefManager.getOperatorName());
+    txtOperatorCharge.setText("شارژ شما : "+MyApplication.prefManager.getBalance());
 
     edtCardNumber.addTextChangedListener(new TextWatcher() {
       @Override
@@ -96,6 +110,10 @@ public class AccountFragment extends Fragment {
 
       }
     });
+
+    edtAccountNum.setText(MyApplication.prefManager.getAccountNumber());
+    edtCardNumber.setText(MyApplication.prefManager.getCardNumber());
+    edtIben.setText(MyApplication.prefManager.getSheba());
 
 
     return view;

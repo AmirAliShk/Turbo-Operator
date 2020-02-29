@@ -55,6 +55,9 @@ public class AddressListDialog {
     listLastAddress = dialog.findViewById(R.id.listLastAddress);
     vfLastAddress=dialog.findViewById(R.id.vfLastAddress);
 
+    lastAddressAdapter=new LastAddressAdapter(passengerAddressModels,MyApplication.context);
+    listLastAddress.setAdapter(lastAddressAdapter);
+
     listLastAddress.setOnItemClickListener(new AdapterView.OnItemClickListener() {
       @Override
       public void onItemClick(AdapterView<?> parent, View view, int position, long id) {

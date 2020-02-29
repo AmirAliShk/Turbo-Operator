@@ -22,13 +22,15 @@ public class DescriptionDialog {
 
     public interface Listener {
         void description(String description);
+        void fixedDescription(String fixedDescription);
+
     }
 
     private Listener listener;
 
     static Dialog dialog;
 
-    public void show(Listener listener,String description) {
+    public void show(Listener listener,String description,String permanentDesc) {
         dialog = new Dialog(MyApplication.currentActivity);
         dialog.getWindow().requestFeature(Window.FEATURE_NO_TITLE);
         dialog.getWindow().getAttributes().windowAnimations = R.style.ExpandAnimation;
@@ -47,6 +49,7 @@ public class DescriptionDialog {
         Button btnSubmit = dialog.findViewById(R.id.btnSubmit);
 
         edtDescription.setText(description);
+        edtAlwaysDescription.setText(permanentDesc);
 
 //        InputFilter filter = new InputFilter() {
 //            public CharSequence filter(CharSequence source, int start, int end, Spanned dest, int dstart, int dend) {
@@ -67,6 +70,7 @@ public class DescriptionDialog {
           @Override
           public void onClick(View v) {
               String description=edtDescription.getText().toString();
+              String fixedDescription=edtAlwaysDescription.getText().toString();
 
 //              if (description.isEmpty()){
 //                  MyApplication.Toast("حداقل یکی از فیلدهای توضیحات را پر کنید", Toast.LENGTH_SHORT);
@@ -74,6 +78,7 @@ public class DescriptionDialog {
 //              }
 
               listener.description(description);
+              listener.fixedDescription(fixedDescription);
               dismiss();
 
           }

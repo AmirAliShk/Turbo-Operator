@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/colorPrimaryLighter"
+    android:orientation="vertical"
+    tools:context=".fragment.HireDriverFragment">
+
+    <RelativeLayout
+        android:id="@+id/rlActionBar"
+        android:layout_width="match_parent"
+        android:layout_height="?android:attr/actionBarSize"
+        android:layoutDirection="ltr"
+        android:background="#792ca9">
+
+        <ImageView
+            android:id="@+id/imgBack"
+            android:padding="15dp"
+            android:src="@drawable/ic_back"
+            android:layout_width="?android:attr/actionBarSize"
+            android:layout_height="match_parent"/>
+
+        <TextView
+            android:id="@+id/txtConnectionStatus"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:text="استخدام"
+            android:textColor="@color/colorWhite"
+            android:textSize="@dimen/text_header" />
+
+    </RelativeLayout>
+
+    <!-- TODO: Update blank fragment layout -->
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="center"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:text="فرم استخدام راننده" />
+
+</LinearLayout>

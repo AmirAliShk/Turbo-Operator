@@ -39,7 +39,8 @@ public class SearchLocationDialog {
   private static final String TAG = SearchLocationDialog.class.getSimpleName();
 
   public interface Listener {
-    void description(String address);
+    void description(String address, int code);
+//    void onClose(boolean isClose);
 
 //    void selectedAddress(boolean b);
   }
@@ -52,7 +53,7 @@ public class SearchLocationDialog {
   private Listener listener;
   private static Dialog dialog;
 
-  public void show(Listener listener, String title) {
+  public void show(Listener listener, String title,String cityLatin) {
     dialog = new Dialog(MyApplication.currentActivity);
     dialog.getWindow().requestFeature(Window.FEATURE_NO_TITLE);
     dialog.getWindow().getAttributes().windowAnimations = R.style.ExpandAnimation;
@@ -81,7 +82,7 @@ public class SearchLocationDialog {
     listPlace.setOnItemClickListener(new AdapterView.OnItemClickListener() {
       @Override
       public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-        listener.description(stationModels.get(position).getCode());
+        listener.description(stationModels.get(position).getAddress(),stationModels.get(position).getCode());
 //        listener.selectedAddress(true);
         dismiss();
       }
@@ -94,7 +95,7 @@ public class SearchLocationDialog {
           MyApplication.Toast("لطفا نام منطقه را وارد نمایید", Toast.LENGTH_SHORT);
           return;
         }
-        findWay("mashhad", StringHelper.toEnglishDigits(edtSearch.getText().toString()));
+        findWay(cityLatin, StringHelper.toEnglishDigits(edtSearch.getText().toString()));
       }
     });
 
@@ -106,19 +107,20 @@ public class SearchLocationDialog {
             MyApplication.Toast("لطفا نام منطقه را وارد نمایید", Toast.LENGTH_SHORT);
             return false;
           }
-          findWay("mashhad", StringHelper.toEnglishDigits(edtSearch.getText().toString()));
+          findWay(cityLatin, StringHelper.toEnglishDigits(edtSearch.getText().toString()));
           return true;
         } else if (i == EditorInfo.IME_ACTION_DONE) {
           if (edtSearch.getText().toString().isEmpty()) {
             MyApplication.Toast("لطفا نام منطقه را وارد نمایید", Toast.LENGTH_SHORT);
             return false;
           }
-          findWay("mashhad", StringHelper.toEnglishDigits(edtSearch.getText().toString()));
+          findWay(cityLatin, StringHelper.toEnglishDigits(edtSearch.getText().toString()));
           return true;
         }
         return false;
       }
     });
+
     MyApplication.handler.postDelayed(new Runnable() {
       @Override
       public void run() {
@@ -145,21 +147,12 @@ public class SearchLocationDialog {
 
   private void findWay(String cityLName, String address) {
     vfLocation.setDisplayedChild(1);
-    JSONObject params = new JSONObject();
-//    try {
-//      params.put("citylatinname", );
-//      params.put("address", );
-//
-//      Log.i(TAG, "findWay: "+params);
 
     RequestHelper.builder(EndPoints.FIND_WAY + "/" + cityLName + "/" + address)
             .method(RequestHelper.GET)
+            .params(new JSONObject())
             .listener(onFindWay)
             .request();
-//
-//    } catch (JSONException e) {
-//      e.printStackTrace();
-//    }
 
   }
 
@@ -179,7 +172,7 @@ public class SearchLocationDialog {
               StationModel stationModel = new StationModel();
               stationModel.setAddress(objWay.getString("name"));
               stationModel.setName(obgStation.getString("stationName"));
-              stationModel.setCode(obgStation.getString("stationCode"));
+              stationModel.setCode(obgStation.getInt("stationCode"));
               stationModel.setCountrySide(obgStation.getInt("countryside"));
               stationModels.add(stationModel);
             }

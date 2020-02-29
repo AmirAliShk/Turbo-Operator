@@ -41,11 +41,15 @@ import ir.taxi1880.operatormanagement.dialog.AddressListDialog;
 import ir.taxi1880.operatormanagement.dialog.DescriptionDialog;
 import ir.taxi1880.operatormanagement.dialog.GeneralDialog;
 import ir.taxi1880.operatormanagement.dialog.SearchLocationDialog;
-import ir.taxi1880.operatormanagement.helper.CheckEmptyView;
+import ir.taxi1880.operatormanagement.fragment.HireDriverFragment;
+import ir.taxi1880.operatormanagement.helper.FragmentHelper;
 import ir.taxi1880.operatormanagement.helper.KeyBoardHelper;
 import ir.taxi1880.operatormanagement.helper.PhoneNumberValidation;
+import ir.taxi1880.operatormanagement.helper.StringHelper;
 import ir.taxi1880.operatormanagement.helper.TypefaceUtil;
+import ir.taxi1880.operatormanagement.model.CityModel;
 import ir.taxi1880.operatormanagement.model.PassengerAddressModel;
+import ir.taxi1880.operatormanagement.model.TypeServiceModel;
 
 public class TripRegisterActivity extends AppCompatActivity {
 
@@ -53,8 +57,12 @@ public class TripRegisterActivity extends AppCompatActivity {
   Unbinder unbinder;
   //  View view;
   private String cityName;
-  private String ServiceType;
-  private String ServiceCount;
+  private String cityLatinName;
+  private String fixDescription;
+  private int cityCode;
+  private String stationName;
+  private int serviceType;
+  private int serviceCount;
   public static InputMethodManager inputMethodManager;
 
   @OnClick(R.id.imgBack)
@@ -103,20 +111,21 @@ public class TripRegisterActivity extends AppCompatActivity {
   void onOrigin() {
     new SearchLocationDialog().show(new SearchLocationDialog.Listener() {
       @Override
-      public void description(String address) {
-        edtOrigin.setText(address);
+      public void description(String address, int code) {
+        edtOrigin.setText(code + "");
       }
-    }, "جست و جوی مبدا");
+    }, "جست و جوی مبدا", cityLatinName);
   }
 
   @OnClick(R.id.llSearchDestination)
   void onDestination() {
     new SearchLocationDialog().show(new SearchLocationDialog.Listener() {
       @Override
-      public void description(String address) {
-        edtDestination.setText(address);
+      public void description(String address, int code) {
+        edtDestination.setText(code + "");
+        stationName = address;
       }
-    }, "جست و جوی مقصد");
+    }, "جست و جوی مقصد", cityLatinName);
   }
 
   @OnClick(R.id.llCity)
@@ -193,7 +202,12 @@ public class TripRegisterActivity extends AppCompatActivity {
       public void description(String description) {
         edtDescription.setText(description);
       }
-    }, edtDescription.getText().toString());
+
+      @Override
+      public void fixedDescription(String fixedDescription) {
+        fixDescription = fixedDescription;
+      }
+    }, edtDescription.getText().toString(), permanentDesc);
   }
 
   @OnClick(R.id.llSearchAddress)
@@ -202,47 +216,56 @@ public class TripRegisterActivity extends AppCompatActivity {
       MyApplication.Toast("ابتدا شماره موبایل را وارد کنید", Toast.LENGTH_SHORT);
       return;
     }
-    getPassengerAddress(edtMobile.getText().toString());
+    getPassengerAddress(StringHelper.toEnglishDigits(edtMobile.getText().toString()));
   }
 
   @OnClick(R.id.btnSubmit)
   void onPressSubmit() {
-//
-//    if (edtMobile.getText().toString().isEmpty()){
-//      MyApplication.Toast("شماره همراه را وارد کنید", Toast.LENGTH_SHORT);
-//      return;
-//    }
-//    if (txtOrigin.getText().toString().isEmpty()){
-//      MyApplication.Toast(" مبدا را مشخص کنید",Toast.LENGTH_SHORT);
-//      return;
-//    }
-//    if (txtDestination.getText().toString().isEmpty()){
-//      MyApplication.Toast(" مقصد را مشخص کنید",Toast.LENGTH_SHORT);
-//      return;
-//    }
-//    if (edtAddress.getText().toString().isEmpty()){
-//      MyApplication.Toast("آدرس را مشخص کنید",Toast.LENGTH_SHORT);
-//      return;
-//    }
+
+    if (edtMobile.getText().toString().isEmpty()) {
+      MyApplication.Toast("شماره همراه را وارد کنید", Toast.LENGTH_SHORT);
+      return;
+    }
+    if (edtOrigin.getText().toString().isEmpty()) {
+      MyApplication.Toast(" مبدا را مشخص کنید", Toast.LENGTH_SHORT);
+      return;
+    }
+    if (edtDestination.getText().toString().isEmpty()) {
+      MyApplication.Toast(" مقصد را مشخص کنید", Toast.LENGTH_SHORT);
+      return;
+    }
+    if (edtFamily.getText().toString().isEmpty()) {
+      MyApplication.Toast(" نام مسافر را مشخص کنید", Toast.LENGTH_SHORT);
+      return;
+    }
+    if (edtAddress.getText().toString().isEmpty()) {
+      MyApplication.Toast("آدرس را مشخص کنید", Toast.LENGTH_SHORT);
+      return;
+    }
+
+    String tell = edtTell.getText().toString();
+    String mobile = edtMobile.getText().toString();
+    String name = edtFamily.getText().toString();
+    String address = edtAddress.getText().toString();
+    int stationCode = Integer.parseInt(edtOrigin.getText().toString());
+    int destinationStation = Integer.parseInt(edtDestination.getText().toString());
+
     new GeneralDialog()
             .title("ثبت اطلاعات")
             .message("آیا از ثبت اطلاعات اطمینان دارید؟")
             .firstButton("بله", () ->
-                    new GeneralDialog()
-                            .title("ثبت شد")
-                            .message("اطلاعات با موفقیت ثبت شد")
-                            .firstButton("باشه", () -> {
-                              //TODO check value
-//                              new CheckEmptyView().setText("empty").setCheck(2).setValue(view);
-                              KeyBoardHelper.hideKeyboard();
-                            })
-                            .show())
+                    insertService(serviceCount, tell, mobile, cityCode, stationCode, name, address, fixDescription, destinationStation,
+                            stationName, serviceType, 1, "", 1, 1, 1))
             .secondButton("خیر", null)
             .show();
   }
 
   @OnClick(R.id.btnOptions)
   void onPressOptions() {
+
+    FragmentHelper
+            .toFragment(MyApplication.currentActivity, new HireDriverFragment())
+            .replace();
   }
 
   @BindView(R.id.edtDestination)
@@ -256,18 +279,20 @@ public class TripRegisterActivity extends AppCompatActivity {
 
   @OnClick(R.id.llClear)
   void onClear() {
-    new GeneralDialog()
-            .title("هشدار")
-            .message("آیا از پاک کردن اطلاعات اطمینان دارید؟")
-            .firstButton("بله", new Runnable() {
-              @Override
-              public void run() {
-                //TODO check value
-                new CheckEmptyView().setText("empty").setCheck(2).setValue(view);
-                Toast.makeText(MyApplication.context, "dont work currently for now :((", Toast.LENGTH_LONG).show();
-              }
-            }).secondButton("خیر", null)
-            .show();
+    MyApplication.Toast("میدونم صفحه باید خالی بشه ولی به زودی درستش میکنم :))", Toast.LENGTH_SHORT);
+
+//    new GeneralDialog()
+//            .title("هشدار")
+//            .message("آیا از پاک کردن اطلاعات اطمینان دارید؟")
+//            .firstButton("بله", new Runnable() {
+//              @Override
+//              public void run() {
+//                //TODO check value
+//                new CheckEmptyView().setText("empty").setCheck(2).setValue(view);
+//                Toast.makeText(MyApplication.context, "dont work currently for now :((", Toast.LENGTH_LONG).show();
+//              }
+//            }).secondButton("خیر", null)
+//            .show();
   }
 
   @OnClick(R.id.llDownload)
@@ -280,7 +305,7 @@ public class TripRegisterActivity extends AppCompatActivity {
       MyApplication.Toast("شماره تلفن همراه را وارد نمایید", Toast.LENGTH_SHORT);
       return;
     }
-    getPassengerInfo(edtTell.getText().toString(), edtMobile.getText().toString());
+    getPassengerInfo(StringHelper.toEnglishDigits(edtTell.getText().toString()), StringHelper.toEnglishDigits(edtMobile.getText().toString()));
   }
 
   @OnClick(R.id.llEndCall)
@@ -302,16 +327,16 @@ public class TripRegisterActivity extends AppCompatActivity {
     switch (view.getId()) {
       case R.id.rbEnable:
         new GeneralDialog()
-            .title("هشدار")
-            .message("آیا از تغییر وضعیت تست اطمینان دارید؟")
-            .firstButton("بله", new Runnable() {
-              @Override
-              public void run() {
-                rbEnable.setChecked(ischanged);
-              }
-            })
-            .secondButton("خیر",null)
-            .show();
+                .title("هشدار")
+                .message("آیا از تغییر وضعیت تست اطمینان دارید؟")
+                .firstButton("بله", new Runnable() {
+                  @Override
+                  public void run() {
+                    rbEnable.setChecked(ischanged);
+                  }
+                })
+                .secondButton("خیر", null)
+                .show();
 
 //        if (ischanged) {
 //          MyApplication.Toast("rbEnable", Toast.LENGTH_SHORT);
@@ -330,14 +355,13 @@ public class TripRegisterActivity extends AppCompatActivity {
   private boolean serviceTypeFlag = false;
   private boolean cityFlag = false;
   private boolean serviceCountFlag = false;
+  String permanentDesc = "";
 
   private String city = "[{\"name\":\"انتخاب شهر\"},{\"name\":\"مشهد\"},{\"name\":\"نیشابور\"},{\"name\":\"حیدریه\"},{\"name\":\"جام\"},{\"name\":\"گناباد\"}," +
           "{\"name\":\"کاشمر\"},{\"name\":\"تایباد\"}]";
 
-  private String serviceType = "[{\"name\":\"سرویس\"},{\"name\":\"دراختیار\"},{\"name\":\"بانوان\"}]";
-
-  private String serviceCount = "[{\"name\":\"1\"},{\"name\":\"2\"},{\"name\":\"3\"},{\"name\":\"4\"},{\"name\":\"5\"}]";
   View view;
+  private String[] countService = new String[6];
 
   @Override
   protected void onCreate(Bundle savedInstanceState) {
@@ -377,7 +401,7 @@ public class TripRegisterActivity extends AppCompatActivity {
 
       @Override
       public void afterTextChanged(Editable editable) {
-        Log.i(TAG, "afterTextChanged: Hiiiiiiiiiiiii" + editable.toString());
+        Log.i(TAG, "afterTextChanged:" + editable.toString());
         if (PhoneNumberValidation.isValid(editable.toString())) {
           edtMobile.setText(editable.toString());
           edtTell.setNextFocusDownId(R.id.edtFamily);
@@ -388,21 +412,57 @@ public class TripRegisterActivity extends AppCompatActivity {
       }
     });
 
+    edtOrigin.addTextChangedListener(new TextWatcher() {
+      @Override
+      public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+      }
+
+      @Override
+      public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+      }
+
+      @Override
+      public void afterTextChanged(Editable editable) {
+        if ((!editable.toString().equals(""))) {
+          getCheckStation(cityCode, Integer.parseInt(StringHelper.toEnglishDigits(editable.toString())));
+        }
+      }
+    });
+
+    edtDestination.addTextChangedListener(new TextWatcher() {
+      @Override
+      public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+      }
+
+      @Override
+      public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+      }
+
+      @Override
+      public void afterTextChanged(Editable editable) {
+        if ((!editable.toString().equals(""))) {
+          getCheckStation(cityCode, Integer.parseInt(StringHelper.toEnglishDigits(editable.toString())));
+        }
+      }
+    });
+
   }
 
   private void initServiceCountSpinner() {
-    ArrayList<String> serviceCountList = new ArrayList<String>();
     try {
-      JSONArray serviceCountArr = new JSONArray(serviceCount);
-      for (int i = 0; i < serviceCountArr.length(); i++) {
-        JSONObject serviceCountObj = serviceCountArr.getJSONObject(i);
-        serviceCountList.add(serviceCountObj.getString("name"));
+      ArrayList<String> countServices = new ArrayList<>();
+      for (int i = 1; i < countService.length; i++) {
+        countService[i] = i + "";
+        countServices.add(countService[i]);
       }
-      spServiceCount.setAdapter(new SpinnerAdapter(MyApplication.currentActivity, R.layout.item_spinner, serviceCountList));
+
+      spServiceCount.setAdapter(new SpinnerAdapter(MyApplication.currentActivity, R.layout.item_spinner, countServices));
       spServiceCount.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
         @Override
         public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-          ServiceCount = spServiceCount.getSelectedItem().toString();
+          serviceCount = Integer.parseInt(spServiceCount.getSelectedItem().toString());
         }
 
         @Override
@@ -410,17 +470,22 @@ public class TripRegisterActivity extends AppCompatActivity {
         }
       });
 
-    } catch (JSONException e) {
+    } catch (ArrayIndexOutOfBoundsException e) {
       e.printStackTrace();
     }
   }
 
   private void initServiceTypeSpinner() {
+    ArrayList<TypeServiceModel> typeServiceModels = new ArrayList<>();
     ArrayList<String> serviceList = new ArrayList<String>();
     try {
-      JSONArray serviceArr = new JSONArray(serviceType);
+      JSONArray serviceArr = new JSONArray(MyApplication.prefManager.getServiceType());
       for (int i = 0; i < serviceArr.length(); i++) {
         JSONObject serviceObj = serviceArr.getJSONObject(i);
+        TypeServiceModel typeServiceModel = new TypeServiceModel();
+        typeServiceModel.setName(serviceObj.getString("name"));
+        typeServiceModel.setId(serviceObj.getInt("id"));
+        typeServiceModels.add(typeServiceModel);
         serviceList.add(serviceObj.getString("name"));
       }
       spServiceType.setAdapter(new SpinnerAdapter(MyApplication.currentActivity, R.layout.item_spinner, serviceList));
@@ -428,14 +493,7 @@ public class TripRegisterActivity extends AppCompatActivity {
       spServiceType.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
         @Override
         public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-//          if (!serviceTypeFlag) {
-          ServiceType = spServiceType.getSelectedItem().toString();
-//            serviceTypeFlag = true;
-//          } else {
-//            openKeyBoaredAuto();
-//            edtFamily.requestFocus();
-//            spServiceType.clearFocus();
-//          }
+          serviceType = typeServiceModels.get(position).getId();
         }
 
         @Override
@@ -445,29 +503,29 @@ public class TripRegisterActivity extends AppCompatActivity {
     } catch (JSONException e) {
       e.printStackTrace();
     }
-
   }
 
   private void initCitySpinner() {
+    ArrayList<CityModel> cityModels = new ArrayList<>();
     ArrayList<String> cityList = new ArrayList<String>();
     try {
-      JSONArray cityArr = new JSONArray(city);
+      JSONArray cityArr = new JSONArray(MyApplication.prefManager.getCity());
       for (int i = 0; i < cityArr.length(); i++) {
         JSONObject cityObj = cityArr.getJSONObject(i);
-        cityList.add(cityObj.getString("name"));
+        CityModel cityModel = new CityModel();
+        cityModel.setCity(cityObj.getString("cityname"));
+        cityModel.setId(cityObj.getInt("cityid"));
+        cityModel.setCityLatin(cityObj.getString("latinName"));
+        cityModels.add(cityModel);
+        cityList.add(cityObj.getString("cityname"));
       }
       spCity.setAdapter(new SpinnerAdapter(MyApplication.currentActivity, R.layout.item_spinner, cityList));
       spCity.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
         @Override
         public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-//          if (!cityFlag) {
-          cityName = spCity.getSelectedItem().toString();
-//            cityFlag = true;
-//          } else {
-//            openKeyBoaredAuto();
-//            edtTell.requestFocus();
-//            spCity.clearFocus();
-//          }
+          cityName = cityModels.get(position).getCity();
+          cityLatinName = cityModels.get(position).getCityLatin();
+          cityCode = cityModels.get(position).getId();
         }
 
         @Override
@@ -481,64 +539,12 @@ public class TripRegisterActivity extends AppCompatActivity {
 
   ArrayList<PassengerAddressModel> passengerAddressModels;
 
-  private void getPassengerAddress(String phoneNumber) {
-    vfPassengerAddress.setDisplayedChild(1);
-    RequestHelper.builder(EndPoints.PASSENGER_ADDRESS + "/" + phoneNumber)
-            .method(RequestHelper.GET)
-            .listener(getPassengerAddress)
-            .request();
-
-  }
-
-  RequestHelper.Callback getPassengerAddress = new RequestHelper.Callback() {
-    @Override
-    public void onResponse(Runnable reCall, Object... args) {
-      MyApplication.handler.post(new Runnable() {
-        @Override
-        public void run() {
-          try {
-            passengerAddressModels = new ArrayList<>();
-            JSONObject obj = new JSONObject(args[0].toString());
-            boolean success = obj.getBoolean("success");
-            String message = obj.getString("message");
-            JSONArray dataArr = obj.getJSONArray("data");
-            for (int i = 0; i <= dataArr.length(); i++) {
-              JSONObject dataObj = dataArr.getJSONObject(i);
-              PassengerAddressModel addressModel = new PassengerAddressModel();
-              addressModel.setPhoneNumber(dataObj.getString("phoneNumber"));
-              addressModel.setAddress(dataObj.getString("address"));
-              addressModel.setStation(dataObj.getInt("station"));
-              addressModel.setStatus(dataObj.getInt("status"));
-              passengerAddressModels.add(addressModel);
-            }
-            if (passengerAddressModels.size() == 0) {
-              vfPassengerAddress.setDisplayedChild(0);
-            } else {
-              new AddressListDialog().show(new AddressListDialog.Listener() {
-                @Override
-                public void description(String address) {
-                  edtAddress.setText(address);
-                }
-              }, passengerAddressModels);
-            }
-
-          } catch (JSONException e) {
-            e.printStackTrace();
-          }
-        }
-      });
-    }
-
-    @Override
-    public void onFailure(Runnable reCall, Exception e) {
-
-    }
-  };
-
   private void getPassengerInfo(String phoneNumber, String mobile) {
     vfPassengerInfo.setDisplayedChild(1);
+
     RequestHelper.builder(EndPoints.PASSENGER_INFO + "/" + phoneNumber + "/" + mobile)
             .method(RequestHelper.GET)
+            .params(new JSONObject())
             .listener(getPassengerInfo)
             .request();
 
@@ -567,9 +573,12 @@ public class TripRegisterActivity extends AppCompatActivity {
             String address = passengerInfoObj.getString("address");
             String name = passengerInfoObj.getString("name");
             int staion = passengerInfoObj.getInt("staion");
-            String description = passengerInfoObj.getString("description");
+            permanentDesc = passengerInfoObj.getString("description");
             String discountCode = passengerInfoObj.getString("discountCode");
             int discountId = passengerInfoObj.getInt("discountId");
+
+            edtFamily.setText(name);
+            edtAddress.setText(address);
 
           } catch (JSONException e) {
             e.printStackTrace();
@@ -580,14 +589,70 @@ public class TripRegisterActivity extends AppCompatActivity {
 
     @Override
     public void onFailure(Runnable reCall, Exception e) {
-
+      vfPassengerInfo.setDisplayedChild(0);
     }
   };
 
-  private void getCheckStation(int stationCode) {
-    vfPassengerInfo.setDisplayedChild(1);
-    RequestHelper.builder(EndPoints.CHECK_STATION + "/" + stationCode)
+  private void getPassengerAddress(String phoneNumber) {
+    vfPassengerAddress.setDisplayedChild(1);
+    RequestHelper.builder(EndPoints.PASSENGER_ADDRESS + "/" + phoneNumber)
             .method(RequestHelper.GET)
+            .params(new JSONObject())
+            .listener(getPassengerAddress)
+            .request();
+
+  }
+
+  RequestHelper.Callback getPassengerAddress = new RequestHelper.Callback() {
+    @Override
+    public void onResponse(Runnable reCall, Object... args) {
+      MyApplication.handler.post(new Runnable() {
+        @Override
+        public void run() {
+          try {
+            passengerAddressModels = new ArrayList<>();
+            JSONObject obj = new JSONObject(args[0].toString());
+            boolean success = obj.getBoolean("success");
+            String message = obj.getString("message");
+            JSONArray dataArr = obj.getJSONArray("data");
+            for (int i = 0; i < dataArr.length(); i++) {
+              JSONObject dataObj = dataArr.getJSONObject(i);
+              PassengerAddressModel addressModel = new PassengerAddressModel();
+              addressModel.setPhoneNumber(dataObj.getString("phoneNumber"));
+              addressModel.setAddress(dataObj.getString("address"));
+              addressModel.setStation(dataObj.getInt("station"));
+              addressModel.setStatus(dataObj.getInt("status"));
+              passengerAddressModels.add(addressModel);
+            }
+            if (passengerAddressModels.size() == 0) {
+              vfPassengerAddress.setDisplayedChild(0);
+              MyApplication.Toast("هنوزآدرسی ثبت نشده!", Toast.LENGTH_SHORT);
+            } else {
+              new AddressListDialog().show(new AddressListDialog.Listener() {
+                @Override
+                public void description(String address) {
+                  edtAddress.setText(address);
+                }
+              }, passengerAddressModels);
+              vfPassengerAddress.setDisplayedChild(0);
+            }
+
+          } catch (JSONException e) {
+            e.printStackTrace();
+          }
+        }
+      });
+    }
+
+    @Override
+    public void onFailure(Runnable reCall, Exception e) {
+    }
+  };
+
+  private void getCheckStation(int cityCode, int stationCode) {
+    RequestHelper.builder(EndPoints.CHECK_STATION + "/" + cityCode + "/" + stationCode)
+            .method(RequestHelper.GET)
+            .params(new JSONObject())
             .listener(getCheckStation)
             .request();
 
@@ -600,7 +665,6 @@ public class TripRegisterActivity extends AppCompatActivity {
         @Override
         public void run() {
           try {
-            vfPassengerInfo.setDisplayedChild(0);
             JSONObject obj = new JSONObject(args[0].toString());
             boolean success = obj.getBoolean("success");
             String message = obj.getString("message");
@@ -608,6 +672,10 @@ public class TripRegisterActivity extends AppCompatActivity {
             JSONObject dataObj = obj.getJSONObject("data");
             int status = dataObj.getInt("status");
             String descriptionStatus = dataObj.getString("descriptionStatus");
+
+            if (status != 0) {
+              MyApplication.Toast(descriptionStatus, Toast.LENGTH_SHORT);
+            }
 
           } catch (JSONException e) {
             e.printStackTrace();
@@ -623,9 +691,9 @@ public class TripRegisterActivity extends AppCompatActivity {
   };
 
   private void getStationInfo(int cityCode) {
-    vfPassengerInfo.setDisplayedChild(1);
     RequestHelper.builder(EndPoints.STATION_INFO + "/" + cityCode)
             .method(RequestHelper.GET)
+            .params(new JSONObject())
             .listener(getStationInfo)
             .request();
 
@@ -638,7 +706,6 @@ public class TripRegisterActivity extends AppCompatActivity {
         @Override
         public void run() {
           try {
-            vfPassengerInfo.setDisplayedChild(0);
             JSONObject obj = new JSONObject(args[0].toString());
             boolean success = obj.getBoolean("success");
             String message = obj.getString("message");
@@ -654,6 +721,80 @@ public class TripRegisterActivity extends AppCompatActivity {
             long lng = dataObj.getLong("lng");
             int cityCode = dataObj.getInt("cityCode");
             int countrySide = dataObj.getInt("countrySide");
+
+          } catch (JSONException e) {
+            e.printStackTrace();
+          }
+        }
+      });
+    }
+
+    @Override
+    public void onFailure(Runnable reCall, Exception e) {
+
+    }
+  };
+
+  private void insertService(int count, String phoneNumber, String mobile, int cityCode, int stationCode, String callerName,
+                             String address, String fixedComment, int destinationStation, String destination, int typeService,
+                             int classType, String comment, int description, int TrafficPlan, int voipId) {
+    JSONObject params = new JSONObject();
+
+    try {
+      params.put("count", count);
+      params.put("phoneNumber", phoneNumber);
+      params.put("mobile", mobile);
+      params.put("cityCode", cityCode);
+      params.put("stationCode", stationCode);
+      params.put("callerName", callerName);
+      params.put("address", address);
+      params.put("fixedComment", fixedComment);
+      params.put("destinationStation", destinationStation);
+      params.put("destination", destination);
+      params.put("typeService", typeService);
+      params.put("classType", classType);
+      params.put("comment", comment);
+      params.put("description", description);
+      params.put("TrafficPlan", TrafficPlan);
+      params.put("voipId", voipId);
+
+
+      RequestHelper.builder(EndPoints.INSERT)
+              .method(RequestHelper.POST)
+              .params(params)
+              .listener(insertService)
+              .request();
+
+    } catch (JSONException e) {
+      e.printStackTrace();
+    }
+  }
+
+  RequestHelper.Callback insertService = new RequestHelper.Callback() {
+    @Override
+    public void onResponse(Runnable reCall, Object... args) {
+      MyApplication.handler.post(new Runnable() {
+        @Override
+        public void run() {
+          try {
+            JSONObject obj = new JSONObject(args[0].toString());
+            boolean success = obj.getBoolean("success");
+            String message = obj.getString("message");
+
+            if (success) {
+              new GeneralDialog()
+                      .title("ثبت شد")
+                      .message("اطلاعات با موفقیت ثبت شد")
+                      .firstButton("باشه", () -> {
+                        //TODO check value
+//                              new CheckEmptyView().setText("empty").setCheck(2).setValue(view);
+                        MyApplication.Toast("میدونم صفحه باید خالی بشه ولی به زودی درستش میکنم :))", Toast.LENGTH_SHORT);
+                        KeyBoardHelper.hideKeyboard();
+                      })
+                      .show();
+            } else {
+              MyApplication.Toast("ther is a problem", Toast.LENGTH_SHORT);
+            }
 
           } catch (JSONException e) {
             e.printStackTrace();

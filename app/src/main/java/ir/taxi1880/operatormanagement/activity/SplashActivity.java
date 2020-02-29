@@ -128,6 +128,18 @@ public class SplashActivity extends AppCompatActivity {
                     int forceUpdate = object.getInt("forceUpdate");
                     String updateUrl = object.getString("updateUrl");
                     int changePass = object.getInt("changePassword");
+                    int countRequest = object.getInt("countRequest");
+                    int sipNumber = object.getInt("sipNumber");
+                    String sipServer=object.getString("sipServer");
+                    String sipPassword=object.getString("sipPassword");
+                    String sheba=object.getString("sheba");
+                    String cardNumber=object.getString("cardNumber");
+                    String accountNumber=object.getString("accountNumber");
+                    int accessInsertService=object.getInt("accessInsertService");
+                    int balance=object.getInt("balance");
+                    String typeService=object.getString("typeService");
+                    String queue=object.getString("queue");
+                    String city=object.getString("city");
 
                     if (block == 1) {
                         new GeneralDialog()
@@ -158,6 +170,17 @@ public class SplashActivity extends AppCompatActivity {
 
                     MyApplication.prefManager.setCountNotification(object.getInt("countNotification"));
                     MyApplication.prefManager.setCountRequest(object.getInt("countRequest"));
+                    MyApplication.prefManager.setSipServer(sipServer);
+                    MyApplication.prefManager.setSipNumber(sipNumber);
+                    MyApplication.prefManager.setSipPassword(sipPassword);
+                    MyApplication.prefManager.setSheba(sheba);
+                    MyApplication.prefManager.setCardNumber(cardNumber);
+                    MyApplication.prefManager.setAccountNumber(accountNumber);
+                    MyApplication.prefManager.setBalance(balance);
+                    MyApplication.prefManager.setServiceType(typeService);
+                    MyApplication.prefManager.setQueue(queue);
+                    MyApplication.prefManager.setCity(city);
+                    MyApplication.prefManager.setAccessInsertService(accessInsertService);
 
                 } catch (JSONException e) {
                     e.printStackTrace();
@@ -219,7 +242,6 @@ public class SplashActivity extends AppCompatActivity {
             e.printStackTrace();
         }
     }
-
 
     // This thread will periodically check if the Service is ready, and then call onServiceReady
     private class ServiceWaitThread extends Thread {

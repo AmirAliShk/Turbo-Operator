@@ -17,6 +17,7 @@ import butterknife.OnClick;
 import butterknife.Unbinder;
 import ir.taxi1880.operatormanagement.R;
 import ir.taxi1880.operatormanagement.app.MyApplication;
+import ir.taxi1880.operatormanagement.fragment.AccountFragment;
 import ir.taxi1880.operatormanagement.fragment.MessageFragment;
 import ir.taxi1880.operatormanagement.fragment.NotificationFragment;
 import ir.taxi1880.operatormanagement.fragment.ReplacementWaitingFragment;
@@ -84,12 +85,15 @@ public class MainActivity extends AppCompatActivity {
   @BindView(R.id.txtOperatorName)
   TextView txtOperatorName;
 
+  @BindView(R.id.txtOperatorCharge)
+  TextView txtOperatorCharge;
+
   @OnClick(R.id.llProfile)
   void onPressProfile() {
-//
-//    FragmentHelper
-//            .toFragment(MyApplication.currentActivity, new AccountFragment())
-//            .replace();
+
+    FragmentHelper
+            .toFragment(MyApplication.currentActivity, new AccountFragment())
+            .replace();
 
   }
 
@@ -127,6 +131,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     txtOperatorName.setText(MyApplication.prefManager.getOperatorName());
+    txtOperatorCharge.setText("شارژ شما : "+MyApplication.prefManager.getBalance());
 
   }
 

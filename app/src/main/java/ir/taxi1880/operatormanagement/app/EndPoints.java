@@ -18,15 +18,26 @@ public class EndPoints {
           ? "http://turbotaxi.ir"
           : "http://turbotaxi.ir";
 
+  public static final String FIND_WAY_IP = (BuildConfig.DEBUG)
+//          ? "http://172.16.2.210"
+          ? "http://turbotaxi.ir"
+          : "http://turbotaxi.ir";
+
+//  https://www.dropbox.com/s/k4g0xad19eical2/app-debug.apk?dl=0
+//  https://dl.dropboxusercontent.com/s/k4g0xad19eical2/app-debug.apk?dl=1
+//  https://dl.dropboxusercontent.com/s/k4g0xad19eical2/app-debug.apk?dl=1
+
+
 
   public static final String PUSH_ADDRESS = "http://turbotaxi.ir:6060";
 
   public static final String APIPort = (BuildConfig.DEBUG) ? "1881" : "1881";
-//  public static final String TRIP_APIPort = (BuildConfig.DEBUG) ? "1885" : "1885";
   public static final String TRIP_APIPort = (BuildConfig.DEBUG) ? "2323" : "2323";
+  public static final String FIND_WAY_APIPort = (BuildConfig.DEBUG) ? "1885" : "1885";
 
   public static final String WEBSERVICE_PATH = IP + ":" + APIPort + "/api/operator/";
   public static final String TRIP_WEBSERVICE_PATH = TRIP_IP + ":" + TRIP_APIPort + "/api/operator/v2/trip/";
+  public static final String FIND_WAY_WEBSERVICE_PATH = FIND_WAY_IP + ":" + FIND_WAY_APIPort + "/api/";
 
 
   /******************************** Base Api *********************************/
@@ -45,10 +56,11 @@ public class EndPoints {
 
   /******************************** Trip Register Api *********************************/
 
-  public static final String FIND_WAY = TRIP_WEBSERVICE_PATH + "findway";
+  public static final String FIND_WAY = FIND_WAY_WEBSERVICE_PATH + "findway";
   public static final String PASSENGER_INFO = TRIP_WEBSERVICE_PATH + "passengerInfo";
   public static final String PASSENGER_ADDRESS = TRIP_WEBSERVICE_PATH + "passengerAddress";
   public static final String CHECK_STATION = TRIP_WEBSERVICE_PATH + "checkStation";
   public static final String STATION_INFO = TRIP_WEBSERVICE_PATH + "stationInfo";
+  public static final String INSERT = TRIP_WEBSERVICE_PATH + "insert";
 
 }
