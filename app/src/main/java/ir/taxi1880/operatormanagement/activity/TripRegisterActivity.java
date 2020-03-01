@@ -20,6 +20,8 @@ import android.widget.Spinner;
 import android.widget.Toast;
 import android.widget.ViewFlipper;
 
+import com.yuxingxin.library.MultiRadioGroup;
+
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -29,7 +31,6 @@ import java.util.ArrayList;
 import androidx.appcompat.app.AppCompatActivity;
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import butterknife.OnCheckedChanged;
 import butterknife.OnClick;
 import butterknife.Unbinder;
 import ir.taxi1880.operatormanagement.OkHttp.RequestHelper;
@@ -56,11 +57,11 @@ public class TripRegisterActivity extends AppCompatActivity {
   public static final String TAG = TripRegisterActivity.class.getSimpleName();
   Unbinder unbinder;
   //  View view;
-  private String cityName;
-  private String cityLatinName;
-  private String fixDescription;
+  private String cityName="";
+  private String cityLatinName="";
+  private String fixDescription="";
   private int cityCode;
-  private String stationName;
+  private String stationName=" ";
   private int serviceType;
   private int serviceCount;
   public static InputMethodManager inputMethodManager;
@@ -124,6 +125,7 @@ public class TripRegisterActivity extends AppCompatActivity {
       public void description(String address, int code) {
         edtDestination.setText(code + "");
         stationName = address;
+        Log.i(TAG, "description: "+address);
       }
     }, "جست و جوی مقصد", cityLatinName);
   }
@@ -195,6 +197,9 @@ public class TripRegisterActivity extends AppCompatActivity {
   @BindView(R.id.chbAlways)
   CheckBox chbAlways;
 
+  @BindView(R.id.rgCarClass)
+  MultiRadioGroup rgCarClass;
+
   @OnClick(R.id.llDescriptionDetail)
   void onPressLlDescriptionDetail() {
     new DescriptionDialog().show(new DescriptionDialog.Listener() {
@@ -219,9 +224,18 @@ public class TripRegisterActivity extends AppCompatActivity {
     getPassengerAddress(StringHelper.toEnglishDigits(edtMobile.getText().toString()));
   }
 
+  byte carClass = 0;
+  byte traffic = -1;
+  byte defaultClass = -1;
+  byte activateStatus = -1;
+
   @OnClick(R.id.btnSubmit)
   void onPressSubmit() {
 
+    if (edtTell.getText().toString().isEmpty()) {
+      MyApplication.Toast("شماره تلفن را وارد کنید", Toast.LENGTH_SHORT);
+      return;
+    }
     if (edtMobile.getText().toString().isEmpty()) {
       MyApplication.Toast("شماره همراه را وارد کنید", Toast.LENGTH_SHORT);
       return;
@@ -247,15 +261,46 @@ public class TripRegisterActivity extends AppCompatActivity {
     String mobile = edtMobile.getText().toString();
     String name = edtFamily.getText().toString();
     String address = edtAddress.getText().toString();
+    String description = edtDescription.getText().toString();
     int stationCode = Integer.parseInt(edtOrigin.getText().toString());
     int destinationStation = Integer.parseInt(edtDestination.getText().toString());
+
+    if (chbTraffic.isChecked())
+      traffic = 1;
+    else
+      traffic = 0;
+
+    if (chbAlways.isChecked())
+      defaultClass = 1;
+    else
+      defaultClass = 0;
+
+    switch (rgCarClass.getCheckedRadioButtonId()) {
+      case R.id.rbUnknow:
+        carClass = 0;
+        break;
+      case R.id.rbTaxi:
+        carClass = 4;
+        break;
+      case R.id.rbPrivilage:
+        carClass = 2;
+        break;
+      case R.id.rbEconomical:
+        carClass = 1;
+        break;
+      case R.id.rbFormality:
+        carClass = 3;
+        break;
+    }
+
 
     new GeneralDialog()
             .title("ثبت اطلاعات")
             .message("آیا از ثبت اطلاعات اطمینان دارید؟")
             .firstButton("بله", () ->
-                    insertService(serviceCount, tell, mobile, cityCode, stationCode, name, address, fixDescription, destinationStation,
-                            stationName, serviceType, 1, "", 1, 1, 1))
+                    insertService(MyApplication.prefManager.getUserCode(), serviceCount, tell, mobile, cityCode, stationCode,
+                                  name, address, fixDescription, destinationStation,
+                                  stationName, serviceType, carClass, description, 1, traffic, 1, defaultClass))
             .secondButton("خیر", null)
             .show();
   }
@@ -316,41 +361,11 @@ public class TripRegisterActivity extends AppCompatActivity {
   @BindView(R.id.rgStatus)
   RadioGroup rgStatus;
 
-  @BindView(R.id.rbEnable)
-  RadioButton rbEnable;
+  @BindView(R.id.rbActivate)
+  RadioButton rbActivate;
 
-  @BindView(R.id.rbNotEnable)
-  RadioButton rbNotEnable;
-
-  @OnCheckedChanged({R.id.rbEnable, R.id.rbNotEnable})
-  public void onRadioCheck(CompoundButton view, boolean ischanged) {
-    switch (view.getId()) {
-      case R.id.rbEnable:
-        new GeneralDialog()
-                .title("هشدار")
-                .message("آیا از تغییر وضعیت تست اطمینان دارید؟")
-                .firstButton("بله", new Runnable() {
-                  @Override
-                  public void run() {
-                    rbEnable.setChecked(ischanged);
-                  }
-                })
-                .secondButton("خیر", null)
-                .show();
-
-//        if (ischanged) {
-//          MyApplication.Toast("rbEnable", Toast.LENGTH_SHORT);
-//        }
-        break;
-      case R.id.rbNotEnable:
-        if (ischanged) {
-          MyApplication.Toast("rbNotEnable", Toast.LENGTH_SHORT);
-        }
-        break;
-      default:
-        break;
-    }
-  }
+  @BindView(R.id.rbDeActivate)
+  RadioButton rbDeActivate;
 
   private boolean serviceTypeFlag = false;
   private boolean cityFlag = false;
@@ -445,6 +460,28 @@ public class TripRegisterActivity extends AppCompatActivity {
         if ((!editable.toString().equals(""))) {
           getCheckStation(cityCode, Integer.parseInt(StringHelper.toEnglishDigits(editable.toString())));
         }
+      }
+    });
+
+    rgStatus.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
+      @Override
+      public void onCheckedChanged(RadioGroup radioGroup, int i) {
+
+        switch (i) {
+          case R.id.rbActivate:
+            MyApplication.Toast("rbActivate", Toast.LENGTH_SHORT);
+            break;
+          case R.id.rbDeActivate:
+            MyApplication.Toast("rbDeActivate", Toast.LENGTH_SHORT);
+            break;
+        }
+      }
+    });
+
+    rbActivate.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+      @Override
+      public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
+
       }
     });
 
@@ -735,12 +772,13 @@ public class TripRegisterActivity extends AppCompatActivity {
     }
   };
 
-  private void insertService(int count, String phoneNumber, String mobile, int cityCode, int stationCode, String callerName,
+  private void insertService(int userId, int count, String phoneNumber, String mobile, int cityCode, int stationCode, String callerName,
                              String address, String fixedComment, int destinationStation, String destination, int typeService,
-                             int classType, String comment, int description, int TrafficPlan, int voipId) {
+                             int classType, String comment, int description, int TrafficPlan, int voipId, int defaultClass) {
     JSONObject params = new JSONObject();
 
     try {
+      params.put("userId", userId);
       params.put("count", count);
       params.put("phoneNumber", phoneNumber);
       params.put("mobile", mobile);
@@ -757,7 +795,9 @@ public class TripRegisterActivity extends AppCompatActivity {
       params.put("description", description);
       params.put("TrafficPlan", TrafficPlan);
       params.put("voipId", voipId);
+      params.put("defaultClass", defaultClass);
 
+      Log.i(TAG, "insertService: " + params);
 
       RequestHelper.builder(EndPoints.INSERT)
               .method(RequestHelper.POST)

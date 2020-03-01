@@ -62,5 +62,7 @@ public class EndPoints {
   public static final String CHECK_STATION = TRIP_WEBSERVICE_PATH + "checkStation";
   public static final String STATION_INFO = TRIP_WEBSERVICE_PATH + "stationInfo";
   public static final String INSERT = TRIP_WEBSERVICE_PATH + "insert";
+  public static final String ACTIVATE = TRIP_WEBSERVICE_PATH + "activate";
+  public static final String DEACTIVATE = TRIP_WEBSERVICE_PATH + "deActivate";
 
 }
