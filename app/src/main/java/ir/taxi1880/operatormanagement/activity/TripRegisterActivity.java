@@ -57,11 +57,11 @@ public class TripRegisterActivity extends AppCompatActivity {
   public static final String TAG = TripRegisterActivity.class.getSimpleName();
   Unbinder unbinder;
   //  View view;
-  private String cityName="";
-  private String cityLatinName="";
-  private String fixDescription="";
+  private String cityName = "";
+  private String cityLatinName = "";
+  private String fixDescription = "";
   private int cityCode;
-  private String stationName=" ";
+  private String stationName = " ";
   private int serviceType;
   private int serviceCount;
   public static InputMethodManager inputMethodManager;
@@ -125,7 +125,7 @@ public class TripRegisterActivity extends AppCompatActivity {
       public void description(String address, int code) {
         edtDestination.setText(code + "");
         stationName = address;
-        Log.i(TAG, "description: "+address);
+        Log.i(TAG, "description: " + address);
       }
     }, "جست و جوی مقصد", cityLatinName);
   }
@@ -299,8 +299,8 @@ public class TripRegisterActivity extends AppCompatActivity {
             .message("آیا از ثبت اطلاعات اطمینان دارید؟")
             .firstButton("بله", () ->
                     insertService(MyApplication.prefManager.getUserCode(), serviceCount, tell, mobile, cityCode, stationCode,
-                                  name, address, fixDescription, destinationStation,
-                                  stationName, serviceType, carClass, description, 1, traffic, 1, defaultClass))
+                            name, address, fixDescription, destinationStation,
+                            stationName, serviceType, carClass, description, 1, traffic, 1, defaultClass))
             .secondButton("خیر", null)
             .show();
   }
@@ -470,6 +470,7 @@ public class TripRegisterActivity extends AppCompatActivity {
         switch (i) {
           case R.id.rbActivate:
             MyApplication.Toast("rbActivate", Toast.LENGTH_SHORT);
+
             break;
           case R.id.rbDeActivate:
             MyApplication.Toast("rbDeActivate", Toast.LENGTH_SHORT);
@@ -758,6 +759,84 @@ public class TripRegisterActivity extends AppCompatActivity {
             long lng = dataObj.getLong("lng");
             int cityCode = dataObj.getInt("cityCode");
             int countrySide = dataObj.getInt("countrySide");
+
+          } catch (JSONException e) {
+            e.printStackTrace();
+          }
+        }
+      });
+    }
+
+    @Override
+    public void onFailure(Runnable reCall, Exception e) {
+
+    }
+  };
+
+  private void setActivate(int userId, int sipNumber) {
+
+    JSONObject params = new JSONObject();
+    try {
+      params.put("userId", userId);
+      params.put("sipNumber", sipNumber);
+
+      RequestHelper.builder(EndPoints.ACTIVATE)
+              .method(RequestHelper.POST)
+              .params(new JSONObject())
+              .listener(setActivate)
+              .request();
+    } catch (JSONException e) {
+      e.printStackTrace();
+    }
+  }
+
+  RequestHelper.Callback setActivate = new RequestHelper.Callback() {
+    @Override
+    public void onResponse(Runnable reCall, Object... args) {
+      MyApplication.handler.post(new Runnable() {
+        @Override
+        public void run() {
+          try {
+            JSONObject obj = new JSONObject(args[0].toString());
+
+          } catch (JSONException e) {
+            e.printStackTrace();
+          }
+        }
+      });
+    }
+
+    @Override
+    public void onFailure(Runnable reCall, Exception e) {
+
+    }
+  };
+
+  private void setDeActivate(int userId, int sipNumber) {
+
+    JSONObject params = new JSONObject();
+    try {
+      params.put("userId", userId);
+      params.put("sipNumber", sipNumber);
+
+      RequestHelper.builder(EndPoints.DEACTIVATE)
+            .method(RequestHelper.POST)
+            .params(new JSONObject())
+            .listener(setDeActivate)
+            .request();
+    } catch (JSONException e) {
+      e.printStackTrace();
+    }
+  }
+
+  RequestHelper.Callback setDeActivate = new RequestHelper.Callback() {
+    @Override
+    public void onResponse(Runnable reCall, Object... args) {
+      MyApplication.handler.post(new Runnable() {
+        @Override
+        public void run() {
+          try {
+            JSONObject obj = new JSONObject(args[0].toString());
 
           } catch (JSONException e) {
             e.printStackTrace();
