@@ -26,13 +26,11 @@ public class HireDriverFragment extends Fragment {
     MyApplication.currentActivity.onBackPressed();
   }
 
-
   @Override
   public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
     View view= inflater.inflate(R.layout.fragment_hire_driver, container, false);
     unbinder = ButterKnife.bind(this, view);
     TypefaceUtil.overrideFonts(view);
-
 
     return  view;
   }

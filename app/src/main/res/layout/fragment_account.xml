@@ -2,7 +2,9 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:clickable="true"
+    android:layoutDirection="rtl"
     android:orientation="vertical"
     android:background="#EEE9F1"
     tools:context="ir.taxi1880.operatormanagement.fragment.AccountFragment">
@@ -58,8 +60,8 @@
 
                     <de.hdodenhof.circleimageview.CircleImageView
                         android:id="@+id/profile_image"
-                        android:layout_width="70dp"
-                        android:layout_height="70dp"
+                        android:layout_width="60dp"
+                        android:layout_height="60dp"
                         android:background="@drawable/bg_circle"
                         android:src="@drawable/ic_operator_user" />
 
@@ -73,16 +75,45 @@
                         android:textColor="@color/colorWhite"
                         android:textSize="@dimen/text_header" />
 
-                    <TextView
-                        android:id="@+id/txtOperatorCharge"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:gravity="center"
-                        android:padding="5dp"
-                        android:visibility="visible"
-                        android:textColor="@color/colorWhite"
-                        android:textSize="@dimen/text_header" />
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:orientation="horizontal">
 
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:gravity="center"
+                        android:text="شارژ شما : "
+                        android:textColor="@color/colorWhite"
+                        android:textSize="@dimen/text_header"
+                        android:visibility="visible" />
+
+                    <ViewFlipper
+                        android:id="@+id/vfBalance"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center">
+
+<!--                        <com.wang.avi.AVLoadingIndicatorView-->
+<!--                            app:indicatorColor="@color/colorWhite"-->
+<!--                            android:layout_width="wrap_content"-->
+<!--                            android:layout_height="match_parent"-->
+<!--                            android:layout_gravity="center" />-->
+
+                        <TextView
+                            android:id="@+id/txtOperatorCharge"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:gravity="center"
+                            android:visibility="visible"
+                            android:textColor="@color/colorWhite"
+                            android:textSize="@dimen/text_header" />
+
+                    </ViewFlipper>
+
+                </LinearLayout>
 
                 </LinearLayout>
 

@@ -30,7 +30,7 @@ public class DescriptionDialog {
 
     static Dialog dialog;
 
-    public void show(Listener listener,String description,String permanentDesc) {
+    public void show(Listener listener,String description,String normalDescription) {
         dialog = new Dialog(MyApplication.currentActivity);
         dialog.getWindow().requestFeature(Window.FEATURE_NO_TITLE);
         dialog.getWindow().getAttributes().windowAnimations = R.style.ExpandAnimation;
@@ -48,8 +48,8 @@ public class DescriptionDialog {
         EditText edtDescription = dialog.findViewById(R.id.edtDescription);
         Button btnSubmit = dialog.findViewById(R.id.btnSubmit);
 
-        edtDescription.setText(description);
-        edtAlwaysDescription.setText(permanentDesc);
+        edtAlwaysDescription.setText(description);
+        edtDescription.setText(normalDescription);
 
 //        InputFilter filter = new InputFilter() {
 //            public CharSequence filter(CharSequence source, int start, int end, Spanned dest, int dstart, int dend) {

@@ -7,254 +7,264 @@ import android.content.SharedPreferences.Editor;
 
 public class PrefManager {
 
-    // Shared Preferences
-    SharedPreferences pref;
+  // Shared Preferences
+  SharedPreferences pref;
 
-    // Editor for Shared preferences
-    Editor editor;
+  // Editor for Shared preferences
+  Editor editor;
 
-    // Context
-    Context _context;
+  // Context
+  Context _context;
 
-    // Shared pref mode
-    int PRIVATE_MODE = 0;
+  // Shared pref mode
+  int PRIVATE_MODE = 0;
 
-    // Shared preferences file name
-    private static final String PREF_NAME = MyApplication.context.getApplicationInfo().name;
-    private static final String KEY_KEY = "key";
-    private static final String KEY_USER_CODE = "userCode";
-    private static final String KEY_USER_NAME = "userName";
-    private static final String KEY_PASSWORD = "password";
-    private static final String KEY_IS_LOGGED_IN = "isLoggedIn";
-    private static final String KEY_COUNT_NOTIFICATION = "countNotification";
-    private static final String KEY_COUNT_REQUEST = "countRquest";
-    private static final String KEY_OPERATOR_LIST = "operatorList";
-    private static final String KEY_REQUEST_LIST = "requestList";
-    private static final String KEY_SHIFT_LIST = "shiftList";
-    private static final String KEY_OPERATOR_NAME = "operatorName";
-    private static final String KEY_SEND_REQUEST_LIST = "sendRequestList";
-    private static final String SIP_SERVER = "sipServer";
-    private static final String SIP_NUMBER = "sipNumber";
-    private static final String SIP_PASSWORD = "sipPassword";
-    private static final String SHEBA = "sheba";
-    private static final String CARD_NUMBER = "cardNumber";
-    private static final String ACCOUNT_NUMBER = "accountNumber";
-    private static final String BALANCE = "balance";
-    private static final String SERVICE_TYPE = "typeService";
-    private static final String QUEUE = "queue";
-    private static final String CITY = "city";
-    private static final String ACCESS_INSERT_SERVICE = "accessInsertService";
+  // Shared preferences file name
+  private static final String PREF_NAME = MyApplication.context.getApplicationInfo().name;
+  private static final String KEY_KEY = "key";
+  private static final String KEY_USER_CODE = "userCode";
+  private static final String KEY_USER_NAME = "userName";
+  private static final String KEY_PASSWORD = "password";
+  private static final String KEY_IS_LOGGED_IN = "isLoggedIn";
+  private static final String KEY_COUNT_NOTIFICATION = "countNotification";
+  private static final String KEY_COUNT_REQUEST = "countRquest";
+  private static final String KEY_OPERATOR_LIST = "operatorList";
+  private static final String KEY_REQUEST_LIST = "requestList";
+  private static final String KEY_SHIFT_LIST = "shiftList";
+  private static final String KEY_OPERATOR_NAME = "operatorName";
+  private static final String KEY_SEND_REQUEST_LIST = "sendRequestList";
+  private static final String SIP_SERVER = "sipServer";
+  private static final String SIP_NUMBER = "sipNumber";
+  private static final String SIP_PASSWORD = "sipPassword";
+  private static final String SHEBA = "sheba";
+  private static final String CARD_NUMBER = "cardNumber";
+  private static final String ACCOUNT_NUMBER = "accountNumber";
+  private static final String BALANCE = "balance";
+  private static final String SERVICE_TYPE = "typeService";
+  private static final String QUEUE = "queue";
+  private static final String CITY = "city";
+  private static final String ACCESS_INSERT_SERVICE = "accessInsertService";
+  private static final String ACTIVATE_STATUS = "activateStatus";
 
-    public PrefManager(Context context) {
-        this._context = context;
-        pref = _context.getSharedPreferences(PREF_NAME, PRIVATE_MODE);
-        editor = pref.edit();
-    }
+  public PrefManager(Context context) {
+    this._context = context;
+    pref = _context.getSharedPreferences(PREF_NAME, PRIVATE_MODE);
+    editor = pref.edit();
+  }
 
-    public void setKey(String key) {
-        editor.putString(KEY_KEY, key);
-        editor.commit();
-    }
+  public void setKey(String key) {
+    editor.putString(KEY_KEY, key);
+    editor.commit();
+  }
 
-    public String getKey() {
-        return pref.getString(KEY_KEY, "");
-    }
+  public String getKey() {
+    return pref.getString(KEY_KEY, "");
+  }
 
-    public void setUserCode(int userCode) {
-        editor.putInt(KEY_USER_CODE, userCode);
-        editor.commit();
-    }
+  public void setUserCode(int userCode) {
+    editor.putInt(KEY_USER_CODE, userCode);
+    editor.commit();
+  }
 
-    public int getUserCode() {
-        return pref.getInt(KEY_USER_CODE, 0);
-    }
+  public int getUserCode() {
+    return pref.getInt(KEY_USER_CODE, 0);
+  }
 
-    public void setBalance(int balance) {
-        editor.putInt(BALANCE, balance);
-        editor.commit();
-    }
+  public void setActivateStatus(boolean activateStatus) {
+    editor.putBoolean(ACTIVATE_STATUS, activateStatus);
+    editor.commit();
+  }
 
-    public int getBalance() {
-        return pref.getInt(BALANCE, 0);
-    }
+  public boolean getActivateStatus() {
+    return pref.getBoolean(ACTIVATE_STATUS, false);
+  }
 
-    public void setSipNumber(int sipNumber) {
-        editor.putInt(SIP_NUMBER, sipNumber);
-        editor.commit();
-    }
+  public void setBalance(int balance) {
+    editor.putInt(BALANCE, balance);
+    editor.commit();
+  }
 
-    public int getSipNumber() {
-        return pref.getInt(SIP_NUMBER, 0);
-    }
+  public int getBalance() {
+    return pref.getInt(BALANCE, 0);
+  }
 
-    public void setAccessInsertService(int accessInsertService) {
-        editor.putInt(ACCESS_INSERT_SERVICE, accessInsertService);
-        editor.commit();
-    }
+  public void setSipNumber(int sipNumber) {
+    editor.putInt(SIP_NUMBER, sipNumber);
+    editor.commit();
+  }
 
-    public int getAccessInsertService() {
-        return pref.getInt(ACCESS_INSERT_SERVICE, 0);
-    }
+  public int getSipNumber() {
+    return pref.getInt(SIP_NUMBER, 0);
+  }
 
-    public void setSipServer(String sipServer) {
-        editor.putString(SIP_SERVER, sipServer);
-        editor.commit();
-    }
+  public void setAccessInsertService(int accessInsertService) {
+    editor.putInt(ACCESS_INSERT_SERVICE, accessInsertService);
+    editor.commit();
+  }
 
-    public String getSipServer() {
-        return pref.getString(SIP_SERVER, "");
-    }
+  public int getAccessInsertService() {
+    return pref.getInt(ACCESS_INSERT_SERVICE, -1);
+  }
 
-    public void setSipPassword(String sipPassword) {
-        editor.putString(SIP_PASSWORD, sipPassword);
-        editor.commit();
-    }
+  public void setSipServer(String sipServer) {
+    editor.putString(SIP_SERVER, sipServer);
+    editor.commit();
+  }
 
-    public String getSipPassword() {
-        return pref.getString(SIP_PASSWORD, "");
-    }
+  public String getSipServer() {
+    return pref.getString(SIP_SERVER, "");
+  }
 
-    public void setSheba(String sheba) {
-        editor.putString(SHEBA, sheba);
-        editor.commit();
-    }
+  public void setSipPassword(String sipPassword) {
+    editor.putString(SIP_PASSWORD, sipPassword);
+    editor.commit();
+  }
 
-    public String getSheba() {
-        return pref.getString(SHEBA, "");
-    }
+  public String getSipPassword() {
+    return pref.getString(SIP_PASSWORD, "");
+  }
 
-    public void setCardNumber(String cardNumber) {
-        editor.putString(CARD_NUMBER, cardNumber);
-        editor.commit();
-    }
+  public void setSheba(String sheba) {
+    editor.putString(SHEBA, sheba);
+    editor.commit();
+  }
 
-    public String getCardNumber() {
-        return pref.getString(CARD_NUMBER, "");
-    }
+  public String getSheba() {
+    return pref.getString(SHEBA, "");
+  }
 
-    public void setAccountNumber(String accountNumber) {
-        editor.putString(ACCOUNT_NUMBER, accountNumber);
-        editor.commit();
-    }
+  public void setCardNumber(String cardNumber) {
+    editor.putString(CARD_NUMBER, cardNumber);
+    editor.commit();
+  }
 
-    public String getAccountNumber() {
-        return pref.getString(ACCOUNT_NUMBER, "");
-    }
+  public String getCardNumber() {
+    return pref.getString(CARD_NUMBER, "");
+  }
 
-    public void setServiceType(String serviceType) {
-        editor.putString(SERVICE_TYPE, serviceType);
-        editor.commit();
-    }
+  public void setAccountNumber(String accountNumber) {
+    editor.putString(ACCOUNT_NUMBER, accountNumber);
+    editor.commit();
+  }
 
-    public String getServiceType() {
-        return pref.getString(SERVICE_TYPE, "");
-    }
+  public String getAccountNumber() {
+    return pref.getString(ACCOUNT_NUMBER, "");
+  }
 
-    public void setQueue(String queue) {
-        editor.putString(QUEUE, queue);
-        editor.commit();
-    }
+  public void setServiceType(String serviceType) {
+    editor.putString(SERVICE_TYPE, serviceType);
+    editor.commit();
+  }
 
-    public String getQueue() {
-        return pref.getString(QUEUE, "");
-    }
+  public String getServiceType() {
+    return pref.getString(SERVICE_TYPE, "");
+  }
 
-    public void setCity(String city) {
-        editor.putString(CITY, city);
-        editor.commit();
-    }
+  public void setQueue(String queue) {
+    editor.putString(QUEUE, queue);
+    editor.commit();
+  }
 
-    public String getCity() {
-        return pref.getString(CITY, "");
-    }
+  public String getQueue() {
+    return pref.getString(QUEUE, "");
+  }
 
-    public void setPassword(String pass) {
-        editor.putString(KEY_PASSWORD, pass);
-        editor.commit();
-    }
+  public void setCity(String city) {
+    editor.putString(CITY, city);
+    editor.commit();
+  }
 
-    public String getPassword() {
-        return pref.getString(KEY_PASSWORD, "0");
-    }
+  public String getCity() {
+    return pref.getString(CITY, "");
+  }
 
-    public void setUserName(String userName) {
-        editor.putString(KEY_USER_NAME, userName);
-        editor.commit();
-    }
+  public void setPassword(String pass) {
+    editor.putString(KEY_PASSWORD, pass);
+    editor.commit();
+  }
 
-    public String getUserName() {
-        return pref.getString(KEY_USER_NAME, "0");
-    }
+  public String getPassword() {
+    return pref.getString(KEY_PASSWORD, "0");
+  }
 
-    public void isLoggedIn(boolean login) {
-        editor.putBoolean(KEY_IS_LOGGED_IN, login);
-        editor.commit();
-    }
+  public void setUserName(String userName) {
+    editor.putString(KEY_USER_NAME, userName);
+    editor.commit();
+  }
 
-    public boolean getLoggedIn(){
-        return pref.getBoolean(KEY_IS_LOGGED_IN,false);
-    }
+  public String getUserName() {
+    return pref.getString(KEY_USER_NAME, "0");
+  }
 
-    public void setCountNotification(int count) {
-        editor.putInt(KEY_COUNT_NOTIFICATION, count);
-        editor.commit();
-    }
+  public void isLoggedIn(boolean login) {
+    editor.putBoolean(KEY_IS_LOGGED_IN, login);
+    editor.commit();
+  }
 
-    public int getCountNotification() {
-        return pref.getInt(KEY_COUNT_NOTIFICATION, 0);
-    }
+  public boolean getLoggedIn() {
+    return pref.getBoolean(KEY_IS_LOGGED_IN, false);
+  }
 
-    public void setOperatorList(String operatorList){
-        editor.putString(KEY_OPERATOR_LIST,operatorList);
-        editor.commit();
-    }
+  public void setCountNotification(int count) {
+    editor.putInt(KEY_COUNT_NOTIFICATION, count);
+    editor.commit();
+  }
 
-    public String getOperatorList(){
-        return pref.getString(KEY_OPERATOR_LIST,null);
-    }
+  public int getCountNotification() {
+    return pref.getInt(KEY_COUNT_NOTIFICATION, 0);
+  }
 
-    public void setShiftList(String shiftList){
-        editor.putString(KEY_SHIFT_LIST,shiftList);
-        editor.commit();
-    }
+  public void setOperatorList(String operatorList) {
+    editor.putString(KEY_OPERATOR_LIST, operatorList);
+    editor.commit();
+  }
 
-    public String getShiftList(){
-        return pref.getString(KEY_SHIFT_LIST,null);
-    }
+  public String getOperatorList() {
+    return pref.getString(KEY_OPERATOR_LIST, null);
+  }
 
-    public void setOperatorName(String operatorName){
-        editor.putString(KEY_OPERATOR_NAME,operatorName);
-        editor.commit();
-    }
+  public void setShiftList(String shiftList) {
+    editor.putString(KEY_SHIFT_LIST, shiftList);
+    editor.commit();
+  }
 
-    public String getOperatorName(){
-        return pref.getString(KEY_OPERATOR_NAME,null);
-    }
+  public String getShiftList() {
+    return pref.getString(KEY_SHIFT_LIST, null);
+  }
 
-    public void setCountRequest(int count) {
-        editor.putInt(KEY_COUNT_REQUEST, count);
-        editor.commit();
-    }
+  public void setOperatorName(String operatorName) {
+    editor.putString(KEY_OPERATOR_NAME, operatorName);
+    editor.commit();
+  }
 
-    public int getCountRequest() {
-        return pref.getInt(KEY_COUNT_REQUEST, 0);
-    }
+  public String getOperatorName() {
+    return pref.getString(KEY_OPERATOR_NAME, null);
+  }
 
-    public void setRequestList(String requestList){
-        editor.putString(KEY_REQUEST_LIST,requestList);
-        editor.commit();
-    }
+  public void setCountRequest(int count) {
+    editor.putInt(KEY_COUNT_REQUEST, count);
+    editor.commit();
+  }
 
-    public String getRequestList(){
-        return pref.getString(KEY_REQUEST_LIST,null);
-    }
+  public int getCountRequest() {
+    return pref.getInt(KEY_COUNT_REQUEST, 0);
+  }
 
-    public void setSendRequestList(String requestList){
-        editor.putString(KEY_SEND_REQUEST_LIST,requestList);
-        editor.commit();
-    }
+  public void setRequestList(String requestList) {
+    editor.putString(KEY_REQUEST_LIST, requestList);
+    editor.commit();
+  }
 
-    public String getSendRequestList(){
-        return pref.getString(KEY_SEND_REQUEST_LIST,null);
-    }
+  public String getRequestList() {
+    return pref.getString(KEY_REQUEST_LIST, null);
+  }
+
+  public void setSendRequestList(String requestList) {
+    editor.putString(KEY_SEND_REQUEST_LIST, requestList);
+    editor.commit();
+  }
+
+  public String getSendRequestList() {
+    return pref.getString(KEY_SEND_REQUEST_LIST, null);
+  }
 }

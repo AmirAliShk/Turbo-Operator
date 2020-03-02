@@ -26,7 +26,7 @@ public class AddressListDialog {
   private static final String TAG = AddressListDialog.class.getSimpleName();
 
   public interface Listener {
-    void description(String address);
+    void description(String address,int stationCode);
 
 //    void selectedAddress(boolean b);
   }
@@ -61,7 +61,7 @@ public class AddressListDialog {
     listLastAddress.setOnItemClickListener(new AdapterView.OnItemClickListener() {
       @Override
       public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-        listener.description(passengerAddressModels.get(position).getAddress());
+        listener.description(passengerAddressModels.get(position).getAddress(),passengerAddressModels.get(position).getStation());
 //        listener.selectedAddress(true);
         dismiss();
       }

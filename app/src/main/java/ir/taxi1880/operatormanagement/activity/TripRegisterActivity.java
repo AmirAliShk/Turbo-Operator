@@ -39,6 +39,7 @@ import ir.taxi1880.operatormanagement.adapter.SpinnerAdapter;
 import ir.taxi1880.operatormanagement.app.EndPoints;
 import ir.taxi1880.operatormanagement.app.MyApplication;
 import ir.taxi1880.operatormanagement.dialog.AddressListDialog;
+import ir.taxi1880.operatormanagement.dialog.CallDialog;
 import ir.taxi1880.operatormanagement.dialog.DescriptionDialog;
 import ir.taxi1880.operatormanagement.dialog.GeneralDialog;
 import ir.taxi1880.operatormanagement.dialog.SearchLocationDialog;
@@ -59,12 +60,14 @@ public class TripRegisterActivity extends AppCompatActivity {
   //  View view;
   private String cityName = "";
   private String cityLatinName = "";
-  private String fixDescription = "";
+  private String normalDescription = "";
   private int cityCode;
   private String stationName = " ";
+  private int originStationCode = -1;
   private int serviceType;
   private int serviceCount;
   public static InputMethodManager inputMethodManager;
+
 
   @OnClick(R.id.imgBack)
   void onBack() {
@@ -205,14 +208,14 @@ public class TripRegisterActivity extends AppCompatActivity {
     new DescriptionDialog().show(new DescriptionDialog.Listener() {
       @Override
       public void description(String description) {
-        edtDescription.setText(description);
+        normalDescription = description;
       }
 
       @Override
       public void fixedDescription(String fixedDescription) {
-        fixDescription = fixedDescription;
+        edtDescription.setText(fixedDescription);
       }
-    }, edtDescription.getText().toString(), permanentDesc);
+    }, edtDescription.getText().toString(),normalDescription);
   }
 
   @OnClick(R.id.llSearchAddress)
@@ -225,8 +228,8 @@ public class TripRegisterActivity extends AppCompatActivity {
   }
 
   byte carClass = 0;
-  byte traffic = -1;
-  byte defaultClass = -1;
+  byte traffic = 0;
+  byte defaultClass = 0;
   byte activateStatus = -1;
 
   @OnClick(R.id.btnSubmit)
@@ -234,6 +237,7 @@ public class TripRegisterActivity extends AppCompatActivity {
 
     if (edtTell.getText().toString().isEmpty()) {
       MyApplication.Toast("شماره تلفن را وارد کنید", Toast.LENGTH_SHORT);
+      edtTell.requestFocus();
       return;
     }
     if (edtMobile.getText().toString().isEmpty()) {
@@ -256,12 +260,18 @@ public class TripRegisterActivity extends AppCompatActivity {
       MyApplication.Toast("آدرس را مشخص کنید", Toast.LENGTH_SHORT);
       return;
     }
+    String mobile;
+
+    if (edtMobile.getText().toString().startsWith("0")){
+      mobile = edtMobile.getText().toString().substring(1,10);
+    }else {
+      mobile = edtMobile.getText().toString();
+    }
 
     String tell = edtTell.getText().toString();
-    String mobile = edtMobile.getText().toString();
     String name = edtFamily.getText().toString();
     String address = edtAddress.getText().toString();
-    String description = edtDescription.getText().toString();
+    String fixedComment = edtDescription.getText().toString();
     int stationCode = Integer.parseInt(edtOrigin.getText().toString());
     int destinationStation = Integer.parseInt(edtDestination.getText().toString());
 
@@ -293,14 +303,13 @@ public class TripRegisterActivity extends AppCompatActivity {
         break;
     }
 
-
     new GeneralDialog()
             .title("ثبت اطلاعات")
             .message("آیا از ثبت اطلاعات اطمینان دارید؟")
             .firstButton("بله", () ->
                     insertService(MyApplication.prefManager.getUserCode(), serviceCount, tell, mobile, cityCode, stationCode,
-                            name, address, fixDescription, destinationStation,
-                            stationName, serviceType, carClass, description, 1, traffic, 1, defaultClass))
+                            name, address, fixedComment, destinationStation,
+                            stationName, serviceType, carClass, normalDescription, traffic, 1, defaultClass))
             .secondButton("خیر", null)
             .show();
   }
@@ -355,7 +364,7 @@ public class TripRegisterActivity extends AppCompatActivity {
 
   @OnClick(R.id.llEndCall)
   void onPressEndCall() {
-    Toast.makeText(MyApplication.context, "this item is not visible(this is test)", Toast.LENGTH_LONG).show();
+    new CallDialog().show();
   }
 
   @BindView(R.id.rgStatus)
@@ -371,9 +380,6 @@ public class TripRegisterActivity extends AppCompatActivity {
   private boolean cityFlag = false;
   private boolean serviceCountFlag = false;
   String permanentDesc = "";
-
-  private String city = "[{\"name\":\"انتخاب شهر\"},{\"name\":\"مشهد\"},{\"name\":\"نیشابور\"},{\"name\":\"حیدریه\"},{\"name\":\"جام\"},{\"name\":\"گناباد\"}," +
-          "{\"name\":\"کاشمر\"},{\"name\":\"تایباد\"}]";
 
   View view;
   private String[] countService = new String[6];
@@ -472,8 +478,10 @@ public class TripRegisterActivity extends AppCompatActivity {
             MyApplication.Toast("rbActivate", Toast.LENGTH_SHORT);
 
             break;
+
           case R.id.rbDeActivate:
             MyApplication.Toast("rbDeActivate", Toast.LENGTH_SHORT);
+
             break;
         }
       }
@@ -614,9 +622,12 @@ public class TripRegisterActivity extends AppCompatActivity {
             permanentDesc = passengerInfoObj.getString("description");
             String discountCode = passengerInfoObj.getString("discountCode");
             int discountId = passengerInfoObj.getInt("discountId");
+            int carType = passengerInfoObj.getInt("carType");
 
             edtFamily.setText(name);
             edtAddress.setText(address);
+            edtOrigin.setText(staion+"");
+            edtDescription.setText(permanentDesc+"");
 
           } catch (JSONException e) {
             e.printStackTrace();
@@ -668,8 +679,10 @@ public class TripRegisterActivity extends AppCompatActivity {
             } else {
               new AddressListDialog().show(new AddressListDialog.Listener() {
                 @Override
-                public void description(String address) {
+                public void description(String address, int stationCode) {
                   edtAddress.setText(address);
+                  originStationCode = stationCode;
+                  edtOrigin.setText(stationCode+"");
                 }
               }, passengerAddressModels);
               vfPassengerAddress.setDisplayedChild(0);
@@ -798,6 +811,9 @@ public class TripRegisterActivity extends AppCompatActivity {
         public void run() {
           try {
             JSONObject obj = new JSONObject(args[0].toString());
+            boolean success = obj.getBoolean("success");
+            String message = obj.getString("message");
+            JSONObject dataObj = obj.getJSONObject("data");
 
           } catch (JSONException e) {
             e.printStackTrace();
@@ -820,10 +836,10 @@ public class TripRegisterActivity extends AppCompatActivity {
       params.put("sipNumber", sipNumber);
 
       RequestHelper.builder(EndPoints.DEACTIVATE)
-            .method(RequestHelper.POST)
-            .params(new JSONObject())
-            .listener(setDeActivate)
-            .request();
+              .method(RequestHelper.POST)
+              .params(new JSONObject())
+              .listener(setDeActivate)
+              .request();
     } catch (JSONException e) {
       e.printStackTrace();
     }
@@ -837,7 +853,9 @@ public class TripRegisterActivity extends AppCompatActivity {
         public void run() {
           try {
             JSONObject obj = new JSONObject(args[0].toString());
-
+            boolean success = obj.getBoolean("success");
+            String message = obj.getString("message");
+            JSONObject dataObj = obj.getJSONObject("data");
           } catch (JSONException e) {
             e.printStackTrace();
           }
@@ -853,7 +871,7 @@ public class TripRegisterActivity extends AppCompatActivity {
 
   private void insertService(int userId, int count, String phoneNumber, String mobile, int cityCode, int stationCode, String callerName,
                              String address, String fixedComment, int destinationStation, String destination, int typeService,
-                             int classType, String comment, int description, int TrafficPlan, int voipId, int defaultClass) {
+                             int classType, String description, int TrafficPlan, int voipId, int defaultClass) {
     JSONObject params = new JSONObject();
 
     try {
@@ -870,7 +888,6 @@ public class TripRegisterActivity extends AppCompatActivity {
       params.put("destination", destination);
       params.put("typeService", typeService);
       params.put("classType", classType);
-      params.put("comment", comment);
       params.put("description", description);
       params.put("TrafficPlan", TrafficPlan);
       params.put("voipId", voipId);
@@ -909,10 +926,29 @@ public class TripRegisterActivity extends AppCompatActivity {
 //                              new CheckEmptyView().setText("empty").setCheck(2).setValue(view);
                         MyApplication.Toast("میدونم صفحه باید خالی بشه ولی به زودی درستش میکنم :))", Toast.LENGTH_SHORT);
                         KeyBoardHelper.hideKeyboard();
+                        MyApplication.currentActivity.onBackPressed();
                       })
                       .show();
             } else {
-              MyApplication.Toast("ther is a problem", Toast.LENGTH_SHORT);
+              new GeneralDialog()
+                      .title("خطا")
+                      .message(message)
+                      .firstButton("تلاش مجدد", () -> {
+
+                        String tell = edtTell.getText().toString();
+                        String mobile = edtMobile.getText().toString();
+                        String name = edtFamily.getText().toString();
+                        String address = edtAddress.getText().toString();
+                        String fixedComment = edtDescription.getText().toString();
+                        int stationCode = Integer.parseInt(edtOrigin.getText().toString());
+                        int destinationStation = Integer.parseInt(edtDestination.getText().toString());
+
+                        insertService(MyApplication.prefManager.getUserCode(), serviceCount, tell, mobile, cityCode, stationCode,
+                                name, address, fixedComment, destinationStation,
+                                stationName, serviceType, carClass, normalDescription, traffic, 1, defaultClass);
+                      })
+                      .secondButton("بستن",null)
+                      .show();
             }
 
           } catch (JSONException e) {

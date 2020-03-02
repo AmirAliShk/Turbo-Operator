@@ -15,6 +15,9 @@ public class EndPoints {
 
   public static final String TRIP_IP = (BuildConfig.DEBUG)
 //          ? "http://172.16.2.210"
+//          ? "http://172.16.2.201"
+//          ? "http://172.16.2.10"
+//          ? "http://172.16.2.203"
           ? "http://turbotaxi.ir"
           : "http://turbotaxi.ir";
 
@@ -23,22 +26,17 @@ public class EndPoints {
           ? "http://turbotaxi.ir"
           : "http://turbotaxi.ir";
 
-//  https://www.dropbox.com/s/k4g0xad19eical2/app-debug.apk?dl=0
-//  https://dl.dropboxusercontent.com/s/k4g0xad19eical2/app-debug.apk?dl=1
-//  https://dl.dropboxusercontent.com/s/k4g0xad19eical2/app-debug.apk?dl=1
-
-
-
-  public static final String PUSH_ADDRESS = "http://turbotaxi.ir:6060";
-
   public static final String APIPort = (BuildConfig.DEBUG) ? "1881" : "1881";
+//  public static final String TRIP_APIPort = (BuildConfig.DEBUG) ? "1881" : "1881";
   public static final String TRIP_APIPort = (BuildConfig.DEBUG) ? "2323" : "2323";
   public static final String FIND_WAY_APIPort = (BuildConfig.DEBUG) ? "1885" : "1885";
 
   public static final String WEBSERVICE_PATH = IP + ":" + APIPort + "/api/operator/";
   public static final String TRIP_WEBSERVICE_PATH = TRIP_IP + ":" + TRIP_APIPort + "/api/operator/v2/trip/";
   public static final String FIND_WAY_WEBSERVICE_PATH = FIND_WAY_IP + ":" + FIND_WAY_APIPort + "/api/";
+  public static final String ACCOUNT_WEBSERVICE_PATH = TRIP_IP + ":" + TRIP_APIPort + "/api/operator/v2/";
 
+  public static final String PUSH_ADDRESS = "http://turbotaxi.ir:6060";
 
   /******************************** Base Api *********************************/
   public static final String GET_APP_INFO = WEBSERVICE_PATH + "getAppInfo";
@@ -57,6 +55,7 @@ public class EndPoints {
   /******************************** Trip Register Api *********************************/
 
   public static final String FIND_WAY = FIND_WAY_WEBSERVICE_PATH + "findway";
+
   public static final String PASSENGER_INFO = TRIP_WEBSERVICE_PATH + "passengerInfo";
   public static final String PASSENGER_ADDRESS = TRIP_WEBSERVICE_PATH + "passengerAddress";
   public static final String CHECK_STATION = TRIP_WEBSERVICE_PATH + "checkStation";
@@ -64,5 +63,11 @@ public class EndPoints {
   public static final String INSERT = TRIP_WEBSERVICE_PATH + "insert";
   public static final String ACTIVATE = TRIP_WEBSERVICE_PATH + "activate";
   public static final String DEACTIVATE = TRIP_WEBSERVICE_PATH + "deActivate";
+
+  /******************************** Account Api *********************************/
+
+  public static final String BALANCE = ACCOUNT_WEBSERVICE_PATH + "balance";
+  public static final String UPDATE_PROFILE = ACCOUNT_WEBSERVICE_PATH + "updateProfile";
+  public static final String PAYMENT = ACCOUNT_WEBSERVICE_PATH + "payment";
 
 }

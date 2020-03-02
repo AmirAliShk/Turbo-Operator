@@ -11,13 +11,21 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.ViewFlipper;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import androidx.fragment.app.Fragment;
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 import butterknife.Unbinder;
+import ir.taxi1880.operatormanagement.OkHttp.RequestHelper;
 import ir.taxi1880.operatormanagement.R;
+import ir.taxi1880.operatormanagement.app.EndPoints;
 import ir.taxi1880.operatormanagement.app.MyApplication;
+import ir.taxi1880.operatormanagement.dialog.GeneralDialog;
 import ir.taxi1880.operatormanagement.helper.TypefaceUtil;
 
 /**
@@ -50,9 +58,21 @@ public class AccountFragment extends Fragment {
   @BindView(R.id.edtAccountNum)
   EditText edtAccountNum;
 
+  @OnClick(R.id.btnCheckOut)
+  void OnCheckOut(){
+    new GeneralDialog()
+            .title("هشدار")
+            .message("آیا از درخواست تسویه حساب خود اطمینان دارید؟")
+            .firstButton("بله مطمئنم", () -> payment(MyApplication.prefManager.getUserCode()))
+            .secondButton("پشیمون شدم",null)
+            .show();
+  }
+
   @BindView(R.id.btnCheckOut)
   Button btnCheckOut;
 
+  @BindView(R.id.vfBalance)
+  ViewFlipper vfBalance;
 
   @Override
   public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -60,8 +80,9 @@ public class AccountFragment extends Fragment {
     unbinder = ButterKnife.bind(this, view);
     TypefaceUtil.overrideFonts(view);
 
+    getBalance(MyApplication.prefManager.getUserCode());
+
     txtOperatorName.setText(MyApplication.prefManager.getOperatorName());
-    txtOperatorCharge.setText("شارژ شما : "+MyApplication.prefManager.getBalance());
 
     edtCardNumber.addTextChangedListener(new TextWatcher() {
       @Override
@@ -115,9 +136,138 @@ public class AccountFragment extends Fragment {
     edtCardNumber.setText(MyApplication.prefManager.getCardNumber());
     edtIben.setText(MyApplication.prefManager.getSheba());
 
-
     return view;
   }
+
+  private void getBalance(int userId) {
+    vfBalance.setDisplayedChild(0);
+
+    RequestHelper.builder(EndPoints.BALANCE + "/" + userId)
+            .method(RequestHelper.GET)
+            .params(new JSONObject())
+            .listener(getBalance)
+            .request();
+
+  }
+
+  RequestHelper.Callback getBalance = new RequestHelper.Callback() {
+    @Override
+    public void onResponse(Runnable reCall, Object... args) {
+      MyApplication.handler.post(new Runnable() {
+        @Override
+        public void run() {
+          try {
+            vfBalance.setDisplayedChild(1);
+            JSONObject obj = new JSONObject(args[0].toString());
+            boolean success=obj.getBoolean("success");
+            String message=obj.getString("message");
+            JSONObject dataObj=obj.getJSONObject("data");
+            int accountBalance=dataObj.getInt("accountBalance");
+
+            txtOperatorCharge.setText(accountBalance+"");
+
+          } catch (JSONException e) {
+            e.printStackTrace();
+          }
+        }
+      });
+    }
+
+    @Override
+    public void onFailure(Runnable reCall, Exception e) {
+//      vfBalance.setDisplayedChild(1);
+    }
+  };
+
+  private void UpdateProfile(int userId) {
+
+    RequestHelper.builder(EndPoints.UPDATE_PROFILE + "/" + userId)
+            .method(RequestHelper.GET)
+            .params(new JSONObject())
+            .listener(UpdateProfile)
+            .request();
+
+  }
+
+  RequestHelper.Callback UpdateProfile = new RequestHelper.Callback() {
+    @Override
+    public void onResponse(Runnable reCall, Object... args) {
+      MyApplication.handler.post(new Runnable() {
+        @Override
+        public void run() {
+          try {
+            JSONObject obj = new JSONObject(args[0].toString());
+
+
+          } catch (JSONException e) {
+            e.printStackTrace();
+          }
+        }
+      });
+    }
+
+    @Override
+    public void onFailure(Runnable reCall, Exception e) {
+    }
+  };
+
+  private void payment(int userId) {
+
+    JSONObject params=new JSONObject();
+
+    try {
+      params.put("userId",userId);
+
+      RequestHelper.builder(EndPoints.PAYMENT)
+              .method(RequestHelper.POST)
+              .params(params)
+              .listener(Payment)
+              .request();
+
+    } catch (JSONException e) {
+      e.printStackTrace();
+    }
+  }
+
+  RequestHelper.Callback Payment = new RequestHelper.Callback() {
+    @Override
+    public void onResponse(Runnable reCall, Object... args) {
+      MyApplication.handler.post(new Runnable() {
+        @Override
+        public void run() {
+          try {
+            JSONObject obj = new JSONObject(args[0].toString());
+            boolean success=obj.getBoolean("success");
+            String message=obj.getString("message");
+            JSONObject dataObj=obj.getJSONObject("data");
+            boolean status=dataObj.getBoolean("status");
+
+            if (success){
+              new GeneralDialog()
+                      .title("ارسال شد")
+                      .message("درخواست شما با موفقیت ارسال شد")
+                      .firstButton("باشه",null)
+                      .show();
+            }else {
+              new GeneralDialog()
+                      .title("خطا")
+                      .message(message)
+                      .firstButton("تلاش مجدد", () -> payment(MyApplication.prefManager.getUserCode()))
+                      .secondButton("بعدا امتحان میکنم",null)
+                      .show();
+            }
+
+          } catch (JSONException e) {
+            e.printStackTrace();
+          }
+        }
+      });
+    }
+
+    @Override
+    public void onFailure(Runnable reCall, Exception e) {
+    }
+  };
 
   @Override
   public void onDestroy() {
