@@ -366,7 +366,8 @@ public class TripRegisterActivity extends AppCompatActivity {
 
   @OnClick(R.id.llEndCall)
   void onPressEndCall() {
-    Toast.makeText(MyApplication.context, "this item is not visible(this is test)", Toast.LENGTH_LONG).show();
+
+    new CallDialog().show();
     Call call = LinphoneService.getCore().getCurrentCall();
     call.terminate();
   }
