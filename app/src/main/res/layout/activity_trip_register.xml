@@ -28,13 +28,13 @@
 
                 <RadioGroup
                     android:id="@+id/rgStatus"
+                    android:background="@drawable/bg_activate_status"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:background="@drawable/bg_button_purple"
                     android:orientation="horizontal">
 
                     <RadioButton
-                        android:id="@+id/rbEnable"
+                        android:id="@+id/rbActivate"
                         android:layout_width="0dp"
                         android:layout_weight="1"
                         android:layout_height="match_parent"
@@ -48,7 +48,7 @@
                         android:button="@null" />
 
                     <RadioButton
-                        android:id="@+id/rbNotEnable"
+                        android:id="@+id/rbDeActivate"
                         android:layout_width="0dp"
                         android:layout_weight="1"
                         android:gravity="center"
@@ -858,6 +858,7 @@
                             android:textColor="@color/grayMedium" />
 
                         <com.yuxingxin.library.MultiRadioGroup
+                            android:id="@+id/rgCarClass"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_margin="3dp"
@@ -876,6 +877,7 @@
                                 android:orientation="horizontal">
 
                                 <RadioButton
+                                    android:id="@+id/rbUnknow"
                                     android:layout_width="0dp"
                                     android:layout_weight="1"
                                     android:checked="true"
@@ -890,12 +892,13 @@
                                     android:layout_weight="0.25"/>
 
                                 <RadioButton
+                                    android:id="@+id/rbTaxi"
                                     android:layout_width="0dp"
-                                    android:layout_weight="1"
-                                    android:textAppearance="?android:attr/textAppearanceSmall"
                                     android:layout_height="wrap_content"
+                                    android:layout_weight="1"
                                     android:buttonTint="@color/colorPrimaryDark"
-                                    android:text="تاکسی"/>
+                                    android:text="تاکسی"
+                                    android:textAppearance="?android:attr/textAppearanceSmall" />
 
                                 <ImageView
                                     android:layout_width="0dp"
@@ -903,6 +906,7 @@
                                     android:layout_weight="0.25"/>
 
                                 <RadioButton
+                                    android:id="@+id/rbPrivilage"
                                     android:layout_width="0dp"
                                     android:layout_weight="1"
                                     android:textAppearance="?android:attr/textAppearanceSmall"
@@ -926,6 +930,7 @@
                                 android:orientation="horizontal">
 
                                 <RadioButton
+                                    android:id="@+id/rbEconomical"
                                     android:layout_width="0dp"
                                     android:layout_height="wrap_content"
                                     android:layout_weight="1"
@@ -939,6 +944,7 @@
                                     android:layout_weight="0.25"/>
 
                                 <RadioButton
+                                    android:id="@+id/rbFormality"
                                     android:layout_width="0dp"
                                     android:layout_weight="1"
                                     android:layout_height="wrap_content"

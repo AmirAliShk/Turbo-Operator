@@ -33,6 +33,17 @@ public class PrefManager {
     private static final String KEY_SHIFT_LIST = "shiftList";
     private static final String KEY_OPERATOR_NAME = "operatorName";
     private static final String KEY_SEND_REQUEST_LIST = "sendRequestList";
+    private static final String SIP_SERVER = "sipServer";
+    private static final String SIP_NUMBER = "sipNumber";
+    private static final String SIP_PASSWORD = "sipPassword";
+    private static final String SHEBA = "sheba";
+    private static final String CARD_NUMBER = "cardNumber";
+    private static final String ACCOUNT_NUMBER = "accountNumber";
+    private static final String BALANCE = "balance";
+    private static final String SERVICE_TYPE = "typeService";
+    private static final String QUEUE = "queue";
+    private static final String CITY = "city";
+    private static final String ACCESS_INSERT_SERVICE = "accessInsertService";
 
     public PrefManager(Context context) {
         this._context = context;
@@ -56,6 +67,105 @@ public class PrefManager {
 
     public int getUserCode() {
         return pref.getInt(KEY_USER_CODE, 0);
+    }
+
+    public void setBalance(int balance) {
+        editor.putInt(BALANCE, balance);
+        editor.commit();
+    }
+
+    public int getBalance() {
+        return pref.getInt(BALANCE, 0);
+    }
+
+    public void setSipNumber(int sipNumber) {
+        editor.putInt(SIP_NUMBER, sipNumber);
+        editor.commit();
+    }
+
+    public int getSipNumber() {
+        return pref.getInt(SIP_NUMBER, 0);
+    }
+
+    public void setAccessInsertService(int accessInsertService) {
+        editor.putInt(ACCESS_INSERT_SERVICE, accessInsertService);
+        editor.commit();
+    }
+
+    public int getAccessInsertService() {
+        return pref.getInt(ACCESS_INSERT_SERVICE, 0);
+    }
+
+    public void setSipServer(String sipServer) {
+        editor.putString(SIP_SERVER, sipServer);
+        editor.commit();
+    }
+
+    public String getSipServer() {
+        return pref.getString(SIP_SERVER, "");
+    }
+
+    public void setSipPassword(String sipPassword) {
+        editor.putString(SIP_PASSWORD, sipPassword);
+        editor.commit();
+    }
+
+    public String getSipPassword() {
+        return pref.getString(SIP_PASSWORD, "");
+    }
+
+    public void setSheba(String sheba) {
+        editor.putString(SHEBA, sheba);
+        editor.commit();
+    }
+
+    public String getSheba() {
+        return pref.getString(SHEBA, "");
+    }
+
+    public void setCardNumber(String cardNumber) {
+        editor.putString(CARD_NUMBER, cardNumber);
+        editor.commit();
+    }
+
+    public String getCardNumber() {
+        return pref.getString(CARD_NUMBER, "");
+    }
+
+    public void setAccountNumber(String accountNumber) {
+        editor.putString(ACCOUNT_NUMBER, accountNumber);
+        editor.commit();
+    }
+
+    public String getAccountNumber() {
+        return pref.getString(ACCOUNT_NUMBER, "");
+    }
+
+    public void setServiceType(String serviceType) {
+        editor.putString(SERVICE_TYPE, serviceType);
+        editor.commit();
+    }
+
+    public String getServiceType() {
+        return pref.getString(SERVICE_TYPE, "");
+    }
+
+    public void setQueue(String queue) {
+        editor.putString(QUEUE, queue);
+        editor.commit();
+    }
+
+    public String getQueue() {
+        return pref.getString(QUEUE, "");
+    }
+
+    public void setCity(String city) {
+        editor.putString(CITY, city);
+        editor.commit();
+    }
+
+    public String getCity() {
+        return pref.getString(CITY, "");
     }
 
     public void setPassword(String pass) {

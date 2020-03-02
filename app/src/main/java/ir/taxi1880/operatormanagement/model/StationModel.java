@@ -3,7 +3,7 @@ package ir.taxi1880.operatormanagement.model;
 public class StationModel {
 
  private String name;
- private String code;
+ private int code;
  private String address;
  private int countrySide;
 
@@ -23,11 +23,11 @@ public class StationModel {
     this.name = name;
   }
 
-  public String getCode() {
+  public int getCode() {
     return code;
   }
 
-  public void setCode(String code) {
+  public void setCode(int code) {
     this.code = code;
   }
 

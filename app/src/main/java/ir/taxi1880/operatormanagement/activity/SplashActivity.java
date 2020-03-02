@@ -1,7 +1,9 @@
 package ir.taxi1880.operatormanagement.activity;
 
+import android.Manifest;
 import android.annotation.SuppressLint;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
@@ -17,7 +19,10 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
@@ -34,223 +39,278 @@ import ir.taxi1880.operatormanagement.services.LinphoneService;
 
 public class SplashActivity extends AppCompatActivity {
 
-    //    @BindView(R.id.splashAvl)
+  //    @BindView(R.id.splashAvl)
 //    AVLoadingIndicatorView splashAvl;
-    boolean doubleBackToExitPressedOnce = false;
-    Unbinder unbinder;
-    @BindView(R.id.txtVersion)
-    TextView txtVersion;
+  boolean doubleBackToExitPressedOnce = false;
+  Unbinder unbinder;
+  @BindView(R.id.txtVersion)
+  TextView txtVersion;
 
-    @SuppressLint("SetTextI18n")
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_splash);
-        View view = getWindow().getDecorView();
-        getSupportActionBar().hide();
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            Window window = getWindow();
-            window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
-            window.setNavigationBarColor(getResources().getColor(R.color.colorPrimaryDark));
-            window.setStatusBarColor(getResources().getColor(R.color.colorPrimaryDark));
-            window.addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
-        }
-        unbinder = ButterKnife.bind(this, view);
-        TypefaceUtil.overrideFonts(view);
-
-        txtVersion.setText("نسخه " + new AppVersionHelper(MyApplication.context).getVerionName() + "");
-        MyApplication.handler.postDelayed(() -> {
-            getAppInfo(new AppVersionHelper(MyApplication.context).getVerionCode(), MyApplication.prefManager.getUserCode(), MyApplication.prefManager.getUserName(), MyApplication.prefManager.getPassword());
-        }, 1500);
-
+  @SuppressLint("SetTextI18n")
+  @Override
+  protected void onCreate(Bundle savedInstanceState) {
+    super.onCreate(savedInstanceState);
+    setContentView(R.layout.activity_splash);
+    View view = getWindow().getDecorView();
+    getSupportActionBar().hide();
+    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+      Window window = getWindow();
+      window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
+      window.setNavigationBarColor(getResources().getColor(R.color.colorPrimaryDark));
+      window.setStatusBarColor(getResources().getColor(R.color.colorPrimaryDark));
+      window.addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
     }
+    unbinder = ButterKnife.bind(this, view);
+    TypefaceUtil.overrideFonts(view);
 
-    private void continueProcessing() {
-        if (MyApplication.prefManager.getLoggedIn()) {
-            startActivity(new Intent(MyApplication.currentActivity, MainActivity.class));
-            MyApplication.currentActivity.finish();
-        } else {
+    txtVersion.setText("نسخه " + new AppVersionHelper(MyApplication.context).getVerionName() + "");
+    MyApplication.handler.postDelayed(() -> {
+      checkPermission();
+
+    }, 1500);
+
+  }
+  String[] permissionsRequired = new String[]{
+          Manifest.permission.RECORD_AUDIO};
+  private static final int PERMISSION_CALLBACK_CONSTANT = 100;
+  public void checkPermission() {
+    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+      if ((ContextCompat.checkSelfPermission(MyApplication.currentActivity, Manifest.permission.RECORD_AUDIO) != PackageManager.PERMISSION_GRANTED)
+              || (ContextCompat.checkSelfPermission(MyApplication.currentActivity, Manifest.permission.INTERNET) != PackageManager.PERMISSION_GRANTED)) {
+        new GeneralDialog()
+                .title("دسترسی")
+                .message("برای ورود به برنامه ضروری است تا دسترسی های لازم را برای عملکرد بهتر به برنامه داده شود لطفا جهت بهبود عملکرد دسترسی های لازم را اعمال نمایید")
+                .cancelable(false)
+                .firstButton("باشه", new Runnable() {
+                  @Override
+                  public void run() {
+                    ActivityCompat.requestPermissions(MyApplication.currentActivity, permissionsRequired, PERMISSION_CALLBACK_CONSTANT);
+                  }
+                })
+                .show();
+      } else {
+        getAppInfo();
+      }
+    } else {
+      getAppInfo();
+    }
+  }
+
+
+  private void continueProcessing() {
+    if (MyApplication.prefManager.getLoggedIn()) {
+      startActivity(new Intent(MyApplication.currentActivity, MainActivity.class));
+      MyApplication.currentActivity.finish();
+    } else {
+      FragmentHelper
+              .toFragment(MyApplication.currentActivity, new LoginFragment())
+              .setAddToBackStack(false)
+              .replace();
+    }
+  }
+
+  @Override
+  protected void onResume() {
+    super.onResume();
+    MyApplication.currentActivity = this;
+  }
+
+  @Override
+  protected void onDestroy() {
+    super.onDestroy();
+    unbinder.unbind();
+  }
+
+  @Override
+  protected void onStart() {
+    super.onStart();
+    MyApplication.currentActivity = this;
+  }
+
+  private void getAppInfo() {
+    JSONObject params = new JSONObject();
+    try {
+      params.put("versionCode", new AppVersionHelper(MyApplication.context).getVerionCode());
+      params.put("operatorId",  MyApplication.prefManager.getUserCode());
+      params.put("userName", MyApplication.prefManager.getUserName());
+      params.put("password", MyApplication.prefManager.getPassword());
+
+      Log.i("TAG", "getAppInfo: " + params);
+
+      RequestHelper.builder(EndPoints.GET_APP_INFO)
+              .params(params)
+              .method(RequestHelper.POST)
+              .listener(onAppInfo)
+              .request();
+
+    } catch (JSONException e) {
+      e.printStackTrace();
+    }
+  }
+
+  @Override
+  public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+    super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+    checkPermission();
+  }
+
+
+  RequestHelper.Callback onAppInfo = new RequestHelper.Callback() {
+    @Override
+    public void onResponse(Runnable reCall, Object... args) {
+      MyApplication.handler.post(() -> {
+        try {
+          JSONObject object = new JSONObject(args[0].toString());
+          int block = object.getInt("isBlock");
+          int updateAvailable = object.getInt("updateAvailable");
+          int forceUpdate = object.getInt("forceUpdate");
+          String updateUrl = object.getString("updateUrl");
+          int changePass = object.getInt("changePassword");
+          int countRequest = object.getInt("countRequest");
+          int sipNumber = object.getInt("sipNumber");
+          String sipServer = object.getString("sipServer");
+          String sipPassword = object.getString("sipPassword");
+          String sheba = object.getString("sheba");
+          String cardNumber = object.getString("cardNumber");
+          String accountNumber = object.getString("accountNumber");
+          int accessInsertService = object.getInt("accessInsertService");
+          int balance = object.getInt("balance");
+          String typeService = object.getString("typeService");
+          String queue = object.getString("queue");
+          String city = object.getString("city");
+
+          if (block == 1) {
+            new GeneralDialog()
+                    .title("هشدار")
+                    .message("اکانت شما توسط سیستم مسدود شده است")
+                    .firstButton("خروج از برنامه", () -> MyApplication.currentActivity.finish())
+                    .show();
+            return;
+          }
+
+          if (changePass == 1) {
             FragmentHelper
                     .toFragment(MyApplication.currentActivity, new LoginFragment())
                     .setAddToBackStack(false)
                     .replace();
-        }
-    }
+            return;
+          }
 
-    @Override
-    protected void onResume() {
-        super.onResume();
-        MyApplication.currentActivity = this;
-    }
+          if (updateAvailable == 1) {
+            updatePart(forceUpdate, updateUrl);
+            return;
+          } else {
+            startVoipService();
+          }
 
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        unbinder.unbind();
-    }
+          JSONArray shiftArr = object.getJSONArray("shifs");
+          MyApplication.prefManager.setShiftList(shiftArr.toString());
 
-    @Override
-    protected void onStart() {
-        super.onStart();
-        MyApplication.currentActivity = this;
-    }
-
-    private void getAppInfo(int versionCode, int operatorId, String userName, String password) {
-        JSONObject params = new JSONObject();
-        try {
-
-            params.put("versionCode", versionCode);
-            params.put("operatorId", operatorId);
-            params.put("userName", userName);
-            params.put("password", password);
-
-            Log.i("TAG", "getAppInfo: "+params);
-
-            RequestHelper.builder(EndPoints.GET_APP_INFO)
-                    .params(params)
-                    .method(RequestHelper.POST)
-                    .listener(onAppInfo)
-                    .request();
+          MyApplication.prefManager.setCountNotification(object.getInt("countNotification"));
+          MyApplication.prefManager.setCountRequest(object.getInt("countRequest"));
+          MyApplication.prefManager.setSipServer(sipServer);
+          MyApplication.prefManager.setSipNumber(sipNumber);
+          MyApplication.prefManager.setSipPassword(sipPassword);
+          MyApplication.prefManager.setSheba(sheba);
+          MyApplication.prefManager.setCardNumber(cardNumber);
+          MyApplication.prefManager.setAccountNumber(accountNumber);
+          MyApplication.prefManager.setBalance(balance);
+          MyApplication.prefManager.setServiceType(typeService);
+          MyApplication.prefManager.setQueue(queue);
+          MyApplication.prefManager.setCity(city);
+          MyApplication.prefManager.setAccessInsertService(accessInsertService);
 
         } catch (JSONException e) {
-            e.printStackTrace();
-        }
-    }
-
-    RequestHelper.Callback onAppInfo = new RequestHelper.Callback() {
-        @Override
-        public void onResponse(Runnable reCall, Object... args) {
-            MyApplication.handler.post(() -> {
-                try {
-                    JSONObject object = new JSONObject(args[0].toString());
-                    int block = object.getInt("isBlock");
-                    int updateAvailable = object.getInt("updateAvailable");
-                    int forceUpdate = object.getInt("forceUpdate");
-                    String updateUrl = object.getString("updateUrl");
-                    int changePass = object.getInt("changePassword");
-
-                    if (block == 1) {
-                        new GeneralDialog()
-                                .title("هشدار")
-                                .message("اکانت شما توسط سیستم مسدود شده است")
-                                .firstButton("خروج از برنامه", () -> MyApplication.currentActivity.finish())
-                                .show();
-                        return;
-                    }
-
-                    if (changePass == 1) {
-                        FragmentHelper
-                                .toFragment(MyApplication.currentActivity, new LoginFragment())
-                                .setAddToBackStack(false)
-                                .replace();
-                        return;
-                    }
-
-                    if (updateAvailable == 1) {
-                        updatePart(forceUpdate, updateUrl);
-                        return;
-                    } else {
-                        startVoipService();
-                    }
-
-                    JSONArray shiftArr = object.getJSONArray("shifs");
-                    MyApplication.prefManager.setShiftList(shiftArr.toString());
-
-                    MyApplication.prefManager.setCountNotification(object.getInt("countNotification"));
-                    MyApplication.prefManager.setCountRequest(object.getInt("countRequest"));
-
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
-
-            });
+          e.printStackTrace();
         }
 
-        @Override
-        public void onFailure(Runnable reCall, Exception e) {
-
-        }
-    };
-
-    private void updatePart(int isForce, final String url) {
-        GeneralDialog generalDialog = new GeneralDialog();
-        if (isForce == 1) {
-            generalDialog.title("به روز رسانی");
-            generalDialog.cancelable(false);
-            generalDialog.message("برای برنامه نسخه جدیدی موجود است لطفا برنامه را به روز رسانی کنید");
-            generalDialog.firstButton("به روز رسانی", () -> {
-                Intent i = new Intent(Intent.ACTION_VIEW);
-                i.setData(Uri.parse(url));
-                MyApplication.currentActivity.startActivity(i);
-                MyApplication.currentActivity.finish();
-            });
-            generalDialog.secondButton("بستن برنامه", () -> MyApplication.currentActivity.finish());
-            generalDialog.show();
-        } else {
-            generalDialog.title("به روز رسانی");
-            generalDialog.cancelable(false);
-            generalDialog.message("برای برنامه نسخه جدیدی موجود است در صورت تمایل میتوانید برنامه را به روز رسانی کنید");
-            generalDialog.firstButton("به روز رسانی", () -> {
-                Intent i = new Intent(Intent.ACTION_VIEW);
-                i.setData(Uri.parse(url));
-                MyApplication.currentActivity.startActivity(i);
-                MyApplication.currentActivity.finish();
-            });
-            generalDialog.secondButton("فعلا نه", () ->         startVoipService());
-            generalDialog.show();
-        }
+      });
     }
 
     @Override
-    public void onBackPressed() {
-        try {
-            if (getSupportFragmentManager().getBackStackEntryCount() > 0 || getFragmentManager().getBackStackEntryCount() > 0) {
-                super.onBackPressed();
-            } else {
-                if (doubleBackToExitPressedOnce) {
-                    super.onBackPressed();
-                } else {
-                    this.doubleBackToExitPressedOnce = true;
-                    MyApplication.Toast(getString(R.string.txt_please_for_exit_reenter_back), Toast.LENGTH_SHORT);
-                    new Handler().postDelayed(() -> doubleBackToExitPressedOnce = false, 1500);
-                }
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+    public void onFailure(Runnable reCall, Exception e) {
+
     }
+  };
 
-
-    // This thread will periodically check if the Service is ready, and then call onServiceReady
-    private class ServiceWaitThread extends Thread {
-        public void run() {
-            while (!LinphoneService.isReady()) {
-                try {
-                    sleep(30);
-                } catch (InterruptedException e) {
-                    throw new RuntimeException("waiting thread sleep() has been interrupted");
-                }
-            }
-            // As we're in a thread, we can't do UI stuff in it, must post a runnable in UI thread
-            MyApplication.handler.post(
-                    new Runnable() {
-                        @Override
-                        public void run() {
-                            continueProcessing();
-                        }
-                    });
-        }
+  private void updatePart(int isForce, final String url) {
+    GeneralDialog generalDialog = new GeneralDialog();
+    if (isForce == 1) {
+      generalDialog.title("به روز رسانی");
+      generalDialog.cancelable(false);
+      generalDialog.message("برای برنامه نسخه جدیدی موجود است لطفا برنامه را به روز رسانی کنید");
+      generalDialog.firstButton("به روز رسانی", () -> {
+        Intent i = new Intent(Intent.ACTION_VIEW);
+        i.setData(Uri.parse(url));
+        MyApplication.currentActivity.startActivity(i);
+        MyApplication.currentActivity.finish();
+      });
+      generalDialog.secondButton("بستن برنامه", () -> MyApplication.currentActivity.finish());
+      generalDialog.show();
+    } else {
+      generalDialog.title("به روز رسانی");
+      generalDialog.cancelable(false);
+      generalDialog.message("برای برنامه نسخه جدیدی موجود است در صورت تمایل میتوانید برنامه را به روز رسانی کنید");
+      generalDialog.firstButton("به روز رسانی", () -> {
+        Intent i = new Intent(Intent.ACTION_VIEW);
+        i.setData(Uri.parse(url));
+        MyApplication.currentActivity.startActivity(i);
+        MyApplication.currentActivity.finish();
+      });
+      generalDialog.secondButton("فعلا نه", () -> startVoipService());
+      generalDialog.show();
     }
+  }
 
-    private void startVoipService(){
-        if (LinphoneService.isReady()) {
-            continueProcessing();
+  @Override
+  public void onBackPressed() {
+    try {
+      if (getSupportFragmentManager().getBackStackEntryCount() > 0 || getFragmentManager().getBackStackEntryCount() > 0) {
+        super.onBackPressed();
+      } else {
+        if (doubleBackToExitPressedOnce) {
+          super.onBackPressed();
         } else {
-            // If it's not, let's start it
-            startService(
-                    new Intent().setClass(this, LinphoneService.class));
-            // And wait for it to be ready, so we can safely use it afterwards
-            new ServiceWaitThread().start();
+          this.doubleBackToExitPressedOnce = true;
+          MyApplication.Toast(getString(R.string.txt_please_for_exit_reenter_back), Toast.LENGTH_SHORT);
+          new Handler().postDelayed(() -> doubleBackToExitPressedOnce = false, 1500);
         }
+      }
+    } catch (Exception e) {
+      e.printStackTrace();
     }
+  }
+
+  // This thread will periodically check if the Service is ready, and then call onServiceReady
+  private class ServiceWaitThread extends Thread {
+    public void run() {
+      while (!LinphoneService.isReady()) {
+        try {
+          sleep(30);
+        } catch (InterruptedException e) {
+          throw new RuntimeException("waiting thread sleep() has been interrupted");
+        }
+      }
+      // As we're in a thread, we can't do UI stuff in it, must post a runnable in UI thread
+      MyApplication.handler.post(
+              new Runnable() {
+                @Override
+                public void run() {
+                  continueProcessing();
+                }
+              });
+    }
+  }
+
+  private void startVoipService() {
+    if (LinphoneService.isReady()) {
+      continueProcessing();
+    } else {
+      // If it's not, let's start it
+      startService(
+              new Intent().setClass(this, LinphoneService.class));
+      // And wait for it to be ready, so we can safely use it afterwards
+      new ServiceWaitThread().start();
+    }
+  }
 }

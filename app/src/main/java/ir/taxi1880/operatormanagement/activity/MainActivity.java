@@ -10,10 +10,6 @@ import android.view.WindowManager;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import org.linphone.core.Address;
-import org.linphone.core.CallParams;
-import org.linphone.core.Core;
-
 import androidx.appcompat.app.AppCompatActivity;
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -21,6 +17,7 @@ import butterknife.OnClick;
 import butterknife.Unbinder;
 import ir.taxi1880.operatormanagement.R;
 import ir.taxi1880.operatormanagement.app.MyApplication;
+import ir.taxi1880.operatormanagement.fragment.AccountFragment;
 import ir.taxi1880.operatormanagement.fragment.MessageFragment;
 import ir.taxi1880.operatormanagement.fragment.NotificationFragment;
 import ir.taxi1880.operatormanagement.fragment.ReplacementWaitingFragment;
@@ -28,7 +25,6 @@ import ir.taxi1880.operatormanagement.fragment.SendReplacementReqFragment;
 import ir.taxi1880.operatormanagement.fragment.ShiftFragment;
 import ir.taxi1880.operatormanagement.helper.FragmentHelper;
 import ir.taxi1880.operatormanagement.helper.TypefaceUtil;
-import ir.taxi1880.operatormanagement.services.LinphoneService;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -89,22 +85,15 @@ public class MainActivity extends AppCompatActivity {
   @BindView(R.id.txtOperatorName)
   TextView txtOperatorName;
 
+  @BindView(R.id.txtOperatorCharge)
+  TextView txtOperatorCharge;
+
   @OnClick(R.id.llProfile)
   void onPressProfile() {
 
-    Core core = LinphoneService.getCore();
-    Address addressToCall = core.interpretUrl("400@172.16.2.222:5060");
-    CallParams params = core.createCallParams(null);
-
-//    Switch videoEnabled = findViewById(R.id.call_with_video);
-//    params.enableVideo(videoEnabled.isChecked());
-
-    if (addressToCall != null) {
-      core.inviteAddressWithParams(addressToCall, params);
-    }//
-//    FragmentHelper
-//            .toFragment(MyApplication.currentActivity, new AccountFragment())
-//            .replace();
+    FragmentHelper
+            .toFragment(MyApplication.currentActivity, new AccountFragment())
+            .replace();
 
   }
 
@@ -142,6 +131,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     txtOperatorName.setText(MyApplication.prefManager.getOperatorName());
+    txtOperatorCharge.setText("شارژ شما : "+MyApplication.prefManager.getBalance());
 
   }
 
