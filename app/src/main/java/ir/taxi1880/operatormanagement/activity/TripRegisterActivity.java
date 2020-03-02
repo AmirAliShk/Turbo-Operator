@@ -25,6 +25,7 @@ import com.yuxingxin.library.MultiRadioGroup;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+import org.linphone.core.Call;
 
 import java.util.ArrayList;
 
@@ -52,6 +53,7 @@ import ir.taxi1880.operatormanagement.helper.TypefaceUtil;
 import ir.taxi1880.operatormanagement.model.CityModel;
 import ir.taxi1880.operatormanagement.model.PassengerAddressModel;
 import ir.taxi1880.operatormanagement.model.TypeServiceModel;
+import ir.taxi1880.operatormanagement.services.LinphoneService;
 
 public class TripRegisterActivity extends AppCompatActivity {
 
@@ -364,7 +366,9 @@ public class TripRegisterActivity extends AppCompatActivity {
 
   @OnClick(R.id.llEndCall)
   void onPressEndCall() {
-    new CallDialog().show();
+    Toast.makeText(MyApplication.context, "this item is not visible(this is test)", Toast.LENGTH_LONG).show();
+    Call call = LinphoneService.getCore().getCurrentCall();
+    call.terminate();
   }
 
   @BindView(R.id.rgStatus)
@@ -675,7 +679,6 @@ public class TripRegisterActivity extends AppCompatActivity {
             }
             if (passengerAddressModels.size() == 0) {
               vfPassengerAddress.setDisplayedChild(0);
-              MyApplication.Toast("هنوزآدرسی ثبت نشده!", Toast.LENGTH_SHORT);
             } else {
               new AddressListDialog().show(new AddressListDialog.Listener() {
                 @Override

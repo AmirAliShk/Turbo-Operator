@@ -141,7 +141,7 @@ public class MainActivity extends AppCompatActivity {
       window.addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
     }
 
-//    MyApplication.configureAccount();
+    MyApplication.configureAccount();
 
     unbinder = ButterKnife.bind(this, view);
     TypefaceUtil.overrideFonts(view);
