@@ -13,12 +13,17 @@ import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import org.linphone.core.AccountCreator;
+import org.linphone.core.ProxyConfig;
+import org.linphone.core.TransportType;
+
 import java.util.Locale;
 
 import androidx.fragment.app.FragmentManager;
 import ir.taxi1880.operatormanagement.R;
 import ir.taxi1880.operatormanagement.helper.TypefaceUtil;
 import ir.taxi1880.operatormanagement.push.AvaFactory;
+import ir.taxi1880.operatormanagement.services.LinphoneService;
 
 public class MyApplication extends Application {
 
@@ -107,19 +112,19 @@ public class MyApplication extends Application {
         toast.show();
     }
 
-//    public static void configureAccount() {
-//        // At least the 3 below values are required
-//        AccountCreator mAccountCreator = LinphoneService.getCore().createAccountCreator(null);
-//
-//        mAccountCreator.setDomain("172.16.2.222");
-//        mAccountCreator.setUsername("423");
-//        mAccountCreator.setPassword("423");
-//        mAccountCreator.setTransport(TransportType.Udp);
-//
-//        // This will automatically create the proxy config and auth info and add them to the Core
-//        ProxyConfig cfg = mAccountCreator.createProxyConfig();
-//        // Make sure the newly created one is the default
-//        LinphoneService.getCore().setDefaultProxyConfig(cfg);
-//    }
+    public static void configureAccount() {
+        // At least the 3 below values are required
+        AccountCreator mAccountCreator = LinphoneService.getCore().createAccountCreator(null);
+
+        mAccountCreator.setDomain("172.16.2.222");
+        mAccountCreator.setUsername("423");
+        mAccountCreator.setPassword("423");
+        mAccountCreator.setTransport(TransportType.Udp);
+
+        // This will automatically create the proxy config and auth info and add them to the Core
+        ProxyConfig cfg = mAccountCreator.createProxyConfig();
+        // Make sure the newly created one is the default
+        LinphoneService.getCore().setDefaultProxyConfig(cfg);
+    }
 
 }

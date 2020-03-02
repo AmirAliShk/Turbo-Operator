@@ -10,6 +10,10 @@ import android.view.WindowManager;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import org.linphone.core.Address;
+import org.linphone.core.CallParams;
+import org.linphone.core.Core;
+
 import androidx.appcompat.app.AppCompatActivity;
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -24,6 +28,7 @@ import ir.taxi1880.operatormanagement.fragment.SendReplacementReqFragment;
 import ir.taxi1880.operatormanagement.fragment.ShiftFragment;
 import ir.taxi1880.operatormanagement.helper.FragmentHelper;
 import ir.taxi1880.operatormanagement.helper.TypefaceUtil;
+import ir.taxi1880.operatormanagement.services.LinphoneService;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -86,7 +91,17 @@ public class MainActivity extends AppCompatActivity {
 
   @OnClick(R.id.llProfile)
   void onPressProfile() {
-//
+
+    Core core = LinphoneService.getCore();
+    Address addressToCall = core.interpretUrl("400@172.16.2.222:5060");
+    CallParams params = core.createCallParams(null);
+
+//    Switch videoEnabled = findViewById(R.id.call_with_video);
+//    params.enableVideo(videoEnabled.isChecked());
+
+    if (addressToCall != null) {
+      core.inviteAddressWithParams(addressToCall, params);
+    }//
 //    FragmentHelper
 //            .toFragment(MyApplication.currentActivity, new AccountFragment())
 //            .replace();
@@ -107,7 +122,7 @@ public class MainActivity extends AppCompatActivity {
       window.addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
     }
 
-//    MyApplication.configureAccount();
+    MyApplication.configureAccount();
 
     unbinder = ButterKnife.bind(this, view);
     TypefaceUtil.overrideFonts(view);

@@ -23,6 +23,7 @@ import android.widget.ViewFlipper;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+import org.linphone.core.Call;
 
 import java.util.ArrayList;
 
@@ -46,6 +47,7 @@ import ir.taxi1880.operatormanagement.helper.KeyBoardHelper;
 import ir.taxi1880.operatormanagement.helper.PhoneNumberValidation;
 import ir.taxi1880.operatormanagement.helper.TypefaceUtil;
 import ir.taxi1880.operatormanagement.model.PassengerAddressModel;
+import ir.taxi1880.operatormanagement.services.LinphoneService;
 
 public class TripRegisterActivity extends AppCompatActivity {
 
@@ -286,6 +288,9 @@ public class TripRegisterActivity extends AppCompatActivity {
   @OnClick(R.id.llEndCall)
   void onPressEndCall() {
     Toast.makeText(MyApplication.context, "this item is not visible(this is test)", Toast.LENGTH_LONG).show();
+    Call call = LinphoneService.getCore().getCurrentCall();
+    call.terminate();
+
   }
 
   @BindView(R.id.rgStatus)
