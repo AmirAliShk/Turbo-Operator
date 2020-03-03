@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="radio_buttons">
+        <item>@string/unKnow</item>
+        <item>@string/taxi</item>
+        <item>@string/privilege</item>
+        <item>@string/economically</item>
+        <item>@string/formality</item>
+    </string-array>
+</resources>

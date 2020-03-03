@@ -20,12 +20,11 @@ import android.widget.Spinner;
 import android.widget.Toast;
 import android.widget.ViewFlipper;
 
-import com.yuxingxin.library.MultiRadioGroup;
+import com.whygraphics.multilineradiogroup.MultiLineRadioGroup;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-import org.linphone.core.Call;
 
 import java.util.ArrayList;
 
@@ -53,7 +52,6 @@ import ir.taxi1880.operatormanagement.helper.TypefaceUtil;
 import ir.taxi1880.operatormanagement.model.CityModel;
 import ir.taxi1880.operatormanagement.model.PassengerAddressModel;
 import ir.taxi1880.operatormanagement.model.TypeServiceModel;
-import ir.taxi1880.operatormanagement.services.LinphoneService;
 
 public class TripRegisterActivity extends AppCompatActivity {
 
@@ -202,8 +200,24 @@ public class TripRegisterActivity extends AppCompatActivity {
   @BindView(R.id.chbAlways)
   CheckBox chbAlways;
 
+  @BindView(R.id.rbUnknow)
+  RadioButton rbUnknow;
+
+  @BindView(R.id.rbTaxi)
+  RadioButton rbTaxi;
+
+  @BindView(R.id.rbPrivilage)
+  RadioButton rbPrivilage;
+
+  @BindView(R.id.rbEconomical)
+  RadioButton rbEconomical;
+
+  @BindView(R.id.rbFormality)
+  RadioButton rbFormality;
+
   @BindView(R.id.rgCarClass)
-  MultiRadioGroup rgCarClass;
+  MultiLineRadioGroup rgCarClass;
+//  MultiRadioGroup rgCarClass;
 
   @OnClick(R.id.llDescriptionDetail)
   void onPressLlDescriptionDetail() {
@@ -217,7 +231,7 @@ public class TripRegisterActivity extends AppCompatActivity {
       public void fixedDescription(String fixedDescription) {
         edtDescription.setText(fixedDescription);
       }
-    }, edtDescription.getText().toString(),normalDescription);
+    }, edtDescription.getText().toString(), normalDescription);
   }
 
   @OnClick(R.id.llSearchAddress)
@@ -264,9 +278,9 @@ public class TripRegisterActivity extends AppCompatActivity {
     }
     String mobile;
 
-    if (edtMobile.getText().toString().startsWith("0")){
-      mobile = edtMobile.getText().toString().substring(1,10);
-    }else {
+    if (edtMobile.getText().toString().startsWith("0")) {
+      mobile = edtMobile.getText().toString().substring(1, 10);
+    } else {
       mobile = edtMobile.getText().toString();
     }
 
@@ -312,7 +326,12 @@ public class TripRegisterActivity extends AppCompatActivity {
                     insertService(MyApplication.prefManager.getUserCode(), serviceCount, tell, mobile, cityCode, stationCode,
                             name, address, fixedComment, destinationStation,
                             stationName, serviceType, carClass, normalDescription, traffic, 1, defaultClass))
-            .secondButton("خیر", null)
+            .secondButton("خیر", new Runnable() {
+              @Override
+              public void run() {
+                Log.i(TAG, "run: " + carClass);
+              }
+            })
             .show();
   }
 
@@ -368,8 +387,8 @@ public class TripRegisterActivity extends AppCompatActivity {
   void onPressEndCall() {
 
     new CallDialog().show();
-    Call call = LinphoneService.getCore().getCurrentCall();
-    call.terminate();
+//    Call call = LinphoneService.getCore().getCurrentCall();
+//    call.terminate();
   }
 
   @BindView(R.id.rgStatus)
@@ -409,8 +428,14 @@ public class TripRegisterActivity extends AppCompatActivity {
     initServiceTypeSpinner();
     initServiceCountSpinner();
 
+    rgStatus.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
+      @Override
+      public void onCheckedChanged(RadioGroup radioGroup, int i) {
+
+      }
+    });
+
     edtTell.requestFocus();
-    KeyBoardHelper.showKeyboard(MyApplication.context);
 
     edtTell.addTextChangedListener(new TextWatcher() {
       @Override
@@ -433,6 +458,13 @@ public class TripRegisterActivity extends AppCompatActivity {
           edtTell.setNextFocusDownId(R.id.edtFamily);
         } else {
           edtMobile.setText("");
+          edtFamily.setText("");
+          edtAddress.setText("");
+          edtOrigin.setText("");
+          edtDescription.setText("");
+          rgCarClass.clearCheck();
+          rbUnknow.setChecked(true);
+          chbAlways.setChecked(false);
           edtTell.setNextFocusDownId(R.id.edtMobile);
         }
       }
@@ -498,6 +530,13 @@ public class TripRegisterActivity extends AppCompatActivity {
 
       }
     });
+
+    MyApplication.handler.postDelayed(new Runnable() {
+      @Override
+      public void run() {
+        KeyBoardHelper.showKeyboard(MyApplication.context);
+      }
+    }, 300);
 
   }
 
@@ -629,10 +668,49 @@ public class TripRegisterActivity extends AppCompatActivity {
             int discountId = passengerInfoObj.getInt("discountId");
             int carType = passengerInfoObj.getInt("carType");
 
-            edtFamily.setText(name);
-            edtAddress.setText(address);
-            edtOrigin.setText(staion+"");
-            edtDescription.setText(permanentDesc+"");
+            if (!success) {
+              new GeneralDialog()
+                      .title("هشدار")
+                      .message(message)
+                      .firstButton("", null)
+                      .secondButton("", null)
+                      .show();
+            } else {
+              edtFamily.setText(name);
+              edtAddress.setText(address);
+              if (staion==0){
+                edtOrigin.setText("") ;
+              }else {
+                edtOrigin.setText(staion + "");
+              }
+              edtDescription.setText(permanentDesc + "");
+
+              rgCarClass.clearCheck();
+
+              switch (carType) {
+                case 0:
+                  rbUnknow.setChecked(true);
+                  break;
+                case 1:
+                  rbEconomical.setChecked(true);
+                  chbAlways.setChecked(true);
+                  break;
+                case 2:
+                  rbPrivilage.setChecked(true);
+                  chbAlways.setChecked(true);
+                  break;
+                case 3:
+                  rbFormality.setChecked(true);
+                  chbAlways.setChecked(true);
+                  break;
+                case 4:
+                  rbTaxi.setChecked(true);
+                  chbAlways.setChecked(true);
+                  break;
+              }
+
+            }
+
 
           } catch (JSONException e) {
             e.printStackTrace();
@@ -686,7 +764,7 @@ public class TripRegisterActivity extends AppCompatActivity {
                 public void description(String address, int stationCode) {
                   edtAddress.setText(address);
                   originStationCode = stationCode;
-                  edtOrigin.setText(stationCode+"");
+                  edtOrigin.setText(stationCode + "");
                 }
               }, passengerAddressModels);
               vfPassengerAddress.setDisplayedChild(0);
@@ -937,21 +1015,21 @@ public class TripRegisterActivity extends AppCompatActivity {
               new GeneralDialog()
                       .title("خطا")
                       .message(message)
-                      .firstButton("تلاش مجدد", () -> {
+                      .firstButton("تلاش مجدد", null)
+//
+//                        String tell = edtTell.getText().toString();
+//                        String mobile = edtMobile.getText().toString();
+//                        String name = edtFamily.getText().toString();
+//                        String address = edtAddress.getText().toString();
+//                        String fixedComment = edtDescription.getText().toString();
+//                        int stationCode = Integer.parseInt(edtOrigin.getText().toString());
+//                        int destinationStation = Integer.parseInt(edtDestination.getText().toString());
+//
+//                        insertService(MyApplication.prefManager.getUserCode(), serviceCount, tell, mobile, cityCode, stationCode,
+//                                name, address, fixedComment, destinationStation,
+//                                stationName, serviceType, carClass, normalDescription, traffic, 1, defaultClass);
 
-                        String tell = edtTell.getText().toString();
-                        String mobile = edtMobile.getText().toString();
-                        String name = edtFamily.getText().toString();
-                        String address = edtAddress.getText().toString();
-                        String fixedComment = edtDescription.getText().toString();
-                        int stationCode = Integer.parseInt(edtOrigin.getText().toString());
-                        int destinationStation = Integer.parseInt(edtDestination.getText().toString());
-
-                        insertService(MyApplication.prefManager.getUserCode(), serviceCount, tell, mobile, cityCode, stationCode,
-                                name, address, fixedComment, destinationStation,
-                                stationName, serviceType, carClass, normalDescription, traffic, 1, defaultClass);
-                      })
-                      .secondButton("بستن",null)
+                      .secondButton("بستن", null)
                       .show();
             }
 

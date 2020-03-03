@@ -23,6 +23,14 @@
     <string name="point"> : </string>
     <string name="submit">ارسال</string>
     <string name="confirm">تایید</string>
-    <string name="reject">رد</string>
     <string name="txt_please_for_exit_reenter_back">برای خروج دوباره کلید بازگشت را بزنید</string>
+    <string name="reject">رد</string>
+
+    <string name="unKnow">نامشخص</string>
+    <string name="taxi">تاکسی</string>
+    <string name="privilege">ممتاز</string>
+    <string name="economically">اقتصادی</string>
+    <string name="formality">تشریفات</string>
+
+
 </resources>
