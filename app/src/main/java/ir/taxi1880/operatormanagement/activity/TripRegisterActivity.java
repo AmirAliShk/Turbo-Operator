@@ -17,6 +17,7 @@ import android.widget.LinearLayout;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.Spinner;
+import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.ViewFlipper;
 
@@ -78,8 +79,14 @@ public class TripRegisterActivity extends AppCompatActivity {
   @BindView(R.id.spCity)
   Spinner spCity;
 
-  @BindView(R.id.edtDescription)
-  EditText edtDescription;
+  @BindView(R.id.txtDescription)
+  TextView txtDescription;
+
+  @BindView(R.id.txtNewPassenger)
+  TextView txtNewPassenger;
+
+  @BindView(R.id.txtLockPassenger)
+  TextView txtLockPassenger;
 
   @BindView(R.id.spServiceCount)
   Spinner spServiceCount;
@@ -178,12 +185,6 @@ public class TripRegisterActivity extends AppCompatActivity {
     KeyBoardHelper.showKeyboard(MyApplication.context);
   }
 
-  @OnClick(R.id.llDescription)
-  void onPressllDescription() {
-    edtDescription.requestFocus();
-    KeyBoardHelper.showKeyboard(MyApplication.context);
-  }
-
   @OnClick(R.id.llTraffic)
   void onPressllTraffic() {
     chbTraffic.setChecked(!chbTraffic.isChecked());
@@ -217,7 +218,7 @@ public class TripRegisterActivity extends AppCompatActivity {
 
   @BindView(R.id.rgCarClass)
   MultiLineRadioGroup rgCarClass;
-//  MultiRadioGroup rgCarClass;
+//          MultiRadioGroup rgCarClass;
 
   @OnClick(R.id.llDescriptionDetail)
   void onPressLlDescriptionDetail() {
@@ -229,9 +230,9 @@ public class TripRegisterActivity extends AppCompatActivity {
 
       @Override
       public void fixedDescription(String fixedDescription) {
-        edtDescription.setText(fixedDescription);
+        txtDescription.setText(fixedDescription);
       }
-    }, edtDescription.getText().toString(), normalDescription);
+    }, txtDescription.getText().toString(), normalDescription);
   }
 
   @OnClick(R.id.llSearchAddress)
@@ -258,24 +259,30 @@ public class TripRegisterActivity extends AppCompatActivity {
     }
     if (edtMobile.getText().toString().isEmpty()) {
       MyApplication.Toast("شماره همراه را وارد کنید", Toast.LENGTH_SHORT);
-      return;
-    }
-    if (edtOrigin.getText().toString().isEmpty()) {
-      MyApplication.Toast(" مبدا را مشخص کنید", Toast.LENGTH_SHORT);
-      return;
-    }
-    if (edtDestination.getText().toString().isEmpty()) {
-      MyApplication.Toast(" مقصد را مشخص کنید", Toast.LENGTH_SHORT);
+      edtMobile.requestFocus();
       return;
     }
     if (edtFamily.getText().toString().isEmpty()) {
       MyApplication.Toast(" نام مسافر را مشخص کنید", Toast.LENGTH_SHORT);
+      edtFamily.requestFocus();
       return;
     }
     if (edtAddress.getText().toString().isEmpty()) {
       MyApplication.Toast("آدرس را مشخص کنید", Toast.LENGTH_SHORT);
+      edtAddress.requestFocus();
       return;
     }
+    if (edtOrigin.getText().toString().isEmpty()) {
+      MyApplication.Toast(" مبدا را مشخص کنید", Toast.LENGTH_SHORT);
+      edtOrigin.requestFocus();
+      return;
+    }
+    if (edtDestination.getText().toString().isEmpty()) {
+      MyApplication.Toast(" مقصد را مشخص کنید", Toast.LENGTH_SHORT);
+      edtDestination.requestFocus();
+      return;
+    }
+
     String mobile;
 
     if (edtMobile.getText().toString().startsWith("0")) {
@@ -287,7 +294,7 @@ public class TripRegisterActivity extends AppCompatActivity {
     String tell = edtTell.getText().toString();
     String name = edtFamily.getText().toString();
     String address = edtAddress.getText().toString();
-    String fixedComment = edtDescription.getText().toString();
+    String fixedComment = txtDescription.getText().toString();
     int stationCode = Integer.parseInt(edtOrigin.getText().toString());
     int destinationStation = Integer.parseInt(edtDestination.getText().toString());
 
@@ -461,8 +468,10 @@ public class TripRegisterActivity extends AppCompatActivity {
           edtFamily.setText("");
           edtAddress.setText("");
           edtOrigin.setText("");
-          edtDescription.setText("");
+          txtDescription.setText("");
           rgCarClass.clearCheck();
+          txtLockPassenger.setVisibility(View.GONE);
+          txtNewPassenger.setVisibility(View.GONE);
           rbUnknow.setChecked(true);
           chbAlways.setChecked(false);
           edtTell.setNextFocusDownId(R.id.edtMobile);
@@ -676,41 +685,42 @@ public class TripRegisterActivity extends AppCompatActivity {
                       .secondButton("", null)
                       .show();
             } else {
-              edtFamily.setText(name);
-              edtAddress.setText(address);
-              if (staion==0){
-                edtOrigin.setText("") ;
-              }else {
+              if (name.equals("")) {
+                txtNewPassenger.setVisibility(View.VISIBLE);
+                edtFamily.requestFocus();
+              } else {
+                txtLockPassenger.setVisibility(View.GONE);
+                txtNewPassenger.setVisibility(View.GONE);
+                edtFamily.setText(name);
+                edtAddress.setText(address);
                 edtOrigin.setText(staion + "");
-              }
-              edtDescription.setText(permanentDesc + "");
-
-              rgCarClass.clearCheck();
-
-              switch (carType) {
-                case 0:
-                  rbUnknow.setChecked(true);
-                  break;
-                case 1:
-                  rbEconomical.setChecked(true);
-                  chbAlways.setChecked(true);
-                  break;
-                case 2:
-                  rbPrivilage.setChecked(true);
-                  chbAlways.setChecked(true);
-                  break;
-                case 3:
-                  rbFormality.setChecked(true);
-                  chbAlways.setChecked(true);
-                  break;
-                case 4:
-                  rbTaxi.setChecked(true);
-                  chbAlways.setChecked(true);
-                  break;
+                txtDescription.setText(permanentDesc + "");
+                rgCarClass.clearCheck();
+                edtDiscount.setText(discountCode);
+                switch (carType) {
+                  case 0:
+                    rbUnknow.setChecked(true);
+                    break;
+                  case 1:
+                    rbEconomical.setChecked(true);
+                    chbAlways.setChecked(true);
+                    break;
+                  case 2:
+                    rbPrivilage.setChecked(true);
+                    chbAlways.setChecked(true);
+                    break;
+                  case 3:
+                    rbFormality.setChecked(true);
+                    chbAlways.setChecked(true);
+                    break;
+                  case 4:
+                    rbTaxi.setChecked(true);
+                    chbAlways.setChecked(true);
+                    break;
+                }
               }
 
             }
-
 
           } catch (JSONException e) {
             e.printStackTrace();
@@ -1021,7 +1031,7 @@ public class TripRegisterActivity extends AppCompatActivity {
 //                        String mobile = edtMobile.getText().toString();
 //                        String name = edtFamily.getText().toString();
 //                        String address = edtAddress.getText().toString();
-//                        String fixedComment = edtDescription.getText().toString();
+//                        String fixedComment = txtDescription.getText().toString();
 //                        int stationCode = Integer.parseInt(edtOrigin.getText().toString());
 //                        int destinationStation = Integer.parseInt(edtDestination.getText().toString());
 //

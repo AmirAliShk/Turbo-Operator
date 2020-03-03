@@ -26,6 +26,7 @@ import ir.taxi1880.operatormanagement.R;
 import ir.taxi1880.operatormanagement.app.EndPoints;
 import ir.taxi1880.operatormanagement.app.MyApplication;
 import ir.taxi1880.operatormanagement.dialog.GeneralDialog;
+import ir.taxi1880.operatormanagement.helper.StringHelper;
 import ir.taxi1880.operatormanagement.helper.TypefaceUtil;
 
 /**
@@ -38,10 +39,10 @@ public class AccountFragment extends Fragment {
   String a;
   private int keyDel;
 
-//  @OnClick(R.id.imgBack)
-//  void onBack() {
-//    MyApplication.currentActivity.onBackPressed();
-//  }
+  @OnClick(R.id.imgBack)
+  void onBack() {
+    MyApplication.currentActivity.onBackPressed();
+  }
 
   @BindView(R.id.txtOperatorName)
   TextView txtOperatorName;
@@ -164,7 +165,7 @@ public class AccountFragment extends Fragment {
             JSONObject dataObj=obj.getJSONObject("data");
             int accountBalance=dataObj.getInt("accountBalance");
 
-            txtOperatorCharge.setText(accountBalance+"");
+            txtOperatorCharge.setText(StringHelper.toPersianDigits(accountBalance+" تومان "));
 
           } catch (JSONException e) {
             e.printStackTrace();

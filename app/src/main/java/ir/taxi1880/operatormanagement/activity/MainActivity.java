@@ -25,6 +25,7 @@ import ir.taxi1880.operatormanagement.fragment.ReplacementWaitingFragment;
 import ir.taxi1880.operatormanagement.fragment.SendReplacementReqFragment;
 import ir.taxi1880.operatormanagement.fragment.ShiftFragment;
 import ir.taxi1880.operatormanagement.helper.FragmentHelper;
+import ir.taxi1880.operatormanagement.helper.StringHelper;
 import ir.taxi1880.operatormanagement.helper.TypefaceUtil;
 
 public class MainActivity extends AppCompatActivity {
@@ -156,7 +157,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     txtOperatorName.setText(MyApplication.prefManager.getOperatorName());
-    txtOperatorCharge.setText("شارژ شما : " + MyApplication.prefManager.getBalance());
+    txtOperatorCharge.setText(StringHelper.toPersianDigits("شارژ شما : " + MyApplication.prefManager.getBalance()+" تومان "));
 
 //    MyApplication.handler.postDelayed(new Runnable() {
 //      @Override
