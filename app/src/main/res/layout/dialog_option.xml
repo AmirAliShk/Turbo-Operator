@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:gravity="center"
+    android:orientation="vertical">
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:fillViewport="false">
+
+        <LinearLayout
+            android:layout_width="300dp"
+            android:background="@drawable/bg_edit_text"
+            android:layout_height="wrap_content"
+            android:layout_gravity="top|center_horizontal"
+            android:gravity="top"
+            android:layout_margin="40dp"
+            android:minWidth="300dp"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:id="@+id/llColor"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:gravity="center"
+                android:background="@drawable/bg_dialog_header"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/txtTitle"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:text="امکانات"
+                    android:textColor="@color/colorWhite"
+                    android:textSize="@dimen/text_header"
+                    android:textStyle="bold" />
+
+            </LinearLayout>
+
+            <ScrollView
+                android:fillViewport="true"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:gravity="center"
+                    android:orientation="vertical">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center"
+                        android:layout_weight="1"
+                        android:layout_margin="10dp"
+                        android:orientation="vertical">
+
+                        <Button
+                            android:id="@+id/btnHireDriver"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:background="@drawable/bg_light_pink_edge"
+                            android:text="استخدام راننده"
+                            android:textColor="@color/colorWhite"
+                            android:padding="10dp"
+                            android:textSize="@dimen/text_header"
+                            android:textStyle="bold" />
+
+                        <Button
+                            android:id="@+id/btnReserve"
+                            android:layout_marginTop="10dp"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:background="@drawable/bg_light_pink_edge"
+                            android:padding="10dp"
+                            android:text="رزرو سفر"
+                            android:textColor="@color/colorWhite"
+                            android:textSize="@dimen/text_header"
+                            android:textStyle="bold" />
+
+                    </LinearLayout>
+
+                </LinearLayout>
+
+            </ScrollView>
+
+        </LinearLayout>
+
+    </ScrollView>
+
+
+</LinearLayout>

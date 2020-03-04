@@ -14,22 +14,6 @@
         android:layout_height="250dp"
         android:background="@mipmap/header_down" />
 
-    <RelativeLayout
-        android:id="@+id/rlActionBar"
-        android:layout_width="match_parent"
-        android:layout_height="?android:attr/actionBarSize"
-        android:layoutDirection="ltr"
-        android:background="#792ca9">
-
-        <ImageView
-            android:id="@+id/imgBack"
-            android:padding="15dp"
-            android:src="@drawable/ic_back"
-            android:layout_width="?android:attr/actionBarSize"
-            android:layout_height="match_parent"/>
-
-    </RelativeLayout>
-
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent">
@@ -283,5 +267,22 @@
         </LinearLayout>
 
     </ScrollView>
+
+    <RelativeLayout
+        android:id="@+id/rlActionBar"
+        android:layout_width="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_height="?android:attr/actionBarSize"
+        android:layoutDirection="ltr"
+        android:background="#792ca9">
+
+        <ImageView
+            android:id="@+id/imgBack"
+            android:padding="15dp"
+            android:src="@drawable/ic_back"
+            android:layout_width="?android:attr/actionBarSize"
+            android:layout_height="match_parent"/>
+
+    </RelativeLayout>
 
 </RelativeLayout>

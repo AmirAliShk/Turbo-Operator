@@ -5,8 +5,12 @@ import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.util.Log;
 import android.view.Gravity;
+import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.Toast;
 
 import ir.taxi1880.operatormanagement.R;
 import ir.taxi1880.operatormanagement.app.MyApplication;
@@ -17,17 +21,14 @@ public class CallDialog {
 
     private static final String TAG = CallDialog.class.getSimpleName();
 
-    public interface Listener {
-        void description(String description);
-        void fixedDescription(String fixedDescription);
-
+    public interface Listener{
+        void onClose(boolean b);
     }
 
-    private Listener listener;
-
     static Dialog dialog;
+    Listener listener;
 
-    public void show() {
+    public void show(Listener listener) {
         dialog = new Dialog(MyApplication.currentActivity);
         dialog.getWindow().requestFeature(Window.FEATURE_NO_TITLE);
         dialog.getWindow().getAttributes().windowAnimations = R.style.ExpandAnimation;
@@ -39,6 +40,36 @@ public class CallDialog {
         wlp.windowAnimations = R.style.ExpandAnimation;
         dialog.getWindow().setAttributes(wlp);
         dialog.setCancelable(true);
+        this.listener=listener;
+
+        LinearLayout llTransferCall=dialog.findViewById(R.id.llTransfer);
+        LinearLayout llEndCall=dialog.findViewById(R.id.llEndCall);
+        ImageView imgClose=dialog.findViewById(R.id.imgClose);
+
+        llTransferCall.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                MyApplication.Toast("تماس به صف پشتیبانی منتقل شد", Toast.LENGTH_SHORT);
+                listener.onClose(true);
+                dismiss();
+            }
+        });
+
+        llEndCall.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                MyApplication.Toast("تماس به اتمام رسید", Toast.LENGTH_SHORT);
+                listener.onClose(true);
+                dismiss();
+            }
+        });
+
+        imgClose.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                dismiss();
+            }
+        });
 
         dialog.show();
     }

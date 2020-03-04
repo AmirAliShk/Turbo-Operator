@@ -43,9 +43,8 @@ import ir.taxi1880.operatormanagement.dialog.AddressListDialog;
 import ir.taxi1880.operatormanagement.dialog.CallDialog;
 import ir.taxi1880.operatormanagement.dialog.DescriptionDialog;
 import ir.taxi1880.operatormanagement.dialog.GeneralDialog;
+import ir.taxi1880.operatormanagement.dialog.OptionDialog;
 import ir.taxi1880.operatormanagement.dialog.SearchLocationDialog;
-import ir.taxi1880.operatormanagement.fragment.HireDriverFragment;
-import ir.taxi1880.operatormanagement.helper.FragmentHelper;
 import ir.taxi1880.operatormanagement.helper.KeyBoardHelper;
 import ir.taxi1880.operatormanagement.helper.PhoneNumberValidation;
 import ir.taxi1880.operatormanagement.helper.StringHelper;
@@ -149,6 +148,9 @@ public class TripRegisterActivity extends AppCompatActivity {
   void onPressllServiceType() {
     spServiceType.performClick();
   }
+
+  @BindView(R.id.llServiceType)
+  LinearLayout llServiceType;
 
   @OnClick(R.id.llServiceCount)
   void onPressllServiceCount() {
@@ -283,6 +285,9 @@ public class TripRegisterActivity extends AppCompatActivity {
       return;
     }
 
+    getCheckOriginStation(cityCode, Integer.parseInt(StringHelper.toEnglishDigits(edtOrigin.getText().toString())));
+    getCheckDestStation(cityCode, Integer.parseInt(StringHelper.toEnglishDigits(edtDestination.getText().toString())));
+
     String mobile;
 
     if (edtMobile.getText().toString().startsWith("0")) {
@@ -336,7 +341,6 @@ public class TripRegisterActivity extends AppCompatActivity {
             .secondButton("خیر", new Runnable() {
               @Override
               public void run() {
-                Log.i(TAG, "run: " + carClass);
               }
             })
             .show();
@@ -344,10 +348,7 @@ public class TripRegisterActivity extends AppCompatActivity {
 
   @OnClick(R.id.btnOptions)
   void onPressOptions() {
-
-    FragmentHelper
-            .toFragment(MyApplication.currentActivity, new HireDriverFragment())
-            .replace();
+    new OptionDialog().show();
   }
 
   @BindView(R.id.edtDestination)
@@ -359,22 +360,33 @@ public class TripRegisterActivity extends AppCompatActivity {
   @BindView(R.id.vfPassengerInfo)
   ViewFlipper vfPassengerInfo;
 
+  private void clearData(){
+    edtTell.setText("");
+    edtMobile.setText("");
+    edtDiscount.setText("");
+    edtFamily.setText("");
+    edtAddress.setText("");
+    edtOrigin.setText("");
+    edtDestination.setText("");
+    chbTraffic.setChecked(false);
+    txtDescription.setText("");
+    chbAlways.setChecked(false);
+    rgCarClass.clearCheck();
+    rbUnknow.setChecked(true);
+  }
+
   @OnClick(R.id.llClear)
   void onClear() {
-    MyApplication.Toast("میدونم صفحه باید خالی بشه ولی به زودی درستش میکنم :))", Toast.LENGTH_SHORT);
-
-//    new GeneralDialog()
-//            .title("هشدار")
-//            .message("آیا از پاک کردن اطلاعات اطمینان دارید؟")
-//            .firstButton("بله", new Runnable() {
-//              @Override
-//              public void run() {
-//                //TODO check value
-//                new CheckEmptyView().setText("empty").setCheck(2).setValue(view);
-//                Toast.makeText(MyApplication.context, "dont work currently for now :((", Toast.LENGTH_LONG).show();
-//              }
-//            }).secondButton("خیر", null)
-//            .show();
+    new GeneralDialog()
+            .title("هشدار")
+            .message("آیا از پاک کردن اطلاعات اطمینان دارید؟")
+            .firstButton("بله", new Runnable() {
+              @Override
+              public void run() {
+                clearData();
+              }
+            }).secondButton("خیر", null)
+            .show();
   }
 
   @OnClick(R.id.llDownload)
@@ -393,7 +405,15 @@ public class TripRegisterActivity extends AppCompatActivity {
   @OnClick(R.id.llEndCall)
   void onPressEndCall() {
 
-    new CallDialog().show();
+    KeyBoardHelper.hideKeyboard();
+    new CallDialog().show(new CallDialog.Listener() {
+      @Override
+      public void onClose(boolean b) {
+        if (b){
+          clearData();
+        }
+      }
+    });
 //    Call call = LinphoneService.getCore().getCurrentCall();
 //    call.terminate();
   }
@@ -479,42 +499,6 @@ public class TripRegisterActivity extends AppCompatActivity {
       }
     });
 
-    edtOrigin.addTextChangedListener(new TextWatcher() {
-      @Override
-      public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-
-      }
-
-      @Override
-      public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-      }
-
-      @Override
-      public void afterTextChanged(Editable editable) {
-        if ((!editable.toString().equals(""))) {
-          getCheckStation(cityCode, Integer.parseInt(StringHelper.toEnglishDigits(editable.toString())));
-        }
-      }
-    });
-
-    edtDestination.addTextChangedListener(new TextWatcher() {
-      @Override
-      public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-
-      }
-
-      @Override
-      public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-      }
-
-      @Override
-      public void afterTextChanged(Editable editable) {
-        if ((!editable.toString().equals(""))) {
-          getCheckStation(cityCode, Integer.parseInt(StringHelper.toEnglishDigits(editable.toString())));
-        }
-      }
-    });
-
     rgStatus.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
       @Override
       public void onCheckedChanged(RadioGroup radioGroup, int i) {
@@ -587,6 +571,8 @@ public class TripRegisterActivity extends AppCompatActivity {
         typeServiceModels.add(typeServiceModel);
         serviceList.add(serviceObj.getString("name"));
       }
+      llServiceType.setClickable(false);
+      spServiceType.setEnabled(false);
       spServiceType.setAdapter(new SpinnerAdapter(MyApplication.currentActivity, R.layout.item_spinner, serviceList));
 
       spServiceType.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
@@ -677,20 +663,22 @@ public class TripRegisterActivity extends AppCompatActivity {
             int discountId = passengerInfoObj.getInt("discountId");
             int carType = passengerInfoObj.getInt("carType");
 
-            if (!success) {
-              new GeneralDialog()
-                      .title("هشدار")
-                      .message(message)
-                      .firstButton("", null)
-                      .secondButton("", null)
-                      .show();
-            } else {
-              if (name.equals("")) {
+            if (success) {
+              if (callerCode == 0) {
                 txtNewPassenger.setVisibility(View.VISIBLE);
+                txtLockPassenger.setVisibility(View.GONE);
                 edtFamily.requestFocus();
               } else {
-                txtLockPassenger.setVisibility(View.GONE);
-                txtNewPassenger.setVisibility(View.GONE);
+                switch (status){
+                  case 0:
+                    txtNewPassenger.setVisibility(View.GONE);
+                    txtLockPassenger.setVisibility(View.GONE);
+                    break;
+                  case 1:
+                    txtNewPassenger.setVisibility(View.GONE);
+                    txtLockPassenger.setVisibility(View.VISIBLE);
+                    break;
+                }
                 edtFamily.setText(name);
                 edtAddress.setText(address);
                 edtOrigin.setText(staion + "");
@@ -719,7 +707,6 @@ public class TripRegisterActivity extends AppCompatActivity {
                     break;
                 }
               }
-
             }
 
           } catch (JSONException e) {
@@ -792,16 +779,16 @@ public class TripRegisterActivity extends AppCompatActivity {
     }
   };
 
-  private void getCheckStation(int cityCode, int stationCode) {
+  private void getCheckOriginStation(int cityCode, int stationCode) {
     RequestHelper.builder(EndPoints.CHECK_STATION + "/" + cityCode + "/" + stationCode)
             .method(RequestHelper.GET)
             .params(new JSONObject())
-            .listener(getCheckStation)
+            .listener(getCheckOriginStation)
             .request();
 
   }
 
-  RequestHelper.Callback getCheckStation = new RequestHelper.Callback() {
+  RequestHelper.Callback getCheckOriginStation = new RequestHelper.Callback() {
     @Override
     public void onResponse(Runnable reCall, Object... args) {
       MyApplication.handler.post(new Runnable() {
@@ -817,7 +804,66 @@ public class TripRegisterActivity extends AppCompatActivity {
             String descriptionStatus = dataObj.getString("descriptionStatus");
 
             if (status != 0) {
-              MyApplication.Toast(descriptionStatus, Toast.LENGTH_SHORT);
+              new GeneralDialog()
+                      .title("هشدار")
+                      .message(descriptionStatus)
+                      .firstButton("اصلاح میکنم", new Runnable() {
+                        @Override
+                        public void run() {
+                          edtOrigin.requestFocus();
+                        }
+                      })
+                      .show();
+            }
+
+          } catch (JSONException e) {
+            e.printStackTrace();
+          }
+        }
+      });
+    }
+
+    @Override
+    public void onFailure(Runnable reCall, Exception e) {
+
+    }
+  };
+
+  private void getCheckDestStation(int cityCode, int stationCode) {
+    RequestHelper.builder(EndPoints.CHECK_STATION + "/" + cityCode + "/" + stationCode)
+            .method(RequestHelper.GET)
+            .params(new JSONObject())
+            .listener(getCheckDestStation)
+            .request();
+
+  }
+
+  RequestHelper.Callback getCheckDestStation = new RequestHelper.Callback() {
+    @Override
+    public void onResponse(Runnable reCall, Object... args) {
+      MyApplication.handler.post(new Runnable() {
+        @Override
+        public void run() {
+          try {
+            JSONObject obj = new JSONObject(args[0].toString());
+            boolean success = obj.getBoolean("success");
+            String message = obj.getString("message");
+
+            JSONObject dataObj = obj.getJSONObject("data");
+            int status = dataObj.getInt("status");
+            String descriptionStatus = dataObj.getString("descriptionStatus");
+
+            if (status != 0) {
+              new GeneralDialog()
+                      .title("هشدار")
+                      .message(descriptionStatus)
+                      .firstButton("اصلاح میکنم", new Runnable() {
+                        @Override
+                        public void run() {
+                          edtDestination.requestFocus();
+                        }
+                      })
+                      .show();
             }
 
           } catch (JSONException e) {
@@ -1014,9 +1060,6 @@ public class TripRegisterActivity extends AppCompatActivity {
                       .title("ثبت شد")
                       .message("اطلاعات با موفقیت ثبت شد")
                       .firstButton("باشه", () -> {
-                        //TODO check value
-//                              new CheckEmptyView().setText("empty").setCheck(2).setValue(view);
-                        MyApplication.Toast("میدونم صفحه باید خالی بشه ولی به زودی درستش میکنم :))", Toast.LENGTH_SHORT);
                         KeyBoardHelper.hideKeyboard();
                         MyApplication.currentActivity.onBackPressed();
                       })

@@ -81,6 +81,7 @@
                 android:layout_height="wrap_content"
                 android:gravity="center|bottom"
                 android:layout_marginTop="5dp"
+                android:visibility="gone"
                 android:textAppearance="?android:attr/textAppearanceSmall"
                 android:text="00:58"/>
 
@@ -89,10 +90,7 @@
                 android:layout_width="?android:attr/actionBarSize"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:paddingTop="5dp"
-                android:paddingRight="8dp"
-                android:paddingLeft="8dp"
-                android:paddingBottom="8dp"
+                android:padding="13dp"
                 android:src="@drawable/ic_end_call" />
 
         </LinearLayout>
@@ -103,6 +101,11 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:fillViewport="true">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -157,7 +160,6 @@
                             android:layout_height="wrap_content"
                             android:gravity="center"
                             android:layout_margin="3dp"
-                            android:elevation="2dp"
                             android:background="@drawable/bg_edit_text">
 
                             <Spinner
@@ -196,7 +198,6 @@
                             android:layout_height="match_parent"
                             android:padding="5dp"
                             android:layout_margin="3dp"
-                            android:elevation="2dp"
                             android:maxLength="11"
                             android:textAppearance="?android:attr/textAppearanceMedium"
                             android:textColor="@color/colorBlack"
@@ -229,7 +230,6 @@
                             android:layout_height="38dp"
                             android:gravity="center"
                             android:layout_margin="3dp"
-                            android:elevation="2dp"
                             android:background="@drawable/bg_strock_corner">
 
                             <ImageView
@@ -272,7 +272,6 @@
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
                             android:layout_margin="3dp"
-                            android:elevation="2dp"
                             android:background="@drawable/edit_text_style"
                             android:nextFocusDown="@id/edtMobile"
                             android:textAppearance="?android:attr/textAppearanceMedium"
@@ -298,23 +297,23 @@
                             android:textAppearance="?android:attr/textAppearanceMedium"
                             android:textColor="@color/grayMedium"/>
 
-                        <LinearLayout
-                            android:layout_width="match_parent"
+                        <RelativeLayout
                             style="@style/linearLayout"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_margin="3dp"
                             android:clickable="true"
                             android:focusable="true"
-                            android:layout_margin="3dp"
-                            android:elevation="2dp"
                             android:gravity="center_vertical"
-                            android:orientation="horizontal"
-                            android:layout_height="wrap_content">
+                            android:orientation="horizontal">
 
                         <EditText
                             android:id="@+id/edtMobile"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
-                            android:background="@android:color/transparent"
+                            android:gravity="center_vertical"
+                            android:background="@drawable/edit_text_style"
                             android:nextFocusDown="@id/edtFamily"
                             android:padding="5dp"
                             android:inputType="number"
@@ -327,6 +326,7 @@
                             android:id="@+id/llDownload"
                             android:layout_width="50dp"
                             android:layout_height="35dp"
+                            android:layout_alignParentLeft="true"
                             android:background="@drawable/bg_ripple"
                             android:gravity="left">
 
@@ -353,7 +353,7 @@
 
                         </LinearLayout>
 
-                        </LinearLayout>
+                        </RelativeLayout>
 
                     </LinearLayout>
 
@@ -398,16 +398,14 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:gravity="center"
-                            android:layout_margin="3dp"
-                            android:elevation="2dp"
-                            android:background="@drawable/bg_edit_text">
+                            android:layout_margin="3dp">
 
                             <Spinner
                                 android:id="@+id/spServiceType"
                                 android:layout_width="match_parent"
                                 android:layout_height="match_parent"
                                 android:dropDownWidth="match_parent"
-                                android:background="@android:color/transparent"
+                                android:background="@drawable/bg_edit_text"
                                 android:gravity="center"
                                 android:paddingTop="5dp"
                                 android:paddingBottom="5dp"  />
@@ -494,24 +492,21 @@
                         android:textAppearance="?android:attr/textAppearanceMedium"
                         android:textColor="@color/grayMedium"/>
 
-                    <LinearLayout
-                        android:id="@+id/llAddress2"
+                    <RelativeLayout
                         android:layout_width="match_parent"
-                        style="@style/linearLayout"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="3dp"
                         android:clickable="true"
                         android:focusable="true"
-                        android:layout_margin="3dp"
-                        android:elevation="2dp"
                         android:gravity="center_vertical"
-                        android:orientation="horizontal"
-                        android:layout_height="wrap_content">
+                        android:orientation="horizontal">
 
                         <EditText
                             android:id="@+id/edtAddress"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
-                            android:background="@android:color/transparent"
+                            android:background="@drawable/edit_text_style"
                             android:nextFocusDown="@id/edtOrigin"
                             android:padding="5dp"
                             android:singleLine="true"
@@ -523,6 +518,7 @@
                             android:id="@+id/llSearchAddress"
                             android:layout_width="50dp"
                             android:layout_height="35dp"
+                            android:layout_alignParentLeft="true"
                             android:background="@drawable/bg_ripple"
                             android:gravity="left">
 
@@ -551,7 +547,7 @@
 
                         </LinearLayout>
 
-                    </LinearLayout>
+                    </RelativeLayout>
 
                 </LinearLayout>
 
@@ -579,24 +575,21 @@
                             android:textAppearance="?android:attr/textAppearanceMedium"
                             android:textColor="@color/grayMedium"/>
 
-                        <LinearLayout
-                            android:id="@+id/llOrigin1"
+                        <RelativeLayout
                             android:layout_width="match_parent"
-                            style="@style/linearLayout"
+                            android:layout_height="wrap_content"
+                            android:layout_margin="3dp"
                             android:clickable="true"
                             android:focusable="true"
-                            android:layout_margin="3dp"
-                            android:elevation="2dp"
                             android:gravity="center_vertical"
-                            android:orientation="horizontal"
-                            android:layout_height="wrap_content">
+                            android:orientation="horizontal">
 
                             <EditText
                                 android:id="@+id/edtOrigin"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:layout_weight="1"
-                                android:background="@android:color/transparent"
+                                android:background="@drawable/edit_text_style"
                                 android:nextFocusDown="@id/edtDestination"
                                 android:padding="5dp"
                                 android:singleLine="true"
@@ -608,7 +601,8 @@
                             <LinearLayout
                                 android:id="@+id/llSearchOrigin"
                                 android:layout_width="50dp"
-                                android:layout_height="match_parent"
+                                android:layout_alignParentLeft="true"
+                                android:layout_height="35dp"
                                 android:background="@drawable/bg_ripple"
                                 android:paddingLeft="5dp"
                                 android:gravity="left|center_vertical">
@@ -622,7 +616,7 @@
 
                             </LinearLayout>
 
-                        </LinearLayout>
+                    </RelativeLayout>
 
                     </LinearLayout>
 
@@ -644,24 +638,21 @@
                             android:textAppearance="?android:attr/textAppearanceMedium"
                             android:textColor="@color/grayMedium"/>
 
-                        <LinearLayout
-                            android:id="@+id/llDestination1"
+                        <RelativeLayout
                             android:layout_width="match_parent"
-                            style="@style/linearLayout"
+                            android:layout_height="wrap_content"
+                            android:layout_margin="3dp"
                             android:clickable="true"
                             android:focusable="true"
-                            android:layout_margin="3dp"
-                            android:elevation="2dp"
                             android:gravity="center_vertical"
-                            android:orientation="horizontal"
-                            android:layout_height="wrap_content">
+                            android:orientation="horizontal">
 
                             <EditText
                                 android:id="@+id/edtDestination"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:layout_weight="1"
-                                android:background="@android:color/transparent"
+                                android:background="@drawable/edit_text_style"
                                 android:nextFocusDown="@id/edtDescription"
                                 android:padding="5dp"
                                 android:singleLine="true"
@@ -673,7 +664,8 @@
                             <LinearLayout
                                 android:id="@+id/llSearchDestination"
                                 android:layout_width="50dp"
-                                android:layout_height="match_parent"
+                                android:layout_height="35dp"
+                                android:layout_alignParentLeft="true"
                                 android:background="@drawable/bg_ripple"
                                 android:paddingLeft="5dp"
                                 android:gravity="left|center_vertical">
@@ -687,18 +679,7 @@
 
                             </LinearLayout>
 
-                        </LinearLayout>
-
-                        <!--                        <TextView-->
-                        <!--                            android:id="@+id/txtDestination"-->
-                        <!--                            android:layout_width="match_parent"-->
-                        <!--                            android:layout_height="match_parent"-->
-                        <!--                            android:padding="8dp"-->
-                        <!--                            android:layout_margin="3dp"-->
-                        <!--                            android:elevation="2dp"-->
-                        <!--                            android:textAppearance="?android:attr/textAppearanceMedium"-->
-                        <!--                            android:textColor="@color/colorBlack"-->
-                        <!--                            android:background="@drawable/bg_strock_corner"/>-->
+                        </RelativeLayout>
 
                     </LinearLayout>
 
@@ -724,7 +705,6 @@
                             android:gravity="center"
                             android:padding="3dp"
                             android:layout_margin="3dp"
-                            android:elevation="2dp"
                             android:background="@drawable/bg_strock_corner">
 
                             <CheckBox
@@ -738,6 +718,8 @@
                         </LinearLayout>
 
                     </LinearLayout>
+
+                </LinearLayout>
 
                 </LinearLayout>
 
@@ -781,7 +763,6 @@
                             android:layout_height="wrap_content"
                             android:gravity="center"
                             android:layout_margin="3dp"
-                            android:elevation="2dp"
                             android:background="@drawable/bg_edit_text">
 
                             <Spinner
@@ -791,8 +772,8 @@
                                 android:background="@android:color/transparent"
                                 android:dropDownWidth="match_parent"
                                 android:gravity="center"
-                                android:paddingTop="5dp"
-                                android:paddingBottom="5dp" />
+                                android:paddingBottom="5dp"
+                                android:paddingTop="5dp" />
 
                         </LinearLayout>
 
@@ -814,21 +795,21 @@
                             android:textAppearance="?android:attr/textAppearanceMedium"
                             android:textColor="@color/grayMedium"/>
 
-                        <LinearLayout
+                        <RelativeLayout
                             android:layout_width="match_parent"
-                            android:background="@drawable/edit_text_style"
-                            android:gravity="center_vertical"
+                            android:layout_height="wrap_content"
                             android:layout_margin="3dp"
-                            android:elevation="2dp"
-                            android:orientation="horizontal"
-                            android:layout_height="wrap_content">
+                            android:clickable="true"
+                            android:focusable="true"
+                            android:gravity="center_vertical"
+                            android:orientation="horizontal">
 
                             <TextView
                                 android:id="@+id/txtDescription"
                                 android:layout_width="match_parent"
                                 android:layout_weight="1"
                                 android:layout_height="wrap_content"
-                                android:background="@android:color/transparent"
+                                android:background="@drawable/bg_strock_corner"
                                 android:textAppearance="?android:attr/textAppearanceMedium"
                                 android:textColor="@color/colorBlack"
                                 android:padding="5dp"
@@ -840,6 +821,7 @@
                                 android:id="@+id/llDescriptionDetail"
                                 android:layout_width="50dp"
                                 android:gravity="center"
+                                android:layout_alignParentLeft="true"
                                 android:background="@drawable/bg_ripple"
                                 android:layout_height="35dp">
 
@@ -854,7 +836,7 @@
 
                             </LinearLayout>
 
-                        </LinearLayout>
+                        </RelativeLayout>
 
                     </LinearLayout>
 
@@ -889,7 +871,6 @@
                             android:layout_height="wrap_content"
                             android:layout_margin="3dp"
                             android:background="@drawable/bg_strock_corner"
-                            android:elevation="2dp"
                             android:gravity="center"
                             android:padding="5dp">
 
@@ -961,7 +942,6 @@
                             android:gravity="center"
                             android:padding="3dp"
                             android:layout_margin="3dp"
-                            android:elevation="2dp"
                             android:background="@drawable/bg_strock_corner">
 
                             <CheckBox
@@ -980,7 +960,7 @@
 
             </LinearLayout>
 
-            <LinearLayout
+        <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal">

@@ -39,7 +39,7 @@ public class AccountFragment extends Fragment {
   String a;
   private int keyDel;
 
-  @OnClick(R.id.imgBack)
+  @OnClick(R.id.rlActionBar)
   void onBack() {
     MyApplication.currentActivity.onBackPressed();
   }

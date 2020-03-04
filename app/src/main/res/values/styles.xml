@@ -19,7 +19,7 @@
         <item name="android:paddingRight">23dp</item>
     </style>
     
-    <style name="linearLayout">
+    <style name="linearLayout"  parent="AppBaseTheme">
         <item name="android:background">@drawable/layer_style</item>
         
     </style>
