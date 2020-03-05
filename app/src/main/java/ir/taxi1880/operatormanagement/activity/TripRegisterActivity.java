@@ -8,7 +8,6 @@ import android.util.Log;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
-import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
@@ -17,11 +16,10 @@ import android.widget.LinearLayout;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.Spinner;
+import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.ViewFlipper;
-
-import com.whygraphics.multilineradiogroup.MultiLineRadioGroup;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -39,6 +37,7 @@ import ir.taxi1880.operatormanagement.R;
 import ir.taxi1880.operatormanagement.adapter.SpinnerAdapter;
 import ir.taxi1880.operatormanagement.app.EndPoints;
 import ir.taxi1880.operatormanagement.app.MyApplication;
+import ir.taxi1880.operatormanagement.customView.MultiRowsRadioGroup;
 import ir.taxi1880.operatormanagement.dialog.AddressListDialog;
 import ir.taxi1880.operatormanagement.dialog.CallDialog;
 import ir.taxi1880.operatormanagement.dialog.DescriptionDialog;
@@ -66,8 +65,9 @@ public class TripRegisterActivity extends AppCompatActivity {
   private int originStationCode = -1;
   private int serviceType;
   private int serviceCount;
-  public static InputMethodManager inputMethodManager;
-
+  private boolean isEnableView = false;
+  private boolean isOriginValid;
+  private boolean isDestinationValid;
 
   @OnClick(R.id.imgBack)
   void onBack() {
@@ -219,8 +219,7 @@ public class TripRegisterActivity extends AppCompatActivity {
   RadioButton rbFormality;
 
   @BindView(R.id.rgCarClass)
-  MultiLineRadioGroup rgCarClass;
-//          MultiRadioGroup rgCarClass;
+  MultiRowsRadioGroup rgCarClass;
 
   @OnClick(R.id.llDescriptionDetail)
   void onPressLlDescriptionDetail() {
@@ -286,6 +285,7 @@ public class TripRegisterActivity extends AppCompatActivity {
     }
 
     getCheckOriginStation(cityCode, Integer.parseInt(StringHelper.toEnglishDigits(edtOrigin.getText().toString())));
+
     getCheckDestStation(cityCode, Integer.parseInt(StringHelper.toEnglishDigits(edtDestination.getText().toString())));
 
     String mobile;
@@ -331,19 +331,21 @@ public class TripRegisterActivity extends AppCompatActivity {
         break;
     }
 
-    new GeneralDialog()
-            .title("ثبت اطلاعات")
-            .message("آیا از ثبت اطلاعات اطمینان دارید؟")
-            .firstButton("بله", () ->
-                    insertService(MyApplication.prefManager.getUserCode(), serviceCount, tell, mobile, cityCode, stationCode,
-                            name, address, fixedComment, destinationStation,
-                            stationName, serviceType, carClass, normalDescription, traffic, 1, defaultClass))
-            .secondButton("خیر", new Runnable() {
-              @Override
-              public void run() {
-              }
-            })
-            .show();
+    if (isOriginValid && isDestinationValid) {
+      new GeneralDialog()
+              .title("ثبت اطلاعات")
+              .message("آیا از ثبت اطلاعات اطمینان دارید؟")
+              .firstButton("بله", () ->
+                      insertService(MyApplication.prefManager.getUserCode(), serviceCount, tell, mobile, cityCode, stationCode,
+                              name, address, fixedComment, destinationStation,
+                              stationName, serviceType, carClass, normalDescription, traffic, 1, defaultClass))
+              .secondButton("خیر", new Runnable() {
+                @Override
+                public void run() {
+                }
+              })
+              .show();
+    }
   }
 
   @OnClick(R.id.btnOptions)
@@ -359,21 +361,6 @@ public class TripRegisterActivity extends AppCompatActivity {
 
   @BindView(R.id.vfPassengerInfo)
   ViewFlipper vfPassengerInfo;
-
-  private void clearData(){
-    edtTell.setText("");
-    edtMobile.setText("");
-    edtDiscount.setText("");
-    edtFamily.setText("");
-    edtAddress.setText("");
-    edtOrigin.setText("");
-    edtDestination.setText("");
-    chbTraffic.setChecked(false);
-    txtDescription.setText("");
-    chbAlways.setChecked(false);
-    rgCarClass.clearCheck();
-    rbUnknow.setChecked(true);
-  }
 
   @OnClick(R.id.llClear)
   void onClear() {
@@ -393,13 +380,15 @@ public class TripRegisterActivity extends AppCompatActivity {
   void onPressDownload() {
     if (edtTell.getText().toString().isEmpty()) {
       MyApplication.Toast("شماره تلفن را وارد نمایید", Toast.LENGTH_SHORT);
+      edtTell.requestFocus();
       return;
     }
     if (edtMobile.getText().toString().isEmpty()) {
       MyApplication.Toast("شماره تلفن همراه را وارد نمایید", Toast.LENGTH_SHORT);
+      edtMobile.requestFocus();
       return;
     }
-    getPassengerInfo(StringHelper.toEnglishDigits(edtTell.getText().toString()), StringHelper.toEnglishDigits(edtMobile.getText().toString()));
+    getPassengerInfo(StringHelper.toEnglishDigits(edtTell.getText().toString()), StringHelper.toEnglishDigits(edtMobile.getText().toString()), StringHelper.toEnglishDigits("1880"));
   }
 
   @OnClick(R.id.llEndCall)
@@ -409,7 +398,7 @@ public class TripRegisterActivity extends AppCompatActivity {
     new CallDialog().show(new CallDialog.Listener() {
       @Override
       public void onClose(boolean b) {
-        if (b){
+        if (b) {
           clearData();
         }
       }
@@ -418,14 +407,41 @@ public class TripRegisterActivity extends AppCompatActivity {
 //    call.terminate();
   }
 
-  @BindView(R.id.rgStatus)
-  RadioGroup rgStatus;
+  @BindView(R.id.swActivateStatus)
+  Switch swActivateStatus;
 
-  @BindView(R.id.rbActivate)
-  RadioButton rbActivate;
+  @BindView(R.id.llDownload)
+  LinearLayout llDownload;
 
-  @BindView(R.id.rbDeActivate)
-  RadioButton rbDeActivate;
+  @BindView(R.id.llSearchAddress)
+  LinearLayout llSearchAddress;
+
+  @BindView(R.id.llDescriptionDetail)
+  LinearLayout llDescriptionDetail;
+
+  @BindView(R.id.llTraffic)
+  LinearLayout llTraffic;
+
+  @BindView(R.id.llAlways)
+  LinearLayout llAlways;
+
+  @BindView(R.id.llServiceCount)
+  LinearLayout llServiceCount;
+
+  @BindView(R.id.llFamily)
+  LinearLayout llFamily;
+
+  @BindView(R.id.llDiscount)
+  LinearLayout llDiscount;
+
+  @BindView(R.id.llAddress)
+  LinearLayout llAddress;
+
+//  @BindView(R.id.rbActivate)
+//  RadioButton rbActivate;
+//
+//  @BindView(R.id.rbDeActivate)
+//  RadioButton rbDeActivate;
 
   private boolean serviceTypeFlag = false;
   private boolean cityFlag = false;
@@ -451,18 +467,56 @@ public class TripRegisterActivity extends AppCompatActivity {
     unbinder = ButterKnife.bind(this, view);
     TypefaceUtil.overrideFonts(view);
 
+    disableViews();
+
     initCitySpinner();
     initServiceTypeSpinner();
     initServiceCountSpinner();
 
-    rgStatus.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
-      @Override
-      public void onCheckedChanged(RadioGroup radioGroup, int i) {
-
-      }
-    });
-
     edtTell.requestFocus();
+
+//    swActivateStatus.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+//      @Override
+//      public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
+//        if (b){
+//          new GeneralDialog()
+//                  .title("هشدار")
+//                  .cancelable(false)
+//                  .message("مطمئنی میخوای وارد صف بشی؟")
+//                  .firstButton("مطمئنم", new Runnable() {
+//                    @Override
+//                    public void run() {
+//                      MyApplication.Toast("شما وارد صف شدید",Toast.LENGTH_SHORT);
+//                    }
+//                  })
+//                  .secondButton("نیستم", new Runnable() {
+//                    @Override
+//                    public void run() {
+//                      swActivateStatus.setChecked(false);
+//                    }
+//                  })
+//                  .show();
+//        }else {
+//          new GeneralDialog()
+//                  .title("هشدار")
+//                  .cancelable(false)
+//                  .message("مطمئنی میخوای خارج بشی؟")
+//                  .firstButton("مطمئنم", new Runnable() {
+//                    @Override
+//                    public void run() {
+//                      MyApplication.Toast("شما خارج شدید",Toast.LENGTH_SHORT);
+//                    }
+//                  })
+//                  .secondButton("نیستم", new Runnable() {
+//                    @Override
+//                    public void run() {
+//                      swActivateStatus.setChecked(true);
+//                    }
+//                  })
+//                  .show();
+//        }
+//      }
+//    });
 
     edtTell.addTextChangedListener(new TextWatcher() {
       @Override
@@ -472,14 +526,17 @@ public class TripRegisterActivity extends AppCompatActivity {
 
       @Override
       public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-        if (charSequence.toString().isEmpty()) {
-          spCity.setSelection(0);
-        }
+//        if (charSequence.toString().isEmpty()) {
+//        spCity.setSelection(0);
+        isEnableView = false;
+        disableViews();
+        initServiceCountSpinner();
+        initServiceTypeSpinner();
+//        }
       }
 
       @Override
       public void afterTextChanged(Editable editable) {
-        Log.i(TAG, "afterTextChanged:" + editable.toString());
         if (PhoneNumberValidation.isValid(editable.toString())) {
           edtMobile.setText(editable.toString());
           edtTell.setNextFocusDownId(R.id.edtFamily);
@@ -499,28 +556,11 @@ public class TripRegisterActivity extends AppCompatActivity {
       }
     });
 
-    rgStatus.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
+    rgCarClass.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
       @Override
-      public void onCheckedChanged(RadioGroup radioGroup, int i) {
-
-        switch (i) {
-          case R.id.rbActivate:
-            MyApplication.Toast("rbActivate", Toast.LENGTH_SHORT);
-
-            break;
-
-          case R.id.rbDeActivate:
-            MyApplication.Toast("rbDeActivate", Toast.LENGTH_SHORT);
-
-            break;
-        }
-      }
-    });
-
-    rbActivate.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-      @Override
-      public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
-
+      public void onCheckedChanged(RadioGroup group, int i) {
+        CompoundButton cb = (CompoundButton) group.findViewById(i);
+        chbAlways.setChecked(false);
       }
     });
 
@@ -540,7 +580,11 @@ public class TripRegisterActivity extends AppCompatActivity {
         countService[i] = i + "";
         countServices.add(countService[i]);
       }
-
+      if (isEnableView) {
+        spServiceCount.setEnabled(true);
+      } else {
+        spServiceCount.setEnabled(false);
+      }
       spServiceCount.setAdapter(new SpinnerAdapter(MyApplication.currentActivity, R.layout.item_spinner, countServices));
       spServiceCount.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
         @Override
@@ -571,8 +615,11 @@ public class TripRegisterActivity extends AppCompatActivity {
         typeServiceModels.add(typeServiceModel);
         serviceList.add(serviceObj.getString("name"));
       }
-      llServiceType.setClickable(false);
-      spServiceType.setEnabled(false);
+      if (isEnableView) {
+        spServiceType.setEnabled(true);
+      } else {
+        spServiceType.setEnabled(false);
+      }
       spServiceType.setAdapter(new SpinnerAdapter(MyApplication.currentActivity, R.layout.item_spinner, serviceList));
 
       spServiceType.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
@@ -617,6 +664,7 @@ public class TripRegisterActivity extends AppCompatActivity {
         public void onNothingSelected(AdapterView<?> parent) {
         }
       });
+
     } catch (JSONException e) {
       e.printStackTrace();
     }
@@ -624,10 +672,10 @@ public class TripRegisterActivity extends AppCompatActivity {
 
   ArrayList<PassengerAddressModel> passengerAddressModels;
 
-  private void getPassengerInfo(String phoneNumber, String mobile) {
+  private void getPassengerInfo(String phoneNumber, String mobile, String queue) {
     vfPassengerInfo.setDisplayedChild(1);
 
-    RequestHelper.builder(EndPoints.PASSENGER_INFO + "/" + phoneNumber + "/" + mobile)
+    RequestHelper.builder(EndPoints.PASSENGER_INFO + "/" + phoneNumber + "/" + mobile + "/" + queue)
             .method(RequestHelper.GET)
             .params(new JSONObject())
             .listener(getPassengerInfo)
@@ -664,12 +712,16 @@ public class TripRegisterActivity extends AppCompatActivity {
             int carType = passengerInfoObj.getInt("carType");
 
             if (success) {
+              isEnableView = true;
+              initServiceCountSpinner();
+              initServiceTypeSpinner();
+              enableViews();
               if (callerCode == 0) {
                 txtNewPassenger.setVisibility(View.VISIBLE);
                 txtLockPassenger.setVisibility(View.GONE);
                 edtFamily.requestFocus();
               } else {
-                switch (status){
+                switch (status) {
                   case 0:
                     txtNewPassenger.setVisibility(View.GONE);
                     txtLockPassenger.setVisibility(View.GONE);
@@ -718,7 +770,6 @@ public class TripRegisterActivity extends AppCompatActivity {
 
     @Override
     public void onFailure(Runnable reCall, Exception e) {
-      vfPassengerInfo.setDisplayedChild(0);
     }
   };
 
@@ -801,12 +852,12 @@ public class TripRegisterActivity extends AppCompatActivity {
 
             JSONObject dataObj = obj.getJSONObject("data");
             int status = dataObj.getInt("status");
-            String descriptionStatus = dataObj.getString("descriptionStatus");
+            String desc = dataObj.getString("descriptionStatus");
 
             if (status != 0) {
               new GeneralDialog()
-                      .title("هشدار")
-                      .message(descriptionStatus)
+                      .title("منطقه مبدا")
+                      .message(desc)
                       .firstButton("اصلاح میکنم", new Runnable() {
                         @Override
                         public void run() {
@@ -814,7 +865,10 @@ public class TripRegisterActivity extends AppCompatActivity {
                         }
                       })
                       .show();
+              return;
             }
+            isOriginValid = true;
+
 
           } catch (JSONException e) {
             e.printStackTrace();
@@ -851,12 +905,12 @@ public class TripRegisterActivity extends AppCompatActivity {
 
             JSONObject dataObj = obj.getJSONObject("data");
             int status = dataObj.getInt("status");
-            String descriptionStatus = dataObj.getString("descriptionStatus");
+            String desc = dataObj.getString("descriptionStatus");
 
             if (status != 0) {
               new GeneralDialog()
-                      .title("هشدار")
-                      .message(descriptionStatus)
+                      .title("منطقه مقصد")
+                      .message(desc)
                       .firstButton("اصلاح میکنم", new Runnable() {
                         @Override
                         public void run() {
@@ -864,7 +918,9 @@ public class TripRegisterActivity extends AppCompatActivity {
                         }
                       })
                       .show();
+              return;
             }
+            isDestinationValid = true;
 
           } catch (JSONException e) {
             e.printStackTrace();
@@ -953,6 +1009,22 @@ public class TripRegisterActivity extends AppCompatActivity {
             String message = obj.getString("message");
             JSONObject dataObj = obj.getJSONObject("data");
 
+            if (success) {
+              MyApplication.Toast("باموفقیت وارد صف شدید", Toast.LENGTH_SHORT);
+            } else {
+              new GeneralDialog()
+                      .title("هشدار")
+                      .message(message)
+                      .firstButton("تلاش مجدد", new Runnable() {
+                        @Override
+                        public void run() {
+//                          setActivate(MyApplication.prefManager.getUserCode(),MyApplication.prefManager.getSipNumber());
+                        }
+                      })
+                      .secondButton("بعدا امتحان میکنم", null)
+                      .show();
+            }
+
           } catch (JSONException e) {
             e.printStackTrace();
           }
@@ -994,6 +1066,23 @@ public class TripRegisterActivity extends AppCompatActivity {
             boolean success = obj.getBoolean("success");
             String message = obj.getString("message");
             JSONObject dataObj = obj.getJSONObject("data");
+
+            if (success) {
+              MyApplication.Toast("باموفقیت از صف خارج شدید", Toast.LENGTH_SHORT);
+            } else {
+              new GeneralDialog()
+                      .title("هشدار")
+                      .message(message)
+                      .firstButton("تلاش مجدد", new Runnable() {
+                        @Override
+                        public void run() {
+//                          setDeActivate(MyApplication.prefManager.getUserCode(),MyApplication.prefManager.getSipNumber());
+                        }
+                      })
+                      .secondButton("بعدا امتحان میکنم", null)
+                      .show();
+            }
+
           } catch (JSONException e) {
             e.printStackTrace();
           }
@@ -1098,6 +1187,76 @@ public class TripRegisterActivity extends AppCompatActivity {
 
     }
   };
+
+  private void clearData() {
+    isEnableView = false;
+    txtLockPassenger.setVisibility(View.GONE);
+    txtNewPassenger.setVisibility(View.GONE);
+    edtTell.setText("");
+    edtMobile.setText("");
+    edtDiscount.setText("");
+    edtFamily.setText("");
+    edtAddress.setText("");
+    edtOrigin.setText("");
+    edtDestination.setText("");
+    chbTraffic.setChecked(false);
+    txtDescription.setText("");
+    chbAlways.setChecked(false);
+    rgCarClass.clearCheck();
+    rbUnknow.setChecked(true);
+  }
+
+  private void enableViews() {
+    edtFamily.setEnabled(true);
+    edtDiscount.setEnabled(true);
+    edtAddress.setEnabled(true);
+    edtOrigin.setEnabled(true);
+    edtDestination.setEnabled(true);
+    chbTraffic.setEnabled(true);
+    chbAlways.setEnabled(true);
+    llSearchAddress.setEnabled(true);
+    llSearchOrigin.setEnabled(true);
+    llSearchDestination.setEnabled(true);
+    llDescriptionDetail.setEnabled(true);
+    llServiceType.setEnabled(true);
+    llTraffic.setEnabled(true);
+    llAlways.setEnabled(true);
+    llServiceCount.setEnabled(true);
+    rgCarClass.setEnabled(true);
+    llDiscount.setEnabled(true);
+    llFamily.setEnabled(true);
+    llAddress.setEnabled(true);
+    spServiceCount.setEnabled(true);
+    spServiceType.setEnabled(true);
+  }
+
+  private void disableViews() {
+    edtFamily.setEnabled(false);
+    edtDiscount.setEnabled(false);
+    edtAddress.setEnabled(false);
+    edtOrigin.setEnabled(false);
+    edtDestination.setEnabled(false);
+    chbTraffic.setEnabled(false);
+    chbAlways.setEnabled(false);
+    llSearchAddress.setEnabled(false);
+    llSearchOrigin.setEnabled(false);
+    llSearchDestination.setEnabled(false);
+    llDescriptionDetail.setEnabled(false);
+    llServiceType.setEnabled(false);
+    llTraffic.setEnabled(false);
+    llAlways.setEnabled(false);
+    llServiceCount.setEnabled(false);
+    llDiscount.setEnabled(false);
+    llFamily.setEnabled(false);
+    llAddress.setEnabled(false);
+    spServiceCount.setEnabled(false);
+    spServiceType.setEnabled(false);
+    for (int i = 0; i < rgCarClass.getChildCount(); i++) {
+      rgCarClass.getChildAt(i).setEnabled(false);
+    }
+
+
+  }
 
   @Override
   protected void onResume() {

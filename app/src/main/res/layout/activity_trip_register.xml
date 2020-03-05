@@ -21,41 +21,50 @@
             android:layout_height="match_parent"
             android:gravity="center">
 
-                <RadioGroup
-                    android:id="@+id/rgStatus"
-                    android:background="@drawable/bg_activate_status"
-                    android:layout_width="200dp"
-                    android:layout_height="40dp"
-                    android:orientation="horizontal">
+<!--                <RadioGroup-->
+<!--                    android:id="@+id/rgStatus"-->
+<!--                    android:background="@drawable/bg_activate_status"-->
+<!--                    android:layout_width="200dp"-->
+<!--                    android:layout_height="40dp"-->
+<!--                    android:orientation="horizontal">-->
 
-                    <RadioButton
-                        android:id="@+id/rbActivate"
-                        android:layout_width="0dp"
-                        android:layout_weight="1"
-                        android:layout_height="match_parent"
-                        android:text="فعال"
-                        android:checked="true"
-                        android:textAppearance="?android:attr/textAppearanceMedium"
-                        android:layout_margin="3dp"
-                        android:textColor="@color/colorWhite"
-                        android:background="@drawable/bg_trip_type"
-                        android:gravity="center"
-                        android:button="@null" />
+<!--                    <RadioButton-->
+<!--                        android:id="@+id/rbActivate"-->
+<!--                        android:layout_width="0dp"-->
+<!--                        android:layout_weight="1"-->
+<!--                        android:layout_height="match_parent"-->
+<!--                        android:text="فعال"-->
+<!--                        android:checked="true"-->
+<!--                        android:textAppearance="?android:attr/textAppearanceMedium"-->
+<!--                        android:layout_margin="3dp"-->
+<!--                        android:textColor="@color/colorWhite"-->
+<!--                        android:background="@drawable/bg_trip_type"-->
+<!--                        android:gravity="center"-->
+<!--                        android:button="@null" />-->
 
-                    <RadioButton
-                        android:id="@+id/rbDeActivate"
-                        android:layout_width="0dp"
-                        android:layout_weight="1"
-                        android:gravity="center"
-                        android:layout_margin="3dp"
-                        android:textAppearance="?android:attr/textAppearanceMedium"
-                        android:layout_height="match_parent"
-                        android:textColor="@color/colorWhite"
-                        android:background="@drawable/bg_trip_type"
-                        android:text="غیر فعال"
-                        android:button="@null" />
+<!--                    <RadioButton-->
+<!--                        android:id="@+id/rbDeActivate"-->
+<!--                        android:layout_width="0dp"-->
+<!--                        android:layout_weight="1"-->
+<!--                        android:gravity="center"-->
+<!--                        android:layout_margin="3dp"-->
+<!--                        android:textAppearance="?android:attr/textAppearanceMedium"-->
+<!--                        android:layout_height="match_parent"-->
+<!--                        android:textColor="@color/colorWhite"-->
+<!--                        android:background="@drawable/bg_trip_type"-->
+<!--                        android:text="غیر فعال"-->
+<!--                        android:button="@null" />-->
 
-                </RadioGroup>
+<!--                </RadioGroup>-->
+
+            <Switch
+                android:id="@+id/swActivateStatus"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:textOn="فعال"
+                android:textOff="غیرفعال"
+                android:gravity="center"
+                />
 
         </LinearLayout>
 
@@ -107,18 +116,12 @@
             android:layout_height="match_parent"
             android:orientation="vertical">
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="vertical">
-
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:paddingRight="15dp"
+                android:layout_height="match_parent"
+                android:orientation="vertical"
                 android:paddingLeft="15dp"
-                android:orientation="vertical">
+                android:paddingRight="15dp">
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -202,7 +205,7 @@
                             android:textAppearance="?android:attr/textAppearanceMedium"
                             android:textColor="@color/colorBlack"
                             android:singleLine="true"
-                            android:inputType="number"
+                            android:inputType="number|textNoSuggestions"
                             android:nextFocusDown="@id/edtMobile"
                             android:background="@drawable/edit_text_style"/>
 
@@ -314,9 +317,8 @@
                             android:layout_weight="1"
                             android:gravity="center_vertical"
                             android:background="@drawable/edit_text_style"
-                            android:nextFocusDown="@id/edtFamily"
                             android:padding="5dp"
-                            android:inputType="number"
+                            android:inputType="number|textNoSuggestions"
                             android:singleLine="true"
                             android:maxLength="11"
                             android:textAppearance="?android:attr/textAppearanceMedium"
@@ -405,7 +407,7 @@
                                 android:layout_width="match_parent"
                                 android:layout_height="match_parent"
                                 android:dropDownWidth="match_parent"
-                                android:background="@drawable/bg_edit_text"
+                                android:background="@drawable/edit_text_style"
                                 android:gravity="center"
                                 android:paddingTop="5dp"
                                 android:paddingBottom="5dp"  />
@@ -537,11 +539,11 @@
                                     android:textStyle="bold" />
 
                                 <com.wang.avi.AVLoadingIndicatorView
-                                    app:indicatorColor="@color/colorPrimaryDark"
-                                    android:padding="5dp"
                                     android:layout_width="match_parent"
                                     android:layout_height="match_parent"
-                                    android:layout_gravity="center" />
+                                    android:layout_gravity="center"
+                                    android:padding="5dp"
+                                    app:indicatorColor="@color/colorPrimaryDark" />
 
                             </ViewFlipper>
 
@@ -705,7 +707,7 @@
                             android:gravity="center"
                             android:padding="3dp"
                             android:layout_margin="3dp"
-                            android:background="@drawable/bg_strock_corner">
+                            android:background="@drawable/edit_text_style">
 
                             <CheckBox
                                 android:id="@+id/chbTraffic"
@@ -718,8 +720,6 @@
                         </LinearLayout>
 
                     </LinearLayout>
-
-                </LinearLayout>
 
                 </LinearLayout>
 
@@ -762,14 +762,13 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:gravity="center"
-                            android:layout_margin="3dp"
-                            android:background="@drawable/bg_edit_text">
+                            android:layout_margin="3dp">
 
                             <Spinner
                                 android:id="@+id/spServiceCount"
                                 android:layout_width="match_parent"
                                 android:layout_height="match_parent"
-                                android:background="@android:color/transparent"
+                                android:background="@drawable/edit_text_style"
                                 android:dropDownWidth="match_parent"
                                 android:gravity="center"
                                 android:paddingBottom="5dp"
@@ -863,9 +862,10 @@
                             android:textAppearance="?android:attr/textAppearanceMedium"
                             android:textColor="@color/grayMedium" />
 
-                        <com.whygraphics.multilineradiogroup.MultiLineRadioGroup
+                        <ir.taxi1880.operatormanagement.customView.MultiRowsRadioGroup
                             xmlns:multi_line_radio_group="http://schemas.android.com/apk/res-auto"
                             android:id="@+id/rgCarClass"
+                            multi_line_radio_group:default_button="@string/unKnow"
                             multi_line_radio_group:max_in_row="3"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
@@ -874,10 +874,16 @@
                             android:gravity="center"
                             android:padding="5dp">
 
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:orientation="horizontal">
+
                                 <RadioButton
                                     android:checked="true"
                                     android:id="@+id/rbUnknow"
                                     android:layout_width="wrap_content"
+                                    android:layout_weight="1"
                                     android:textAppearance="?android:attr/textAppearanceSmall"
                                     android:layout_height="wrap_content"
                                     android:buttonTint="@color/colorPrimaryDark"
@@ -885,6 +891,7 @@
 
                                 <RadioButton
                                     android:id="@+id/rbTaxi"
+                                    android:layout_weight="1"
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
                                     android:buttonTint="@color/colorPrimaryDark"
@@ -893,15 +900,24 @@
 
                                 <RadioButton
                                     android:id="@+id/rbPrivilage"
+                                    android:layout_weight="1"
                                     android:layout_width="wrap_content"
                                     android:textAppearance="?android:attr/textAppearanceSmall"
                                     android:layout_height="wrap_content"
                                     android:buttonTint="@color/colorPrimaryDark"
                                     android:text="@string/privilege"/>
 
+                            </LinearLayout>
+
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:orientation="horizontal">
+
                                 <RadioButton
                                     android:id="@+id/rbEconomical"
                                     android:layout_width="wrap_content"
+                                    android:layout_weight="1"
                                     android:layout_height="wrap_content"
                                     android:buttonTint="@color/colorPrimaryDark"
                                     android:text="@string/economically"
@@ -916,7 +932,14 @@
                                     android:buttonTint="@color/colorPrimaryDark"
                                     android:text="@string/formality"/>
 
-                        </com.whygraphics.multilineradiogroup.MultiLineRadioGroup>
+                                <ImageView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="match_parent"
+                                    android:layout_weight="2"/>
+
+                            </LinearLayout>
+
+                        </ir.taxi1880.operatormanagement.customView.MultiRowsRadioGroup>
 
                     </LinearLayout>
 
@@ -939,18 +962,18 @@
                         <LinearLayout
                             android:layout_width="match_parent"
                             android:layout_height="38dp"
-                            android:gravity="center"
-                            android:padding="3dp"
                             android:layout_margin="3dp"
-                            android:background="@drawable/bg_strock_corner">
+                            android:background="@drawable/edit_text_style"
+                            android:gravity="center"
+                            android:padding="3dp">
 
                             <CheckBox
                                 android:id="@+id/chbAlways"
                                 android:layout_width="match_parent"
                                 android:layout_height="30dp"
-                                android:checked="false"
                                 android:background="@drawable/traffic"
-                                android:button="@null"/>
+                                android:button="@null"
+                                android:checked="false" />
 
                         </LinearLayout>
 
@@ -960,7 +983,7 @@
 
             </LinearLayout>
 
-        <LinearLayout
+           <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal">

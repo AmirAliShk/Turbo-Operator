@@ -32,8 +32,6 @@ public class MainActivity extends AppCompatActivity {
 
   Unbinder unbinder;
   boolean doubleBackToExitPressedOnce = false;
-//  private String[] permission = {Manifest.permission.READ_PHONE_STATE, Manifest.permission.RECORD_AUDIO};
-//  int REQUEST_PERMISSION_CODE = 1;
 
   @OnClick(R.id.llNotification)
   void onNotification() {
@@ -53,32 +51,15 @@ public class MainActivity extends AppCompatActivity {
   @OnClick(R.id.llTripRegister)
   void onTripRegister() {
 
-//    if ((ContextCompat.checkSelfPermission(MyApplication.context, Manifest.permission.READ_PHONE_STATE) != PackageManager.PERMISSION_GRANTED) ||
-//            (ContextCompat.checkSelfPermission(MyApplication.context, Manifest.permission.RECORD_AUDIO) != PackageManager.PERMISSION_GRANTED)) {
-//      new GeneralDialog()
-//              .title("مجوز")
-//              .message("لطفا مجوز های لازم را به برنامه بدهید")
-//              .firstButton("اجازه میدم", () -> ActivityCompat.requestPermissions(MyApplication.currentActivity, permission, REQUEST_PERMISSION_CODE))
-//              .secondButton("اجازه نمیدم", null)
-//              .show();
-//    } else {
       if (MyApplication.prefManager.getAccessInsertService() == 0) {
         new GeneralDialog()
                 .title("هشدار")
                 .message("شما اجازه دسترسی به این بخش از برنامه را ندارید")
-                .firstButton("باشه", new Runnable() {
-                  @Override
-                  public void run() {
-//                  TODO delete this runnable
-                    MyApplication.Toast("حالا چون داری تست میکنی میزارم بری داخل :)", Toast.LENGTH_SHORT);
-                    startActivity(new Intent(MyApplication.context, TripRegisterActivity.class));
-                  }
-                })
+                .firstButton("باشه",null)
                 .show();
       } else {
         startActivity(new Intent(MyApplication.context, TripRegisterActivity.class));
       }
-//    }
   }
 
   @OnClick(R.id.llReplacement)
@@ -159,56 +140,7 @@ public class MainActivity extends AppCompatActivity {
     txtOperatorName.setText(MyApplication.prefManager.getOperatorName());
     txtOperatorCharge.setText(StringHelper.toPersianDigits("شارژ شما : " + MyApplication.prefManager.getBalance()+" تومان "));
 
-//    MyApplication.handler.postDelayed(new Runnable() {
-//      @Override
-//      public void run() {
-//        if ((ContextCompat.checkSelfPermission(MyApplication.context, Manifest.permission.READ_PHONE_STATE) != PackageManager.PERMISSION_GRANTED) ||
-//                (ContextCompat.checkSelfPermission(MyApplication.context, Manifest.permission.RECORD_AUDIO) != PackageManager.PERMISSION_GRANTED)) {
-//          new GeneralDialog()
-//                  .title("مجوز")
-//                  .message("لطفا مجوز های لازم را به برنامه بدهید")
-//                  .firstButton("اجازه میدم", () -> ActivityCompat.requestPermissions(MyApplication.currentActivity, permission, REQUEST_PERMISSION_CODE))
-//                  .secondButton("اجازه نمیدم", null)
-//                  .show();
-//        }
-//      }
-//    }, 300);
   }
-
-//  @Override
-//  public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
-//    super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-//    if (requestCode == REQUEST_PERMISSION_CODE) {
-//      if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-//
-//        if (MyApplication.prefManager.getAccessInsertService() == 0) {
-//          new GeneralDialog()
-//                  .title("هشدار")
-//                  .message("شما اجازه دسترسی به این بخش از برنامه را ندارید")
-//                  .firstButton("باشه", new Runnable() {
-//                    @Override
-//                    public void run() {
-////                  TODO delete this runnable
-//                      MyApplication.Toast("حالا چون داری تست میکنی میزارم بری داخل :)", Toast.LENGTH_SHORT);
-//                      startActivity(new Intent(MyApplication.context, TripRegisterActivity.class));
-//                    }
-//                  })
-//                  .show();
-//        } else {
-//          startActivity(new Intent(MyApplication.context, TripRegisterActivity.class));
-//        }
-//
-//      } else {
-//        new GeneralDialog()
-//                .title("مجوز")
-//                .message("لطفا مجوز های لازم را به برنامه بدهید")
-//                .firstButton("اجازه میدم", () ->
-//                        ActivityCompat.requestPermissions(MyApplication.currentActivity, permission, REQUEST_PERMISSION_CODE))
-//                .secondButton("اجازه نمیدم", null)
-//                .show();
-//      }
-//    }
-//  }
 
   @Override
   protected void onResume() {

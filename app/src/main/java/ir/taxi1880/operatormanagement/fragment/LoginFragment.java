@@ -104,6 +104,7 @@ public class LoginFragment extends Fragment {
           int status = object.getInt("status");
           int userId = object.getInt("userId");
           int block = object.getInt("isBlock");
+//          int accessInsertService = object.getInt("accessInsertService");
           MyApplication.prefManager.setOperatorName(object.getString("name"));
 
           if (status == 1) {
@@ -118,6 +119,7 @@ public class LoginFragment extends Fragment {
             }
 
             MyApplication.prefManager.setUserCode(userId);
+//            MyApplication.prefManager.setAccessInsertService(accessInsertService);
             MyApplication.prefManager.setUserName((edtUserName.getText().toString()));
             MyApplication.prefManager.setPassword(edtPassword.getText().toString());
             MyApplication.prefManager.isLoggedIn(true);
