@@ -30,6 +30,7 @@
     <color name="colorPurpleLight">#D8C9F3</color>
     <color name="colorRed">#D50D0D</color>
     <color name="colorRedLight">#FFB2B2</color>
+    <color name="colorTransparent">#00FFB2B2</color>
 
 
 </resources>

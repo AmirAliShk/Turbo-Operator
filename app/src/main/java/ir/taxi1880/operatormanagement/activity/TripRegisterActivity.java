@@ -1,5 +1,6 @@
 package ir.taxi1880.operatormanagement.activity;
 
+import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
 import android.text.Editable;
@@ -9,6 +10,7 @@ import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.AdapterView;
+import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.EditText;
@@ -16,7 +18,6 @@ import android.widget.LinearLayout;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.Spinner;
-import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.ViewFlipper;
@@ -407,9 +408,6 @@ public class TripRegisterActivity extends AppCompatActivity {
 //    call.terminate();
   }
 
-  @BindView(R.id.swActivateStatus)
-  Switch swActivateStatus;
-
   @BindView(R.id.llDownload)
   LinearLayout llDownload;
 
@@ -437,11 +435,45 @@ public class TripRegisterActivity extends AppCompatActivity {
   @BindView(R.id.llAddress)
   LinearLayout llAddress;
 
-//  @BindView(R.id.rbActivate)
-//  RadioButton rbActivate;
-//
-//  @BindView(R.id.rbDeActivate)
-//  RadioButton rbDeActivate;
+  @BindView(R.id.btnActivate)
+  Button btnActivate;
+
+  @BindView(R.id.btnDeActivate)
+  Button btnDeActivate;
+
+  @OnClick(R.id.btnActivate)
+  void onActivePress() {
+    new GeneralDialog()
+            .title("هشدار")
+            .cancelable(false)
+            .message("مطمئنی میخوای وارد صف بشی؟")
+            .firstButton("مطمئنم", new Runnable() {
+              @Override
+              public void run() {
+                setActivate(MyApplication.prefManager.getUserCode(),MyApplication.prefManager.getSipNumber());
+              }
+            })
+            .secondButton("نیستم", null)
+            .show();
+
+  }
+
+  @OnClick(R.id.btnDeActivate)
+  void onDeActivePress() {
+    new GeneralDialog()
+            .title("هشدار")
+            .cancelable(false)
+            .message("مطمئنی میخوای خارج بشی؟")
+            .firstButton("مطمئنم", new Runnable() {
+              @Override
+              public void run() {
+                setDeActivate(MyApplication.prefManager.getUserCode(),MyApplication.prefManager.getSipNumber());
+              }
+            })
+            .secondButton("نیستم", null)
+            .show();
+
+  }
 
   private boolean serviceTypeFlag = false;
   private boolean cityFlag = false;
@@ -467,6 +499,18 @@ public class TripRegisterActivity extends AppCompatActivity {
     unbinder = ButterKnife.bind(this, view);
     TypefaceUtil.overrideFonts(view);
 
+    if (MyApplication.prefManager.getActivateStatus()) {
+      btnActivate.setBackgroundResource(R.drawable.bg_light_pink_edge);
+      btnDeActivate.setBackgroundColor(Color.parseColor("#00FFB2B2"));
+      btnActivate.setTextColor(Color.parseColor("#ffffff"));
+      btnDeActivate.setTextColor(Color.parseColor("#000000"));
+    } else {
+      btnDeActivate.setBackgroundResource(R.drawable.bg_light_pink_edge);
+      btnActivate.setBackgroundColor(Color.parseColor("#00FFB2B2"));
+      btnDeActivate.setTextColor(Color.parseColor("#ffffff"));
+      btnActivate.setTextColor(Color.parseColor("#000000"));
+    }
+
     disableViews();
 
     initCitySpinner();
@@ -474,49 +518,6 @@ public class TripRegisterActivity extends AppCompatActivity {
     initServiceCountSpinner();
 
     edtTell.requestFocus();
-
-//    swActivateStatus.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-//      @Override
-//      public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
-//        if (b){
-//          new GeneralDialog()
-//                  .title("هشدار")
-//                  .cancelable(false)
-//                  .message("مطمئنی میخوای وارد صف بشی؟")
-//                  .firstButton("مطمئنم", new Runnable() {
-//                    @Override
-//                    public void run() {
-//                      MyApplication.Toast("شما وارد صف شدید",Toast.LENGTH_SHORT);
-//                    }
-//                  })
-//                  .secondButton("نیستم", new Runnable() {
-//                    @Override
-//                    public void run() {
-//                      swActivateStatus.setChecked(false);
-//                    }
-//                  })
-//                  .show();
-//        }else {
-//          new GeneralDialog()
-//                  .title("هشدار")
-//                  .cancelable(false)
-//                  .message("مطمئنی میخوای خارج بشی؟")
-//                  .firstButton("مطمئنم", new Runnable() {
-//                    @Override
-//                    public void run() {
-//                      MyApplication.Toast("شما خارج شدید",Toast.LENGTH_SHORT);
-//                    }
-//                  })
-//                  .secondButton("نیستم", new Runnable() {
-//                    @Override
-//                    public void run() {
-//                      swActivateStatus.setChecked(true);
-//                    }
-//                  })
-//                  .show();
-//        }
-//      }
-//    });
 
     edtTell.addTextChangedListener(new TextWatcher() {
       @Override
@@ -987,6 +988,8 @@ public class TripRegisterActivity extends AppCompatActivity {
       params.put("userId", userId);
       params.put("sipNumber", sipNumber);
 
+      Log.i(TAG, "setActivate: "+params);
+
       RequestHelper.builder(EndPoints.ACTIVATE)
               .method(RequestHelper.POST)
               .params(new JSONObject())
@@ -1010,7 +1013,12 @@ public class TripRegisterActivity extends AppCompatActivity {
             JSONObject dataObj = obj.getJSONObject("data");
 
             if (success) {
-              MyApplication.Toast("باموفقیت وارد صف شدید", Toast.LENGTH_SHORT);
+              MyApplication.Toast("شما باموفقیت وارد صف شدید", Toast.LENGTH_SHORT);
+              btnActivate.setBackgroundResource(R.drawable.bg_light_pink_edge);
+              MyApplication.prefManager.setActivateStatus(true);
+              btnDeActivate.setBackgroundColor(Color.parseColor("#00FFB2B2"));
+              btnActivate.setTextColor(Color.parseColor("#ffffff"));
+              btnDeActivate.setTextColor(Color.parseColor("#000000"));
             } else {
               new GeneralDialog()
                       .title("هشدار")
@@ -1018,7 +1026,7 @@ public class TripRegisterActivity extends AppCompatActivity {
                       .firstButton("تلاش مجدد", new Runnable() {
                         @Override
                         public void run() {
-//                          setActivate(MyApplication.prefManager.getUserCode(),MyApplication.prefManager.getSipNumber());
+                          setActivate(MyApplication.prefManager.getUserCode(),MyApplication.prefManager.getSipNumber());
                         }
                       })
                       .secondButton("بعدا امتحان میکنم", null)
@@ -1045,6 +1053,8 @@ public class TripRegisterActivity extends AppCompatActivity {
       params.put("userId", userId);
       params.put("sipNumber", sipNumber);
 
+      Log.i(TAG, "setDeActivate: "+params);
+
       RequestHelper.builder(EndPoints.DEACTIVATE)
               .method(RequestHelper.POST)
               .params(new JSONObject())
@@ -1068,7 +1078,12 @@ public class TripRegisterActivity extends AppCompatActivity {
             JSONObject dataObj = obj.getJSONObject("data");
 
             if (success) {
-              MyApplication.Toast("باموفقیت از صف خارج شدید", Toast.LENGTH_SHORT);
+              MyApplication.Toast("شما باموفقیت از صف خارج شدید", Toast.LENGTH_SHORT);
+              MyApplication.prefManager.setActivateStatus(false);
+              btnDeActivate.setBackgroundResource(R.drawable.bg_light_pink_edge);
+              btnActivate.setBackgroundColor(Color.parseColor("#00FFB2B2"));
+              btnDeActivate.setTextColor(Color.parseColor("#ffffff"));
+              btnActivate.setTextColor(Color.parseColor("#000000"));
             } else {
               new GeneralDialog()
                       .title("هشدار")
@@ -1076,7 +1091,7 @@ public class TripRegisterActivity extends AppCompatActivity {
                       .firstButton("تلاش مجدد", new Runnable() {
                         @Override
                         public void run() {
-//                          setDeActivate(MyApplication.prefManager.getUserCode(),MyApplication.prefManager.getSipNumber());
+                          setDeActivate(MyApplication.prefManager.getUserCode(),MyApplication.prefManager.getSipNumber());
                         }
                       })
                       .secondButton("بعدا امتحان میکنم", null)

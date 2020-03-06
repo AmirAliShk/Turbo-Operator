@@ -17,54 +17,36 @@
         android:background="@drawable/bg_action_bar_purple">
 
         <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_width="200dp"
+            android:layout_height="40dp"
+            android:layout_centerInParent="true"
+            android:background="@drawable/bg_activate_status"
+            android:orientation="horizontal"
             android:gravity="center">
 
-<!--                <RadioGroup-->
-<!--                    android:id="@+id/rgStatus"-->
-<!--                    android:background="@drawable/bg_activate_status"-->
-<!--                    android:layout_width="200dp"-->
-<!--                    android:layout_height="40dp"-->
-<!--                    android:orientation="horizontal">-->
-
-<!--                    <RadioButton-->
-<!--                        android:id="@+id/rbActivate"-->
-<!--                        android:layout_width="0dp"-->
-<!--                        android:layout_weight="1"-->
-<!--                        android:layout_height="match_parent"-->
-<!--                        android:text="فعال"-->
-<!--                        android:checked="true"-->
-<!--                        android:textAppearance="?android:attr/textAppearanceMedium"-->
-<!--                        android:layout_margin="3dp"-->
-<!--                        android:textColor="@color/colorWhite"-->
-<!--                        android:background="@drawable/bg_trip_type"-->
-<!--                        android:gravity="center"-->
-<!--                        android:button="@null" />-->
-
-<!--                    <RadioButton-->
-<!--                        android:id="@+id/rbDeActivate"-->
-<!--                        android:layout_width="0dp"-->
-<!--                        android:layout_weight="1"-->
-<!--                        android:gravity="center"-->
-<!--                        android:layout_margin="3dp"-->
-<!--                        android:textAppearance="?android:attr/textAppearanceMedium"-->
-<!--                        android:layout_height="match_parent"-->
-<!--                        android:textColor="@color/colorWhite"-->
-<!--                        android:background="@drawable/bg_trip_type"-->
-<!--                        android:text="غیر فعال"-->
-<!--                        android:button="@null" />-->
-
-<!--                </RadioGroup>-->
-
-            <Switch
-                android:id="@+id/swActivateStatus"
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:textOn="فعال"
-                android:textOff="غیرفعال"
+            <Button
+                android:background="@android:color/transparent"
+                android:id="@+id/btnActivate"
+                android:text="فعال"
+                android:textColor="@color/colorBlack"
+                android:layout_margin="3dp"
                 android:gravity="center"
-                />
+                android:textAppearance="?android:attr/textAppearanceLarge"
+                android:layout_width="wrap_content"
+                android:layout_weight="1"
+                android:layout_height="match_parent"/>
+
+            <Button
+                android:background="@drawable/bg_light_pink_edge"
+                android:id="@+id/btnDeActivate"
+                android:layout_margin="3dp"
+                android:text="غیر فعال"
+                android:gravity="center"
+                android:layout_weight="1"
+                android:textColor="@color/colorWhite"
+                android:textAppearance="?android:attr/textAppearanceLarge"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"/>
 
         </LinearLayout>
 
