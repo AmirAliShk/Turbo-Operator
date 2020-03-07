@@ -106,7 +106,7 @@ public class ReplacementWaitingAdapter extends BaseAdapter {
     }
 
     private void answerShiftReplacementRequest(int operatorId, int replacementRequestId, int answer) {
-            RequestHelper.loadBalancingBuilder(EndPoints.ANSWER_SHIFT_REPLACEMENT_REQUEST)
+            RequestHelper.builder(EndPoints.ANSWER_SHIFT_REPLACEMENT_REQUEST)
                     .addParam("operatorId", operatorId)
                     .addParam("replacementRequestId", replacementRequestId)
                     .addParam("answer", answer)

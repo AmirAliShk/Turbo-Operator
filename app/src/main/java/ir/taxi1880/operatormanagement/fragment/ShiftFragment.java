@@ -66,7 +66,7 @@ public class ShiftFragment extends Fragment {
     private void getShifts(int operatorId) {
         vfShift.setDisplayedChild(0);
 
-            RequestHelper.loadBalancingBuilder(EndPoints.GET_SHIFTS)
+            RequestHelper.builder(EndPoints.GET_SHIFTS)
                     .addParam("operatorId", operatorId)
                     .listener(onGetShifts)
                     .post();

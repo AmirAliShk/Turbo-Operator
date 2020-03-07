@@ -103,7 +103,7 @@ public class NotificationAdapter extends BaseAdapter {
     }
 
     private void setNewsSeen(int newsId) {
-            RequestHelper.loadBalancingBuilder(EndPoints.SET_NEWS_SEEN)
+            RequestHelper.builder(EndPoints.SET_NEWS_SEEN)
                     .addParam("newsId", newsId)
                     .listener(onSetNewsSeen)
                     .post();

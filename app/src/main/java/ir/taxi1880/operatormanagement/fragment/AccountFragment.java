@@ -143,7 +143,7 @@ public class AccountFragment extends Fragment {
   private void getBalance(int userId) {
     vfBalance.setDisplayedChild(0);
 
-    RequestHelper.loadBalancingBuilder(EndPoints.BALANCE + "/" + userId)
+    RequestHelper.builder(EndPoints.BALANCE + "/" + userId)
             .addPath(userId + "")
             .listener(getBalance)
             .get();
@@ -181,7 +181,7 @@ public class AccountFragment extends Fragment {
 
   private void UpdateProfile(int userId,String accountNumber,String sheba) {
 
-    RequestHelper.loadBalancingBuilder(EndPoints.UPDATE_PROFILE)
+    RequestHelper.builder(EndPoints.UPDATE_PROFILE)
             .addPath(userId + "")
             .addPath(accountNumber + "")
             .addPath(sheba + "")

@@ -273,6 +273,9 @@ public class RequestHelper implements Callback {
                 requestFailed(response.code(), new Exception(message + res));
               }
             } catch (JSONException e) {
+              if (object==null) {
+                object = new Object[0];
+              }
               if (response.isSuccessful())
                 requestSuccess(bodyStr);
               else

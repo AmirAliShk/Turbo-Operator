@@ -62,7 +62,7 @@ public class SendReplacementReqFragment extends Fragment {
 
     private void getShiftReplacementRequest(int operatorId) {
         vfSendReq.setDisplayedChild(0);
-            RequestHelper.loadBalancingBuilder(EndPoints.GET_SHIFT_REPLACEMENT_REQUESTS)
+            RequestHelper.builder(EndPoints.GET_SHIFT_REPLACEMENT_REQUESTS)
                     .addParam("operatorId", operatorId)
                     .listener(onGetShiftReplacementRequest)
                     .post();

@@ -120,6 +120,7 @@ public class TripRegisterActivity extends AppCompatActivity {
 
   @OnClick(R.id.llSearchOrigin)
   void onOrigin() {
+    edtOrigin.requestFocus();
     new SearchLocationDialog().show(new SearchLocationDialog.Listener() {
       @Override
       public void description(String address, int code) {
@@ -130,6 +131,7 @@ public class TripRegisterActivity extends AppCompatActivity {
 
   @OnClick(R.id.llSearchDestination)
   void onDestination() {
+    edtDestination.requestFocus();
     new SearchLocationDialog().show(new SearchLocationDialog.Listener() {
       @Override
       public void description(String address, int code) {
@@ -682,7 +684,7 @@ public class TripRegisterActivity extends AppCompatActivity {
   private void getPassengerInfo(String phoneNumber, String mobile, String queue) {
     vfPassengerInfo.setDisplayedChild(1);
 
-    RequestHelper.loadBalancingBuilder(EndPoints.PASSENGER_INFO)
+    RequestHelper.builder(EndPoints.PASSENGER_INFO)
             .addPath(phoneNumber)
             .addPath(mobile)
             .addPath(queue)
@@ -694,84 +696,82 @@ public class TripRegisterActivity extends AppCompatActivity {
   RequestHelper.Callback getPassengerInfo = new RequestHelper.Callback() {
     @Override
     public void onResponse(Runnable reCall, Object... args) {
-      MyApplication.handler.post(new Runnable() {
-        @Override
-        public void run() {
-          try {
-            vfPassengerInfo.setDisplayedChild(0);
-            JSONObject obj = new JSONObject(args[0].toString());
-            boolean success = obj.getBoolean("success");
-            String message = obj.getString("message");
+      MyApplication.handler.post(() -> {
+        try {
+          Log.i(TAG, "run: "+args[0].toString());
+          vfPassengerInfo.setDisplayedChild(0);
+          JSONObject obj = new JSONObject(args[0].toString());
+//            boolean success = obj.getBoolean("success");
+//            String message = obj.getString("message");
 
-            JSONObject dataObj = obj.getJSONObject("data");
+//            JSONObject dataObj = obj.getJSONObject("data");
 
-            JSONObject statusObj = dataObj.getJSONObject("status");
-            int status = statusObj.getInt("status");
-            String descriptionStatus = statusObj.getString("descriptionStatus");
+          JSONObject statusObj = obj.getJSONObject("status");
+          int status = statusObj.getInt("status");
+          String descriptionStatus = statusObj.getString("descriptionStatus");
 
-            JSONObject passengerInfoObj = dataObj.getJSONObject("passengerInfo");
-            int callerCode = passengerInfoObj.getInt("callerCode");
-            String address = passengerInfoObj.getString("address");
-            String name = passengerInfoObj.getString("name");
-            int staion = passengerInfoObj.getInt("staion");
-            permanentDesc = passengerInfoObj.getString("description");
-            String discountCode = passengerInfoObj.getString("discountCode");
-            int discountId = passengerInfoObj.getInt("discountId");
-            int carType = passengerInfoObj.getInt("carType");
+          JSONObject passengerInfoObj = obj.getJSONObject("passengerInfo");
+          int callerCode = passengerInfoObj.getInt("callerCode");
+          String address = passengerInfoObj.getString("address");
+          String name = passengerInfoObj.getString("name");
+          int staion = passengerInfoObj.getInt("staion");
+          permanentDesc = passengerInfoObj.getString("description");
+          String discountCode = passengerInfoObj.getString("discountCode");
+          int discountId = passengerInfoObj.getInt("discountId");
+          int carType = passengerInfoObj.getInt("carType");
 
-            if (success) {
-              isEnableView = true;
-              initServiceCountSpinner();
-              initServiceTypeSpinner();
-              enableViews();
-              if (callerCode == 0) {
-                txtNewPassenger.setVisibility(View.VISIBLE);
-                txtLockPassenger.setVisibility(View.GONE);
-                edtFamily.requestFocus();
-              } else {
-                switch (status) {
-                  case 0:
-                    txtNewPassenger.setVisibility(View.GONE);
-                    txtLockPassenger.setVisibility(View.GONE);
-                    break;
-                  case 1:
-                    txtNewPassenger.setVisibility(View.GONE);
-                    txtLockPassenger.setVisibility(View.VISIBLE);
-                    break;
-                }
-                edtFamily.setText(name);
-                edtAddress.setText(address);
-                edtOrigin.setText(staion + "");
-                txtDescription.setText(permanentDesc + "");
-                rgCarClass.clearCheck();
-                edtDiscount.setText(discountCode);
-                switch (carType) {
-                  case 0:
-                    rbUnknow.setChecked(true);
-                    break;
-                  case 1:
-                    rbEconomical.setChecked(true);
-                    chbAlways.setChecked(true);
-                    break;
-                  case 2:
-                    rbPrivilage.setChecked(true);
-                    chbAlways.setChecked(true);
-                    break;
-                  case 3:
-                    rbFormality.setChecked(true);
-                    chbAlways.setChecked(true);
-                    break;
-                  case 4:
-                    rbTaxi.setChecked(true);
-                    chbAlways.setChecked(true);
-                    break;
-                }
+//            if (success) {
+            isEnableView = true;
+            initServiceCountSpinner();
+            initServiceTypeSpinner();
+            enableViews();
+            if (callerCode == 0) {
+              txtNewPassenger.setVisibility(View.VISIBLE);
+              txtLockPassenger.setVisibility(View.GONE);
+              edtFamily.requestFocus();
+            } else {
+              switch (status) {
+                case 0:
+                  txtNewPassenger.setVisibility(View.GONE);
+                  txtLockPassenger.setVisibility(View.GONE);
+                  break;
+                case 1:
+                  txtNewPassenger.setVisibility(View.GONE);
+                  txtLockPassenger.setVisibility(View.VISIBLE);
+                  break;
+              }
+              edtFamily.setText(name);
+              edtAddress.setText(address);
+              edtOrigin.setText(staion + "");
+              txtDescription.setText(permanentDesc + "");
+              rgCarClass.clearCheck();
+              edtDiscount.setText(discountCode);
+              switch (carType) {
+                case 0:
+                  rbUnknow.setChecked(true);
+                  break;
+                case 1:
+                  rbEconomical.setChecked(true);
+                  chbAlways.setChecked(true);
+                  break;
+                case 2:
+                  rbPrivilage.setChecked(true);
+                  chbAlways.setChecked(true);
+                  break;
+                case 3:
+                  rbFormality.setChecked(true);
+                  chbAlways.setChecked(true);
+                  break;
+                case 4:
+                  rbTaxi.setChecked(true);
+                  chbAlways.setChecked(true);
+                  break;
               }
             }
+//            }
 
-          } catch (JSONException e) {
-            e.printStackTrace();
-          }
+        } catch (JSONException e) {
+          e.printStackTrace();
         }
       });
     }
@@ -783,7 +783,7 @@ public class TripRegisterActivity extends AppCompatActivity {
 
   private void getPassengerAddress(String phoneNumber) {
     vfPassengerAddress.setDisplayedChild(1);
-    RequestHelper.loadBalancingBuilder(EndPoints.PASSENGER_ADDRESS)
+    RequestHelper.builder(EndPoints.PASSENGER_ADDRESS)
             .addPath(phoneNumber)
             .listener(getPassengerAddress)
             .get();
@@ -797,13 +797,14 @@ public class TripRegisterActivity extends AppCompatActivity {
         @Override
         public void run() {
           try {
+            Log.i(TAG, "onResponse: "+args[0].toString());
             passengerAddressModels = new ArrayList<>();
-            JSONObject obj = new JSONObject(args[0].toString());
-            boolean success = obj.getBoolean("success");
-            String message = obj.getString("message");
-            JSONArray dataArr = obj.getJSONArray("data");
-            for (int i = 0; i < dataArr.length(); i++) {
-              JSONObject dataObj = dataArr.getJSONObject(i);
+            JSONArray obj = new JSONArray(args[0].toString());
+//            boolean success = obj.getBoolean("success");
+//            String message = obj.getString("message");
+//            JSONArray dataArr = obj.getJSONArray("data");
+            for (int i = 0; i < obj.length(); i++) {
+              JSONObject dataObj = obj.getJSONObject(i);
               PassengerAddressModel addressModel = new PassengerAddressModel();
               addressModel.setPhoneNumber(dataObj.getString("phoneNumber"));
               addressModel.setAddress(dataObj.getString("address"));
@@ -838,7 +839,7 @@ public class TripRegisterActivity extends AppCompatActivity {
   };
 
   private void getCheckOriginStation(int cityCode, int stationCode) {
-    RequestHelper.loadBalancingBuilder(EndPoints.CHECK_STATION)
+    RequestHelper.builder(EndPoints.CHECK_STATION)
             .addPath(cityCode + "")
             .addPath(stationCode + "")
             .listener(getCheckOriginStation)
@@ -853,13 +854,14 @@ public class TripRegisterActivity extends AppCompatActivity {
         @Override
         public void run() {
           try {
+            Log.i(TAG, "onResponse: "+args[0].toString());
             JSONObject obj = new JSONObject(args[0].toString());
-            boolean success = obj.getBoolean("success");
-            String message = obj.getString("message");
-
-            JSONObject dataObj = obj.getJSONObject("data");
-            int status = dataObj.getInt("status");
-            String desc = dataObj.getString("descriptionStatus");
+//            boolean success = obj.getBoolean("success");
+//            String message = obj.getString("message");
+//
+//            JSONObject dataObj = obj.getJSONObject("data");
+            int status = obj.getInt("status");
+            String desc = obj.getString("descriptionStatus");
 
             if (status != 0) {
               new GeneralDialog()
@@ -891,10 +893,10 @@ public class TripRegisterActivity extends AppCompatActivity {
   };
 
   private void getCheckDestStation(int cityCode, int stationCode) {
-    RequestHelper.loadBalancingBuilder(EndPoints.CHECK_STATION)
+    RequestHelper.builder(EndPoints.CHECK_STATION)
             .addPath(cityCode + "")
             .addPath(stationCode + "")
-            .listener(getCheckOriginStation)
+            .listener(getCheckDestStation)
             .get();
 
   }
@@ -906,13 +908,14 @@ public class TripRegisterActivity extends AppCompatActivity {
         @Override
         public void run() {
           try {
+            Log.i(TAG, "onResponse: "+args[0].toString());
             JSONObject obj = new JSONObject(args[0].toString());
-            boolean success = obj.getBoolean("success");
-            String message = obj.getString("message");
-
-            JSONObject dataObj = obj.getJSONObject("data");
-            int status = dataObj.getInt("status");
-            String desc = dataObj.getString("descriptionStatus");
+//            boolean success = obj.getBoolean("success");
+//            String message = obj.getString("message");
+//
+//            JSONObject dataObj = obj.getJSONObject("data");
+            int status = obj.getInt("status");
+            String desc = obj.getString("descriptionStatus");
 
             if (status != 0) {
               new GeneralDialog()
@@ -943,7 +946,7 @@ public class TripRegisterActivity extends AppCompatActivity {
   };
 
   private void getStationInfo(int cityCode) {
-    RequestHelper.loadBalancingBuilder(EndPoints.STATION_INFO)
+    RequestHelper.builder(EndPoints.STATION_INFO)
             .addPath(cityCode + "")
             .listener(getStationInfo)
             .get();
@@ -957,6 +960,7 @@ public class TripRegisterActivity extends AppCompatActivity {
         @Override
         public void run() {
           try {
+            Log.i(TAG, "onResponse: "+args[0].toString());
             JSONObject obj = new JSONObject(args[0].toString());
             boolean success = obj.getBoolean("success");
             String message = obj.getString("message");
@@ -988,7 +992,7 @@ public class TripRegisterActivity extends AppCompatActivity {
 
   private void setActivate(int userId, int sipNumber) {
 
-    RequestHelper.loadBalancingBuilder(EndPoints.ACTIVATE)
+    RequestHelper.builder(EndPoints.ACTIVATE)
             .addParam("userId", userId)
             .addParam("sipNumber", sipNumber)
             .listener(setActivate)
@@ -1003,6 +1007,7 @@ public class TripRegisterActivity extends AppCompatActivity {
         @Override
         public void run() {
           try {
+            Log.i(TAG, "onResponse: "+args[0].toString());
             JSONObject obj = new JSONObject(args[0].toString());
             boolean success = obj.getBoolean("success");
             String message = obj.getString("message");
@@ -1051,7 +1056,7 @@ public class TripRegisterActivity extends AppCompatActivity {
 
       Log.i(TAG, "setDeActivate: " + params);
 
-      RequestHelper.loadBalancingBuilder(EndPoints.DEACTIVATE)
+      RequestHelper.builder(EndPoints.DEACTIVATE)
               .addParam("userId", userId)
               .addParam("sipNumber", sipNumber)
               .listener(setDeActivate)
@@ -1068,6 +1073,7 @@ public class TripRegisterActivity extends AppCompatActivity {
         @Override
         public void run() {
           try {
+            Log.i(TAG, "onResponse: "+args[0].toString());
             JSONObject obj = new JSONObject(args[0].toString());
             boolean success = obj.getBoolean("success");
             String message = obj.getString("message");
@@ -1111,7 +1117,7 @@ public class TripRegisterActivity extends AppCompatActivity {
                              String address, String fixedComment, int destinationStation, String destination, int typeService,
                              int classType, String description, int TrafficPlan, int voipId, int defaultClass) {
 
-    RequestHelper.loadBalancingBuilder(EndPoints.INSERT)
+    RequestHelper.builder(EndPoints.INSERT)
             .addParam("userId", userId)
             .addParam("count", count)
             .addParam("phoneNumber", phoneNumber)
@@ -1141,6 +1147,7 @@ public class TripRegisterActivity extends AppCompatActivity {
         @Override
         public void run() {
           try {
+            Log.i(TAG, "onResponse: "+args[0].toString());
             JSONObject obj = new JSONObject(args[0].toString());
             boolean success = obj.getBoolean("success");
             String message = obj.getString("message");

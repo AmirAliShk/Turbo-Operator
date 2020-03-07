@@ -140,7 +140,7 @@ public class ReplacementFragment extends Fragment {
 
   private void shiftReplacementRequest(int operatorId, int intendedOperatorId, int shift, String date) {
     llLoader.setVisibility(View.VISIBLE);
-      RequestHelper.loadBalancingBuilder(EndPoints.SHIFT_REPLACEMENT_REQUEST)
+      RequestHelper.builder(EndPoints.SHIFT_REPLACEMENT_REQUEST)
               .addParam("operatorId", operatorId)
               .addParam("intendedOperatorId", intendedOperatorId)
               .addParam("shift", shift)
@@ -194,7 +194,7 @@ public class ReplacementFragment extends Fragment {
 
   private void getOnlineOperator(String date, int shiftId, int operatorId) {
     vfOperator.setDisplayedChild(1);
-      RequestHelper.loadBalancingBuilder(EndPoints.GET_SHIFT_OPERATOR)
+      RequestHelper.builder(EndPoints.GET_SHIFT_OPERATOR)
               .addParam("date", date)
               .addParam("shiftId", shiftId)
               .addParam("operatorId", operatorId)

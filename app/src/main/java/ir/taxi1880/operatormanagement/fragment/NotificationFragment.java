@@ -64,7 +64,7 @@ public class NotificationFragment extends Fragment {
 
     private void getNews(int operatorId) {
         vfNoti.setDisplayedChild(0);
-            RequestHelper.loadBalancingBuilder(EndPoints.GET_NEWS)
+            RequestHelper.builder(EndPoints.GET_NEWS)
                     .addParam("operatorId", operatorId)
                     .listener(onGetNews)
                     .post();

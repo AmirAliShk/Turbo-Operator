@@ -8,6 +8,7 @@ import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
+import android.util.Log;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
@@ -40,6 +41,7 @@ public class SplashActivity extends AppCompatActivity {
 
   //    @BindView(R.id.splashAvl)
 //    AVLoadingIndicatorView splashAvl;
+  public static final String TAG=SplashActivity.class.getSimpleName();
   boolean doubleBackToExitPressedOnce = false;
   Unbinder unbinder;
   @BindView(R.id.txtVersion)
@@ -127,7 +129,7 @@ public class SplashActivity extends AppCompatActivity {
   }
 
   private void getAppInfo() {
-      RequestHelper.loadBalancingBuilder(EndPoints.GET_APP_INFO)
+      RequestHelper.builder(EndPoints.GET_APP_INFO)
               .addParam("versionCode", new AppVersionHelper(MyApplication.context).getVerionCode())
               .addParam("operatorId",  MyApplication.prefManager.getUserCode())
               .addParam("userName", MyApplication.prefManager.getUserName())
@@ -142,12 +144,12 @@ public class SplashActivity extends AppCompatActivity {
     checkPermission();
   }
 
-
   RequestHelper.Callback onAppInfo = new RequestHelper.Callback() {
     @Override
     public void onResponse(Runnable reCall, Object... args) {
       MyApplication.handler.post(() -> {
         try {
+          Log.i(TAG, "onResponse: "+args[0].toString());
           JSONObject object = new JSONObject(args[0].toString());
           int block = object.getInt("isBlock");
           int updateAvailable = object.getInt("updateAvailable");

@@ -63,7 +63,7 @@ public class ReplacementWaitingFragment extends Fragment {
 
     private void getShiftReplacementRequest(int operatorId) {
         vfGetReq.setDisplayedChild(0);
-            RequestHelper.loadBalancingBuilder(EndPoints.GET_SHIFT_REPLACEMENT_REQUESTS)
+            RequestHelper.builder(EndPoints.GET_SHIFT_REPLACEMENT_REQUESTS)
                     .addParam("operatorId", operatorId)
                     .listener(onGetShiftReplacementRequest)
                     .post();

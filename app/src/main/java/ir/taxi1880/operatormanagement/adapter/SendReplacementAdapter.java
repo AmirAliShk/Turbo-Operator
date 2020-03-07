@@ -123,7 +123,7 @@ public class SendReplacementAdapter extends BaseAdapter {
 
   private void cancelRequest(int requestId) {
 
-      RequestHelper.loadBalancingBuilder(EndPoints.CANCEL_REPLACEMENT_REQUEST)
+      RequestHelper.builder(EndPoints.CANCEL_REPLACEMENT_REQUEST)
               .addParam("requestId", requestId)
               .listener(onCancel)
               .post();

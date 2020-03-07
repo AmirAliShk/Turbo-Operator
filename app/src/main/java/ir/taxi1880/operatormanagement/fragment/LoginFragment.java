@@ -76,7 +76,7 @@ public class LoginFragment extends Fragment {
 
   private void logIn(String userName, String password) {
 
-      RequestHelper.loadBalancingBuilder(EndPoints.LOGIN)
+      RequestHelper.builder(EndPoints.LOGIN)
               .addParam("userName", userName)
               .addParam("password", password)
               .listener(onLogIn)

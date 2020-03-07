@@ -104,7 +104,7 @@ public class MessageFragment extends Fragment {
     private void getMessages(int operatorId) {
         vfMessage.setDisplayedChild(0);
 
-            RequestHelper.loadBalancingBuilder(EndPoints.GET_MESSAGES)
+            RequestHelper.builder(EndPoints.GET_MESSAGES)
                     .addParam("operatorId", operatorId)
                     .listener(onGetMessages)
                     .post();
@@ -148,7 +148,7 @@ public class MessageFragment extends Fragment {
     private void sendMessage(int operatorId, String message) {
 //        vfSend.setDisplayedChild(1);
 
-            RequestHelper.loadBalancingBuilder(EndPoints.SEND_MESSAGES)
+            RequestHelper.builder(EndPoints.SEND_MESSAGES)
                     .addParam("operatorId", operatorId)
                     .addParam("message", message)
                     .listener(onSendMessage)
