@@ -11,18 +11,17 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
 
-import ir.taxi1880.operatormanagement.OkHttp.RequestHelper;
 import ir.taxi1880.operatormanagement.R;
 import ir.taxi1880.operatormanagement.app.EndPoints;
 import ir.taxi1880.operatormanagement.app.MyApplication;
 import ir.taxi1880.operatormanagement.dialog.GeneralDialog;
 import ir.taxi1880.operatormanagement.helper.TypefaceUtil;
 import ir.taxi1880.operatormanagement.model.ReplacementModel;
+import ir.taxi1880.operatormanagement.okHttp.RequestHelper;
 
 public class SendReplacementAdapter extends BaseAdapter {
 
@@ -123,19 +122,12 @@ public class SendReplacementAdapter extends BaseAdapter {
   }
 
   private void cancelRequest(int requestId) {
-    JSONObject params = new JSONObject();
-    try {
-      params.put("requestId", requestId);
 
-      RequestHelper.builder(EndPoints.CANCEL_REPLACEMENT_REQUEST)
-              .params(params)
-              .method(RequestHelper.POST)
+      RequestHelper.loadBalancingBuilder(EndPoints.CANCEL_REPLACEMENT_REQUEST)
+              .addParam("requestId", requestId)
               .listener(onCancel)
-              .request();
+              .post();
 
-    } catch (JSONException e) {
-      e.printStackTrace();
-    }
   }
 
   RequestHelper.Callback onCancel = new RequestHelper.Callback() {

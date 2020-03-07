@@ -1,5 +1,4 @@
-package ir.taxi1880.operatormanagement.OkHttp;
-
+package ir.taxi1880.operatormanagement.okHttp;
 import android.app.ActivityManager;
 import android.content.Context;
 import android.os.AsyncTask;
@@ -11,12 +10,13 @@ import java.util.concurrent.ExecutionException;
  * Created by Amirreza Erfanian on 2018/July/26.
  * v : 1.0.0
  */
-public class AppStatusHelper extends AsyncTask<Context, Void, Boolean>{
+public class AppStatusHelper extends AsyncTask<Context, Void, Boolean> {
 
-  public boolean appIsRun(Context context){
+  private static final String TAG = AppStatusHelper.class.getSimpleName();
+  public static boolean appIsRun(Context context){
     Boolean status = false;
     try {
-      status = this.execute(context).get();
+      status = new AppStatusHelper().execute(context).get();
     } catch (InterruptedException e) {
       e.printStackTrace();
     } catch (ExecutionException e) {
@@ -39,10 +39,12 @@ public class AppStatusHelper extends AsyncTask<Context, Void, Boolean>{
     }
     final String packageName = context.getPackageName();
     for (ActivityManager.RunningAppProcessInfo appProcess : appProcesses) {
-      if (appProcess.importance == ActivityManager.RunningAppProcessInfo.IMPORTANCE_FOREGROUND && appProcess.processName.equals(packageName)) {
+      if ((appProcess.importance == ActivityManager.RunningAppProcessInfo.IMPORTANCE_FOREGROUND
+              ||appProcess.importance == ActivityManager.RunningAppProcessInfo.IMPORTANCE_VISIBLE) && appProcess.processName.equals(packageName)) {
         return true;
       }
     }
+
     return false;
   }
 

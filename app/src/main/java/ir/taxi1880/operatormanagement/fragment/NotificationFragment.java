@@ -10,7 +10,6 @@ import android.widget.TextView;
 import android.widget.ViewFlipper;
 
 import org.json.JSONArray;
-import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
@@ -20,13 +19,13 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import butterknife.Unbinder;
-import ir.taxi1880.operatormanagement.OkHttp.RequestHelper;
 import ir.taxi1880.operatormanagement.R;
 import ir.taxi1880.operatormanagement.adapter.NotificationAdapter;
 import ir.taxi1880.operatormanagement.app.EndPoints;
 import ir.taxi1880.operatormanagement.app.MyApplication;
 import ir.taxi1880.operatormanagement.helper.TypefaceUtil;
 import ir.taxi1880.operatormanagement.model.NotificationModel;
+import ir.taxi1880.operatormanagement.okHttp.RequestHelper;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -65,19 +64,10 @@ public class NotificationFragment extends Fragment {
 
     private void getNews(int operatorId) {
         vfNoti.setDisplayedChild(0);
-        JSONObject params = new JSONObject();
-        try {
-            params.put("operatorId", operatorId);
-
-            RequestHelper.builder(EndPoints.GET_NEWS)
-                    .params(params)
-                    .method(RequestHelper.POST)
+            RequestHelper.loadBalancingBuilder(EndPoints.GET_NEWS)
+                    .addParam("operatorId", operatorId)
                     .listener(onGetNews)
-                    .request();
-
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
+                    .post();
     }
 
     RequestHelper.Callback onGetNews = new RequestHelper.Callback() {

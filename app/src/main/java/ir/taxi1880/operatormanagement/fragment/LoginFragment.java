@@ -4,7 +4,6 @@ package ir.taxi1880.operatormanagement.fragment;
 import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,7 +11,6 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
-import org.json.JSONException;
 import org.json.JSONObject;
 
 import androidx.fragment.app.Fragment;
@@ -20,7 +18,6 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import butterknife.Unbinder;
-import ir.taxi1880.operatormanagement.OkHttp.RequestHelper;
 import ir.taxi1880.operatormanagement.R;
 import ir.taxi1880.operatormanagement.activity.MainActivity;
 import ir.taxi1880.operatormanagement.app.EndPoints;
@@ -29,6 +26,7 @@ import ir.taxi1880.operatormanagement.dialog.ErrorDialog;
 import ir.taxi1880.operatormanagement.dialog.GeneralDialog;
 import ir.taxi1880.operatormanagement.helper.KeyBoardHelper;
 import ir.taxi1880.operatormanagement.helper.TypefaceUtil;
+import ir.taxi1880.operatormanagement.okHttp.RequestHelper;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -77,22 +75,13 @@ public class LoginFragment extends Fragment {
   }
 
   private void logIn(String userName, String password) {
-    JSONObject params = new JSONObject();
-    try {
-      params.put("userName", userName);
-      params.put("password", password);
 
-      Log.i(TAG, "logIn: " + params);
-
-      RequestHelper.builder(EndPoints.LOGIN)
-              .params(params)
-              .method(RequestHelper.POST)
+      RequestHelper.loadBalancingBuilder(EndPoints.LOGIN)
+              .addParam("userName", userName)
+              .addParam("password", password)
               .listener(onLogIn)
-              .request();
+              .post();
 
-    } catch (JSONException e) {
-      e.printStackTrace();
-    }
   }
 
   RequestHelper.Callback onLogIn = new RequestHelper.Callback() {
@@ -104,7 +93,15 @@ public class LoginFragment extends Fragment {
           int status = object.getInt("status");
           int userId = object.getInt("userId");
           int block = object.getInt("isBlock");
-//          int accessInsertService = object.getInt("accessInsertService");
+          int accessInsertService = object.getInt("accessInsertService");
+          int sipNumber = object.getInt("sipNumber");
+          String sipServer = object.getString("sipServer");
+          String sipPassword = object.getString("sipPassword");
+          String sheba = object.getString("sheba");
+          String cardNumber = object.getString("cardNumber");
+          String accountNumber = object.getString("accountNumber");
+          int balance = object.getInt("balance");
+
           MyApplication.prefManager.setOperatorName(object.getString("name"));
 
           if (status == 1) {
@@ -119,7 +116,14 @@ public class LoginFragment extends Fragment {
             }
 
             MyApplication.prefManager.setUserCode(userId);
-//            MyApplication.prefManager.setAccessInsertService(accessInsertService);
+            MyApplication.prefManager.setAccessInsertService(accessInsertService);
+            MyApplication.prefManager.setSipServer(sipServer);
+            MyApplication.prefManager.setSipNumber(sipNumber);
+            MyApplication.prefManager.setSipPassword(sipPassword);
+            MyApplication.prefManager.setSheba(sheba);
+            MyApplication.prefManager.setCardNumber(cardNumber);
+            MyApplication.prefManager.setAccountNumber(accountNumber);
+            MyApplication.prefManager.setBalance(balance);
             MyApplication.prefManager.setUserName((edtUserName.getText().toString()));
             MyApplication.prefManager.setPassword(edtPassword.getText().toString());
             MyApplication.prefManager.isLoggedIn(true);

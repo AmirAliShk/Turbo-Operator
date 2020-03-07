@@ -8,7 +8,6 @@ import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
-import android.util.Log;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
@@ -26,7 +25,6 @@ import androidx.core.content.ContextCompat;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
-import ir.taxi1880.operatormanagement.OkHttp.RequestHelper;
 import ir.taxi1880.operatormanagement.R;
 import ir.taxi1880.operatormanagement.app.EndPoints;
 import ir.taxi1880.operatormanagement.app.MyApplication;
@@ -35,6 +33,7 @@ import ir.taxi1880.operatormanagement.fragment.LoginFragment;
 import ir.taxi1880.operatormanagement.helper.AppVersionHelper;
 import ir.taxi1880.operatormanagement.helper.FragmentHelper;
 import ir.taxi1880.operatormanagement.helper.TypefaceUtil;
+import ir.taxi1880.operatormanagement.okHttp.RequestHelper;
 import ir.taxi1880.operatormanagement.services.LinphoneService;
 
 public class SplashActivity extends AppCompatActivity {
@@ -128,24 +127,13 @@ public class SplashActivity extends AppCompatActivity {
   }
 
   private void getAppInfo() {
-    JSONObject params = new JSONObject();
-    try {
-      params.put("versionCode", new AppVersionHelper(MyApplication.context).getVerionCode());
-      params.put("operatorId",  MyApplication.prefManager.getUserCode());
-      params.put("userName", MyApplication.prefManager.getUserName());
-      params.put("password", MyApplication.prefManager.getPassword());
-
-      Log.i("TAG", "getAppInfo: " + params);
-
-      RequestHelper.builder(EndPoints.GET_APP_INFO)
-              .params(params)
-              .method(RequestHelper.POST)
+      RequestHelper.loadBalancingBuilder(EndPoints.GET_APP_INFO)
+              .addParam("versionCode", new AppVersionHelper(MyApplication.context).getVerionCode())
+              .addParam("operatorId",  MyApplication.prefManager.getUserCode())
+              .addParam("userName", MyApplication.prefManager.getUserName())
+              .addParam("password", MyApplication.prefManager.getPassword())
               .listener(onAppInfo)
-              .request();
-
-    } catch (JSONException e) {
-      e.printStackTrace();
-    }
+              .post();
   }
 
   @Override
@@ -176,7 +164,7 @@ public class SplashActivity extends AppCompatActivity {
           int accessInsertService = object.getInt("accessInsertService");
           int balance = object.getInt("balance");
           String typeService = object.getString("typeService");
-          String queue = object.getString("queue");
+          String queue = object.getString(  "queue");
           String city = object.getString("city");
 
           if (block == 1) {

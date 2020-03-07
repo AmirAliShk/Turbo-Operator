@@ -21,7 +21,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import butterknife.Unbinder;
-import ir.taxi1880.operatormanagement.OkHttp.RequestHelper;
+import ir.taxi1880.operatormanagement.okHttp.RequestHelper;
 import ir.taxi1880.operatormanagement.R;
 import ir.taxi1880.operatormanagement.app.EndPoints;
 import ir.taxi1880.operatormanagement.app.MyApplication;
@@ -34,7 +34,7 @@ import ir.taxi1880.operatormanagement.helper.TypefaceUtil;
  */
 public class AccountFragment extends Fragment {
 
-  public static final String TAG=AccountFragment.class.getSimpleName();
+  public static final String TAG = AccountFragment.class.getSimpleName();
   Unbinder unbinder;
   String a;
   private int keyDel;
@@ -60,12 +60,12 @@ public class AccountFragment extends Fragment {
   EditText edtAccountNum;
 
   @OnClick(R.id.btnCheckOut)
-  void OnCheckOut(){
+  void OnCheckOut() {
     new GeneralDialog()
             .title("هشدار")
             .message("آیا از درخواست تسویه حساب خود اطمینان دارید؟")
             .firstButton("بله مطمئنم", () -> payment(MyApplication.prefManager.getUserCode()))
-            .secondButton("پشیمون شدم",null)
+            .secondButton("پشیمون شدم", null)
             .show();
   }
 
@@ -77,7 +77,7 @@ public class AccountFragment extends Fragment {
 
   @Override
   public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-    View view= inflater.inflate(R.layout.fragment_account, container, false);
+    View view = inflater.inflate(R.layout.fragment_account, container, false);
     unbinder = ButterKnife.bind(this, view);
     TypefaceUtil.overrideFonts(view);
 
@@ -143,11 +143,10 @@ public class AccountFragment extends Fragment {
   private void getBalance(int userId) {
     vfBalance.setDisplayedChild(0);
 
-    RequestHelper.builder(EndPoints.BALANCE + "/" + userId)
-            .method(RequestHelper.GET)
-            .params(new JSONObject())
+    RequestHelper.loadBalancingBuilder(EndPoints.BALANCE + "/" + userId)
+            .addPath(userId + "")
             .listener(getBalance)
-            .request();
+            .get();
 
   }
 
@@ -160,12 +159,12 @@ public class AccountFragment extends Fragment {
           try {
             vfBalance.setDisplayedChild(1);
             JSONObject obj = new JSONObject(args[0].toString());
-            boolean success=obj.getBoolean("success");
-            String message=obj.getString("message");
-            JSONObject dataObj=obj.getJSONObject("data");
-            int accountBalance=dataObj.getInt("accountBalance");
+            boolean success = obj.getBoolean("success");
+            String message = obj.getString("message");
+            JSONObject dataObj = obj.getJSONObject("data");
+            int accountBalance = dataObj.getInt("accountBalance");
 
-            txtOperatorCharge.setText(StringHelper.toPersianDigits(accountBalance+" تومان "));
+            txtOperatorCharge.setText(StringHelper.toPersianDigits(accountBalance + " تومان "));
 
           } catch (JSONException e) {
             e.printStackTrace();
@@ -180,13 +179,14 @@ public class AccountFragment extends Fragment {
     }
   };
 
-  private void UpdateProfile(int userId) {
+  private void UpdateProfile(int userId,String accountNumber,String sheba) {
 
-    RequestHelper.builder(EndPoints.UPDATE_PROFILE + "/" + userId)
-            .method(RequestHelper.GET)
-            .params(new JSONObject())
+    RequestHelper.loadBalancingBuilder(EndPoints.UPDATE_PROFILE)
+            .addPath(userId + "")
+            .addPath(accountNumber + "")
+            .addPath(sheba + "")
             .listener(UpdateProfile)
-            .request();
+            .put();
 
   }
 
@@ -214,20 +214,11 @@ public class AccountFragment extends Fragment {
 
   private void payment(int userId) {
 
-    JSONObject params=new JSONObject();
-
-    try {
-      params.put("userId",userId);
-
       RequestHelper.builder(EndPoints.PAYMENT)
-              .method(RequestHelper.POST)
-              .params(params)
+             .addParam("userId", userId)
               .listener(Payment)
-              .request();
+              .post();
 
-    } catch (JSONException e) {
-      e.printStackTrace();
-    }
   }
 
   RequestHelper.Callback Payment = new RequestHelper.Callback() {
@@ -238,23 +229,23 @@ public class AccountFragment extends Fragment {
         public void run() {
           try {
             JSONObject obj = new JSONObject(args[0].toString());
-            boolean success=obj.getBoolean("success");
-            String message=obj.getString("message");
-            JSONObject dataObj=obj.getJSONObject("data");
-            boolean status=dataObj.getBoolean("status");
+            boolean success = obj.getBoolean("success");
+            String message = obj.getString("message");
+            JSONObject dataObj = obj.getJSONObject("data");
+            boolean status = dataObj.getBoolean("status");
 
-            if (success){
+            if (success) {
               new GeneralDialog()
                       .title("ارسال شد")
                       .message("درخواست شما با موفقیت ارسال شد")
-                      .firstButton("باشه",null)
+                      .firstButton("باشه", null)
                       .show();
-            }else {
+            } else {
               new GeneralDialog()
                       .title("خطا")
                       .message(message)
                       .firstButton("تلاش مجدد", () -> payment(MyApplication.prefManager.getUserCode()))
-                      .secondButton("بعدا امتحان میکنم",null)
+                      .secondButton("بعدا امتحان میکنم", null)
                       .show();
             }
 

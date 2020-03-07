@@ -24,7 +24,7 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 
-import ir.taxi1880.operatormanagement.OkHttp.RequestHelper;
+import ir.taxi1880.operatormanagement.okHttp.RequestHelper;
 import ir.taxi1880.operatormanagement.R;
 import ir.taxi1880.operatormanagement.adapter.StationAdapter;
 import ir.taxi1880.operatormanagement.app.EndPoints;
@@ -148,11 +148,11 @@ public class SearchLocationDialog {
   private void findWay(String cityLName, String address) {
     vfLocation.setDisplayedChild(1);
 
-    RequestHelper.builder(EndPoints.FIND_WAY + "/" + cityLName + "/" + address)
-            .method(RequestHelper.GET)
-            .params(new JSONObject())
+    RequestHelper.builder(EndPoints.FIND_WAY)
+            .addPath(cityLName)
+            .addPath(address)
             .listener(onFindWay)
-            .request();
+            .get();
 
   }
 

@@ -9,7 +9,10 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import ir.taxi1880.operatormanagement.OkHttp.RequestHelper;
+import org.json.JSONObject;
+
+import java.util.ArrayList;
+
 import ir.taxi1880.operatormanagement.R;
 import ir.taxi1880.operatormanagement.app.EndPoints;
 import ir.taxi1880.operatormanagement.app.MyApplication;
@@ -17,11 +20,7 @@ import ir.taxi1880.operatormanagement.dialog.ErrorDialog;
 import ir.taxi1880.operatormanagement.dialog.GeneralDialog;
 import ir.taxi1880.operatormanagement.helper.TypefaceUtil;
 import ir.taxi1880.operatormanagement.model.ReplacementModel;
-
-import org.json.JSONException;
-import org.json.JSONObject;
-
-import java.util.ArrayList;
+import ir.taxi1880.operatormanagement.okHttp.RequestHelper;
 
 public class ReplacementWaitingAdapter extends BaseAdapter {
 
@@ -107,21 +106,12 @@ public class ReplacementWaitingAdapter extends BaseAdapter {
     }
 
     private void answerShiftReplacementRequest(int operatorId, int replacementRequestId, int answer) {
-        JSONObject params = new JSONObject();
-        try {
-            params.put("operatorId", operatorId);
-            params.put("replacementRequestId", replacementRequestId);
-            params.put("answer", answer);
-
-            RequestHelper.builder(EndPoints.ANSWER_SHIFT_REPLACEMENT_REQUEST)
-                    .params(params)
-                    .method(RequestHelper.POST)
+            RequestHelper.loadBalancingBuilder(EndPoints.ANSWER_SHIFT_REPLACEMENT_REQUEST)
+                    .addParam("operatorId", operatorId)
+                    .addParam("replacementRequestId", replacementRequestId)
+                    .addParam("answer", answer)
                     .listener(onAnswerShiftReplacementRequest)
-                    .request();
-
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
+                    .post();
     }
 
     RequestHelper.Callback onAnswerShiftReplacementRequest = new RequestHelper.Callback() {

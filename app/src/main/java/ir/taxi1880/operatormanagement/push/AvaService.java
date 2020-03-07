@@ -12,7 +12,7 @@ import java.util.Calendar;
 import java.util.Timer;
 import java.util.TimerTask;
 
-import ir.taxi1880.operatormanagement.OkHttp.RequestHelper;
+import ir.taxi1880.operatormanagement.okHttp.RequestHelper;
 import ir.taxi1880.operatormanagement.app.MyApplication;
 
 //import ir.efsp.ava.io.core.client.Socket;
@@ -125,18 +125,11 @@ public class AvaService extends Service {
     avaPref.setMissingApiRequestTime(Calendar.getInstance().getTimeInMillis());
     if (avaPref.getMissingApiUrl() == null) return;
 
-    JSONObject params = new JSONObject();
-    try {
-      params.put("projectId", avaPref.getProjectId());
-      params.put("userId", avaPref.getUserId());
-      RequestHelper
-              .builder(avaPref.getMissingApiUrl())
-              .params(params)
+      RequestHelper.loadBalancingBuilder(avaPref.getMissingApiUrl())
+              .addParam("projectId", avaPref.getProjectId())
+              .addParam("userId", avaPref.getUserId())
               .listener(onGetMissingPush)
-              .request();
-    }catch (Exception e){
-      e.printStackTrace();
-    }
+              .post();
   }
 
   RequestHelper.Callback onGetMissingPush = new RequestHelper.Callback() {

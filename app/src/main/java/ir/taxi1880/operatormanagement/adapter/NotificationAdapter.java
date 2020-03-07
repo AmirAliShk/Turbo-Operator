@@ -11,18 +11,17 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
 
-import ir.taxi1880.operatormanagement.OkHttp.RequestHelper;
 import ir.taxi1880.operatormanagement.R;
 import ir.taxi1880.operatormanagement.app.EndPoints;
 import ir.taxi1880.operatormanagement.app.MyApplication;
 import ir.taxi1880.operatormanagement.dialog.ErrorDialog;
 import ir.taxi1880.operatormanagement.helper.TypefaceUtil;
 import ir.taxi1880.operatormanagement.model.NotificationModel;
+import ir.taxi1880.operatormanagement.okHttp.RequestHelper;
 
 public class NotificationAdapter extends BaseAdapter {
 
@@ -104,19 +103,10 @@ public class NotificationAdapter extends BaseAdapter {
     }
 
     private void setNewsSeen(int newsId) {
-        JSONObject params = new JSONObject();
-        try {
-            params.put("newsId", newsId);
-
-            RequestHelper.builder(EndPoints.SET_NEWS_SEEN)
-                    .params(params)
-                    .method(RequestHelper.POST)
+            RequestHelper.loadBalancingBuilder(EndPoints.SET_NEWS_SEEN)
+                    .addParam("newsId", newsId)
                     .listener(onSetNewsSeen)
-                    .request();
-
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
+                    .post();
     }
 
     private RequestHelper.Callback onSetNewsSeen = new RequestHelper.Callback() {

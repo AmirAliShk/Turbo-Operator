@@ -3,7 +3,6 @@ package ir.taxi1880.operatormanagement.fragment;
 
 import android.annotation.SuppressLint;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,7 +13,6 @@ import android.widget.Toast;
 import android.widget.ViewFlipper;
 
 import org.json.JSONArray;
-import org.json.JSONException;
 import org.json.JSONObject;
 
 import androidx.fragment.app.Fragment;
@@ -22,13 +20,13 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import butterknife.Unbinder;
-import ir.taxi1880.operatormanagement.OkHttp.RequestHelper;
 import ir.taxi1880.operatormanagement.R;
 import ir.taxi1880.operatormanagement.app.EndPoints;
 import ir.taxi1880.operatormanagement.app.MyApplication;
 import ir.taxi1880.operatormanagement.dialog.GeneralDialog;
 import ir.taxi1880.operatormanagement.dialog.OperatorDialog;
 import ir.taxi1880.operatormanagement.helper.TypefaceUtil;
+import ir.taxi1880.operatormanagement.okHttp.RequestHelper;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -142,22 +140,14 @@ public class ReplacementFragment extends Fragment {
 
   private void shiftReplacementRequest(int operatorId, int intendedOperatorId, int shift, String date) {
     llLoader.setVisibility(View.VISIBLE);
-    JSONObject params = new JSONObject();
-    try {
-      params.put("operatorId", operatorId);
-      params.put("intendedOperatorId", intendedOperatorId);
-      params.put("shift", shift);
-      params.put("date", date);
-
-      RequestHelper.builder(EndPoints.SHIFT_REPLACEMENT_REQUEST)
-              .params(params)
-              .method(RequestHelper.POST)
+      RequestHelper.loadBalancingBuilder(EndPoints.SHIFT_REPLACEMENT_REQUEST)
+              .addParam("operatorId", operatorId)
+              .addParam("intendedOperatorId", intendedOperatorId)
+              .addParam("shift", shift)
+              .addParam("date", date)
               .listener(onShiftReplacementRequest)
-              .request();
+              .post();
 
-    } catch (JSONException e) {
-      e.printStackTrace();
-    }
   }
 
   RequestHelper.Callback onShiftReplacementRequest = new RequestHelper.Callback() {
@@ -204,23 +194,13 @@ public class ReplacementFragment extends Fragment {
 
   private void getOnlineOperator(String date, int shiftId, int operatorId) {
     vfOperator.setDisplayedChild(1);
-    JSONObject params = new JSONObject();
-    try {
-      params.put("date", date);
-      params.put("shiftId", shiftId);
-      params.put("operatorId", operatorId);
-
-      Log.i(TAG, "getOnlineOperator: " + params);
-
-      RequestHelper.builder(EndPoints.GET_SHIFT_OPERATOR)
-              .params(params)
-              .method(RequestHelper.POST)
+      RequestHelper.loadBalancingBuilder(EndPoints.GET_SHIFT_OPERATOR)
+              .addParam("date", date)
+              .addParam("shiftId", shiftId)
+              .addParam("operatorId", operatorId)
               .listener(onGetOnlineOperator)
-              .request();
+              .post();
 
-    } catch (JSONException e) {
-      e.printStackTrace();
-    }
   }
 
   RequestHelper.Callback onGetOnlineOperator = new RequestHelper.Callback() {

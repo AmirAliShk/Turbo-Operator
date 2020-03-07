@@ -2,9 +2,6 @@ package ir.taxi1880.operatormanagement.fragment;
 
 
 import android.os.Bundle;
-
-import androidx.fragment.app.Fragment;
-
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,24 +9,23 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.ViewFlipper;
 
-import ir.taxi1880.operatormanagement.OkHttp.RequestHelper;
+import org.json.JSONArray;
+import org.json.JSONObject;
+
+import java.util.ArrayList;
+
+import androidx.fragment.app.Fragment;
+import butterknife.BindView;
+import butterknife.ButterKnife;
+import butterknife.OnClick;
+import butterknife.Unbinder;
 import ir.taxi1880.operatormanagement.R;
 import ir.taxi1880.operatormanagement.adapter.SendReplacementAdapter;
 import ir.taxi1880.operatormanagement.app.EndPoints;
 import ir.taxi1880.operatormanagement.app.MyApplication;
 import ir.taxi1880.operatormanagement.helper.TypefaceUtil;
 import ir.taxi1880.operatormanagement.model.ReplacementModel;
-
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
-
-import java.util.ArrayList;
-
-import butterknife.BindView;
-import butterknife.ButterKnife;
-import butterknife.OnClick;
-import butterknife.Unbinder;
+import ir.taxi1880.operatormanagement.okHttp.RequestHelper;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -66,19 +62,11 @@ public class SendReplacementReqFragment extends Fragment {
 
     private void getShiftReplacementRequest(int operatorId) {
         vfSendReq.setDisplayedChild(0);
-        JSONObject params = new JSONObject();
-        try {
-            params.put("operatorId", operatorId);
-
-            RequestHelper.builder(EndPoints.GET_SHIFT_REPLACEMENT_REQUESTS)
-                    .params(params)
-                    .method(RequestHelper.POST)
+            RequestHelper.loadBalancingBuilder(EndPoints.GET_SHIFT_REPLACEMENT_REQUESTS)
+                    .addParam("operatorId", operatorId)
                     .listener(onGetShiftReplacementRequest)
-                    .request();
+                    .post();
 
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
     }
 
     private RequestHelper.Callback onGetShiftReplacementRequest = new RequestHelper.Callback() {

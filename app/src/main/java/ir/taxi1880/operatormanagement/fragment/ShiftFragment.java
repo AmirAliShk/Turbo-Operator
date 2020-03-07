@@ -2,7 +2,6 @@ package ir.taxi1880.operatormanagement.fragment;
 
 
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,7 +10,6 @@ import android.widget.TextView;
 import android.widget.ViewFlipper;
 
 import org.json.JSONArray;
-import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
@@ -21,13 +19,13 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import butterknife.Unbinder;
-import ir.taxi1880.operatormanagement.OkHttp.RequestHelper;
 import ir.taxi1880.operatormanagement.R;
 import ir.taxi1880.operatormanagement.adapter.ShiftAdapter;
 import ir.taxi1880.operatormanagement.app.EndPoints;
 import ir.taxi1880.operatormanagement.app.MyApplication;
 import ir.taxi1880.operatormanagement.helper.TypefaceUtil;
 import ir.taxi1880.operatormanagement.model.ShiftModel;
+import ir.taxi1880.operatormanagement.okHttp.RequestHelper;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -67,22 +65,12 @@ public class ShiftFragment extends Fragment {
 
     private void getShifts(int operatorId) {
         vfShift.setDisplayedChild(0);
-        JSONObject params = new JSONObject();
-        try {
 
-            params.put("operatorId", operatorId);
-
-            Log.i(TAG, "getShifts: "+params);
-
-            RequestHelper.builder(EndPoints.GET_SHIFTS)
-                    .params(params)
-                    .method(RequestHelper.POST)
+            RequestHelper.loadBalancingBuilder(EndPoints.GET_SHIFTS)
+                    .addParam("operatorId", operatorId)
                     .listener(onGetShifts)
-                    .request();
+                    .post();
 
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
     }
 
     private RequestHelper.Callback onGetShifts = new RequestHelper.Callback() {

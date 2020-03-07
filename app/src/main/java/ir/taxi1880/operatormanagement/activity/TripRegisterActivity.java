@@ -33,7 +33,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import butterknife.Unbinder;
-import ir.taxi1880.operatormanagement.OkHttp.RequestHelper;
+import ir.taxi1880.operatormanagement.okHttp.RequestHelper;
 import ir.taxi1880.operatormanagement.R;
 import ir.taxi1880.operatormanagement.adapter.SpinnerAdapter;
 import ir.taxi1880.operatormanagement.app.EndPoints;
@@ -289,15 +289,20 @@ public class TripRegisterActivity extends AppCompatActivity {
 
     getCheckDestStation(cityCode, Integer.parseInt(StringHelper.toEnglishDigits(edtDestination.getText().toString())));
 
-    String mobile;
+    String mobile, tell;
 
-    if (edtMobile.getText().toString().startsWith("0")) {
-      mobile = edtMobile.getText().toString().substring(1, 10);
-    } else {
-      mobile = edtMobile.getText().toString();
-    }
+    //    if (edtMobile.getText().toString().startsWith("0")) {
+    //      mobile = edtMobile.getText().toString().substring(1, 10);
+    //    } else {
+    mobile = edtMobile.getText().toString();
+    //    }
 
-    String tell = edtTell.getText().toString();
+//    if (edtTell.getText().toString().startsWith("0")) {
+//      tell = edtTell.getText().toString().substring(1, 10);
+//    } else {
+    tell = edtTell.getText().toString();
+//    }
+
     String name = edtFamily.getText().toString();
     String address = edtAddress.getText().toString();
     String fixedComment = txtDescription.getText().toString();
@@ -450,7 +455,8 @@ public class TripRegisterActivity extends AppCompatActivity {
             .firstButton("مطمئنم", new Runnable() {
               @Override
               public void run() {
-                setActivate(MyApplication.prefManager.getUserCode(),MyApplication.prefManager.getSipNumber());
+                setActivate(MyApplication.prefManager.getUserCode(), MyApplication.prefManager.getSipNumber());
+//                MyApplication.Toast("activated",Toast.LENGTH_SHORT);
               }
             })
             .secondButton("نیستم", null)
@@ -467,12 +473,12 @@ public class TripRegisterActivity extends AppCompatActivity {
             .firstButton("مطمئنم", new Runnable() {
               @Override
               public void run() {
-                setDeActivate(MyApplication.prefManager.getUserCode(),MyApplication.prefManager.getSipNumber());
+                setDeActivate(MyApplication.prefManager.getUserCode(), MyApplication.prefManager.getSipNumber());
+//                MyApplication.Toast(" ! activated",Toast.LENGTH_SHORT);
               }
             })
             .secondButton("نیستم", null)
             .show();
-
   }
 
   private boolean serviceTypeFlag = false;
@@ -676,11 +682,12 @@ public class TripRegisterActivity extends AppCompatActivity {
   private void getPassengerInfo(String phoneNumber, String mobile, String queue) {
     vfPassengerInfo.setDisplayedChild(1);
 
-    RequestHelper.builder(EndPoints.PASSENGER_INFO + "/" + phoneNumber + "/" + mobile + "/" + queue)
-            .method(RequestHelper.GET)
-            .params(new JSONObject())
+    RequestHelper.loadBalancingBuilder(EndPoints.PASSENGER_INFO)
+            .addPath(phoneNumber)
+            .addPath(mobile)
+            .addPath(queue)
             .listener(getPassengerInfo)
-            .request();
+            .get();
 
   }
 
@@ -776,11 +783,10 @@ public class TripRegisterActivity extends AppCompatActivity {
 
   private void getPassengerAddress(String phoneNumber) {
     vfPassengerAddress.setDisplayedChild(1);
-    RequestHelper.builder(EndPoints.PASSENGER_ADDRESS + "/" + phoneNumber)
-            .method(RequestHelper.GET)
-            .params(new JSONObject())
+    RequestHelper.loadBalancingBuilder(EndPoints.PASSENGER_ADDRESS)
+            .addPath(phoneNumber)
             .listener(getPassengerAddress)
-            .request();
+            .get();
 
   }
 
@@ -832,11 +838,11 @@ public class TripRegisterActivity extends AppCompatActivity {
   };
 
   private void getCheckOriginStation(int cityCode, int stationCode) {
-    RequestHelper.builder(EndPoints.CHECK_STATION + "/" + cityCode + "/" + stationCode)
-            .method(RequestHelper.GET)
-            .params(new JSONObject())
+    RequestHelper.loadBalancingBuilder(EndPoints.CHECK_STATION)
+            .addPath(cityCode + "")
+            .addPath(stationCode + "")
             .listener(getCheckOriginStation)
-            .request();
+            .get();
 
   }
 
@@ -885,11 +891,11 @@ public class TripRegisterActivity extends AppCompatActivity {
   };
 
   private void getCheckDestStation(int cityCode, int stationCode) {
-    RequestHelper.builder(EndPoints.CHECK_STATION + "/" + cityCode + "/" + stationCode)
-            .method(RequestHelper.GET)
-            .params(new JSONObject())
-            .listener(getCheckDestStation)
-            .request();
+    RequestHelper.loadBalancingBuilder(EndPoints.CHECK_STATION)
+            .addPath(cityCode + "")
+            .addPath(stationCode + "")
+            .listener(getCheckOriginStation)
+            .get();
 
   }
 
@@ -937,11 +943,10 @@ public class TripRegisterActivity extends AppCompatActivity {
   };
 
   private void getStationInfo(int cityCode) {
-    RequestHelper.builder(EndPoints.STATION_INFO + "/" + cityCode)
-            .method(RequestHelper.GET)
-            .params(new JSONObject())
+    RequestHelper.loadBalancingBuilder(EndPoints.STATION_INFO)
+            .addPath(cityCode + "")
             .listener(getStationInfo)
-            .request();
+            .get();
 
   }
 
@@ -983,21 +988,12 @@ public class TripRegisterActivity extends AppCompatActivity {
 
   private void setActivate(int userId, int sipNumber) {
 
-    JSONObject params = new JSONObject();
-    try {
-      params.put("userId", userId);
-      params.put("sipNumber", sipNumber);
+    RequestHelper.loadBalancingBuilder(EndPoints.ACTIVATE)
+            .addParam("userId", userId)
+            .addParam("sipNumber", sipNumber)
+            .listener(setActivate)
+            .post();
 
-      Log.i(TAG, "setActivate: "+params);
-
-      RequestHelper.builder(EndPoints.ACTIVATE)
-              .method(RequestHelper.POST)
-              .params(new JSONObject())
-              .listener(setActivate)
-              .request();
-    } catch (JSONException e) {
-      e.printStackTrace();
-    }
   }
 
   RequestHelper.Callback setActivate = new RequestHelper.Callback() {
@@ -1026,7 +1022,7 @@ public class TripRegisterActivity extends AppCompatActivity {
                       .firstButton("تلاش مجدد", new Runnable() {
                         @Override
                         public void run() {
-                          setActivate(MyApplication.prefManager.getUserCode(),MyApplication.prefManager.getSipNumber());
+                          setActivate(MyApplication.prefManager.getUserCode(), MyApplication.prefManager.getSipNumber());
                         }
                       })
                       .secondButton("بعدا امتحان میکنم", null)
@@ -1053,13 +1049,13 @@ public class TripRegisterActivity extends AppCompatActivity {
       params.put("userId", userId);
       params.put("sipNumber", sipNumber);
 
-      Log.i(TAG, "setDeActivate: "+params);
+      Log.i(TAG, "setDeActivate: " + params);
 
-      RequestHelper.builder(EndPoints.DEACTIVATE)
-              .method(RequestHelper.POST)
-              .params(new JSONObject())
+      RequestHelper.loadBalancingBuilder(EndPoints.DEACTIVATE)
+              .addParam("userId", userId)
+              .addParam("sipNumber", sipNumber)
               .listener(setDeActivate)
-              .request();
+              .post();
     } catch (JSONException e) {
       e.printStackTrace();
     }
@@ -1091,7 +1087,7 @@ public class TripRegisterActivity extends AppCompatActivity {
                       .firstButton("تلاش مجدد", new Runnable() {
                         @Override
                         public void run() {
-                          setDeActivate(MyApplication.prefManager.getUserCode(),MyApplication.prefManager.getSipNumber());
+                          setDeActivate(MyApplication.prefManager.getUserCode(), MyApplication.prefManager.getSipNumber());
                         }
                       })
                       .secondButton("بعدا امتحان میکنم", null)
@@ -1114,38 +1110,28 @@ public class TripRegisterActivity extends AppCompatActivity {
   private void insertService(int userId, int count, String phoneNumber, String mobile, int cityCode, int stationCode, String callerName,
                              String address, String fixedComment, int destinationStation, String destination, int typeService,
                              int classType, String description, int TrafficPlan, int voipId, int defaultClass) {
-    JSONObject params = new JSONObject();
 
-    try {
-      params.put("userId", userId);
-      params.put("count", count);
-      params.put("phoneNumber", phoneNumber);
-      params.put("mobile", mobile);
-      params.put("cityCode", cityCode);
-      params.put("stationCode", stationCode);
-      params.put("callerName", callerName);
-      params.put("address", address);
-      params.put("fixedComment", fixedComment);
-      params.put("destinationStation", destinationStation);
-      params.put("destination", destination);
-      params.put("typeService", typeService);
-      params.put("classType", classType);
-      params.put("description", description);
-      params.put("TrafficPlan", TrafficPlan);
-      params.put("voipId", voipId);
-      params.put("defaultClass", defaultClass);
+    RequestHelper.loadBalancingBuilder(EndPoints.INSERT)
+            .addParam("userId", userId)
+            .addParam("count", count)
+            .addParam("phoneNumber", phoneNumber)
+            .addParam("mobile", mobile)
+            .addParam("cityCode", cityCode)
+            .addParam("stationCode", stationCode)
+            .addParam("callerName", callerName)
+            .addParam("address", address)
+            .addParam("fixedComment", fixedComment)
+            .addParam("destinationStation", destinationStation)
+            .addParam("destination", destination)
+            .addParam("typeService", typeService)
+            .addParam("classType", classType)
+            .addParam("description", description)
+            .addParam("TrafficPlan", TrafficPlan)
+            .addParam("voipId", voipId)
+            .addParam("defaultClass", defaultClass)
+            .listener(insertService)
+            .post();
 
-      Log.i(TAG, "insertService: " + params);
-
-      RequestHelper.builder(EndPoints.INSERT)
-              .method(RequestHelper.POST)
-              .params(params)
-              .listener(insertService)
-              .request();
-
-    } catch (JSONException e) {
-      e.printStackTrace();
-    }
   }
 
   RequestHelper.Callback insertService = new RequestHelper.Callback() {
