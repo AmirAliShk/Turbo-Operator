@@ -71,13 +71,13 @@
                             android:id="@+id/edtDescription"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:nextFocusDown="@id/edtAlwaysDescription"
+                            android:background="@drawable/bg_strock_corner"
                             android:gravity="top"
-                            android:minHeight="100dp"
                             android:maxLength="40"
                             android:maxLines="3"
+                            android:minHeight="100dp"
                             android:minLines="3"
-                            android:background="@drawable/bg_strock_corner"
+                            android:nextFocusDown="@id/edtAlwaysDescription"
                             android:padding="5dp" />
 
                     </LinearLayout>

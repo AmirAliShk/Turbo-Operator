@@ -4,6 +4,7 @@ package ir.taxi1880.operatormanagement.fragment;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -143,7 +144,7 @@ public class AccountFragment extends Fragment {
   private void getBalance(int userId) {
     vfBalance.setDisplayedChild(0);
 
-    RequestHelper.builder(EndPoints.BALANCE + "/" + userId)
+    RequestHelper.builder(EndPoints.BALANCE)
             .addPath(userId + "")
             .listener(getBalance)
             .get();
@@ -157,6 +158,7 @@ public class AccountFragment extends Fragment {
         @Override
         public void run() {
           try {
+            Log.i(TAG, "run: "+args[0].toString());
             vfBalance.setDisplayedChild(1);
             JSONObject obj = new JSONObject(args[0].toString());
             boolean success = obj.getBoolean("success");

@@ -698,19 +698,19 @@ public class TripRegisterActivity extends AppCompatActivity {
     public void onResponse(Runnable reCall, Object... args) {
       MyApplication.handler.post(() -> {
         try {
-          Log.i(TAG, "run: "+args[0].toString());
+          Log.i(TAG, "run: " + args[0].toString());
           vfPassengerInfo.setDisplayedChild(0);
           JSONObject obj = new JSONObject(args[0].toString());
-//            boolean success = obj.getBoolean("success");
-//            String message = obj.getString("message");
+          boolean success = obj.getBoolean("success");
+          String message = obj.getString("message");
 
-//            JSONObject dataObj = obj.getJSONObject("data");
+          JSONObject dataObj = obj.getJSONObject("data");
 
-          JSONObject statusObj = obj.getJSONObject("status");
+          JSONObject statusObj = dataObj.getJSONObject("status");
           int status = statusObj.getInt("status");
           String descriptionStatus = statusObj.getString("descriptionStatus");
 
-          JSONObject passengerInfoObj = obj.getJSONObject("passengerInfo");
+          JSONObject passengerInfoObj = dataObj.getJSONObject("passengerInfo");
           int callerCode = passengerInfoObj.getInt("callerCode");
           String address = passengerInfoObj.getString("address");
           String name = passengerInfoObj.getString("name");
@@ -720,7 +720,7 @@ public class TripRegisterActivity extends AppCompatActivity {
           int discountId = passengerInfoObj.getInt("discountId");
           int carType = passengerInfoObj.getInt("carType");
 
-//            if (success) {
+          if (success) {
             isEnableView = true;
             initServiceCountSpinner();
             initServiceTypeSpinner();
@@ -768,7 +768,7 @@ public class TripRegisterActivity extends AppCompatActivity {
                   break;
               }
             }
-//            }
+          }
 
         } catch (JSONException e) {
           e.printStackTrace();
@@ -797,14 +797,14 @@ public class TripRegisterActivity extends AppCompatActivity {
         @Override
         public void run() {
           try {
-            Log.i(TAG, "onResponse: "+args[0].toString());
+            Log.i(TAG, "onResponse: " + args[0].toString());
             passengerAddressModels = new ArrayList<>();
-            JSONArray obj = new JSONArray(args[0].toString());
-//            boolean success = obj.getBoolean("success");
-//            String message = obj.getString("message");
-//            JSONArray dataArr = obj.getJSONArray("data");
-            for (int i = 0; i < obj.length(); i++) {
-              JSONObject dataObj = obj.getJSONObject(i);
+            JSONObject obj = new JSONObject(args[0].toString());
+            boolean success = obj.getBoolean("success");
+            String message = obj.getString("message");
+            JSONArray dataArr = obj.getJSONArray("data");
+            for (int i = 0; i < dataArr.length(); i++) {
+              JSONObject dataObj = dataArr.getJSONObject(i);
               PassengerAddressModel addressModel = new PassengerAddressModel();
               addressModel.setPhoneNumber(dataObj.getString("phoneNumber"));
               addressModel.setAddress(dataObj.getString("address"));
@@ -854,14 +854,14 @@ public class TripRegisterActivity extends AppCompatActivity {
         @Override
         public void run() {
           try {
-            Log.i(TAG, "onResponse: "+args[0].toString());
+            Log.i(TAG, "onResponse: " + args[0].toString());
             JSONObject obj = new JSONObject(args[0].toString());
-//            boolean success = obj.getBoolean("success");
-//            String message = obj.getString("message");
-//
-//            JSONObject dataObj = obj.getJSONObject("data");
-            int status = obj.getInt("status");
-            String desc = obj.getString("descriptionStatus");
+            boolean success = obj.getBoolean("success");
+            String message = obj.getString("message");
+
+            JSONObject dataObj = obj.getJSONObject("data");
+            int status = dataObj.getInt("status");
+            String desc = dataObj.getString("descriptionStatus");
 
             if (status != 0) {
               new GeneralDialog()
@@ -908,14 +908,14 @@ public class TripRegisterActivity extends AppCompatActivity {
         @Override
         public void run() {
           try {
-            Log.i(TAG, "onResponse: "+args[0].toString());
+            Log.i(TAG, "onResponse: " + args[0].toString());
             JSONObject obj = new JSONObject(args[0].toString());
-//            boolean success = obj.getBoolean("success");
-//            String message = obj.getString("message");
-//
-//            JSONObject dataObj = obj.getJSONObject("data");
-            int status = obj.getInt("status");
-            String desc = obj.getString("descriptionStatus");
+            boolean success = obj.getBoolean("success");
+            String message = obj.getString("message");
+
+            JSONObject dataObj = obj.getJSONObject("data");
+            int status = dataObj.getInt("status");
+            String desc = dataObj.getString("descriptionStatus");
 
             if (status != 0) {
               new GeneralDialog()
@@ -960,7 +960,7 @@ public class TripRegisterActivity extends AppCompatActivity {
         @Override
         public void run() {
           try {
-            Log.i(TAG, "onResponse: "+args[0].toString());
+            Log.i(TAG, "onResponse: " + args[0].toString());
             JSONObject obj = new JSONObject(args[0].toString());
             boolean success = obj.getBoolean("success");
             String message = obj.getString("message");
@@ -1007,7 +1007,7 @@ public class TripRegisterActivity extends AppCompatActivity {
         @Override
         public void run() {
           try {
-            Log.i(TAG, "onResponse: "+args[0].toString());
+            Log.i(TAG, "onResponse: " + args[0].toString());
             JSONObject obj = new JSONObject(args[0].toString());
             boolean success = obj.getBoolean("success");
             String message = obj.getString("message");
@@ -1073,7 +1073,7 @@ public class TripRegisterActivity extends AppCompatActivity {
         @Override
         public void run() {
           try {
-            Log.i(TAG, "onResponse: "+args[0].toString());
+            Log.i(TAG, "onResponse: " + args[0].toString());
             JSONObject obj = new JSONObject(args[0].toString());
             boolean success = obj.getBoolean("success");
             String message = obj.getString("message");
@@ -1147,7 +1147,7 @@ public class TripRegisterActivity extends AppCompatActivity {
         @Override
         public void run() {
           try {
-            Log.i(TAG, "onResponse: "+args[0].toString());
+            Log.i(TAG, "onResponse: " + args[0].toString());
             JSONObject obj = new JSONObject(args[0].toString());
             boolean success = obj.getBoolean("success");
             String message = obj.getString("message");

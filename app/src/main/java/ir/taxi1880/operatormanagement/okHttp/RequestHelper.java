@@ -254,42 +254,55 @@ public class RequestHelper implements Callback {
         bodyStr = parseXML(response.body().string());
         log("request result : " + bodyStr);
 
+        if (!response.isSuccessful()) {
+          requestFailed(response.code(), new Exception(response.message() + bodyStr));
+        } else {
+          if (object == null)
+            object = new Object[0];
+          requestSuccess(bodyStr);
+        }
+
         //check response code true 200
 
-        MyApplication.handler.post(new Runnable() {
-          @Override
-          public void run() {
-            try {
-              JSONObject res = new JSONObject(bodyStr);
-              boolean status = res.getBoolean("success");
-              String message = res.getString("message");
-              if (status) {
-                if (response.isSuccessful()) {
-                  if (object == null)
-                    object = new Object[0];
-                  requestSuccess(res.get("data"));
-                }
-              } else {
-                requestFailed(response.code(), new Exception(message + res));
-              }
-            } catch (JSONException e) {
-              if (object==null) {
-                object = new Object[0];
-              }
-              if (response.isSuccessful())
-                requestSuccess(bodyStr);
-              else
-                requestFailed(response.code(), e);
-            }
-          }
-
-        });
+//        MyApplication.handler.post(new Runnable() {
+//          @Override
+//          public void run() {
+//        try {
+//              JSONObject res = new JSONObject(bodyStr);
+//              boolean status = res.getBoolean("success");
+//              String message = res.getString("message");
+//              if (status) {
+//                if (response.isSuccessful()) {
+//                  if (object == null)
+//                    object = new Object[0];
+//                  requestSuccess(bodyStr);
+//                }
+//              }
+//              else {
+//                requestFailed(response.code(), new Exception(response.message() + bodyStr));
+//              }
+//            } catch (IOException e) {
+//              if (object==null) {
+//                object = new Object[0];
+//              }
+//              if (response.isSuccessful())
+//                requestSuccess(bodyStr);
+//              else
+//                requestFailed(response.code(), e);
+//            }
+//          }
+//
+//        });
 
       } catch (final IOException e) {
         requestFailed(response.code(), e);
+        if (listener != null)
+          listener.onFailure(runnable, e);
+
       }
     }
   }
+//    }
 
   /**
    * manage log
