@@ -165,6 +165,7 @@ public class RequestHelper implements Callback {
             .build();
 
     request();
+
   }
 
   public void post() {
@@ -178,6 +179,7 @@ public class RequestHelper implements Callback {
             .build();
 
     request();
+
   }
 
   public void put() {
@@ -190,6 +192,7 @@ public class RequestHelper implements Callback {
             .put(body)
             .build();
     request();
+
   }
 
   public void delete() {

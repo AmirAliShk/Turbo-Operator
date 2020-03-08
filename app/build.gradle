@@ -48,10 +48,7 @@ dependencies {
     implementation 'com.scwang.wave:MultiWaveHeader:1.0.0-alpha-1'
     implementation 'de.hdodenhof:circleimageview:3.0.1'
     implementation 'com.mohamadamin:persianmaterialdatetimepicker:1.2.1'
-//    implementation 'info.hoang8f:android-segmented:1.0.6'
-//    implementation 'com.yuxingxin.multiradiogroup:library:1.0.0'
     implementation 'com.github.Gavras:MultiLineRadioGroup:v1.0.0.6'
-
 
     //noinspection GradleDynamicVersion
     debugImplementation "org.linphone.minimal:linphone-sdk-android-debug:4.3+"
@@ -66,6 +63,4 @@ dependencies {
     }
 
     implementation 'com.gauravbhola.ripplepulsebackground:library:1.0.0'
-
-
 }

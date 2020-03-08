@@ -3,8 +3,10 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:background="#EEE9F1"
     android:clickable="true"
+    android:layoutDirection="rtl"
     android:orientation="vertical"
     tools:context="ir.taxi1880.operatormanagement.activity.MainActivity">
 
@@ -58,15 +60,45 @@
                         android:textColor="@color/colorWhite"
                         android:textSize="@dimen/text_header" />
 
-                    <TextView
-                        android:id="@+id/txtOperatorCharge"
+                    <LinearLayout
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
+                        android:layout_height="40dp"
                         android:gravity="center"
-                        android:padding="5dp"
-                        android:visibility="visible"
-                        android:textColor="@color/colorWhite"
-                        android:textSize="@dimen/text_header" />
+                        android:paddingRight="10dp"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="match_parent"
+                            android:gravity="center"
+                            android:text="شارژ شما : "
+                            android:textColor="@color/colorWhite"
+                            android:textSize="@dimen/text_header"
+                            android:visibility="visible" />
+
+                        <ViewFlipper
+                            android:id="@+id/vfBalance"
+                            android:layout_width="wrap_content"
+                            android:layout_height="match_parent"
+                            android:layout_gravity="center">
+
+                            <com.wang.avi.AVLoadingIndicatorView
+                                android:layout_width="40dp"
+                                android:layout_height="40dp"
+                                android:layout_gravity="center"
+                                app:indicatorColor="@color/colorWhite" />
+
+                            <TextView
+                                android:id="@+id/txtOperatorCharge"
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                android:gravity="center"
+                                android:textColor="@color/colorWhite"
+                                android:textAppearance="?android:attr/textAppearanceLarge"/>
+
+                        </ViewFlipper>
+
+                    </LinearLayout>
 
                 </LinearLayout>
 

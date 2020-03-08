@@ -17,18 +17,18 @@ public class EndPoints {
 //          ? "http://172.16.2.210"
 //          ? "http://172.16.2.201"
 //          ? "http://172.16.2.10"
-//          ? "http://172.16.2.203"
-          ? "http://turbotaxi.ir"
+          ? "http://172.16.2.203"
+//          ? "http://turbotaxi.ir"
           : "http://turbotaxi.ir";
 
   public static final String FIND_WAY_IP = (BuildConfig.DEBUG)
-//          ? "http://172.16.2.210"
-          ? "http://turbotaxi.ir"
+          ? "http://172.16.2.210"
+//          ? "http://turbotaxi.ir"
           : "http://turbotaxi.ir";
 
   public static final String APIPort = (BuildConfig.DEBUG) ? "1881" : "1881";
-//  public static final String TRIP_APIPort = (BuildConfig.DEBUG) ? "1881" : "1881";
-  public static final String TRIP_APIPort = (BuildConfig.DEBUG) ? "2323" : "2323";
+  public static final String TRIP_APIPort = (BuildConfig.DEBUG) ? "1881" : "1881";
+//  public static final String TRIP_APIPort = (BuildConfig.DEBUG) ? "2323" : "2323";
   public static final String FIND_WAY_APIPort = (BuildConfig.DEBUG) ? "1885" : "1885";
 
   public static final String WEBSERVICE_PATH = IP + ":" + APIPort + "/api/operator/";
@@ -63,6 +63,8 @@ public class EndPoints {
   public static final String INSERT = TRIP_WEBSERVICE_PATH + "insert";
   public static final String ACTIVATE = TRIP_WEBSERVICE_PATH + "activate";
   public static final String DEACTIVATE = TRIP_WEBSERVICE_PATH + "deActivate";
+  public static final String HIRETYPES  = TRIP_WEBSERVICE_PATH + "hireTypes";
+  public static final String HIRE = TRIP_WEBSERVICE_PATH + "hire";
 
   /******************************** Account Api *********************************/
 

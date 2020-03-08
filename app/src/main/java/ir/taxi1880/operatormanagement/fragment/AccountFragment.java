@@ -22,13 +22,13 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import butterknife.Unbinder;
-import ir.taxi1880.operatormanagement.okHttp.RequestHelper;
 import ir.taxi1880.operatormanagement.R;
 import ir.taxi1880.operatormanagement.app.EndPoints;
 import ir.taxi1880.operatormanagement.app.MyApplication;
 import ir.taxi1880.operatormanagement.dialog.GeneralDialog;
 import ir.taxi1880.operatormanagement.helper.StringHelper;
 import ir.taxi1880.operatormanagement.helper.TypefaceUtil;
+import ir.taxi1880.operatormanagement.okHttp.RequestHelper;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -70,6 +70,17 @@ public class AccountFragment extends Fragment {
             .show();
   }
 
+  @OnClick(R.id.btnUpdate)
+  void OnUpdae() {
+    new GeneralDialog()
+            .title("به روز رسانی")
+            .message("اطلاعات شما به روز شود؟")
+            .firstButton("بله", () ->
+                   updateProfile(MyApplication.prefManager.getUserCode(),edtAccountNum.getText().toString(),edtCardNumber.getText().toString(),edtIben.getText().toString()))
+            .secondButton("خیر", null)
+            .show();
+  }
+
   @BindView(R.id.btnCheckOut)
   Button btnCheckOut;
 
@@ -85,6 +96,9 @@ public class AccountFragment extends Fragment {
     getBalance(MyApplication.prefManager.getUserCode());
 
     txtOperatorName.setText(MyApplication.prefManager.getOperatorName());
+    edtAccountNum.setText(MyApplication.prefManager.getAccountNumber());
+    edtCardNumber.setText(MyApplication.prefManager.getCardNumber());
+    edtIben.setText(MyApplication.prefManager.getSheba());
 
     edtCardNumber.addTextChangedListener(new TextWatcher() {
       @Override
@@ -134,9 +148,7 @@ public class AccountFragment extends Fragment {
       }
     });
 
-    edtAccountNum.setText(MyApplication.prefManager.getAccountNumber());
-    edtCardNumber.setText(MyApplication.prefManager.getCardNumber());
-    edtIben.setText(MyApplication.prefManager.getSheba());
+
 
     return view;
   }
@@ -181,18 +193,19 @@ public class AccountFragment extends Fragment {
     }
   };
 
-  private void UpdateProfile(int userId,String accountNumber,String sheba) {
+  private void updateProfile(int userId,String accountNumber,String cardNumber,String sheba) {
 
     RequestHelper.builder(EndPoints.UPDATE_PROFILE)
             .addPath(userId + "")
-            .addPath(accountNumber + "")
-            .addPath(sheba + "")
-            .listener(UpdateProfile)
+            .addPath(accountNumber)
+            .addPath(cardNumber)
+            .addPath(sheba)
+            .listener(updateProfile)
             .put();
 
   }
 
-  RequestHelper.Callback UpdateProfile = new RequestHelper.Callback() {
+  RequestHelper.Callback updateProfile = new RequestHelper.Callback() {
     @Override
     public void onResponse(Runnable reCall, Object... args) {
       MyApplication.handler.post(new Runnable() {
@@ -200,7 +213,20 @@ public class AccountFragment extends Fragment {
         public void run() {
           try {
             JSONObject obj = new JSONObject(args[0].toString());
+            boolean success = obj.getBoolean("success");
+            String message = obj.getString("message");
 
+            JSONObject data = obj.getJSONObject("data");
+
+            boolean status = data.getBoolean("status");
+
+            if (success){
+              new GeneralDialog()
+                      .title("")
+                      .message("اطلاعات شما با موفقیت به روز رسانی شد")
+                      .firstButton("باشه",null)
+                      .show();
+            }
 
           } catch (JSONException e) {
             e.printStackTrace();

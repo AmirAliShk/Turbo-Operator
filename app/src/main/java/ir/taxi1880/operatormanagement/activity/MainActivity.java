@@ -4,11 +4,15 @@ import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
+import android.util.Log;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import androidx.appcompat.app.AppCompatActivity;
 import butterknife.BindView;
@@ -16,6 +20,7 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import butterknife.Unbinder;
 import ir.taxi1880.operatormanagement.R;
+import ir.taxi1880.operatormanagement.app.EndPoints;
 import ir.taxi1880.operatormanagement.app.MyApplication;
 import ir.taxi1880.operatormanagement.dialog.GeneralDialog;
 import ir.taxi1880.operatormanagement.fragment.AccountFragment;
@@ -27,9 +32,11 @@ import ir.taxi1880.operatormanagement.fragment.ShiftFragment;
 import ir.taxi1880.operatormanagement.helper.FragmentHelper;
 import ir.taxi1880.operatormanagement.helper.StringHelper;
 import ir.taxi1880.operatormanagement.helper.TypefaceUtil;
+import ir.taxi1880.operatormanagement.okHttp.RequestHelper;
 
 public class MainActivity extends AppCompatActivity {
 
+  public static final String TAG = MainActivity.class.getSimpleName();
   Unbinder unbinder;
   boolean doubleBackToExitPressedOnce = false;
 
@@ -51,15 +58,15 @@ public class MainActivity extends AppCompatActivity {
   @OnClick(R.id.llTripRegister)
   void onTripRegister() {
 
-      if (MyApplication.prefManager.getAccessInsertService() == 0) {
-        new GeneralDialog()
-                .title("هشدار")
-                .message("شما اجازه دسترسی به این بخش از برنامه را ندارید")
-                .firstButton("باشه",null)
-                .show();
-      } else {
-        startActivity(new Intent(MyApplication.context, TripRegisterActivity.class));
-      }
+    if (MyApplication.prefManager.getAccessInsertService() == 0) {
+      new GeneralDialog()
+              .title("هشدار")
+              .message("شما اجازه دسترسی به این بخش از برنامه را ندارید")
+              .firstButton("باشه", null)
+              .show();
+    } else {
+      startActivity(new Intent(MyApplication.context, TripRegisterActivity.class));
+    }
   }
 
   @OnClick(R.id.llReplacement)
@@ -94,6 +101,9 @@ public class MainActivity extends AppCompatActivity {
 
   @BindView(R.id.txtOperatorCharge)
   TextView txtOperatorCharge;
+
+//  @BindView(R.id.vfBalance)
+//  ViewFlipper vfBalance;
 
   @OnClick(R.id.llProfile)
   void onPressProfile() {
@@ -138,9 +148,48 @@ public class MainActivity extends AppCompatActivity {
     }
 
     txtOperatorName.setText(MyApplication.prefManager.getOperatorName());
-    txtOperatorCharge.setText(StringHelper.toPersianDigits("شارژ شما : " + MyApplication.prefManager.getBalance()+" تومان "));
+    txtOperatorCharge.setText(StringHelper.toPersianDigits(MyApplication.prefManager.getBalance() + " تومان "));
+  }
+
+  private void getBalance(int userId) {
+//    vfBalance.setDisplayedChild(0);
+
+    RequestHelper.builder(EndPoints.BALANCE)
+            .addPath(userId + "")
+            .listener(getBalance)
+            .get();
 
   }
+
+  RequestHelper.Callback getBalance = new RequestHelper.Callback() {
+    @Override
+    public void onResponse(Runnable reCall, Object... args) {
+      MyApplication.handler.post(new Runnable() {
+        @Override
+        public void run() {
+          try {
+            Log.i(TAG, "run: " + args[0].toString());
+//            vfBalance.setDisplayedChild(1);
+            JSONObject obj = new JSONObject(args[0].toString());
+            boolean success = obj.getBoolean("success");
+            String message = obj.getString("message");
+            JSONObject dataObj = obj.getJSONObject("data");
+            int accountBalance = dataObj.getInt("accountBalance");
+
+            txtOperatorCharge.setText(StringHelper.toPersianDigits(accountBalance + " تومان "));
+
+          } catch (JSONException e) {
+            e.printStackTrace();
+          }
+        }
+      });
+    }
+
+    @Override
+    public void onFailure(Runnable reCall, Exception e) {
+
+    }
+  };
 
   @Override
   protected void onResume() {
@@ -152,6 +201,12 @@ public class MainActivity extends AppCompatActivity {
   protected void onStart() {
     super.onStart();
     MyApplication.currentActivity = this;
+//    runOnUiThread(new Runnable() {
+//      @Override
+//      public void run() {
+//        getBalance(MyApplication.prefManager.getUserCode());
+//      }
+//    });
   }
 
   @Override

@@ -299,11 +299,11 @@ public class TripRegisterActivity extends AppCompatActivity {
     mobile = edtMobile.getText().toString();
     //    }
 
-//    if (edtTell.getText().toString().startsWith("0")) {
-//      tell = edtTell.getText().toString().substring(1, 10);
-//    } else {
+    if (edtTell.getText().toString().startsWith("0")) {
+      tell = edtTell.getText().toString().substring(1, 10);
+    } else {
     tell = edtTell.getText().toString();
-//    }
+    }
 
     String name = edtFamily.getText().toString();
     String address = edtAddress.getText().toString();
@@ -358,7 +358,7 @@ public class TripRegisterActivity extends AppCompatActivity {
 
   @OnClick(R.id.btnOptions)
   void onPressOptions() {
-    new OptionDialog().show();
+    new OptionDialog().show(edtMobile.getText().toString(),edtFamily.getText().toString(),cityCode);
   }
 
   @BindView(R.id.edtDestination)
@@ -546,10 +546,16 @@ public class TripRegisterActivity extends AppCompatActivity {
 
       @Override
       public void afterTextChanged(Editable editable) {
+
+        if (editable.toString().length()==1 && editable.toString().startsWith("0")){
+          editable.clear();
+        }
+
         if (PhoneNumberValidation.isValid(editable.toString())) {
           edtMobile.setText(editable.toString());
-          edtTell.setNextFocusDownId(R.id.edtFamily);
+//          edtTell.setNextFocusDownId(R.id.edtFamily);
         } else {
+//          clearData();
           edtMobile.setText("");
           edtFamily.setText("");
           edtAddress.setText("");
@@ -561,6 +567,25 @@ public class TripRegisterActivity extends AppCompatActivity {
           rbUnknow.setChecked(true);
           chbAlways.setChecked(false);
           edtTell.setNextFocusDownId(R.id.edtMobile);
+        }
+      }
+    });
+
+    edtMobile.addTextChangedListener(new TextWatcher() {
+      @Override
+      public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+      }
+
+      @Override
+      public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+      }
+
+      @Override
+      public void afterTextChanged(Editable editable) {
+        if (editable.toString().length()==1 && editable.toString().startsWith("0")){
+          editable.clear();
         }
       }
     });
@@ -721,6 +746,7 @@ public class TripRegisterActivity extends AppCompatActivity {
           int carType = passengerInfoObj.getInt("carType");
 
           if (success) {
+            edtTell.setNextFocusDownId(R.id.edtFamily);
             isEnableView = true;
             initServiceCountSpinner();
             initServiceTypeSpinner();
@@ -1195,6 +1221,7 @@ public class TripRegisterActivity extends AppCompatActivity {
 
     }
   };
+
 
   private void clearData() {
     isEnableView = false;

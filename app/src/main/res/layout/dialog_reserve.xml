@@ -3,86 +3,83 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:gravity="center"
-    android:layoutDirection="rtl"
     android:orientation="vertical">
 
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="استخدام"
+        android:text="رزرو سفر"
         android:paddingRight="30dp"
         android:textAppearance="?android:attr/textAppearanceLarge"
         android:textColor="@color/colorWhite"/>
 
-    <LinearLayout
-            android:layout_width="350dp"
+        <LinearLayout
+            android:layout_width="330dp"
             android:background="@drawable/bg_gray_lite_edge"
             android:layout_height="wrap_content"
             android:layout_gravity="top|center_horizontal"
             android:gravity="top"
             android:padding="10dp"
-            android:minWidth="350dp"
+            android:minWidth="330dp"
             android:orientation="vertical">
 
             <LinearLayout
+                android:id="@+id/llDate"
                 android:layout_width="match_parent"
+                android:layout_weight="1"
+                android:padding="5dp"
                 android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:padding="10dp">
-
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="نوع"
-                    android:padding="10dp"
-                    android:textAppearance="?android:attr/textAppearanceMedium"
-                    android:textColor="@color/grayMedium"/>
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:elevation="3dp"
-                    android:layout_margin="5dp"
-                    android:padding="5dp"
-                    android:background="@drawable/bg_strock_corner">
-
-                    <Spinner
-                        android:id="@+id/spHireType"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:dropDownWidth="match_parent"
-                        android:backgroundTint="@color/colorPurple"
-                        android:gravity="right"
-                         />
-
-                </LinearLayout>
-
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:padding="10dp"
                 android:orientation="vertical">
 
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="توضیحات"
-                    android:padding="10dp"
+                    android:text="تاریخ"
+                    android:padding="5dp"
                     android:textAppearance="?android:attr/textAppearanceMedium"
                     android:textColor="@color/grayMedium"/>
 
-                <EditText
-                    android:id="@+id/edtComment"
+                <TextView
+                    android:id="@+id/txtDate"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:minHeight="150dp"
-                    android:gravity="top|right"
+                    android:padding="5dp"
+                    android:gravity="center"
                     android:layout_margin="5dp"
-                    android:padding="10dp"
                     android:elevation="3dp"
-                    android:background="@drawable/bg_strock_corner"/>
+                    android:textAppearance="?android:attr/textAppearanceMedium"
+                    android:textColor="@color/colorBlack"
+                    android:background="@drawable/edit_text_style"/>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/llTime"
+                android:layout_width="match_parent"
+                android:layout_weight="1"
+                android:padding="5dp"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="ساعت"
+                    android:padding="5dp"
+                    android:textAppearance="?android:attr/textAppearanceMedium"
+                    android:textColor="@color/grayMedium"/>
+
+                <TextView
+                    android:id="@+id/txtTime"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:padding="5dp"
+                    android:layout_margin="5dp"
+                    android:gravity="center"
+                    android:elevation="3dp"
+                    android:textAppearance="?android:attr/textAppearanceMedium"
+                    android:textColor="@color/colorBlack"
+                    android:background="@drawable/edit_text_style"/>
 
             </LinearLayout>
 
@@ -91,7 +88,7 @@
                 android:layout_height="wrap_content"
                 android:gravity="center"
                 android:layout_weight="1"
-                android:layout_margin="10dp"
+                android:layout_margin="20dp"
                 android:orientation="vertical">
 
                 <Button
