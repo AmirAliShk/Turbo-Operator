@@ -72,11 +72,12 @@ public class AccountFragment extends Fragment {
 
   @OnClick(R.id.btnUpdate)
   void OnUpdae() {
+    String cardNumber=edtCardNumber.getText().toString().replaceAll(" ","");
     new GeneralDialog()
             .title("به روز رسانی")
             .message("اطلاعات شما به روز شود؟")
             .firstButton("بله", () ->
-                   updateProfile(MyApplication.prefManager.getUserCode(),edtAccountNum.getText().toString(),edtCardNumber.getText().toString(),edtIben.getText().toString()))
+                   updateProfile(MyApplication.prefManager.getUserCode(),edtAccountNum.getText().toString(),cardNumber,edtIben.getText().toString()))
             .secondButton("خیر", null)
             .show();
   }
@@ -148,8 +149,6 @@ public class AccountFragment extends Fragment {
       }
     });
 
-
-
     return view;
   }
 
@@ -196,10 +195,10 @@ public class AccountFragment extends Fragment {
   private void updateProfile(int userId,String accountNumber,String cardNumber,String sheba) {
 
     RequestHelper.builder(EndPoints.UPDATE_PROFILE)
-            .addPath(userId + "")
-            .addPath(accountNumber)
-            .addPath(cardNumber)
-            .addPath(sheba)
+            .addParam("userId",userId)
+            .addParam("accountNumber",accountNumber)
+            .addParam("cardNumber",cardNumber)
+            .addParam("sheba",sheba)
             .listener(updateProfile)
             .put();
 
@@ -222,8 +221,8 @@ public class AccountFragment extends Fragment {
 
             if (success){
               new GeneralDialog()
-                      .title("")
-                      .message("اطلاعات شما با موفقیت به روز رسانی شد")
+                      .title("به روزرسانی")
+                      .message("اطلاعات شما با موفقـیت به روز رسانی شد")
                       .firstButton("باشه",null)
                       .show();
             }

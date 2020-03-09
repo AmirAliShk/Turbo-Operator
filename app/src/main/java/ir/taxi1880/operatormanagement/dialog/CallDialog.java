@@ -46,6 +46,9 @@ public class CallDialog {
         LinearLayout llEndCall=dialog.findViewById(R.id.llEndCall);
         ImageView imgClose=dialog.findViewById(R.id.imgClose);
 
+        //TODO  if call is available this layer must be visible
+        llEndCall.setVisibility(View.GONE);
+
         llTransferCall.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

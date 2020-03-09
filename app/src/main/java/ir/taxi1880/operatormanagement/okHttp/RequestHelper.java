@@ -209,9 +209,10 @@ public class RequestHelper implements Callback {
 
   private void request() {
 
+    try {
     log("request url : " + req.url().toString());
     log("request params : " + params);
-    try {
+    log("paths : "+paths);
       OkHttpClient.Builder builder = new OkHttpClient
               .Builder()
               .proxy(Proxy.NO_PROXY);

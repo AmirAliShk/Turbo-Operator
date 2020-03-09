@@ -81,7 +81,7 @@
                 android:layout_width="?android:attr/actionBarSize"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:padding="13dp"
+                android:padding="15dp"
                 android:src="@drawable/ic_end_call" />
 
         </LinearLayout>
@@ -153,6 +153,7 @@
                                 android:layout_height="match_parent"
                                 android:dropDownWidth="match_parent"
                                 android:background="@drawable/bg_edit_text"
+                                android:spinnerMode="dialog"
                                 android:gravity="center"
                                 android:paddingTop="5dp"
                                 android:paddingBottom="5dp" />

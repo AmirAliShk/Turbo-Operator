@@ -31,4 +31,6 @@ public class SpinnerAdapter extends ArrayAdapter<String> {
     TypefaceUtil.overrideFonts(v);
     return v;
   }
+
+
 }

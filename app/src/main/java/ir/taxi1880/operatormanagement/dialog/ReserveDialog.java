@@ -18,6 +18,7 @@ import android.widget.TimePicker;
 import com.mohamadamin.persianmaterialdatetimepicker.date.DatePickerDialog;
 import com.mohamadamin.persianmaterialdatetimepicker.utils.PersianCalendar;
 
+import java.util.Date;
 import java.util.Locale;
 
 import ir.taxi1880.operatormanagement.R;
@@ -35,6 +36,7 @@ public class ReserveDialog {
     void onClose(boolean b);
   }
 
+  Date currentDate =DateHelper.getCurrentGregorianDate();
   static Dialog dialog;
   private static final String DATEPICKER = "DatePickerDialog";
   private static final String TIMEPICKER = "TimePickerDialog";
@@ -61,7 +63,7 @@ public class ReserveDialog {
     TextView txtDate = dialog.findViewById(R.id.txtDate);
     Button btnSubmit = dialog.findViewById(R.id.btnSubmit);
 
-    txtDate.setText(StringHelper.toPersianDigits(DateHelper.strPersianTwo(DateHelper.getCurrentGregorianDate())));
+    txtDate.setText(StringHelper.toPersianDigits(DateHelper.strPersianTwo(currentDate)));
 
     txtTime.setOnClickListener(new View.OnClickListener() {
       @Override
@@ -69,13 +71,13 @@ public class ReserveDialog {
         PersianCalendar persianCalendar = new PersianCalendar();
         int hour = persianCalendar.get(PersianCalendar.HOUR_OF_DAY);
         int minute = persianCalendar.get(PersianCalendar.MINUTE);
-        timePickerDialog = new TimePickerDialog(MyApplication.currentActivity, new TimePickerDialog.OnTimeSetListener() {
+        timePickerDialog = new TimePickerDialog(MyApplication.context, new TimePickerDialog.OnTimeSetListener() {
           @Override
           public void onTimeSet(TimePicker timePicker, int i, int i1) {
-            txtTime.setText( i + ":" + i1);
+            txtTime.setText(i + ":" + i1);
           }
-        },hour, minute, true);
-        timePickerDialog.setTitle("ساعت");
+        }, hour, minute, true);
+//        timePickerDialog.setTitle("ساعت");
         timePickerDialog.show();
       }
     });
@@ -86,13 +88,14 @@ public class ReserveDialog {
         PersianCalendar persianCalendar = new PersianCalendar();
         datePickerDialog = DatePickerDialog.newInstance((view, year, monthOfYear, dayOfMonth) -> {
                   String date = String.format(new Locale("en_US"), "%04d/%02d/%02d", year, monthOfYear + 1, dayOfMonth);
+
                   txtDate.setText(StringHelper.toPersianDigits(date));
                 },
                 persianCalendar.getPersianYear(),
                 persianCalendar.getPersianMonth(),
                 persianCalendar.getPersianDay()
         );
-        datePickerDialog.show(MyApplication.currentActivity.getFragmentManager(),DATEPICKER);
+        datePickerDialog.show(MyApplication.currentActivity.getFragmentManager(), DATEPICKER);
       }
     });
 

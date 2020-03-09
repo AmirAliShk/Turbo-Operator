@@ -12,7 +12,8 @@ public class PhoneNumberValidation {
       mobile = mobile.substring(1);
     }
 //    String regEx = "[0-9]\\d{10}$";
-    String regEx = "[0-9]{10}$";
+//      String regEx = "[0-9]{10}$";
+      String regEx = "9[0-9]{9}$";
 //    String regEx = "/^(9)(\\d{2})(\\d{3})(\\d{4})$/";
     return mobile.matches(regEx);
   }

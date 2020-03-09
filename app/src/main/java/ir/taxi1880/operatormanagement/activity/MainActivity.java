@@ -10,6 +10,7 @@ import android.view.Window;
 import android.view.WindowManager;
 import android.widget.TextView;
 import android.widget.Toast;
+import android.widget.ViewFlipper;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -102,8 +103,8 @@ public class MainActivity extends AppCompatActivity {
   @BindView(R.id.txtOperatorCharge)
   TextView txtOperatorCharge;
 
-//  @BindView(R.id.vfBalance)
-//  ViewFlipper vfBalance;
+  @BindView(R.id.vfBalance)
+  ViewFlipper vfBalance;
 
   @OnClick(R.id.llProfile)
   void onPressProfile() {
@@ -148,11 +149,11 @@ public class MainActivity extends AppCompatActivity {
     }
 
     txtOperatorName.setText(MyApplication.prefManager.getOperatorName());
-    txtOperatorCharge.setText(StringHelper.toPersianDigits(MyApplication.prefManager.getBalance() + " تومان "));
+//    txtOperatorCharge.setText(StringHelper.toPersianDigits(MyApplication.prefManager.getBalance() + " تومان "));
   }
 
   private void getBalance(int userId) {
-//    vfBalance.setDisplayedChild(0);
+    vfBalance.setDisplayedChild(0);
 
     RequestHelper.builder(EndPoints.BALANCE)
             .addPath(userId + "")
@@ -169,7 +170,7 @@ public class MainActivity extends AppCompatActivity {
         public void run() {
           try {
             Log.i(TAG, "run: " + args[0].toString());
-//            vfBalance.setDisplayedChild(1);
+            vfBalance.setDisplayedChild(1);
             JSONObject obj = new JSONObject(args[0].toString());
             boolean success = obj.getBoolean("success");
             String message = obj.getString("message");
@@ -201,12 +202,7 @@ public class MainActivity extends AppCompatActivity {
   protected void onStart() {
     super.onStart();
     MyApplication.currentActivity = this;
-//    runOnUiThread(new Runnable() {
-//      @Override
-//      public void run() {
-//        getBalance(MyApplication.prefManager.getUserCode());
-//      }
-//    });
+    getBalance(MyApplication.prefManager.getUserCode());
   }
 
   @Override

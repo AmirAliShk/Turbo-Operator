@@ -302,7 +302,7 @@ public class TripRegisterActivity extends AppCompatActivity {
     if (edtTell.getText().toString().startsWith("0")) {
       tell = edtTell.getText().toString().substring(1, 10);
     } else {
-    tell = edtTell.getText().toString();
+      tell = edtTell.getText().toString();
     }
 
     String name = edtFamily.getText().toString();
@@ -358,7 +358,8 @@ public class TripRegisterActivity extends AppCompatActivity {
 
   @OnClick(R.id.btnOptions)
   void onPressOptions() {
-    new OptionDialog().show(edtMobile.getText().toString(),edtFamily.getText().toString(),cityCode);
+    KeyBoardHelper.hideKeyboard();
+    new OptionDialog().show(edtMobile.getText().toString(), edtFamily.getText().toString(), cityCode);
   }
 
   @BindView(R.id.edtDestination)
@@ -490,7 +491,6 @@ public class TripRegisterActivity extends AppCompatActivity {
 
   View view;
   private String[] countService = new String[6];
-
   @Override
   protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
@@ -518,7 +518,6 @@ public class TripRegisterActivity extends AppCompatActivity {
       btnDeActivate.setTextColor(Color.parseColor("#ffffff"));
       btnActivate.setTextColor(Color.parseColor("#000000"));
     }
-
     disableViews();
 
     initCitySpinner();
@@ -539,6 +538,7 @@ public class TripRegisterActivity extends AppCompatActivity {
 //        spCity.setSelection(0);
         isEnableView = false;
         disableViews();
+        spCity.setSelection(0);
         initServiceCountSpinner();
         initServiceTypeSpinner();
 //        }
@@ -547,16 +547,16 @@ public class TripRegisterActivity extends AppCompatActivity {
       @Override
       public void afterTextChanged(Editable editable) {
 
-        if (editable.toString().length()==1 && editable.toString().startsWith("0")){
+        if (editable.toString().length() == 1 && editable.toString().startsWith("0")) {
           editable.clear();
         }
 
         if (PhoneNumberValidation.isValid(editable.toString())) {
           edtMobile.setText(editable.toString());
-//          edtTell.setNextFocusDownId(R.id.edtFamily);
+          edtMobile.setNextFocusDownId(R.id.edtMobile);
         } else {
 //          clearData();
-          edtMobile.setText("");
+//          edtMobile.setText("");
           edtFamily.setText("");
           edtAddress.setText("");
           edtOrigin.setText("");
@@ -567,6 +567,7 @@ public class TripRegisterActivity extends AppCompatActivity {
           rbUnknow.setChecked(true);
           chbAlways.setChecked(false);
           edtTell.setNextFocusDownId(R.id.edtMobile);
+          edtMobile.setNextFocusDownId(R.id.edtMobile);
         }
       }
     });
@@ -584,7 +585,7 @@ public class TripRegisterActivity extends AppCompatActivity {
 
       @Override
       public void afterTextChanged(Editable editable) {
-        if (editable.toString().length()==1 && editable.toString().startsWith("0")){
+        if (editable.toString().length() == 1 && editable.toString().startsWith("0")) {
           editable.clear();
         }
       }
@@ -744,6 +745,7 @@ public class TripRegisterActivity extends AppCompatActivity {
           String discountCode = passengerInfoObj.getString("discountCode");
           int discountId = passengerInfoObj.getInt("discountId");
           int carType = passengerInfoObj.getInt("carType");
+          int cityCode = passengerInfoObj.getInt("cityCode");
 
           if (success) {
             edtTell.setNextFocusDownId(R.id.edtFamily);
@@ -751,6 +753,10 @@ public class TripRegisterActivity extends AppCompatActivity {
             initServiceCountSpinner();
             initServiceTypeSpinner();
             enableViews();
+            spCity.setSelection(cityCode - 1, true);
+            if (cityCode==0){
+              spCity.performClick();
+            }
             if (callerCode == 0) {
               txtNewPassenger.setVisibility(View.VISIBLE);
               txtLockPassenger.setVisibility(View.GONE);
