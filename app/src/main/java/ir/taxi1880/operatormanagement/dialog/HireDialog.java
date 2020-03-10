@@ -37,12 +37,14 @@ public class HireDialog {
     void onClose(boolean b);
   }
 
+  Listener listener;
+
   private Spinner spHireType;
   private int hireType;
 
   static Dialog dialog;
 
-  public void show(String mobile, String name, int cityCode) {
+  public void show(Listener listener,String mobile, String name, int cityCode) {
     dialog = new Dialog(MyApplication.currentActivity);
     dialog.getWindow().requestFeature(Window.FEATURE_NO_TITLE);
     dialog.getWindow().getAttributes().windowAnimations = R.style.ExpandAnimation;
@@ -54,6 +56,7 @@ public class HireDialog {
     wlp.windowAnimations = R.style.ExpandAnimation;
     dialog.getWindow().setAttributes(wlp);
     dialog.setCancelable(true);
+    this.listener=listener;
 
     getHireType();
 
@@ -130,9 +133,12 @@ public class HireDialog {
               new GeneralDialog()
                       .title("ثبت شد")
                       .message("درخواست استخدامی شما با موفقیت ثبت شد")
-                      .firstButton("باشه", () -> {
-                        dismiss();
-                        MyApplication.currentActivity.finish();
+                      .firstButton("باشه", new Runnable() {
+                        @Override
+                        public void run() {
+                          dismiss();
+                          listener.onClose(true);
+                        }
                       })
                       .show();
             }
@@ -165,6 +171,7 @@ public class HireDialog {
           ArrayList<HireTypeModel> hireTypeModels = new ArrayList<>();
           ArrayList<String> hireTypes = new ArrayList<String>();
           try {
+            Log.i(TAG, "run: "+args[0].toString());
             JSONObject hireObj = new JSONObject(args[0].toString());
             boolean success = hireObj.getBoolean("success");
             String message = hireObj.getString("message");

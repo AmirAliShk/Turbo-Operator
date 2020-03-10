@@ -1,7 +1,6 @@
 package ir.taxi1880.operatormanagement.dialog;
 
 import android.app.Dialog;
-import android.app.TimePickerDialog;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.util.Log;
@@ -13,11 +12,14 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.TimePicker;
+import android.widget.Toast;
 
 import com.mohamadamin.persianmaterialdatetimepicker.date.DatePickerDialog;
+import com.mohamadamin.persianmaterialdatetimepicker.time.TimePickerDialog;
 import com.mohamadamin.persianmaterialdatetimepicker.utils.PersianCalendar;
 
+
+import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
 
@@ -36,7 +38,7 @@ public class ReserveDialog {
     void onClose(boolean b);
   }
 
-  Date currentDate =DateHelper.getCurrentGregorianDate();
+  private Date selectedDate = DateHelper.getCurrentGregorianDate();
   static Dialog dialog;
   private static final String DATEPICKER = "DatePickerDialog";
   private static final String TIMEPICKER = "TimePickerDialog";
@@ -63,22 +65,20 @@ public class ReserveDialog {
     TextView txtDate = dialog.findViewById(R.id.txtDate);
     Button btnSubmit = dialog.findViewById(R.id.btnSubmit);
 
-    txtDate.setText(StringHelper.toPersianDigits(DateHelper.strPersianTwo(currentDate)));
+    txtDate.setText(StringHelper.toPersianDigits(DateHelper.strPersianSeven(selectedDate)));
+    txtTime.setText(StringHelper.toPersianDigits(DateHelper.strPersianFour1(selectedDate)));
 
     txtTime.setOnClickListener(new View.OnClickListener() {
       @Override
-      public void onClick(View view) {
+      public void onClick(View v) {
         PersianCalendar persianCalendar = new PersianCalendar();
-        int hour = persianCalendar.get(PersianCalendar.HOUR_OF_DAY);
-        int minute = persianCalendar.get(PersianCalendar.MINUTE);
-        timePickerDialog = new TimePickerDialog(MyApplication.context, new TimePickerDialog.OnTimeSetListener() {
-          @Override
-          public void onTimeSet(TimePicker timePicker, int i, int i1) {
-            txtTime.setText(i + ":" + i1);
-          }
-        }, hour, minute, true);
-//        timePickerDialog.setTitle("ساعت");
-        timePickerDialog.show();
+        timePickerDialog = TimePickerDialog.newInstance(
+                (view, hourOfDay, minute) -> {
+                  String m_Time = String.format(new Locale("en_US"), "%02d:%02d", hourOfDay, minute);
+                  txtTime.setText(StringHelper.toPersianDigits(m_Time));
+                }, Calendar.HOUR_OF_DAY, Calendar.MINUTE, true);
+        timePickerDialog.show(MyApplication.currentActivity.getFragmentManager(), TIMEPICKER);
+
       }
     });
 
@@ -87,9 +87,15 @@ public class ReserveDialog {
       public void onClick(View v) {
         PersianCalendar persianCalendar = new PersianCalendar();
         datePickerDialog = DatePickerDialog.newInstance((view, year, monthOfYear, dayOfMonth) -> {
-                  String date = String.format(new Locale("en_US"), "%04d/%02d/%02d", year, monthOfYear + 1, dayOfMonth);
-
-                  txtDate.setText(StringHelper.toPersianDigits(date));
+                  DateHelper.YearMonthDate jalaliDate = new DateHelper.YearMonthDate(year, monthOfYear + 1, dayOfMonth, 23, 59, 0);
+                  selectedDate = DateHelper.jalaliToGregorian(jalaliDate);
+                  Date currentDate = DateHelper.getCurrentGregorianDate();
+                  if (selectedDate.getTime() <= currentDate.getTime()) {
+                    MyApplication.Toast("نباید از تاریخ امروز کمتر انتخاب کنی", Toast.LENGTH_SHORT);
+                    txtDate.setText(StringHelper.toPersianDigits(DateHelper.strPersianSeven(currentDate)));
+                  } else {
+                    txtDate.setText(StringHelper.toPersianDigits(DateHelper.strPersianSeven(selectedDate)));
+                  }
                 },
                 persianCalendar.getPersianYear(),
                 persianCalendar.getPersianMonth(),
@@ -102,7 +108,7 @@ public class ReserveDialog {
     btnSubmit.setOnClickListener(new View.OnClickListener() {
       @Override
       public void onClick(View view) {
-
+        dismiss();
       }
     });
 

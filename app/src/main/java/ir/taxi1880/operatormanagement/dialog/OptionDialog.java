@@ -21,9 +21,15 @@ public class OptionDialog {
 
   private static final String TAG = OptionDialog.class.getSimpleName();
 
+  public interface Listener {
+    void onClose(boolean b);
+  }
+
+  Listener listener;
+
   static Dialog dialog;
 
-  public void show(String mobile, String name, int cityCode) {
+  public void show(Listener listener, String mobile, String name, int cityCode) {
     dialog = new Dialog(MyApplication.currentActivity);
     dialog.getWindow().requestFeature(Window.FEATURE_NO_TITLE);
     dialog.getWindow().getAttributes().windowAnimations = R.style.ExpandAnimation;
@@ -35,6 +41,7 @@ public class OptionDialog {
     wlp.windowAnimations = R.style.ExpandAnimation;
     dialog.getWindow().setAttributes(wlp);
     dialog.setCancelable(true);
+    this.listener = listener;
 
     LinearLayout llHire = dialog.findViewById(R.id.llHire);
     LinearLayout llReserve = dialog.findViewById(R.id.llReserve);
@@ -58,7 +65,15 @@ public class OptionDialog {
           dismiss();
           return;
         }
-        new HireDialog().show(mobile, name, cityCode);
+        new HireDialog().show(new HireDialog.Listener() {
+          @Override
+          public void onClose(boolean b) {
+//            if (b) {
+
+              listener.onClose(b);
+//            }
+          }
+        }, mobile, name, cityCode);
         dismiss();
       }
     });

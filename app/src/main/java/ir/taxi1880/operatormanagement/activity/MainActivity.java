@@ -202,6 +202,7 @@ public class MainActivity extends AppCompatActivity {
   protected void onStart() {
     super.onStart();
     MyApplication.currentActivity = this;
+//    KeyBoardHelper.hideKeyboard();
     getBalance(MyApplication.prefManager.getUserCode());
   }
 

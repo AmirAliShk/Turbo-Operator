@@ -37,13 +37,13 @@
                 android:layout_height="match_parent"/>
 
             <Button
-                android:background="@drawable/bg_light_pink_edge"
+                android:background="@android:color/transparent"
                 android:id="@+id/btnDeActivate"
                 android:layout_margin="3dp"
                 android:text="غیر فعال"
                 android:gravity="center"
                 android:layout_weight="1"
-                android:textColor="@color/colorWhite"
+                android:textColor="@color/colorBlack"
                 android:textAppearance="?android:attr/textAppearanceLarge"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"/>
@@ -144,19 +144,18 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:gravity="center"
-                            android:layout_margin="3dp"
                             android:background="@drawable/bg_edit_text">
 
                             <Spinner
                                 android:id="@+id/spCity"
                                 android:layout_width="match_parent"
                                 android:layout_height="match_parent"
-                                android:dropDownWidth="match_parent"
                                 android:background="@drawable/bg_edit_text"
-                                android:spinnerMode="dialog"
+                                android:dropDownWidth="match_parent"
                                 android:gravity="center"
+                                android:paddingBottom="5dp"
                                 android:paddingTop="5dp"
-                                android:paddingBottom="5dp" />
+                                android:spinnerMode="dialog" />
 
                         </LinearLayout>
 
@@ -183,8 +182,8 @@
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
                             android:padding="5dp"
-                            android:layout_margin="3dp"
                             android:maxLength="11"
+                            android:gravity="left|center_vertical"
                             android:textAppearance="?android:attr/textAppearanceMedium"
                             android:textColor="@color/colorBlack"
                             android:singleLine="true"
@@ -215,7 +214,6 @@
                             android:layout_width="match_parent"
                             android:layout_height="38dp"
                             android:gravity="center"
-                            android:layout_margin="3dp"
                             android:background="@drawable/bg_strock_corner">
 
                             <ImageView
@@ -257,7 +255,7 @@
                             android:id="@+id/edtDiscount"
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
-                            android:layout_margin="3dp"
+                            android:editable="false"
                             android:background="@drawable/edit_text_style"
                             android:nextFocusDown="@id/edtMobile"
                             android:textAppearance="?android:attr/textAppearanceMedium"
@@ -287,7 +285,6 @@
                             style="@style/linearLayout"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:layout_margin="3dp"
                             android:clickable="true"
                             android:focusable="true"
                             android:gravity="center_vertical"
@@ -298,9 +295,9 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
-                            android:gravity="center_vertical"
+                            android:gravity="left|center_vertical"
                             android:background="@drawable/edit_text_style"
-                            android:padding="5dp"
+                            style="@style/padding"
                             android:inputType="number|textNoSuggestions"
                             android:singleLine="true"
                             android:maxLength="11"
@@ -382,8 +379,7 @@
                         <LinearLayout
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:gravity="center"
-                            android:layout_margin="3dp">
+                            android:gravity="center">
 
                             <Spinner
                                 android:id="@+id/spServiceType"
@@ -451,7 +447,7 @@
                                 android:layout_weight="1"
                                 android:background="@drawable/edit_text_style"
                                 android:nextFocusDown="@id/edtAddress"
-                                android:padding="5dp"
+                                style="@style/padding"
                                 android:singleLine="true"
                                 android:maxLength="40"
                                 android:textAppearance="?android:attr/textAppearanceMedium"
@@ -480,7 +476,6 @@
                     <RelativeLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_margin="3dp"
                         android:clickable="true"
                         android:focusable="true"
                         android:gravity="center_vertical"
@@ -493,9 +488,8 @@
                             android:layout_weight="1"
                             android:background="@drawable/edit_text_style"
                             android:nextFocusDown="@id/edtOrigin"
-                            android:padding="5dp"
+                            style="@style/padding"
                             android:singleLine="true"
-                            android:maxLength="40"
                             android:textAppearance="?android:attr/textAppearanceMedium"
                             android:textColor="@color/colorBlack" />
 
@@ -563,7 +557,6 @@
                         <RelativeLayout
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:layout_margin="3dp"
                             android:clickable="true"
                             android:focusable="true"
                             android:gravity="center_vertical"
@@ -574,9 +567,10 @@
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:layout_weight="1"
+                                android:gravity="left|center_vertical"
                                 android:background="@drawable/edit_text_style"
                                 android:nextFocusDown="@id/edtDestination"
-                                android:padding="5dp"
+                                style="@style/padding"
                                 android:singleLine="true"
                                 android:maxLength="3"
                                 android:inputType="number"
@@ -626,7 +620,6 @@
                         <RelativeLayout
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:layout_margin="3dp"
                             android:clickable="true"
                             android:focusable="true"
                             android:gravity="center_vertical"
@@ -637,9 +630,10 @@
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:layout_weight="1"
+                                android:gravity="left|center_vertical"
                                 android:background="@drawable/edit_text_style"
                                 android:nextFocusDown="@id/edtDescription"
-                                android:padding="5dp"
+                                style="@style/padding"
                                 android:singleLine="true"
                                 android:maxLength="3"
                                 android:inputType="number"
@@ -689,7 +683,6 @@
                             android:layout_height="38dp"
                             android:gravity="center"
                             android:padding="3dp"
-                            android:layout_margin="3dp"
                             android:background="@drawable/edit_text_style">
 
                             <CheckBox
@@ -744,8 +737,7 @@
                         <LinearLayout
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:gravity="center"
-                            android:layout_margin="3dp">
+                            android:gravity="center">
 
                             <Spinner
                                 android:id="@+id/spServiceCount"
@@ -780,7 +772,6 @@
                         <RelativeLayout
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:layout_margin="3dp"
                             android:clickable="true"
                             android:focusable="true"
                             android:gravity="center_vertical"
@@ -794,7 +785,7 @@
                                 android:background="@drawable/bg_strock_corner"
                                 android:textAppearance="?android:attr/textAppearanceMedium"
                                 android:textColor="@color/colorBlack"
-                                android:padding="5dp"
+                                style="@style/padding"
                                 android:maxLength="40"
                                 android:nextFocusDown="@id/btnSubmit"
                                 android:singleLine="true"/>
@@ -852,7 +843,6 @@
                             multi_line_radio_group:max_in_row="3"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:layout_margin="3dp"
                             android:background="@drawable/bg_strock_corner"
                             android:gravity="center"
                             android:padding="5dp">
@@ -945,7 +935,6 @@
                         <LinearLayout
                             android:layout_width="match_parent"
                             android:layout_height="38dp"
-                            android:layout_margin="3dp"
                             android:background="@drawable/edit_text_style"
                             android:gravity="center"
                             android:padding="3dp">

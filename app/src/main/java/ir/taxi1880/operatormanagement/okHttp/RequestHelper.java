@@ -81,6 +81,7 @@ public class RequestHelper implements Callback {
     }
     try {
       params.put(key, value);
+      Log.i(TAG, "addParam: "+params);
     } catch (JSONException e) {
       e.printStackTrace();
     }

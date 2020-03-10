@@ -4,6 +4,7 @@ import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
 import java.util.TimeZone;
@@ -486,6 +487,10 @@ public class DateHelper {
     }
   }
 
+  /**
+   * @param date <br>
+   * <b>return a value such as: <br>بعد از ظهر دوشنبه،30 دی، ساعت 18:00<b/><br>
+   * */
   public static String strPersianDate(Date date) {
     DateHelper util = new DateHelper();
     SolarCalendar sc = util.new SolarCalendar(date);
@@ -493,41 +498,121 @@ public class DateHelper {
     return String.format(new Locale("en_US"), "%s %s %02d %s ساعت %02d:%02d", middle, sc.strWeekDay, sc.date, sc.strMonth, date.getHours(), date.getMinutes());
   }
 
-  public static String strPersianTwo(Date date){
+  /**
+   * @param date <br>
+   * <b>return a value such as: <br>از دوشنبه 30 دی<b/><br>
+   * */
+  public static String strPersianTwo(Date date) {
     DateHelper util = new DateHelper();
     SolarCalendar sc = util.new SolarCalendar(date);
-    return String.format(new Locale("en_US"),"%04d/%02d/%02d",sc.year,sc.month,sc.date);
+    return String.format(new Locale("en_US"), "از %s %02d %s", sc.strWeekDay, sc.date, sc.strMonth);
   }
 
-  public static String strPersianDate2(Date date) {
+  /**
+   * @param date <br>
+   * <b>return a value such as: <br>دوشنبه 30 دی<b/><br>
+   * */
+  public static String strPersianTree(Date date) {
     DateHelper util = new DateHelper();
     SolarCalendar sc = util.new SolarCalendar(date);
-    return String.format(new Locale("en_US"), "%02d %s %s", sc.date, sc.strMonth, sc.year == getCurrentJalaliDate().year ? "" : sc.year + "");
+    return String.format(new Locale("en_US"), "%s %02d %s", sc.strWeekDay, sc.date, sc.strMonth);
   }
 
-  public static String strPersianDate3(Date date) {
-    DateHelper util = new DateHelper();
-    SolarCalendar sc = util.new SolarCalendar(date);
-    Date curDate = jalaliToGregorian(getCurrentJalaliDate());
-    SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd");
-    if (sdf.format(curDate).compareTo(sdf.format(date)) == 0)
+  /**
+   * @param date <br>
+   * <b>return a value such as: <br>دوشنبه 18:05<b/><br>
+   * */
+  public static String strPersianFour(Date date) {
+    try {
+      DateHelper util = new DateHelper();
+      SolarCalendar sc = util.new SolarCalendar(date);
+      return String.format(new Locale("en_US"), "%02d:%02d %s", date.getHours(), date.getMinutes(), sc.strWeekDay);
+    } catch (Exception e) {
+      e.printStackTrace();
+      return "";
+    }
+  }
+
+  /**
+   * @param date <br>
+   * <b>return a value such as: <br>18:05<b/><br>
+   * */
+  public static String strPersianFour1(Date date) {
+    try {
+      DateHelper util = new DateHelper();
+      SolarCalendar sc = util.new SolarCalendar(date);
       return String.format(new Locale("en_US"), "%02d:%02d", date.getHours(), date.getMinutes());
-    return String.format(new Locale("en_US"), "%s %s %s"
-            , sc.month == getCurrentJalaliDate().getMonth() ? sc.strWeekDay : sc.date + ""
-            , sc.month == getCurrentJalaliDate().getMonth() ? "" : sc.strMonth
-            , sc.year == getCurrentJalaliDate().year ? "" : sc.year + "");
+    } catch (Exception e) {
+      e.printStackTrace();
+      return "";
+    }
   }
 
-  public static String strPersianDate4(Date date) {
+  /**
+   * @param date <br>
+   * <b>return a value such as: <br>1398/10/30 <b/><br>
+   * */
+  public static String strPersianSeven(Date date) {
+    try {
+      DateHelper util = new DateHelper();
+      SolarCalendar sc = util.new SolarCalendar(date);
+      return String.format(new Locale("en_US"), "%04d/%02d/%02d", sc.year,sc.month,sc.date);
+    } catch (Exception e) {
+      e.printStackTrace();
+      return "";
+    }
+  }
+
+  /**
+   * @param date <br>
+   * <b>return a value such as: <br>30 دی 18:07<b/><br>
+   * */
+  public static String strPersianEghit(Date date) {
+    try {
+      DateHelper util = new DateHelper();
+      SolarCalendar sc = util.new SolarCalendar(date);
+      return String.format(new Locale("en_US"), "%02d %s %02d:%02d", sc.date,sc.strMonth ,date.getHours(), date.getMinutes());
+    } catch (Exception e) {
+      e.printStackTrace();
+      return "";
+    }
+  }
+  /**
+   * @param date <br>
+   * <b>return a value such as: <br>30 دی <b/><br>
+   * */
+  public static String strPersianTen(Date date) {
     DateHelper util = new DateHelper();
     SolarCalendar sc = util.new SolarCalendar(date);
-    Date curDate = jalaliToGregorian(getCurrentJalaliDate());
-    SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd");
-//    if(sdf.format(curDate).compareTo(sdf.format(date))==0)
-//      return  String.format(new Locale("en_US"), "%02d:%02d", date.getHours(), date.getMinutes());
-    return String.format(new Locale("en_US"), "%04d/%02d/%02d", sc.year, sc.month, sc.date);
+    return String.format(new Locale("en_US"), "%02d %s", sc.date, sc.strMonth);
   }
 
+  /**
+   * @param d <br>
+   * <b>return a value such as: <br>2020-01-20<b/><br>
+   * */
+  public static String strPersianFive(long d) {
+    try {
+      Calendar calendar = Calendar.getInstance();
+      calendar.setTimeInMillis(d);
+      SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+      //Here you say to java the initial timezone. This is the secret
+
+      return sdf.format(calendar.getTime());
+
+    } catch (Exception e) {
+      e.printStackTrace();
+      return "";
+    }
+  }
+
+  /**
+   * @param d <br>
+   * <b>return a value such as: <br>2020-01-20<b/><br>
+   * */
+  public static String strPersianSix(Date d) {
+    return strPersianFive(d.getTime());
+  }
 
   public static String parseFormat(String date) {
     return strPersianDate(parseFormat(date, null));

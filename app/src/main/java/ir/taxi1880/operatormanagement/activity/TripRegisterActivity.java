@@ -72,8 +72,18 @@ public class TripRegisterActivity extends AppCompatActivity {
 
   @OnClick(R.id.imgBack)
   void onBack() {
-    MyApplication.currentActivity.onBackPressed();
-//    KeyBoardHelper.hideKeyboard();
+    KeyBoardHelper.hideKeyboard();
+    new GeneralDialog()
+            .title("خروج")
+            .message("آیا از خروج خود اطمینان دارید؟")
+            .firstButton("بله", new Runnable() {
+              @Override
+              public void run() {
+                MyApplication.currentActivity.onBackPressed();
+              }
+            })
+            .secondButton("خیر", null)
+            .show();
   }
 
   @BindView(R.id.spCity)
@@ -241,11 +251,11 @@ public class TripRegisterActivity extends AppCompatActivity {
 
   @OnClick(R.id.llSearchAddress)
   void onPressSearchAddress() {
-    if (edtMobile.getText().toString().isEmpty()) {
-      MyApplication.Toast("ابتدا شماره موبایل را وارد کنید", Toast.LENGTH_SHORT);
+    if (edtTell.getText().toString().isEmpty()) {
+      MyApplication.Toast("ابتدا شماره تلفن را وارد کنید", Toast.LENGTH_SHORT);
       return;
     }
-    getPassengerAddress(StringHelper.toEnglishDigits(edtMobile.getText().toString()));
+    getPassengerAddress(StringHelper.toEnglishDigits(edtTell.getText().toString()));
   }
 
   byte carClass = 0;
@@ -293,17 +303,9 @@ public class TripRegisterActivity extends AppCompatActivity {
 
     String mobile, tell;
 
-    //    if (edtMobile.getText().toString().startsWith("0")) {
-    //      mobile = edtMobile.getText().toString().substring(1, 10);
-    //    } else {
     mobile = edtMobile.getText().toString();
-    //    }
 
-    if (edtTell.getText().toString().startsWith("0")) {
-      tell = edtTell.getText().toString().substring(1, 10);
-    } else {
-      tell = edtTell.getText().toString();
-    }
+    tell = edtTell.getText().toString();
 
     String name = edtFamily.getText().toString();
     String address = edtAddress.getText().toString();
@@ -344,6 +346,7 @@ public class TripRegisterActivity extends AppCompatActivity {
               .title("ثبت اطلاعات")
               .message("آیا از ثبت اطلاعات اطمینان دارید؟")
               .firstButton("بله", () ->
+                      //TODO currect voipId
                       insertService(MyApplication.prefManager.getUserCode(), serviceCount, tell, mobile, cityCode, stationCode,
                               name, address, fixedComment, destinationStation,
                               stationName, serviceType, carClass, normalDescription, traffic, 1, defaultClass))
@@ -359,7 +362,14 @@ public class TripRegisterActivity extends AppCompatActivity {
   @OnClick(R.id.btnOptions)
   void onPressOptions() {
     KeyBoardHelper.hideKeyboard();
-    new OptionDialog().show(edtMobile.getText().toString(), edtFamily.getText().toString(), cityCode);
+    new OptionDialog().show(new OptionDialog.Listener() {
+      @Override
+      public void onClose(boolean b) {
+        if (b){
+          clearData();
+        }
+      }
+    }, edtMobile.getText().toString(), edtFamily.getText().toString(), cityCode);
   }
 
   @BindView(R.id.edtDestination)
@@ -451,6 +461,7 @@ public class TripRegisterActivity extends AppCompatActivity {
 
   @OnClick(R.id.btnActivate)
   void onActivePress() {
+    KeyBoardHelper.hideKeyboard();
     new GeneralDialog()
             .title("هشدار")
             .cancelable(false)
@@ -469,6 +480,7 @@ public class TripRegisterActivity extends AppCompatActivity {
 
   @OnClick(R.id.btnDeActivate)
   void onDeActivePress() {
+    KeyBoardHelper.hideKeyboard();
     new GeneralDialog()
             .title("هشدار")
             .cancelable(false)
@@ -491,6 +503,7 @@ public class TripRegisterActivity extends AppCompatActivity {
 
   View view;
   private String[] countService = new String[6];
+
   @Override
   protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
@@ -508,15 +521,15 @@ public class TripRegisterActivity extends AppCompatActivity {
     TypefaceUtil.overrideFonts(view);
 
     if (MyApplication.prefManager.getActivateStatus()) {
-      btnActivate.setBackgroundResource(R.drawable.bg_light_pink_edge);
+      btnActivate.setBackgroundResource(R.drawable.bg_green_edge);
       btnDeActivate.setBackgroundColor(Color.parseColor("#00FFB2B2"));
-      btnActivate.setTextColor(Color.parseColor("#ffffff"));
-      btnDeActivate.setTextColor(Color.parseColor("#000000"));
+//      btnActivate.setTextColor(Color.parseColor("#ffffff"));
+//      btnDeActivate.setTextColor(Color.parseColor("#000000"));
     } else {
-      btnDeActivate.setBackgroundResource(R.drawable.bg_light_pink_edge);
+      btnDeActivate.setBackgroundResource(R.drawable.bg_pink_edge);
       btnActivate.setBackgroundColor(Color.parseColor("#00FFB2B2"));
-      btnDeActivate.setTextColor(Color.parseColor("#ffffff"));
-      btnActivate.setTextColor(Color.parseColor("#000000"));
+//      btnDeActivate.setTextColor(Color.parseColor("#ffffff"));
+//      btnActivate.setTextColor(Color.parseColor("#000000"));
     }
     disableViews();
 
@@ -754,7 +767,7 @@ public class TripRegisterActivity extends AppCompatActivity {
             initServiceTypeSpinner();
             enableViews();
             spCity.setSelection(cityCode - 1, true);
-            if (cityCode==0){
+            if (cityCode == 0) {
               spCity.performClick();
             }
             if (callerCode == 0) {
@@ -1047,11 +1060,11 @@ public class TripRegisterActivity extends AppCompatActivity {
 
             if (success) {
               MyApplication.Toast("شما باموفقیت وارد صف شدید", Toast.LENGTH_SHORT);
-              btnActivate.setBackgroundResource(R.drawable.bg_light_pink_edge);
+              btnActivate.setBackgroundResource(R.drawable.bg_green_edge);
               MyApplication.prefManager.setActivateStatus(true);
               btnDeActivate.setBackgroundColor(Color.parseColor("#00FFB2B2"));
-              btnActivate.setTextColor(Color.parseColor("#ffffff"));
-              btnDeActivate.setTextColor(Color.parseColor("#000000"));
+//              btnActivate.setTextColor(Color.parseColor("#ffffff"));
+//              btnDeActivate.setTextColor(Color.parseColor("#000000"));
             } else {
               new GeneralDialog()
                       .title("هشدار")
@@ -1114,10 +1127,10 @@ public class TripRegisterActivity extends AppCompatActivity {
             if (success) {
               MyApplication.Toast("شما باموفقیت از صف خارج شدید", Toast.LENGTH_SHORT);
               MyApplication.prefManager.setActivateStatus(false);
-              btnDeActivate.setBackgroundResource(R.drawable.bg_light_pink_edge);
+              btnDeActivate.setBackgroundResource(R.drawable.bg_pink_edge);
               btnActivate.setBackgroundColor(Color.parseColor("#00FFB2B2"));
-              btnDeActivate.setTextColor(Color.parseColor("#ffffff"));
-              btnActivate.setTextColor(Color.parseColor("#000000"));
+//              btnDeActivate.setTextColor(Color.parseColor("#ffffff"));
+//              btnActivate.setTextColor(Color.parseColor("#000000"));
             } else {
               new GeneralDialog()
                       .title("هشدار")
