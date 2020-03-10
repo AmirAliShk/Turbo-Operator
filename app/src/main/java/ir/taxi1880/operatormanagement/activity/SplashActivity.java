@@ -168,6 +168,8 @@ public class SplashActivity extends AppCompatActivity {
           String typeService = object.getString("typeService");
           String queue = object.getString(  "queue");
           String city = object.getString("city");
+          int pushId = object.getInt("pushId");
+          String pushToken = object.getString("pushToken");
 
           if (block == 1) {
             new GeneralDialog()
@@ -201,6 +203,9 @@ public class SplashActivity extends AppCompatActivity {
           MyApplication.prefManager.setSipServer(sipServer);
           MyApplication.prefManager.setSipNumber(sipNumber);
           MyApplication.prefManager.setSipPassword(sipPassword);
+
+          MyApplication.prefManager.setPushId(pushId);
+          MyApplication.prefManager.setPushToken(pushToken);
           MyApplication.prefManager.setSheba(sheba);
           MyApplication.prefManager.setCardNumber(cardNumber);
           MyApplication.prefManager.setAccountNumber(accountNumber);

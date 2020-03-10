@@ -36,6 +36,8 @@ public class PrefManager {
   private static final String SIP_SERVER = "sipServer";
   private static final String SIP_NUMBER = "sipNumber";
   private static final String SIP_PASSWORD = "sipPassword";
+  private static final String PUSH_TOKEN = "pushToken";
+  private static final String PUSH_ID = "pushID";
   private static final String SHEBA = "sheba";
   private static final String CARD_NUMBER = "cardNumber";
   private static final String ACCOUNT_NUMBER = "accountNumber";
@@ -122,6 +124,24 @@ public class PrefManager {
 
   public String getSipPassword() {
     return pref.getString(SIP_PASSWORD, "");
+  }
+
+  public void setPushToken(String v) {
+    editor.putString(PUSH_TOKEN, v);
+    editor.commit();
+  }
+
+  public String getPushToken() {
+    return pref.getString(PUSH_TOKEN, "");
+  }
+
+  public void setPushId(int v) {
+    editor.putInt(PUSH_ID, v);
+    editor.commit();
+  }
+
+  public int getPushId() {
+    return pref.getInt(PUSH_ID, 5);
   }
 
   public void setSheba(String sheba) {

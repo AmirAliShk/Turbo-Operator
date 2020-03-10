@@ -95,6 +95,8 @@ public class LoginFragment extends Fragment {
           int block = object.getInt("isBlock");
           int accessInsertService = object.getInt("accessInsertService");
           int sipNumber = object.getInt("sipNumber");
+          int pushId = object.getInt("pushId");
+          String pushToken = object.getString("pushToken");
           String sipServer = object.getString("sipServer");
           String sipPassword = object.getString("sipPassword");
           String sheba = object.getString("sheba");
@@ -120,6 +122,8 @@ public class LoginFragment extends Fragment {
             MyApplication.prefManager.setSipServer(sipServer);
             MyApplication.prefManager.setSipNumber(sipNumber);
             MyApplication.prefManager.setSipPassword(sipPassword);
+            MyApplication.prefManager.setPushId(pushId);
+            MyApplication.prefManager.setPushToken(pushToken);
             MyApplication.prefManager.setSheba(sheba);
             MyApplication.prefManager.setCardNumber(cardNumber);
             MyApplication.prefManager.setAccountNumber(accountNumber);
@@ -127,6 +131,7 @@ public class LoginFragment extends Fragment {
             MyApplication.prefManager.setUserName((edtUserName.getText().toString()));
             MyApplication.prefManager.setPassword(edtPassword.getText().toString());
             MyApplication.prefManager.isLoggedIn(true);
+            MyApplication.avaStart();
             startActivity(new Intent(MyApplication.currentActivity, MainActivity.class));
             MyApplication.currentActivity.finish();
           } else {
