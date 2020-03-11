@@ -92,6 +92,7 @@ public class RequestHelper implements Callback {
     if (paths == null)
       paths = new ArrayList<>();
     paths.add(value);
+    Log.i(TAG, "addParam: "+value);
     return this;
   }
 

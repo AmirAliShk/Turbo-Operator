@@ -22,7 +22,7 @@ public class EndPoints {
           : "http://turbotaxi.ir";
 
   public static final String FIND_WAY_IP = (BuildConfig.DEBUG)
-//          ? "http://172.16.2.210"
+//          ? "http://172.16 .2.210"
           ? "http://turbotaxi.ir"
           : "http://turbotaxi.ir";
 

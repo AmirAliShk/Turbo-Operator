@@ -69,21 +69,14 @@ public class TripRegisterActivity extends AppCompatActivity {
   private boolean isEnableView = false;
   private boolean isOriginValid;
   private boolean isDestinationValid;
+  private boolean isTellValidable = false;
 
   @OnClick(R.id.imgBack)
   void onBack() {
     KeyBoardHelper.hideKeyboard();
-    new GeneralDialog()
-            .title("خروج")
-            .message("آیا از خروج خود اطمینان دارید؟")
-            .firstButton("بله", new Runnable() {
-              @Override
-              public void run() {
-                MyApplication.currentActivity.onBackPressed();
-              }
-            })
-            .secondButton("خیر", null)
-            .show();
+
+    MyApplication.currentActivity.onBackPressed();
+
   }
 
   @BindView(R.id.spCity)
@@ -271,7 +264,7 @@ public class TripRegisterActivity extends AppCompatActivity {
       edtTell.requestFocus();
       return;
     }
-    if (edtMobile.getText().toString().isEmpty()) {
+    if (edtMobile.getText().toString().isEmpty() && !isTellValidable) {
       MyApplication.Toast("شماره همراه را وارد کنید", Toast.LENGTH_SHORT);
       edtMobile.requestFocus();
       return;
@@ -301,12 +294,8 @@ public class TripRegisterActivity extends AppCompatActivity {
 
     getCheckDestStation(cityCode, Integer.parseInt(StringHelper.toEnglishDigits(edtDestination.getText().toString())));
 
-    String mobile, tell;
-
-    mobile = edtMobile.getText().toString();
-
-    tell = edtTell.getText().toString();
-
+    String mobile = isTellValidable && edtMobile.getText().toString().isEmpty() ? "0" : edtMobile.getText().toString();
+    String tell = edtTell.getText().toString();
     String name = edtFamily.getText().toString();
     String address = edtAddress.getText().toString();
     String fixedComment = txtDescription.getText().toString();
@@ -365,7 +354,7 @@ public class TripRegisterActivity extends AppCompatActivity {
     new OptionDialog().show(new OptionDialog.Listener() {
       @Override
       public void onClose(boolean b) {
-        if (b){
+        if (b) {
           clearData();
         }
       }
@@ -402,12 +391,14 @@ public class TripRegisterActivity extends AppCompatActivity {
       edtTell.requestFocus();
       return;
     }
-    if (edtMobile.getText().toString().isEmpty()) {
+    if (edtMobile.getText().toString().isEmpty() && !isTellValidable) {
       MyApplication.Toast("شماره تلفن همراه را وارد نمایید", Toast.LENGTH_SHORT);
       edtMobile.requestFocus();
       return;
     }
-    getPassengerInfo(StringHelper.toEnglishDigits(edtTell.getText().toString()), StringHelper.toEnglishDigits(edtMobile.getText().toString()), StringHelper.toEnglishDigits("1880"));
+    String mobile = isTellValidable && edtMobile.getText().toString().isEmpty() ? "0" : edtMobile.getText().toString();
+
+    getPassengerInfo(StringHelper.toEnglishDigits(edtTell.getText().toString()), StringHelper.toEnglishDigits(mobile), StringHelper.toEnglishDigits("1880"));
   }
 
   @OnClick(R.id.llEndCall)
@@ -523,13 +514,9 @@ public class TripRegisterActivity extends AppCompatActivity {
     if (MyApplication.prefManager.getActivateStatus()) {
       btnActivate.setBackgroundResource(R.drawable.bg_green_edge);
       btnDeActivate.setBackgroundColor(Color.parseColor("#00FFB2B2"));
-//      btnActivate.setTextColor(Color.parseColor("#ffffff"));
-//      btnDeActivate.setTextColor(Color.parseColor("#000000"));
     } else {
       btnDeActivate.setBackgroundResource(R.drawable.bg_pink_edge);
       btnActivate.setBackgroundColor(Color.parseColor("#00FFB2B2"));
-//      btnDeActivate.setTextColor(Color.parseColor("#ffffff"));
-//      btnActivate.setTextColor(Color.parseColor("#000000"));
     }
     disableViews();
 
@@ -570,6 +557,7 @@ public class TripRegisterActivity extends AppCompatActivity {
         } else {
 //          clearData();
 //          edtMobile.setText("");
+          isTellValidable = true;
           edtFamily.setText("");
           edtAddress.setText("");
           edtOrigin.setText("");
@@ -859,6 +847,7 @@ public class TripRegisterActivity extends AppCompatActivity {
             }
             if (passengerAddressModels.size() == 0) {
               vfPassengerAddress.setDisplayedChild(0);
+              MyApplication.Toast("آدرسی موجود نیست",Toast.LENGTH_SHORT);
             } else {
               new AddressListDialog().show(new AddressListDialog.Listener() {
                 @Override
@@ -1063,8 +1052,6 @@ public class TripRegisterActivity extends AppCompatActivity {
               btnActivate.setBackgroundResource(R.drawable.bg_green_edge);
               MyApplication.prefManager.setActivateStatus(true);
               btnDeActivate.setBackgroundColor(Color.parseColor("#00FFB2B2"));
-//              btnActivate.setTextColor(Color.parseColor("#ffffff"));
-//              btnDeActivate.setTextColor(Color.parseColor("#000000"));
             } else {
               new GeneralDialog()
                       .title("هشدار")
@@ -1129,8 +1116,6 @@ public class TripRegisterActivity extends AppCompatActivity {
               MyApplication.prefManager.setActivateStatus(false);
               btnDeActivate.setBackgroundResource(R.drawable.bg_pink_edge);
               btnActivate.setBackgroundColor(Color.parseColor("#00FFB2B2"));
-//              btnDeActivate.setTextColor(Color.parseColor("#ffffff"));
-//              btnActivate.setTextColor(Color.parseColor("#000000"));
             } else {
               new GeneralDialog()
                       .title("هشدار")
@@ -1244,6 +1229,8 @@ public class TripRegisterActivity extends AppCompatActivity {
 
   private void clearData() {
     isEnableView = false;
+    isTellValidable = false;
+    edtTell.requestFocus();
     txtLockPassenger.setVisibility(View.GONE);
     txtNewPassenger.setVisibility(View.GONE);
     edtTell.setText("");
@@ -1334,6 +1321,17 @@ public class TripRegisterActivity extends AppCompatActivity {
   @Override
   public void onBackPressed() {
     KeyBoardHelper.hideKeyboard();
-    super.onBackPressed();
+    new GeneralDialog()
+            .title("خروج")
+            .message("آیا از خروج خود اطمینان دارید؟")
+            .firstButton("بله", new Runnable() {
+              @Override
+              public void run() {
+                TripRegisterActivity.super.onBackPressed();
+              }
+            })
+            .secondButton("خیر", null)
+            .show();
+
   }
 }
