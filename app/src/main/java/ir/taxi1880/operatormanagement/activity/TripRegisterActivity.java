@@ -33,7 +33,6 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import butterknife.Unbinder;
-import ir.taxi1880.operatormanagement.okHttp.RequestHelper;
 import ir.taxi1880.operatormanagement.R;
 import ir.taxi1880.operatormanagement.adapter.SpinnerAdapter;
 import ir.taxi1880.operatormanagement.app.EndPoints;
@@ -41,6 +40,7 @@ import ir.taxi1880.operatormanagement.app.MyApplication;
 import ir.taxi1880.operatormanagement.customView.MultiRowsRadioGroup;
 import ir.taxi1880.operatormanagement.dialog.AddressListDialog;
 import ir.taxi1880.operatormanagement.dialog.CallDialog;
+import ir.taxi1880.operatormanagement.dialog.CityDialog;
 import ir.taxi1880.operatormanagement.dialog.DescriptionDialog;
 import ir.taxi1880.operatormanagement.dialog.GeneralDialog;
 import ir.taxi1880.operatormanagement.dialog.OptionDialog;
@@ -52,6 +52,7 @@ import ir.taxi1880.operatormanagement.helper.TypefaceUtil;
 import ir.taxi1880.operatormanagement.model.CityModel;
 import ir.taxi1880.operatormanagement.model.PassengerAddressModel;
 import ir.taxi1880.operatormanagement.model.TypeServiceModel;
+import ir.taxi1880.operatormanagement.okHttp.RequestHelper;
 
 public class TripRegisterActivity extends AppCompatActivity {
 
@@ -756,7 +757,13 @@ public class TripRegisterActivity extends AppCompatActivity {
             enableViews();
             spCity.setSelection(cityCode - 1, true);
             if (cityCode == 0) {
-              spCity.performClick();
+              KeyBoardHelper.hideKeyboard();
+              new CityDialog().show(new CityDialog.Listener() {
+                @Override
+                public void selectedCity(int position) {
+                  spCity.setSelection(position);
+                }
+              });
             }
             if (callerCode == 0) {
               txtNewPassenger.setVisibility(View.VISIBLE);
@@ -1225,7 +1232,6 @@ public class TripRegisterActivity extends AppCompatActivity {
 
     }
   };
-
 
   private void clearData() {
     isEnableView = false;
