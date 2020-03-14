@@ -43,15 +43,35 @@ public class PrefManager {
   private static final String ACCOUNT_NUMBER = "accountNumber";
   private static final String BALANCE = "balance";
   private static final String SERVICE_TYPE = "typeService";
+  private static final String QUEUE_LIST = "queueList";
   private static final String QUEUE = "queue";
   private static final String CITY = "city";
   private static final String ACCESS_INSERT_SERVICE = "accessInsertService";
   private static final String ACTIVATE_STATUS = "activateStatus";
+  private static final String VOIP_ID = "voipId";
 
   public PrefManager(Context context) {
     this._context = context;
     pref = _context.getSharedPreferences(PREF_NAME, PRIVATE_MODE);
     editor = pref.edit();
+  }
+
+  public String getVoipId() {
+    return pref.getString(VOIP_ID, "");
+  }
+
+  public void setVoipId(String voipId) {
+    editor.putString(VOIP_ID, voipId);
+    editor.commit();
+  }
+
+  public String getQueue() {
+    return pref.getString(QUEUE, "");
+  }
+
+  public void setQueue(String queue) {
+    editor.putString(QUEUE, queue);
+    editor.commit();
   }
 
   public void setKey(String key) {
@@ -180,13 +200,13 @@ public class PrefManager {
     return pref.getString(SERVICE_TYPE, "");
   }
 
-  public void setQueue(String queue) {
-    editor.putString(QUEUE, queue);
+  public void setQueueList(String queue) {
+    editor.putString(QUEUE_LIST, queue);
     editor.commit();
   }
 
-  public String getQueue() {
-    return pref.getString(QUEUE, "");
+  public String getQueueList() {
+    return pref.getString(QUEUE_LIST, "");
   }
 
   public void setCity(String city) {

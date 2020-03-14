@@ -59,6 +59,7 @@ public class CallDialog {
     llTransferCall.setOnClickListener(new View.OnClickListener() {
       @Override
       public void onClick(View view) {
+//        TODO complete this part
 //                Call call = LinphoneService.getCore().getCurrentCall();
 //                call.transfer("1880");
         MyApplication.Toast("تماس به صف پشتیبانی منتقل شد", Toast.LENGTH_SHORT);
@@ -70,6 +71,7 @@ public class CallDialog {
     llEndCall.setOnClickListener(new View.OnClickListener() {
       @Override
       public void onClick(View view) {
+//        TODO complete this part
 //                Call call = LinphoneService.getCore().getCurrentCall();
 //                call.terminate();
         MyApplication.Toast("تماس به اتمام رسید", Toast.LENGTH_SHORT);

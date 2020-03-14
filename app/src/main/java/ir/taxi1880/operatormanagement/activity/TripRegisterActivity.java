@@ -1194,8 +1194,7 @@ public class TripRegisterActivity extends AppCompatActivity {
                       .title("ثبت شد")
                       .message("اطلاعات با موفقیت ثبت شد")
                       .firstButton("باشه", () -> {
-                        KeyBoardHelper.hideKeyboard();
-                        MyApplication.currentActivity.onBackPressed();
+                        clearData();
                       })
                       .show();
             } else {

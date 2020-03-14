@@ -211,7 +211,7 @@ public class SplashActivity extends AppCompatActivity {
           MyApplication.prefManager.setAccountNumber(accountNumber);
           MyApplication.prefManager.setBalance(balance);
           MyApplication.prefManager.setServiceType(typeService);
-          MyApplication.prefManager.setQueue(queue);
+          MyApplication.prefManager.setQueueList(queue);
           MyApplication.prefManager.setCity(city);
           MyApplication.prefManager.setAccessInsertService(accessInsertService);
 
