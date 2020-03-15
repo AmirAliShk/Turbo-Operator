@@ -6,11 +6,14 @@ import android.os.Bundle;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
+import android.widget.TextView;
 
 import com.gauravbhola.ripplepulsebackground.RipplePulseLayout;
 
+import org.linphone.core.Address;
 import org.linphone.core.Call;
 import org.linphone.core.CallParams;
+import org.linphone.core.Conference;
 import org.linphone.core.Core;
 import org.linphone.core.CoreListenerStub;
 import org.linphone.core.tools.Log;
@@ -18,11 +21,13 @@ import org.linphone.core.tools.Log;
 import java.util.Timer;
 
 import androidx.appcompat.app.AppCompatActivity;
+import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import butterknife.Unbinder;
 import ir.taxi1880.operatormanagement.R;
 import ir.taxi1880.operatormanagement.app.MyApplication;
+import ir.taxi1880.operatormanagement.helper.SoundHelper;
 import ir.taxi1880.operatormanagement.services.LinphoneService;
 import ir.taxi1880.operatormanagement.services.LinphoneUtils;
 
@@ -32,9 +37,14 @@ public class CallIncomingActivity extends AppCompatActivity {
   Timer timer;
   int timercount;
 
+  @BindView(R.id.txtCallerNum)
+  TextView txtCallerNum;
+
+  @BindView(R.id.txtCallerName)
+  TextView txtCallerName;
+
   @OnClick(R.id.imgAccept)
   void onAcceptPress() {
-    Call call = LinphoneService.getCore().getCurrentCall();
     call.accept();
 //    txtTimer.setVisibility(View.VISIBLE);
 //    startTimer();
@@ -45,12 +55,11 @@ public class CallIncomingActivity extends AppCompatActivity {
 
   @OnClick(R.id.imgReject)
   void onRejectPress() {
-    Call call = LinphoneService.getCore().getCurrentCall();
     call.terminate();
   }
 
   Unbinder unbinder;
-
+  Call call;
   @Override
   protected void onResume() {
     Core core = LinphoneService.getCore();
@@ -58,6 +67,14 @@ public class CallIncomingActivity extends AppCompatActivity {
       core.addListener(mListener);
     }
 
+    call =  core.getCurrentCall();
+    core.getIdentity();
+    Conference conference = call.getConference();
+//     core.getConference().getId();
+    Address address = call.getRemoteAddress();
+
+    txtCallerNum.setText(address.getUsername());
+    MyApplication.prefManager.setParticipant(address.getUsername());
     super.onResume();
 
   }
@@ -75,23 +92,29 @@ public class CallIncomingActivity extends AppCompatActivity {
       window.setStatusBarColor(getResources().getColor(R.color.colorPrimaryDark));
       window.addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
     }
-    unbinder = ButterKnife.bind(this);
 
+    unbinder = ButterKnife.bind(this);
     mListener =
             new CoreListenerStub() {
               @Override
               public void onCallStateChanged(Core core, Call call, Call.State state, String message) {
+
+
                 if (state == Call.State.End || state == Call.State.Released) {
 //                  stopTimer();
                   finish();
-                }else if(state == Call.State.Connected){
+                } else if (state == Call.State.Connected) {
                   gotoCalling();
                 }
               }
             };
     RipplePulseLayout mRipplePulseLayout = findViewById(R.id.layout_ripplepulse);
     mRipplePulseLayout.startRippleAnimation();
+
+    SoundHelper.ringing(R.raw.ring);
+
   }
+
   private void gotoCalling() {
     Intent intent = new Intent(this, TripRegisterActivity.class);
     // This flag is required to start an Activity from a Service context
@@ -105,6 +128,8 @@ public class CallIncomingActivity extends AppCompatActivity {
   protected void onDestroy() {
     super.onDestroy();
     unbinder.unbind();
+    SoundHelper.stop();
+
   }
 
 //  void startTimer() {

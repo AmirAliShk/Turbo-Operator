@@ -85,7 +85,8 @@ public class LinphoneService extends Service {
 
                 if (state == Call.State.IncomingReceived) {
 
-                  onIncomingReceived();
+                    onIncomingReceived();
+
 
 //                    android.util.Log.i("AMIRREZA", "onCallStateChanged  :): "+state);
 //

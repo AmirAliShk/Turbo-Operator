@@ -45,6 +45,7 @@ public class PrefManager {
   private static final String SERVICE_TYPE = "typeService";
   private static final String QUEUE_LIST = "queueList";
   private static final String QUEUE = "queue";
+  private static final String PARTICIPANT = "Participant";
   private static final String CITY = "city";
   private static final String ACCESS_INSERT_SERVICE = "accessInsertService";
   private static final String ACTIVATE_STATUS = "activateStatus";
@@ -71,6 +72,14 @@ public class PrefManager {
 
   public void setQueue(String queue) {
     editor.putString(QUEUE, queue);
+    editor.commit();
+  }
+  public String getParticipant() {
+    return pref.getString(PARTICIPANT, "");
+  }
+
+  public void setParticipant(String v) {
+    editor.putString(PARTICIPANT, v);
     editor.commit();
   }
 

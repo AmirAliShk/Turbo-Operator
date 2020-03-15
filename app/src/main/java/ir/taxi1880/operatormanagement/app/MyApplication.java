@@ -7,6 +7,7 @@ import android.content.res.Configuration;
 import android.graphics.Typeface;
 import android.os.Environment;
 import android.os.Handler;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -44,6 +45,7 @@ public class MyApplication extends Application {
   public static String DIR_DOWNLOAD;
   public static String DIR_ROOT;
   public static FragmentManager fragmentManagerV4;
+  public static final String SOUND = "android.resource://ir.taxi1880.operatormanagement/";
 
   @Override
   public void onCreate() {
@@ -72,6 +74,9 @@ public class MyApplication extends Application {
 //        if (prefManager.getAvaPID()==0) return;
 //        if (prefManager.getAvaToken()==null) return;
 
+    Log.i(TAG, "avaStart: "+MyApplication.prefManager.getUserCode());
+    Log.i(TAG, "avaStart: "+MyApplication.prefManager.getPushId());
+    Log.i(TAG, "avaStart: "+MyApplication.prefManager.getPushToken());
     AvaFactory.getInstance(context)
             .setUserID(MyApplication.prefManager.getUserCode()+"")
             .setProjectID(MyApplication.prefManager.getPushId())

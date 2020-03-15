@@ -60,8 +60,8 @@ public class CallDialog {
       @Override
       public void onClick(View view) {
 //        TODO complete this part
-//                Call call = LinphoneService.getCore().getCurrentCall();
-//                call.transfer("1880");
+        Call call = LinphoneService.getCore().getCurrentCall();
+        call.transfer("1880");
         MyApplication.Toast("تماس به صف پشتیبانی منتقل شد", Toast.LENGTH_SHORT);
         listener.onClose(true);
         dismiss();
@@ -72,8 +72,8 @@ public class CallDialog {
       @Override
       public void onClick(View view) {
 //        TODO complete this part
-//                Call call = LinphoneService.getCore().getCurrentCall();
-//                call.terminate();
+        Call call = LinphoneService.getCore().getCurrentCall();
+        call.terminate();
         MyApplication.Toast("تماس به اتمام رسید", Toast.LENGTH_SHORT);
         listener.onClose(true);
         dismiss();

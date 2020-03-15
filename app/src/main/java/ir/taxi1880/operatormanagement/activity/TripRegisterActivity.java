@@ -1,5 +1,9 @@
 package ir.taxi1880.operatormanagement.activity;
 
+import android.content.BroadcastReceiver;
+import android.content.Context;
+import android.content.Intent;
+import android.content.IntentFilter;
 import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
@@ -29,6 +33,7 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
@@ -36,6 +41,7 @@ import butterknife.Unbinder;
 import ir.taxi1880.operatormanagement.R;
 import ir.taxi1880.operatormanagement.adapter.SpinnerAdapter;
 import ir.taxi1880.operatormanagement.app.EndPoints;
+import ir.taxi1880.operatormanagement.app.Keys;
 import ir.taxi1880.operatormanagement.app.MyApplication;
 import ir.taxi1880.operatormanagement.customView.MultiRowsRadioGroup;
 import ir.taxi1880.operatormanagement.dialog.AddressListDialog;
@@ -521,6 +527,7 @@ public class TripRegisterActivity extends AppCompatActivity {
     }
     disableViews();
 
+    Log.i(TAG, "AMIRREZA=> onCreate register: ");
     initCitySpinner();
     initServiceTypeSpinner();
     initServiceCountSpinner();
@@ -607,6 +614,7 @@ public class TripRegisterActivity extends AppCompatActivity {
         KeyBoardHelper.showKeyboard(MyApplication.context);
       }
     }, 300);
+    edtTell.setText(MyApplication.prefManager.getParticipant());
 
   }
 
@@ -1309,11 +1317,54 @@ public class TripRegisterActivity extends AppCompatActivity {
     super.onResume();
     MyApplication.currentActivity = this;
   }
+  BroadcastReceiver pushReceiver = new BroadcastReceiver() {
+    @Override
+    public void onReceive(Context context, Intent intent) {
+      try {
+        String result = intent.getStringExtra(Keys.KEY_MESSAGE);
+
+        Log.i(TAG, "AMIRREZA =====> onReceive: " + result);
+        JSONObject object = new JSONObject(result);
+        String strMessage = object.getString("message");
+        JSONObject message = new JSONObject(strMessage);
+        String typee = message.getString("type");
+        int exten = message.getInt("exten");
+        String participant = message.getString("participant");
+        String queue = message.getString("queue");
+        String voipId = message.getString("voipId");
+
+
+//        edtTell.setText(participant);
+      } catch (JSONException e) {
+        e.printStackTrace();
+      }
+
+    }
+  };
+
+  @Override
+  protected void onStop() {
+    super.onStop();
+    if (pushReceiver != null)
+      unregisterReceiver(pushReceiver);
+
+  }
+
+  @Override
+  protected void onPause() {
+    super.onPause();
+    KeyBoardHelper.hideKeyboard();
+  }
 
   @Override
   protected void onStart() {
     super.onStart();
     MyApplication.currentActivity = this;
+
+
+    registerReceiver(pushReceiver, new IntentFilter());
+    LocalBroadcastManager.getInstance(MyApplication.currentActivity).registerReceiver((pushReceiver),
+            new IntentFilter(Keys.KEY_BROADCAST_PUSH));
   }
 
   @Override
