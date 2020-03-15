@@ -303,7 +303,7 @@
                             android:gravity="left|center_vertical"
                             android:background="@drawable/edit_text_style"
                             style="@style/padding"
-                            android:inputType="number|textNoSuggestions"
+                            android:inputType="number|textNoSuggestions|textFilter|textVisiblePassword"
                             android:singleLine="true"
                             android:maxLength="11"
                             android:textAppearance="?android:attr/textAppearanceMedium"

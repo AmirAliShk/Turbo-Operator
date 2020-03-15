@@ -11,6 +11,7 @@ import org.json.JSONObject;
 
 import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 import ir.taxi1880.operatormanagement.app.MyApplication;
+
 import ir.taxi1880.operatormanagement.push.Keys;
 
 import static ir.taxi1880.operatormanagement.app.Keys.KEY_BROADCAST_PUSH;
@@ -47,8 +48,10 @@ public class PushReceiver extends BroadcastReceiver {
       MyApplication.prefManager.setVoipId(voipId);
       MyApplication.prefManager.setQueue(queue);
 
+
     } catch (JSONException e) {
       e.printStackTrace();
     }
   }
+
 }

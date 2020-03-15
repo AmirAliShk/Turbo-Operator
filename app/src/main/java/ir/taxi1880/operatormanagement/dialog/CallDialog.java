@@ -10,6 +10,7 @@ import android.view.Window;
 import android.view.WindowManager;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import org.linphone.core.Call;
@@ -47,13 +48,16 @@ public class CallDialog {
     LinearLayout llTransferCall = dialog.findViewById(R.id.llTransfer);
     LinearLayout llEndCall = dialog.findViewById(R.id.llEndCall);
     ImageView imgClose = dialog.findViewById(R.id.imgClose);
+    TextView txtTitle=dialog.findViewById(R.id.txtTitle);
 
     //TODO  if call is available this layer must be visible
     Call call = LinphoneService.getCore().getCurrentCall();
     if (call == null) {
       llEndCall.setVisibility(View.GONE);
+      txtTitle.setText("تماس با پشتیبانی");
     } else {
       llEndCall.setVisibility(View.VISIBLE);
+      txtTitle.setText("انتقال تماس");
     }
 
     llTransferCall.setOnClickListener(new View.OnClickListener() {

@@ -1,4 +1,4 @@
-package ir.taxi1880.operatormanagement.views;
+package ir.taxi1880.operatormanagement.customView;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
