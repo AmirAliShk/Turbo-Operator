@@ -36,11 +36,11 @@ public class PushReceiver extends BroadcastReceiver {
       JSONObject message = new JSONObject(strMessage);
       String typee = message.getString("type");
       int exten = message.getInt("exten");
-        String participant = message.getString("participant");
+      String participant = message.getString("participant");
       String queue = message.getString("queue");
       String voipId = message.getString("voipId");
 
-      LocalBroadcastManager broadcaster  = LocalBroadcastManager.getInstance(MyApplication.context);
+      LocalBroadcastManager broadcaster = LocalBroadcastManager.getInstance(MyApplication.context);
       Intent broadcastIntent = new Intent(KEY_BROADCAST_PUSH);
       broadcastIntent.putExtra(KEY_MESSAGE, result);
       broadcaster.sendBroadcast(broadcastIntent);

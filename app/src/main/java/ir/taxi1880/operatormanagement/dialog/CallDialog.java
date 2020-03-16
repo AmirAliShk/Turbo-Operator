@@ -60,6 +60,7 @@ public class CallDialog {
     ImageView imgClose = dialog.findViewById(R.id.imgClose);
     TextView txtTitle = dialog.findViewById(R.id.txtTitle);
 
+
     //TODO  if call is available this layer must be visible
     Core core = LinphoneService.getCore();
     Call call = core.getCurrentCall();
@@ -94,10 +95,10 @@ public class CallDialog {
       }
     });
 
+
     llTransferCall.setOnClickListener(new View.OnClickListener() {
       @Override
       public void onClick(View view) {
-//        TODO complete this part
         call.transfer("950");
         MyApplication.Toast("تماس به صف پشتیبانی منتقل شد", Toast.LENGTH_SHORT);
         listener.onClose(true);
@@ -108,7 +109,6 @@ public class CallDialog {
     llEndCall.setOnClickListener(new View.OnClickListener() {
       @Override
       public void onClick(View view) {
-//        TODO complete this part
         call.terminate();
         MyApplication.Toast("تماس به اتمام رسید", Toast.LENGTH_SHORT);
         listener.onClose(true);

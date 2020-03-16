@@ -26,6 +26,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.ViewFlipper;
 
+import com.gauravbhola.ripplepulsebackground.RipplePulseLayout;
+
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -77,6 +79,9 @@ public class TripRegisterActivity extends AppCompatActivity {
   private boolean isOriginValid;
   private boolean isDestinationValid;
   private boolean isTellValidable = false;
+  String queue = "0";
+  String voipId = "0";
+  String participant;
 
   @OnClick(R.id.imgBack)
   void onBack() {
@@ -266,6 +271,11 @@ public class TripRegisterActivity extends AppCompatActivity {
   @OnClick(R.id.btnSubmit)
   void onPressSubmit() {
 
+    if (cityCode == -1) {
+      MyApplication.Toast("شهر را وارد نمایید", Toast.LENGTH_SHORT);
+      spCity.requestFocus();
+      return;
+    }
     if (edtTell.getText().toString().isEmpty()) {
       MyApplication.Toast("شماره تلفن را وارد کنید", Toast.LENGTH_SHORT);
       edtTell.requestFocus();
@@ -342,10 +352,9 @@ public class TripRegisterActivity extends AppCompatActivity {
               .title("ثبت اطلاعات")
               .message("آیا از ثبت اطلاعات اطمینان دارید؟")
               .firstButton("بله", () ->
-                      //TODO currect voipId
                       insertService(MyApplication.prefManager.getUserCode(), serviceCount, tell, mobile, cityCode, stationCode,
                               name, address, fixedComment, destinationStation,
-                              stationName, serviceType, carClass, normalDescription, traffic, 1, defaultClass))
+                              stationName, serviceType, carClass, normalDescription, traffic, voipId, defaultClass))
               .secondButton("خیر", new Runnable() {
                 @Override
                 public void run() {
@@ -403,9 +412,10 @@ public class TripRegisterActivity extends AppCompatActivity {
       edtMobile.requestFocus();
       return;
     }
+
     String mobile = isTellValidable && edtMobile.getText().toString().isEmpty() ? "0" : edtMobile.getText().toString();
 
-    getPassengerInfo(StringHelper.toEnglishDigits(edtTell.getText().toString()), StringHelper.toEnglishDigits(mobile), StringHelper.toEnglishDigits("1880"));
+    getPassengerInfo(StringHelper.toEnglishDigits(edtTell.getText().toString()), StringHelper.toEnglishDigits(mobile), StringHelper.toEnglishDigits(queue));
   }
 
   @OnClick(R.id.llEndCall)
@@ -501,6 +511,7 @@ public class TripRegisterActivity extends AppCompatActivity {
 
   View view;
   private String[] countService = new String[6];
+  RipplePulseLayout mRipplePulseLayout;
 
   @Override
   protected void onCreate(Bundle savedInstanceState) {
@@ -555,9 +566,10 @@ public class TripRegisterActivity extends AppCompatActivity {
       @Override
       public void afterTextChanged(Editable editable) {
 
-        if (editable.toString().length() == 1 && editable.toString().startsWith("0")) {
-          editable.clear();
-        }
+//        PhoneNumberValidation.removePrefix(editable.toString());
+//       if (editable.toString().startsWith("0")){
+//         editable.clear();
+//       }
 
         if (PhoneNumberValidation.isValid(editable.toString())) {
           edtMobile.setText(editable.toString());
@@ -614,8 +626,23 @@ public class TripRegisterActivity extends AppCompatActivity {
         KeyBoardHelper.showKeyboard(MyApplication.context);
       }
     }, 300);
-    edtTell.setText(MyApplication.prefManager.getParticipant());
 
+    setTextCallNumber(MyApplication.prefManager.getParticipant());
+  }
+
+  private void setTextCallNumber(String participant) {
+    participant = participant.trim();
+    if (participant.startsWith("0098")) {
+      participant = participant.substring(4);
+    } else if (participant.startsWith("+98") || participant.startsWith("098")) {
+      participant = participant.substring(3);
+    } else if (participant.startsWith("00") || participant.startsWith("98")) {
+      participant = participant.substring(2);
+    } else if (participant.startsWith("0")) {
+      participant = participant.substring(1);
+    }
+    if (edtTell.getText().toString().isEmpty())
+      edtTell.setText(participant);
   }
 
   private void initServiceCountSpinner() {
@@ -687,6 +714,7 @@ public class TripRegisterActivity extends AppCompatActivity {
     ArrayList<String> cityList = new ArrayList<String>();
     try {
       JSONArray cityArr = new JSONArray(MyApplication.prefManager.getCity());
+      cityList.add("انتخاب نشده");
       for (int i = 0; i < cityArr.length(); i++) {
         JSONObject cityObj = cityArr.getJSONObject(i);
         CityModel cityModel = new CityModel();
@@ -700,9 +728,18 @@ public class TripRegisterActivity extends AppCompatActivity {
       spCity.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
         @Override
         public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-          cityName = cityModels.get(position).getCity();
-          cityLatinName = cityModels.get(position).getCityLatin();
-          cityCode = cityModels.get(position).getId();
+          if (position == 0) {
+            cityName = null;
+            cityLatinName = null;
+            cityCode = -1;
+            return;
+          }
+          cityName = cityModels.get(position - 1).getCity();
+          cityLatinName = cityModels.get(position - 1).getCityLatin();
+          cityCode = cityModels.get(position - 1).getId();
+          Log.i(TAG, "onItemSelected: " + cityName);
+          Log.i(TAG, "onItemSelected: " + cityLatinName);
+          Log.i(TAG, "onItemSelected: " + cityCode);
         }
 
         @Override
@@ -763,13 +800,13 @@ public class TripRegisterActivity extends AppCompatActivity {
             initServiceCountSpinner();
             initServiceTypeSpinner();
             enableViews();
-            spCity.setSelection(cityCode - 1, true);
+            spCity.setSelection(cityCode, true);
             if (cityCode == 0) {
               KeyBoardHelper.hideKeyboard();
               new CityDialog().show(new CityDialog.Listener() {
                 @Override
                 public void selectedCity(int position) {
-                  spCity.setSelection(position);
+                  spCity.setSelection(position + 1);
                 }
               });
             }
@@ -862,7 +899,7 @@ public class TripRegisterActivity extends AppCompatActivity {
             }
             if (passengerAddressModels.size() == 0) {
               vfPassengerAddress.setDisplayedChild(0);
-              MyApplication.Toast("آدرسی موجود نیست",Toast.LENGTH_SHORT);
+              MyApplication.Toast("آدرسی موجود نیست", Toast.LENGTH_SHORT);
             } else {
               new AddressListDialog().show(new AddressListDialog.Listener() {
                 @Override
@@ -1160,7 +1197,7 @@ public class TripRegisterActivity extends AppCompatActivity {
 
   private void insertService(int userId, int count, String phoneNumber, String mobile, int cityCode, int stationCode, String callerName,
                              String address, String fixedComment, int destinationStation, String destination, int typeService,
-                             int classType, String description, int TrafficPlan, int voipId, int defaultClass) {
+                             int classType, String description, int TrafficPlan, String voipId, int defaultClass) {
 
     RequestHelper.builder(EndPoints.INSERT)
             .addParam("userId", userId)
@@ -1316,12 +1353,15 @@ public class TripRegisterActivity extends AppCompatActivity {
   protected void onResume() {
     super.onResume();
     MyApplication.currentActivity = this;
+
   }
+
   BroadcastReceiver pushReceiver = new BroadcastReceiver() {
     @Override
     public void onReceive(Context context, Intent intent) {
       try {
         String result = intent.getStringExtra(Keys.KEY_MESSAGE);
+        Log.i(TAG, "onCreate: participant:" + participant + "***voipId:" + voipId + "****queue:" + queue);
 
         Log.i(TAG, "AMIRREZA =====> onReceive: " + result);
         JSONObject object = new JSONObject(result);
@@ -1329,12 +1369,12 @@ public class TripRegisterActivity extends AppCompatActivity {
         JSONObject message = new JSONObject(strMessage);
         String typee = message.getString("type");
         int exten = message.getInt("exten");
-        String participant = message.getString("participant");
-        String queue = message.getString("queue");
-        String voipId = message.getString("voipId");
+        participant = message.getString("participant");
+        queue = message.getString("queue");
+        voipId = message.getString("voipId");
 
 
-//        edtTell.setText(participant);
+        setTextCallNumber(participant);
       } catch (JSONException e) {
         e.printStackTrace();
       }
@@ -1371,12 +1411,13 @@ public class TripRegisterActivity extends AppCompatActivity {
   protected void onDestroy() {
     super.onDestroy();
     unbinder.unbind();
-//    KeyBoardHelper.hideKeyboard();
+    MyApplication.prefManager.setParticipant("");
   }
 
   @Override
   public void onBackPressed() {
     KeyBoardHelper.hideKeyboard();
+    MyApplication.prefManager.setParticipant("");
     new GeneralDialog()
             .title("خروج")
             .message("آیا از خروج خود اطمینان دارید؟")

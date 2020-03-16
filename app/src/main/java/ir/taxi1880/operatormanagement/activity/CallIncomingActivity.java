@@ -13,7 +13,6 @@ import com.gauravbhola.ripplepulsebackground.RipplePulseLayout;
 import org.linphone.core.Address;
 import org.linphone.core.Call;
 import org.linphone.core.CallParams;
-import org.linphone.core.Conference;
 import org.linphone.core.Core;
 import org.linphone.core.CoreListenerStub;
 import org.linphone.core.tools.Log;
@@ -68,11 +67,7 @@ public class CallIncomingActivity extends AppCompatActivity {
     }
 
     call =  core.getCurrentCall();
-    core.getIdentity();
-    Conference conference = call.getConference();
-//     core.getConference().getId();
     Address address = call.getRemoteAddress();
-
     txtCallerNum.setText(address.getUsername());
     MyApplication.prefManager.setParticipant(address.getUsername());
     super.onResume();
