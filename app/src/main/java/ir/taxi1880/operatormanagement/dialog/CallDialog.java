@@ -50,7 +50,6 @@ public class CallDialog {
     ImageView imgClose = dialog.findViewById(R.id.imgClose);
     TextView txtTitle=dialog.findViewById(R.id.txtTitle);
 
-    //TODO  if call is available this layer must be visible
     Call call = LinphoneService.getCore().getCurrentCall();
     if (call == null) {
       llEndCall.setVisibility(View.GONE);
@@ -63,8 +62,6 @@ public class CallDialog {
     llTransferCall.setOnClickListener(new View.OnClickListener() {
       @Override
       public void onClick(View view) {
-//        TODO complete this part
-        Call call = LinphoneService.getCore().getCurrentCall();
         call.transfer("1880");
         MyApplication.Toast("تماس به صف پشتیبانی منتقل شد", Toast.LENGTH_SHORT);
         listener.onClose(true);
@@ -75,8 +72,6 @@ public class CallDialog {
     llEndCall.setOnClickListener(new View.OnClickListener() {
       @Override
       public void onClick(View view) {
-//        TODO complete this part
-        Call call = LinphoneService.getCore().getCurrentCall();
         call.terminate();
         MyApplication.Toast("تماس به اتمام رسید", Toast.LENGTH_SHORT);
         listener.onClose(true);

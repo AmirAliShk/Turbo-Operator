@@ -16,6 +16,21 @@ public class PhoneNumberValidation {
     return mobile.matches(regEx);
   }
 
+  public static String removePrefix(String mobileNumber){
+
+    if (mobileNumber.startsWith("0")){
+      mobileNumber.substring(1,10);
+    }else if (mobileNumber.startsWith("+98")||mobileNumber.startsWith("098")){
+      mobileNumber.substring(3,12);
+    }else if (mobileNumber.startsWith("0098")){
+      mobileNumber.substring(4,13);
+    }else if (mobileNumber.startsWith("00")||mobileNumber.startsWith("98")){
+      mobileNumber.substring(2,11);
+    }
+
+    return mobileNumber;
+  }
+
   public static String addZeroFirst(String mobile) {
     if (mobile.substring(0, 1).equals("0")) {
       return mobile;
