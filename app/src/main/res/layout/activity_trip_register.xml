@@ -10,6 +10,100 @@
     android:layoutDirection="rtl"
     tools:context=".activity.TripRegisterActivity">
 
+
+    <RelativeLayout
+        android:id="@+id/rlNewInComingCall"
+        android:layout_width="match_parent"
+        android:layout_height="80dp"
+        android:background="@drawable/bg_action_bar_purple">
+
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <RelativeLayout
+                android:layout_marginRight="20dp"
+                android:id="@+id/imgAccept"
+                android:layout_width="80dp"
+                android:gravity="center"
+                android:layout_height="match_parent">
+
+                <com.gauravbhola.ripplepulsebackground.RipplePulseLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:clipChildren="false"
+                    app:rippleColor="#ffffff"
+                    android:gravity="center"
+                    android:layout_centerInParent="true"
+                    app:rippleType="stroke"
+                    app:strokeWidth="3dp"
+                    app:startRadius="13dp"
+                    app:endRadius="40dp"
+                    android:id="@+id/layout_ripplepulse"
+                    app:duration="2000"
+                    />
+
+                <ImageView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:padding="10dp"
+
+                    android:layout_centerInParent="true"
+                    android:src="@drawable/ic_call_answer"
+                    android:visibility="visible" />
+
+            </RelativeLayout>
+
+            <LinearLayout
+                android:layout_weight="1"
+                android:gravity="center"
+                android:orientation="vertical"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="تماس ورودی جدید از "
+                    android:gravity="center"
+                    android:textAppearance="?android:attr/textAppearanceSmall"
+                    android:textColor="#fff"
+                    android:textStyle="bold"/>
+
+                <TextView
+                    android:id="@+id/txtCallerNum"
+
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="235"
+                    android:gravity="center"
+                    android:textAppearance="?android:attr/textAppearanceLarge"
+                    android:textColor="#fff"
+                    android:textStyle="bold"/>
+
+            </LinearLayout>
+
+            <RelativeLayout
+                android:layout_marginLeft="20dp"
+                android:id="@+id/imgReject"
+                android:layout_width="80dp"
+                android:gravity="center"
+                android:layout_height="match_parent">
+
+                <ImageView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:padding="10dp"
+                    android:layout_gravity="center"
+                    android:src="@drawable/ic_call_end" />
+
+            </RelativeLayout>
+
+        </LinearLayout>
+
+
+    </RelativeLayout>
+
     <RelativeLayout
         android:id="@+id/rlActionBar"
         android:layout_width="match_parent"
@@ -92,7 +186,7 @@
                     app:startRadius="13dp"
                     app:endRadius="25dp"
                     app:duration="1500"
-                    android:id="@+id/layout_ripplepulse"/>
+                   />
 
                 <ImageView
                     android:id="@+id/imgEndCall"

@@ -27,6 +27,7 @@ import java.util.TimerTask;
 import androidx.annotation.Nullable;
 import ir.taxi1880.operatormanagement.R;
 import ir.taxi1880.operatormanagement.activity.CallIncomingActivity;
+import ir.taxi1880.operatormanagement.activity.TripRegisterActivity;
 
 public class LinphoneService extends Service {
   private static final String START_LINPHONE_LOGS = " ==== Device information dump ====";
@@ -227,6 +228,7 @@ public class LinphoneService extends Service {
   }
 
   private void onIncomingReceived() {
+    if (TripRegisterActivity.isRunning) return;
     Intent intent = new Intent(this, CallIncomingActivity.class);
     // This flag is required to start an Activity from a Service context
     intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);

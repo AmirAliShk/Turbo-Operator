@@ -21,6 +21,7 @@ import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
+import android.widget.RelativeLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -31,6 +32,10 @@ import com.gauravbhola.ripplepulsebackground.RipplePulseLayout;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+import org.linphone.core.Address;
+import org.linphone.core.Call;
+import org.linphone.core.Core;
+import org.linphone.core.CoreListenerStub;
 
 import java.util.ArrayList;
 
@@ -55,12 +60,14 @@ import ir.taxi1880.operatormanagement.dialog.OptionDialog;
 import ir.taxi1880.operatormanagement.dialog.SearchLocationDialog;
 import ir.taxi1880.operatormanagement.helper.KeyBoardHelper;
 import ir.taxi1880.operatormanagement.helper.PhoneNumberValidation;
+import ir.taxi1880.operatormanagement.helper.SoundHelper;
 import ir.taxi1880.operatormanagement.helper.StringHelper;
 import ir.taxi1880.operatormanagement.helper.TypefaceUtil;
 import ir.taxi1880.operatormanagement.model.CityModel;
 import ir.taxi1880.operatormanagement.model.PassengerAddressModel;
 import ir.taxi1880.operatormanagement.model.TypeServiceModel;
 import ir.taxi1880.operatormanagement.okHttp.RequestHelper;
+import ir.taxi1880.operatormanagement.services.LinphoneService;
 
 public class TripRegisterActivity extends AppCompatActivity {
 
@@ -264,6 +271,7 @@ public class TripRegisterActivity extends AppCompatActivity {
   }
 
   byte carClass = 0;
+  public static boolean isRunning = false;
   byte traffic = 0;
   byte defaultClass = 0;
   byte activateStatus = -1;
@@ -433,6 +441,12 @@ public class TripRegisterActivity extends AppCompatActivity {
 //    Call call = LinphoneService.getCore().getCurrentCall();
 //    call.terminate();
   }
+
+  @BindView(R.id.rlNewInComingCall)
+  RelativeLayout rlNewInComingCall;
+
+  @BindView(R.id.rlActionBar)
+  RelativeLayout rlActionBar;
 
   @BindView(R.id.llDownload)
   LinearLayout llDownload;
@@ -628,6 +642,34 @@ public class TripRegisterActivity extends AppCompatActivity {
     }, 300);
 
     setTextCallNumber(MyApplication.prefManager.getParticipant());
+
+    RipplePulseLayout mRipplePulseLayout = findViewById(R.id.layout_ripplepulse);
+    mRipplePulseLayout.startRippleAnimation();
+
+    core = LinphoneService.getCore();
+    CoreListenerStub mCoreListener = new CoreListenerStub() {
+      @Override
+      public void onCallStateChanged(Core core, final Call call, Call.State state, String message) {
+        Toast.makeText(MyApplication.context, message, Toast.LENGTH_SHORT).show();
+        TripRegisterActivity.this.call = call;
+        switch (state.toInt()) {
+          case 1://inComingCall
+            showCallIncoming();
+            break;
+          case 6://Connect
+          case 18://Release
+          case 12://Error
+          case 13://End
+            showTitleBar();
+            break;
+        }
+        if (state == Call.State.IncomingReceived) {
+          showCallIncoming();
+        }
+      }
+    };
+    core.addListener(mCoreListener);
+
   }
 
   private void setTextCallNumber(String participant) {
@@ -644,6 +686,7 @@ public class TripRegisterActivity extends AppCompatActivity {
     if (edtTell.getText().toString().isEmpty())
       edtTell.setText(participant);
   }
+
 
   private void initServiceCountSpinner() {
     try {
@@ -1353,6 +1396,8 @@ public class TripRegisterActivity extends AppCompatActivity {
   protected void onResume() {
     super.onResume();
     MyApplication.currentActivity = this;
+    showTitleBar();
+    isRunning = true;
 
   }
 
@@ -1378,7 +1423,6 @@ public class TripRegisterActivity extends AppCompatActivity {
       } catch (JSONException e) {
         e.printStackTrace();
       }
-
     }
   };
 
@@ -1394,14 +1438,14 @@ public class TripRegisterActivity extends AppCompatActivity {
   protected void onPause() {
     super.onPause();
     KeyBoardHelper.hideKeyboard();
+    isRunning = false;
+
   }
 
   @Override
   protected void onStart() {
     super.onStart();
     MyApplication.currentActivity = this;
-
-
     registerReceiver(pushReceiver, new IntentFilter());
     LocalBroadcastManager.getInstance(MyApplication.currentActivity).registerReceiver((pushReceiver),
             new IntentFilter(Keys.KEY_BROADCAST_PUSH));
@@ -1429,6 +1473,44 @@ public class TripRegisterActivity extends AppCompatActivity {
             })
             .secondButton("خیر", null)
             .show();
+
+  }
+
+  @OnClick(R.id.imgAccept)
+  void onAcceptPress() {
+    call.accept();
+
+  }
+
+
+  @OnClick(R.id.imgReject)
+  void onRejectPress() {
+    call.terminate();
+  }
+
+  @BindView(R.id.txtCallerNum)
+  TextView txtCallerNum;
+
+  Core core;
+  Call call;
+
+  private void showCallIncoming() {
+    call = core.getCurrentCall();
+    Address address = call.getRemoteAddress();
+    txtCallerNum.setText(address.getUsername());
+    MyApplication.prefManager.setParticipant(address.getUsername());
+
+    rlNewInComingCall.setVisibility(View.VISIBLE);
+    rlActionBar.setVisibility(View.GONE);
+    SoundHelper.ringing(R.raw.ring);
+
+
+  }
+
+  private void showTitleBar() {
+    rlNewInComingCall.setVisibility(View.GONE);
+    rlActionBar.setVisibility(View.VISIBLE);
+    SoundHelper.stop();
 
   }
 }

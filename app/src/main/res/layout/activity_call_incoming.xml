@@ -29,7 +29,6 @@
                     android:id="@+id/txtCallerName"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="فاطمه نوری"
                     android:padding="10dp"
                     android:gravity="center"
                     android:textAppearance="?android:attr/textAppearanceLarge"
