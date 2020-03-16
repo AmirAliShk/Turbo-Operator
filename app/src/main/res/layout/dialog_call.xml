@@ -5,6 +5,79 @@
     android:gravity="center"
     android:orientation="vertical">
 
+    <ViewFlipper
+        android:id="@+id/vfCall"
+        android:layout_width="330dp"
+        android:layout_height="wrap_content">
+        <LinearLayout
+            android:layout_width="330dp"
+            android:background="@drawable/bg_gray_lite_edge"
+            android:layout_height="wrap_content"
+            android:layout_gravity="top|center_horizontal"
+            android:gravity="top"
+            android:padding="10dp"
+            android:minWidth="330dp"
+            android:orientation="horizontal">
+
+            <LinearLayout
+                android:id="@+id/llCallSupport"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:padding="20dp"
+                android:layout_height="match_parent"
+                android:orientation="vertical">
+
+                <ImageView
+                    android:layout_width="100dp"
+                    android:layout_height="100dp"
+                    android:layout_gravity="center"
+                    android:background="@drawable/bg_circle_green"
+                    android:elevation="3dp"
+                    android:padding="15dp"
+                    android:src="@drawable/ic_call_transfer" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="انتقال تماس"
+                    android:padding="10dp"
+                    android:gravity="center"
+                    android:textAppearance="?android:attr/textAppearanceMedium"
+                    android:textColor="@color/colorBlack"/>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/llTestConnection"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:padding="20dp"
+                android:layout_height="match_parent"
+                android:orientation="vertical">
+
+                <ImageView
+                    android:layout_width="100dp"
+                    android:layout_height="100dp"
+                    android:layout_gravity="center"
+                    android:background="@drawable/bg_circle_green"
+                    android:elevation="3dp"
+                    android:padding="18dp"
+                    android:src="@drawable/ic_device_hub_black_24dp" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="تست ارتباط"
+                    android:padding="10dp"
+                    android:gravity="center"
+                    android:textAppearance="?android:attr/textAppearanceMedium"
+                    android:textColor="@color/colorBlack"/>
+
+            </LinearLayout>
+
+        </LinearLayout>
+
         <LinearLayout
             android:layout_width="330dp"
             android:background="@drawable/bg_gray_lite_edge"
@@ -34,7 +107,6 @@
                     android:src="@drawable/ic_call_transfer" />
 
                 <TextView
-                    android:id="@+id/txtTitle"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="انتقال تماس"
@@ -74,6 +146,8 @@
             </LinearLayout>
 
         </LinearLayout>
+
+    </ViewFlipper>
 
     <ImageView
         android:id="@+id/imgClose"

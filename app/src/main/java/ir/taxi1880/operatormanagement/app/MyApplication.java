@@ -15,6 +15,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import org.linphone.core.AccountCreator;
+import org.linphone.core.Core;
 import org.linphone.core.ProxyConfig;
 import org.linphone.core.TransportType;
 
@@ -74,11 +75,11 @@ public class MyApplication extends Application {
 //        if (prefManager.getAvaPID()==0) return;
 //        if (prefManager.getAvaToken()==null) return;
 
-    Log.i(TAG, "avaStart: "+MyApplication.prefManager.getUserCode());
-    Log.i(TAG, "avaStart: "+MyApplication.prefManager.getPushId());
-    Log.i(TAG, "avaStart: "+MyApplication.prefManager.getPushToken());
+    Log.i(TAG, "avaStart: " + MyApplication.prefManager.getUserCode());
+    Log.i(TAG, "avaStart: " + MyApplication.prefManager.getPushId());
+    Log.i(TAG, "avaStart: " + MyApplication.prefManager.getPushToken());
     AvaFactory.getInstance(context)
-            .setUserID(MyApplication.prefManager.getUserCode()+"")
+            .setUserID(MyApplication.prefManager.getUserCode() + "")
             .setProjectID(MyApplication.prefManager.getPushId())
             .setToken(MyApplication.prefManager.getPushToken())
             .setAddress(EndPoints.PUSH_ADDRESS)
@@ -121,18 +122,31 @@ public class MyApplication extends Application {
   }
 
   public static void configureAccount() {
-    // At least the 3 below values are required
+    Core core = LinphoneService.getCore();
+    core.clearAllAuthInfo();
+    core.clearProxyConfig();
+
+    // No account configured, we display the configuration activity
     AccountCreator mAccountCreator = LinphoneService.getCore().createAccountCreator(null);
 
-    mAccountCreator.setDomain("172.16.2.222"/*prefManager.getSipServer()*/);
-    mAccountCreator.setUsername(prefManager.getSipNumber() + "");
-    mAccountCreator.setPassword(prefManager.getSipPassword());
+//    mAccountCreator.setDomain("172.16.2.222");
+//    mAccountCreator.setUsername("423");
+//    mAccountCreator.setPassword("423");
+      mAccountCreator.setDomain(prefManager.getSipServer());
+      mAccountCreator.setUsername(prefManager.getSipNumber() + "");
+      mAccountCreator.setPassword(prefManager.getSipPassword());
     mAccountCreator.setTransport(TransportType.Udp);
 
     // This will automatically create the proxy config and auth info and add them to the Core
     ProxyConfig cfg = mAccountCreator.createProxyConfig();
+
     // Make sure the newly created one is the default
-    LinphoneService.getCore().setDefaultProxyConfig(cfg);
+    core.setDefaultProxyConfig(cfg);
+
+    // At least the 3 below values are required
+
   }
+
+
 
 }

@@ -1,8 +1,10 @@
 package ir.taxi1880.operatormanagement.dialog;
 
 import android.app.Dialog;
+import android.content.Context;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
+import android.media.AudioManager;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
@@ -12,8 +14,12 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
+import android.widget.ViewFlipper;
 
+import org.linphone.core.Address;
 import org.linphone.core.Call;
+import org.linphone.core.CallParams;
+import org.linphone.core.Core;
 
 import ir.taxi1880.operatormanagement.R;
 import ir.taxi1880.operatormanagement.app.MyApplication;
@@ -28,6 +34,7 @@ public class CallDialog {
   public interface Listener {
     void onClose(boolean b);
   }
+
 
   static Dialog dialog;
   Listener listener;
@@ -47,25 +54,51 @@ public class CallDialog {
     this.listener = listener;
     LinearLayout llTransferCall = dialog.findViewById(R.id.llTransfer);
     LinearLayout llEndCall = dialog.findViewById(R.id.llEndCall);
+    LinearLayout llCallSupport = dialog.findViewById(R.id.llCallSupport);
+    LinearLayout llTestConnection = dialog.findViewById(R.id.llTestConnection);
+    ViewFlipper vfCall = dialog.findViewById(R.id.vfCall);
     ImageView imgClose = dialog.findViewById(R.id.imgClose);
-    TextView txtTitle=dialog.findViewById(R.id.txtTitle);
+    TextView txtTitle = dialog.findViewById(R.id.txtTitle);
 
     //TODO  if call is available this layer must be visible
-    Call call = LinphoneService.getCore().getCurrentCall();
-    if (call == null) {
-      llEndCall.setVisibility(View.GONE);
-      txtTitle.setText("تماس با پشتیبانی");
-    } else {
-      llEndCall.setVisibility(View.VISIBLE);
-      txtTitle.setText("انتقال تماس");
-    }
+    Core core = LinphoneService.getCore();
+    Call call = core.getCurrentCall();
+    vfCall.setDisplayedChild((call == null) ? 0 : 1);
+
+    llCallSupport.setOnClickListener(new View.OnClickListener() {
+      @Override
+      public void onClick(View view) {
+        Address addressToCall = core.interpretUrl("950");
+        CallParams params = core.createCallParams(null);
+        AudioManager mAudioManager = ((AudioManager) LinphoneService.getInstance().getApplicationContext().getSystemService(Context.AUDIO_SERVICE));
+        mAudioManager.setSpeakerphoneOn(true);
+        params.enableVideo(false);
+        if (addressToCall != null) {
+          core.inviteAddressWithParams(addressToCall, params);
+        }
+        listener.onClose(false);
+      }
+    });
+
+    llTestConnection.setOnClickListener(new View.OnClickListener() {
+      @Override
+      public void onClick(View view) {
+        Address addressToCall = core.interpretUrl("998");
+        CallParams params = core.createCallParams(null);
+        params.enableVideo(false);
+        if (addressToCall != null) {
+          core.inviteAddressWithParams(addressToCall, params);
+        }
+
+        listener.onClose(false);
+      }
+    });
 
     llTransferCall.setOnClickListener(new View.OnClickListener() {
       @Override
       public void onClick(View view) {
 //        TODO complete this part
-        Call call = LinphoneService.getCore().getCurrentCall();
-        call.transfer("1880");
+        call.transfer("950");
         MyApplication.Toast("تماس به صف پشتیبانی منتقل شد", Toast.LENGTH_SHORT);
         listener.onClose(true);
         dismiss();
@@ -76,7 +109,6 @@ public class CallDialog {
       @Override
       public void onClick(View view) {
 //        TODO complete this part
-        Call call = LinphoneService.getCore().getCurrentCall();
         call.terminate();
         MyApplication.Toast("تماس به اتمام رسید", Toast.LENGTH_SHORT);
         listener.onClose(true);

@@ -41,11 +41,25 @@ public class SplashActivity extends AppCompatActivity {
 
   //    @BindView(R.id.splashAvl)
 //    AVLoadingIndicatorView splashAvl;
-  public static final String TAG=SplashActivity.class.getSimpleName();
+  public static final String TAG = SplashActivity.class.getSimpleName();
   boolean doubleBackToExitPressedOnce = false;
   Unbinder unbinder;
   @BindView(R.id.txtVersion)
   TextView txtVersion;
+
+//  @OnClick(R.id.btnTextConnection)
+//  void onCallPress(){
+//    Core core = LinphoneService.getCore();
+//    Address addressToCall = core.interpretUrl("998");
+//    CallParams params = core.createCallParams(null);
+//    AudioManager mAudioManager = ((AudioManager) MyApplication.context.getSystemService(Context.AUDIO_SERVICE));
+//
+//    mAudioManager.setSpeakerphoneOn(true);
+//    params.enableVideo(false);
+//    if (addressToCall != null) {
+//      core.inviteAddressWithParams(addressToCall, params);
+//    }
+//  }
 
   @SuppressLint("SetTextI18n")
   @Override
@@ -65,15 +79,20 @@ public class SplashActivity extends AppCompatActivity {
     TypefaceUtil.overrideFonts(view);
 
     txtVersion.setText("نسخه " + new AppVersionHelper(MyApplication.context).getVerionName() + "");
+
+//    startVoipService();
+
     MyApplication.handler.postDelayed(() -> {
       checkPermission();
 
     }, 1500);
 
   }
+
   String[] permissionsRequired = new String[]{
           Manifest.permission.RECORD_AUDIO};
   private static final int PERMISSION_CALLBACK_CONSTANT = 100;
+
   public void checkPermission() {
     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
       if ((ContextCompat.checkSelfPermission(MyApplication.currentActivity, Manifest.permission.RECORD_AUDIO) != PackageManager.PERMISSION_GRANTED)
@@ -129,13 +148,13 @@ public class SplashActivity extends AppCompatActivity {
   }
 
   private void getAppInfo() {
-      RequestHelper.builder(EndPoints.GET_APP_INFO)
-              .addParam("versionCode", new AppVersionHelper(MyApplication.context).getVerionCode())
-              .addParam("operatorId",  MyApplication.prefManager.getUserCode())
-              .addParam("userName", MyApplication.prefManager.getUserName())
-              .addParam("password", MyApplication.prefManager.getPassword())
-              .listener(onAppInfo)
-              .post();
+    RequestHelper.builder(EndPoints.GET_APP_INFO)
+            .addParam("versionCode", new AppVersionHelper(MyApplication.context).getVerionCode())
+            .addParam("operatorId", MyApplication.prefManager.getUserCode())
+            .addParam("userName", MyApplication.prefManager.getUserName())
+            .addParam("password", MyApplication.prefManager.getPassword())
+            .listener(onAppInfo)
+            .post();
   }
 
   @Override
@@ -149,7 +168,7 @@ public class SplashActivity extends AppCompatActivity {
     public void onResponse(Runnable reCall, Object... args) {
       MyApplication.handler.post(() -> {
         try {
-          Log.i(TAG, "onResponse: "+args[0].toString());
+          Log.i(TAG, "onResponse: " + args[0].toString());
           JSONObject object = new JSONObject(args[0].toString());
           int block = object.getInt("isBlock");
           int updateAvailable = object.getInt("updateAvailable");
@@ -166,7 +185,7 @@ public class SplashActivity extends AppCompatActivity {
           int accessInsertService = object.getInt("accessInsertService");
           int balance = object.getInt("balance");
           String typeService = object.getString("typeService");
-          String queue = object.getString(  "queue");
+          String queue = object.getString("queue");
           String city = object.getString("city");
           int pushId = object.getInt("pushId");
           String pushToken = object.getString("pushToken");
@@ -188,11 +207,22 @@ public class SplashActivity extends AppCompatActivity {
             return;
           }
 
+          MyApplication.prefManager.setSipServer(sipServer);
+          MyApplication.prefManager.setSipNumber(sipNumber);
+          MyApplication.prefManager.setSipPassword(sipPassword);
           if (updateAvailable == 1) {
             updatePart(forceUpdate, updateUrl);
             return;
-          } else {
-            startVoipService();
+          }
+
+          startVoipService();
+
+          if (sipNumber != MyApplication.prefManager.getSipNumber() ||
+                  !sipPassword.equals(MyApplication.prefManager.getSipPassword()) ||
+                  !sipServer.equals(MyApplication.prefManager.getSipServer())) {
+            if (sipNumber != 0) {
+              MyApplication.configureAccount();
+            }
           }
 
           JSONArray shiftArr = object.getJSONArray("shifs");
@@ -200,9 +230,6 @@ public class SplashActivity extends AppCompatActivity {
 
           MyApplication.prefManager.setCountNotification(object.getInt("countNotification"));
           MyApplication.prefManager.setCountRequest(object.getInt("countRequest"));
-          MyApplication.prefManager.setSipServer(sipServer);
-          MyApplication.prefManager.setSipNumber(sipNumber);
-          MyApplication.prefManager.setSipPassword(sipPassword);
 
           MyApplication.prefManager.setPushId(pushId);
           MyApplication.prefManager.setPushToken(pushToken);
