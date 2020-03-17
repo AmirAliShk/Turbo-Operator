@@ -45,6 +45,10 @@ public class AvaFactory {
     instance.token = token;
     return instance;
   }
+  public AvaFactory readMissingPush() {
+    new ReadUnreadMessage().getUnreadPush(true,instance.context);
+    return instance;
+  }
 
   public static Context getContext() {
     return instance.context;
@@ -92,6 +96,8 @@ public class AvaFactory {
 
     return status;
   }
+
+
 
 
 }

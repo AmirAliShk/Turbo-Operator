@@ -32,6 +32,9 @@ public class AvaReporter {
         broadcaster.sendBroadcast(broadcastIntent);
       }, 1000);
 
+
+
+
     } catch (Exception e1) {
       AvaCrashReporter.send(e1, 109);
     }

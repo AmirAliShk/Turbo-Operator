@@ -263,11 +263,19 @@ public class TripRegisterActivity extends AppCompatActivity {
 
   @OnClick(R.id.llSearchAddress)
   void onPressSearchAddress() {
-    if (edtTell.getText().toString().isEmpty()) {
+    if (getTellNumber().isEmpty()) {
       MyApplication.Toast("ابتدا شماره تلفن را وارد کنید", Toast.LENGTH_SHORT);
       return;
     }
-    getPassengerAddress(StringHelper.toEnglishDigits(edtTell.getText().toString()));
+    getPassengerAddress(StringHelper.toEnglishDigits(getTellNumber()));
+  }
+
+  private String getTellNumber() {
+    return edtTell.getText().toString();
+  }
+
+  private String getMobileNumber() {
+    return edtMobile.getText().toString();
   }
 
   byte carClass = 0;
@@ -284,12 +292,12 @@ public class TripRegisterActivity extends AppCompatActivity {
       spCity.requestFocus();
       return;
     }
-    if (edtTell.getText().toString().isEmpty()) {
+    if (getTellNumber().isEmpty()) {
       MyApplication.Toast("شماره تلفن را وارد کنید", Toast.LENGTH_SHORT);
       edtTell.requestFocus();
       return;
     }
-    if (edtMobile.getText().toString().isEmpty() && !isTellValidable) {
+    if (getMobileNumber().isEmpty() && !isTellValidable) {
       MyApplication.Toast("شماره همراه را وارد کنید", Toast.LENGTH_SHORT);
       edtMobile.requestFocus();
       return;
@@ -319,8 +327,8 @@ public class TripRegisterActivity extends AppCompatActivity {
 
     getCheckDestStation(cityCode, Integer.parseInt(StringHelper.toEnglishDigits(edtDestination.getText().toString())));
 
-    String mobile = isTellValidable && edtMobile.getText().toString().isEmpty() ? "0" : edtMobile.getText().toString();
-    String tell = edtTell.getText().toString();
+    String mobile = isTellValidable && getMobileNumber().isEmpty() ? "0" : getMobileNumber();
+    String tell = getTellNumber();
     String name = edtFamily.getText().toString();
     String address = edtAddress.getText().toString();
     String fixedComment = txtDescription.getText().toString();
@@ -382,7 +390,7 @@ public class TripRegisterActivity extends AppCompatActivity {
           clearData();
         }
       }
-    }, edtMobile.getText().toString(), edtFamily.getText().toString(), cityCode);
+    }, getMobileNumber(), edtFamily.getText().toString(), cityCode);
   }
 
   @BindView(R.id.edtDestination)
@@ -410,20 +418,20 @@ public class TripRegisterActivity extends AppCompatActivity {
 
   @OnClick(R.id.llDownload)
   void onPressDownload() {
-    if (edtTell.getText().toString().isEmpty()) {
+    if (getTellNumber().isEmpty()) {
       MyApplication.Toast("شماره تلفن را وارد نمایید", Toast.LENGTH_SHORT);
       edtTell.requestFocus();
       return;
     }
-    if (edtMobile.getText().toString().isEmpty() && !isTellValidable) {
+    if (getMobileNumber().isEmpty() && !isTellValidable) {
       MyApplication.Toast("شماره تلفن همراه را وارد نمایید", Toast.LENGTH_SHORT);
       edtMobile.requestFocus();
       return;
     }
 
-    String mobile = isTellValidable && edtMobile.getText().toString().isEmpty() ? "0" : edtMobile.getText().toString();
+    String mobile = isTellValidable && getMobileNumber().isEmpty() ? "0" : getMobileNumber();
 
-    getPassengerInfo(StringHelper.toEnglishDigits(edtTell.getText().toString()), StringHelper.toEnglishDigits(mobile), StringHelper.toEnglishDigits(queue));
+    getPassengerInfo(StringHelper.toEnglishDigits(getTellNumber()), StringHelper.toEnglishDigits(mobile), StringHelper.toEnglishDigits(queue));
   }
 
   @OnClick(R.id.llEndCall)
@@ -580,10 +588,9 @@ public class TripRegisterActivity extends AppCompatActivity {
       @Override
       public void afterTextChanged(Editable editable) {
 
-//        PhoneNumberValidation.removePrefix(editable.toString());
-//       if (editable.toString().startsWith("0")){
-//         editable.clear();
-//       }
+        if (PhoneNumberValidation.havePrefix(editable.toString()))
+          edtTell.setText(PhoneNumberValidation.removePrefix(editable.toString()));
+
 
         if (PhoneNumberValidation.isValid(editable.toString())) {
           edtMobile.setText(editable.toString());
@@ -646,44 +653,11 @@ public class TripRegisterActivity extends AppCompatActivity {
     RipplePulseLayout mRipplePulseLayout = findViewById(R.id.layout_ripplepulse);
     mRipplePulseLayout.startRippleAnimation();
 
-    core = LinphoneService.getCore();
-    CoreListenerStub mCoreListener = new CoreListenerStub() {
-      @Override
-      public void onCallStateChanged(Core core, final Call call, Call.State state, String message) {
-        Toast.makeText(MyApplication.context, message, Toast.LENGTH_SHORT).show();
-        TripRegisterActivity.this.call = call;
-        switch (state.toInt()) {
-          case 1://inComingCall
-            showCallIncoming();
-            break;
-          case 6://Connect
-          case 18://Release
-          case 12://Error
-          case 13://End
-            showTitleBar();
-            break;
-        }
-        if (state == Call.State.IncomingReceived) {
-          showCallIncoming();
-        }
-      }
-    };
-    core.addListener(mCoreListener);
-
   }
 
   private void setTextCallNumber(String participant) {
-    participant = participant.trim();
-    if (participant.startsWith("0098")) {
-      participant = participant.substring(4);
-    } else if (participant.startsWith("+98") || participant.startsWith("098")) {
-      participant = participant.substring(3);
-    } else if (participant.startsWith("00") || participant.startsWith("98")) {
-      participant = participant.substring(2);
-    } else if (participant.startsWith("0")) {
-      participant = participant.substring(1);
-    }
-    if (edtTell.getText().toString().isEmpty())
+    participant = PhoneNumberValidation.removePrefix(participant);
+    if (getTellNumber().isEmpty())
       edtTell.setText(participant);
   }
 
@@ -1397,7 +1371,6 @@ public class TripRegisterActivity extends AppCompatActivity {
     super.onResume();
     MyApplication.currentActivity = this;
     showTitleBar();
-    isRunning = true;
 
   }
 
@@ -1442,6 +1415,29 @@ public class TripRegisterActivity extends AppCompatActivity {
 
   }
 
+  CoreListenerStub mCoreListener = new CoreListenerStub() {
+    @Override
+    public void onCallStateChanged(Core core, final Call call, Call.State state, String message) {
+      Toast.makeText(MyApplication.context, message, Toast.LENGTH_SHORT).show();
+      TripRegisterActivity.this.call = call;
+
+      if (state == Call.State.IncomingReceived) {
+        showCallIncoming();
+      } else if (state == Call.State.Released) {
+        showTitleBar();
+      } else if (state == Call.State.Connected) {
+        setTextCallNumber(MyApplication.prefManager.getParticipant());
+
+        showTitleBar();
+      } else if (state == Call.State.Error) {
+        showTitleBar();
+      } else if (state == Call.State.End) {
+        showTitleBar();
+      }
+    }
+  };
+
+
   @Override
   protected void onStart() {
     super.onStart();
@@ -1449,6 +1445,10 @@ public class TripRegisterActivity extends AppCompatActivity {
     registerReceiver(pushReceiver, new IntentFilter());
     LocalBroadcastManager.getInstance(MyApplication.currentActivity).registerReceiver((pushReceiver),
             new IntentFilter(Keys.KEY_BROADCAST_PUSH));
+
+    core = LinphoneService.getCore();
+    core.addListener(mCoreListener);
+    isRunning = true;
   }
 
   @Override
@@ -1473,13 +1473,11 @@ public class TripRegisterActivity extends AppCompatActivity {
             })
             .secondButton("خیر", null)
             .show();
-
   }
 
   @OnClick(R.id.imgAccept)
   void onAcceptPress() {
     call.accept();
-
   }
 
 
@@ -1499,18 +1497,16 @@ public class TripRegisterActivity extends AppCompatActivity {
     Address address = call.getRemoteAddress();
     txtCallerNum.setText(address.getUsername());
     MyApplication.prefManager.setParticipant(address.getUsername());
-
     rlNewInComingCall.setVisibility(View.VISIBLE);
     rlActionBar.setVisibility(View.GONE);
     SoundHelper.ringing(R.raw.ring);
-
-
   }
 
   private void showTitleBar() {
     rlNewInComingCall.setVisibility(View.GONE);
     rlActionBar.setVisibility(View.VISIBLE);
     SoundHelper.stop();
-
   }
+
+
 }

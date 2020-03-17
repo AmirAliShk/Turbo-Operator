@@ -28,6 +28,7 @@ import androidx.annotation.Nullable;
 import ir.taxi1880.operatormanagement.R;
 import ir.taxi1880.operatormanagement.activity.CallIncomingActivity;
 import ir.taxi1880.operatormanagement.activity.TripRegisterActivity;
+import ir.taxi1880.operatormanagement.push.AvaFactory;
 
 public class LinphoneService extends Service {
   private static final String START_LINPHONE_LOGS = " ==== Device information dump ====";
@@ -79,9 +80,16 @@ public class LinphoneService extends Service {
     mCoreListener = new CoreListenerStub() {
       @Override
       public void onCallStateChanged(Core core, final Call call, Call.State state, String message) {
+
         Toast.makeText(LinphoneService.this, message, Toast.LENGTH_SHORT).show();
         if (state == Call.State.IncomingReceived) {
           onIncomingReceived();
+        }
+
+
+        if (state == Call.State.Connected) {
+          //if don't receive push notification from server we call missingPushApi
+          AvaFactory.getInstance(getApplicationContext()).readMissingPush();
         }
       }
     };
@@ -199,8 +207,7 @@ public class LinphoneService extends Service {
     }
 
     if (info != null) {
-      Log.i(
-              "[Service] Linphone version is ",
+      Log.i("[Service] Linphone version is ",
               info.versionName + " (" + info.versionCode + ")");
     } else {
       Log.i("[Service] Linphone version is unknown");

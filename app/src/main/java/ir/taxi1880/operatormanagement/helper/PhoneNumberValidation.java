@@ -12,23 +12,35 @@ public class PhoneNumberValidation {
     if (mobile.substring(0, 1).equals("0")) {
       mobile = mobile.substring(1);
     }
-      String regEx = "9[0-9]{9}$";
+    String regEx = "9[0-9]{9}$";
     return mobile.matches(regEx);
   }
 
-  public static String removePrefix(String mobileNumber){
-
-    if (mobileNumber.startsWith("0")){
-      mobileNumber.substring(1,10);
-    }else if (mobileNumber.startsWith("+98")||mobileNumber.startsWith("098")){
-      mobileNumber.substring(3,12);
-    }else if (mobileNumber.startsWith("0098")){
-      mobileNumber.substring(4,13);
-    }else if (mobileNumber.startsWith("00")||mobileNumber.startsWith("98")){
-      mobileNumber.substring(2,11);
+  public static String removePrefix(String mobileNumber) {
+    mobileNumber = mobileNumber.trim();
+    if (mobileNumber.startsWith("0098")) {
+      return mobileNumber.substring(4);
+    } else if (mobileNumber.startsWith("+98") || mobileNumber.startsWith("098")) {
+      return mobileNumber.substring(3);
+    } else if (mobileNumber.startsWith("00") || mobileNumber.startsWith("98")) {
+      return mobileNumber.substring(2);
+    } else if (mobileNumber.startsWith("0")) {
+      return mobileNumber.substring(1);
     }
-
     return mobileNumber;
+  }
+  public static boolean havePrefix(String mobileNumber) {
+    mobileNumber = mobileNumber.trim();
+    if (mobileNumber.startsWith("0098")) {
+      return true;
+    } else if (mobileNumber.startsWith("+98") || mobileNumber.startsWith("098")) {
+      return true;
+    } else if (mobileNumber.startsWith("00") || mobileNumber.startsWith("98")) {
+      return true;
+    } else if (mobileNumber.startsWith("0")) {
+      return true;
+    }
+    return false;
   }
 
   public static String addZeroFirst(String mobile) {

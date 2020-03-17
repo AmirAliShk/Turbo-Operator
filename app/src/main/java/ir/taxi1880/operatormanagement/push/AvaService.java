@@ -5,14 +5,9 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.IBinder;
 
-import org.json.JSONArray;
-import org.json.JSONObject;
-
-import java.util.Calendar;
 import java.util.Timer;
 import java.util.TimerTask;
 
-import ir.taxi1880.operatormanagement.okHttp.RequestHelper;
 import ir.taxi1880.operatormanagement.app.MyApplication;
 
 //import ir.efsp.ava.io.core.client.Socket;
@@ -106,7 +101,7 @@ public class AvaService extends Service {
     unreadMessageTimer.scheduleAtFixedRate(new TimerTask() {
       @Override
       public void run() {
-        getUnreadPush();
+        new ReadUnreadMessage().getUnreadPush(false,context);
       }
     }, 0, avaPref.getIntervalTime() * 1000);
   }
@@ -118,45 +113,6 @@ public class AvaService extends Service {
       unreadMessageTimer.cancel();
     unreadMessageTimer = null;
   }
-
-  private void getUnreadPush() {
-    if (avaPref.getMissingApiRequestTime() + 5000 > Calendar.getInstance().getTimeInMillis())
-      return;
-    avaPref.setMissingApiRequestTime(Calendar.getInstance().getTimeInMillis());
-    if (avaPref.getMissingApiUrl() == null) return;
-
-      RequestHelper.loadBalancingBuilder(avaPref.getMissingApiUrl())
-              .addParam("projectId", avaPref.getProjectId())
-              .addParam("userId", avaPref.getUserId())
-              .listener(onGetMissingPush)
-              .post();
-  }
-
-  RequestHelper.Callback onGetMissingPush = new RequestHelper.Callback() {
-    @Override
-    public void onResponse(Runnable reCall, Object... args) {
-      try {
-        JSONObject result = new JSONObject(args[0].toString());
-        boolean status = result.getBoolean("status");
-        if (status) {
-          JSONArray arrayMessage = result.getJSONArray("pushMessags");
-          for (int i = 0; i < arrayMessage.length(); i++) {
-            AvaLog.i("Message receive : " + arrayMessage.getJSONObject(i).toString());
-            AvaReporter.Message(context, Keys.PUSH_RECEIVE, arrayMessage.getJSONObject(i).toString());
-          }
-        }
-      } catch (Exception e) {
-        e.printStackTrace();
-        AvaCrashReporter.send(e, 101);
-
-      }
-    }
-
-    @Override
-    public void onFailure(Runnable reCall, Exception e) {
-
-    }
-  };
 
   private Timer checkConnectionTimer;
 
