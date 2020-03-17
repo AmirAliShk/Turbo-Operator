@@ -648,7 +648,7 @@ public class TripRegisterActivity extends AppCompatActivity {
       }
     }, 300);
 
-    setTextCallNumber(MyApplication.prefManager.getParticipant());
+//    setTextCallNumber(MyApplication.prefManager.getParticipant());
 
     RipplePulseLayout mRipplePulseLayout = findViewById(R.id.layout_ripplepulse);
     mRipplePulseLayout.startRippleAnimation();
@@ -1379,18 +1379,14 @@ public class TripRegisterActivity extends AppCompatActivity {
     public void onReceive(Context context, Intent intent) {
       try {
         String result = intent.getStringExtra(Keys.KEY_MESSAGE);
-        Log.i(TAG, "onCreate: participant:" + participant + "***voipId:" + voipId + "****queue:" + queue);
-
-        Log.i(TAG, "AMIRREZA =====> onReceive: " + result);
         JSONObject object = new JSONObject(result);
         String strMessage = object.getString("message");
         JSONObject message = new JSONObject(strMessage);
-        String typee = message.getString("type");
+        String type = message.getString("type");
         int exten = message.getInt("exten");
         participant = message.getString("participant");
         queue = message.getString("queue");
         voipId = message.getString("voipId");
-
 
         setTextCallNumber(participant);
       } catch (JSONException e) {
@@ -1426,8 +1422,6 @@ public class TripRegisterActivity extends AppCompatActivity {
       } else if (state == Call.State.Released) {
         showTitleBar();
       } else if (state == Call.State.Connected) {
-        setTextCallNumber(MyApplication.prefManager.getParticipant());
-
         showTitleBar();
       } else if (state == Call.State.Error) {
         showTitleBar();

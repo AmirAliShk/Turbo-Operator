@@ -32,7 +32,7 @@ public class AvaReporter {
         broadcaster.sendBroadcast(broadcastIntent);
       }, 1000);
 
-
+      AvaLog.i("Message receive : " + msg);
 
 
     } catch (Exception e1) {

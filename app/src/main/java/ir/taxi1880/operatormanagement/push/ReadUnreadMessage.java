@@ -17,7 +17,7 @@ public class ReadUnreadMessage {
     avaPref.setMissingApiRequestTime(Calendar.getInstance().getTimeInMillis());
     if (avaPref.getMissingApiUrl() == null) return;
 
-    RequestHelper.loadBalancingBuilder(avaPref.getMissingApiUrl())
+      RequestHelper.builder(avaPref.getMissingApiUrl())
             .addParam("projectId", avaPref.getProjectId())
             .addParam("userId", avaPref.getUserId())
             .returnInResponse(context)
@@ -35,7 +35,6 @@ public class ReadUnreadMessage {
         if (status) {
           JSONArray arrayMessage = result.getJSONArray("pushMessags");
           for (int i = 0; i < arrayMessage.length(); i++) {
-            AvaLog.i("Message receive : " + arrayMessage.getJSONObject(i).toString());
             AvaReporter.Message(context, Keys.PUSH_RECEIVE, arrayMessage.getJSONObject(i).toString());
           }
         }

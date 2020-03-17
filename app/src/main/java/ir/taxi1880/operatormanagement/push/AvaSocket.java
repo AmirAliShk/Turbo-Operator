@@ -281,7 +281,6 @@ public class AvaSocket {
     @Override
     public void call(Object... args) {
       String result = args[0].toString();
-      AvaLog.i("Message receive : " + result);
       AvaReporter.Message(context, Keys.PUSH_RECEIVE, result);
       try {
         socket.emit(Keys.EVENT_PUSH, new JSONObject(result));
