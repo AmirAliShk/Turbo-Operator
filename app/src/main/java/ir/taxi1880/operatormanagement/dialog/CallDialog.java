@@ -101,7 +101,7 @@ public class CallDialog {
       public void onClick(View view) {
         call.transfer("950");
         MyApplication.Toast("تماس به صف پشتیبانی منتقل شد", Toast.LENGTH_SHORT);
-        listener.onClose(true);
+        listener.onClose(false);
         dismiss();
       }
     });
@@ -111,7 +111,7 @@ public class CallDialog {
       public void onClick(View view) {
         call.terminate();
         MyApplication.Toast("تماس به اتمام رسید", Toast.LENGTH_SHORT);
-        listener.onClose(true);
+        listener.onClose(false);
         dismiss();
       }
     });

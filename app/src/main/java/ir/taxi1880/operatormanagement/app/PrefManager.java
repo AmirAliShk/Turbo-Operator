@@ -50,6 +50,7 @@ public class PrefManager {
   private static final String ACCESS_INSERT_SERVICE = "accessInsertService";
   private static final String ACTIVATE_STATUS = "activateStatus";
   private static final String VOIP_ID = "voipId";
+  private static final String LAST_NOTIFICATION = "lastNotification";
 
   public PrefManager(Context context) {
     this._context = context;
@@ -63,6 +64,15 @@ public class PrefManager {
 
   public void setVoipId(String voipId) {
     editor.putString(VOIP_ID, voipId);
+    editor.commit();
+  }
+
+  public String getLastNotification() {
+    return pref.getString(LAST_NOTIFICATION, null);
+  }
+
+  public void setLastNotification(String v) {
+    editor.putString(LAST_NOTIFICATION, v);
     editor.commit();
   }
 

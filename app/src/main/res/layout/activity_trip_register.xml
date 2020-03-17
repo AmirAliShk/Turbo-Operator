@@ -221,6 +221,7 @@
                 android:paddingRight="15dp">
 
                 <LinearLayout
+                    android:layout_marginTop="5dp"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
@@ -230,7 +231,6 @@
                         android:id="@+id/llCity"
                         android:layout_width="0dp"
                         android:layout_weight="0.65"
-                        android:padding="5dp"
                         android:layout_height="wrap_content"
                         android:orientation="vertical">
 
@@ -275,12 +275,51 @@
                         </LinearLayout>
 
                     </LinearLayout>
+                    <ImageView
+                        android:layout_width="5dp"
+                        android:layout_height="match_parent"/>
+
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_weight="0.25"
+                        android:id="@+id/llCallerId"
+                        android:clickable="true"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="شماره"
+                            android:gravity="center"
+                            android:textAppearance="?android:attr/textAppearanceSmall"
+                            android:textColor="@color/grayMedium"/>
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="38dp"
+                            android:gravity="center"
+                            android:background="@drawable/bg_strock_corner">
+
+                            <ImageView
+                                android:layout_marginTop="3dp"
+                                android:id="@+id/imgUmb"
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                android:padding="3dp"
+                                android:src="@drawable/ic_add_circle_outline_black_24dp"/>
+
+                        </LinearLayout>
+
+                    </LinearLayout>
+                    <ImageView
+                        android:layout_width="5dp"
+                        android:layout_height="match_parent"/>
 
                     <LinearLayout
                         android:id="@+id/llTell"
                         android:layout_width="0dp"
                         android:layout_weight="1"
-                        android:padding="5dp"
                         android:layout_height="wrap_content"
                         android:orientation="vertical">
 
@@ -308,11 +347,13 @@
                             android:background="@drawable/edit_text_style"/>
 
                     </LinearLayout>
+                    <ImageView
+                        android:layout_width="5dp"
+                        android:layout_height="match_parent"/>
 
                     <LinearLayout
                         android:layout_width="0dp"
                         android:layout_weight="0.25"
-                        android:padding="5dp"
                         android:id="@+id/llClear"
                         android:clickable="true"
                         android:layout_height="wrap_content"
@@ -400,8 +441,7 @@
                             android:textAppearance="?android:attr/textAppearanceSmall"
                             android:textColor="@color/grayMedium"/>
 
-                        <RelativeLayout
-                            style="@style/linearLayout"
+                        <LinearLayout
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:clickable="true"
@@ -410,22 +450,101 @@
                             android:gravity="center_vertical"
                             android:orientation="horizontal">
 
+                            <EditText
+
+                                android:id="@+id/edtMobile"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:gravity="left|center_vertical"
+                                android:background="@drawable/edit_text_style"
+                                android:padding="5dp"
+                                android:inputType="number|textNoSuggestions|textFilter|textVisiblePassword"
+                                android:singleLine="true"
+                                android:maxLength="11"
+                                android:textAppearance="?android:attr/textAppearanceMedium"
+                                android:textColor="@color/colorBlack"/>
+
+                            <ImageView
+                                android:layout_width="5dp"
+                                android:layout_height="match_parent"/>
+                            <LinearLayout
+                                android:background="@drawable/edit_text_style"
+                                android:id="@+id/llDownload"
+                                android:layout_width="50dp"
+                                android:layout_height="35dp"
+                                android:layout_alignParentLeft="true"
+                                android:gravity="left">
+
+                                <ViewFlipper
+                                    android:id="@+id/vfPassengerInfo"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="match_parent">
+
+                                    <ImageView
+                                        android:layout_width="match_parent"
+                                        android:layout_height="match_parent"
+                                        android:layout_margin="5dp"
+                                        android:gravity="left|center_vertical"
+                                        android:src="@drawable/ic_download" />
+
+                                    <com.wang.avi.AVLoadingIndicatorView
+                                        app:indicatorColor="@color/colorPrimaryDark"
+                                        android:padding="5dp"
+                                        android:layout_width="match_parent"
+                                        android:layout_height="match_parent"
+                                        android:layout_gravity="center" />
+
+                                </ViewFlipper>
+
+                            </LinearLayout>
+
+                        </LinearLayout>
+
+                    </LinearLayout>
+
+                </LinearLayout>
+
+
+                <LinearLayout
+                    android:id="@+id/llAddress"
+                    android:layout_width="match_parent"
+                    android:padding="5dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="آدرس"
+                        android:paddingRight="5dp"
+                        android:textAppearance="?android:attr/textAppearanceSmall"
+                        android:textColor="@color/grayMedium"/>
+
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:clickable="true"
+                        android:focusable="true"
+                        android:layout_marginTop="3dp"
+                        android:gravity="center_vertical"
+                        android:orientation="horizontal">
+
                         <EditText
-                            android:id="@+id/edtMobile"
+                            android:id="@+id/edtAddress"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
-                            android:gravity="left|center_vertical"
                             android:background="@drawable/edit_text_style"
+                            android:nextFocusDown="@id/edtOrigin"
                             style="@style/padding"
-                            android:inputType="number|textNoSuggestions|textFilter|textVisiblePassword"
                             android:singleLine="true"
-                            android:maxLength="11"
                             android:textAppearance="?android:attr/textAppearanceMedium"
-                            android:textColor="@color/colorBlack"/>
+                            android:textColor="@color/colorBlack" />
 
                         <LinearLayout
-                            android:id="@+id/llDownload"
+                            android:id="@+id/llSearchAddress"
                             android:layout_width="50dp"
                             android:layout_height="35dp"
                             android:layout_alignParentLeft="true"
@@ -433,34 +552,33 @@
                             android:gravity="left">
 
                             <ViewFlipper
-                                android:id="@+id/vfPassengerInfo"
+                                android:id="@+id/vfPassengerAddress"
                                 android:layout_width="match_parent"
                                 android:layout_height="match_parent">
 
-                                <ImageView
+                                <TextView
                                     android:layout_width="match_parent"
-                                    android:layout_height="match_parent"
+                                    android:layout_height="wrap_content"
                                     android:layout_margin="5dp"
                                     android:gravity="left|center_vertical"
-                                    android:src="@drawable/ic_download" />
+                                    android:text="بیشتر"
+                                    android:textColor="@color/colorPrimaryDark"
+                                    android:textStyle="bold" />
 
                                 <com.wang.avi.AVLoadingIndicatorView
-                                    app:indicatorColor="@color/colorPrimaryDark"
-                                    android:padding="5dp"
                                     android:layout_width="match_parent"
                                     android:layout_height="match_parent"
-                                    android:layout_gravity="center" />
+                                    android:layout_gravity="center"
+                                    android:padding="5dp"
+                                    app:indicatorColor="@color/colorPrimaryDark" />
 
                             </ViewFlipper>
 
                         </LinearLayout>
 
-                        </RelativeLayout>
-
-                    </LinearLayout>
+                    </RelativeLayout>
 
                 </LinearLayout>
-
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -561,95 +679,21 @@
 
                         </LinearLayout>
 
-                            <EditText
-                                android:id="@+id/edtFamily"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:layout_weight="1"
-                                android:layout_marginTop="3dp"
-                                android:background="@drawable/edit_text_style"
-                                android:nextFocusDown="@id/edtAddress"
-                                style="@style/padding"
-                                android:singleLine="true"
-                                android:maxLength="40"
-                                android:textAppearance="?android:attr/textAppearanceMedium"
-                                android:textColor="@color/colorBlack" />
-
-                    </LinearLayout>
-
-                </LinearLayout>
-
-                <LinearLayout
-                    android:id="@+id/llAddress"
-                    android:layout_width="match_parent"
-                    android:padding="5dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:orientation="vertical">
-
-                    <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:text="آدرس"
-                        android:paddingRight="5dp"
-                        android:textAppearance="?android:attr/textAppearanceSmall"
-                        android:textColor="@color/grayMedium"/>
-
-                    <RelativeLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:clickable="true"
-                        android:focusable="true"
-                        android:layout_marginTop="3dp"
-                        android:gravity="center_vertical"
-                        android:orientation="horizontal">
-
                         <EditText
-                            android:id="@+id/edtAddress"
+                            android:id="@+id/edtFamily"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
+                            android:layout_marginTop="3dp"
                             android:background="@drawable/edit_text_style"
-                            android:nextFocusDown="@id/edtOrigin"
+                            android:nextFocusDown="@id/edtAddress"
                             style="@style/padding"
                             android:singleLine="true"
+                            android:maxLength="40"
                             android:textAppearance="?android:attr/textAppearanceMedium"
                             android:textColor="@color/colorBlack" />
 
-                        <LinearLayout
-                            android:id="@+id/llSearchAddress"
-                            android:layout_width="50dp"
-                            android:layout_height="35dp"
-                            android:layout_alignParentLeft="true"
-                            android:background="@drawable/bg_ripple"
-                            android:gravity="left">
-
-                            <ViewFlipper
-                                android:id="@+id/vfPassengerAddress"
-                                android:layout_width="match_parent"
-                                android:layout_height="match_parent">
-
-                                <TextView
-                                    android:layout_width="match_parent"
-                                    android:layout_height="wrap_content"
-                                    android:layout_margin="5dp"
-                                    android:gravity="left|center_vertical"
-                                    android:text="بیشتر"
-                                    android:textColor="@color/colorPrimaryDark"
-                                    android:textStyle="bold" />
-
-                                <com.wang.avi.AVLoadingIndicatorView
-                                    android:layout_width="match_parent"
-                                    android:layout_height="match_parent"
-                                    android:layout_gravity="center"
-                                    android:padding="5dp"
-                                    app:indicatorColor="@color/colorPrimaryDark" />
-
-                            </ViewFlipper>
-
-                        </LinearLayout>
-
-                    </RelativeLayout>
+                    </LinearLayout>
 
                 </LinearLayout>
 

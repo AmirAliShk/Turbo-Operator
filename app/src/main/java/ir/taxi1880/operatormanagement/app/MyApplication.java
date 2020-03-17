@@ -14,6 +14,9 @@ import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import org.acra.ACRA;
+import org.acra.annotation.AcraHttpSender;
+import org.acra.sender.HttpSender;
 import org.linphone.core.AccountCreator;
 import org.linphone.core.Core;
 import org.linphone.core.ProxyConfig;
@@ -22,11 +25,13 @@ import org.linphone.core.TransportType;
 import java.util.Locale;
 
 import androidx.fragment.app.FragmentManager;
+import ir.taxi1880.operatormanagement.BuildConfig;
 import ir.taxi1880.operatormanagement.R;
 import ir.taxi1880.operatormanagement.helper.TypefaceUtil;
 import ir.taxi1880.operatormanagement.push.AvaFactory;
 import ir.taxi1880.operatormanagement.services.LinphoneService;
 
+@AcraHttpSender(uri = "http://turbotaxi.ir:6061/api/crashReport", httpMethod = HttpSender.Method.POST)
 public class MyApplication extends Application {
 
   private static final String TAG = MyApplication.class.getSimpleName();
@@ -67,6 +72,11 @@ public class MyApplication extends Application {
 
     if (MyApplication.prefManager.getUserCode() != 0)
       avaStart();
+
+
+    if (!BuildConfig.DEBUG)
+      ACRA.init(this);
+
 
   }
 
@@ -122,12 +132,13 @@ public class MyApplication extends Application {
   }
 
   public static void configureAccount() {
-    Core core = LinphoneService.getCore();
-    core.clearAllAuthInfo();
-    core.clearProxyConfig();
+    try {
+      Core core = LinphoneService.getCore();
+      core.clearAllAuthInfo();
+      core.clearProxyConfig();
 
-    // No account configured, we display the configuration activity
-    AccountCreator mAccountCreator = LinphoneService.getCore().createAccountCreator(null);
+      // No account configured, we display the configuration activity
+      AccountCreator mAccountCreator = LinphoneService.getCore().createAccountCreator(null);
 
 //    mAccountCreator.setDomain("172.16.2.222");
 //    mAccountCreator.setUsername("423");
@@ -135,15 +146,19 @@ public class MyApplication extends Application {
       mAccountCreator.setDomain(prefManager.getSipServer());
       mAccountCreator.setUsername(prefManager.getSipNumber() + "");
       mAccountCreator.setPassword(prefManager.getSipPassword());
-    mAccountCreator.setTransport(TransportType.Udp);
+      mAccountCreator.setTransport(TransportType.Udp);
 
-    // This will automatically create the proxy config and auth info and add them to the Core
-    ProxyConfig cfg = mAccountCreator.createProxyConfig();
+      // This will automatically create the proxy config and auth info and add them to the Core
+      ProxyConfig cfg = mAccountCreator.createProxyConfig();
 
-    // Make sure the newly created one is the default
-    core.setDefaultProxyConfig(cfg);
+      // Make sure the newly created one is the default
+      core.setDefaultProxyConfig(cfg);
 
-    // At least the 3 below values are required
+      // At least the 3 below values are required
+    }catch (Exception e){
+      e.printStackTrace();
+    }
+
 
   }
 

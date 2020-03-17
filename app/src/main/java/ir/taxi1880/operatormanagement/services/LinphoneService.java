@@ -7,7 +7,6 @@ import android.content.pm.PackageManager;
 import android.os.Build;
 import android.os.Handler;
 import android.os.IBinder;
-import android.widget.Toast;
 
 import org.linphone.core.Call;
 import org.linphone.core.Core;
@@ -68,7 +67,7 @@ public class LinphoneService extends Service {
     String basePath = getFilesDir().getAbsolutePath();
     Factory.instance().setLogCollectionPath(basePath);
     Factory.instance().enableLogCollection(LogCollectionState.Enabled);
-    Factory.instance().setDebugMode(true, getString(R.string.app_name));
+    Factory.instance().setDebugMode(false, getString(R.string.app_name));
 
     // Dump some useful information about the device we're running on
     Log.i(START_LINPHONE_LOGS);
@@ -81,7 +80,6 @@ public class LinphoneService extends Service {
       @Override
       public void onCallStateChanged(Core core, final Call call, Call.State state, String message) {
 
-        Toast.makeText(LinphoneService.this, message, Toast.LENGTH_SHORT).show();
         if (state == Call.State.IncomingReceived) {
           onIncomingReceived();
         }

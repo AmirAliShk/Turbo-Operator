@@ -18,6 +18,7 @@ import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
@@ -40,6 +41,7 @@ import org.linphone.core.CoreListenerStub;
 import java.util.ArrayList;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.ContextCompat;
 import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -56,6 +58,7 @@ import ir.taxi1880.operatormanagement.dialog.CallDialog;
 import ir.taxi1880.operatormanagement.dialog.CityDialog;
 import ir.taxi1880.operatormanagement.dialog.DescriptionDialog;
 import ir.taxi1880.operatormanagement.dialog.GeneralDialog;
+import ir.taxi1880.operatormanagement.dialog.LoadingDialog;
 import ir.taxi1880.operatormanagement.dialog.OptionDialog;
 import ir.taxi1880.operatormanagement.dialog.SearchLocationDialog;
 import ir.taxi1880.operatormanagement.helper.KeyBoardHelper;
@@ -63,6 +66,7 @@ import ir.taxi1880.operatormanagement.helper.PhoneNumberValidation;
 import ir.taxi1880.operatormanagement.helper.SoundHelper;
 import ir.taxi1880.operatormanagement.helper.StringHelper;
 import ir.taxi1880.operatormanagement.helper.TypefaceUtil;
+import ir.taxi1880.operatormanagement.model.CallModel;
 import ir.taxi1880.operatormanagement.model.CityModel;
 import ir.taxi1880.operatormanagement.model.PassengerAddressModel;
 import ir.taxi1880.operatormanagement.model.TypeServiceModel;
@@ -88,7 +92,6 @@ public class TripRegisterActivity extends AppCompatActivity {
   private boolean isTellValidable = false;
   String queue = "0";
   String voipId = "0";
-  String participant;
 
   @OnClick(R.id.imgBack)
   void onBack() {
@@ -325,8 +328,11 @@ public class TripRegisterActivity extends AppCompatActivity {
 
     getCheckOriginStation(cityCode, Integer.parseInt(StringHelper.toEnglishDigits(edtOrigin.getText().toString())));
 
-    getCheckDestStation(cityCode, Integer.parseInt(StringHelper.toEnglishDigits(edtDestination.getText().toString())));
-
+    //TODO Two line change comment
+    /***********************************/
+//    getCheckDestStation(cityCode, Integer.parseInt(StringHelper.toEnglishDigits(edtDestination.getText().toString())));
+    isDestinationValid = true;
+    /***********************************/
     String mobile = isTellValidable && getMobileNumber().isEmpty() ? "0" : getMobileNumber();
     String tell = getTellNumber();
     String name = edtFamily.getText().toString();
@@ -370,7 +376,7 @@ public class TripRegisterActivity extends AppCompatActivity {
               .firstButton("بله", () ->
                       insertService(MyApplication.prefManager.getUserCode(), serviceCount, tell, mobile, cityCode, stationCode,
                               name, address, fixedComment, destinationStation,
-                              stationName, serviceType, carClass, normalDescription, traffic, voipId, defaultClass))
+                              stationName, serviceType, carClass, normalDescription, traffic, defaultClass))
               .secondButton("خیر", new Runnable() {
                 @Override
                 public void run() {
@@ -648,17 +654,10 @@ public class TripRegisterActivity extends AppCompatActivity {
       }
     }, 300);
 
-//    setTextCallNumber(MyApplication.prefManager.getParticipant());
 
     RipplePulseLayout mRipplePulseLayout = findViewById(R.id.layout_ripplepulse);
     mRipplePulseLayout.startRippleAnimation();
 
-  }
-
-  private void setTextCallNumber(String participant) {
-    participant = PhoneNumberValidation.removePrefix(participant);
-    if (getTellNumber().isEmpty())
-      edtTell.setText(participant);
   }
 
 
@@ -689,6 +688,26 @@ public class TripRegisterActivity extends AppCompatActivity {
     } catch (ArrayIndexOutOfBoundsException e) {
       e.printStackTrace();
     }
+
+    edtAddress.addTextChangedListener(new TextWatcher() {
+      @Override
+      public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+      }
+
+      @Override
+      public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+      }
+
+      @Override
+      public void afterTextChanged(Editable editable) {
+        if(editable.toString().isEmpty())
+        {
+          edtOrigin.setText("");
+        }
+      }
+    });
   }
 
   private void initServiceTypeSpinner() {
@@ -788,7 +807,16 @@ public class TripRegisterActivity extends AppCompatActivity {
     public void onResponse(Runnable reCall, Object... args) {
       MyApplication.handler.post(() -> {
         try {
-          Log.i(TAG, "run: " + args[0].toString());
+          if(queue.trim().equals("1817")){
+            MyApplication.handler.postDelayed(new Runnable() {
+              @Override
+              public void run() {
+                spServiceType.setSelection(2,true);
+              }
+            }, 500);
+          }
+
+          Log.i(TAG, "AMIRREZA ER: " + args[0].toString());
           vfPassengerInfo.setDisplayedChild(0);
           JSONObject obj = new JSONObject(args[0].toString());
           boolean success = obj.getBoolean("success");
@@ -810,6 +838,8 @@ public class TripRegisterActivity extends AppCompatActivity {
           int discountId = passengerInfoObj.getInt("discountId");
           int carType = passengerInfoObj.getInt("carType");
           int cityCode = passengerInfoObj.getInt("cityCode");
+
+
 
           if (success) {
             edtTell.setNextFocusDownId(R.id.edtFamily);
@@ -892,6 +922,8 @@ public class TripRegisterActivity extends AppCompatActivity {
 
   }
 
+
+
   RequestHelper.Callback getPassengerAddress = new RequestHelper.Callback() {
     @Override
     public void onResponse(Runnable reCall, Object... args) {
@@ -924,6 +956,7 @@ public class TripRegisterActivity extends AppCompatActivity {
                   edtAddress.setText(address);
                   originStationCode = stationCode;
                   edtOrigin.setText(stationCode + "");
+
                 }
               }, passengerAddressModels);
               vfPassengerAddress.setDisplayedChild(0);
@@ -1054,6 +1087,17 @@ public class TripRegisterActivity extends AppCompatActivity {
             .listener(getStationInfo)
             .get();
 
+  }
+
+  @OnClick(R.id.llCallerId)
+  void onCallerIdPress() {
+    try {
+      call = core.getCurrentCall();
+      Address address = call.getRemoteAddress();
+      edtTell.setText(address.getUsername());
+    } catch (Exception e) {
+      e.printStackTrace();
+    }
   }
 
   RequestHelper.Callback getStationInfo = new RequestHelper.Callback() {
@@ -1214,8 +1258,10 @@ public class TripRegisterActivity extends AppCompatActivity {
 
   private void insertService(int userId, int count, String phoneNumber, String mobile, int cityCode, int stationCode, String callerName,
                              String address, String fixedComment, int destinationStation, String destination, int typeService,
-                             int classType, String description, int TrafficPlan, String voipId, int defaultClass) {
+                             int classType, String description, int TrafficPlan, int defaultClass) {
 
+
+    LoadingDialog.makeLoader();
     RequestHelper.builder(EndPoints.INSERT)
             .addParam("userId", userId)
             .addParam("count", count)
@@ -1234,6 +1280,7 @@ public class TripRegisterActivity extends AppCompatActivity {
             .addParam("TrafficPlan", TrafficPlan)
             .addParam("voipId", voipId)
             .addParam("defaultClass", defaultClass)
+            .addParam("queue", queue)
             .listener(insertService)
             .post();
 
@@ -1246,17 +1293,29 @@ public class TripRegisterActivity extends AppCompatActivity {
         @Override
         public void run() {
           try {
+
             Log.i(TAG, "onResponse: " + args[0].toString());
             JSONObject obj = new JSONObject(args[0].toString());
             boolean success = obj.getBoolean("success");
             String message = obj.getString("message");
 
             if (success) {
+
               new GeneralDialog()
                       .title("ثبت شد")
                       .message("اطلاعات با موفقیت ثبت شد")
                       .firstButton("باشه", () -> {
                         clearData();
+
+                        CallModel callModel = parseNotification(MyApplication.prefManager.getLastNotification());
+                        if (callModel != null)
+                          if (!callModel.getVoipId().equals(voipId)) {
+                            MyApplication.prefManager.setLastNotification(null);
+                            handleCallerInfo(callModel);
+                          }
+
+                        voipId = "0";
+                        queue = "0";
                       })
                       .show();
             } else {
@@ -1280,6 +1339,7 @@ public class TripRegisterActivity extends AppCompatActivity {
                       .secondButton("بستن", null)
                       .show();
             }
+            LoadingDialog.dismiss();
 
           } catch (JSONException e) {
             e.printStackTrace();
@@ -1290,7 +1350,7 @@ public class TripRegisterActivity extends AppCompatActivity {
 
     @Override
     public void onFailure(Runnable reCall, Exception e) {
-
+      MyApplication.handler.post(LoadingDialog::dismiss);
     }
   };
 
@@ -1312,6 +1372,8 @@ public class TripRegisterActivity extends AppCompatActivity {
     chbAlways.setChecked(false);
     rgCarClass.clearCheck();
     rbUnknow.setChecked(true);
+    voipId = "0";
+    queue = "0";
   }
 
   private void enableViews() {
@@ -1374,26 +1436,52 @@ public class TripRegisterActivity extends AppCompatActivity {
 
   }
 
+
+  //receive push notification from local broadcast
   BroadcastReceiver pushReceiver = new BroadcastReceiver() {
     @Override
     public void onReceive(Context context, Intent intent) {
-      try {
-        String result = intent.getStringExtra(Keys.KEY_MESSAGE);
-        JSONObject object = new JSONObject(result);
-        String strMessage = object.getString("message");
-        JSONObject message = new JSONObject(strMessage);
-        String type = message.getString("type");
-        int exten = message.getInt("exten");
-        participant = message.getString("participant");
-        queue = message.getString("queue");
-        voipId = message.getString("voipId");
-
-        setTextCallNumber(participant);
-      } catch (JSONException e) {
-        e.printStackTrace();
-      }
+      String result = intent.getStringExtra(Keys.KEY_MESSAGE);
+      handleCallerInfo(parseNotification(result));
     }
   };
+
+
+  private void handleCallerInfo(CallModel callModel) {
+    if (voipId.equals("0")) {
+      //show CallerId
+      if (callModel == null) {
+        return;
+      }
+      String participant = PhoneNumberValidation.removePrefix(callModel.getParticipant());
+      queue = callModel.getQueue();
+      voipId = callModel.getVoipId();
+      edtTell.setText(participant);
+    }
+
+  }
+
+  /**
+   * @param info have below format
+   *             sample : {"type":"callerInfo","exten":"456","participant":"404356734579","queue":"999","voipId":"1584260434.9922480"}
+   */
+  private CallModel parseNotification(String info) {
+    try {
+      JSONObject object = new JSONObject(info);
+      String strMessage = object.getString("message");
+      JSONObject message = new JSONObject(strMessage);
+      CallModel callModel = new CallModel();
+      callModel.setType(message.getString("type"));
+      callModel.setExten(message.getInt("exten"));
+      callModel.setParticipant(message.getString("participant"));
+      callModel.setQueue(message.getString("queue"));
+      callModel.setVoipId(message.getString("voipId"));
+      return callModel;
+    } catch (JSONException e) {
+      e.printStackTrace();
+      return null;
+    }
+  }
 
   @Override
   protected void onStop() {
@@ -1408,20 +1496,25 @@ public class TripRegisterActivity extends AppCompatActivity {
     super.onPause();
     KeyBoardHelper.hideKeyboard();
     isRunning = false;
-
   }
+
+  @BindView(R.id.imgEndCall)
+  ImageView imgEndCall;
 
   CoreListenerStub mCoreListener = new CoreListenerStub() {
     @Override
     public void onCallStateChanged(Core core, final Call call, Call.State state, String message) {
-      Toast.makeText(MyApplication.context, message, Toast.LENGTH_SHORT).show();
       TripRegisterActivity.this.call = call;
-
       if (state == Call.State.IncomingReceived) {
         showCallIncoming();
       } else if (state == Call.State.Released) {
+        imgEndCall.setColorFilter(ContextCompat.getColor(MyApplication.context, R.color.colorWhite), android.graphics.PorterDuff.Mode.MULTIPLY);
         showTitleBar();
       } else if (state == Call.State.Connected) {
+        imgEndCall.setColorFilter(ContextCompat.getColor(MyApplication.context, R.color.colorRed), android.graphics.PorterDuff.Mode.MULTIPLY);
+        Address address = call.getRemoteAddress();
+        if (voipId.equals("0"))
+          edtTell.setText(address.getUsername());
         showTitleBar();
       } else if (state == Call.State.Error) {
         showTitleBar();
@@ -1430,7 +1523,6 @@ public class TripRegisterActivity extends AppCompatActivity {
       }
     }
   };
-
 
   @Override
   protected void onStart() {
@@ -1449,13 +1541,11 @@ public class TripRegisterActivity extends AppCompatActivity {
   protected void onDestroy() {
     super.onDestroy();
     unbinder.unbind();
-    MyApplication.prefManager.setParticipant("");
   }
 
   @Override
   public void onBackPressed() {
     KeyBoardHelper.hideKeyboard();
-    MyApplication.prefManager.setParticipant("");
     new GeneralDialog()
             .title("خروج")
             .message("آیا از خروج خود اطمینان دارید؟")
@@ -1490,7 +1580,6 @@ public class TripRegisterActivity extends AppCompatActivity {
     call = core.getCurrentCall();
     Address address = call.getRemoteAddress();
     txtCallerNum.setText(address.getUsername());
-    MyApplication.prefManager.setParticipant(address.getUsername());
     rlNewInComingCall.setVisibility(View.VISIBLE);
     rlActionBar.setVisibility(View.GONE);
     SoundHelper.ringing(R.raw.ring);

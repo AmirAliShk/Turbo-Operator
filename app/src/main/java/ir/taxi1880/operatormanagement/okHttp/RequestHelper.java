@@ -25,6 +25,7 @@ import java.util.regex.Pattern;
 import ir.taxi1880.operatormanagement.R;
 import ir.taxi1880.operatormanagement.app.EndPoints;
 import ir.taxi1880.operatormanagement.app.MyApplication;
+import ir.taxi1880.operatormanagement.helper.StringHelper;
 import ir.taxi1880.operatormanagement.helper.TypefaceUtil;
 import okhttp3.Call;
 import okhttp3.Callback;
@@ -80,6 +81,20 @@ public class RequestHelper implements Callback {
       params = new JSONObject();
     }
     try {
+
+      params.put(key, value);
+      Log.i(TAG, "addParam: "+params);
+    } catch (JSONException e) {
+      e.printStackTrace();
+    }
+    return this;
+  }
+  public RequestHelper addParam(String key, String value) {
+    if (params == null) {
+      params = new JSONObject();
+    }
+    try {
+      value = StringHelper.toEnglishDigits(value);
       params.put(key, value);
       Log.i(TAG, "addParam: "+params);
     } catch (JSONException e) {
@@ -451,16 +466,19 @@ public class RequestHelper implements Callback {
     btnTryAgain.setOnClickListener(v -> {
 //      if (runnable != null)
 //        vfRetry.setDisplayedChild(1);
-      MyApplication.handler.postDelayed(new Runnable() {
-        @Override
-        public void run() {
+      dialog.dismiss();
+      runnable.run();
 
-          runnable.run();
-          if (dialog != null)
-            dialog.dismiss();
-          dialog = null;
-        }
-      }, 2000);
+//      MyApplication.handler.postDelayed(new Runnable() {
+//        @Override
+//        public void run() {
+//
+//          runnable.run();
+//          if (dialog != null)
+//            dialog.dismiss();
+//          dialog = null;
+//        }
+//      }, 2000);
     });
 
     dialog.show();

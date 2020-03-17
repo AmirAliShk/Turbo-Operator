@@ -34,6 +34,7 @@ public class AvaReporter {
 
       AvaLog.i("Message receive : " + msg);
 
+      MyApplication.prefManager.setLastNotification(msg);
 
     } catch (Exception e1) {
       AvaCrashReporter.send(e1, 109);

@@ -10,33 +10,33 @@ public class EndPoints {
 //    http://172.16.2.210:1885/api/findway/citylatinname/address
 
   public static final String IP = (BuildConfig.DEBUG)
-          ? "http://turbotaxi.ir"
-          : "http://turbotaxi.ir";
+          ? "http://172.16.2.203"
+//          ? "http://turbotaxi.ir"
+          : "http://172.16.2.203";
 
-  public static final String TRIP_IP = (BuildConfig.DEBUG)
-//          ? "http://172.16.2.210"
-//          ? "http://172.16.2.201"
-//          ? "http://172.16.2.10"
-//          ? "http://172.16.2.203"
-          ? "http://turbotaxi.ir"
-          : "http://turbotaxi.ir";
 
   public static final String FIND_WAY_IP = (BuildConfig.DEBUG)
-//          ? "http://172.16 .2.210"
-          ? "http://turbotaxi.ir"
-          : "http://turbotaxi.ir";
+//          ? "http://turbotaxi.ir"
+          ? "http://172.16.2.210"
+          : "http://172.16.2.210";
+
+  public static final String PUSH_ADDRESS =   (BuildConfig.DEBUG)
+//          ? "http://turbotaxi.ir:6060"
+          ? "http://172.16.2.212:6060"
+          : "http://172.16.2.212:6060";
 
   public static final String APIPort = (BuildConfig.DEBUG) ? "1881" : "1881";
-//  public static final String TRIP_APIPort = (BuildConfig.DEBUG) ? "1881" : "1881";
-  public static final String TRIP_APIPort = (BuildConfig.DEBUG) ? "2323" : "2323";
+  public static final String TRIP_APIPort = (BuildConfig.DEBUG) ? "1881" : "1881";
+//  public static final String TRIP_APIPort = (BuildConfig.DEBUG) ? "2323" : "2323";
   public static final String FIND_WAY_APIPort = (BuildConfig.DEBUG) ? "1885" : "1885";
 
   public static final String WEBSERVICE_PATH = IP + ":" + APIPort + "/api/operator/";
-  public static final String TRIP_WEBSERVICE_PATH = TRIP_IP + ":" + TRIP_APIPort + "/api/operator/v2/trip/";
+  public static final String TRIP_WEBSERVICE_PATH = IP + ":" + TRIP_APIPort + "/api/operator/v2/trip/";
   public static final String FIND_WAY_WEBSERVICE_PATH = FIND_WAY_IP + ":" + FIND_WAY_APIPort + "/api/";
-  public static final String ACCOUNT_WEBSERVICE_PATH = TRIP_IP + ":" + TRIP_APIPort + "/api/operator/v2/";
+  public static final String ACCOUNT_WEBSERVICE_PATH = IP + ":" + TRIP_APIPort + "/api/operator/v2/";
 
-  public static final String PUSH_ADDRESS = "http://turbotaxi.ir:6060";
+
+
 
   /******************************** Base Api *********************************/
   public static final String GET_APP_INFO = WEBSERVICE_PATH + "getAppInfo";
