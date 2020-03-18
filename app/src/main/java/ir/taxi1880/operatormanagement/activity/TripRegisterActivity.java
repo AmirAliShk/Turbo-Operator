@@ -23,6 +23,7 @@ import android.widget.LinearLayout;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.RelativeLayout;
+import android.widget.ScrollView;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -46,6 +47,7 @@ import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import butterknife.OnFocusChange;
 import butterknife.Unbinder;
 import ir.taxi1880.operatormanagement.R;
 import ir.taxi1880.operatormanagement.adapter.SpinnerAdapter;
@@ -128,6 +130,9 @@ public class TripRegisterActivity extends AppCompatActivity {
   @BindView(R.id.edtTell)
   EditText edtTell;
 
+  @BindView(R.id.svTripRegister)
+  ScrollView svTripRegister;
+
   @BindView(R.id.edtMobile)
   EditText edtMobile;
 
@@ -139,6 +144,12 @@ public class TripRegisterActivity extends AppCompatActivity {
 
   @BindView(R.id.llSearchOrigin)
   LinearLayout llSearchOrigin;
+
+  @BindView(R.id.llTrafficBg)
+  LinearLayout llTrafficBg;
+
+  @BindView(R.id.llAlwaysBg)
+  LinearLayout llAlwaysBg;
 
   @BindView(R.id.llSearchDestination)
   LinearLayout llSearchDestination;
@@ -444,14 +455,19 @@ public class TripRegisterActivity extends AppCompatActivity {
   void onPressEndCall() {
 
     KeyBoardHelper.hideKeyboard();
-    new CallDialog().show(new CallDialog.Listener() {
+    core.removeListener(mCoreListener);
+    new CallDialog().show(new CallDialog.CallBack() {
       @Override
-      public void onClose(boolean b) {
-        if (b) {
-          clearData();
-        }
+      public void onDismiss() {
+        core.addListener(mCoreListener);
+      }
+
+      @Override
+      public void onCallReceived() {
+        showCallIncoming();
       }
     });
+
 //    Call call = LinphoneService.getCore().getCurrentCall();
 //    call.terminate();
   }
@@ -560,10 +576,13 @@ public class TripRegisterActivity extends AppCompatActivity {
     if (MyApplication.prefManager.getActivateStatus()) {
       btnActivate.setBackgroundResource(R.drawable.bg_green_edge);
       btnDeActivate.setBackgroundColor(Color.parseColor("#00FFB2B2"));
+      btnDeActivate.setTextColor(Color.parseColor("#000000"));
     } else {
       btnDeActivate.setBackgroundResource(R.drawable.bg_pink_edge);
       btnActivate.setBackgroundColor(Color.parseColor("#00FFB2B2"));
+      btnDeActivate.setTextColor(Color.parseColor("#ffffff"));
     }
+
     disableViews();
 
     Log.i(TAG, "AMIRREZA=> onCreate register: ");
@@ -702,8 +721,7 @@ public class TripRegisterActivity extends AppCompatActivity {
 
       @Override
       public void afterTextChanged(Editable editable) {
-        if(editable.toString().isEmpty())
-        {
+        if (editable.toString().isEmpty()) {
           edtOrigin.setText("");
         }
       }
@@ -807,11 +825,11 @@ public class TripRegisterActivity extends AppCompatActivity {
     public void onResponse(Runnable reCall, Object... args) {
       MyApplication.handler.post(() -> {
         try {
-          if(queue.trim().equals("1817")){
+          if (queue.trim().equals("1817")) {
             MyApplication.handler.postDelayed(new Runnable() {
               @Override
               public void run() {
-                spServiceType.setSelection(2,true);
+                spServiceType.setSelection(2, true);
               }
             }, 500);
           }
@@ -838,7 +856,6 @@ public class TripRegisterActivity extends AppCompatActivity {
           int discountId = passengerInfoObj.getInt("discountId");
           int carType = passengerInfoObj.getInt("carType");
           int cityCode = passengerInfoObj.getInt("cityCode");
-
 
 
           if (success) {
@@ -921,7 +938,6 @@ public class TripRegisterActivity extends AppCompatActivity {
             .get();
 
   }
-
 
 
   RequestHelper.Callback getPassengerAddress = new RequestHelper.Callback() {
@@ -1089,14 +1105,19 @@ public class TripRegisterActivity extends AppCompatActivity {
 
   }
 
-  @OnClick(R.id.llCallerId)
-  void onCallerIdPress() {
-    try {
-      call = core.getCurrentCall();
-      Address address = call.getRemoteAddress();
-      edtTell.setText(address.getUsername());
-    } catch (Exception e) {
-      e.printStackTrace();
+
+  @OnFocusChange(R.id.edtTell)
+  void onChangeFocus(boolean v) {
+    if (v) {
+      if (getTellNumber().trim().isEmpty()) {
+        try {
+          call = core.getCurrentCall();
+          Address address = call.getRemoteAddress();
+          edtTell.setText(address.getUsername());
+        } catch (Exception e) {
+          e.printStackTrace();
+        }
+      }
     }
   }
 
@@ -1165,6 +1186,7 @@ public class TripRegisterActivity extends AppCompatActivity {
               btnActivate.setBackgroundResource(R.drawable.bg_green_edge);
               MyApplication.prefManager.setActivateStatus(true);
               btnDeActivate.setBackgroundColor(Color.parseColor("#00FFB2B2"));
+              btnDeActivate.setTextColor(Color.parseColor("#000000"));
             } else {
               new GeneralDialog()
                       .title("هشدار")
@@ -1229,6 +1251,7 @@ public class TripRegisterActivity extends AppCompatActivity {
               MyApplication.prefManager.setActivateStatus(false);
               btnDeActivate.setBackgroundResource(R.drawable.bg_pink_edge);
               btnActivate.setBackgroundColor(Color.parseColor("#00FFB2B2"));
+              btnDeActivate.setTextColor(Color.parseColor("#ffffff"));
             } else {
               new GeneralDialog()
                       .title("هشدار")
@@ -1317,7 +1340,9 @@ public class TripRegisterActivity extends AppCompatActivity {
                         voipId = "0";
                         queue = "0";
                       })
+
                       .show();
+              svTripRegister.scrollTo(0, 0);
             } else {
               new GeneralDialog()
                       .title("خطا")
@@ -1378,11 +1403,13 @@ public class TripRegisterActivity extends AppCompatActivity {
 
   private void enableViews() {
     edtFamily.setEnabled(true);
-    edtDiscount.setEnabled(true);
+//    edtDiscount.setEnabled(true);
     edtAddress.setEnabled(true);
+    txtDescription.setEnabled(true);
     edtOrigin.setEnabled(true);
     edtDestination.setEnabled(true);
     chbTraffic.setEnabled(true);
+    llTrafficBg.setEnabled(true);
     chbAlways.setEnabled(true);
     llSearchAddress.setEnabled(true);
     llSearchOrigin.setEnabled(true);
@@ -1390,6 +1417,7 @@ public class TripRegisterActivity extends AppCompatActivity {
     llDescriptionDetail.setEnabled(true);
     llServiceType.setEnabled(true);
     llTraffic.setEnabled(true);
+    llAlwaysBg.setEnabled(true);
     llAlways.setEnabled(true);
     llServiceCount.setEnabled(true);
     rgCarClass.setEnabled(true);
@@ -1398,15 +1426,18 @@ public class TripRegisterActivity extends AppCompatActivity {
     llAddress.setEnabled(true);
     spServiceCount.setEnabled(true);
     spServiceType.setEnabled(true);
+
   }
 
   private void disableViews() {
     edtFamily.setEnabled(false);
-    edtDiscount.setEnabled(false);
+//    edtDiscount.setEnabled(false);
     edtAddress.setEnabled(false);
     edtOrigin.setEnabled(false);
     edtDestination.setEnabled(false);
+    txtDescription.setEnabled(false);
     chbTraffic.setEnabled(false);
+    llTrafficBg.setEnabled(false);
     chbAlways.setEnabled(false);
     llSearchAddress.setEnabled(false);
     llSearchOrigin.setEnabled(false);
@@ -1414,6 +1445,7 @@ public class TripRegisterActivity extends AppCompatActivity {
     llDescriptionDetail.setEnabled(false);
     llServiceType.setEnabled(false);
     llTraffic.setEnabled(false);
+    llAlwaysBg.setEnabled(false);
     llAlways.setEnabled(false);
     llServiceCount.setEnabled(false);
     llDiscount.setEnabled(false);
@@ -1421,6 +1453,7 @@ public class TripRegisterActivity extends AppCompatActivity {
     llAddress.setEnabled(false);
     spServiceCount.setEnabled(false);
     spServiceType.setEnabled(false);
+    rgCarClass.setEnabled(false);
     for (int i = 0; i < rgCarClass.getChildCount(); i++) {
       rgCarClass.getChildAt(i).setEnabled(false);
     }
@@ -1561,13 +1594,29 @@ public class TripRegisterActivity extends AppCompatActivity {
 
   @OnClick(R.id.imgAccept)
   void onAcceptPress() {
-    call.accept();
+    call = core.getCurrentCall();
+    Call[] calls = core.getCalls();
+    int i = calls.length;
+    Log.i(TAG, "onRejectPress: "+i);
+    if (call != null)
+      call.accept();
+    else if( calls.length>0){
+      calls[0].accept();
+    }
   }
 
 
   @OnClick(R.id.imgReject)
   void onRejectPress() {
-    call.terminate();
+    call = core.getCurrentCall();
+    Call[] calls = core.getCalls();
+    int i = calls.length;
+    Log.i(TAG, "onRejectPress: "+i);
+    if (call != null)
+      call.terminate();
+    else if( calls.length>0){
+      calls[0].terminate();
+    }
   }
 
   @BindView(R.id.txtCallerNum)

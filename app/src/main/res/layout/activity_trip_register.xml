@@ -111,7 +111,7 @@
         android:background="@drawable/bg_action_bar_purple">
 
         <LinearLayout
-            android:layout_width="200dp"
+            android:layout_width="180dp"
             android:layout_height="45dp"
             android:layout_centerInParent="true"
             android:background="@drawable/bg_activate_status"
@@ -204,6 +204,7 @@
     </RelativeLayout>
 
     <ScrollView
+        android:id="@+id/svTripRegister"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:fillViewport="true">
@@ -230,7 +231,7 @@
                     <LinearLayout
                         android:id="@+id/llCity"
                         android:layout_width="0dp"
-                        android:layout_weight="0.65"
+                        android:layout_weight="0.3"
                         android:layout_height="wrap_content"
                         android:orientation="vertical">
 
@@ -241,7 +242,7 @@
 
                             <TextView
                                 android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
+                                android:layout_height="25dp"
                                 android:layout_weight="1"
                                 android:text="شهر"
                                 android:paddingRight="5dp"
@@ -259,13 +260,12 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:gravity="center"
-                            android:layout_marginTop="3dp"
                             android:background="@drawable/bg_edit_text">
 
                             <Spinner
                                 android:id="@+id/spCity"
                                 android:layout_width="match_parent"
-                                android:layout_height="match_parent"
+                                android:layout_height="40dp"
                                 android:background="@drawable/bg_edit_text"
                                 android:dropDownWidth="match_parent"
                                 android:gravity="center"
@@ -275,115 +275,85 @@
                         </LinearLayout>
 
                     </LinearLayout>
+
                     <ImageView
                         android:layout_width="5dp"
                         android:layout_height="match_parent"/>
 
                     <LinearLayout
+                        android:orientation="horizontal"
                         android:layout_width="0dp"
-                        android:layout_weight="0.25"
-                        android:id="@+id/llCallerId"
-                        android:clickable="true"
-                        android:layout_height="wrap_content"
-                        android:orientation="vertical">
-
-                        <TextView
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:text="شماره"
-                            android:gravity="center"
-                            android:textAppearance="?android:attr/textAppearanceSmall"
-                            android:textColor="@color/grayMedium"/>
-
+                        android:layout_weight="0.7"
+                        android:layout_height="wrap_content">
                         <LinearLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="38dp"
-                            android:gravity="center"
-                            android:background="@drawable/bg_strock_corner">
+                            android:id="@+id/llTell"
+                            android:layout_width="0dp"
+                            android:layout_weight="0.6"
+                            android:layout_height="wrap_content"
+                            android:orientation="vertical">
 
-                            <ImageView
-                                android:layout_marginTop="3dp"
-                                android:id="@+id/imgUmb"
+                            <TextView
                                 android:layout_width="match_parent"
-                                android:layout_height="match_parent"
-                                android:padding="3dp"
-                                android:src="@drawable/ic_add_circle_outline_black_24dp"/>
+                                android:layout_height="25dp"
+                                android:text="تلفن"
+                                android:paddingRight="5dp"
+                                android:textAppearance="?android:attr/textAppearanceSmall"
+                                android:textColor="@color/grayMedium"/>
+
+                            <EditText
+                                android:id="@+id/edtTell"
+                                android:layout_width="match_parent"
+                                android:layout_height="40dp"
+                                android:padding="5dp"
+                                android:maxLength="11"
+                                android:gravity="left|center_vertical"
+                                android:textAppearance="?android:attr/textAppearanceMedium"
+                                android:textColor="@color/colorBlack"
+                                android:singleLine="true"
+                                android:inputType="number|textNoSuggestions"
+                                android:nextFocusDown="@id/edtMobile"
+                                android:background="@drawable/edit_text_style"/>
 
                         </LinearLayout>
 
-                    </LinearLayout>
-                    <ImageView
-                        android:layout_width="5dp"
-                        android:layout_height="match_parent"/>
-
-                    <LinearLayout
-                        android:id="@+id/llTell"
-                        android:layout_width="0dp"
-                        android:layout_weight="1"
-                        android:layout_height="wrap_content"
-                        android:orientation="vertical">
-
-                        <TextView
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:text="تلفن"
-                            android:paddingRight="5dp"
-                            android:textAppearance="?android:attr/textAppearanceSmall"
-                            android:textColor="@color/grayMedium"/>
-
-                        <EditText
-                            android:id="@+id/edtTell"
-                            android:layout_marginTop="3dp"
-                            android:layout_width="match_parent"
-                            android:layout_height="match_parent"
-                            android:padding="5dp"
-                            android:maxLength="11"
-                            android:gravity="left|center_vertical"
-                            android:textAppearance="?android:attr/textAppearanceMedium"
-                            android:textColor="@color/colorBlack"
-                            android:singleLine="true"
-                            android:inputType="number|textNoSuggestions"
-                            android:nextFocusDown="@id/edtMobile"
-                            android:background="@drawable/edit_text_style"/>
-
-                    </LinearLayout>
-                    <ImageView
-                        android:layout_width="5dp"
-                        android:layout_height="match_parent"/>
-
-                    <LinearLayout
-                        android:layout_width="0dp"
-                        android:layout_weight="0.25"
-                        android:id="@+id/llClear"
-                        android:clickable="true"
-                        android:layout_height="wrap_content"
-                        android:orientation="vertical">
-
-                        <TextView
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:text="حذف"
-                            android:gravity="center"
-                            android:textAppearance="?android:attr/textAppearanceSmall"
-                            android:textColor="@color/grayMedium"/>
+                        <ImageView
+                            android:layout_width="5dp"
+                            android:layout_height="match_parent"/>
 
                         <LinearLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="38dp"
-                            android:gravity="center"
-                            android:background="@drawable/bg_strock_corner">
+                            android:layout_width="50dp"
+                            android:id="@+id/llClear"
+                            android:clickable="true"
+                            android:layout_height="wrap_content"
+                            android:orientation="vertical">
 
-                            <ImageView
-                                android:layout_marginTop="3dp"
-                                android:id="@+id/imgClear"
+                            <TextView
+                                android:layout_width="match_parent"
+                                android:layout_height="25dp"
+                                android:text="حذف"
+                                android:gravity="center"
+                                android:textAppearance="?android:attr/textAppearanceSmall"
+                                android:textColor="@color/grayMedium"/>
+
+                            <LinearLayout
                                 android:layout_width="match_parent"
                                 android:layout_height="match_parent"
-                                android:padding="3dp"
-                                android:src="@drawable/ic_trash"/>
+                                android:gravity="center"
+                                android:background="@drawable/bg_strock_corner">
+
+                                <ImageView
+                                    android:id="@+id/imgClear"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="40dp"
+                                    android:padding="4dp"
+                                    android:src="@drawable/ic_trash"/>
+
+                            </LinearLayout>
 
                         </LinearLayout>
-
                     </LinearLayout>
+
+
 
                 </LinearLayout>
 
@@ -396,14 +366,13 @@
                     <LinearLayout
                         android:id="@+id/llDiscount"
                         android:layout_width="0dp"
-                        android:layout_weight="0.5"
-                        android:padding="5dp"
+                        android:layout_weight="0.3"
                         android:layout_height="wrap_content"
                         android:orientation="vertical">
 
                         <TextView
                             android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
+                            android:layout_height="25dp"
                             android:text="تخفیف"
                             android:paddingRight="5dp"
                             android:textAppearance="?android:attr/textAppearanceSmall"
@@ -412,173 +381,190 @@
                         <EditText
                             android:id="@+id/edtDiscount"
                             android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="3dp"
+                            android:layout_height="40dp"
                             android:background="@drawable/edit_text_style"
                             android:editable="false"
                             android:focusable="false"
                             android:nextFocusDown="@id/edtMobile"
                             android:padding="5dp"
+                            android:enabled="false"
                             android:singleLine="true"
+                            android:gravity="center"
                             android:textAppearance="?android:attr/textAppearanceMedium"
                             android:textColor="@color/colorBlack" />
 
                     </LinearLayout>
 
-                    <LinearLayout
-                        android:id="@+id/llMobile"
-                        android:layout_width="0dp"
-                        android:layout_weight="1"
-                        android:padding="5dp"
-                        android:layout_height="wrap_content"
-                        android:orientation="vertical">
+                    <ImageView
+                        android:layout_width="5dp"
+                        android:layout_height="match_parent"/>
 
-                        <TextView
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:text="همراه"
-                            android:paddingRight="5dp"
-                            android:textAppearance="?android:attr/textAppearanceSmall"
-                            android:textColor="@color/grayMedium"/>
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="0.7"
+                        android:orientation="horizontal">
 
                         <LinearLayout
-                            android:layout_width="match_parent"
+                            android:id="@+id/llMobile"
+                            android:layout_width="0dp"
+                            android:layout_weight="0.6"
                             android:layout_height="wrap_content"
-                            android:clickable="true"
-                            android:layout_marginTop="3dp"
-                            android:focusable="true"
-                            android:gravity="center_vertical"
-                            android:orientation="horizontal">
+                            android:orientation="vertical">
 
-                            <EditText
+                            <TextView
+                                android:layout_width="match_parent"
+                                android:layout_height="25dp"
+                                android:text="همراه"
+                                android:paddingRight="5dp"
+                                android:textAppearance="?android:attr/textAppearanceSmall"
+                                android:textColor="@color/grayMedium"/>
 
-                                android:id="@+id/edtMobile"
+                            <LinearLayout
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
-                                android:layout_weight="1"
-                                android:gravity="left|center_vertical"
-                                android:background="@drawable/edit_text_style"
-                                android:padding="5dp"
-                                android:inputType="number|textNoSuggestions|textFilter|textVisiblePassword"
-                                android:singleLine="true"
-                                android:maxLength="11"
-                                android:textAppearance="?android:attr/textAppearanceMedium"
-                                android:textColor="@color/colorBlack"/>
+                                android:clickable="true"
+                                android:focusable="true"
+                                android:gravity="center_vertical"
+                                android:orientation="horizontal">
 
-                            <ImageView
-                                android:layout_width="5dp"
-                                android:layout_height="match_parent"/>
-                            <LinearLayout
-                                android:background="@drawable/edit_text_style"
-                                android:id="@+id/llDownload"
-                                android:layout_width="50dp"
-                                android:layout_height="35dp"
-                                android:layout_alignParentLeft="true"
-                                android:gravity="left">
-
-                                <ViewFlipper
-                                    android:id="@+id/vfPassengerInfo"
+                                <EditText
+                                    android:nextFocusDown="@id/edtAddress"
+                                    android:id="@+id/edtMobile"
                                     android:layout_width="match_parent"
-                                    android:layout_height="match_parent">
+                                    android:layout_height="40dp"
+                                    android:gravity="left|center_vertical"
+                                    android:background="@drawable/edit_text_style"
+                                    android:padding="5dp"
+                                    android:inputType="number|textNoSuggestions|textFilter|textVisiblePassword"
+                                    android:singleLine="true"
+                                    android:maxLength="11"
+                                    android:textAppearance="?android:attr/textAppearanceMedium"
+                                    android:textColor="@color/colorBlack"/>
 
-                                    <ImageView
-                                        android:layout_width="match_parent"
-                                        android:layout_height="match_parent"
-                                        android:layout_margin="5dp"
-                                        android:gravity="left|center_vertical"
-                                        android:src="@drawable/ic_download" />
-
-                                    <com.wang.avi.AVLoadingIndicatorView
-                                        app:indicatorColor="@color/colorPrimaryDark"
-                                        android:padding="5dp"
-                                        android:layout_width="match_parent"
-                                        android:layout_height="match_parent"
-                                        android:layout_gravity="center" />
-
-                                </ViewFlipper>
+                                <ImageView
+                                    android:layout_width="5dp"
+                                    android:layout_height="match_parent"/>
 
                             </LinearLayout>
 
                         </LinearLayout>
 
+                        <ImageView
+                            android:layout_width="5dp"
+                            android:layout_height="match_parent"/>
+
+                        <LinearLayout
+                            android:id="@+id/llDownload"
+                            android:layout_width="50dp"
+                            android:layout_height="match_parent"
+                            android:gravity="left">
+
+
+                            <ViewFlipper
+                                android:layout_marginTop="25dp"
+                                android:background="@drawable/edit_text_style"
+                                android:id="@+id/vfPassengerInfo"
+                                android:layout_width="match_parent"
+                                android:layout_height="40dp">
+
+
+                                <ImageView
+                                    android:layout_width="match_parent"
+                                    android:layout_height="match_parent"
+                                    android:layout_margin="5dp"
+                                    android:gravity="left|center_vertical"
+                                    android:src="@drawable/ic_download" />
+                                <com.wang.avi.AVLoadingIndicatorView
+                                    app:indicatorColor="@color/colorPrimaryDark"
+                                    android:padding="5dp"
+                                    android:layout_width="35dp"
+                                    android:layout_height="35dp"
+                                    android:layout_gravity="center" />
+
+                            </ViewFlipper>
+
+                        </LinearLayout>
                     </LinearLayout>
 
                 </LinearLayout>
 
-
                 <LinearLayout
                     android:id="@+id/llAddress"
                     android:layout_width="match_parent"
-                    android:padding="5dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:orientation="vertical">
 
                     <TextView
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
+                        android:layout_height="25dp"
                         android:text="آدرس"
                         android:paddingRight="5dp"
                         android:textAppearance="?android:attr/textAppearanceSmall"
                         android:textColor="@color/grayMedium"/>
 
-                    <RelativeLayout
+                    <LinearLayout
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
+                        android:layout_height="40dp"
                         android:clickable="true"
                         android:focusable="true"
-                        android:layout_marginTop="3dp"
                         android:gravity="center_vertical"
                         android:orientation="horizontal">
 
                         <EditText
                             android:id="@+id/edtAddress"
                             android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
+                            android:layout_height="match_parent"
                             android:layout_weight="1"
                             android:background="@drawable/edit_text_style"
-                            android:nextFocusDown="@id/edtOrigin"
+                            android:nextFocusDown="@id/edtFamily"
                             style="@style/padding"
                             android:singleLine="true"
                             android:textAppearance="?android:attr/textAppearanceMedium"
                             android:textColor="@color/colorBlack" />
 
+                        <ImageView
+                            android:layout_width="5dp"
+                            android:layout_height="match_parent"/>
+
                         <LinearLayout
                             android:id="@+id/llSearchAddress"
                             android:layout_width="50dp"
-                            android:layout_height="35dp"
-                            android:layout_alignParentLeft="true"
-                            android:background="@drawable/bg_ripple"
-                            android:gravity="left">
+                            android:layout_height="match_parent"
+                            android:background="@drawable/edit_text_style"
+                            >
 
                             <ViewFlipper
+                                android:background="@drawable/bg_ripple"
                                 android:id="@+id/vfPassengerAddress"
                                 android:layout_width="match_parent"
-                                android:layout_height="match_parent">
+                                android:layout_height="40dp">
 
                                 <TextView
+                                    android:layout_gravity="center"
                                     android:layout_width="match_parent"
                                     android:layout_height="wrap_content"
                                     android:layout_margin="5dp"
-                                    android:gravity="left|center_vertical"
+                                    android:gravity="center"
                                     android:text="بیشتر"
                                     android:textColor="@color/colorPrimaryDark"
                                     android:textStyle="bold" />
-
                                 <com.wang.avi.AVLoadingIndicatorView
-                                    android:layout_width="match_parent"
-                                    android:layout_height="match_parent"
-                                    android:layout_gravity="center"
+                                    app:indicatorColor="@color/colorPrimaryDark"
                                     android:padding="5dp"
-                                    app:indicatorColor="@color/colorPrimaryDark" />
+                                    android:layout_width="35dp"
+                                    android:layout_height="35dp"
+                                    android:layout_gravity="center" />
 
                             </ViewFlipper>
 
                         </LinearLayout>
 
-                    </RelativeLayout>
+                    </LinearLayout>
 
                 </LinearLayout>
+
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -588,19 +574,18 @@
                     <LinearLayout
                         android:id="@+id/llServiceType"
                         android:layout_width="0dp"
-                        android:layout_weight="0.5"
-                        android:padding="5dp"
+                        android:layout_weight="0.3"
                         android:layout_height="wrap_content"
                         android:orientation="vertical">
 
                         <LinearLayout
                             android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
+                            android:layout_height="25dp"
                             android:orientation="horizontal">
 
                             <TextView
                                 android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
+                                android:layout_height="match_parent"
                                 android:layout_weight="1"
                                 android:text="نوع سرویس"
                                 android:paddingRight="5dp"
@@ -616,8 +601,7 @@
 
                         <LinearLayout
                             android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="3dp"
+                            android:layout_height="40dp"
                             android:gravity="center">
 
                             <Spinner
@@ -634,17 +618,20 @@
 
                     </LinearLayout>
 
+                    <ImageView
+                        android:layout_width="5dp"
+                        android:layout_height="match_parent"/>
+
                     <LinearLayout
                         android:id="@+id/llFamily"
                         android:layout_width="0dp"
-                        android:layout_weight="1"
-                        android:padding="5dp"
+                        android:layout_weight="0.7"
                         android:layout_height="wrap_content"
                         android:orientation="vertical">
 
                         <LinearLayout
                             android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
+                            android:layout_height="25dp"
                             android:orientation="horizontal">
 
                             <TextView
@@ -682,11 +669,10 @@
                         <EditText
                             android:id="@+id/edtFamily"
                             android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
+                            android:layout_height="40dp"
                             android:layout_weight="1"
-                            android:layout_marginTop="3dp"
                             android:background="@drawable/edit_text_style"
-                            android:nextFocusDown="@id/edtAddress"
+                            android:nextFocusDown="@id/edtOrigin"
                             style="@style/padding"
                             android:singleLine="true"
                             android:maxLength="40"
@@ -707,14 +693,13 @@
                         android:id="@+id/llOrigin"
                         android:layout_width="0dp"
                         android:layout_weight="1"
-                        android:padding="5dp"
                         android:layout_height="wrap_content"
                         android:orientation="vertical"
                         android:clickable="true">
 
                         <TextView
                             android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
+                            android:layout_height="25dp"
                             android:text="منطقه مبدا"
                             android:gravity="right"
                             android:paddingRight="5dp"
@@ -723,9 +708,8 @@
 
                         <RelativeLayout
                             android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
+                            android:layout_height="40dp"
                             android:clickable="true"
-                            android:layout_marginTop="3dp"
                             android:focusable="true"
                             android:gravity="center_vertical"
                             android:orientation="horizontal">
@@ -733,7 +717,7 @@
                             <EditText
                                 android:id="@+id/edtOrigin"
                                 android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
+                                android:layout_height="match_parent"
                                 android:layout_weight="1"
                                 android:gravity="left|center_vertical"
                                 android:background="@drawable/edit_text_style"
@@ -749,7 +733,7 @@
                                 android:id="@+id/llSearchOrigin"
                                 android:layout_width="50dp"
                                 android:layout_alignParentLeft="true"
-                                android:layout_height="35dp"
+                                android:layout_height="match_parent"
                                 android:background="@drawable/bg_ripple"
                                 android:paddingLeft="5dp"
                                 android:gravity="left|center_vertical">
@@ -766,19 +750,21 @@
                     </RelativeLayout>
 
                     </LinearLayout>
+                    <ImageView
+                        android:layout_width="5dp"
+                        android:layout_height="match_parent"/>
 
                     <LinearLayout
                         android:id="@+id/llDestination"
                         android:layout_width="0dp"
                         android:layout_weight="1"
-                        android:padding="5dp"
                         android:layout_height="wrap_content"
                         android:orientation="vertical"
                         android:clickable="true">
 
                         <TextView
                             android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
+                            android:layout_height="25dp"
                             android:text="منطقه مقصد"
                             android:gravity="right"
                             android:paddingRight="5dp"
@@ -787,9 +773,8 @@
 
                         <RelativeLayout
                             android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
+                            android:layout_height="40dp"
                             android:clickable="true"
-                            android:layout_marginTop="3dp"
                             android:focusable="true"
                             android:gravity="center_vertical"
                             android:orientation="horizontal">
@@ -797,7 +782,7 @@
                             <EditText
                                 android:id="@+id/edtDestination"
                                 android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
+                                android:layout_height="match_parent"
                                 android:layout_weight="1"
                                 android:gravity="left|center_vertical"
                                 android:background="@drawable/edit_text_style"
@@ -812,7 +797,7 @@
                             <LinearLayout
                                 android:id="@+id/llSearchDestination"
                                 android:layout_width="50dp"
-                                android:layout_height="35dp"
+                                android:layout_height="match_parent"
                                 android:layout_alignParentLeft="true"
                                 android:background="@drawable/bg_ripple"
                                 android:paddingLeft="5dp"
@@ -830,35 +815,36 @@
                         </RelativeLayout>
 
                     </LinearLayout>
+                    <ImageView
+                        android:layout_width="5dp"
+                        android:layout_height="match_parent"/>
 
                     <LinearLayout
                         android:id="@+id/llTraffic"
-                        android:layout_width="0dp"
-                        android:layout_weight="0.30"
-                        android:padding="5dp"
+                        android:layout_width="50dp"
                         android:layout_height="wrap_content"
                         android:orientation="vertical">
 
                         <TextView
                             android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
+                            android:layout_height="25dp"
                             android:text="طرح"
                             android:gravity="center"
                             android:textAppearance="?android:attr/textAppearanceSmall"
                             android:textColor="@color/grayMedium"/>
 
                         <LinearLayout
+                            android:id="@+id/llTrafficBg"
                             android:layout_width="match_parent"
-                            android:layout_height="36dp"
+                            android:layout_height="40dp"
                             android:gravity="center"
-                            android:layout_marginTop="3dp"
                             android:padding="3dp"
                             android:background="@drawable/edit_text_style">
 
                             <CheckBox
                                 android:id="@+id/chbTraffic"
-                                android:layout_width="match_parent"
-                                android:layout_height="match_parent"
+                                android:layout_width="40dp"
+                                android:layout_height="40dp"
                                 android:background="@drawable/traffic"
                                 android:button="@null"
                                 android:checked="false" />
@@ -879,7 +865,6 @@
                         android:id="@+id/llServiceCount"
                         android:layout_width="0dp"
                         android:layout_weight="0.30"
-                        android:padding="5dp"
                         android:layout_height="wrap_content"
                         android:orientation="vertical">
 
@@ -890,7 +875,7 @@
 
                             <TextView
                                 android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
+                                android:layout_height="25dp"
                                 android:layout_weight="1"
                                 android:text="تعداد"
                                 android:paddingRight="5dp"
@@ -906,8 +891,7 @@
 
                         <LinearLayout
                             android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="3dp"
+                            android:layout_height="40dp"
                             android:gravity="center">
 
                             <Spinner
@@ -923,18 +907,20 @@
                         </LinearLayout>
 
                     </LinearLayout>
+                    <ImageView
+                        android:layout_width="5dp"
+                        android:layout_height="match_parent"/>
 
                     <LinearLayout
                         android:id="@+id/llDescription"
                         android:layout_width="0dp"
                         android:layout_weight="1"
-                        android:padding="5dp"
                         android:layout_height="wrap_content"
                         android:orientation="vertical">
 
                         <TextView
                             android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
+                            android:layout_height="25dp"
                             android:text="توضیحات دائمی"
                             android:paddingRight="5dp"
                             android:textAppearance="?android:attr/textAppearanceSmall"
@@ -942,10 +928,9 @@
 
                         <RelativeLayout
                             android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
+                            android:layout_height="40dp"
                             android:clickable="true"
                             android:focusable="true"
-                            android:layout_marginTop="3dp"
                             android:gravity="center_vertical"
                             android:orientation="horizontal">
 
@@ -953,8 +938,8 @@
                                 android:id="@+id/txtDescription"
                                 android:layout_width="match_parent"
                                 android:layout_weight="1"
-                                android:layout_height="wrap_content"
-                                android:background="@drawable/bg_strock_corner"
+                                android:layout_height="match_parent"
+                                android:background="@drawable/edit_text_style"
                                 android:textAppearance="?android:attr/textAppearanceMedium"
                                 android:textColor="@color/colorBlack"
                                 style="@style/padding"
@@ -968,7 +953,7 @@
                                 android:gravity="center"
                                 android:layout_alignParentLeft="true"
                                 android:background="@drawable/bg_ripple"
-                                android:layout_height="35dp">
+                                android:layout_height="match_parent">
 
                                 <TextView
                                     android:layout_width="match_parent"
@@ -998,11 +983,11 @@
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
                         android:orientation="vertical"
-                        android:padding="5dp">
+                        >
 
                         <TextView
                             android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
+                            android:layout_height="25dp"
                             android:text="کلاس خودرو"
                             android:paddingRight="5dp"
                             android:textAppearance="?android:attr/textAppearanceSmall"
@@ -1013,32 +998,23 @@
                             android:id="@+id/rgCarClass"
                             multi_line_radio_group:default_button="@string/unKnow"
                             multi_line_radio_group:max_in_row="3"
-                            android:layout_marginTop="3dp"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:background="@drawable/bg_strock_corner"
+                            android:background="@drawable/edit_text_style"
                             android:gravity="center"
                             android:padding="5dp">
 
                             <LinearLayout
+
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:orientation="horizontal">
 
-                                <RadioButton
-                                    android:checked="true"
-                                    android:id="@+id/rbUnknow"
-                                    android:layout_width="wrap_content"
-                                    android:layout_weight="1"
-                                    android:textAppearance="?android:attr/textAppearanceSmall"
-                                    android:layout_height="wrap_content"
-                                    android:buttonTint="@color/colorPrimaryDark"
-                                    android:text="@string/unKnow" />
 
                                 <RadioButton
                                     android:id="@+id/rbTaxi"
                                     android:layout_weight="1"
-                                    android:layout_width="wrap_content"
+                                    android:layout_width="0dp"
                                     android:layout_height="wrap_content"
                                     android:buttonTint="@color/colorPrimaryDark"
                                     android:text="@string/taxi"
@@ -1047,11 +1023,19 @@
                                 <RadioButton
                                     android:id="@+id/rbPrivilage"
                                     android:layout_weight="1"
-                                    android:layout_width="wrap_content"
+                                    android:layout_width="0dp"
                                     android:textAppearance="?android:attr/textAppearanceSmall"
                                     android:layout_height="wrap_content"
                                     android:buttonTint="@color/colorPrimaryDark"
                                     android:text="@string/privilege"/>
+                                <RadioButton
+                                    android:id="@+id/rbEconomical"
+                                    android:layout_width="0dp"
+                                    android:layout_weight="1"
+                                    android:layout_height="wrap_content"
+                                    android:buttonTint="@color/colorPrimaryDark"
+                                    android:text="@string/economically"
+                                    android:textAppearance="?android:attr/textAppearanceSmall" />
 
                             </LinearLayout>
 
@@ -1060,28 +1044,25 @@
                                 android:layout_height="wrap_content"
                                 android:orientation="horizontal">
 
-                                <RadioButton
-                                    android:id="@+id/rbEconomical"
-                                    android:layout_width="wrap_content"
-                                    android:layout_weight="1"
-                                    android:layout_height="wrap_content"
-                                    android:buttonTint="@color/colorPrimaryDark"
-                                    android:text="@string/economically"
-                                    android:textAppearance="?android:attr/textAppearanceSmall" />
 
                                 <RadioButton
                                     android:id="@+id/rbFormality"
-                                    android:layout_width="wrap_content"
+                                    android:layout_width="0dp"
                                     android:layout_weight="1"
                                     android:layout_height="wrap_content"
                                     android:textAppearance="?android:attr/textAppearanceSmall"
                                     android:buttonTint="@color/colorPrimaryDark"
                                     android:text="@string/formality"/>
 
-                                <ImageView
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="match_parent"
-                                    android:layout_weight="2"/>
+                                <RadioButton
+                                    android:checked="true"
+                                    android:id="@+id/rbUnknow"
+                                    android:layout_width="0dp"
+                                    android:layout_weight="2"
+                                    android:textAppearance="?android:attr/textAppearanceSmall"
+                                    android:layout_height="wrap_content"
+                                    android:buttonTint="@color/colorPrimaryDark"
+                                    android:text="@string/unKnow" />
 
                             </LinearLayout>
 
@@ -1089,34 +1070,36 @@
 
                     </LinearLayout>
 
+                    <ImageView
+                        android:layout_width="5dp"
+                        android:layout_height="match_parent"/>
+
                     <LinearLayout
                         android:id="@+id/llAlways"
-                        android:layout_width="0dp"
-                        android:layout_weight="0.15"
-                        android:padding="5dp"
+                        android:layout_width="50dp"
                         android:layout_height="wrap_content"
                         android:orientation="vertical">
 
                         <TextView
                             android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
+                            android:layout_height="25dp"
                             android:text="دائم"
                             android:gravity="center"
                             android:textAppearance="?android:attr/textAppearanceSmall"
                             android:textColor="@color/grayMedium"/>
 
                         <LinearLayout
+                            android:id="@+id/llAlwaysBg"
                             android:layout_width="match_parent"
-                            android:layout_height="36dp"
-                            android:background="@drawable/edit_text_style"
+                            android:layout_height="40dp"
                             android:gravity="center"
-                            android:layout_marginTop="3dp"
-                            android:padding="3dp">
+                            android:padding="3dp"
+                            android:background="@drawable/edit_text_style">
 
                             <CheckBox
                                 android:id="@+id/chbAlways"
-                                android:layout_width="match_parent"
-                                android:layout_height="match_parent"
+                                android:layout_width="40dp"
+                                android:layout_height="40dp"
                                 android:background="@drawable/traffic"
                                 android:button="@null"
                                 android:checked="false" />
@@ -1125,9 +1108,12 @@
 
                     </LinearLayout>
 
+
                 </LinearLayout>
 
                 <LinearLayout
+                    android:layout_marginTop="5dp"
+                    android:layout_marginBottom="10dp"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="horizontal">
@@ -1136,7 +1122,6 @@
                         android:id="@+id/btnSubmit"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:layout_margin="7dp"
                         android:layout_weight="2.5"
                         android:background="@drawable/bg_light_pink_edge"
                         android:text="ثبت سرویس "
@@ -1144,11 +1129,13 @@
                         android:textAppearance="?android:attr/textAppearanceLarge"
                         android:textStyle="bold" />
 
+                    <ImageView
+                        android:layout_width="5dp"
+                        android:layout_height="match_parent"/>
                     <Button
                         android:id="@+id/btnOptions"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:layout_margin="7dp"
                         android:layout_weight="1"
                         android:background="@drawable/bg_strock_corner"
                         android:text="گزینه ها"

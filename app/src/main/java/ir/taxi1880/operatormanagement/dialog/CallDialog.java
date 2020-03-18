@@ -11,8 +11,6 @@ import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
-import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.ViewFlipper;
 
@@ -20,7 +18,13 @@ import org.linphone.core.Address;
 import org.linphone.core.Call;
 import org.linphone.core.CallParams;
 import org.linphone.core.Core;
+import org.linphone.core.CoreListener;
+import org.linphone.core.CoreListenerStub;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
+import butterknife.OnClick;
+import butterknife.Unbinder;
 import ir.taxi1880.operatormanagement.R;
 import ir.taxi1880.operatormanagement.app.MyApplication;
 import ir.taxi1880.operatormanagement.helper.KeyBoardHelper;
@@ -31,15 +35,95 @@ public class CallDialog {
 
   private static final String TAG = CallDialog.class.getSimpleName();
 
-  public interface Listener {
-    void onClose(boolean b);
+  public interface CallBack {
+    void onDismiss();
+
+    void onCallReceived();
+  }
+
+  Unbinder unbinder;
+
+  @OnClick(R.id.llTransfer)
+  void onTransferCallPress() {
+    core.getCurrentCall().transfer("950");
+    MyApplication.Toast("تماس به صف پشتیبانی منتقل شد", Toast.LENGTH_SHORT);
+    dismiss();
+  }
+
+  @OnClick(R.id.llEndCall)
+  void onEndCallPress() {
+    core.getCurrentCall().terminate();
+    dismiss();
+  }
+
+  @OnClick(R.id.imgEndCall)
+  void onEndPress() {
+
+    try {
+      Call call = core.getCallByRemoteAddress2(callAddress);
+      if (call != null)
+        call.terminate();
+    } catch (Exception e) {
+      e.printStackTrace();
+    }
+
+    setCancelable(true);
+    vfCall.setDisplayedChild(0);
   }
 
 
-  static Dialog dialog;
-  Listener listener;
+  @OnClick(R.id.llCallSupport)
+  void onCallSupportPress() {
+    Address addressToCall = core.interpretUrl("950");
+    CallParams params = core.createCallParams(null);
+    AudioManager mAudioManager = ((AudioManager) LinphoneService.getInstance().getApplicationContext().getSystemService(Context.AUDIO_SERVICE));
+    mAudioManager.setSpeakerphoneOn(true);
+    params.enableVideo(false);
+    if (addressToCall != null) {
+      core.inviteAddressWithParams(addressToCall, params);
+    }
+    setCancelable(false);
+    callAddress = addressToCall;
 
-  public void show(Listener listener) {
+    vfCall.setDisplayedChild(2);
+  }
+
+  @OnClick(R.id.llTestConnection)
+  void onTestConnectionPress() {
+    Address addressToCall = core.interpretUrl("998");
+    CallParams params = core.createCallParams(null);
+    params.enableVideo(false);
+    if (addressToCall != null) {
+      core.inviteAddressWithParams(addressToCall, params);
+    }
+    callAddress = addressToCall;
+
+    setCancelable(false);
+    vfCall.setDisplayedChild(2);
+  }
+
+
+  @OnClick(R.id.imgClose)
+  void onClosePress() {
+    dismiss();
+  }
+
+  @BindView(R.id.vfCall)
+  ViewFlipper vfCall;
+
+  @BindView(R.id.imgEndCall)
+  ImageView imgEndCall;
+
+  @BindView(R.id.imgClose)
+  ImageView imgClose;
+
+  Dialog dialog;
+  Call call;
+  Core core;
+  CallBack callBack;
+  Address callAddress;
+
+  public void show(CallBack callBack) {
     dialog = new Dialog(MyApplication.currentActivity);
     dialog.getWindow().requestFeature(Window.FEATURE_NO_TITLE);
     dialog.getWindow().getAttributes().windowAnimations = R.style.ExpandAnimation;
@@ -50,83 +134,39 @@ public class CallDialog {
     wlp.gravity = Gravity.CENTER;
     wlp.windowAnimations = R.style.ExpandAnimation;
     dialog.getWindow().setAttributes(wlp);
-    dialog.setCancelable(true);
-    this.listener = listener;
-    LinearLayout llTransferCall = dialog.findViewById(R.id.llTransfer);
-    LinearLayout llEndCall = dialog.findViewById(R.id.llEndCall);
-    LinearLayout llCallSupport = dialog.findViewById(R.id.llCallSupport);
-    LinearLayout llTestConnection = dialog.findViewById(R.id.llTestConnection);
-    ViewFlipper vfCall = dialog.findViewById(R.id.vfCall);
-    ImageView imgClose = dialog.findViewById(R.id.imgClose);
-    TextView txtTitle = dialog.findViewById(R.id.txtTitle);
-
-
+    unbinder = ButterKnife.bind(this, dialog);
+    setCancelable(true);
+    this.callBack = callBack;
     //TODO  if call is available this layer must be visible
-    Core core = LinphoneService.getCore();
-    Call call = core.getCurrentCall();
+    core = LinphoneService.getCore();
+    call = core.getCurrentCall();
     vfCall.setDisplayedChild((call == null) ? 0 : 1);
 
-    llCallSupport.setOnClickListener(new View.OnClickListener() {
+    CoreListener coreListener = new CoreListenerStub() {
       @Override
-      public void onClick(View view) {
-        Address addressToCall = core.interpretUrl("950");
-        CallParams params = core.createCallParams(null);
-        AudioManager mAudioManager = ((AudioManager) LinphoneService.getInstance().getApplicationContext().getSystemService(Context.AUDIO_SERVICE));
-        mAudioManager.setSpeakerphoneOn(true);
-        params.enableVideo(false);
-        if (addressToCall != null) {
-          core.inviteAddressWithParams(addressToCall, params);
+      public void onCallStateChanged(Core lc, Call _call, Call.State state, String message) {
+        super.onCallStateChanged(lc, _call, state, message);
+        call = _call;
+
+        if (state == Call.State.IncomingReceived) {
+          callBack.onCallReceived();
+        } else if (state == Call.State.Released) {
+          setCancelable(true);
+          vfCall.setDisplayedChild(0);
+        } else if (state == Call.State.Connected) {
         }
-        listener.onClose(false);
       }
-    });
+    };
 
-    llTestConnection.setOnClickListener(new View.OnClickListener() {
-      @Override
-      public void onClick(View view) {
-        Address addressToCall = core.interpretUrl("998");
-        CallParams params = core.createCallParams(null);
-        params.enableVideo(false);
-        if (addressToCall != null) {
-          core.inviteAddressWithParams(addressToCall, params);
-        }
+    core.addListener(coreListener);
 
-        listener.onClose(false);
-      }
-    });
-
-
-    llTransferCall.setOnClickListener(new View.OnClickListener() {
-      @Override
-      public void onClick(View view) {
-        call.transfer("950");
-        MyApplication.Toast("تماس به صف پشتیبانی منتقل شد", Toast.LENGTH_SHORT);
-        listener.onClose(false);
-        dismiss();
-      }
-    });
-
-    llEndCall.setOnClickListener(new View.OnClickListener() {
-      @Override
-      public void onClick(View view) {
-        call.terminate();
-        MyApplication.Toast("تماس به اتمام رسید", Toast.LENGTH_SHORT);
-        listener.onClose(false);
-        dismiss();
-      }
-    });
-
-    imgClose.setOnClickListener(new View.OnClickListener() {
-      @Override
-      public void onClick(View view) {
-        dismiss();
-      }
-    });
 
     dialog.show();
   }
 
-  private static void dismiss() {
+  private void dismiss() {
+    if (callBack != null)
+      callBack.onDismiss();
     try {
       if (dialog != null) {
         dialog.dismiss();
@@ -135,7 +175,13 @@ public class CallDialog {
     } catch (Exception e) {
       Log.e("TAG", "dismiss: " + e.getMessage());
     }
+
     dialog = null;
   }
 
+  private void setCancelable(boolean v) {
+    dialog.setCancelable(v);
+
+    imgClose.setVisibility(v ? View.VISIBLE : View.GONE);
+  }
 }
