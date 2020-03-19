@@ -43,11 +43,32 @@ public class CallDialog {
 
   Unbinder unbinder;
 
+  @BindView(R.id.vfPause)
+  ViewFlipper vfPause;
+
   @OnClick(R.id.llTransfer)
   void onTransferCallPress() {
     core.getCurrentCall().transfer("950");
     MyApplication.Toast("تماس به صف پشتیبانی منتقل شد", Toast.LENGTH_SHORT);
     dismiss();
+  }
+
+  @OnClick(R.id.llPause)
+  void onPausePress() {
+    core.getCurrentCall().pause();
+    vfPause.setDisplayedChild(1);
+
+  }
+
+  @OnClick(R.id.llPlay)
+  void onPlayPress() {
+    Call call = core.getCurrentCall();
+    if (call == null)
+      call = core.getCalls().length > 0 ? core.getCalls()[0] : null;
+    if (call != null)
+      call.resume();
+    vfPause.setDisplayedChild(0);
+
   }
 
   @OnClick(R.id.llEndCall)

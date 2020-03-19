@@ -82,6 +82,7 @@ public class SearchLocationDialog {
     listPlace.setOnItemClickListener(new AdapterView.OnItemClickListener() {
       @Override
       public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+
         listener.description(stationModels.get(position).getAddress(),stationModels.get(position).getCode());
 //        listener.selectedAddress(true);
         dismiss();

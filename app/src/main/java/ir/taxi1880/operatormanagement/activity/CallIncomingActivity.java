@@ -12,10 +12,8 @@ import com.gauravbhola.ripplepulsebackground.RipplePulseLayout;
 
 import org.linphone.core.Address;
 import org.linphone.core.Call;
-import org.linphone.core.CallParams;
 import org.linphone.core.Core;
 import org.linphone.core.CoreListenerStub;
-import org.linphone.core.tools.Log;
 
 import java.util.Timer;
 
@@ -28,7 +26,6 @@ import ir.taxi1880.operatormanagement.R;
 import ir.taxi1880.operatormanagement.app.MyApplication;
 import ir.taxi1880.operatormanagement.helper.SoundHelper;
 import ir.taxi1880.operatormanagement.services.LinphoneService;
-import ir.taxi1880.operatormanagement.services.LinphoneUtils;
 
 public class CallIncomingActivity extends AppCompatActivity {
   public static final String TAG = CallIncomingActivity.class.getSimpleName();
@@ -165,27 +162,6 @@ public class CallIncomingActivity extends AppCompatActivity {
   }
 
 
-  public boolean acceptCall(Call call) {
-
-    android.util.Log.i("LOG", "acceptCall ");
-    if (call == null) return false;
-
-    Core core = LinphoneService.getCore();
-    CallParams params = core.createCallParams(call);
-
-    boolean isLowBandwidthConnection =
-            !LinphoneUtils.isHighBandwidthConnection(MyApplication.context);
-
-    if (params != null) {
-      params.enableLowBandwidth(isLowBandwidthConnection);
-    } else {
-      Log.e("[Call Manager] Could not create call params for call");
-      return false;
-    }
-
-    call.acceptWithParams(params);
-    return true;
-  }
 
 
 }

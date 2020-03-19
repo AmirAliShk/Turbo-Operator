@@ -125,8 +125,9 @@ public class MyApplication extends Application {
     TextView text = (TextView) v.findViewById(R.id.text);
     text.setText(message);
     Toast toast = new Toast(currentActivity);
-    toast.setGravity(Gravity.BOTTOM, 0, 80);
+    toast.setGravity(Gravity.CENTER, 0, 0);
     toast.setDuration(duration);
+
     toast.setView(v);
     toast.show();
   }
@@ -140,9 +141,6 @@ public class MyApplication extends Application {
       // No account configured, we display the configuration activity
       AccountCreator mAccountCreator = LinphoneService.getCore().createAccountCreator(null);
 
-//    mAccountCreator.setDomain("172.16.2.222");
-//    mAccountCreator.setUsername("423");
-//    mAccountCreator.setPassword("423");
       mAccountCreator.setDomain(prefManager.getSipServer());
       mAccountCreator.setUsername(prefManager.getSipNumber() + "");
       mAccountCreator.setPassword(prefManager.getSipPassword());

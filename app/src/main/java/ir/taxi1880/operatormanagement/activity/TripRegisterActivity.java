@@ -18,6 +18,7 @@ import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RadioButton;
@@ -151,32 +152,54 @@ public class TripRegisterActivity extends AppCompatActivity {
   @BindView(R.id.llAlwaysBg)
   LinearLayout llAlwaysBg;
 
-  @BindView(R.id.llSearchDestination)
-  LinearLayout llSearchDestination;
+  @OnClick(R.id.imgStationInfo)
+  void onStationInfoPress(){
 
-  @OnClick(R.id.llSearchOrigin)
-  void onOrigin() {
-    edtOrigin.requestFocus();
+    getStationInfo("90");
+  }
+
+
+  @BindView(R.id.llSearchBg)
+  ImageButton llSearchBg;
+
+
+  @OnClick(R.id.llSearchBg)
+  void onSearchPress() {
     new SearchLocationDialog().show(new SearchLocationDialog.Listener() {
       @Override
       public void description(String address, int code) {
-        edtOrigin.setText(code + "");
+        new GeneralDialog()
+                .message("انتخاب شود برای")
+                .firstButton("مبدا", new Runnable() {
+                  @Override
+                  public void run() {
+                    edtOrigin.setText(code + "");
+
+                  }
+                }).secondButton("مقصد", new Runnable() {
+          @Override
+          public void run() {
+            edtDestination.setText(code + "");
+          }
+        }).show();
       }
-    }, "جست و جوی مبدا", cityLatinName);
+    }, "جست و جوی آدرس", cityLatinName);
   }
 
-  @OnClick(R.id.llSearchDestination)
-  void onDestination() {
-    edtDestination.requestFocus();
-    new SearchLocationDialog().show(new SearchLocationDialog.Listener() {
-      @Override
-      public void description(String address, int code) {
-        edtDestination.setText(code + "");
-        stationName = address;
-        Log.i(TAG, "description: " + address);
-      }
-    }, "جست و جوی مقصد", cityLatinName);
-  }
+
+  //TODO HEAR
+//  @OnClick(R.id.llSearchDestination)
+//  void onDestination() {
+//    edtDestination.requestFocus();
+//    new SearchLocationDialog().show(new SearchLocationDialog.Listener() {
+//      @Override
+//      public void description(String address, int code) {
+//
+//        stationName = address;
+//        Log.i(TAG, "description: " + address);
+//      }
+//    }, "جست و جوی مقصد", cityLatinName);
+//  }
 
   @OnClick(R.id.llCity)
   void onPressllCity() {
@@ -303,36 +326,36 @@ public class TripRegisterActivity extends AppCompatActivity {
 
     if (cityCode == -1) {
       MyApplication.Toast("شهر را وارد نمایید", Toast.LENGTH_SHORT);
-      spCity.requestFocus();
+      spCity.performClick();
       return;
     }
     if (getTellNumber().isEmpty()) {
-      MyApplication.Toast("شماره تلفن را وارد کنید", Toast.LENGTH_SHORT);
+      edtTell.setError("شماره تلفن را وارد کنید");
       edtTell.requestFocus();
       return;
     }
     if (getMobileNumber().isEmpty() && !isTellValidable) {
-      MyApplication.Toast("شماره همراه را وارد کنید", Toast.LENGTH_SHORT);
+      edtMobile.setError("شماره همراه را وارد کنید");
       edtMobile.requestFocus();
       return;
     }
     if (edtFamily.getText().toString().isEmpty()) {
-      MyApplication.Toast(" نام مسافر را مشخص کنید", Toast.LENGTH_SHORT);
+      edtFamily.setError(" نام مسافر را مشخص کنید");
       edtFamily.requestFocus();
       return;
     }
     if (edtAddress.getText().toString().isEmpty()) {
-      MyApplication.Toast("آدرس را مشخص کنید", Toast.LENGTH_SHORT);
+      edtAddress.setError("آدرس را مشخص کنید");
       edtAddress.requestFocus();
       return;
     }
     if (edtOrigin.getText().toString().isEmpty()) {
-      MyApplication.Toast(" مبدا را مشخص کنید", Toast.LENGTH_SHORT);
+      edtOrigin.setError(" مبدا را مشخص کنید");
       edtOrigin.requestFocus();
       return;
     }
     if (edtDestination.getText().toString().isEmpty()) {
-      MyApplication.Toast(" مقصد را مشخص کنید", Toast.LENGTH_SHORT);
+      edtDestination.setError(" مقصد را مشخص کنید");
       edtDestination.requestFocus();
       return;
     }
@@ -416,6 +439,9 @@ public class TripRegisterActivity extends AppCompatActivity {
   @BindView(R.id.vfPassengerAddress)
   ViewFlipper vfPassengerAddress;
 
+  @BindView(R.id.txtSpError)
+  TextView txtSpError;
+
   @BindView(R.id.vfPassengerInfo)
   ViewFlipper vfPassengerInfo;
 
@@ -436,12 +462,12 @@ public class TripRegisterActivity extends AppCompatActivity {
   @OnClick(R.id.llDownload)
   void onPressDownload() {
     if (getTellNumber().isEmpty()) {
-      MyApplication.Toast("شماره تلفن را وارد نمایید", Toast.LENGTH_SHORT);
+      edtTell.setError("شماره تلفن را وارد نمایید");
       edtTell.requestFocus();
       return;
     }
     if (getMobileNumber().isEmpty() && !isTellValidable) {
-      MyApplication.Toast("شماره تلفن همراه را وارد نمایید", Toast.LENGTH_SHORT);
+      edtMobile.setError("شماره تلفن همراه را وارد نمایید");
       edtMobile.requestFocus();
       return;
     }
@@ -927,6 +953,7 @@ public class TripRegisterActivity extends AppCompatActivity {
 
     @Override
     public void onFailure(Runnable reCall, Exception e) {
+      MyApplication.handler.post(() -> vfPassengerInfo.setDisplayedChild(0));
     }
   };
 
@@ -1097,9 +1124,10 @@ public class TripRegisterActivity extends AppCompatActivity {
     }
   };
 
-  private void getStationInfo(int cityCode) {
+  private void getStationInfo(String stationCode) {
+    LoadingDialog.makeLoader();
     RequestHelper.builder(EndPoints.STATION_INFO)
-            .addPath(cityCode + "")
+            .addPath(stationCode + "")
             .listener(getStationInfo)
             .get();
 
@@ -1128,23 +1156,14 @@ public class TripRegisterActivity extends AppCompatActivity {
         @Override
         public void run() {
           try {
+            LoadingDialog.dismiss();
             Log.i(TAG, "onResponse: " + args[0].toString());
             JSONObject obj = new JSONObject(args[0].toString());
-            boolean success = obj.getBoolean("success");
-            String message = obj.getString("message");
-
-            JSONObject dataObj = obj.getJSONObject("data");
-            int id = dataObj.getInt("id");
-            int stcode = dataObj.getInt("stcode");
-            String street = dataObj.getString("street");
-            String odd = dataObj.getString("odd");
-            String even = dataObj.getString("even");
-            String stationName = dataObj.getString("stationName");
-            long lat = dataObj.getLong("lat");
-            long lng = dataObj.getLong("lng");
-            int cityCode = dataObj.getInt("cityCode");
-            int countrySide = dataObj.getInt("countrySide");
-
+            obj.getBoolean("")
+            obj = obj.getJSONObject("data");
+            new GeneralDialog()
+                    .message(args[0].toString())
+                    .show();
           } catch (JSONException e) {
             e.printStackTrace();
           }
@@ -1154,12 +1173,13 @@ public class TripRegisterActivity extends AppCompatActivity {
 
     @Override
     public void onFailure(Runnable reCall, Exception e) {
-
+      MyApplication.handler.post(LoadingDialog::dismiss);
     }
   };
 
   private void setActivate(int userId, int sipNumber) {
 
+    LoadingDialog.makeLoader();
     RequestHelper.builder(EndPoints.ACTIVATE)
             .addParam("userId", userId)
             .addParam("sipNumber", sipNumber)
@@ -1175,6 +1195,7 @@ public class TripRegisterActivity extends AppCompatActivity {
         @Override
         public void run() {
           try {
+
             Log.i(TAG, "onResponse: " + args[0].toString());
             JSONObject obj = new JSONObject(args[0].toString());
             boolean success = obj.getBoolean("success");
@@ -1204,13 +1225,15 @@ public class TripRegisterActivity extends AppCompatActivity {
           } catch (JSONException e) {
             e.printStackTrace();
           }
+          LoadingDialog.dismiss();
+
         }
       });
     }
 
     @Override
     public void onFailure(Runnable reCall, Exception e) {
-
+      MyApplication.handler.post(LoadingDialog::dismiss);
     }
   };
 
@@ -1223,6 +1246,7 @@ public class TripRegisterActivity extends AppCompatActivity {
 
       Log.i(TAG, "setDeActivate: " + params);
 
+      LoadingDialog.makeLoader();
       RequestHelper.builder(EndPoints.DEACTIVATE)
               .addParam("userId", userId)
               .addParam("sipNumber", sipNumber)
@@ -1269,12 +1293,14 @@ public class TripRegisterActivity extends AppCompatActivity {
           } catch (JSONException e) {
             e.printStackTrace();
           }
+          LoadingDialog.dismiss();
         }
       });
     }
 
     @Override
     public void onFailure(Runnable reCall, Exception e) {
+      MyApplication.handler.post(LoadingDialog::dismiss);
 
     }
   };
@@ -1328,17 +1354,16 @@ public class TripRegisterActivity extends AppCompatActivity {
                       .title("ثبت شد")
                       .message("اطلاعات با موفقیت ثبت شد")
                       .firstButton("باشه", () -> {
+                        String tempVoipId = voipId;
                         clearData();
-
                         CallModel callModel = parseNotification(MyApplication.prefManager.getLastNotification());
                         if (callModel != null)
-                          if (!callModel.getVoipId().equals(voipId)) {
+
+                          if (!callModel.getVoipId().equals(tempVoipId)) {
                             MyApplication.prefManager.setLastNotification(null);
                             handleCallerInfo(callModel);
                           }
 
-                        voipId = "0";
-                        queue = "0";
                       })
 
                       .show();
@@ -1399,6 +1424,7 @@ public class TripRegisterActivity extends AppCompatActivity {
     rbUnknow.setChecked(true);
     voipId = "0";
     queue = "0";
+    normalDescription = "";
   }
 
   private void enableViews() {
@@ -1413,7 +1439,6 @@ public class TripRegisterActivity extends AppCompatActivity {
     chbAlways.setEnabled(true);
     llSearchAddress.setEnabled(true);
     llSearchOrigin.setEnabled(true);
-    llSearchDestination.setEnabled(true);
     llDescriptionDetail.setEnabled(true);
     llServiceType.setEnabled(true);
     llTraffic.setEnabled(true);
@@ -1425,6 +1450,7 @@ public class TripRegisterActivity extends AppCompatActivity {
     llFamily.setEnabled(true);
     llAddress.setEnabled(true);
     spServiceCount.setEnabled(true);
+    llSearchBg.setEnabled(true);
     spServiceType.setEnabled(true);
 
   }
@@ -1441,7 +1467,6 @@ public class TripRegisterActivity extends AppCompatActivity {
     chbAlways.setEnabled(false);
     llSearchAddress.setEnabled(false);
     llSearchOrigin.setEnabled(false);
-    llSearchDestination.setEnabled(false);
     llDescriptionDetail.setEnabled(false);
     llServiceType.setEnabled(false);
     llTraffic.setEnabled(false);
@@ -1453,6 +1478,7 @@ public class TripRegisterActivity extends AppCompatActivity {
     llAddress.setEnabled(false);
     spServiceCount.setEnabled(false);
     spServiceType.setEnabled(false);
+    llSearchBg.setEnabled(false);
     rgCarClass.setEnabled(false);
     for (int i = 0; i < rgCarClass.getChildCount(); i++) {
       rgCarClass.getChildAt(i).setEnabled(false);
@@ -1481,17 +1507,20 @@ public class TripRegisterActivity extends AppCompatActivity {
 
 
   private void handleCallerInfo(CallModel callModel) {
-    if (voipId.equals("0")) {
-      //show CallerId
-      if (callModel == null) {
-        return;
+    try {
+      if (voipId.equals("0")) {
+        //show CallerId
+        if (callModel == null) {
+          return;
+        }
+        String participant = PhoneNumberValidation.removePrefix(callModel.getParticipant());
+        queue = callModel.getQueue();
+        voipId = callModel.getVoipId();
+        edtTell.setText(participant);
       }
-      String participant = PhoneNumberValidation.removePrefix(callModel.getParticipant());
-      queue = callModel.getQueue();
-      voipId = callModel.getVoipId();
-      edtTell.setText(participant);
+    } catch (Exception e) {
+      e.printStackTrace();
     }
-
   }
 
   /**
@@ -1499,6 +1528,7 @@ public class TripRegisterActivity extends AppCompatActivity {
    *             sample : {"type":"callerInfo","exten":"456","participant":"404356734579","queue":"999","voipId":"1584260434.9922480"}
    */
   private CallModel parseNotification(String info) {
+    if (info == null) return null;
     try {
       JSONObject object = new JSONObject(info);
       String strMessage = object.getString("message");
@@ -1529,6 +1559,8 @@ public class TripRegisterActivity extends AppCompatActivity {
     super.onPause();
     KeyBoardHelper.hideKeyboard();
     isRunning = false;
+
+
   }
 
   @BindView(R.id.imgEndCall)
@@ -1574,6 +1606,8 @@ public class TripRegisterActivity extends AppCompatActivity {
   protected void onDestroy() {
     super.onDestroy();
     unbinder.unbind();
+    core.removeListener(mCoreListener);
+
   }
 
   @Override
@@ -1597,10 +1631,10 @@ public class TripRegisterActivity extends AppCompatActivity {
     call = core.getCurrentCall();
     Call[] calls = core.getCalls();
     int i = calls.length;
-    Log.i(TAG, "onRejectPress: "+i);
+    Log.i(TAG, "onRejectPress: " + i);
     if (call != null)
       call.accept();
-    else if( calls.length>0){
+    else if (calls.length > 0) {
       calls[0].accept();
     }
   }
@@ -1611,10 +1645,10 @@ public class TripRegisterActivity extends AppCompatActivity {
     call = core.getCurrentCall();
     Call[] calls = core.getCalls();
     int i = calls.length;
-    Log.i(TAG, "onRejectPress: "+i);
+    Log.i(TAG, "onRejectPress: " + i);
     if (call != null)
       call.terminate();
-    else if( calls.length>0){
+    else if (calls.length > 0) {
       calls[0].terminate();
     }
   }

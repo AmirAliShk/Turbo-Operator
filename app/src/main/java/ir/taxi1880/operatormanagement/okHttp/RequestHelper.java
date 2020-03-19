@@ -251,7 +251,7 @@ public class RequestHelper implements Callback {
 
   private int connectionTimeout = 10;
   private int writeTimeout = 10;
-  private int readTimeout = 20;
+  private int readTimeout = 15;
   private Object object1 = null;
   private Object object2 = null;
 

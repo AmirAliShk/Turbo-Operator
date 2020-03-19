@@ -213,6 +213,7 @@ public class GeneralDialog {
     txtTitle.setText(titleText);
     if (titleText.isEmpty()) {
       txtTitle.setVisibility(View.GONE);
+      llTitle.setVisibility(View.GONE);
     }
     if (titleText.isEmpty()) {
       txtTitle.setVisibility(View.GONE);
