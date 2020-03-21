@@ -10,24 +10,27 @@ public class EndPoints {
 //    http://172.16.2.210:1885/api/findway/citylatinname/address
 
   public static final String IP = (BuildConfig.DEBUG)
-          ? "http://172.16.2.203"
-//          ? "http://turbotaxi.ir"
-          : "http://172.16.2.203";
+//          ? "http://172.16.2.203"
+          ? "http://turbotaxi.ir"
+          : "http://turbotaxi.ir";
+//          : "http://172.16.2.203";
 
 
   public static final String FIND_WAY_IP = (BuildConfig.DEBUG)
-//          ? "http://turbotaxi.ir"
-          ? "http://172.16.2.210"
-          : "http://172.16.2.210";
+          ? "http://turbotaxi.ir"
+//          ? "http://172.16.2.210"
+          : "http://turbotaxi.ir";
+//          : "http://172.16.2.210";
 
   public static final String PUSH_ADDRESS =   (BuildConfig.DEBUG)
-//          ? "http://turbotaxi.ir:6060"
-          ? "http://172.16.2.212:6060"
-          : "http://172.16.2.212:6060";
+          ? "http://turbotaxi.ir:6060"
+//          ? "http://172.16.2.212:6060"
+//          : "http://172.16.2.212:6060";
+          : "http://turbotaxi.ir:6060";
 
   public static final String APIPort = (BuildConfig.DEBUG) ? "1881" : "1881";
-  public static final String TRIP_APIPort = (BuildConfig.DEBUG) ? "1881" : "1881";
-//  public static final String TRIP_APIPort = (BuildConfig.DEBUG) ? "2323" : "2323";
+//  public static final String TRIP_APIPort = (BuildConfig.DEBUG) ? "1881" : "1881";
+  public static final String TRIP_APIPort = (BuildConfig.DEBUG) ? "2323" : "2323";
   public static final String FIND_WAY_APIPort = (BuildConfig.DEBUG) ? "1885" : "1885";
 
   public static final String WEBSERVICE_PATH = IP + ":" + APIPort + "/api/operator/";

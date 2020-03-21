@@ -141,7 +141,9 @@ public class MyApplication extends Application {
       // No account configured, we display the configuration activity
       AccountCreator mAccountCreator = LinphoneService.getCore().createAccountCreator(null);
 
-      mAccountCreator.setDomain(prefManager.getSipServer());
+      //TODO currect sip domain
+//      mAccountCreator.setDomain(prefManager.getSipServer());
+      mAccountCreator.setDomain("sbc.turbotaxi.ir:4060");
       mAccountCreator.setUsername(prefManager.getSipNumber() + "");
       mAccountCreator.setPassword(prefManager.getSipPassword());
       mAccountCreator.setTransport(TransportType.Udp);

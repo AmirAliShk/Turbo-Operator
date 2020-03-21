@@ -64,6 +64,7 @@ import ir.taxi1880.operatormanagement.dialog.GeneralDialog;
 import ir.taxi1880.operatormanagement.dialog.LoadingDialog;
 import ir.taxi1880.operatormanagement.dialog.OptionDialog;
 import ir.taxi1880.operatormanagement.dialog.SearchLocationDialog;
+import ir.taxi1880.operatormanagement.dialog.StationInfoDialog;
 import ir.taxi1880.operatormanagement.helper.KeyBoardHelper;
 import ir.taxi1880.operatormanagement.helper.PhoneNumberValidation;
 import ir.taxi1880.operatormanagement.helper.SoundHelper;
@@ -72,6 +73,7 @@ import ir.taxi1880.operatormanagement.helper.TypefaceUtil;
 import ir.taxi1880.operatormanagement.model.CallModel;
 import ir.taxi1880.operatormanagement.model.CityModel;
 import ir.taxi1880.operatormanagement.model.PassengerAddressModel;
+import ir.taxi1880.operatormanagement.model.StationInfoModel;
 import ir.taxi1880.operatormanagement.model.TypeServiceModel;
 import ir.taxi1880.operatormanagement.okHttp.RequestHelper;
 import ir.taxi1880.operatormanagement.services.LinphoneService;
@@ -153,9 +155,14 @@ public class TripRegisterActivity extends AppCompatActivity {
   LinearLayout llAlwaysBg;
 
   @OnClick(R.id.imgStationInfo)
-  void onStationInfoPress(){
-
-    getStationInfo("90");
+  void onStationInfoPress() {
+    String origin = edtOrigin.getText().toString();
+    if (origin.isEmpty()) {
+      edtOrigin.setError("ایستگاه را وارد کنید");
+      edtOrigin.requestFocus();
+      return;
+    }
+    getStationInfo(origin);
   }
 
 
@@ -1149,6 +1156,8 @@ public class TripRegisterActivity extends AppCompatActivity {
     }
   }
 
+  ArrayList<StationInfoModel> stationInfoModels;
+
   RequestHelper.Callback getStationInfo = new RequestHelper.Callback() {
     @Override
     public void onResponse(Runnable reCall, Object... args) {
@@ -1156,14 +1165,45 @@ public class TripRegisterActivity extends AppCompatActivity {
         @Override
         public void run() {
           try {
+            boolean isCountrySide = false;
+            String stationName = "";
             LoadingDialog.dismiss();
             Log.i(TAG, "onResponse: " + args[0].toString());
+            stationInfoModels = new ArrayList<>();
             JSONObject obj = new JSONObject(args[0].toString());
-            obj.getBoolean("")
-            obj = obj.getJSONObject("data");
-            new GeneralDialog()
-                    .message(args[0].toString())
-                    .show();
+            boolean success = obj.getBoolean("success");
+            String message = obj.getString("message");
+            JSONArray dataArr = obj.getJSONArray("data");
+            for (int i = 0; i < dataArr.length(); i++) {
+              JSONObject dataObj = dataArr.getJSONObject(i);
+              StationInfoModel stationInfoModel = new StationInfoModel();
+              stationInfoModel.setStcode(dataObj.getInt("stcode"));
+              stationInfoModel.setStreet(dataObj.getString("street"));
+              stationInfoModel.setOdd(dataObj.getString("odd"));
+              stationInfoModel.setEven(dataObj.getString("even"));
+              stationInfoModel.setStationName(dataObj.getString("stationName"));
+              stationInfoModel.setCountrySide(dataObj.getInt("countrySide"));
+              if (dataObj.getInt("countrySide") == 1) {
+                isCountrySide = true;
+              } else {
+                isCountrySide = false;
+              }
+
+              if (!dataObj.getString("stationName").equals("")) {
+                stationName = dataObj.getString("stationName");
+              }
+              stationInfoModels.add(stationInfoModel);
+            }
+            if (stationInfoModels.size() == 0) {
+              MyApplication.Toast("اطلاعاتی موجود نیست", Toast.LENGTH_SHORT);
+            } else {
+              if (stationName.equals("")) {
+                new StationInfoDialog().show(stationInfoModels, "کد ایستگاه : " + edtOrigin.getText().toString(), isCountrySide);
+              } else {
+                new StationInfoDialog().show(stationInfoModels, stationName + " \n " + "کد ایستگاه : " + edtOrigin.getText().toString(), isCountrySide);
+              }
+            }
+
           } catch (JSONException e) {
             e.printStackTrace();
           }
