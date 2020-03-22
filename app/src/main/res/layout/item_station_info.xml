@@ -12,16 +12,16 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:gravity="right|center_vertical"
-        android:paddingLeft="10dp"
-        android:paddingRight="10dp"
+        android:paddingLeft="20dp"
+        android:paddingRight="20dp"
         android:paddingTop="5dp"
         android:paddingBottom="5dp"
         android:orientation="horizontal">
 
-        <ImageView
-            android:layout_width="30dp"
-            android:layout_height="25dp"
-            android:src="@drawable/ic_street" />
+<!--        <ImageView-->
+<!--            android:layout_width="30dp"-->
+<!--            android:layout_height="25dp"-->
+<!--            android:src="@drawable/ic_street" />-->
 
         <TextView
             android:layout_width="wrap_content"
@@ -29,7 +29,7 @@
             android:gravity="right|center_vertical"
             android:text="خیابان :  "
             android:textAppearance="?android:attr/textAppearanceSmall"
-            android:textColor="@color/colorBlack" />
+            android:textColor="@color/colorPrimaryDark" />
 
         <TextView
             android:id="@+id/txtStreet"
@@ -69,7 +69,7 @@
                 android:gravity="right|center_vertical"
                 android:text="محدوده زوج :  "
                 android:textAppearance="?android:attr/textAppearanceSmall"
-                android:textColor="@color/colorBlack" />
+                android:textColor="@color/colorPrimaryDark" />
 
             <TextView
                 android:id="@+id/txtEven"
@@ -96,7 +96,7 @@
                 android:layout_height="match_parent"
                 android:text=" محدوده فرد :  "
                 android:gravity="right|center_vertical"
-                android:textColor="@color/colorBlack"
+                android:textColor="@color/colorPrimaryDark"
                 android:textAppearance="?android:attr/textAppearanceSmall" />
 
             <TextView

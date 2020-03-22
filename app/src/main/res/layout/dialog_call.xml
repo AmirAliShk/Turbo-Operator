@@ -8,7 +8,7 @@
     <ViewFlipper
         android:id="@+id/vfCall"
         android:layout_width="330dp"
-        android:layout_height="wrap_content">
+        android:layout_height="230dp">
 
 
 

@@ -11,12 +11,10 @@ import android.view.WindowManager;
 import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.TextView;
-import android.widget.ViewFlipper;
 
 import java.util.ArrayList;
 
 import ir.taxi1880.operatormanagement.R;
-import ir.taxi1880.operatormanagement.adapter.LastAddressAdapter;
 import ir.taxi1880.operatormanagement.adapter.StationInfoAdapter;
 import ir.taxi1880.operatormanagement.app.MyApplication;
 import ir.taxi1880.operatormanagement.helper.KeyBoardHelper;
@@ -66,6 +64,13 @@ public class StationInfoDialog {
 
     stationInfoAdapter = new StationInfoAdapter(stationInfoModels, MyApplication.context);
     listStationInfo.setAdapter(stationInfoAdapter);
+
+    listStationInfo.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+      @Override
+      public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+        dismiss();
+      }
+    });
 
     dialog.show();
 

@@ -29,6 +29,7 @@ public class PhoneNumberValidation {
     }
     return mobileNumber;
   }
+
   public static boolean havePrefix(String mobileNumber) {
     mobileNumber = mobileNumber.trim();
     if (mobileNumber.startsWith("0098")) {
