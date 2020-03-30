@@ -67,7 +67,7 @@ public class LinphoneService extends Service {
     String basePath = getFilesDir().getAbsolutePath();
     Factory.instance().setLogCollectionPath(basePath);
     Factory.instance().enableLogCollection(LogCollectionState.Enabled);
-    Factory.instance().setDebugMode(false, getString(R.string.app_name));
+    Factory.instance().setDebugMode(true, "AMIR SIP => ");
 
     // Dump some useful information about the device we're running on
     Log.i(START_LINPHONE_LOGS);
@@ -122,6 +122,7 @@ public class LinphoneService extends Service {
     // Our Service has been started, we can keep our reference on it
     // From now one the Launcher will be able to call onServiceReady()
     sInstance = this;
+    mCore.setUserAgent("mohsen@123",null);
 
     // Core must be started after being created and configured
     mCore.start();
