@@ -49,6 +49,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import butterknife.OnFocusChange;
+import butterknife.OnLongClick;
 import butterknife.Unbinder;
 import ir.taxi1880.operatormanagement.R;
 import ir.taxi1880.operatormanagement.adapter.SpinnerAdapter;
@@ -561,6 +562,11 @@ public class TripRegisterActivity extends AppCompatActivity {
             .secondButton("نیستم", null)
             .show();
 
+  }
+
+  @OnClick(R.id.clearAddress)
+  void onCLearAddress(){
+    edtAddress.getText().clear();
   }
 
   @OnClick(R.id.btnDeActivate)

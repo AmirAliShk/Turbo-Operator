@@ -576,6 +576,7 @@
                                 android:textAppearance="?android:attr/textAppearanceMedium"
                                 android:textColor="@color/colorBlack" />
                             <ImageView
+                                android:id="@+id/clearAddress"
                                 android:layout_alignParentLeft="true"
                                 android:src="@drawable/ic_reject"
                                 android:tint="#000"
