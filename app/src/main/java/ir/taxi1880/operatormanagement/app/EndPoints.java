@@ -77,7 +77,7 @@ public class EndPoints {
 
   public static final String SCORE = ACCOUNT_WEBSERVICE_PATH + "score";
   public static final String BESTS = SCORE_WEBSERVICE_PATH + "bests";
-  public static final String REVARDS = SCORE_WEBSERVICE_PATH + "rewards";
+  public static final String REWARDS = SCORE_WEBSERVICE_PATH + "rewards";
   public static final String SINGLE = SCORE_WEBSERVICE_PATH + "single";
 
 }

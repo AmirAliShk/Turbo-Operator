@@ -12,22 +12,22 @@ import androidx.recyclerview.widget.RecyclerView;
 import ir.taxi1880.operatormanagement.R;
 import ir.taxi1880.operatormanagement.app.MyApplication;
 import ir.taxi1880.operatormanagement.helper.TypefaceUtil;
-import ir.taxi1880.operatormanagement.model.BestModel;
+import ir.taxi1880.operatormanagement.model.RewardsModel;
 
 public class RewardAdapter extends RecyclerView.Adapter<RewardAdapter.ViewHolder> {
 
     private LayoutInflater layoutInflater;
-    private ArrayList<BestModel> bestModels;
+    private ArrayList<RewardsModel> rewardsModels;
 
-    public RewardAdapter(ArrayList<BestModel> bestModels) {
+    public RewardAdapter(ArrayList<RewardsModel> rewardsModels) {
         this.layoutInflater = LayoutInflater.from(MyApplication.context);
-        this.bestModels = bestModels;
+        this.rewardsModels = rewardsModels;
     }
 
     @NonNull
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = layoutInflater.inflate(R.layout.item_best, parent, false);
+        View view = layoutInflater.inflate(R.layout.item_reward, parent, false);
         TypefaceUtil.overrideFonts(view);
         return new ViewHolder(view);
     }
@@ -39,18 +39,22 @@ public class RewardAdapter extends RecyclerView.Adapter<RewardAdapter.ViewHolder
 
     @Override
     public int getItemCount() {
-        return bestModels.size();
+        return rewardsModels.size();
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {
 
-        TextView txtScore;
-        TextView txtRowNumber;
+        TextView comment;
+        TextView score;
+        TextView expireDate;
+        TextView expireTime;
 
         ViewHolder(@NonNull View itemView) {
             super(itemView);
-            txtScore = itemView.findViewById(R.id.txtScore);
-            txtRowNumber = itemView.findViewById(R.id.txtRowNumber);
+            comment= itemView.findViewById(R.id.txtRewardComment);
+            score = itemView.findViewById(R.id.txtRewardScore);
+            expireDate = itemView.findViewById(R.id.txtRewardExpireDate);
+            expireTime = itemView.findViewById(R.id.txtRewardExpireTime);
         }
     }
 
