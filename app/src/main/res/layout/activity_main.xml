@@ -382,12 +382,18 @@
 
         </LinearLayout>
 
-        <ImageView
-            android:id="@+id/imgScore"
-            android:layout_margin="10dp"
-            android:layout_width="50dp"
-            android:layout_height="50dp"
-            android:src="@drawable/ic_score"/>
+        <Button
+            android:id="@+id/bests"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="bests"/>
+
+        <Button
+            android:id="@+id/rewards"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/bests"
+            android:text="rewards"/>
 
     </RelativeLayout>
 

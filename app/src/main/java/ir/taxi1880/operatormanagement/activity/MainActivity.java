@@ -29,6 +29,7 @@ import ir.taxi1880.operatormanagement.fragment.BestsFragment;
 import ir.taxi1880.operatormanagement.fragment.MessageFragment;
 import ir.taxi1880.operatormanagement.fragment.NotificationFragment;
 import ir.taxi1880.operatormanagement.fragment.ReplacementWaitingFragment;
+import ir.taxi1880.operatormanagement.fragment.RewardsFragment;
 import ir.taxi1880.operatormanagement.fragment.SendReplacementReqFragment;
 import ir.taxi1880.operatormanagement.fragment.ShiftFragment;
 import ir.taxi1880.operatormanagement.helper.FragmentHelper;
@@ -116,10 +117,17 @@ public class MainActivity extends AppCompatActivity {
 
   }
 
-  @OnClick(R.id.imgScore)
-  void onPressScore(){
+  @OnClick(R.id.bests)
+  void bests(){
     FragmentHelper
             .toFragment(MyApplication.currentActivity, new BestsFragment())
+            .replace();
+  }
+
+  @OnClick(R.id.rewards)
+  void rewards(){
+    FragmentHelper
+            .toFragment(MyApplication.currentActivity, new RewardsFragment())
             .replace();
   }
 
