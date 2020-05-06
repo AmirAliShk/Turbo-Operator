@@ -5,6 +5,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ViewFlipper;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -12,7 +13,6 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 
 import androidx.fragment.app.Fragment;
-import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -37,6 +37,9 @@ public class BestsFragment extends Fragment {
   @BindView(R.id.recycleBest)
   RecyclerView recycleBest;
 
+  @BindView(R.id.vfBest)
+  ViewFlipper vfBest;
+
   @Override
   public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
     View view = inflater.inflate(R.layout.fragment_bests, container, false);
@@ -46,6 +49,7 @@ public class BestsFragment extends Fragment {
   }
 
   private void getBest() {
+    vfBest.setDisplayedChild(0);
     RequestHelper.builder(EndPoints.BESTS)
             .listener(getBest)
             .get();
@@ -75,8 +79,8 @@ public class BestsFragment extends Fragment {
               bestModels.add(bestModel);
             }
 
+            vfBest.setDisplayedChild(1);
             bestAdapter = new BestAdapter(bestModels);
-            recycleBest.setLayoutManager(new LinearLayoutManager(MyApplication.context));
             recycleBest.setAdapter(bestAdapter);
 
           } catch (Exception e) {
