@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@drawable/bg_blue_border_edge"
+    android:layout_margin="10dp"
+    android:layoutDirection="rtl"
+    >
+
+    <TextView
+        android:id="@+id/txtScoreHour"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textColor="@color/colorBlack"
+        android:padding="10dp"/>
+
+    <TextView
+        android:id="@+id/txtScoreScore"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/txtScoreHour"
+        android:textColor="@color/colorBlack"
+        android:padding="10dp"/>
+
+</RelativeLayout>
