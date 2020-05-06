@@ -7,11 +7,24 @@
     android:layout_height="match_parent"
     tools:context=".fragment.ScoreFragment">
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/recycleScore"
+    <ViewFlipper
+        android:id="@+id/vfScore"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        tools:listitem="@layout/item_score"
-        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"/>
+        android:layout_height="match_parent">
+
+        <ProgressBar
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_gravity="center"
+            android:progressTint="@color/colorAccent" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recycleScore"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            tools:listitem="@layout/item_score"
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"/>
+
+    </ViewFlipper>
 
 </RelativeLayout>

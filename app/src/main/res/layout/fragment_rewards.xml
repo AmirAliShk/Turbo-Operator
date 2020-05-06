@@ -7,10 +7,23 @@
     android:layout_height="match_parent"
     tools:context=".fragment.RewardsFragment">
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/recycleRewards"
+    <ViewFlipper
+        android:id="@+id/vfReward"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"/>
+        android:layout_height="match_parent">
+
+        <ProgressBar
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_gravity="center"
+            android:progressTint="@color/colorAccent" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recycleRewards"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"/>
+
+    </ViewFlipper>
 
 </RelativeLayout>

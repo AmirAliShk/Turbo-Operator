@@ -35,7 +35,7 @@ public class ScoreAdapter extends RecyclerView.Adapter<ScoreAdapter.ViewHolder> 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         holder.txtHour.setText(scoreModels.get(position).getHour());
-        holder.txtHour.setText(scoreModels.get(position).getScore()+"");
+        holder.txtScore.setText(scoreModels.get(position).getScore()+"");
     }
 
     @Override

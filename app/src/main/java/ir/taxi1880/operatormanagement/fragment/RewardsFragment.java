@@ -3,10 +3,10 @@
 package ir.taxi1880.operatormanagement.fragment;
 
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ViewFlipper;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -19,7 +19,6 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
 import ir.taxi1880.operatormanagement.R;
-import ir.taxi1880.operatormanagement.adapter.BestAdapter;
 import ir.taxi1880.operatormanagement.adapter.RewardAdapter;
 import ir.taxi1880.operatormanagement.app.EndPoints;
 import ir.taxi1880.operatormanagement.app.MyApplication;
@@ -35,15 +34,19 @@ public class RewardsFragment extends Fragment {
   @BindView(R.id.recycleRewards)
   RecyclerView recycleRewards;
 
+  @BindView(R.id.vfReward)
+  ViewFlipper vfReward;
+
   @Override
   public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
     View view = inflater.inflate(R.layout.fragment_rewards, container, false);
-    unbinder= ButterKnife.bind(this,view);
+    unbinder = ButterKnife.bind(this, view);
     getRewards();
     return view;
   }
 
   private void getRewards() {
+    vfReward.setDisplayedChild(0);
     RequestHelper.builder(EndPoints.REWARDS)
             .listener(onRewards)
             .get();
@@ -71,8 +74,8 @@ public class RewardsFragment extends Fragment {
               rewardsModel.setexpireTime(obj.getString("expireTime"));
               rewardsModels.add(rewardsModel);
             }
-
-            rewardAdapter= new RewardAdapter(rewardsModels);
+            vfReward.setDisplayedChild(1);
+            rewardAdapter = new RewardAdapter(rewardsModels);
             recycleRewards.setAdapter(rewardAdapter);
 
           } catch (Exception e) {
