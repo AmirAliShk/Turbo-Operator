@@ -1,6 +1,7 @@
 package ir.taxi1880.operatormanagement.fragment;
 
 
+import android.content.Context;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -109,4 +110,23 @@ public class NotificationFragment extends Fragment {
         unbinder.unbind();
     }
 
+    private RefreshNotificationCount refreshListener;
+
+    public interface RefreshNotificationCount{
+        void refreshNotification();
+    }
+
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        refreshListener = (RefreshNotificationCount) context;
+    }
+
+    @Override
+    public void onDetach() {
+        super.onDetach();
+        if(refreshListener != null){
+            refreshListener.refreshNotification();
+        }
+    }
 }

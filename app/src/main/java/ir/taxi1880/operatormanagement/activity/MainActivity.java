@@ -39,7 +39,7 @@ import ir.taxi1880.operatormanagement.helper.StringHelper;
 import ir.taxi1880.operatormanagement.helper.TypefaceUtil;
 import ir.taxi1880.operatormanagement.okHttp.RequestHelper;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements NotificationFragment.RefreshNotificationCount{
 
   public static final String TAG = MainActivity.class.getSimpleName();
   Unbinder unbinder;
@@ -171,6 +171,7 @@ public class MainActivity extends AppCompatActivity {
     } else {
       txtBadgeCount.setVisibility(View.VISIBLE);
       txtBadgeCount.setText(MyApplication.prefManager.getCountNotification() + "");
+      MyApplication.Toast(MyApplication.prefManager.getCountNotification()+"", Toast.LENGTH_SHORT);
     }
 
     if (MyApplication.prefManager.getCountRequest() == 0) {
@@ -228,6 +229,7 @@ public class MainActivity extends AppCompatActivity {
   protected void onResume() {
     super.onResume();
     MyApplication.currentActivity = this;
+
   }
 
   @Override
@@ -261,6 +263,17 @@ public class MainActivity extends AppCompatActivity {
       }
     } catch (Exception e) {
       e.printStackTrace();
+    }
+  }
+
+  @Override
+  public void refreshNotification() {
+    if (MyApplication.prefManager.getCountNotification() == 0) {
+      txtBadgeCount.setVisibility(View.GONE);
+    } else {
+      txtBadgeCount.setVisibility(View.VISIBLE);
+      txtBadgeCount.setText(MyApplication.prefManager.getCountNotification() + "");
+      MyApplication.Toast(MyApplication.prefManager.getCountNotification()+"", Toast.LENGTH_SHORT);
     }
   }
 }

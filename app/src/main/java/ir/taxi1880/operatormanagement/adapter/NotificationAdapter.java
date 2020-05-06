@@ -10,6 +10,7 @@ import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import org.json.JSONObject;
 
@@ -52,7 +53,7 @@ public class NotificationAdapter extends BaseAdapter {
     public View getView(int position, View convertView, ViewGroup parent) {
         ViewHolder viewHolder;
         try {
-            final NotificationModel notificationModel = notificationModels.get(position);
+            NotificationModel notificationModel= notificationModels.get(position);
             if (convertView == null) {
                 convertView = layoutInflater.inflate(R.layout.item_notification, parent,false);
                 TypefaceUtil.overrideFonts(convertView);
@@ -117,15 +118,15 @@ public class NotificationAdapter extends BaseAdapter {
                     JSONObject object = new JSONObject(args[0].toString());
                     int status = object.getInt("status");
                     if (status == 1) {
-//                        notificationModels.get(0).setSeen(1);
                         if (MyApplication.prefManager.getCountNotification() > 0)
                             MyApplication.prefManager.setCountNotification(MyApplication.prefManager.getCountNotification() - 1);
+                        MyApplication.Toast(MyApplication.prefManager.getCountNotification()+"", Toast.LENGTH_SHORT);
                         notifyDataSetChanged();
                     } else {
                         new ErrorDialog()
                                 .titleText("خطایی رخ داده")
                                 .messageText("پردازش داده های ورودی با مشکل مواجه گردید")
-                                .tryAgainBtnRunnable("تلاش مجدد", () -> MyApplication.currentActivity.onBackPressed())
+                                .tryAgainBtnRunnable("تلاش مجدد",null)
                                 .closeBtnRunnable("بستن", () -> MyApplication.currentActivity.onBackPressed())
                                 .show();
                     }

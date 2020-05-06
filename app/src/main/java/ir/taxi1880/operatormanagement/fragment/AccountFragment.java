@@ -72,12 +72,12 @@ public class AccountFragment extends Fragment {
 
   @OnClick(R.id.btnUpdate)
   void OnUpdae() {
-    String cardNumber=edtCardNumber.getText().toString().replaceAll(" ","");
+    String cardNumber = edtCardNumber.getText().toString().replaceAll(" ", "");
     new GeneralDialog()
             .title("به روز رسانی")
             .message("اطلاعات شما به روز شود؟")
             .firstButton("بله", () ->
-                   updateProfile(MyApplication.prefManager.getUserCode(),edtAccountNum.getText().toString(),cardNumber,edtIben.getText().toString()))
+                    updateProfile(MyApplication.prefManager.getUserCode(), edtAccountNum.getText().toString(), cardNumber, edtIben.getText().toString()))
             .secondButton("خیر", null)
             .show();
   }
@@ -169,7 +169,7 @@ public class AccountFragment extends Fragment {
         @Override
         public void run() {
           try {
-            Log.i(TAG, "run: "+args[0].toString());
+            Log.i(TAG, "run: " + args[0].toString());
             vfBalance.setDisplayedChild(1);
             JSONObject obj = new JSONObject(args[0].toString());
             boolean success = obj.getBoolean("success");
@@ -192,13 +192,13 @@ public class AccountFragment extends Fragment {
     }
   };
 
-  private void updateProfile(int userId,String accountNumber,String cardNumber,String sheba) {
+  private void updateProfile(int userId, String accountNumber, String cardNumber, String sheba) {
 
     RequestHelper.builder(EndPoints.UPDATE_PROFILE)
-            .addParam("userId",userId)
-            .addParam("accountNumber",accountNumber)
-            .addParam("cardNumber",cardNumber)
-            .addParam("sheba",sheba)
+            .addParam("userId", userId)
+            .addParam("accountNumber", accountNumber)
+            .addParam("cardNumber", cardNumber)
+            .addParam("sheba", sheba)
             .listener(updateProfile)
             .put();
 
@@ -219,12 +219,15 @@ public class AccountFragment extends Fragment {
 
             boolean status = data.getBoolean("status");
 
-            if (success){
+            if (success) {
               new GeneralDialog()
                       .title("به روزرسانی")
                       .message("اطلاعات شما با موفقـیت به روز رسانی شد")
-                      .firstButton("باشه",null)
+                      .firstButton("باشه", null)
                       .show();
+              MyApplication.prefManager.setAccountNumber(edtAccountNum.getText().toString());
+              MyApplication.prefManager.setSheba(edtIben.getText().toString());
+              MyApplication.prefManager.setCardNumber(edtCardNumber.getText().toString());
             }
 
           } catch (JSONException e) {
@@ -241,10 +244,10 @@ public class AccountFragment extends Fragment {
 
   private void payment(int userId) {
 
-      RequestHelper.builder(EndPoints.PAYMENT)
-             .addParam("userId", userId)
-              .listener(Payment)
-              .post();
+    RequestHelper.builder(EndPoints.PAYMENT)
+            .addParam("userId", userId)
+            .listener(Payment)
+            .post();
 
   }
 
