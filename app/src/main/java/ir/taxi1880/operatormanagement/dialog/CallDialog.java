@@ -92,7 +92,6 @@ public class CallDialog {
     vfCall.setDisplayedChild(0);
   }
 
-
   @OnClick(R.id.llCallSupport)
   void onCallSupportPress() {
     Address addressToCall = core.interpretUrl("950");
@@ -122,7 +121,6 @@ public class CallDialog {
     setCancelable(false);
     vfCall.setDisplayedChild(2);
   }
-
 
   @OnClick(R.id.imgClose)
   void onClosePress() {

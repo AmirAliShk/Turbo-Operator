@@ -50,7 +50,7 @@ public class CallIncomingActivity extends AppCompatActivity {
 //  TextView txtTimer;
 
   @OnClick(R.id.imgReject)
-  void onRejectPress() {
+  void onRejectPress()   {
     call.terminate();
   }
 
@@ -152,14 +152,14 @@ public class CallIncomingActivity extends AppCompatActivity {
 //  }
 
 
-  @Override
-  protected void onPause() {
-    Core core = LinphoneService.getCore();
-    if (core != null) {
-      core.removeListener(mListener);
+    @Override
+    protected void onPause() {
+      Core core = LinphoneService.getCore();
+      if (core != null) {
+        core.removeListener(mListener);
+      }
+      super.onPause();
     }
-    super.onPause();
-  }
 
 
 
