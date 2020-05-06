@@ -6,7 +6,7 @@
     android:clickable="true"
     android:layoutDirection="rtl"
     android:orientation="vertical"
-    android:background="#EEE9F1"
+    android:background="@color/colorPrimaryLighter"
     tools:context="ir.taxi1880.operatormanagement.fragment.AccountFragment">
 
     <ImageView
