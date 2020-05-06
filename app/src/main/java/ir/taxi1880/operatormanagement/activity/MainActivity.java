@@ -24,7 +24,7 @@ import ir.taxi1880.operatormanagement.R;
 import ir.taxi1880.operatormanagement.app.EndPoints;
 import ir.taxi1880.operatormanagement.app.MyApplication;
 import ir.taxi1880.operatormanagement.dialog.GeneralDialog;
-import ir.taxi1880.operatormanagement.fragment.AccountFragment;
+import ir.taxi1880.operatormanagement.fragment.BestsFragment;
 import ir.taxi1880.operatormanagement.fragment.MessageFragment;
 import ir.taxi1880.operatormanagement.fragment.NotificationFragment;
 import ir.taxi1880.operatormanagement.fragment.ReplacementWaitingFragment;
@@ -110,7 +110,7 @@ public class MainActivity extends AppCompatActivity {
   void onPressProfile() {
 
     FragmentHelper
-            .toFragment(MyApplication.currentActivity, new AccountFragment())
+            .toFragment(MyApplication.currentActivity, new BestsFragment())
             .replace();
 
   }
