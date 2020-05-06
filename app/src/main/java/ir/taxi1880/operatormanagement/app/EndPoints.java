@@ -37,9 +37,7 @@ public class EndPoints {
   public static final String TRIP_WEBSERVICE_PATH = IP + ":" + TRIP_APIPort + "/api/operator/v2/trip/";
   public static final String FIND_WAY_WEBSERVICE_PATH = FIND_WAY_IP + ":" + FIND_WAY_APIPort + "/api/";
   public static final String ACCOUNT_WEBSERVICE_PATH = IP + ":" + TRIP_APIPort + "/api/operator/v2/";
-
-
-
+  public static final String SCORE_WEBSERVICE_PATH = IP + ":" + TRIP_APIPort + "/api/operator/v2/score/";
 
   /******************************** Base Api *********************************/
   public static final String GET_APP_INFO = WEBSERVICE_PATH + "getAppInfo";
@@ -74,5 +72,12 @@ public class EndPoints {
   public static final String BALANCE = ACCOUNT_WEBSERVICE_PATH + "balance";
   public static final String UPDATE_PROFILE = ACCOUNT_WEBSERVICE_PATH + "updateProfile";
   public static final String PAYMENT = ACCOUNT_WEBSERVICE_PATH + "payment";
+
+  /******************************** Score Api *********************************/
+
+  public static final String SCORE = ACCOUNT_WEBSERVICE_PATH + "score";
+  public static final String BESTS = SCORE_WEBSERVICE_PATH + "bests";
+  public static final String REVARDS = SCORE_WEBSERVICE_PATH + "rewards";
+  public static final String SINGLE = SCORE_WEBSERVICE_PATH + "single";
 
 }
