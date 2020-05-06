@@ -402,6 +402,13 @@
             android:layout_below="@id/rewards"
             android:text="singles"/>
 
+        <Button
+            android:id="@+id/scores"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/singles"
+            android:text="scores"/>
+
     </RelativeLayout>
 
 </RelativeLayout>

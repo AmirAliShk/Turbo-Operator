@@ -1,7 +1,6 @@
 package ir.taxi1880.operatormanagement.fragment;
 
 import android.os.Bundle;
-import android.os.StrictMode;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -61,10 +60,10 @@ public class ScoreFragment extends Fragment {
                         JSONArray rewardsArr = bestObj.getJSONArray("data");
                         for (int i = 0; i < rewardsArr.length(); i++) {
                             JSONObject obj = rewardsArr.getJSONObject(i);
-                            ScoreModel rewardsModel = new ScoreModel();
-                            rewardsModel.setScore(obj.getInt("score"));
-                            rewardsModel.setHour(obj.getString("hour"));
-                            scoreModels.add(rewardsModel);
+                            ScoreModel scoreModel = new ScoreModel();
+                            scoreModel.setScore(obj.getInt("score"));
+                            scoreModel.setHour(obj.getString("hour"));
+                            scoreModels.add(scoreModel);
                         }
 
                         scoreAdapter = new ScoreAdapter(scoreModels);
