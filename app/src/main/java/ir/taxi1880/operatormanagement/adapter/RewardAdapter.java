@@ -34,7 +34,10 @@ public class RewardAdapter extends RecyclerView.Adapter<RewardAdapter.ViewHolder
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-
+        holder.txtComment.setText(rewardsModels.get(position).getComment());
+        holder.txtScore.setText(rewardsModels.get(position).getScore()+"");
+        holder.txtExpireDate.setText(rewardsModels.get(position).getExpireDate());
+        holder.txtExpireTime.setText(rewardsModels.get(position).getexpireTime());
     }
 
     @Override
@@ -44,17 +47,17 @@ public class RewardAdapter extends RecyclerView.Adapter<RewardAdapter.ViewHolder
 
     public class ViewHolder extends RecyclerView.ViewHolder {
 
-        TextView comment;
-        TextView score;
-        TextView expireDate;
-        TextView expireTime;
+        TextView txtComment;
+        TextView txtScore;
+        TextView txtExpireDate;
+        TextView txtExpireTime;
 
         ViewHolder(@NonNull View itemView) {
             super(itemView);
-            comment= itemView.findViewById(R.id.txtRewardComment);
-            score = itemView.findViewById(R.id.txtRewardScore);
-            expireDate = itemView.findViewById(R.id.txtRewardExpireDate);
-            expireTime = itemView.findViewById(R.id.txtRewardExpireTime);
+            txtComment= itemView.findViewById(R.id.txtRewardComment);
+            txtScore= itemView.findViewById(R.id.txtRewardScore);
+            txtExpireDate = itemView.findViewById(R.id.txtRewardExpireDate);
+            txtExpireTime= itemView.findViewById(R.id.txtRewardExpireTime);
         }
     }
 
