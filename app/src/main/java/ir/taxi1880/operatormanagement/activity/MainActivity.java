@@ -28,6 +28,7 @@ import ir.taxi1880.operatormanagement.fragment.AccountFragment;
 import ir.taxi1880.operatormanagement.fragment.BestsFragment;
 import ir.taxi1880.operatormanagement.fragment.MessageFragment;
 import ir.taxi1880.operatormanagement.fragment.NotificationFragment;
+import ir.taxi1880.operatormanagement.fragment.OpScoreFragment;
 import ir.taxi1880.operatormanagement.fragment.ReplacementWaitingFragment;
 import ir.taxi1880.operatormanagement.fragment.RewardsFragment;
 import ir.taxi1880.operatormanagement.fragment.SendReplacementReqFragment;
@@ -128,6 +129,13 @@ public class MainActivity extends AppCompatActivity {
   void rewards(){
     FragmentHelper
             .toFragment(MyApplication.currentActivity, new RewardsFragment())
+            .replace();
+  }
+
+  @OnClick(R.id.singles)
+  void singles(){
+    FragmentHelper
+            .toFragment(MyApplication.currentActivity, new OpScoreFragment())
             .replace();
   }
 
