@@ -5,6 +5,10 @@
     android:background="@color/colorPrimaryLighter"
     android:layout_height="match_parent"
     tools:context=".fragment.BestsFragment">
+    
+<!--    <ViewFlipper-->
+<!--        android:layout_width=""-->
+<!--        android:layout_height=""-->
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recycleBest"

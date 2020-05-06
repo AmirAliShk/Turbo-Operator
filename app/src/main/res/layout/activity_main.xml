@@ -382,6 +382,13 @@
 
         </LinearLayout>
 
+        <ImageView
+            android:id="@+id/imgScore"
+            android:layout_margin="10dp"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:src="@drawable/ic_score"/>
+
     </RelativeLayout>
 
 </RelativeLayout>
