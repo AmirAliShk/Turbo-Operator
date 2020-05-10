@@ -36,8 +36,7 @@ public class BestAdapter extends RecyclerView.Adapter<BestAdapter.ViewHolder> {
   @Override
   public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
     holder.txtScore.setText(StringHelper.toPersianDigits(bestModels.get(position).getScore()+""));
-    holder.txtRowNumber.setText(StringHelper.toPersianDigits("."+bestModels.get(position).getRowNumber()));
-    holder.txtName.setText(bestModels.get(position).getName()+" "+bestModels.get(position).getLastName());
+    holder.txtName.setText(StringHelper.toPersianDigits(bestModels.get(position).getRowNumber()+"")+" .  "+bestModels.get(position).getName()+" "+bestModels.get(position).getLastName());
   }
 
   @Override
@@ -48,12 +47,10 @@ public class BestAdapter extends RecyclerView.Adapter<BestAdapter.ViewHolder> {
   public class ViewHolder extends RecyclerView.ViewHolder {
 
     TextView txtScore;
-    TextView txtRowNumber;
     TextView txtName;
     ViewHolder(@NonNull View itemView) {
       super(itemView);
       txtScore = itemView.findViewById(R.id.txtScore);
-      txtRowNumber = itemView.findViewById(R.id.txtRowNumber);
       txtName = itemView.findViewById(R.id.txtName);
     }
   }
