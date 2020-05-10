@@ -3,11 +3,11 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
+    android:layoutDirection="rtl"
     android:background="@color/colorPrimaryLighter"
     android:clickable="true"
-    android:layoutDirection="rtl"
-    tools:context=".fragment.ShiftFragment">
+    android:orientation="vertical"
+    tools:context=".fragment.ScoresFragment">
 
     <RelativeLayout
         android:layout_width="match_parent"
@@ -30,7 +30,7 @@
         android:paddingRight="10dp">
 
         <LinearLayout
-            android:id="@+id/llShiftList"
+            android:id="@+id/llBest"
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_margin="10dp"
@@ -43,15 +43,14 @@
             <ImageView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:src="@drawable/ic_waiting" />
+                android:src="@drawable/ic_best" />
 
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:gravity="right"
-                android:layout_marginRight="10dp"
-                android:text="@string/shifts"
+                android:text="@string/best"
                 android:textColor="@color/colorBlack"
                 android:textSize="@dimen/text_header"
                 android:textStyle="bold" />
@@ -59,7 +58,7 @@
         </LinearLayout>
 
         <LinearLayout
-            android:id="@+id/llSendReplacement"
+            android:id="@+id/llRewards"
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_margin="10dp"
@@ -72,15 +71,14 @@
             <ImageView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:src="@drawable/ic_send_request" />
+                android:src="@drawable/ic_reward" />
 
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:gravity="right"
-                android:layout_marginRight="10dp"
-                android:text="@string/send_request"
+                android:text="@string/reward"
                 android:textColor="@color/colorBlack"
                 android:textSize="@dimen/text_header"
                 android:textStyle="bold" />
@@ -88,7 +86,7 @@
         </LinearLayout>
 
         <LinearLayout
-            android:id="@+id/llGetReplacement"
+            android:id="@+id/llScoreList"
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_margin="10dp"
@@ -101,16 +99,14 @@
             <ImageView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:padding="8dp"
-                android:src="@drawable/ic_get_request" />
+                android:src="@drawable/ic_scorelist" />
 
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:gravity="right"
-                android:layout_marginRight="10dp"
-                android:text="@string/get_request"
+                android:text="@string/scoreList"
                 android:textColor="@color/colorBlack"
                 android:textSize="@dimen/text_header"
                 android:textStyle="bold" />

@@ -25,14 +25,9 @@ import ir.taxi1880.operatormanagement.app.EndPoints;
 import ir.taxi1880.operatormanagement.app.MyApplication;
 import ir.taxi1880.operatormanagement.dialog.GeneralDialog;
 import ir.taxi1880.operatormanagement.fragment.AccountFragment;
-import ir.taxi1880.operatormanagement.fragment.BestsFragment;
 import ir.taxi1880.operatormanagement.fragment.MessageFragment;
 import ir.taxi1880.operatormanagement.fragment.NotificationFragment;
-import ir.taxi1880.operatormanagement.fragment.OpScoreFragment;
-import ir.taxi1880.operatormanagement.fragment.ReplacementWaitingFragment;
-import ir.taxi1880.operatormanagement.fragment.RewardsFragment;
-import ir.taxi1880.operatormanagement.fragment.ScoreFragment;
-import ir.taxi1880.operatormanagement.fragment.SendReplacementReqFragment;
+import ir.taxi1880.operatormanagement.fragment.ScoresFragment;
 import ir.taxi1880.operatormanagement.fragment.ShiftFragment;
 import ir.taxi1880.operatormanagement.helper.FragmentHelper;
 import ir.taxi1880.operatormanagement.helper.StringHelper;
@@ -52,7 +47,7 @@ public class MainActivity extends AppCompatActivity implements NotificationFragm
             .replace();
   }
 
-  @OnClick(R.id.llShift)
+  @OnClick(R.id.llShifts)
   void onShifts() {
     FragmentHelper
             .toFragment(MyApplication.currentActivity, new ShiftFragment())
@@ -74,17 +69,10 @@ public class MainActivity extends AppCompatActivity implements NotificationFragm
     }
   }
 
-  @OnClick(R.id.llReplacement)
-  void onReplacement() {
+  @OnClick(R.id.llScores)
+  void onScores() {
     FragmentHelper
-            .toFragment(MyApplication.currentActivity, new SendReplacementReqFragment())
-            .replace();
-  }
-
-  @OnClick(R.id.llWaitReplacement)
-  void onWaotReplacement() {
-    FragmentHelper
-            .toFragment(MyApplication.currentActivity, new ReplacementWaitingFragment())
+            .toFragment(MyApplication.currentActivity, new ScoresFragment())
             .replace();
   }
 
@@ -117,34 +105,6 @@ public class MainActivity extends AppCompatActivity implements NotificationFragm
             .toFragment(MyApplication.currentActivity, new AccountFragment())
             .replace();
 
-  }
-
-  @OnClick(R.id.bests)
-  void bests(){
-    FragmentHelper
-            .toFragment(MyApplication.currentActivity, new BestsFragment())
-            .replace();
-  }
-
-  @OnClick(R.id.rewards)
-  void rewards(){
-    FragmentHelper
-            .toFragment(MyApplication.currentActivity, new RewardsFragment())
-            .replace();
-  }
-
-  @OnClick(R.id.singles)
-  void singles(){
-    FragmentHelper
-            .toFragment(MyApplication.currentActivity, new OpScoreFragment())
-            .replace();
-  }
-
-  @OnClick(R.id.scores)
-  void scores(){
-    FragmentHelper
-            .toFragment(MyApplication.currentActivity, new ScoreFragment())
-            .replace();
   }
 
   @Override

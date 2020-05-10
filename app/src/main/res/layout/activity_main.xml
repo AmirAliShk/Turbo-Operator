@@ -108,6 +108,11 @@
                     style="@style/padding_except_bottom"
                     android:orientation="vertical">
 
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="0dp"
+                        android:layout_weight="0.25"/>
+
                     <LinearLayout
                         android:id="@+id/llTripRegister"
                         android:layout_width="match_parent"
@@ -128,43 +133,9 @@
                         <TextView
                             android:layout_width="match_parent"
                             android:layout_height="0dp"
-                            android:layout_weight="1"
+                            android:layout_weight="0.75"
                             android:gravity="center"
                             android:text="ثبت سفر"
-                            android:textColor="@color/colorBlack"
-                            android:textSize="@dimen/text_header"
-                            android:textStyle="bold" />
-
-                    </LinearLayout>
-
-                    <LinearLayout
-                        android:id="@+id/llShift"
-                        android:layout_width="match_parent"
-                        android:layout_height="0dp"
-                        android:layout_margin="8dp"
-                        android:layout_weight="1"
-                        android:background="@drawable/bg_white_edge"
-                        android:elevation="3dp"
-                        android:gravity="center"
-                        android:orientation="vertical">
-
-                        <ImageView
-                            android:layout_width="wrap_content"
-                            android:layout_height="0dp"
-                            android:layout_weight="1.5"
-                            android:src="@drawable/ic_waiting" />
-
-<!--                        <ImageView-->
-<!--                            android:layout_width="match_parent"-->
-<!--                            android:layout_weight="0.25"-->
-<!--                            android:layout_height="0dp" />-->
-
-                        <TextView
-                            android:layout_width="match_parent"
-                            android:layout_height="0dp"
-                            android:layout_weight="1"
-                            android:gravity="center"
-                            android:text="@string/shifts"
                             android:textColor="@color/colorBlack"
                             android:textSize="@dimen/text_header"
                             android:textStyle="bold" />
@@ -179,7 +150,7 @@
                         android:orientation="horizontal">
 
                         <LinearLayout
-                            android:id="@+id/llReplacement"
+                            android:id="@+id/llShifts"
                             android:layout_width="0dp"
                             android:layout_height="match_parent"
                             android:layout_margin="8dp"
@@ -193,7 +164,7 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="0dp"
                                 android:layout_weight="1"
-                                android:src="@drawable/ic_send_request" />
+                                android:src="@drawable/ic_waiting" />
 
 <!--                            <ImageView-->
 <!--                                android:layout_width="match_parent"-->
@@ -203,9 +174,9 @@
                             <TextView
                                 android:layout_width="match_parent"
                                 android:layout_height="0dp"
-                                android:layout_weight="1"
+                                android:layout_weight="0.75"
                                 android:gravity="center"
-                                android:text="@string/send_request"
+                                android:text="@string/shifts"
                                 android:textColor="@color/colorBlack"
                                 android:textSize="@dimen/text_title"
                                 android:textStyle="bold" />
@@ -213,7 +184,7 @@
                         </LinearLayout>
 
                         <LinearLayout
-                            android:id="@+id/llWaitReplacement"
+                            android:id="@+id/llScores"
                             android:layout_width="0dp"
                             android:layout_height="match_parent"
                             android:layout_margin="8dp"
@@ -248,8 +219,7 @@
                                         android:layout_width="wrap_content"
                                         android:layout_height="0dp"
                                         android:layout_weight="1"
-                                        android:padding="5dp"
-                                        android:src="@drawable/ic_get_request" />
+                                        android:src="@drawable/ic_scores" />
 
 <!--                                    <ImageView-->
 <!--                                        android:layout_width="match_parent"-->
@@ -259,9 +229,9 @@
                                     <TextView
                                         android:layout_width="match_parent"
                                         android:layout_height="0dp"
-                                        android:layout_weight="1"
+                                        android:layout_weight="0.75"
                                         android:gravity="center"
-                                        android:text="@string/get_request"
+                                        android:text="@string/scores"
                                         android:textColor="@color/colorBlack"
                                         android:textSize="@dimen/text_title"
                                         android:textStyle="bold" />
@@ -308,7 +278,7 @@
                                 android:layout_width="match_parent"
                                 android:layout_height="0dp"
                                 android:gravity="center"
-                                android:layout_weight="1"
+                                android:layout_weight="0.75"
                                 android:textColor="@color/colorBlack"
                                 android:textSize="@dimen/text_header"
                                 android:textStyle="bold" />
@@ -363,7 +333,7 @@
                                         android:layout_width="match_parent"
                                         android:layout_height="0dp"
                                         android:gravity="center"
-                                        android:layout_weight="1"
+                                        android:layout_weight="0.75"
                                         android:textColor="@color/colorBlack"
                                         android:textSize="@dimen/text_header"
                                         android:textStyle="bold" />
@@ -376,38 +346,16 @@
 
                     </LinearLayout>
 
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="0dp"
+                        android:layout_weight="0.25"/>
+
                 </LinearLayout>
 
             </LinearLayout>
 
         </LinearLayout>
-
-        <Button
-            android:id="@+id/bests"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="bests"/>
-
-        <Button
-            android:id="@+id/rewards"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/bests"
-            android:text="rewards"/>
-
-        <Button
-            android:id="@+id/singles"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/rewards"
-            android:text="singles"/>
-
-        <Button
-            android:id="@+id/scores"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/singles"
-            android:text="scores"/>
 
     </RelativeLayout>
 

@@ -49,7 +49,6 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import butterknife.OnFocusChange;
-import butterknife.OnLongClick;
 import butterknife.Unbinder;
 import ir.taxi1880.operatormanagement.R;
 import ir.taxi1880.operatormanagement.adapter.SpinnerAdapter;
@@ -166,10 +165,8 @@ public class TripRegisterActivity extends AppCompatActivity {
     getStationInfo(origin);
   }
 
-
   @BindView(R.id.llSearchBg)
   ImageButton llSearchBg;
-
 
   @OnClick(R.id.llSearchBg)
   void onSearchPress() {
@@ -193,7 +190,6 @@ public class TripRegisterActivity extends AppCompatActivity {
       }
     }, "جست و جوی آدرس", cityLatinName);
   }
-
 
   //TODO HEAR
 //  @OnClick(R.id.llSearchDestination)
@@ -717,7 +713,6 @@ public class TripRegisterActivity extends AppCompatActivity {
     mRipplePulseLayout.startRippleAnimation();
 
   }
-
 
   private void initServiceCountSpinner() {
     try {

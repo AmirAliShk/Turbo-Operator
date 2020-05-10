@@ -32,4 +32,8 @@
     <color name="colorRedLight">#ECC1C1</color>
     <color name="colorTransparent">#00FFB2B2</color>
 
+    <color name="colorGolden">#ffe45d</color>
+    <color name="colorSilver">#c5c6cb</color>
+    <color name="colorBronze">#d8c897</color>
+
 </resources>

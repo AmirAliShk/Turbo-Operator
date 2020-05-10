@@ -11,6 +11,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 import ir.taxi1880.operatormanagement.R;
 import ir.taxi1880.operatormanagement.app.MyApplication;
+import ir.taxi1880.operatormanagement.helper.StringHelper;
 import ir.taxi1880.operatormanagement.helper.TypefaceUtil;
 import ir.taxi1880.operatormanagement.model.BestModel;
 
@@ -34,8 +35,8 @@ public class BestAdapter extends RecyclerView.Adapter<BestAdapter.ViewHolder> {
 
   @Override
   public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-    holder.txtScore.setText(bestModels.get(position).getScore()+"");
-    holder.txtRowNumber.setText(bestModels.get(position).getRowNumber()+"");
+    holder.txtScore.setText(StringHelper.toPersianDigits(bestModels.get(position).getScore()+""));
+    holder.txtRowNumber.setText(StringHelper.toPersianDigits("."+bestModels.get(position).getRowNumber()));
     holder.txtName.setText(bestModels.get(position).getName()+" "+bestModels.get(position).getLastName());
   }
 

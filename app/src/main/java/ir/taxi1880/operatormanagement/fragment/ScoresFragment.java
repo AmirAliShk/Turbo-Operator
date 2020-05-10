@@ -17,36 +17,41 @@ import ir.taxi1880.operatormanagement.helper.TypefaceUtil;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class ShiftFragment extends Fragment {
-
+public class ScoresFragment extends Fragment {
   Unbinder unbinder;
 
-  @OnClick(R.id.llShiftList)
-  void llShifts(){
+  @OnClick(R.id.llBest)
+  void llBest(){
     FragmentHelper
-            .toFragment(MyApplication.currentActivity, new ShiftListFragment())
+            .toFragment(MyApplication.currentActivity, new BestsFragment())
             .replace();
   }
 
-  @OnClick(R.id.llSendReplacement)
-  void llSendReplacement(){
+  @OnClick(R.id.llRewards)
+  void llRewards(){
     FragmentHelper
-            .toFragment(MyApplication.currentActivity, new SendReplacementReqFragment())
+            .toFragment(MyApplication.currentActivity, new RewardsFragment())
             .replace();
   }
 
-  @OnClick(R.id.llGetReplacement)
-  void llGetReplacement(){
+  @OnClick(R.id.llScoreList)
+  void llScoreList(){
     FragmentHelper
-            .toFragment(MyApplication.currentActivity, new ReplacementWaitingFragment())
+            .toFragment(MyApplication.currentActivity, new ScoreFragment())
             .replace();
   }
 
   @Override
   public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-    View view = inflater.inflate(R.layout.fragment_shift, container, false);
+    View view = inflater.inflate(R.layout.fragment_scores, container, false);
     unbinder= ButterKnife.bind(this,view);
     TypefaceUtil.overrideFonts(view);
     return view;
+  }
+
+  @Override
+  public void onDestroy() {
+    super.onDestroy();
+    unbinder.unbind();
   }
 }

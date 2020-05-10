@@ -1,29 +1,159 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:background="@color/colorPrimaryLighter"
     android:layout_height="match_parent"
+    android:background="@color/colorPrimaryLighter"
+    android:layoutDirection="rtl"
+    android:clickable="true"
+    android:orientation="vertical"
     tools:context=".fragment.BestsFragment">
-    
-    <ViewFlipper
-        android:id="@+id/vfBest"
+
+    <RelativeLayout
+        android:id="@+id/rlActionBar"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="?android:attr/actionBarSize"
+        android:background="#792ca9">
 
-        <ProgressBar
-            android:layout_width="40dp"
-            android:layout_height="40dp"
-            android:layout_gravity="center"
-            android:progressTint="@color/colorAccent" />
-
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/recycleBest"
-            android:layout_width="match_parent"
+        <ImageView
+            android:id="@+id/imgBack"
+            android:layout_width="?android:attr/actionBarSize"
             android:layout_height="match_parent"
-            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"/>
+            android:padding="15dp"
+            android:layout_alignParentEnd="true"
+            android:src="@drawable/ic_back"
+            android:layout_alignParentRight="true" />
 
-    </ViewFlipper>
+    </RelativeLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="horizontal">
+
+        <View
+            android:layout_width="0dp"
+            android:layout_weight="0.10"
+            android:layout_height="match_parent"/>
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:orientation="vertical"
+            android:layout_height="match_parent">
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1">
+
+                <ImageView
+                    android:id="@+id/imgSilver"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="50dp"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintBottom_toTopOf="@id/txtSilver"
+                    app:layout_constraintEnd_toStartOf="@id/imgGolden"
+                    app:layout_constraintStart_toStartOf="parent"
+                    android:src="@drawable/ic_silver"/>
+
+                <TextView
+                    android:id="@+id/txtSilver"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:paddingRight="10dp"
+                    android:paddingLeft="10dp"
+                    android:background="@drawable/bg_silver"
+                    android:textColor="@color/colorBlack"
+                    android:textSize="15sp"
+                    app:layout_constraintTop_toBottomOf="@id/imgSilver"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toStartOf="@id/txtGolden"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    android:text="فاطمه نوری"/>
+
+                <ImageView
+                    android:id="@+id/imgGolden"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintStart_toEndOf="@id/imgSilver"
+                    app:layout_constraintEnd_toStartOf="@id/imgBronze"
+                    android:src="@drawable/ic_golden"/>
+
+                <TextView
+                    android:id="@+id/txtGolden"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:paddingRight="10dp"
+                    android:paddingLeft="10dp"
+                    android:background="@drawable/bg_golden"
+                    android:textColor="@color/colorBlack"
+                    android:textSize="15sp"
+                    app:layout_constraintTop_toBottomOf="@id/imgGolden"
+                    app:layout_constraintStart_toEndOf="@id/txtSilver"
+                    app:layout_constraintEnd_toStartOf="@id/txtBronze"
+                    android:text="فاطمه نوری"/>
+
+                <ImageView
+                    android:id="@+id/imgBronze"
+                    android:layout_marginTop="50dp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintStart_toEndOf="@id/imgGolden"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintBottom_toTopOf="@id/txtBronze"
+                    android:src="@drawable/ic_bronze"/>
+
+                <TextView
+                    android:id="@+id/txtBronze"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:paddingRight="10dp"
+                    android:paddingLeft="10dp"
+                    android:background="@drawable/bg_bronze"
+                    android:textColor="@color/colorBlack"
+                    android:textSize="15sp"
+                    app:layout_constraintTop_toBottomOf="@id/imgBronze"
+                    app:layout_constraintStart_toEndOf="@id/txtGolden"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    android:text="فاطمه نوری"/>
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <ViewFlipper
+                android:id="@+id/vfBest"
+                android:layout_below="@id/rlActionBar"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:paddingTop="10dp"
+                android:layout_weight="2">
+
+                <ProgressBar
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:layout_gravity="center"
+                    android:progressTint="@color/colorAccent" />
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/recycleBest"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
+
+            </ViewFlipper>
+
+        </LinearLayout>
+
+        <View
+            android:layout_width="0dp"
+            android:layout_weight="0.10"
+            android:layout_height="match_parent"/>
+
+    </LinearLayout>
 
 </RelativeLayout>
