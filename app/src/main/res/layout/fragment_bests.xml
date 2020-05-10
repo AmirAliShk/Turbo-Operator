@@ -46,15 +46,16 @@
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
-                android:layout_weight="1">
+                android:layout_weight="1.5">
 
                 <ImageView
                     android:id="@+id/imgSilver"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="50dp"
-                    app:layout_constraintTop_toTopOf="parent"
-                    app:layout_constraintBottom_toTopOf="@id/txtSilver"
+                    android:layout_marginTop="35dp"
+                    android:maxWidth="20dp"
+                    app:layout_constraintTop_toTopOf="@+id/txtGolden"
+                    app:layout_constraintBottom_toBottomOf="@+id/txtGolden"
                     app:layout_constraintEnd_toStartOf="@id/imgGolden"
                     app:layout_constraintStart_toStartOf="parent"
                     android:src="@drawable/ic_silver"/>
@@ -63,64 +64,66 @@
                     android:id="@+id/txtSilver"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:paddingRight="10dp"
-                    android:paddingLeft="10dp"
+                    android:paddingStart="10dp"
+                    android:paddingEnd="10dp"
                     android:background="@drawable/bg_silver"
                     android:textColor="@color/colorBlack"
                     android:textSize="15sp"
+                    android:layout_marginTop="5dp"
                     app:layout_constraintTop_toBottomOf="@id/imgSilver"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintEnd_toStartOf="@id/txtGolden"
-                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintStart_toStartOf="@+id/imgSilver"
+                    app:layout_constraintEnd_toEndOf="@+id/imgSilver"
                     android:text="فاطمه نوری"/>
 
                 <ImageView
                     android:id="@+id/imgGolden"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    app:layout_constraintTop_toTopOf="parent"
-                    app:layout_constraintStart_toEndOf="@id/imgSilver"
-                    app:layout_constraintEnd_toStartOf="@id/imgBronze"
+                    android:layout_marginBottom="5dp"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintBottom_toTopOf="@+id/txtGolden"
                     android:src="@drawable/ic_golden"/>
 
                 <TextView
                     android:id="@+id/txtGolden"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:paddingRight="10dp"
-                    android:paddingLeft="10dp"
+                    android:paddingStart="10dp"
+                    android:paddingEnd="10dp"
                     android:background="@drawable/bg_golden"
                     android:textColor="@color/colorBlack"
                     android:textSize="15sp"
-                    app:layout_constraintTop_toBottomOf="@id/imgGolden"
-                    app:layout_constraintStart_toEndOf="@id/txtSilver"
-                    app:layout_constraintEnd_toStartOf="@id/txtBronze"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintStart_toStartOf="@+id/imgGolden"
+                    app:layout_constraintEnd_toEndOf="@+id/imgGolden"
                     android:text="فاطمه نوری"/>
 
                 <ImageView
                     android:id="@+id/imgBronze"
-                    android:layout_marginTop="50dp"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    app:layout_constraintTop_toTopOf="parent"
+                    android:layout_marginTop="35dp"
+                    app:layout_constraintTop_toTopOf="@+id/txtGolden"
                     app:layout_constraintStart_toEndOf="@id/imgGolden"
                     app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintBottom_toTopOf="@id/txtBronze"
-                    android:src="@drawable/ic_bronze"/>
+                    app:layout_constraintBottom_toBottomOf="@+id/txtGolden"
+                    android:src="@drawable/ic_bronze" />
 
                 <TextView
                     android:id="@+id/txtBronze"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:paddingRight="10dp"
-                    android:paddingLeft="10dp"
+                    android:paddingStart="10dp"
+                    android:paddingEnd="10dp"
                     android:background="@drawable/bg_bronze"
                     android:textColor="@color/colorBlack"
                     android:textSize="15sp"
+                    android:layout_marginTop="5dp"
                     app:layout_constraintTop_toBottomOf="@id/imgBronze"
-                    app:layout_constraintStart_toEndOf="@id/txtGolden"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="@+id/imgBronze"
+                    app:layout_constraintStart_toStartOf="@+id/imgBronze"
                     android:text="فاطمه نوری"/>
 
             </androidx.constraintlayout.widget.ConstraintLayout>
@@ -130,19 +133,19 @@
                 android:layout_below="@id/rlActionBar"
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
-                android:paddingTop="10dp"
                 android:layout_weight="2">
 
-                <ProgressBar
-                    android:layout_width="40dp"
-                    android:layout_height="40dp"
-                    android:layout_gravity="center"
-                    android:progressTint="@color/colorAccent" />
+<!--                <ProgressBar-->
+<!--                    android:layout_width="40dp"-->
+<!--                    android:layout_height="40dp"-->
+<!--                    android:layout_gravity="center"-->
+<!--                    android:progressTint="@color/colorAccent" />-->
 
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/recycleBest"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
+                    tools:listitem="@layout/item_best"
                     app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
 
             </ViewFlipper>
