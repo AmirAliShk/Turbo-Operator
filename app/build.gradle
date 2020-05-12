@@ -12,9 +12,9 @@ android {
 
     signingConfigs {
         release {
-            storeFile file("/home/gitlab-runner/signkeys/operatorManagement.jks")
+            storeFile file("/home/gitlab-runner/signkeys/driver1880.jks")
             storePassword "47421parsian47421"
-            keyAlias "operatorManagement"
+            keyAlias "parsian"
             keyPassword "47421parsian47421"
         }
     }
