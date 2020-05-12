@@ -20,6 +20,11 @@ import ir.taxi1880.operatormanagement.helper.TypefaceUtil;
 public class ScoresFragment extends Fragment {
   Unbinder unbinder;
 
+  @OnClick(R.id.imgBack)
+  void onBack() {
+    MyApplication.currentActivity.onBackPressed();
+  }
+
   @OnClick(R.id.llBest)
   void llBest(){
     FragmentHelper
@@ -37,7 +42,7 @@ public class ScoresFragment extends Fragment {
   @OnClick(R.id.llScoreList)
   void llScoreList(){
     FragmentHelper
-            .toFragment(MyApplication.currentActivity, new ScoreFragment())
+            .toFragment(MyApplication.currentActivity, new ScoreListFragment())
             .replace();
   }
 

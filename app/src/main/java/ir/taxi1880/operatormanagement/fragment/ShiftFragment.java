@@ -21,6 +21,11 @@ public class ShiftFragment extends Fragment {
 
   Unbinder unbinder;
 
+  @OnClick(R.id.imgBack)
+  void onBack() {
+    MyApplication.currentActivity.onBackPressed();
+  }
+
   @OnClick(R.id.llShiftList)
   void llShifts(){
     FragmentHelper

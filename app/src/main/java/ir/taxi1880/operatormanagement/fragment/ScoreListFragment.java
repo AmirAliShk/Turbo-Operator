@@ -15,6 +15,7 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.RecyclerView;
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 import butterknife.Unbinder;
 import ir.taxi1880.operatormanagement.R;
 import ir.taxi1880.operatormanagement.adapter.ScoreAdapter;
@@ -23,11 +24,16 @@ import ir.taxi1880.operatormanagement.app.MyApplication;
 import ir.taxi1880.operatormanagement.model.ScoreModel;
 import ir.taxi1880.operatormanagement.okHttp.RequestHelper;
 
-public class ScoreFragment extends Fragment {
+public class ScoreListFragment extends Fragment {
 
   private Unbinder unbinder;
   private ArrayList<ScoreModel> scoreModels;
   private ScoreAdapter scoreAdapter;
+
+  @OnClick(R.id.imgBack)
+  void onBack() {
+    MyApplication.currentActivity.onBackPressed();
+  }
 
   @BindView(R.id.recycleScore)
   RecyclerView recycleScore;
@@ -37,7 +43,7 @@ public class ScoreFragment extends Fragment {
 
   @Override
   public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-    View view = inflater.inflate(R.layout.fragment_score, container, false);
+    View view = inflater.inflate(R.layout.fragment_score_list, container, false);
     unbinder = ButterKnife.bind(this, view);
     getScore();
     return view;
