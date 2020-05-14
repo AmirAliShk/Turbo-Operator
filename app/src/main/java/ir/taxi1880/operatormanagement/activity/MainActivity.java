@@ -131,7 +131,6 @@ public class MainActivity extends AppCompatActivity implements NotificationFragm
     } else {
       txtBadgeCount.setVisibility(View.VISIBLE);
       txtBadgeCount.setText(MyApplication.prefManager.getCountNotification() + "");
-      MyApplication.Toast(MyApplication.prefManager.getCountNotification()+"", Toast.LENGTH_SHORT);
     }
 
     if (MyApplication.prefManager.getCountRequest() == 0) {
@@ -233,7 +232,6 @@ public class MainActivity extends AppCompatActivity implements NotificationFragm
     } else {
       txtBadgeCount.setVisibility(View.VISIBLE);
       txtBadgeCount.setText(MyApplication.prefManager.getCountNotification() + "");
-      MyApplication.Toast(MyApplication.prefManager.getCountNotification()+"", Toast.LENGTH_SHORT);
     }
   }
 }

@@ -21,12 +21,14 @@
             android:src="@drawable/ic_tik" />
 
         <TextView
-            android:id="@+id/txtRewardComment"
+            android:id="@+id/txtTitle"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:gravity="right"
             android:padding="10dp"
+            android:textSize="18sp"
+            android:textStyle="bold"
             android:textColor="@color/colorBlack" />
 
         <ImageView
@@ -35,13 +37,13 @@
             android:src="@drawable/ic_star" />
 
         <TextView
-            android:id="@+id/txtRewardScore"
+            android:id="@+id/txtScore"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_below="@id/txtRewardComment"
             android:layout_weight="0.5"
-            android:gravity="right"
+            android:gravity="right|center_vertical"
             android:padding="10dp"
+            android:textSize="16sp"
             android:textColor="@color/colorBlack" />
 
     </LinearLayout>
@@ -58,11 +60,11 @@
             android:src="@drawable/ic_list" />
 
         <TextView
-            android:id="@+id/txtRewardExpireDate"
+            android:id="@+id/txtSubject"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@id/txtRewardScore"
             android:padding="10dp"
+            android:textSize="16sp"
             android:textColor="@color/colorBlack" />
 
     </LinearLayout>
@@ -79,11 +81,20 @@
             android:src="@drawable/ic_timer" />
 
         <TextView
-            android:id="@+id/txtRewardExpireTime"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:padding="10dp"
+            android:text="@string/expireDate"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            android:textColor="@color/colorBlack" />
+
+        <TextView
+            android:id="@+id/txtExpireDate"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@id/txtRewardExpireDate"
             android:padding="10dp"
+            android:textSize="16sp"
             android:textColor="@color/colorBlack" />
 
     </LinearLayout>

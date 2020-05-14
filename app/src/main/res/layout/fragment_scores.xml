@@ -28,6 +28,122 @@
             android:src="@drawable/ic_back"
             android:layout_alignParentRight="true" />
 
+        <TextView
+            android:id="@+id/title"
+            android:layout_width="match_parent"
+            android:layout_height="?android:attr/actionBarSize"
+            android:padding="10dp"
+            android:text="@string/scores"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            android:gravity="center"
+            android:textColor="@color/colorWhite" />
+
+        <ViewFlipper
+            android:id="@+id/vfScores"
+            android:layout_below="@id/title"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+<!--            <ProgressBar-->
+<!--                android:layout_width="30dp"-->
+<!--                android:layout_height="30dp"-->
+<!--                android:layout_gravity="center"-->
+<!--                android:progressTint="@color/colorPrimary" />-->
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:orientation="horizontal">
+
+                <View
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:layout_height="1dp"/>
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_weight="0.75"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:paddingStart="10dp"
+                    android:background="@drawable/bg_transparent"
+                    android:paddingEnd="10dp"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:id="@+id/txtDay"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/today"
+                        android:textSize="18sp"
+                        android:textStyle="bold"
+                        android:textColor="@color/colorWhite" />
+
+                    <ImageView
+                        android:layout_width="25dp"
+                        android:layout_height="25dp"
+                        android:src="@drawable/ic_star"/>
+
+                    <TextView
+                        android:id="@+id/txtDayScore"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textSize="18sp"
+                        android:textStyle="bold"
+                        android:textColor="@color/colorWhite" />
+
+                </LinearLayout>
+
+                <View
+                    android:layout_width="0dp"
+                    android:layout_weight="0.5"
+                    android:layout_height="1dp"/>
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_weight="0.75"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:background="@drawable/bg_transparent"
+                    android:paddingStart="10dp"
+                    android:paddingEnd="10dp"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:id="@+id/txtMonth"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/month"
+                        android:textSize="18sp"
+                        android:textStyle="bold"
+                        android:textColor="@color/colorWhite" />
+
+                    <ImageView
+                        android:layout_width="50dp"
+                        android:layout_height="25dp"
+                        android:src="@drawable/stars"/>
+
+                    <TextView
+                        android:id="@+id/txtMonthScore"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textSize="18sp"
+                        android:textStyle="bold"
+                        android:textColor="@color/colorWhite" />
+
+                </LinearLayout>
+
+                <View
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:layout_height="1dp"/>
+
+            </LinearLayout>
+
+        </ViewFlipper>
+
     </RelativeLayout>
 
     <LinearLayout

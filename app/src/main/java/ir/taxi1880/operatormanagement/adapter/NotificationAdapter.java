@@ -10,7 +10,6 @@ import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import org.json.JSONObject;
 
@@ -120,7 +119,6 @@ public class NotificationAdapter extends BaseAdapter {
                     if (status == 1) {
                         if (MyApplication.prefManager.getCountNotification() > 0)
                             MyApplication.prefManager.setCountNotification(MyApplication.prefManager.getCountNotification() - 1);
-                        MyApplication.Toast(MyApplication.prefManager.getCountNotification()+"", Toast.LENGTH_SHORT);
                         notifyDataSetChanged();
                     } else {
                         new ErrorDialog()

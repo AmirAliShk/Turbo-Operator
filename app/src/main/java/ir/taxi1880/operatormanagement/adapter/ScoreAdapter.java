@@ -11,6 +11,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 import ir.taxi1880.operatormanagement.R;
 import ir.taxi1880.operatormanagement.app.MyApplication;
+import ir.taxi1880.operatormanagement.helper.StringHelper;
 import ir.taxi1880.operatormanagement.helper.TypefaceUtil;
 import ir.taxi1880.operatormanagement.model.ScoreModel;
 
@@ -34,8 +35,8 @@ public class ScoreAdapter extends RecyclerView.Adapter<ScoreAdapter.ViewHolder> 
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-        holder.txtHour.setText(scoreModels.get(position).getHour());
-        holder.txtScore.setText(scoreModels.get(position).getScore()+"");
+        holder.txtHour.setText(StringHelper.toPersianDigits(scoreModels.get(position).getHour()+":00"));
+        holder.txtScore.setText(StringHelper.toPersianDigits(scoreModels.get(position).getScore()+""));
     }
 
     @Override
@@ -50,8 +51,8 @@ public class ScoreAdapter extends RecyclerView.Adapter<ScoreAdapter.ViewHolder> 
 
         ViewHolder(@NonNull View itemView) {
             super(itemView);
-            txtScore = itemView.findViewById(R.id.txtScoreScore);
-            txtHour = itemView.findViewById(R.id.txtScoreHour);
+            txtScore = itemView.findViewById(R.id.txtScore);
+            txtHour = itemView.findViewById(R.id.txtHour);
         }
     }
 

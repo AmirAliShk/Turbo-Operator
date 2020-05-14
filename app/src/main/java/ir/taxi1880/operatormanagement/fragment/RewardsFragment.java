@@ -58,7 +58,6 @@ public class RewardsFragment extends Fragment {
             .get();
   }
 
-
   private RequestHelper.Callback onRewards = new RequestHelper.Callback() {
     @Override
     public void onResponse(Runnable reCall, Object... args) {
@@ -78,6 +77,7 @@ public class RewardsFragment extends Fragment {
               rewardsModel.setComment(obj.getString("comment"));
               rewardsModel.setExpireDate(obj.getString("expireDate"));
               rewardsModel.setexpireTime(obj.getString("expireTime"));
+              rewardsModel.setSubject(obj.getString("subject"));
               rewardsModels.add(rewardsModel);
             }
             vfReward.setDisplayedChild(1);
