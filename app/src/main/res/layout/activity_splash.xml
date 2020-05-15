@@ -57,7 +57,7 @@
             app:mwhCloseColor="@color/colorPrimary"
             app:mwhIsRunning="true"
             app:mwhGradientAngle="90"
-            app:mwhVelocity="3"
+            app:mwhVelocity="1"
             app:mwhWaveHeight="60dp"
             android:layout_width="match_parent"
             android:layout_height="0dp"

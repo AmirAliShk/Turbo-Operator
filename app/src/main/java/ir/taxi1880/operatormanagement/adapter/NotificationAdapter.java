@@ -19,6 +19,7 @@ import ir.taxi1880.operatormanagement.R;
 import ir.taxi1880.operatormanagement.app.EndPoints;
 import ir.taxi1880.operatormanagement.app.MyApplication;
 import ir.taxi1880.operatormanagement.dialog.ErrorDialog;
+import ir.taxi1880.operatormanagement.helper.StringHelper;
 import ir.taxi1880.operatormanagement.helper.TypefaceUtil;
 import ir.taxi1880.operatormanagement.model.NotificationModel;
 import ir.taxi1880.operatormanagement.okHttp.RequestHelper;
@@ -77,7 +78,7 @@ public class NotificationAdapter extends BaseAdapter {
             });
 
             viewHolder.txtNotification.setText(notificationModel.getText());
-            viewHolder.txtDate.setText(notificationModel.getSendDate());
+            viewHolder.txtDate.setText(StringHelper.toPersianDigits(notificationModel.getSendDate()));
 
         } catch (Exception e) {
             e.printStackTrace();

@@ -239,7 +239,7 @@
                             android:background="@android:color/transparent"
                             android:nextFocusDown="@id/btnCheckOut"
                             android:padding="5dp"
-                            android:maxLength="20"
+                            android:maxLength="25"
                             android:gravity="left|center_vertical"
                             android:inputType="number"
                             android:singleLine="true"

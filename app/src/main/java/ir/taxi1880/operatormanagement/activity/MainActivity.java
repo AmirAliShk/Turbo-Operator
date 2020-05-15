@@ -34,7 +34,7 @@ import ir.taxi1880.operatormanagement.helper.StringHelper;
 import ir.taxi1880.operatormanagement.helper.TypefaceUtil;
 import ir.taxi1880.operatormanagement.okHttp.RequestHelper;
 
-public class MainActivity extends AppCompatActivity implements NotificationFragment.RefreshNotificationCount{
+public class MainActivity extends AppCompatActivity implements NotificationFragment.RefreshNotificationCount {
 
   public static final String TAG = MainActivity.class.getSimpleName();
   Unbinder unbinder;
@@ -130,14 +130,14 @@ public class MainActivity extends AppCompatActivity implements NotificationFragm
       txtBadgeCount.setVisibility(View.GONE);
     } else {
       txtBadgeCount.setVisibility(View.VISIBLE);
-      txtBadgeCount.setText(MyApplication.prefManager.getCountNotification() + "");
+      txtBadgeCount.setText(StringHelper.toPersianDigits(MyApplication.prefManager.getCountNotification() + ""));
     }
 
     if (MyApplication.prefManager.getCountRequest() == 0) {
       txtRequestCount.setVisibility(View.GONE);
     } else {
       txtRequestCount.setVisibility(View.VISIBLE);
-      txtRequestCount.setText(MyApplication.prefManager.getCountRequest() + "");
+      txtRequestCount.setText(StringHelper.toPersianDigits(MyApplication.prefManager.getCountRequest() + ""));
     }
 
     txtOperatorName.setText(MyApplication.prefManager.getOperatorName());
@@ -231,7 +231,7 @@ public class MainActivity extends AppCompatActivity implements NotificationFragm
       txtBadgeCount.setVisibility(View.GONE);
     } else {
       txtBadgeCount.setVisibility(View.VISIBLE);
-      txtBadgeCount.setText(MyApplication.prefManager.getCountNotification() + "");
+      txtBadgeCount.setText(StringHelper.toPersianDigits(MyApplication.prefManager.getCountNotification() + ""));
     }
   }
 }

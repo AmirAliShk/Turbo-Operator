@@ -137,7 +137,7 @@
                             android:gravity="center"
                             android:text="ثبت سفر"
                             android:textColor="@color/colorBlack"
-                            android:textSize="@dimen/text_header"
+                            android:textSize="@dimen/text_title"
                             android:textStyle="bold" />
 
                     </LinearLayout>
@@ -280,7 +280,7 @@
                                 android:gravity="center"
                                 android:text="@string/message"
                                 android:textColor="@color/colorBlack"
-                                android:textSize="@dimen/text_header"
+                                android:textSize="@dimen/text_title"
                                 android:textStyle="bold" />
 
                         </LinearLayout>
@@ -335,7 +335,7 @@
                                         android:gravity="center"
                                         android:text="@string/notification"
                                         android:textColor="@color/colorBlack"
-                                        android:textSize="@dimen/text_header"
+                                        android:textSize="@dimen/text_title"
                                         android:textStyle="bold" />
 
                                 </LinearLayout>

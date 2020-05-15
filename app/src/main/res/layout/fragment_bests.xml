@@ -38,11 +38,12 @@
             android:layout_height="match_parent"
             android:layout_below="@id/rlActionBar">
 
-<!--            <ProgressBar-->
-<!--                android:layout_width="40dp"-->
-<!--                android:layout_height="40dp"-->
-<!--                android:layout_gravity="center"-->
-<!--                android:progressTint="@color/colorAccent" />-->
+            <com.wang.avi.AVLoadingIndicatorView
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:layout_gravity="center"
+                app:indicatorName="BallSpinFadeLoaderIndicator"
+                app:indicatorColor="@color/colorPrimaryDark" />
 
             <LinearLayout
                 android:layout_width="match_parent"

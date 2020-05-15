@@ -3,6 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:background="@color/colorPrimaryLighter"
     android:clickable="true"
     android:orientation="vertical"
@@ -39,11 +40,12 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <ProgressBar
-            android:layout_width="40dp"
-            android:layout_height="40dp"
+        <com.wang.avi.AVLoadingIndicatorView
+            android:layout_width="50dp"
+            android:layout_height="50dp"
             android:layout_gravity="center"
-            android:progressTint="@color/colorAccent" />
+            app:indicatorName="BallSpinFadeLoaderIndicator"
+            app:indicatorColor="@color/colorPrimaryDark" />
 
         <ListView
             android:layout_below="@id/rlActionBar"

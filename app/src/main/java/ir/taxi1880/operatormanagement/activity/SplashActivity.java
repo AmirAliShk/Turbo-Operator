@@ -33,6 +33,7 @@ import ir.taxi1880.operatormanagement.dialog.GeneralDialog;
 import ir.taxi1880.operatormanagement.fragment.LoginFragment;
 import ir.taxi1880.operatormanagement.helper.AppVersionHelper;
 import ir.taxi1880.operatormanagement.helper.FragmentHelper;
+import ir.taxi1880.operatormanagement.helper.StringHelper;
 import ir.taxi1880.operatormanagement.helper.TypefaceUtil;
 import ir.taxi1880.operatormanagement.okHttp.RequestHelper;
 import ir.taxi1880.operatormanagement.services.LinphoneService;
@@ -78,7 +79,7 @@ public class SplashActivity extends AppCompatActivity {
     unbinder = ButterKnife.bind(this, view);
     TypefaceUtil.overrideFonts(view);
 
-    txtVersion.setText("نسخه " + new AppVersionHelper(MyApplication.context).getVerionName() + "");
+    txtVersion.setText(StringHelper.toPersianDigits("نسخه " + new AppVersionHelper(MyApplication.context).getVerionName() + ""));
 
 //    startVoipService();
 

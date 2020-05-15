@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -10,16 +11,16 @@
     <RelativeLayout
         android:id="@+id/rlActionBar"
         android:layout_width="match_parent"
-        android:layoutDirection="ltr"
         android:layout_height="?android:attr/actionBarSize"
-        android:background="#792ca9">
+        android:background="#792ca9"
+        android:layoutDirection="ltr">
 
         <ImageView
             android:id="@+id/imgBack"
-            android:padding="15dp"
-            android:src="@drawable/ic_back"
             android:layout_width="?android:attr/actionBarSize"
-            android:layout_height="match_parent"/>
+            android:layout_height="match_parent"
+            android:padding="15dp"
+            android:src="@drawable/ic_back" />
 
         <TextView
             android:id="@+id/txtConnectionStatus"
@@ -34,34 +35,35 @@
 
     <ViewFlipper
         android:id="@+id/vfSendReq"
-        android:layout_below="@id/rlActionBar"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:layout_below="@id/rlActionBar">
 
-        <ProgressBar
-            android:layout_width="40dp"
-            android:layout_height="40dp"
+        <com.wang.avi.AVLoadingIndicatorView
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            app:indicatorName="BallSpinFadeLoaderIndicator"
             android:layout_gravity="center"
-            android:progressTint="@color/colorAccent" />
+            app:indicatorColor="@color/colorPrimaryDark" />
 
         <ListView
-            android:layout_below="@id/rlActionBar"
             android:id="@+id/listReplacement"
-            android:divider="@null"
-            android:listSelector="@android:color/transparent"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"/>
+            android:layout_height="match_parent"
+            android:layout_below="@id/rlActionBar"
+            android:divider="@null"
+            android:listSelector="@android:color/transparent" />
 
         <TextView
             android:id="@+id/txtNull"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
             android:layout_centerInParent="true"
             android:gravity="center"
-            android:textSize="@dimen/text_title"
-            android:textColor="@color/colorBlack"
-            android:visibility="gone"
             android:text="هنوز هیچ درخواستی ثبت نکردی!"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"/>
+            android:textColor="@color/colorBlack"
+            android:textSize="@dimen/text_title"
+            android:visibility="gone" />
 
     </ViewFlipper>
 

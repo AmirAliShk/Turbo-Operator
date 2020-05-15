@@ -5,7 +5,7 @@
     android:viewportHeight="100">
   <path
       android:pathData="M81.38,11.36C83.86,10.06 87.06,12.24 86.99,14.97C87.13,18.01 83.16,20.25 80.73,18.25C78.12,16.7 78.64,12.47 81.38,11.36Z"
-      android:fillColor="#9f78b4"/>
+      android:fillColor="#6c18a4"/>
   <path
       android:pathData="M76.16,12.17C77.78,11.64 78.34,12.19 77.84,13.82C76.21,14.36 75.65,13.81 76.16,12.17Z"
       android:strokeAlpha="0.76"
@@ -61,7 +61,7 @@
       android:fillColor="#5aba9e"/>
   <path
       android:pathData="M11,63.02C10.86,60.98 12.87,59.9 14.04,58.57C15.87,59.35 18.54,59.7 18.87,62.12C19.49,63.95 17.95,65.39 16.99,66.74C14.37,67.74 10.91,66.04 11,63.02Z"
-      android:fillColor="#f4d081"/>
+      android:fillColor="#6c18a4"/>
   <path
       android:pathData="M41.42,59.42C43.47,59.42 45.52,59.42 47.58,59.42C47.56,63 47.58,66.58 47.64,70.17C45.54,70.22 43.44,70.22 41.35,70.13C41.42,66.56 41.44,62.99 41.42,59.42Z"
       android:fillColor="#fcee21"/>
@@ -71,6 +71,6 @@
   <path
       android:pathData="M80.15,74.06C82.61,73.06 84.24,76.8 81.84,77.94C79.38,78.92 77.76,75.2 80.15,74.06Z"
       android:strokeAlpha="0.93"
-      android:fillColor="#e2c077"
+      android:fillColor="#6c18a4"
       android:fillAlpha="0.93"/>
 </vector>
