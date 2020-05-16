@@ -10,6 +10,10 @@ android {
         versionName "2.0"
     }
 
+    //recent change: add bestScore,rewardList,scoreList
+    //versionCode: version 4
+    //versionName: 2.0
+
     signingConfigs {
         release {
             storeFile file("/home/gitlab-runner/signkeys/driver1880.jks")
