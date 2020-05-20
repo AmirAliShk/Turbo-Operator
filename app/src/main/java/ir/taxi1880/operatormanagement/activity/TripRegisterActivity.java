@@ -1683,14 +1683,28 @@ public class TripRegisterActivity extends AppCompatActivity {
 
   @OnClick(R.id.imgReject)
   void onRejectPress() {
-    call = core.getCurrentCall();
-    Call[] calls = core.getCalls();
-    int i = calls.length;
-    Log.i(TAG, "onRejectPress: " + i);
-    if (call != null)
-      call.terminate();
-    else if (calls.length > 0) {
-      calls[0].terminate();
+    Core mCore = LinphoneService.getCore();
+    Call currentCall = mCore.getCurrentCall();
+    for (Call call : mCore.getCalls()) {
+      if (call != null && call.getConference() != null) {
+//        if (mCore.isInConference()) {
+//          displayConferenceCall(call);
+//          conferenceDisplayed = true;
+//        } else if (!pausedConferenceDisplayed) {
+//          displayPausedConference();
+//          pausedConferenceDisplayed = true;
+//        }
+      } else if (call != null && call != currentCall) {
+        Call.State state = call.getState();
+        if (state == Call.State.Paused
+                || state == Call.State.PausedByRemote
+                || state == Call.State.Pausing) {
+          call.terminate();
+        }
+      }
+      else if (call != null && call == currentCall) {
+        call.terminate();
+      }
     }
   }
 

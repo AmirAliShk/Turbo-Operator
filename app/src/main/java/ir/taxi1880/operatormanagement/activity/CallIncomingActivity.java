@@ -28,101 +28,123 @@ import ir.taxi1880.operatormanagement.helper.SoundHelper;
 import ir.taxi1880.operatormanagement.services.LinphoneService;
 
 public class CallIncomingActivity extends AppCompatActivity {
-  public static final String TAG = CallIncomingActivity.class.getSimpleName();
-  private CoreListenerStub mListener;
-  Timer timer;
-  int timercount;
+    public static final String TAG = CallIncomingActivity.class.getSimpleName();
+    private CoreListenerStub mListener;
+    Timer timer;
+    int timercount;
 
-  @BindView(R.id.txtCallerNum)
-  TextView txtCallerNum;
+    @BindView(R.id.txtCallerNum)
+    TextView txtCallerNum;
 
-  @BindView(R.id.txtCallerName)
-  TextView txtCallerName;
+    @BindView(R.id.txtCallerName)
+    TextView txtCallerName;
 
-  @OnClick(R.id.imgAccept)
-  void onAcceptPress() {
-    call.accept();
+    @OnClick(R.id.imgAccept)
+    void onAcceptPress() {
+        call.accept();
 //    txtTimer.setVisibility(View.VISIBLE);
 //    startTimer();
-  }
+    }
 
 //  @BindView(R.id.txtTimer)
 //  TextView txtTimer;
 
-  @OnClick(R.id.imgReject)
-  void onRejectPress()   {
-    call.terminate();
-  }
-
-  Unbinder unbinder;
-  Call call;
-  @Override
-  protected void onResume() {
-    Core core = LinphoneService.getCore();
-    if (core != null) {
-      core.addListener(mListener);
-    }
-
-    call =  core.getCurrentCall();
-    Address address = call.getRemoteAddress();
-    txtCallerNum.setText(address.getUsername());
-    MyApplication.prefManager.setParticipant(address.getUsername());
-    super.onResume();
-
-  }
-
-  @Override
-  protected void onCreate(Bundle savedInstanceState) {
-    super.onCreate(savedInstanceState);
-    setContentView(R.layout.activity_call_incoming);
-    View view = getWindow().getDecorView();
-    getSupportActionBar().hide();
-    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-      Window window = getWindow();
-      window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
-      window.setNavigationBarColor(getResources().getColor(R.color.colorPrimaryLighter));
-      window.setStatusBarColor(getResources().getColor(R.color.colorPrimaryDark));
-      window.addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
-    }
-
-    unbinder = ButterKnife.bind(this);
-    mListener =
-            new CoreListenerStub() {
-              @Override
-              public void onCallStateChanged(Core core, Call call, Call.State state, String message) {
-
-
-                if (state == Call.State.End || state == Call.State.Released) {
-//                  stopTimer();
-                  finish();
-                } else if (state == Call.State.Connected) {
-                  gotoCalling();
+    @OnClick(R.id.imgReject)
+    void onRejectPress() {
+        Core mCore = LinphoneService.getCore();
+        Call currentCall = mCore.getCurrentCall();
+        for (Call call : mCore.getCalls()) {
+            if (call != null && call.getConference() != null) {
+//        if (mCore.isInConference()) {
+//          displayConferenceCall(call);
+//          conferenceDisplayed = true;
+//        } else if (!pausedConferenceDisplayed) {
+//          displayPausedConference();
+//          pausedConferenceDisplayed = true;
+//        }
+            } else if (call != null && call != currentCall) {
+                Call.State state = call.getState();
+                if (state == Call.State.Paused
+                        || state == Call.State.PausedByRemote
+                        || state == Call.State.Pausing) {
+                    call.terminate();
                 }
-              }
-            };
-    RipplePulseLayout mRipplePulseLayout = findViewById(R.id.layout_ripplepulse);
-    mRipplePulseLayout.startRippleAnimation();
+            } else if (call != null && call == currentCall) {
+                call.terminate();
+            }
+        }
+    }
 
-    SoundHelper.ringing(R.raw.ring);
+    Unbinder unbinder;
+    Call call;
 
-  }
+    @Override
+    protected void onResume() {
+        Core core = LinphoneService.getCore();
+        if (core != null) {
+            core.addListener(mListener);
+        }
 
-  private void gotoCalling() {
-    Intent intent = new Intent(this, TripRegisterActivity.class);
-    // This flag is required to start an Activity from a Service context
-    intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-    startActivity(intent);
-    finish();
+        call = core.getCurrentCall();
+        Address address = call.getRemoteAddress();
+        txtCallerNum.setText(address.getUsername());
+        MyApplication.prefManager.setParticipant(address.getUsername());
+        super.onResume();
 
-  }
+    }
 
-  @Override
-  protected void onDestroy() {
-    super.onDestroy();
-    unbinder.unbind();
-    SoundHelper.stop();
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_call_incoming);
+        View view = getWindow().getDecorView();
+        getSupportActionBar().hide();
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            Window window = getWindow();
+            window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
+            window.setNavigationBarColor(getResources().getColor(R.color.colorPrimaryLighter));
+            window.setStatusBarColor(getResources().getColor(R.color.colorPrimaryDark));
+            window.addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
+        }
 
-  }
+        unbinder = ButterKnife.bind(this);
+        mListener =
+                new CoreListenerStub() {
+                    @Override
+                    public void onCallStateChanged(Core core, Call call, Call.State state, String message) {
+
+
+                        if (state == Call.State.End || state == Call.State.Released) {
+//                  stopTimer();
+                            finish();
+                        } else if (state == Call.State.Connected) {
+                            gotoCalling();
+                        }
+                    }
+                };
+        RipplePulseLayout mRipplePulseLayout = findViewById(R.id.layout_ripplepulse);
+        mRipplePulseLayout.startRippleAnimation();
+
+        SoundHelper.ringing(R.raw.ring);
+
+    }
+
+    private void gotoCalling() {
+        Intent intent = new Intent(this, TripRegisterActivity.class);
+        // This flag is required to start an Activity from a Service context
+        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        startActivity(intent);
+        finish();
+
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        unbinder.unbind();
+        SoundHelper.stop();
+
+    }
 
 //  void startTimer() {
 //    timercount = 0;
@@ -154,14 +176,12 @@ public class CallIncomingActivity extends AppCompatActivity {
 
     @Override
     protected void onPause() {
-      Core core = LinphoneService.getCore();
-      if (core != null) {
-        core.removeListener(mListener);
-      }
-      super.onPause();
+        Core core = LinphoneService.getCore();
+        if (core != null) {
+            core.removeListener(mListener);
+        }
+        super.onPause();
     }
-
-
 
 
 }
