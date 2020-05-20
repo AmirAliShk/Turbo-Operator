@@ -80,8 +80,6 @@ public class MessageFragment extends Fragment {
         unbinder = ButterKnife.bind(this, view);
         TypefaceUtil.overrideFonts(view);
 
-        tvName.setText(MyApplication.prefManager.getOperatorName());
-
         messageModels = new ArrayList<>();
 
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(MyApplication.context);

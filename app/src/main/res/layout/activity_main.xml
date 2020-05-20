@@ -103,22 +103,22 @@
                 </LinearLayout>
 
                 <LinearLayout
+                    style="@style/padding_except_bottom"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    style="@style/padding_except_bottom"
                     android:orientation="vertical">
 
                     <View
                         android:layout_width="match_parent"
                         android:layout_height="0dp"
-                        android:layout_weight="0.25"/>
+                        android:layout_weight="0.25" />
 
                     <LinearLayout
                         android:id="@+id/llTripRegister"
                         android:layout_width="match_parent"
                         android:layout_height="0dp"
                         android:layout_margin="5dp"
-                        android:layout_weight="0.75"
+                        android:layout_weight="1"
                         android:background="@drawable/bg_white_edge"
                         android:elevation="3dp"
                         android:gravity="center"
@@ -137,7 +137,7 @@
                             android:gravity="center"
                             android:text="ثبت سفر"
                             android:textColor="@color/colorBlack"
-                            android:textSize="@dimen/text_header"
+                            android:textSize="@dimen/text_title"
                             android:textStyle="bold" />
 
                     </LinearLayout>
@@ -166,10 +166,10 @@
                                 android:layout_weight="1"
                                 android:src="@drawable/ic_waiting" />
 
-<!--                            <ImageView-->
-<!--                                android:layout_width="match_parent"-->
-<!--                                android:layout_weight="0.25"-->
-<!--                                android:layout_height="0dp" />-->
+                            <!--                            <ImageView-->
+                            <!--                                android:layout_width="match_parent"-->
+                            <!--                                android:layout_weight="0.25"-->
+                            <!--                                android:layout_height="0dp" />-->
 
                             <TextView
                                 android:layout_width="match_parent"
@@ -200,20 +200,20 @@
 
                                 <TextView
                                     android:id="@+id/txtRequestCount"
-                                    android:text="1"
-                                    android:visibility="gone"
-                                    android:background="@drawable/bg_badge"
-                                    android:textColor="@color/colorWhite"
-                                    android:gravity="center"
-                                    android:layout_margin="10dp"
                                     android:layout_width="30dp"
-                                    android:layout_height="30dp"/>
+                                    android:layout_height="30dp"
+                                    android:layout_margin="10dp"
+                                    android:background="@drawable/bg_badge"
+                                    android:gravity="center"
+                                    android:text="1"
+                                    android:textColor="@color/colorWhite"
+                                    android:visibility="gone" />
 
                                 <LinearLayout
-                                    android:orientation="vertical"
-                                    android:gravity="center"
                                     android:layout_width="match_parent"
-                                    android:layout_height="match_parent">
+                                    android:layout_height="match_parent"
+                                    android:gravity="center"
+                                    android:orientation="vertical">
 
                                     <ImageView
                                         android:layout_width="wrap_content"
@@ -221,10 +221,10 @@
                                         android:layout_weight="1"
                                         android:src="@drawable/ic_scores" />
 
-<!--                                    <ImageView-->
-<!--                                        android:layout_width="match_parent"-->
-<!--                                        android:layout_weight="0.25"-->
-<!--                                        android:layout_height="0dp" />-->
+                                    <!--                                    <ImageView-->
+                                    <!--                                        android:layout_width="match_parent"-->
+                                    <!--                                        android:layout_weight="0.25"-->
+                                    <!--                                        android:layout_height="0dp" />-->
 
                                     <TextView
                                         android:layout_width="match_parent"
@@ -268,19 +268,19 @@
                                 android:layout_weight="1"
                                 android:src="@drawable/ic_message" />
 
-<!--                            <ImageView-->
-<!--                                android:layout_width="match_parent"-->
-<!--                                android:layout_weight="0.25"-->
-<!--                                android:layout_height="0dp" />-->
+                            <!--                            <ImageView-->
+                            <!--                                android:layout_width="match_parent"-->
+                            <!--                                android:layout_weight="0.25"-->
+                            <!--                                android:layout_height="0dp" />-->
 
                             <TextView
-                                android:text="@string/message"
                                 android:layout_width="match_parent"
                                 android:layout_height="0dp"
-                                android:gravity="center"
                                 android:layout_weight="0.75"
+                                android:gravity="center"
+                                android:text="@string/message"
                                 android:textColor="@color/colorBlack"
-                                android:textSize="@dimen/text_header"
+                                android:textSize="@dimen/text_title"
                                 android:textStyle="bold" />
 
                         </LinearLayout>
@@ -302,14 +302,14 @@
 
                                 <TextView
                                     android:id="@+id/txtBadgeCount"
-                                    android:text="1"
-                                    android:visibility="gone"
-                                    android:background="@drawable/bg_badge"
-                                    android:textColor="@color/colorWhite"
-                                    android:gravity="center"
-                                    android:layout_margin="10dp"
                                     android:layout_width="30dp"
-                                    android:layout_height="30dp"/>
+                                    android:layout_height="30dp"
+                                    android:layout_margin="10dp"
+                                    android:background="@drawable/bg_badge"
+                                    android:gravity="center"
+                                    android:text="1"
+                                    android:textColor="@color/colorWhite"
+                                    android:visibility="gone" />
 
                                 <LinearLayout
                                     android:layout_width="match_parent"
@@ -323,19 +323,19 @@
                                         android:layout_weight="1"
                                         android:src="@drawable/ic_notification" />
 
-<!--                                    <ImageView-->
-<!--                                        android:layout_width="match_parent"-->
-<!--                                        android:layout_weight="0.25"-->
-<!--                                        android:layout_height="0dp" />-->
+                                    <!--                                    <ImageView-->
+                                    <!--                                        android:layout_width="match_parent"-->
+                                    <!--                                        android:layout_weight="0.25"-->
+                                    <!--                                        android:layout_height="0dp" />-->
 
                                     <TextView
-                                        android:text="@string/notification"
                                         android:layout_width="match_parent"
                                         android:layout_height="0dp"
-                                        android:gravity="center"
                                         android:layout_weight="0.75"
+                                        android:gravity="center"
+                                        android:text="@string/notification"
                                         android:textColor="@color/colorBlack"
-                                        android:textSize="@dimen/text_header"
+                                        android:textSize="@dimen/text_title"
                                         android:textStyle="bold" />
 
                                 </LinearLayout>
@@ -349,7 +349,7 @@
                     <View
                         android:layout_width="match_parent"
                         android:layout_height="0dp"
-                        android:layout_weight="0.25"/>
+                        android:layout_weight="0.25" />
 
                 </LinearLayout>
 

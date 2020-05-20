@@ -6,7 +6,15 @@ public class RewardsModel {
     private String comment;
     private String expireDate;
     private String expireTime;
+    private String subject;
 
+    public String getSubject() {
+        return subject;
+    }
+
+    public void setSubject(String subject) {
+        this.subject = subject;
+    }
 
     public int getScore() {
         return score;

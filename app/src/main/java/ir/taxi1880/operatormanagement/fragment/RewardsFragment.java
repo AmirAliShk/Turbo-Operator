@@ -17,6 +17,7 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.RecyclerView;
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 import butterknife.Unbinder;
 import ir.taxi1880.operatormanagement.R;
 import ir.taxi1880.operatormanagement.adapter.RewardAdapter;
@@ -30,6 +31,11 @@ public class RewardsFragment extends Fragment {
   private Unbinder unbinder;
   private ArrayList<RewardsModel> rewardsModels;
   private RewardAdapter rewardAdapter;
+
+  @OnClick(R.id.imgBack)
+  void onBack() {
+    MyApplication.currentActivity.onBackPressed();
+  }
 
   @BindView(R.id.recycleRewards)
   RecyclerView recycleRewards;
@@ -52,7 +58,6 @@ public class RewardsFragment extends Fragment {
             .get();
   }
 
-
   private RequestHelper.Callback onRewards = new RequestHelper.Callback() {
     @Override
     public void onResponse(Runnable reCall, Object... args) {
@@ -72,6 +77,7 @@ public class RewardsFragment extends Fragment {
               rewardsModel.setComment(obj.getString("comment"));
               rewardsModel.setExpireDate(obj.getString("expireDate"));
               rewardsModel.setexpireTime(obj.getString("expireTime"));
+              rewardsModel.setSubject(obj.getString("subject"));
               rewardsModels.add(rewardsModel);
             }
             vfReward.setDisplayedChild(1);

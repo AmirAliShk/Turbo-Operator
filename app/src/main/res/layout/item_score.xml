@@ -1,25 +1,63 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:background="@drawable/bg_blue_border_edge"
     android:layout_margin="10dp"
-    android:layoutDirection="rtl"
-    >
+    android:gravity="center"
+    android:padding="5dp"
+    android:elevation="3dp"
+    android:orientation="horizontal"
+    android:layoutDirection="rtl">
+
+    <ImageView
+        android:layout_width="25dp"
+        android:layout_height="25dp"
+        android:src="@drawable/ic_timer" />
 
     <TextView
-        android:id="@+id/txtScoreHour"
-        android:layout_width="match_parent"
+        android:layout_width="0dp"
+        android:layout_weight="0.75"
+        android:layout_height="wrap_content"
+        android:padding="10dp"
+        android:text="@string/hour"
+        android:textSize="18sp"
+        android:textStyle="bold"
+        android:textColor="@color/colorBlack" />
+
+    <TextView
+        android:id="@+id/txtHour"
+        android:layout_width="0dp"
+        android:layout_weight="1.5"
+        android:gravity="right|center_vertical"
+        android:textSize="18sp"
         android:layout_height="wrap_content"
         android:textColor="@color/colorBlack"
         android:padding="10dp"/>
 
     <TextView
-        android:id="@+id/txtScoreScore"
-        android:layout_width="match_parent"
+        android:layout_width="0dp"
+        android:layout_weight="0.75"
         android:layout_height="wrap_content"
-        android:layout_below="@id/txtScoreHour"
+        android:padding="10dp"
+        android:text="@string/score"
+        android:textSize="18sp"
+        android:textStyle="bold"
+        android:textColor="@color/colorBlack" />
+
+    <ImageView
+        android:layout_width="25dp"
+        android:layout_height="25dp"
+        android:src="@drawable/ic_star" />
+
+    <TextView
+        android:id="@+id/txtScore"
+        android:layout_width="0dp"
+        android:layout_weight="0.5"
+        android:textSize="18sp"
+        android:gravity="right|center_vertical"
+        android:layout_height="wrap_content"
         android:textColor="@color/colorBlack"
         android:padding="10dp"/>
 
-</RelativeLayout>
+</LinearLayout>

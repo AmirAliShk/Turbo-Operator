@@ -5,7 +5,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:background="@color/colorPrimaryLighter"
     android:layout_height="match_parent"
-    tools:context=".fragment.RewardsFragment">
+    tools:context=".fragment.ScoreListFragment">
 
     <RelativeLayout
         android:id="@+id/rlActionBar"
@@ -26,14 +26,14 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
-            android:text="@string/reward"
+            android:text="@string/scoreList"
             android:textColor="@color/colorWhite"
             android:textSize="@dimen/text_header" />
 
     </RelativeLayout>
 
     <ViewFlipper
-        android:id="@+id/vfReward"
+        android:id="@+id/vfScore"
         android:layout_below="@id/rlActionBar"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
@@ -46,9 +46,10 @@
             app:indicatorColor="@color/colorPrimaryDark" />
 
         <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/recycleRewards"
+            android:id="@+id/recycleScore"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            tools:listitem="@layout/item_score"
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"/>
 
     </ViewFlipper>

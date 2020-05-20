@@ -6,15 +6,19 @@ android {
         applicationId "ir.taxi1880.operatormanagement"
         minSdkVersion 16
         targetSdkVersion 19
-        versionCode 3
-        versionName "1.2"
+        versionCode 4
+        versionName "2.0"
     }
+
+    //recent change: add bestScore,rewardList,scoreList
+    //versionCode: version 4
+    //versionName: 2.0
 
     signingConfigs {
         release {
-            storeFile file("/home/gitlab-runner/signkeys/operatorManagement.jks")
+            storeFile file("/home/gitlab-runner/signkeys/driver1880.jks")
             storePassword "47421parsian47421"
-            keyAlias "operatorManagement"
+            keyAlias "parsian"
             keyPassword "47421parsian47421"
         }
     }

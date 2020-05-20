@@ -36,3 +36,7 @@
 -keep class com.squareup.okhttp.** { *; }
 -keep interface com.squareup.okhttp.** { *; }
 
+#AVLoadingIndicatorView
+-keep class com.wang.avi.** { *; }
+-keep class com.wang.avi.indicators.** { *; }
+

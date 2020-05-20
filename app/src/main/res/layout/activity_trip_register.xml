@@ -10,7 +10,6 @@
     android:layoutDirection="rtl"
     tools:context=".activity.TripRegisterActivity">
 
-
     <RelativeLayout
         android:id="@+id/rlNewInComingCall"
         android:layout_width="match_parent"
@@ -1158,6 +1157,7 @@
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="2.5"
+                        android:layout_margin="3dp"
                         android:background="@drawable/bg_light_pink_edge"
                         android:text="ثبت سرویس "
                         android:textColor="@color/colorWhite"
@@ -1174,6 +1174,7 @@
                         android:layout_weight="1"
                         android:background="@drawable/bg_strock_corner"
                         android:text="گزینه ها"
+                        android:layout_margin="3dp"
                         android:textColor="@color/colorBlack"
                         android:textSize="@dimen/text_header"
                         android:textStyle="bold" />

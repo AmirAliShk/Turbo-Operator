@@ -15,6 +15,7 @@ import android.view.WindowManager;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import org.acra.ACRA;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -33,6 +34,7 @@ import ir.taxi1880.operatormanagement.dialog.GeneralDialog;
 import ir.taxi1880.operatormanagement.fragment.LoginFragment;
 import ir.taxi1880.operatormanagement.helper.AppVersionHelper;
 import ir.taxi1880.operatormanagement.helper.FragmentHelper;
+import ir.taxi1880.operatormanagement.helper.StringHelper;
 import ir.taxi1880.operatormanagement.helper.TypefaceUtil;
 import ir.taxi1880.operatormanagement.okHttp.RequestHelper;
 import ir.taxi1880.operatormanagement.services.LinphoneService;
@@ -44,6 +46,8 @@ public class SplashActivity extends AppCompatActivity {
   public static final String TAG = SplashActivity.class.getSimpleName();
   boolean doubleBackToExitPressedOnce = false;
   Unbinder unbinder;
+  private final String PUSH_PROJECT_ID = "5";
+
   @BindView(R.id.txtVersion)
   TextView txtVersion;
 
@@ -78,7 +82,10 @@ public class SplashActivity extends AppCompatActivity {
     unbinder = ButterKnife.bind(this, view);
     TypefaceUtil.overrideFonts(view);
 
-    txtVersion.setText("نسخه " + new AppVersionHelper(MyApplication.context).getVerionName() + "");
+    ACRA.getErrorReporter().putCustomData("projectId", PUSH_PROJECT_ID);
+    ACRA.getErrorReporter().putCustomData("LineCode", MyApplication.prefManager.getUserCode()+"");
+
+    txtVersion.setText(StringHelper.toPersianDigits("نسخه " + new AppVersionHelper(MyApplication.context).getVerionName() + ""));
 
 //    startVoipService();
 

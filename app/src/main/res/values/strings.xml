@@ -37,5 +37,12 @@
     <string name="scoreList">جدول امتیازات</string>
     <string name="scores">امتیازات</string>
 
+    <string name="hour">ساعت</string>
+    <string name="score">امتیاز</string>
+    <string name="expireDate">تاریخ انقضا : </string>
+
+    <string name="today">امروز</string>
+    <string name="month">ماه</string>
+
 
 </resources>

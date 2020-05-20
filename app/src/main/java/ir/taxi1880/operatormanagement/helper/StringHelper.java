@@ -70,15 +70,10 @@ public class StringHelper {
 
       @Override
       public void onTextChanged(CharSequence s, int i, int i1, int i2) {
-
-      }
-
-      @Override
-      public void afterTextChanged(Editable editable) {
         if (isEnable) return;
         isEnable = true;
 
-        String temp = editable.toString();
+        String temp = StringHelper.toPersianDigits(s.toString());
 
         temp = temp.replaceAll(c, "");
         temp = temp.replaceAll("(.{" + cnt + "})", "$0" + c);
@@ -88,6 +83,11 @@ public class StringHelper {
         editText.setSelection(editText.getText().toString().length());
 
         isEnable = false;
+
+      }
+
+      @Override
+      public void afterTextChanged(Editable editable) {
 
       }
     });

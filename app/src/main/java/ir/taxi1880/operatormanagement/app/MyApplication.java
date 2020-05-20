@@ -25,7 +25,6 @@ import org.linphone.core.TransportType;
 import java.util.Locale;
 
 import androidx.fragment.app.FragmentManager;
-import ir.taxi1880.operatormanagement.BuildConfig;
 import ir.taxi1880.operatormanagement.R;
 import ir.taxi1880.operatormanagement.helper.TypefaceUtil;
 import ir.taxi1880.operatormanagement.push.AvaFactory;
@@ -73,10 +72,7 @@ public class MyApplication extends Application {
     if (MyApplication.prefManager.getUserCode() != 0)
       avaStart();
 
-
-    if (!BuildConfig.DEBUG)
       ACRA.init(this);
-
 
   }
 

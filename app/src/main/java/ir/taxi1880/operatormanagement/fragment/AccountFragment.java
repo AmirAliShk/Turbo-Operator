@@ -2,10 +2,7 @@ package ir.taxi1880.operatormanagement.fragment;
 
 
 import android.os.Bundle;
-import android.text.Editable;
-import android.text.TextWatcher;
 import android.util.Log;
-import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -97,57 +94,13 @@ public class AccountFragment extends Fragment {
     getBalance(MyApplication.prefManager.getUserCode());
 
     txtOperatorName.setText(MyApplication.prefManager.getOperatorName());
-    edtAccountNum.setText(MyApplication.prefManager.getAccountNumber());
-    edtCardNumber.setText(MyApplication.prefManager.getCardNumber());
-    edtIben.setText(MyApplication.prefManager.getSheba());
+    edtAccountNum.setText(StringHelper.toPersianDigits(MyApplication.prefManager.getAccountNumber()));
+    edtCardNumber.setText(StringHelper.toPersianDigits(MyApplication.prefManager.getCardNumber()));
+    edtIben.setText(StringHelper.toPersianDigits(MyApplication.prefManager.getSheba()));
 
-    edtCardNumber.addTextChangedListener(new TextWatcher() {
-      @Override
-      public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
-      }
-
-      @Override
-      public void onTextChanged(CharSequence s, int start, int before, int count) {
-        boolean flag = true;
-        String eachBlock[] = edtCardNumber.getText().toString().split(" ");
-        for (int i = 0; i < eachBlock.length; i++) {
-          if (eachBlock[i].length() > 4) {
-            flag = false;
-          }
-        }
-
-        if (flag) {
-          edtCardNumber.setOnKeyListener((v, keyCode, event) -> {
-            if (keyCode == KeyEvent.KEYCODE_DEL)
-              keyDel = 1;
-            return false;
-          });
-
-          if (keyDel == 0) {
-            if (((edtCardNumber.getText().length() + 1) % 5) == 0) {
-
-              if (edtCardNumber.getText().toString().split(" ").length <= 3) {
-                edtCardNumber.setText(edtCardNumber.getText() + " ");
-                edtCardNumber.setSelection(edtCardNumber.getText().length());
-              }
-            }
-            a = edtCardNumber.getText().toString();
-          } else {
-            a = edtCardNumber.getText().toString();
-            keyDel = 0;
-          }
-
-        } else {
-          edtCardNumber.setText(a);
-        }
-      }
-
-      @Override
-      public void afterTextChanged(Editable s) {
-
-      }
-    });
+    StringHelper.setCharAfterOnTime(edtCardNumber, " - ", 4);
+    StringHelper.setCharAfterOnTime(edtAccountNum, "", 0);
+    StringHelper.setCharAfterOnTime(edtIben, "", 0);
 
     return view;
   }
@@ -196,9 +149,9 @@ public class AccountFragment extends Fragment {
 
     RequestHelper.builder(EndPoints.UPDATE_PROFILE)
             .addParam("userId", userId)
-            .addParam("accountNumber", accountNumber)
-            .addParam("cardNumber", cardNumber)
-            .addParam("sheba", sheba)
+            .addParam("accountNumber", StringHelper.toEnglishDigits(accountNumber))
+            .addParam("cardNumber",  StringHelper.toEnglishDigits(cardNumber.replaceAll("-","")))
+            .addParam("sheba",  StringHelper.toEnglishDigits(sheba))
             .listener(updateProfile)
             .put();
 

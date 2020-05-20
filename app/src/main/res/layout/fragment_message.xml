@@ -1,200 +1,200 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:background="@color/colorWhite"
     android:clickable="true"
+    android:layoutDirection="rtl"
     tools:context="ir.taxi1880.operatormanagement.fragment.MessageFragment">
 
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
         <LinearLayout
-            android:orientation="vertical"
+            android:id="@+id/llActionBar"
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="?android:attr/actionBarSize"
+            android:background="@color/colorPrimaryDark">
 
             <LinearLayout
-                android:id="@+id/llActionBar"
                 android:layout_width="match_parent"
-                android:layoutDirection="ltr"
-                android:layout_height="?android:attr/actionBarSize"
-                android:background="@color/colorPrimaryDark">
+                android:layout_height="match_parent">
 
                 <LinearLayout
-                    android:layoutDirection="ltr"
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent">
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:layout_marginEnd="20dp"
+                    android:layout_marginStart="20dp"
+                    android:gravity="center"
+                    android:orientation="horizontal">
 
-                    <ImageView
-                        android:id="@+id/imgBack"
-                        android:layout_width="55dp"
-                        android:layout_height="match_parent"
-                        android:layout_alignParentLeft="true"
-                        android:paddingBottom="15dp"
-                        android:paddingTop="15dp"
-                        android:src="@drawable/ic_back"
-                        android:tint="@color/colorWhite" />
+                    <RelativeLayout
+                        android:id="@+id/rlImgProfile"
+                        android:layout_width="45dp"
+                        android:layout_height="45dp"
+                        android:layout_alignParentRight="true"
+                        android:layout_centerInParent="true"
+                        android:gravity="center">
 
-                    <LinearLayout
-                        android:layout_marginLeft="10dp"
-                        android:gravity="center"
-                        android:layout_weight="1"
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:orientation="horizontal">
-
-                        <RelativeLayout
-                            android:id="@+id/rlImgProfile"
-                            android:layout_width="45dp"
-                            android:layout_height="45dp"
-                            android:layout_alignParentRight="true"
-                            android:layout_centerInParent="true"
-                            android:gravity="center">
-
-                            <de.hdodenhof.circleimageview.CircleImageView
-                                android:id="@+id/profile_image"
-                                android:layout_width="match_parent"
-                                android:layout_height="match_parent"
-                                android:background="@drawable/bg_circle"
-                                android:src="@drawable/ic_operator_user" />
-
-                        </RelativeLayout>
-
-                        <LinearLayout
-                            android:gravity="center"
+                        <de.hdodenhof.circleimageview.CircleImageView
+                            android:id="@+id/profile_image"
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
-                            android:orientation="vertical">
+                            android:background="@drawable/bg_circle"
+                            android:src="@drawable/ic_operator_user" />
 
-                            <TextView
-                                android:id="@+id/tvName"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:ellipsize="end"
-                                android:gravity="left"
-                                android:lines="1"
-                                android:maxLines="1"
-                                android:minLines="1"
-                                android:text="noori"
-                                android:paddingLeft="10dp"
-                                android:paddingRight="10dp"
-                                android:textAppearance="?android:attr/textAppearanceMedium"
-                                android:textColor="@color/colorWhite"
-                                android:textStyle="bold"/>
+                    </RelativeLayout>
 
-                            <TextView
-                                android:visibility="gone"
-                                android:id="@+id/tvStatus"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:ellipsize="end"
-                                android:gravity="left"
-                                android:maxLines="1"
-                                android:minLines="1"
-                                android:paddingLeft="10dp"
-                                android:paddingRight="10dp"
-                                android:textColor="@color/colorWhite"
-                                android:text="انلاین"
-                                android:textSize="10dp"
-                                android:alpha="0.5"
-                                android:textAppearance="?android:attr/textAppearanceSmall"
-                                android:textStyle="bold"/>
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:gravity="center"
+                        android:orientation="vertical">
 
-                        </LinearLayout>
+                        <TextView
+                            android:id="@+id/tvName"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:ellipsize="end"
+                            android:gravity="right"
+                            android:lines="1"
+                            android:maxLines="1"
+                            android:minLines="1"
+                            android:paddingLeft="10dp"
+                            android:paddingRight="10dp"
+                            android:text="ارتباط با مدیر"
+                            android:textAppearance="?android:attr/textAppearanceMedium"
+                            android:textColor="@color/colorWhite"
+                            android:textStyle="bold" />
+
+                        <TextView
+                            android:id="@+id/tvStatus"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:alpha="0.5"
+                            android:ellipsize="end"
+                            android:gravity="left"
+                            android:maxLines="1"
+                            android:minLines="1"
+                            android:paddingLeft="10dp"
+                            android:paddingRight="10dp"
+                            android:text="انلاین"
+                            android:textAppearance="?android:attr/textAppearanceSmall"
+                            android:textColor="@color/colorWhite"
+                            android:textSize="10dp"
+                            android:textStyle="bold"
+                            android:visibility="gone" />
 
                     </LinearLayout>
 
                 </LinearLayout>
 
-            </LinearLayout>
-
-            <RelativeLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_weight="1">
-
                 <ImageView
-                    android:layout_width="match_parent"
+                    android:id="@+id/imgBack"
+                    android:layout_width="55dp"
                     android:layout_height="match_parent"
-                    android:background="@drawable/bg_login"
-                    android:tint="@color/colorPrimary"
-                    android:alpha="0.08"
-                    />
-
-                <ViewFlipper
-                    android:id="@+id/vfMessage"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent">
-
-                    <ProgressBar
-                        android:layout_width="40dp"
-                        android:layout_height="40dp"
-                        android:layout_gravity="center"
-                        android:progressTint="@color/colorAccent" />
-
-                    <androidx.recyclerview.widget.RecyclerView
-                        android:id="@+id/listMessage"
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:paddingRight="5dp"
-                        android:paddingLeft="5dp"/>
-
-                </ViewFlipper>
-
-            </RelativeLayout>
-
-            <LinearLayout
-                android:id="@+id/llMessage"
-                android:layoutDirection="ltr"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:background="@drawable/bg_edt_messanger2"
-                android:orientation="horizontal">
-
-                <EditText
-                    android:id="@+id/edtMessage"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="10dp"
-                    android:layout_weight="1"
-                    android:background="@android:color/transparent"
-                    android:hint="پیام"
-                    android:maxHeight="150dp"
-                    android:minHeight="?android:attr/actionBarSize"
-                    android:textColor="@color/colorBlack"
-                    android:textColorHint="#888"/>
-
-                <ViewFlipper
-                    android:id="@+id/vfSend"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content">
-
-                    <LinearLayout
-                        android:id="@+id/llSend"
-                        android:layout_width="?android:attr/actionBarSize"
-                        android:layout_height="?android:attr/actionBarSize"
-                        android:gravity="center">
-
-                        <ImageView
-                            android:id="@+id/imSend"
-                            android:layout_width="30dp"
-                            android:layout_height="30dp"
-                            android:src="@drawable/ic_send"
-                            android:tint="@color/colorPrimary"/>
-
-                    </LinearLayout>
-
-                    <ProgressBar
-                        android:layout_width="?android:attr/actionBarSize"
-                        android:layout_height="?android:attr/actionBarSize"
-                        android:layout_gravity="center"
-                        android:padding="10dp"
-                        android:progressTint="@color/colorPrimary"/>
-
-                </ViewFlipper>
+                    android:layout_alignParentLeft="true"
+                    android:paddingTop="15dp"
+                    android:paddingBottom="15dp"
+                    android:src="@drawable/ic_back"
+                    android:tint="@color/colorWhite" />
 
             </LinearLayout>
 
         </LinearLayout>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1">
+
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:alpha="0.08"
+                android:background="@drawable/bg_login"
+                android:tint="@color/colorPrimary" />
+
+            <ViewFlipper
+                android:id="@+id/vfMessage"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <com.wang.avi.AVLoadingIndicatorView
+                    android:layout_width="50dp"
+                    android:layout_height="50dp"
+                    app:indicatorName="BallSpinFadeLoaderIndicator"
+                    android:layout_gravity="center"
+                    app:indicatorColor="@color/colorPrimaryDark" />
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/listMessage"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:paddingLeft="5dp"
+                    android:paddingRight="5dp" />
+
+            </ViewFlipper>
+
+        </RelativeLayout>
+
+        <LinearLayout
+            android:id="@+id/llMessage"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/bg_edt_messanger2"
+            android:layoutDirection="ltr"
+            android:orientation="horizontal">
+
+            <EditText
+                android:id="@+id/edtMessage"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:layout_weight="1"
+                android:background="@android:color/transparent"
+                android:hint="پیام"
+                android:maxHeight="150dp"
+                android:minHeight="?android:attr/actionBarSize"
+                android:textColor="@color/colorBlack"
+                android:textColorHint="#888" />
+
+            <ViewFlipper
+                android:id="@+id/vfSend"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
+
+                <LinearLayout
+                    android:id="@+id/llSend"
+                    android:layout_width="?android:attr/actionBarSize"
+                    android:layout_height="?android:attr/actionBarSize"
+                    android:gravity="center">
+
+                    <ImageView
+                        android:id="@+id/imSend"
+                        android:layout_width="30dp"
+                        android:layout_height="30dp"
+                        android:src="@drawable/ic_send"
+                        android:tint="@color/colorPrimary" />
+
+                </LinearLayout>
+
+                <ProgressBar
+                    android:layout_width="?android:attr/actionBarSize"
+                    android:layout_height="?android:attr/actionBarSize"
+                    android:layout_gravity="center"
+                    android:padding="10dp"
+                    android:progressTint="@color/colorPrimary" />
+
+            </ViewFlipper>
+
+        </LinearLayout>
+
+    </LinearLayout>
 
 </LinearLayout>
