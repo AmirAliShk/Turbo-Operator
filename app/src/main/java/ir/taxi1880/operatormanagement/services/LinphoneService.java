@@ -52,7 +52,7 @@ public class LinphoneService extends Service {
     }
 
     public static Core getCore() {
-      if (sInstance != null && sInstance.mCore != null) {
+      if (sInstance != null || sInstance.mCore != null) {
         return sInstance.mCore;
       }else {
         MyApplication.context.startService(new Intent().setClass(MyApplication.currentActivity, LinphoneService.class));
