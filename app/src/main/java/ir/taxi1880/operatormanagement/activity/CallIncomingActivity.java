@@ -85,15 +85,22 @@ public class CallIncomingActivity extends AppCompatActivity {
             core.addListener(mListener);
         }
 
-        Call[] calls = core.getCalls();
-        for (Call call : calls){
-            if (call.getState() == Call.State.Connected){
-                call = core.getCurrentCall();
-                Address address = call.getRemoteAddress();
-                txtCallerNum.setText(address.getUsername());
-                MyApplication.prefManager.setParticipant(address.getUsername());
-            }
-        }
+        call = core.getCurrentCall();
+        Address address = call.getRemoteAddress();
+        txtCallerNum.setText(address.getUsername());
+        MyApplication.prefManager.setParticipant(address.getUsername());
+
+
+//        Call[] calls = core.getCalls();
+//        for (Call call : calls){
+//            if (call.getState() == Call.State.Connected){
+//                call = core.getCurrentCall();
+//                Address address = call.getRemoteAddress();
+//                txtCallerNum.setText(address.getUsername());
+//                MyApplication.prefManager.setParticipant(address.getUsername());
+//            }
+//        }
+
         super.onResume();
 
     }
@@ -121,6 +128,7 @@ public class CallIncomingActivity extends AppCompatActivity {
 
                         if (state == Call.State.End || state == Call.State.Released) {
 //                  stopTimer();
+
                             finish();
                         } else if (state == Call.State.Connected) {
                             gotoCalling();

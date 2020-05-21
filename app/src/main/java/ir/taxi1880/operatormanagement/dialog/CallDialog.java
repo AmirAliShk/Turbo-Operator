@@ -145,16 +145,20 @@ public class CallDialog {
 
   @OnClick(R.id.llLastCall)
   void onLastCallPress() {
-    Address addressToCall = core.interpretUrl(MyApplication.prefManager.getLastCall());
-    CallParams params = core.createCallParams(null);
-    params.enableVideo(false);
-    if (addressToCall != null) {
-      core.inviteAddressWithParams(addressToCall, params);
-    }
-    callAddress = addressToCall;
+    if (MyApplication.prefManager.getLastCall() == "null") {
+      MyApplication.Toast("اخیرا تماسی برقرار نشده است." , Toast.LENGTH_LONG);
+    } else {
+      Address addressToCall = core.interpretUrl(MyApplication.prefManager.getLastCall());
+      CallParams params = core.createCallParams(null);
+      params.enableVideo(false);
+      if (addressToCall != null) {
+        core.inviteAddressWithParams(addressToCall, params);
+      }
+      callAddress = addressToCall;
 
-    setCancelable(false);
-    vfCall.setDisplayedChild(2);
+      setCancelable(false);
+      vfCall.setDisplayedChild(2);
+    }
   }
 
   @OnClick(R.id.imgClose)
@@ -205,9 +209,12 @@ public class CallDialog {
         if (state == Call.State.IncomingReceived) {
           callBack.onCallReceived();
         } else if (state == Call.State.Released) {
+          dismiss();
           setCancelable(true);
           vfCall.setDisplayedChild(0);
         } else if (state == Call.State.Connected) {
+        } else if (state == Call.State.End) {
+          dismiss();
         }
       }
     };
