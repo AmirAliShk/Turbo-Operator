@@ -51,6 +51,7 @@ public class PrefManager {
   private static final String ACTIVATE_STATUS = "activateStatus";
   private static final String VOIP_ID = "voipId";
   private static final String LAST_NOTIFICATION = "lastNotification";
+  private static final String LAST_CALL_NUMBER = "lastCallNumber";
 
   public PrefManager(Context context) {
     this._context = context;
@@ -325,5 +326,14 @@ public class PrefManager {
 
   public String getSendRequestList() {
     return pref.getString(KEY_SEND_REQUEST_LIST, null);
+  }
+
+  public void setLastCall(String callNumber) {
+    editor.putString(LAST_CALL_NUMBER, callNumber);
+    editor.commit();
+  }
+
+  public String getLastCall() {
+    return pref.getString(LAST_CALL_NUMBER, "null");
   }
 }

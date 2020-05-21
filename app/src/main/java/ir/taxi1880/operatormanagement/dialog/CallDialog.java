@@ -143,6 +143,20 @@ public class CallDialog {
     vfCall.setDisplayedChild(2);
   }
 
+  @OnClick(R.id.llLastCall)
+  void onLastCallPress() {
+    Address addressToCall = core.interpretUrl(MyApplication.prefManager.getLastCall());
+    CallParams params = core.createCallParams(null);
+    params.enableVideo(false);
+    if (addressToCall != null) {
+      core.inviteAddressWithParams(addressToCall, params);
+    }
+    callAddress = addressToCall;
+
+    setCancelable(false);
+    vfCall.setDisplayedChild(2);
+  }
+
   @OnClick(R.id.imgClose)
   void onClosePress() {
     dismiss();
