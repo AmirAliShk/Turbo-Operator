@@ -802,15 +802,15 @@ public class TripRegisterActivity extends AppCompatActivity {
     ArrayList<String> cityList = new ArrayList<String>();
     try {
       JSONArray cityArr = new JSONArray(MyApplication.prefManager.getCity());
-      cityList.add("انتخاب نشده");
-      for (int i = 1; i < cityArr.length(); i++) {
+      cityList.add(0,"انتخاب نشده");
+      for (int i = 0; i < cityArr.length(); i++) {
         JSONObject cityObj = cityArr.getJSONObject(i);
         CityModel cityModel = new CityModel();
         cityModel.setCity(cityObj.getString("cityname"));
         cityModel.setId(cityObj.getInt("cityid"));
         cityModel.setCityLatin(cityObj.getString("latinName"));
         cityModels.add(cityModel);
-        cityList.add(cityObj.getString("cityname"));
+        cityList.add(i+1,cityObj.getString("cityname"));
       }
       spCity.setAdapter(new SpinnerAdapter(MyApplication.currentActivity, R.layout.item_spinner, cityList));
       spCity.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {

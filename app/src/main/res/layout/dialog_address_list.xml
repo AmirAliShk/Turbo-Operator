@@ -14,14 +14,14 @@
         android:fillViewport="true">
 
         <LinearLayout
-            android:layout_width="match_parent"
+            android:layout_width="350dp"
             android:background="@drawable/bg_edit_text"
             android:layout_height="wrap_content"
-            android:minHeight="500dp"
+            android:minHeight="400dp"
             android:layout_gravity="center"
             android:gravity="top"
             android:layout_margin="20dp"
-            android:minWidth="400dp"
+            android:minWidth="300dp"
             android:orientation="vertical">
 
             <LinearLayout
