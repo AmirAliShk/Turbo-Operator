@@ -129,6 +129,32 @@ public class CallIncomingActivity extends AppCompatActivity {
     }
 
     @Override
+    protected void onResume() {
+        Core core = LinphoneService.getCore();
+        if (core != null) {
+            core.addListener(mListener);
+        }
+
+        call = core.getCurrentCall();
+        Address address = call.getRemoteAddress();
+        txtCallerNum.setText(address.getUsername());
+
+//        Call[] calls = core.getCalls();
+//        for (Call call : calls){
+//            if (call.getState() == Call.State.Connected){
+//                call = core.getCurrentCall();
+//                Address address = call.getRemoteAddress();
+//                txtCallerNum.setText(address.getUsername());
+//                MyApplication.prefManager.setParticipant(address.getUsername());
+//            }
+//        }
+
+        super.onResume();
+
+    }
+
+
+    @Override
     protected void onDestroy() {
         super.onDestroy();
         unbinder.unbind();
