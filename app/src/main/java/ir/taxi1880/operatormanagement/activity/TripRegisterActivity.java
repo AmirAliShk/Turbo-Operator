@@ -803,7 +803,7 @@ public class TripRegisterActivity extends AppCompatActivity {
     try {
       JSONArray cityArr = new JSONArray(MyApplication.prefManager.getCity());
       cityList.add("انتخاب نشده");
-      for (int i = 0; i < cityArr.length(); i++) {
+      for (int i = 1; i < cityArr.length(); i++) {
         JSONObject cityObj = cityArr.getJSONObject(i);
         CityModel cityModel = new CityModel();
         cityModel.setCity(cityObj.getString("cityname"));
