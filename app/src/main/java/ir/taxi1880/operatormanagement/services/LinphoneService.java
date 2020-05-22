@@ -52,19 +52,19 @@ public class LinphoneService extends Service {
     }
 
     public static Core getCore() {
-      if (sInstance != null && sInstance.mCore != null) {
-        return sInstance.mCore;
-      }else {
-        MyApplication.context.startService(new Intent().setClass(MyApplication.currentActivity, LinphoneService.class));
-        while (!LinphoneService.isReady()) {
-          try {
-            sleep(30);
-          } catch (InterruptedException e) {
-            throw new RuntimeException("waiting thread sleep() has been interrupted");
-          }
+        if (sInstance != null && sInstance.mCore != null) {
+            return sInstance.mCore;
+        } else {
+            MyApplication.context.startService(new Intent().setClass(MyApplication.currentActivity, LinphoneService.class));
+            while (!LinphoneService.isReady()) {
+                try {
+                    sleep(30);
+                } catch (InterruptedException e) {
+                    throw new RuntimeException("waiting thread sleep() has been interrupted");
+                }
+            }
+            return sInstance.mCore;
         }
-        return sInstance.mCore;
-      }
     }
 
     @Nullable
@@ -166,7 +166,8 @@ public class LinphoneService extends Service {
     @Override
     public void onDestroy() {
         mCore.removeListener(mCoreListener);
-        mTimer.cancel();
+        if (mTimer != null)
+            mTimer.cancel();
         mCore.stop();
         // A stopped Core can be started again
         // To ensure resources are freed, we must ensure it will be garbage collected
