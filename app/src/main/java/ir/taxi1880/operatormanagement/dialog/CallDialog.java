@@ -48,7 +48,12 @@ public class CallDialog {
 
   @OnClick(R.id.llTransfer)
   void onTransferCallPress() {
-    core.getCurrentCall().transfer("950");
+    Call[] calls = core.getCalls();
+    for (Call call : calls){
+      if (call.getState() == Call.State.Connected){
+        call.transfer("950");
+      }
+    }
     MyApplication.Toast("تماس به صف پشتیبانی منتقل شد", Toast.LENGTH_SHORT);
     dismiss();
   }
