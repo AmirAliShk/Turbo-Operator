@@ -973,7 +973,8 @@ public class TripRegisterActivity extends AppCompatActivity {
   };
 
   private void getPassengerAddress(String phoneNumber) {
-    vfPassengerAddress.setDisplayedChild(1);
+    if (vfPassengerAddress != null)
+      vfPassengerAddress.setDisplayedChild(1);
     RequestHelper.builder(EndPoints.PASSENGER_ADDRESS)
             .addPath(phoneNumber)
             .listener(getPassengerAddress)

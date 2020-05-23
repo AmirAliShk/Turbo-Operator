@@ -39,6 +39,7 @@ public class CityDialog {
   private static Dialog dialog;
 
   public void show(Listener listener) {
+    if (MyApplication.currentActivity==null)return;
     dialog = new Dialog(MyApplication.currentActivity);
     dialog.getWindow().requestFeature(Window.FEATURE_NO_TITLE);
     dialog.getWindow().getAttributes().windowAnimations = R.style.ExpandAnimation;

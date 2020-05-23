@@ -46,6 +46,7 @@ public class ReserveDialog {
   private TimePickerDialog timePickerDialog;
 
   public void show() {
+    if (MyApplication.currentActivity==null)return;
     dialog = new Dialog(MyApplication.currentActivity);
     dialog.getWindow().requestFeature(Window.FEATURE_NO_TITLE);
     dialog.getWindow().getAttributes().windowAnimations = R.style.ExpandAnimation;
