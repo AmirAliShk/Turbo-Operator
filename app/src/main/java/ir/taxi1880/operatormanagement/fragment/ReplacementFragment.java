@@ -120,7 +120,7 @@ public class ReplacementFragment extends Fragment {
     TypefaceUtil.overrideFonts(view);
 
     Bundle bundle = getArguments();
-    if (bundle!=null){
+    if (bundle != null) {
       shiftDate = bundle.getString("shiftDate");
       shiftName = bundle.getString("shiftName");
     }
@@ -140,13 +140,13 @@ public class ReplacementFragment extends Fragment {
 
   private void shiftReplacementRequest(int operatorId, int intendedOperatorId, int shift, String date) {
     llLoader.setVisibility(View.VISIBLE);
-      RequestHelper.builder(EndPoints.SHIFT_REPLACEMENT_REQUEST)
-              .addParam("operatorId", operatorId)
-              .addParam("intendedOperatorId", intendedOperatorId)
-              .addParam("shift", shift)
-              .addParam("date", date)
-              .listener(onShiftReplacementRequest)
-              .post();
+    RequestHelper.builder(EndPoints.SHIFT_REPLACEMENT_REQUEST)
+            .addParam("operatorId", operatorId)
+            .addParam("intendedOperatorId", intendedOperatorId)
+            .addParam("shift", shift)
+            .addParam("date", date)
+            .listener(onShiftReplacementRequest)
+            .post();
 
   }
 
@@ -193,13 +193,14 @@ public class ReplacementFragment extends Fragment {
   };
 
   private void getOnlineOperator(String date, int shiftId, int operatorId) {
-    vfOperator.setDisplayedChild(1);
-      RequestHelper.builder(EndPoints.GET_SHIFT_OPERATOR)
-              .addParam("date", date)
-              .addParam("shiftId", shiftId)
-              .addParam("operatorId", operatorId)
-              .listener(onGetOnlineOperator)
-              .post();
+    if (vfOperator != null)
+      vfOperator.setDisplayedChild(1);
+    RequestHelper.builder(EndPoints.GET_SHIFT_OPERATOR)
+            .addParam("date", date)
+            .addParam("shiftId", shiftId)
+            .addParam("operatorId", operatorId)
+            .listener(onGetOnlineOperator)
+            .post();
 
   }
 
@@ -214,7 +215,8 @@ public class ReplacementFragment extends Fragment {
         } catch (Exception e) {
           e.printStackTrace();
         }
-        vfOperator.setDisplayedChild(0);
+        if (vfOperator != null)
+          vfOperator.setDisplayedChild(0);
         new OperatorDialog().show((op) -> {
           edtOperator.setText(op.getOperatorName());
           opId = op.getOperatorId();

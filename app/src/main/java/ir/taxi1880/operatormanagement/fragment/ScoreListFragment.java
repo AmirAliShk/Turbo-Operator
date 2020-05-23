@@ -50,7 +50,8 @@ public class ScoreListFragment extends Fragment {
   }
 
   private void getScore() {
-    vfScore.setDisplayedChild(0);
+    if (vfScore != null)
+      vfScore.setDisplayedChild(0);
     RequestHelper.builder(EndPoints.SCORE)
             .listener(onScore)
             .get();
@@ -76,7 +77,8 @@ public class ScoreListFragment extends Fragment {
               scoreModel.setHour(obj.getString("hour"));
               scoreModels.add(scoreModel);
             }
-            vfScore.setDisplayedChild(1);
+            if (vfScore != null)
+              vfScore.setDisplayedChild(1);
             scoreAdapter = new ScoreAdapter(scoreModels);
             recycleScore.setAdapter(scoreAdapter);
 

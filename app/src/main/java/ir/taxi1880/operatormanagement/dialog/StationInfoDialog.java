@@ -38,6 +38,7 @@ public class StationInfoDialog {
   private static Dialog dialog;
 
   public void show(ArrayList<StationInfoModel> stationInfoModels,String title,boolean isCountrySide) {
+    if (MyApplication.currentActivity==null)return;
     dialog = new Dialog(MyApplication.currentActivity);
     dialog.getWindow().requestFeature(Window.FEATURE_NO_TITLE);
     dialog.getWindow().getAttributes().windowAnimations = R.style.ExpandAnimation;

@@ -145,7 +145,8 @@ public class MainActivity extends AppCompatActivity implements NotificationFragm
   }
 
   private void getBalance(int userId) {
-    vfBalance.setDisplayedChild(0);
+    if (vfBalance != null)
+      vfBalance.setDisplayedChild(0);
 
     RequestHelper.builder(EndPoints.BALANCE)
             .addPath(userId + "")
@@ -162,7 +163,6 @@ public class MainActivity extends AppCompatActivity implements NotificationFragm
         public void run() {
           try {
             Log.i(TAG, "run: " + args[0].toString());
-            vfBalance.setDisplayedChild(1);
             JSONObject obj = new JSONObject(args[0].toString());
             boolean success = obj.getBoolean("success");
             String message = obj.getString("message");
@@ -170,6 +170,8 @@ public class MainActivity extends AppCompatActivity implements NotificationFragm
             int accountBalance = dataObj.getInt("accountBalance");
 
             txtOperatorCharge.setText(StringHelper.toPersianDigits(accountBalance + " تومان "));
+            if (vfBalance != null)
+              vfBalance.setDisplayedChild(1);
 
           } catch (JSONException e) {
             e.printStackTrace();

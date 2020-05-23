@@ -555,6 +555,7 @@
                                     android:text="بیشتر"
                                     android:textColor="@color/colorPrimaryDark"
                                     android:textStyle="bold" />
+
                                 <com.wang.avi.AVLoadingIndicatorView
                                     app:indicatorColor="@color/colorPrimaryDark"
                                     android:padding="5dp"

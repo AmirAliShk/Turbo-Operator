@@ -54,6 +54,7 @@ public class SearchLocationDialog {
   private static Dialog dialog;
 
   public void show(Listener listener, String title,String cityLatin) {
+    if (MyApplication.currentActivity==null)return;
     dialog = new Dialog(MyApplication.currentActivity);
     dialog.getWindow().requestFeature(Window.FEATURE_NO_TITLE);
     dialog.getWindow().getAttributes().windowAnimations = R.style.ExpandAnimation;
