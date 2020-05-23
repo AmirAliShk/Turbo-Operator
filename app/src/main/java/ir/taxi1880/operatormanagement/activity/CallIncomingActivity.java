@@ -1,11 +1,16 @@
 package ir.taxi1880.operatormanagement.activity;
 
+import android.app.NotificationChannel;
+import android.app.NotificationManager;
+import android.app.PendingIntent;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
+import android.widget.RemoteViews;
 import android.widget.TextView;
 
 import com.gauravbhola.ripplepulsebackground.RipplePulseLayout;
@@ -18,6 +23,7 @@ import org.linphone.core.CoreListenerStub;
 import java.util.Timer;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.NotificationCompat;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
@@ -31,8 +37,7 @@ import ir.taxi1880.operatormanagement.services.LinphoneService;
 public class CallIncomingActivity extends AppCompatActivity {
     public static final String TAG = CallIncomingActivity.class.getSimpleName();
     private CoreListenerStub mListener;
-    Timer timer;
-    int timercount;
+    NotificationManager mNotificationManager;
 
     @BindView(R.id.txtCallerNum)
     TextView txtCallerNum;
@@ -78,6 +83,7 @@ public class CallIncomingActivity extends AppCompatActivity {
 
     Unbinder unbinder;
     Call call;
+    Boolean isReceivedCall = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -107,6 +113,9 @@ public class CallIncomingActivity extends AppCompatActivity {
                         } else if (state == Call.State.Connected) {
                             gotoCalling();
                         }
+                        else if (state == Call.State.IncomingReceived){
+                            isReceivedCall = true;
+                        }
                     }
                 };
         RipplePulseLayout mRipplePulseLayout = findViewById(R.id.layout_ripplepulse);
@@ -129,6 +138,33 @@ public class CallIncomingActivity extends AppCompatActivity {
 
     }
 
+    public void createNotification() {
+        String CALLCHANNEL = "callChannel";
+
+        RemoteViews collapsedView = new RemoteViews(getPackageName(), R.layout.notification_collapsed);
+        RemoteViews expandedView = new RemoteViews(getPackageName(), R.layout.notification_expanded);
+
+        Intent intent = new Intent(MyApplication.context, CallIncomingActivity.class);
+        collapsedView.setOnClickPendingIntent(R.id.linearNotif, PendingIntent.getActivity(MyApplication.context, 1, intent, PendingIntent.FLAG_UPDATE_CURRENT));
+        expandedView.setOnClickPendingIntent(R.id.btnBackToCall, PendingIntent.getActivity(MyApplication.context, 1, intent, PendingIntent.FLAG_UPDATE_CURRENT));
+
+        NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(MyApplication.context.getApplicationContext(), "notify_timer")
+                .setSmallIcon(R.drawable.return_call)
+                .setCustomContentView(collapsedView)
+                .setAutoCancel(true)
+                .setCustomBigContentView(expandedView)
+                .setStyle(new NotificationCompat.DecoratedCustomViewStyle());
+        mNotificationManager = (NotificationManager) MyApplication.context.getSystemService(Context.NOTIFICATION_SERVICE);
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            NotificationChannel channel = new NotificationChannel(CALLCHANNEL, "call channel", NotificationManager.IMPORTANCE_HIGH);
+            mNotificationManager.createNotificationChannel(channel);
+            mBuilder.setChannelId(CALLCHANNEL);
+        }
+        mNotificationManager.notify(0, mBuilder.build());
+
+    }
+
     @Override
     protected void onResume() {
         super.onResume();
@@ -138,15 +174,15 @@ public class CallIncomingActivity extends AppCompatActivity {
                 core.addListener(mListener);
             }
             Call[] calls = core.getCalls();
-            for (Call call : calls){
-                if (call.getState() == Call.State.Connected){
+            for (Call call : calls) {
+                if (call.getState() == Call.State.Connected) {
                     Address address = call.getRemoteAddress();
                     txtCallerNum.setText(address.getUsername());
                 }
             }
-        }catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
-            AvaCrashReporter.send(e,"callIncomingActivity");
+            AvaCrashReporter.send(e, "callIncomingActivity");
         }
     }
 
@@ -167,4 +203,11 @@ public class CallIncomingActivity extends AppCompatActivity {
         super.onPause();
     }
 
+    @Override
+    public void onBackPressed() {
+        if (isReceivedCall)
+            createNotification();
+
+        super.onBackPressed();
+    }
 }
