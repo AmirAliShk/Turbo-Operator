@@ -106,6 +106,7 @@ public class AccountFragment extends Fragment {
   }
 
   private void getBalance(int userId) {
+    if (vfBalance != null)
     vfBalance.setDisplayedChild(0);
 
     RequestHelper.builder(EndPoints.BALANCE)
@@ -123,7 +124,7 @@ public class AccountFragment extends Fragment {
         public void run() {
           try {
             Log.i(TAG, "run: " + args[0].toString());
-            vfBalance.setDisplayedChild(1);
+
             JSONObject obj = new JSONObject(args[0].toString());
             boolean success = obj.getBoolean("success");
             String message = obj.getString("message");
@@ -131,7 +132,8 @@ public class AccountFragment extends Fragment {
             int accountBalance = dataObj.getInt("accountBalance");
 
             txtOperatorCharge.setText(StringHelper.toPersianDigits(accountBalance + " تومان "));
-
+            if (vfBalance != null)
+              vfBalance.setDisplayedChild(1);
           } catch (JSONException e) {
             e.printStackTrace();
           }

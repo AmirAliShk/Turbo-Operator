@@ -52,7 +52,8 @@ public class RewardsFragment extends Fragment {
   }
 
   private void getRewards() {
-    vfReward.setDisplayedChild(0);
+    if (vfReward != null)
+      vfReward.setDisplayedChild(0);
     RequestHelper.builder(EndPoints.REWARDS)
             .listener(onRewards)
             .get();
@@ -80,7 +81,8 @@ public class RewardsFragment extends Fragment {
               rewardsModel.setSubject(obj.getString("subject"));
               rewardsModels.add(rewardsModel);
             }
-            vfReward.setDisplayedChild(1);
+            if (vfReward != null)
+              vfReward.setDisplayedChild(1);
             rewardAdapter = new RewardAdapter(rewardsModels);
             recycleRewards.setAdapter(rewardAdapter);
 

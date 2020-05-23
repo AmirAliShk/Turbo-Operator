@@ -564,7 +564,7 @@ public class TripRegisterActivity extends AppCompatActivity {
   }
 
   @OnClick(R.id.clearAddress)
-  void onCLearAddress(){
+  void onCLearAddress() {
     edtAddress.getText().clear();
   }
 
@@ -625,11 +625,11 @@ public class TripRegisterActivity extends AppCompatActivity {
 
     Log.i(TAG, "AMIRREZA=> onCreate register: ");
 
-    MyApplication.handler.postDelayed(()->{
+    MyApplication.handler.postDelayed(() -> {
       initCitySpinner();
       initServiceTypeSpinner();
       initServiceCountSpinner();
-    },200);
+    }, 200);
 
 
     edtTell.requestFocus();
@@ -809,7 +809,7 @@ public class TripRegisterActivity extends AppCompatActivity {
     ArrayList<String> cityList = new ArrayList<String>();
     try {
       JSONArray cityArr = new JSONArray(MyApplication.prefManager.getCity());
-      cityList.add(0,"انتخاب نشده");
+      cityList.add(0, "انتخاب نشده");
       for (int i = 0; i < cityArr.length(); i++) {
         JSONObject cityObj = cityArr.getJSONObject(i);
         CityModel cityModel = new CityModel();
@@ -817,7 +817,7 @@ public class TripRegisterActivity extends AppCompatActivity {
         cityModel.setId(cityObj.getInt("cityid"));
         cityModel.setCityLatin(cityObj.getString("latinName"));
         cityModels.add(cityModel);
-        cityList.add(i+1,cityObj.getString("cityname"));
+        cityList.add(i + 1, cityObj.getString("cityname"));
       }
       spCity.setAdapter(new SpinnerAdapter(MyApplication.currentActivity, R.layout.item_spinner, cityList));
       spCity.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
@@ -850,7 +850,8 @@ public class TripRegisterActivity extends AppCompatActivity {
   ArrayList<PassengerAddressModel> passengerAddressModels;
 
   private void getPassengerInfo(String phoneNumber, String mobile, String queue) {
-    vfPassengerInfo.setDisplayedChild(1);
+    if (vfPassengerInfo != null)
+      vfPassengerInfo.setDisplayedChild(1);
 
     RequestHelper.builder(EndPoints.PASSENGER_INFO)
             .addPath(phoneNumber)
@@ -876,7 +877,6 @@ public class TripRegisterActivity extends AppCompatActivity {
           }
 
           Log.i(TAG, "AMIRREZA ER: " + args[0].toString());
-          vfPassengerInfo.setDisplayedChild(0);
           JSONObject obj = new JSONObject(args[0].toString());
           boolean success = obj.getBoolean("success");
           String message = obj.getString("message");
@@ -897,7 +897,6 @@ public class TripRegisterActivity extends AppCompatActivity {
           int discountId = passengerInfoObj.getInt("discountId");
           int carType = passengerInfoObj.getInt("carType");
           int cityCode = passengerInfoObj.getInt("cityCode");
-
 
           if (success) {
             edtTell.setNextFocusDownId(R.id.edtFamily);
@@ -960,6 +959,9 @@ public class TripRegisterActivity extends AppCompatActivity {
             }
           }
 
+          if (vfPassengerInfo != null)
+            vfPassengerInfo.setDisplayedChild(0);
+
         } catch (JSONException e) {
           e.printStackTrace();
         }
@@ -968,7 +970,9 @@ public class TripRegisterActivity extends AppCompatActivity {
 
     @Override
     public void onFailure(Runnable reCall, Exception e) {
-      MyApplication.handler.post(() -> vfPassengerInfo.setDisplayedChild(0));
+      MyApplication.handler.post(() -> {
+        if (vfPassengerInfo != null) vfPassengerInfo.setDisplayedChild(0);
+      });
     }
   };
 
@@ -1005,7 +1009,8 @@ public class TripRegisterActivity extends AppCompatActivity {
               passengerAddressModels.add(addressModel);
             }
             if (passengerAddressModels.size() == 0) {
-              vfPassengerAddress.setDisplayedChild(0);
+              if (vfPassengerAddress != null)
+                vfPassengerAddress.setDisplayedChild(0);
               MyApplication.Toast("آدرسی موجود نیست", Toast.LENGTH_SHORT);
             } else {
               new AddressListDialog().show(new AddressListDialog.Listener() {
@@ -1017,7 +1022,8 @@ public class TripRegisterActivity extends AppCompatActivity {
 
                 }
               }, passengerAddressModels);
-              vfPassengerAddress.setDisplayedChild(0);
+              if (vfPassengerAddress != null)
+                vfPassengerAddress.setDisplayedChild(0);
             }
 
           } catch (JSONException e) {
@@ -1541,8 +1547,8 @@ public class TripRegisterActivity extends AppCompatActivity {
     showTitleBar();
 
     Call call = core.getCurrentCall();
-      if (call != null) {
-        startCallQuality();
+    if (call != null) {
+      startCallQuality();
     }
   }
 
@@ -1752,8 +1758,7 @@ public class TripRegisterActivity extends AppCompatActivity {
                 || state == Call.State.Pausing) {
           call.terminate();
         }
-      }
-      else if (call != null && call == currentCall) {
+      } else if (call != null && call == currentCall) {
         call.terminate();
       }
     }

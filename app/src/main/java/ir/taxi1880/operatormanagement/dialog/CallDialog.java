@@ -187,6 +187,7 @@ public class CallDialog {
   Address callAddress;
 
   public void show(CallBack callBack) {
+    if (MyApplication.currentActivity==null)return;
     dialog = new Dialog(MyApplication.currentActivity);
     dialog.getWindow().requestFeature(Window.FEATURE_NO_TITLE);
     dialog.getWindow().getAttributes().windowAnimations = R.style.ExpandAnimation;

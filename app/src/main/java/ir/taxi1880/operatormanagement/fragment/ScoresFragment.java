@@ -79,6 +79,7 @@ public class ScoresFragment extends Fragment {
   }
 
   private void getSingleScore() {
+    if (vfScores != null)
     vfScores.setDisplayedChild(0);
     RequestHelper.builder(EndPoints.SINGLE)
             .addPath(MyApplication.prefManager.getUserCode()+"")
@@ -106,6 +107,7 @@ public class ScoresFragment extends Fragment {
             txtDayScore.setText(StringHelper.toPersianDigits(todayScore+""));
             txtMonthScore.setText(StringHelper.toPersianDigits(monthScore+""));
 
+            if (vfScores != null)
             vfScores.setDisplayedChild(1);
 
           } catch (Exception e) {
@@ -121,7 +123,6 @@ public class ScoresFragment extends Fragment {
 
     }
   };
-
 
   @Override
   public void onDestroy() {

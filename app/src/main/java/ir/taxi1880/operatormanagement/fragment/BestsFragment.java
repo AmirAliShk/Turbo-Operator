@@ -38,7 +38,7 @@ public class BestsFragment extends Fragment {
   private BestAdapter bestAdapter;
 
   @OnClick(R.id.imgBack)
-  void imgBack(){
+  void imgBack() {
     MyApplication.currentActivity.onBackPressed();
   }
 
@@ -67,7 +67,8 @@ public class BestsFragment extends Fragment {
   }
 
   private void getBest() {
-    vfBest.setDisplayedChild(0);
+    if (vfBest != null)
+      vfBest.setDisplayedChild(0);
     RequestHelper.builder(EndPoints.BESTS)
             .listener(getBest)
             .get();
@@ -90,9 +91,9 @@ public class BestsFragment extends Fragment {
             JSONObject obj0 = bestArr.getJSONObject(0);
             JSONObject obj1 = bestArr.getJSONObject(1);
             JSONObject obj2 = bestArr.getJSONObject(2);
-            txtGolden.setText((obj0.getInt("rowNumber")+"."+obj0.getString("name")+" "+obj0.getString("lastName")));
-            txtSilver.setText((obj1.getInt("rowNumber")+"."+obj1.getString("name")+" "+obj1.getString("lastName")));
-            txtBronze.setText((obj2.getInt("rowNumber")+"."+obj2.getString("name")+" "+obj2.getString("lastName")));
+            txtGolden.setText((obj0.getInt("rowNumber") + "." + obj0.getString("name") + " " + obj0.getString("lastName")));
+            txtSilver.setText((obj1.getInt("rowNumber") + "." + obj1.getString("name") + " " + obj1.getString("lastName")));
+            txtBronze.setText((obj2.getInt("rowNumber") + "." + obj2.getString("name") + " " + obj2.getString("lastName")));
             for (int i = 3; i < bestArr.length(); i++) {
               JSONObject obj = bestArr.getJSONObject(i);
               BestModel bestModel = new BestModel();
@@ -113,10 +114,11 @@ public class BestsFragment extends Fragment {
 //            txtBronze.setText(bestModels.get(2).getRowNumber()+". "+bestModels.get(2).getName()+" "+bestModels.get(2).getLastName());
 //            bestModels.remove(2);
 
-            vfBest.setDisplayedChild(1);
-
             bestAdapter = new BestAdapter(bestModels);
             recycleBest.setAdapter(bestAdapter);
+
+            if (vfBest != null)
+              vfBest.setDisplayedChild(1);
 
           } catch (Exception e) {
             e.printStackTrace();

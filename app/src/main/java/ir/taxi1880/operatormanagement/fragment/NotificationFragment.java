@@ -64,6 +64,7 @@ public class NotificationFragment extends Fragment {
     }
 
     private void getNews(int operatorId) {
+        if (vfNoti != null)
         vfNoti.setDisplayedChild(0);
             RequestHelper.builder(EndPoints.GET_NEWS)
                     .addParam("operatorId", operatorId)
@@ -86,11 +87,13 @@ public class NotificationFragment extends Fragment {
                         notificationModel.setSeen(object.getInt("seen"));
                         notificationModels.add(notificationModel);
                     }
+                    if (vfNoti != null)
                     vfNoti.setDisplayedChild(1);
                     notificationAdapter = new NotificationAdapter(notificationModels, MyApplication.context);
                     listNotification.setAdapter(notificationAdapter);
                     if (notificationModels.size() == 0) {
-                       vfNoti.setDisplayedChild(2);
+                        if (vfNoti != null)
+                            vfNoti.setDisplayedChild(2);
                     }
                 } catch (Exception e) {
                     e.printStackTrace();
