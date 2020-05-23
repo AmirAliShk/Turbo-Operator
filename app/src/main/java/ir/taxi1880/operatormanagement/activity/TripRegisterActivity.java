@@ -1,5 +1,6 @@
 package ir.taxi1880.operatormanagement.activity;
 
+import android.app.NotificationManager;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
@@ -1666,6 +1667,7 @@ public class TripRegisterActivity extends AppCompatActivity {
       } else if (state == Call.State.Released) {
         imgEndCall.setColorFilter(ContextCompat.getColor(MyApplication.context, R.color.colorWhite), android.graphics.PorterDuff.Mode.MULTIPLY);
         showTitleBar();
+
       } else if (state == Call.State.Connected) {
         startCallQuality();
         imgEndCall.setColorFilter(ContextCompat.getColor(MyApplication.context, R.color.colorRed), android.graphics.PorterDuff.Mode.MULTIPLY);
@@ -1676,6 +1678,8 @@ public class TripRegisterActivity extends AppCompatActivity {
       } else if (state == Call.State.Error) {
         showTitleBar();
       } else if (state == Call.State.End) {
+        NotificationManager notificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+        notificationManager.cancel(0);
         showTitleBar();
       }
     }

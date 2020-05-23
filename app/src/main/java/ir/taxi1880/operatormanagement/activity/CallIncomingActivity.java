@@ -84,6 +84,7 @@ public class CallIncomingActivity extends AppCompatActivity {
     Unbinder unbinder;
     Call call;
     Boolean isReceivedCall = false;
+    int notifManagerId = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -98,6 +99,8 @@ public class CallIncomingActivity extends AppCompatActivity {
             window.setStatusBarColor(getResources().getColor(R.color.colorPrimaryDark));
             window.addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
         }
+        NotificationManager notificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+        notificationManager.cancel(notifManagerId);
 
         unbinder = ButterKnife.bind(this);
         mListener =
@@ -161,7 +164,7 @@ public class CallIncomingActivity extends AppCompatActivity {
             mNotificationManager.createNotificationChannel(channel);
             mBuilder.setChannelId(CALLCHANNEL);
         }
-        mNotificationManager.notify(0, mBuilder.build());
+        mNotificationManager.notify(notifManagerId, mBuilder.build());
 
     }
 
