@@ -31,6 +31,7 @@
     <color name="colorRed">#EB2929</color>
     <color name="colorRedLight">#ECC1C1</color>
     <color name="colorTransparent">#00FFB2B2</color>
+    <color name="colorGreenLight">#31ce5a</color>
 
     <color name="colorGolden">#ffe45d</color>
     <color name="colorSilver">#c5c6cb</color>
