@@ -624,9 +624,13 @@ public class TripRegisterActivity extends AppCompatActivity {
     disableViews();
 
     Log.i(TAG, "AMIRREZA=> onCreate register: ");
-    initCitySpinner();
-    initServiceTypeSpinner();
-    initServiceCountSpinner();
+
+    MyApplication.handler.postDelayed(()->{
+      initCitySpinner();
+      initServiceTypeSpinner();
+      initServiceCountSpinner();
+    },200);
+
 
     edtTell.requestFocus();
 

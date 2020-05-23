@@ -42,248 +42,249 @@ import okhttp3.Response;
  */
 public class RequestHelper implements Callback {
 
-  public static final String TAG = RequestHelper.class.getSimpleName();
-  public static final String POST = "POST";
-  public static final String GET = "GET";
-  public static final String DELETE = "DELETE";
-  public static final String PUT = "PUT";
-  public static final String HEAD = "HEAD";
-  public static final String PATCH = "PATCH";
+    public static final String TAG = RequestHelper.class.getSimpleName();
+    public static final String POST = "POST";
+    public static final String GET = "GET";
+    public static final String DELETE = "DELETE";
+    public static final String PUT = "PUT";
+    public static final String HEAD = "HEAD";
+    public static final String PATCH = "PATCH";
 
-  private static RequestHelper instance;
-  private String url = null;
-  private String path = null;
-  private Callback listener = null;
-  private JSONObject params = null;
-  private ArrayList<String> paths = null;
-  private boolean errorHandling = true;
-  private Request req;
-  private Object[] object;
+    private static RequestHelper instance;
+    private String url = null;
+    private String path = null;
+    private Callback listener = null;
+    private JSONObject params = null;
+    private ArrayList<String> paths = null;
+    private boolean errorHandling = true;
+    private Request req;
+    private Object[] object;
 
-  public interface Callback {
-    void onResponse(Runnable reCall, Object... args);
+    public interface Callback {
+        void onResponse(Runnable reCall, Object... args);
 
-    void onFailure(Runnable reCall, Exception e);
-  }
-
-  public RequestHelper setErrorHandling(Boolean v) {
-    this.errorHandling = v;
-    return this;
-  }
-
-  public RequestHelper returnInResponse(Object... object) {
-    this.object = object;
-    return this;
-  }
-
-  public RequestHelper addParam(String key, Object value) {
-    if (params == null) {
-      params = new JSONObject();
-    }
-    try {
-
-      params.put(key, value);
-      Log.i(TAG, "addParam: "+params);
-    } catch (JSONException e) {
-      e.printStackTrace();
-    }
-    return this;
-  }
-  public RequestHelper addParam(String key, String value) {
-    if (params == null) {
-      params = new JSONObject();
-    }
-    try {
-      value = StringHelper.toEnglishDigits(value);
-      params.put(key, value);
-      Log.i(TAG, "addParam: "+params);
-    } catch (JSONException e) {
-      e.printStackTrace();
-    }
-    return this;
-  }
-
-  public RequestHelper addPath(String value) {
-    if (paths == null)
-      paths = new ArrayList<>();
-    paths.add(value);
-    Log.i(TAG, "addParam: "+value);
-    return this;
-  }
-
-  public RequestHelper listener(Callback listener) {
-    this.listener = listener;
-    return this;
-  }
-
-  public RequestHelper readTimeout(int readTimeout) {
-    this.readTimeout = readTimeout;
-    return this;
-  }
-
-  public RequestHelper connectionTimeout(int connectionTimeout) {
-    this.connectionTimeout = connectionTimeout;
-    return this;
-  }
-
-  public RequestHelper writeTimeout(int writeTimeout) {
-    this.writeTimeout = writeTimeout;
-    return this;
-  }
-
-  public static RequestHelper builder(String url) {
-    instance = new RequestHelper();
-    instance.url = url;
-    return instance;
-  }
-
-  private String getUrl() {
-    String url = this.url;
-    if (path != null) {
-      String address = EndPoints.IP;
-      url = "http://" + address + this.path;
+        void onFailure(Runnable reCall, Exception e);
     }
 
-    this.url = url;
-    return url;
-  }
+    public RequestHelper setErrorHandling(Boolean v) {
+        this.errorHandling = v;
+        return this;
+    }
 
-  public static RequestHelper loadBalancingBuilder(String path) {
-    instance = new RequestHelper();
-    instance.path = path;
-    return instance;
-  }
+    public RequestHelper returnInResponse(Object... object) {
+        this.object = object;
+        return this;
+    }
 
-  public void get() {
-    url = getUrl();
-    if (url == null) return;
-
-    HttpUrl.Builder urlBuilder = HttpUrl.parse(url).newBuilder();
-    if (params != null) {
-      Iterator<String> iter = params.keys();
-      while (iter.hasNext()) {
-        String key = iter.next();
+    public RequestHelper addParam(String key, Object value) {
+        if (params == null) {
+            params = new JSONObject();
+        }
         try {
-          String value = params.getString(key);
-          urlBuilder.addQueryParameter(key, value);
+
+            params.put(key, value);
+            Log.i(TAG, "addParam: " + params);
         } catch (JSONException e) {
-          e.printStackTrace();
+            e.printStackTrace();
         }
-      }
+        return this;
     }
-    if (paths != null) {
-      for (String ob : paths) {
-        urlBuilder.addPathSegment(ob);
-      }
+
+    public RequestHelper addParam(String key, String value) {
+        if (params == null) {
+            params = new JSONObject();
+        }
+        try {
+            value = StringHelper.toEnglishDigits(value);
+            params.put(key, value);
+            Log.i(TAG, "addParam: " + params);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        return this;
     }
-    String url = urlBuilder.build().toString();
-    req = new Request.Builder()
-            .url(url)
-            .build();
 
-    request();
-
-  }
-
-  public void post() {
-    url = getUrl();
-    if (url == null) return;
-
-    RequestBody body = RequestBody.create(JSON, params.toString());
-    req = new Request.Builder()
-            .url(url)
-            .post(body)
-            .build();
-
-    request();
-
-  }
-
-  public void put() {
-    url = getUrl();
-    if (url == null) return;
-
-    RequestBody body = RequestBody.create(JSON, params.toString());
-    req = new Request.Builder()
-            .url(url)
-            .put(body)
-            .build();
-    request();
-
-  }
-
-  public void delete() {
-    url = getUrl();
-    if (url == null) return;
-
-    RequestBody body = RequestBody.create(JSON, params.toString());
-    req = new Request.Builder()
-            .url(url)
-            .delete(body)
-            .build();
-    request();
-  }
-
-  private void request() {
-
-    try {
-    log("request url : " + req.url().toString());
-    log("request params : " + params);
-    log("paths : "+paths);
-      OkHttpClient.Builder builder = new OkHttpClient
-              .Builder()
-              .proxy(Proxy.NO_PROXY);
-
-      OkHttpClient okHttpClient = builder.connectTimeout(connectionTimeout, TimeUnit.SECONDS)
-              .writeTimeout(writeTimeout, TimeUnit.SECONDS)
-              .readTimeout(readTimeout, TimeUnit.SECONDS)
-              .build();
-
-      call = okHttpClient.newCall(req);
-      call.enqueue(this);
-
-    } catch (final Exception e) {
-      requestFailed(REQUEST_CRASH, e);
+    public RequestHelper addPath(String value) {
+        if (paths == null)
+            paths = new ArrayList<>();
+        paths.add(value);
+        Log.i(TAG, "addParam: " + value);
+        return this;
     }
-  }
 
-  public static final MediaType JSON = MediaType.parse("application/json; charset=utf-8");
+    public RequestHelper listener(Callback listener) {
+        this.listener = listener;
+        return this;
+    }
 
-  private int connectionTimeout = 10;
-  private int writeTimeout = 10;
-  private int readTimeout = 15;
-  private Object object1 = null;
-  private Object object2 = null;
+    public RequestHelper readTimeout(int readTimeout) {
+        this.readTimeout = readTimeout;
+        return this;
+    }
 
-  public static final int INTERNET_CONNECTION_EXCEPTION = -1;
-  public static final int REQUEST_CRASH = -2;
+    public RequestHelper connectionTimeout(int connectionTimeout) {
+        this.connectionTimeout = connectionTimeout;
+        return this;
+    }
 
-  @Override
-  public void onFailure(Call call, final IOException e) {
-    this.call = call;
-    log("request failed :  The requested URL can't be Reached The service took too long to respond.");
-    if (listener != null)
-      requestFailed(INTERNET_CONNECTION_EXCEPTION, e);
-  }
+    public RequestHelper writeTimeout(int writeTimeout) {
+        this.writeTimeout = writeTimeout;
+        return this;
+    }
 
-  @Override
-  public void onResponse(Call call, final Response response) {
-    this.call = call;
-    if (listener != null) {
-      final String bodyStr;
-      try {
-        bodyStr = parseXML(response.body().string());
-        log("request result : " + bodyStr);
+    public static RequestHelper builder(String url) {
+        instance = new RequestHelper();
+        instance.url = url;
+        return instance;
+    }
 
-        if (!response.isSuccessful()) {
-          requestFailed(response.code(), new Exception(response.message() + bodyStr));
-        } else {
-          if (object == null)
-            object = new Object[0];
-          requestSuccess(bodyStr);
+    private String getUrl() {
+        String url = this.url;
+        if (path != null) {
+            String address = EndPoints.IP;
+            url = "http://" + address + this.path;
         }
 
-        //check response code true 200
+        this.url = url;
+        return url;
+    }
+
+    public static RequestHelper loadBalancingBuilder(String path) {
+        instance = new RequestHelper();
+        instance.path = path;
+        return instance;
+    }
+
+    public void get() {
+        url = getUrl();
+        if (url == null) return;
+
+        HttpUrl.Builder urlBuilder = HttpUrl.parse(url).newBuilder();
+        if (params != null) {
+            Iterator<String> iter = params.keys();
+            while (iter.hasNext()) {
+                String key = iter.next();
+                try {
+                    String value = params.getString(key);
+                    urlBuilder.addQueryParameter(key, value);
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+        if (paths != null) {
+            for (String ob : paths) {
+                urlBuilder.addPathSegment(ob);
+            }
+        }
+        String url = urlBuilder.build().toString();
+        req = new Request.Builder()
+                .url(url)
+                .build();
+
+        request();
+
+    }
+
+    public void post() {
+        url = getUrl();
+        if (url == null) return;
+
+        RequestBody body = RequestBody.create(JSON, params.toString());
+        req = new Request.Builder()
+                .url(url)
+                .post(body)
+                .build();
+
+        request();
+
+    }
+
+    public void put() {
+        url = getUrl();
+        if (url == null) return;
+
+        RequestBody body = RequestBody.create(JSON, params.toString());
+        req = new Request.Builder()
+                .url(url)
+                .put(body)
+                .build();
+        request();
+
+    }
+
+    public void delete() {
+        url = getUrl();
+        if (url == null) return;
+
+        RequestBody body = RequestBody.create(JSON, params.toString());
+        req = new Request.Builder()
+                .url(url)
+                .delete(body)
+                .build();
+        request();
+    }
+
+    private void request() {
+
+        try {
+            log("request url : " + req.url().toString());
+            log("request params : " + params);
+            log("paths : " + paths);
+            OkHttpClient.Builder builder = new OkHttpClient
+                    .Builder()
+                    .proxy(Proxy.NO_PROXY);
+
+            OkHttpClient okHttpClient = builder.connectTimeout(connectionTimeout, TimeUnit.SECONDS)
+                    .writeTimeout(writeTimeout, TimeUnit.SECONDS)
+                    .readTimeout(readTimeout, TimeUnit.SECONDS)
+                    .build();
+
+            call = okHttpClient.newCall(req);
+            call.enqueue(this);
+
+        } catch (final Exception e) {
+            requestFailed(REQUEST_CRASH, e);
+        }
+    }
+
+    public static final MediaType JSON = MediaType.parse("application/json; charset=utf-8");
+
+    private int connectionTimeout = 10;
+    private int writeTimeout = 10;
+    private int readTimeout = 15;
+    private Object object1 = null;
+    private Object object2 = null;
+
+    public static final int INTERNET_CONNECTION_EXCEPTION = -1;
+    public static final int REQUEST_CRASH = -2;
+
+    @Override
+    public void onFailure(Call call, final IOException e) {
+        this.call = call;
+        log("request failed :  The requested URL can't be Reached The service took too long to respond.");
+        if (listener != null)
+            requestFailed(INTERNET_CONNECTION_EXCEPTION, e);
+    }
+
+    @Override
+    public void onResponse(Call call, final Response response) {
+        this.call = call;
+        if (listener != null) {
+            final String bodyStr;
+            try {
+                bodyStr = parseXML(response.body().string());
+                log("request result : " + bodyStr);
+
+                if (!response.isSuccessful()) {
+                    requestFailed(response.code(), new Exception(response.message() + bodyStr));
+                } else {
+                    if (object == null)
+                        object = new Object[0];
+                    requestSuccess(bodyStr);
+                }
+
+                //check response code true 200
 
 //        MyApplication.handler.post(new Runnable() {
 //          @Override
@@ -315,159 +316,161 @@ public class RequestHelper implements Callback {
 //
 //        });
 
-      } catch (final IOException e) {
-        requestFailed(response.code(), e);
-        if (listener != null)
-          listener.onFailure(runnable, e);
+            } catch (final IOException e) {
+                requestFailed(response.code(), e);
+                if (listener != null)
+                    listener.onFailure(runnable, e);
 
-      }
+            }
+        }
     }
-  }
 //    }
 
-  /**
-   * manage log
-   *
-   * @param v
-   */
-  private void log(String v) {
-    Log.d(TAG, "====> " + v);
-  }
-
-  /**
-   * this function extract response from XML result
-   *
-   * @param str = response from EndPoints
-   * @return
-   */
-  public static String parseXML(String str) {
-    if (str == null) {
-      return null;
+    /**
+     * manage log
+     *
+     * @param v
+     */
+    private void log(String v) {
+        Log.d(TAG, "====> " + v);
     }
 
-    str = str.replace("\n", "");
-    str = str.replace("\r", "");
-    Pattern pattern = Pattern.compile("\\<.*?\\>");
-    Matcher matcher = pattern.matcher(str);
+    /**
+     * this function extract response from XML result
+     *
+     * @param str = response from EndPoints
+     * @return
+     */
+    public static String parseXML(String str) {
+        if (str == null) {
+            return null;
+        }
 
-    if (matcher.matches()) {
-      return matcher.replaceAll("").trim();
+        str = str.replace("\n", "");
+        str = str.replace("\r", "");
+        Pattern pattern = Pattern.compile("\\<.*?\\>");
+        Matcher matcher = pattern.matcher(str);
+
+        if (matcher.matches()) {
+            return matcher.replaceAll("").trim();
+        }
+
+        return str;
     }
 
-    return str;
-  }
+    Call call;
+    Runnable runnable = new Runnable() {
+        @Override
+        public void run() {
+            request();
+        }
+    };
 
-  Call call;
-  Runnable runnable = new Runnable() {
-    @Override
-    public void run() {
-      request();
+    private void requestSuccess(Object res) {
+        if (listener != null) {
+            Object[] resTemp = new Object[object.length + 1];
+            resTemp[0] = res;
+            for (int i = 0; i < object.length; i++) {
+                resTemp[i + 1] = object[i];
+            }
+            listener.onResponse(runnable, resTemp);
+        }
     }
-  };
 
-  private void requestSuccess(Object res) {
-    if (listener != null) {
-      Object[] resTemp = new Object[object.length + 1];
-      resTemp[0] = res;
-      for (int i = 0; i < object.length; i++) {
-        resTemp[i + 1] = object[i];
-      }
-      listener.onResponse(runnable, resTemp);
-    }
-  }
+    private void requestFailed(int code, Exception e) {
 
-  private void requestFailed(int code, Exception e) {
-
-    if (listener != null)
-      listener.onFailure(runnable, e);
-    Log.e(TAG, "requestFailed: ", e);
-    switch (code) {
-      case -1:
+        if (listener != null)
+            listener.onFailure(runnable, e);
+        Log.e(TAG, "requestFailed: ", e);
+        switch (code) {
+            case -1:
 //        DBIO.setFail(MyApplication.context, url);
-        showError("عدم دسترسی به اینترنت لطفا پس از بررسی ارتباط دستگاه خود به اینترنت و اطمینان از ارتباط، مجدد تلاش نمایید.");
-        break;
-      case -3:
-        showError("آدرس وارد شده نا معتبر میباشد لطفا با پشتیبانی تماس حاصل نمایید");
-        break;
-      case 400:
-        showError("خطای 400 : مشکلی در ارسال داده به وجود آمده است لطفا پس از چند لحظه مجدد تلاش نمایید در صورت عدم برطرف شدن، لطفا با پشتیبانی تماس حاصل نمایید.");
-        break;
-      case 401:
+                showError("عدم دسترسی به اینترنت لطفا پس از بررسی ارتباط دستگاه خود به اینترنت و اطمینان از ارتباط، مجدد تلاش نمایید.");
+                break;
+            case -3:
+                showError("آدرس وارد شده نا معتبر میباشد لطفا با پشتیبانی تماس حاصل نمایید");
+                break;
+            case 400:
+                showError("خطای 400 : مشکلی در ارسال داده به وجود آمده است لطفا پس از چند لحظه مجدد تلاش نمایید در صورت عدم برطرف شدن، لطفا با پشتیبانی تماس حاصل نمایید.");
+                break;
+            case 401:
 //        DBIO.setFail(MyApplication.context, url);
-        showError("خطای 401 : عدم دسترسی به شبکه لطفا با پشتیبانی تماس حاصل نمایید.");
-        break;
-      case 403:
-        showError("خطای 403 : عدم مجوز دسترسی به شبکه لطفا با پشتیبانی تماس حاصل نمایید.");
-        break;
-      case 404:
+                showError("خطای 401 : عدم دسترسی به شبکه لطفا با پشتیبانی تماس حاصل نمایید.");
+                break;
+            case 403:
+                showError("خطای 403 : عدم مجوز دسترسی به شبکه لطفا با پشتیبانی تماس حاصل نمایید.");
+                break;
+            case 404:
 //        DBIO.setFail(MyApplication.context, url);
-        showError("خطای 404 : برای چنین درخواستی پاسخی وجود ندارد لطفا با پشتیبانی تماس حاصل نمایید.");
-        break;
-      case 422://error entity
-        showError("خطای 422 : متاسفانه اطلاعات ارسالی ناقص است لطفا با پشتیبانی تماس بگیرد");
-        break;
-      case 500:
-        showError("خطای 500 : مشکلی در پردازش داده به وجود آمده است لطفا پس از چند لحظه مجدد تلاش نمایید در صورت عدم برطرف شدن، لطفا با پشتیبانی تماس حاصل نمایید.");
-        break;
-      default:
-        showError("خطای " + code + " : خطایی تعریف نشده در سیستم به وجود آمده لطفا با پشتیبانی تماس حاصل نمایید.");
-        break;
+                showError("خطای 404 : برای چنین درخواستی پاسخی وجود ندارد لطفا با پشتیبانی تماس حاصل نمایید.");
+                break;
+            case 422://error entity
+                showError("خطای 422 : متاسفانه اطلاعات ارسالی ناقص است لطفا با پشتیبانی تماس بگیرد");
+                break;
+            case 500:
+                showError("خطای 500 : مشکلی در پردازش داده به وجود آمده است لطفا پس از چند لحظه مجدد تلاش نمایید در صورت عدم برطرف شدن، لطفا با پشتیبانی تماس حاصل نمایید.");
+                break;
+            default:
+                showError("خطای " + code + " : خطایی تعریف نشده در سیستم به وجود آمده لطفا با پشتیبانی تماس حاصل نمایید.");
+                break;
+        }
     }
-  }
 
-  private void showError(final String message) {
-    if (!errorHandling) return;
-    try {
+    private void showError(final String message) {
+        if (!errorHandling) return;
+        try {
 //      if (MyApplication.prefManager.isAppRun()) {
-      MyApplication.handler.post(() -> {
-        dismiss();
-        show(message);
-      });
+            MyApplication.handler.post(() -> {
+                dismiss();
+                show(message);
+            });
 //      }
-    } catch (Exception e) {
-      e.printStackTrace();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        Log.d(TAG, "showError: " + message);
     }
-    Log.d(TAG, "showError: " + message);
-  }
 
-  private Dialog dialog;
+    private Dialog dialog;
 
-  public void show(String message) {
-    dialog = new Dialog(MyApplication.currentActivity);
-    dialog.getWindow().requestFeature(Window.FEATURE_NO_TITLE);
-    dialog.getWindow().getAttributes().windowAnimations = R.style.ExpandAnimation;
-    dialog.setContentView(R.layout.dialog_error);
+    public void show(String message) {
 
-    TypefaceUtil.overrideFonts(dialog.getWindow().getDecorView());
-    dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
-    WindowManager.LayoutParams wlp = dialog.getWindow().getAttributes();
-    wlp.gravity = Gravity.BOTTOM;
-    wlp.width = LinearLayout.LayoutParams.MATCH_PARENT;
-    dialog.getWindow().setAttributes(wlp);
+        if (MyApplication.currentActivity == null) return;
+        dialog = new Dialog(MyApplication.currentActivity);
+        dialog.getWindow().requestFeature(Window.FEATURE_NO_TITLE);
+        dialog.getWindow().getAttributes().windowAnimations = R.style.ExpandAnimation;
+        dialog.setContentView(R.layout.dialog_error);
 
-    dialog.setCancelable(false);
+        TypefaceUtil.overrideFonts(dialog.getWindow().getDecorView());
+        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        WindowManager.LayoutParams wlp = dialog.getWindow().getAttributes();
+        wlp.gravity = Gravity.BOTTOM;
+        wlp.width = LinearLayout.LayoutParams.MATCH_PARENT;
+        dialog.getWindow().setAttributes(wlp);
 
-    TextView txtMessage = (TextView) dialog.findViewById(R.id.txtMessage);
-    txtMessage.setText(message);
+        dialog.setCancelable(false);
 
-    TextView title = (TextView) dialog.findViewById(R.id.txtTitle);
+        TextView txtMessage = (TextView) dialog.findViewById(R.id.txtMessage);
+        txtMessage.setText(message);
 
-    title.setText("خطایی رخ داده");
+        TextView title = (TextView) dialog.findViewById(R.id.txtTitle);
 
-    Button btnClose = dialog.findViewById(R.id.btnClose);
-    Button btnTryAgain = dialog.findViewById(R.id.btnTryAgain);
+        title.setText("خطایی رخ داده");
+
+        Button btnClose = dialog.findViewById(R.id.btnClose);
+        Button btnTryAgain = dialog.findViewById(R.id.btnTryAgain);
 
 
-    btnClose.setOnClickListener(v -> {
-      if (dialog != null)
-        dialog.dismiss();
-    });
+        btnClose.setOnClickListener(v -> {
+            if (dialog != null)
+                dialog.dismiss();
+        });
 
-    btnTryAgain.setOnClickListener(v -> {
+        btnTryAgain.setOnClickListener(v -> {
 //      if (runnable != null)
 //        vfRetry.setDisplayedChild(1);
-      dialog.dismiss();
-      runnable.run();
+            dialog.dismiss();
+            runnable.run();
 
 //      MyApplication.handler.postDelayed(new Runnable() {
 //        @Override
@@ -479,19 +482,24 @@ public class RequestHelper implements Callback {
 //          dialog = null;
 //        }
 //      }, 2000);
-    });
+        });
 
-    dialog.show();
-  }
 
-  private void dismiss() {
-    try {
-      if (dialog != null)
-        dialog.dismiss();
-    } catch (Exception e) {
-      Log.e(TAG, "dismiss: " + e.getMessage());
+        try {
+            dialog.show();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
-    dialog = null;
-  }
+
+    private void dismiss() {
+        try {
+            if (dialog != null)
+                dialog.dismiss();
+        } catch (Exception e) {
+            Log.e(TAG, "dismiss: " + e.getMessage());
+        }
+        dialog = null;
+    }
 
 }
