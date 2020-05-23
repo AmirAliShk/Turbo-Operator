@@ -110,6 +110,7 @@
         android:background="@drawable/bg_action_bar_purple">
 
         <LinearLayout
+            android:id="@+id/llStatus"
             android:layout_width="180dp"
             android:layout_height="45dp"
             android:layout_centerInParent="true"
@@ -201,6 +202,15 @@
         </LinearLayout>
 
     </RelativeLayout>
+
+    <ImageView
+        android:id="@+id/imgCallQuality"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:padding="10dp"
+        android:background="@color/colorPrimaryDark"
+        android:layout_toLeftOf="@id/llEndCall"
+        android:src="@drawable/call_quality_indicator_0" />
 
     <ScrollView
         android:id="@+id/svTripRegister"

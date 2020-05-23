@@ -138,7 +138,6 @@ public class CallIncomingActivity extends AppCompatActivity {
         call = core.getCurrentCall();
         Address address = call.getRemoteAddress();
         txtCallerNum.setText(address.getUsername());
-
 //        Call[] calls = core.getCalls();
 //        for (Call call : calls){
 //            if (call.getState() == Call.State.Connected){
@@ -148,11 +147,9 @@ public class CallIncomingActivity extends AppCompatActivity {
 //                MyApplication.prefManager.setParticipant(address.getUsername());
 //            }
 //        }
-
         super.onResume();
 
     }
-
 
     @Override
     protected void onDestroy() {
@@ -162,34 +159,6 @@ public class CallIncomingActivity extends AppCompatActivity {
 
     }
 
-//  void startTimer() {
-//    timercount = 0;
-//    timer = new Timer();
-//    timer.schedule(new TimerTask() {
-//      @Override
-//      public void run() {
-//        runOnUiThread(new Runnable() {
-//          @Override
-//          public void run() {
-//            timercount++;
-////            Call call = LinphoneService.getCore().getCurrentCall();
-////            int min = call.getDuration() / 60;
-////            int sec = call.getDuration() % 60;
-////            String time = String.format("%02d:%02d", min, sec);
-////            txtTimer.setText(time);
-//          }
-//        });
-//      }
-//    }, 0, 1000);
-//  }
-
-//  public void stopTimer() {
-//    if (timer == null) return;
-//    timer.cancel();
-//    timer = null;
-//  }
-
-
     @Override
     protected void onPause() {
         Core core = LinphoneService.getCore();
@@ -198,6 +167,5 @@ public class CallIncomingActivity extends AppCompatActivity {
         }
         super.onPause();
     }
-
 
 }

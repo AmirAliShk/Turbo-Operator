@@ -325,6 +325,9 @@ public class TripRegisterActivity extends AppCompatActivity {
   byte defaultClass = 0;
   byte activateStatus = -1;
 
+  @BindView(R.id.imgCallQuality)
+  ImageView imgCallQuality;
+
   @OnClick(R.id.btnSubmit)
   void onPressSubmit() {
 
@@ -974,7 +977,6 @@ public class TripRegisterActivity extends AppCompatActivity {
 
   }
 
-
   RequestHelper.Callback getPassengerAddress = new RequestHelper.Callback() {
     @Override
     public void onResponse(Runnable reCall, Object... args) {
@@ -1140,7 +1142,6 @@ public class TripRegisterActivity extends AppCompatActivity {
             .get();
 
   }
-
 
   @OnFocusChange(R.id.edtTell)
   void onChangeFocus(boolean v) {
@@ -1534,8 +1535,11 @@ public class TripRegisterActivity extends AppCompatActivity {
     MyApplication.currentActivity = this;
     showTitleBar();
 
+    Call call = core.getCurrentCall();
+      if (call != null) {
+        startCallQuality();
+    }
   }
-
 
   //receive push notification from local broadcast
   BroadcastReceiver pushReceiver = new BroadcastReceiver() {
@@ -1545,7 +1549,6 @@ public class TripRegisterActivity extends AppCompatActivity {
       handleCallerInfo(parseNotification(result));
     }
   };
-
 
   private void handleCallerInfo(CallModel callModel) {
     try {
@@ -1587,6 +1590,47 @@ public class TripRegisterActivity extends AppCompatActivity {
     }
   }
 
+  private Runnable mCallQualityUpdater;
+  private int mDisplayedQuality = -1;
+
+  private void startCallQuality() {
+    LinphoneService.dispatchOnUIThreadAfter(
+            mCallQualityUpdater =
+                    new Runnable() {
+                      final Call mCurrentCall = LinphoneService.getCore().getCurrentCall();
+
+                      public void run() {
+                        if (mCurrentCall == null) {
+                          mCallQualityUpdater = null;
+                          return;
+                        }
+                        float newQuality = mCurrentCall.getCurrentQuality();
+                        updateQualityOfSignalIcon(newQuality);
+
+                        LinphoneService.dispatchOnUIThreadAfter(this, 1000);
+                      }
+                    },
+            1000);
+  }
+
+  private void updateQualityOfSignalIcon(float quality) {
+    int iQuality = (int) quality;
+
+    if (iQuality == mDisplayedQuality) return;
+    if (quality >= 4) { // Good Quality
+      imgCallQuality.setImageResource(R.drawable.call_quality_indicator_4);
+    } else if (quality >= 3) {// Average quality
+      imgCallQuality.setImageResource(R.drawable.call_quality_indicator_3);
+    } else if (quality >= 2) { // Low quality
+      imgCallQuality.setImageResource(R.drawable.call_quality_indicator_2);
+    } else if (quality >= 1) { // Very low quality
+      imgCallQuality.setImageResource(R.drawable.call_quality_indicator_1);
+    } else { // Worst quality
+      imgCallQuality.setImageResource(R.drawable.call_quality_indicator_0);
+    }
+    mDisplayedQuality = iQuality;
+  }
+
   @Override
   protected void onStop() {
     super.onStop();
@@ -1600,8 +1644,10 @@ public class TripRegisterActivity extends AppCompatActivity {
     super.onPause();
     KeyBoardHelper.hideKeyboard();
     isRunning = false;
-
-
+    if (mCallQualityUpdater != null) {
+      LinphoneService.removeFromUIThreadDispatcher(mCallQualityUpdater);
+      mCallQualityUpdater = null;
+    }
   }
 
   @BindView(R.id.imgEndCall)
@@ -1617,6 +1663,7 @@ public class TripRegisterActivity extends AppCompatActivity {
         imgEndCall.setColorFilter(ContextCompat.getColor(MyApplication.context, R.color.colorWhite), android.graphics.PorterDuff.Mode.MULTIPLY);
         showTitleBar();
       } else if (state == Call.State.Connected) {
+        startCallQuality();
         imgEndCall.setColorFilter(ContextCompat.getColor(MyApplication.context, R.color.colorRed), android.graphics.PorterDuff.Mode.MULTIPLY);
         Address address = call.getRemoteAddress();
         if (voipId.equals("0"))
@@ -1680,7 +1727,6 @@ public class TripRegisterActivity extends AppCompatActivity {
     }
   }
 
-
   @OnClick(R.id.imgReject)
   void onRejectPress() {
     Core mCore = LinphoneService.getCore();
@@ -1728,6 +1774,5 @@ public class TripRegisterActivity extends AppCompatActivity {
     rlActionBar.setVisibility(View.VISIBLE);
     SoundHelper.stop();
   }
-
 
 }

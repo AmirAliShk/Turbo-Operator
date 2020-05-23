@@ -7,6 +7,7 @@ import android.content.pm.PackageManager;
 import android.os.Build;
 import android.os.Handler;
 import android.os.IBinder;
+import android.os.Looper;
 
 import org.linphone.core.Call;
 import org.linphone.core.Core;
@@ -36,6 +37,7 @@ public class LinphoneService extends Service {
     private static final String START_LINPHONE_LOGS = " ==== Device information dump ====";
     // Keep a static reference to the Service so we can access it from anywhere in the app
     private static LinphoneService sInstance;
+    private static final Handler sHandler = new Handler(Looper.getMainLooper());
 
     private Handler mHandler;
     private Timer mTimer;
@@ -256,4 +258,14 @@ public class LinphoneService extends Service {
         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         startActivity(intent);
     }
+
+    public static void removeFromUIThreadDispatcher(Runnable r) {
+        sHandler.removeCallbacks(r);
+    }
+
+    public static void dispatchOnUIThreadAfter(Runnable r, long after) {
+        sHandler.postDelayed(r, after);
+    }
+
+
 }
