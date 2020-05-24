@@ -1,6 +1,5 @@
 package ir.taxi1880.operatormanagement.activity;
 
-import android.app.NotificationManager;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
@@ -324,7 +323,6 @@ public class TripRegisterActivity extends AppCompatActivity {
   public static boolean isRunning = false;
   byte traffic = 0;
   byte defaultClass = 0;
-  byte activateStatus = -1;
 
   @BindView(R.id.imgCallQuality)
   ImageView imgCallQuality;
@@ -580,21 +578,16 @@ public class TripRegisterActivity extends AppCompatActivity {
               @Override
               public void run() {
                 setDeActivate(MyApplication.prefManager.getUserCode(), MyApplication.prefManager.getSipNumber());
-//                MyApplication.Toast(" ! activated",Toast.LENGTH_SHORT);
               }
             })
             .secondButton("نیستم", null)
             .show();
   }
 
-  private boolean serviceTypeFlag = false;
-  private boolean cityFlag = false;
-  private boolean serviceCountFlag = false;
   String permanentDesc = "";
 
   View view;
   private String[] countService = new String[6];
-  RipplePulseLayout mRipplePulseLayout;
 
   @Override
   protected void onCreate(Bundle savedInstanceState) {
@@ -1547,10 +1540,10 @@ public class TripRegisterActivity extends AppCompatActivity {
     MyApplication.currentActivity = this;
     showTitleBar();
 
-    Call call = core.getCurrentCall();
-    if (call != null) {
-      startCallQuality();
-    }
+//    Call call = core.getCurrentCall();
+//    if (call != null) {
+//      startCallQuality();
+//    }
   }
 
   //receive push notification from local broadcast
@@ -1627,19 +1620,21 @@ public class TripRegisterActivity extends AppCompatActivity {
 
   private void updateQualityOfSignalIcon(float quality) {
     int iQuality = (int) quality;
+    int imageRes = R.drawable.call_quality_indicator_0;
 
     if (iQuality == mDisplayedQuality) return;
     if (quality >= 4) { // Good Quality
-      imgCallQuality.setImageResource(R.drawable.call_quality_indicator_4);
+      imageRes = R.drawable.call_quality_indicator_4;
     } else if (quality >= 3) {// Average quality
-      imgCallQuality.setImageResource(R.drawable.call_quality_indicator_3);
+      imageRes = (R.drawable.call_quality_indicator_3);
     } else if (quality >= 2) { // Low quality
-      imgCallQuality.setImageResource(R.drawable.call_quality_indicator_2);
+      imageRes = (R.drawable.call_quality_indicator_2);
     } else if (quality >= 1) { // Very low quality
-      imgCallQuality.setImageResource(R.drawable.call_quality_indicator_1);
+      imageRes = (R.drawable.call_quality_indicator_1);
     } else { // Worst quality
-      imgCallQuality.setImageResource(R.drawable.call_quality_indicator_0);
+      imageRes = (R.drawable.call_quality_indicator_0);
     }
+    imgCallQuality.setImageResource(imageRes);
     mDisplayedQuality = iQuality;
   }
 

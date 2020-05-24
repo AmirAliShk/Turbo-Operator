@@ -89,8 +89,7 @@ public class ShiftListFragment extends Fragment {
             shiftModel.setShiftTime(object.getString("time"));
             shiftModels.add(shiftModel);
           }
-          if (vfShift != null)
-            vfShift.setDisplayedChild(1);
+
           shiftAdapter = new ShiftAdapter(shiftModels, MyApplication.context);
           listShift.setAdapter(shiftAdapter);
 
@@ -98,6 +97,9 @@ public class ShiftListFragment extends Fragment {
             if (vfShift != null)
               vfShift.setDisplayedChild(2);
           }
+          if (vfShift != null)
+            vfShift.setDisplayedChild(1);
+
         } catch (Exception e) {
           e.printStackTrace();
         }

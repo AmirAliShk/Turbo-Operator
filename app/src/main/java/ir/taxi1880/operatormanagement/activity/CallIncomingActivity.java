@@ -12,7 +12,6 @@ import android.view.Window;
 import android.view.WindowManager;
 import android.widget.RemoteViews;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.gauravbhola.ripplepulsebackground.RipplePulseLayout;
 
@@ -70,9 +69,7 @@ public class CallIncomingActivity extends AppCompatActivity {
 //        }
       } else if (call != null && call != currentCall) {
         Call.State state = call.getState();
-        if (state == Call.State.Paused
-                || state == Call.State.PausedByRemote
-                || state == Call.State.Pausing) {
+        if (state == Call.State.Paused || state == Call.State.PausedByRemote || state == Call.State.Pausing) {
           call.terminate();
         }
       } else if (call != null && call == currentCall) {
@@ -107,15 +104,11 @@ public class CallIncomingActivity extends AppCompatActivity {
               @Override
               public void onCallStateChanged(Core core, Call call, Call.State state, String message) {
 
-
                 if (state == Call.State.End || state == Call.State.Released) {
-//                  stopTimer();
-
                   finish();
                 } else if (state == Call.State.Connected) {
                   gotoCalling();
                 } else if (state == Call.State.IncomingReceived) {
-                  MyApplication.Toast("isReceivedCall", Toast.LENGTH_SHORT);
                 }
               }
             };

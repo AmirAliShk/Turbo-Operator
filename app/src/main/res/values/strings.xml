@@ -25,8 +25,8 @@
     <string name="confirm">تایید</string>
     <string name="txt_please_for_exit_reenter_back">برای خروج دوباره کلید بازگشت را بزنید</string>
     <string name="reject">رد</string>
-    <string name="callNotification">درحال مکالمه ...</string>
-    <string name="callNotificationButton">بازگشت به تماس</string>
+    <string name="callNotification">بازگشت به صفحه تماس</string>
+    <string name="callNotificationButton">بازگشت به صفحه تماس</string>
 
     <string name="unKnow">نامشخص</string>
     <string name="taxi">تاکسی</string>

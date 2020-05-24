@@ -105,18 +105,13 @@ public class BestsFragment extends Fragment {
               bestModels.add(bestModel);
             }
 
-//            txtGolden.setText(bestModels.get(0).getRowNumber()+". "+bestModels.get(0).getName()+" "+bestModels.get(0).getLastName());
-//            bestModels.remove(0);
-//
-//            txtSilver.setText(bestModels.get(1).getRowNumber()+". "+bestModels.get(1).getName()+" "+bestModels.get(1).getLastName());
-//            bestModels.remove(1);
-//
-//            txtBronze.setText(bestModels.get(2).getRowNumber()+". "+bestModels.get(2).getName()+" "+bestModels.get(2).getLastName());
-//            bestModels.remove(2);
-
             bestAdapter = new BestAdapter(bestModels);
             recycleBest.setAdapter(bestAdapter);
 
+            if (bestModels.size() == 0) {
+              if (vfBest != null)
+                vfBest.setDisplayedChild(2);
+            }
             if (vfBest != null)
               vfBest.setDisplayedChild(1);
 

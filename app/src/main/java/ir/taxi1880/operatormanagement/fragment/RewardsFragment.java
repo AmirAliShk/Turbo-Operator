@@ -81,10 +81,16 @@ public class RewardsFragment extends Fragment {
               rewardsModel.setSubject(obj.getString("subject"));
               rewardsModels.add(rewardsModel);
             }
-            if (vfReward != null)
-              vfReward.setDisplayedChild(1);
+
             rewardAdapter = new RewardAdapter(rewardsModels);
             recycleRewards.setAdapter(rewardAdapter);
+
+            if (rewardsModels.size() == 0) {
+              if (vfReward != null)
+                vfReward.setDisplayedChild(2);
+            }
+            if (vfReward != null)
+              vfReward.setDisplayedChild(1);
 
           } catch (Exception e) {
             e.printStackTrace();

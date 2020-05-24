@@ -77,10 +77,16 @@ public class ScoreListFragment extends Fragment {
               scoreModel.setHour(obj.getString("hour"));
               scoreModels.add(scoreModel);
             }
-            if (vfScore != null)
-              vfScore.setDisplayedChild(1);
+
             scoreAdapter = new ScoreAdapter(scoreModels);
             recycleScore.setAdapter(scoreAdapter);
+
+            if (scoreModels.size() == 0) {
+              if (vfScore != null)
+                vfScore.setDisplayedChild(2);
+            }
+            if (vfScore != null)
+              vfScore.setDisplayedChild(1);
 
           } catch (Exception e) {
             e.printStackTrace();

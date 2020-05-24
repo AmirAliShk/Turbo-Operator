@@ -52,6 +52,14 @@
             tools:listitem="@layout/item_score"
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"/>
 
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:textSize="@dimen/text_title"
+            android:textColor="@color/colorBlack"
+            android:text="هنوز هیچی ثبت نشده!"/>
+
     </ViewFlipper>
 
 </RelativeLayout>
