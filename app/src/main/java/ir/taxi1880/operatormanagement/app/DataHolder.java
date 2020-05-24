@@ -3,17 +3,15 @@ package ir.taxi1880.operatormanagement.app;
 public class DataHolder {
   private static DataHolder ourInstance;
 
-  private String name;
-  private String cityCode;
-  private String mobile;
+  private boolean isEndCall=false;
 
-  public void setHire(String name, String cityCode, String mobile) {
-    ourInstance.name = name;
-    ourInstance.cityCode = cityCode;
-    ourInstance.mobile = mobile;
+  public boolean isEndCall() {
+    return ourInstance.isEndCall;
   }
 
-
+  public void setEndCall(boolean receivedCall) {
+    ourInstance.isEndCall = receivedCall;
+  }
 
   public static DataHolder getInstance() {
     if (ourInstance == null) {
