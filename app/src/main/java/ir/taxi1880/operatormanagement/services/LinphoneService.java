@@ -33,6 +33,7 @@ import ir.taxi1880.operatormanagement.activity.CallIncomingActivity;
 import ir.taxi1880.operatormanagement.activity.TripRegisterActivity;
 import ir.taxi1880.operatormanagement.app.DataHolder;
 import ir.taxi1880.operatormanagement.app.MyApplication;
+import ir.taxi1880.operatormanagement.helper.VibratorHelper;
 import ir.taxi1880.operatormanagement.push.AvaFactory;
 
 import static java.lang.Thread.sleep;
@@ -48,6 +49,7 @@ public class LinphoneService extends Service {
 
   private Core mCore;
   private CoreListenerStub mCoreListener;
+  long[] pattern = {0,70,70};
 
   public static boolean isReady() {
     return sInstance != null;
@@ -105,6 +107,7 @@ public class LinphoneService extends Service {
           DataHolder.getInstance().setEndCall(true);
           NotificationManager notificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
           notificationManager.cancel(0);
+          VibratorHelper.setVibrator(MyApplication.context,pattern);
         } else {
           DataHolder.getInstance().setEndCall(false);
         }
@@ -112,6 +115,7 @@ public class LinphoneService extends Service {
           onIncomingReceived();
         }
         if (state == Call.State.Connected) {
+          VibratorHelper.setVibrator(MyApplication.context,pattern);
           //if don't receive push notification from server we call missingPushApi
           AvaFactory.getInstance(getApplicationContext()).readMissingPush();
           MyApplication.Toast("Connected", Toast.LENGTH_SHORT);
