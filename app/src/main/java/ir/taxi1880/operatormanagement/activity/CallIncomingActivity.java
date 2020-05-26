@@ -167,20 +167,19 @@ public class CallIncomingActivity extends AppCompatActivity {
       if (core != null) {
         core.addListener(mListener);
       }
-      call = core.getCurrentCall();
-      Address address = call.getRemoteAddress();
-      txtCallerNum.setText(address.getUsername());
-//            Call[] calls = core.getCalls();
-//            for (Call call : calls) {
-//                if (call.getState() == Call.State.Connected) {
-//                    Address address = call.getRemoteAddress();
-//                    txtCallerNum.setText(address.getUsername());
-//                }
-//            }
-    } catch (Exception e) {
+      Call[] calls = core.getCalls();
+      for (Call callList : calls){
+        if (callList.getState() == Call.State.IncomingReceived){
+          call = callList;
+          Address address = callList.getRemoteAddress();
+          txtCallerNum.setText(address.getUsername());
+        }
+      }
+    }catch (Exception e){
       e.printStackTrace();
-      AvaCrashReporter.send(e, "callIncomingActivity");
+      AvaCrashReporter.send(e,"callIncomingActivity");
     }
+
   }
 
   @Override
