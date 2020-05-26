@@ -1,5 +1,6 @@
 package ir.taxi1880.operatormanagement.activity;
 
+import android.app.ActivityManager;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
@@ -7,6 +8,7 @@ import android.content.IntentFilter;
 import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Handler;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
@@ -41,6 +43,7 @@ import org.linphone.core.Core;
 import org.linphone.core.CoreListenerStub;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
@@ -98,6 +101,7 @@ public class TripRegisterActivity extends AppCompatActivity {
   private boolean isTellValidable = false;
   String queue = "0";
   String voipId = "0";
+  Boolean inComingCall = false;
 
   @OnClick(R.id.imgBack)
   void onBack() {
@@ -1541,6 +1545,7 @@ public class TripRegisterActivity extends AppCompatActivity {
     MyApplication.currentActivity = this;
     showTitleBar();
     if (DataHolder.getInstance().getConnectedCall()){
+      inComingCall = true;
       DataHolder.getInstance().setConnectedCall(false);
       startCallQuality();
       imgEndCall.setColorFilter(ContextCompat.getColor(MyApplication.context, R.color.colorRed), android.graphics.PorterDuff.Mode.MULTIPLY);
@@ -1551,7 +1556,7 @@ public class TripRegisterActivity extends AppCompatActivity {
           if (voipId.equals("0")){
             Address address = call.getRemoteAddress();
             edtTell.setText(address.getUsername());
-        }
+          }
         }
       }
     };
@@ -1693,11 +1698,7 @@ public class TripRegisterActivity extends AppCompatActivity {
         if (voipId.equals("0"))
           edtTell.setText(address.getUsername());
         showTitleBar();
-      }else if (state == Call.State.StreamsRunning){
-        MyApplication.Toast("lk", Toast.LENGTH_SHORT);
-      }
-
-      else if (state == Call.State.Error) {
+      } else if (state == Call.State.Error) {
         showTitleBar();
       } else if (state == Call.State.End) {
         showTitleBar();
@@ -1735,7 +1736,17 @@ public class TripRegisterActivity extends AppCompatActivity {
             .firstButton("بله", new Runnable() {
               @Override
               public void run() {
-                TripRegisterActivity.super.onBackPressed();
+                try {
+                  if (inComingCall){
+                    inComingCall = false;
+                    startActivity(new Intent(MyApplication.context, MainActivity.class));
+                    finish();
+                  }else {
+                    TripRegisterActivity.super.onBackPressed();
+                  }
+                } catch (Exception e) {
+                  e.printStackTrace();
+                }
               }
             })
             .secondButton("خیر", null)
