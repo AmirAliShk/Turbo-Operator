@@ -4,6 +4,7 @@ import android.app.ActivityManager;
 import android.content.Context;
 import android.content.Intent;
 
+import androidx.core.content.ContextCompat;
 import ir.taxi1880.operatormanagement.app.MyApplication;
 import ir.taxi1880.operatormanagement.push.AvaCrashReporter;
 import ir.taxi1880.operatormanagement.push.AvaLog;
@@ -20,7 +21,7 @@ public class ServiceHelper {
     try {
       if (activity != null)
         if (!isRunning(activity, serviceClass))
-          activity.startService(new Intent(activity, serviceClass));
+          ContextCompat.startForegroundService(MyApplication.context, new Intent(activity, serviceClass));
     } catch (Exception e) {
       AvaCrashReporter.send(e,114);
       e.printStackTrace();

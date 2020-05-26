@@ -33,10 +33,12 @@ import ir.taxi1880.operatormanagement.activity.CallIncomingActivity;
 import ir.taxi1880.operatormanagement.activity.TripRegisterActivity;
 import ir.taxi1880.operatormanagement.app.DataHolder;
 import ir.taxi1880.operatormanagement.app.MyApplication;
+import ir.taxi1880.operatormanagement.helper.ServiceHelper;
 import ir.taxi1880.operatormanagement.helper.SoundHelper;
 import ir.taxi1880.operatormanagement.helper.VibratorHelper;
 import ir.taxi1880.operatormanagement.push.AvaFactory;
 
+import static ir.taxi1880.operatormanagement.app.MyApplication.context;
 import static ir.taxi1880.operatormanagement.helper.SoundHelper.stop;
 import static java.lang.Thread.sleep;
 
@@ -65,7 +67,7 @@ public class LinphoneService extends Service {
     if (sInstance != null && sInstance.mCore != null) {
       return sInstance.mCore;
     } else {
-      MyApplication.context.startService(new Intent().setClass(MyApplication.currentActivity, LinphoneService.class));
+      ServiceHelper.start(context, LinphoneService.class);
       while (!LinphoneService.isReady()) {
         try {
           sleep(30);

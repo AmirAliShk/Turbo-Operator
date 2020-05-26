@@ -34,10 +34,13 @@ import ir.taxi1880.operatormanagement.dialog.GeneralDialog;
 import ir.taxi1880.operatormanagement.fragment.LoginFragment;
 import ir.taxi1880.operatormanagement.helper.AppVersionHelper;
 import ir.taxi1880.operatormanagement.helper.FragmentHelper;
+import ir.taxi1880.operatormanagement.helper.ServiceHelper;
 import ir.taxi1880.operatormanagement.helper.StringHelper;
 import ir.taxi1880.operatormanagement.helper.TypefaceUtil;
 import ir.taxi1880.operatormanagement.okHttp.RequestHelper;
 import ir.taxi1880.operatormanagement.services.LinphoneService;
+
+import static ir.taxi1880.operatormanagement.app.MyApplication.context;
 
 public class SplashActivity extends AppCompatActivity {
 
@@ -85,7 +88,7 @@ public class SplashActivity extends AppCompatActivity {
     ACRA.getErrorReporter().putCustomData("projectId", PUSH_PROJECT_ID);
     ACRA.getErrorReporter().putCustomData("LineCode", MyApplication.prefManager.getUserCode()+"");
 
-    txtVersion.setText(StringHelper.toPersianDigits("نسخه " + new AppVersionHelper(MyApplication.context).getVerionName() + ""));
+    txtVersion.setText(StringHelper.toPersianDigits("نسخه " + new AppVersionHelper(context).getVerionName() + ""));
 
 //    startVoipService();
 
@@ -156,7 +159,7 @@ public class SplashActivity extends AppCompatActivity {
 
   private void getAppInfo() {
     RequestHelper.builder(EndPoints.GET_APP_INFO)
-            .addParam("versionCode", new AppVersionHelper(MyApplication.context).getVerionCode())
+            .addParam("versionCode", new AppVersionHelper(context).getVerionCode())
             .addParam("operatorId", MyApplication.prefManager.getUserCode())
             .addParam("userName", MyApplication.prefManager.getUserName())
             .addParam("password", MyApplication.prefManager.getPassword())
@@ -336,8 +339,7 @@ public class SplashActivity extends AppCompatActivity {
       continueProcessing();
     } else {
       // If it's not, let's start it
-      startService(
-              new Intent().setClass(this, LinphoneService.class));
+      ServiceHelper.start(context, LinphoneService.class);
       // And wait for it to be ready, so we can safely use it afterwards
       new ServiceWaitThread().start();
     }
