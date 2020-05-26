@@ -52,6 +52,7 @@ import butterknife.OnFocusChange;
 import butterknife.Unbinder;
 import ir.taxi1880.operatormanagement.R;
 import ir.taxi1880.operatormanagement.adapter.SpinnerAdapter;
+import ir.taxi1880.operatormanagement.app.DataHolder;
 import ir.taxi1880.operatormanagement.app.EndPoints;
 import ir.taxi1880.operatormanagement.app.Keys;
 import ir.taxi1880.operatormanagement.app.MyApplication;
@@ -1539,6 +1540,21 @@ public class TripRegisterActivity extends AppCompatActivity {
     super.onResume();
     MyApplication.currentActivity = this;
     showTitleBar();
+    if (DataHolder.getInstance().getConnectedCall()){
+      DataHolder.getInstance().setConnectedCall(false);
+      startCallQuality();
+      imgEndCall.setColorFilter(ContextCompat.getColor(MyApplication.context, R.color.colorRed), android.graphics.PorterDuff.Mode.MULTIPLY);
+
+      Call[] calls = core.getCalls();
+      for (Call call : calls){
+        if (call != null && call.getState() == Call.State.StreamsRunning){
+          if (voipId.equals("0")){
+            Address address = call.getRemoteAddress();
+            edtTell.setText(address.getUsername());
+        }
+        }
+      }
+    };
 
 //    Call call = core.getCurrentCall();
 //    if (call != null) {
@@ -1677,7 +1693,11 @@ public class TripRegisterActivity extends AppCompatActivity {
         if (voipId.equals("0"))
           edtTell.setText(address.getUsername());
         showTitleBar();
-      } else if (state == Call.State.Error) {
+      }else if (state == Call.State.StreamsRunning){
+        MyApplication.Toast("lk", Toast.LENGTH_SHORT);
+      }
+
+      else if (state == Call.State.Error) {
         showTitleBar();
       } else if (state == Call.State.End) {
         showTitleBar();
@@ -1773,7 +1793,6 @@ public class TripRegisterActivity extends AppCompatActivity {
     txtCallerNum.setText(address.getUsername());
     rlNewInComingCall.setVisibility(View.VISIBLE);
     rlActionBar.setVisibility(View.GONE);
-    SoundHelper.ringing(R.raw.ring);
   }
 
   private void showTitleBar() {

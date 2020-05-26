@@ -115,8 +115,6 @@ public class CallIncomingActivity extends AppCompatActivity {
     RipplePulseLayout mRipplePulseLayout = findViewById(R.id.layout_ripplepulse);
     mRipplePulseLayout.startRippleAnimation();
 
-    SoundHelper.ringing(R.raw.ring);
-
   }
 
   private void gotoCalling() {
@@ -128,6 +126,7 @@ public class CallIncomingActivity extends AppCompatActivity {
     // This flag is required to start an Activity from a Service context
     intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
     startActivity(intent);
+    DataHolder.getInstance().setConnectedCall(true);
     finish();
 
   }

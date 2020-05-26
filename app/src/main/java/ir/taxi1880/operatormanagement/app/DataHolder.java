@@ -4,6 +4,7 @@ public class DataHolder {
   private static DataHolder ourInstance;
 
   private boolean isEndCall=false;
+  private boolean isConnectedCall=false;
 
   public boolean isEndCall() {
     return ourInstance.isEndCall;
@@ -20,5 +21,13 @@ public class DataHolder {
     } else {
       return ourInstance;
     }
+  }
+
+  public void setConnectedCall(boolean connectedCall) {
+    ourInstance.isConnectedCall = connectedCall;
+  }
+
+  public Boolean getConnectedCall(){
+    return ourInstance.isConnectedCall;
   }
 }

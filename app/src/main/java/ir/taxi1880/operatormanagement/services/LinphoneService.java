@@ -33,9 +33,11 @@ import ir.taxi1880.operatormanagement.activity.CallIncomingActivity;
 import ir.taxi1880.operatormanagement.activity.TripRegisterActivity;
 import ir.taxi1880.operatormanagement.app.DataHolder;
 import ir.taxi1880.operatormanagement.app.MyApplication;
+import ir.taxi1880.operatormanagement.helper.SoundHelper;
 import ir.taxi1880.operatormanagement.helper.VibratorHelper;
 import ir.taxi1880.operatormanagement.push.AvaFactory;
 
+import static ir.taxi1880.operatormanagement.helper.SoundHelper.stop;
 import static java.lang.Thread.sleep;
 
 public class LinphoneService extends Service {
@@ -108,18 +110,25 @@ public class LinphoneService extends Service {
           NotificationManager notificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
           notificationManager.cancel(0);
           VibratorHelper.setVibrator(MyApplication.context,pattern);
+          stop();
         } else {
           DataHolder.getInstance().setEndCall(false);
         }
+
+        if (state == Call.State.Released) {
+          stop();
+        }
+
         if (state == Call.State.IncomingReceived) {
           onIncomingReceived();
         }
+
         if (state == Call.State.Connected) {
           VibratorHelper.setVibrator(MyApplication.context,pattern);
           //if don't receive push notification from server we call missingPushApi
           AvaFactory.getInstance(getApplicationContext()).readMissingPush();
           MyApplication.Toast("Connected", Toast.LENGTH_SHORT);
-
+          stop();
         }
       }
     };
@@ -267,6 +276,7 @@ public class LinphoneService extends Service {
   }
 
   private void onIncomingReceived() {
+    SoundHelper.ringing(R.raw.ring);
     if (TripRegisterActivity.isRunning) return;
     Intent intent = new Intent(this, CallIncomingActivity.class);
     // This flag is required to start an Activity from a Service context
