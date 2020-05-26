@@ -50,7 +50,7 @@ public class CallDialog {
   void onTransferCallPress() {
     Call[] calls = core.getCalls();
     for (Call call : calls){
-      if (call.getState() == Call.State.Connected){
+      if (call != null && call.getState() == Call.State.StreamsRunning){
         call.transfer("950");
       }
     }
