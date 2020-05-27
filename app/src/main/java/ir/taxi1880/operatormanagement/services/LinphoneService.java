@@ -1,5 +1,7 @@
 package ir.taxi1880.operatormanagement.services;
 
+import android.app.Notification;
+import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.app.Service;
 import android.content.Context;
@@ -53,7 +55,7 @@ public class LinphoneService extends Service {
   private Core mCore;
   private CoreListenerStub mCoreListener;
   long[] pattern = {0,70,70};
-  Context context = getApplicationContext();
+  public static final String CHANNEL_ID = "ForegroundServiceChannel";
 
   public static boolean isReady() {
     return sInstance != null;
@@ -88,7 +90,6 @@ public class LinphoneService extends Service {
   @Override
   public void onCreate() {
     super.onCreate();
-
     // The first call to liblinphone SDK MUST BE to a Factory method
     // So let's enable the library debug logs & log collection
     String basePath = getFilesDir().getAbsolutePath();
@@ -112,7 +113,7 @@ public class LinphoneService extends Service {
           DataHolder.getInstance().setConnectedCall(false);
           NotificationManager notificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
           notificationManager.cancel(0);
-          VibratorHelper.setVibrator(context,pattern);
+          VibratorHelper.setVibrator(MyApplication.context,pattern);
           stop();
         } else {
           DataHolder.getInstance().setEndCall(false);
@@ -128,7 +129,7 @@ public class LinphoneService extends Service {
 
         if (state == Call.State.Connected) {
           DataHolder.getInstance().setConnectedCall(true);
-          VibratorHelper.setVibrator(context,pattern);
+          VibratorHelper.setVibrator(MyApplication.context,pattern);
           //if don't receive push notification from server we call missingPushApi
           AvaFactory.getInstance(getApplicationContext()).readMissingPush();
           Toast.makeText(getApplicationContext(), "connected", Toast.LENGTH_SHORT).show();
@@ -295,6 +296,5 @@ public class LinphoneService extends Service {
   public static void dispatchOnUIThreadAfter(Runnable r, long after) {
     sHandler.postDelayed(r, after);
   }
-
 
 }
