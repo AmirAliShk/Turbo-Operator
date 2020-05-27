@@ -39,6 +39,7 @@ public class MainActivity extends AppCompatActivity implements NotificationFragm
   public static final String TAG = MainActivity.class.getSimpleName();
   Unbinder unbinder;
   boolean doubleBackToExitPressedOnce = false;
+  static boolean active = false;
 
   @OnClick(R.id.llNotification)
   void onNotification() {
@@ -197,14 +198,15 @@ public class MainActivity extends AppCompatActivity implements NotificationFragm
   protected void onStart() {
     super.onStart();
     MyApplication.currentActivity = this;
-//    KeyBoardHelper.hideKeyboard();
     getBalance(MyApplication.prefManager.getUserCode());
+    active = true;
   }
 
   @Override
   protected void onDestroy() {
     super.onDestroy();
     unbinder.unbind();
+    active = false;
   }
 
   @Override
