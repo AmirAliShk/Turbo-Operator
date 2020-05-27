@@ -1556,7 +1556,6 @@ public class TripRegisterActivity extends AppCompatActivity {
     showTitleBar();
     if (DataHolder.getInstance().getConnectedCall()){
       inComingCall = true;
-      DataHolder.getInstance().setConnectedCall(false);
       startCallQuality();
       imgEndCall.setColorFilter(ContextCompat.getColor(MyApplication.context, R.color.colorRed), android.graphics.PorterDuff.Mode.MULTIPLY);
 

@@ -109,6 +109,7 @@ public class LinphoneService extends Service {
 
         if (state == Call.State.End) {
           DataHolder.getInstance().setEndCall(true);
+          DataHolder.getInstance().setConnectedCall(false);
           NotificationManager notificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
           notificationManager.cancel(0);
           VibratorHelper.setVibrator(MyApplication.context,pattern);
@@ -126,6 +127,7 @@ public class LinphoneService extends Service {
         }
 
         if (state == Call.State.Connected) {
+          DataHolder.getInstance().setConnectedCall(true);
           VibratorHelper.setVibrator(MyApplication.context,pattern);
           //if don't receive push notification from server we call missingPushApi
           AvaFactory.getInstance(getApplicationContext()).readMissingPush();
