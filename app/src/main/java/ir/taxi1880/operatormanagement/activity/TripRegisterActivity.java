@@ -329,8 +329,8 @@ public class TripRegisterActivity extends AppCompatActivity {
   byte traffic = 0;
   byte defaultClass = 0;
 
-  @BindView(R.id.imgCallQuality)
-  ImageView imgCallQuality;
+//  @BindView(R.id.imgCallQuality)
+//  ImageView imgCallQuality;
 
   @OnClick(R.id.btnSubmit)
   void onPressSubmit() {
@@ -1655,7 +1655,8 @@ public class TripRegisterActivity extends AppCompatActivity {
     } else { // Worst quality
       imageRes = (R.drawable.call_quality_indicator_0);
     }
-    imgCallQuality.setImageResource(imageRes);
+    ImageView img = findViewById(R.id.imgCallQuality);
+    img.setImageResource(imageRes);
     mDisplayedQuality = iQuality;
   }
 
