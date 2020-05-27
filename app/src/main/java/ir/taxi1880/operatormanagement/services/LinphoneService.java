@@ -38,7 +38,6 @@ import ir.taxi1880.operatormanagement.helper.SoundHelper;
 import ir.taxi1880.operatormanagement.helper.VibratorHelper;
 import ir.taxi1880.operatormanagement.push.AvaFactory;
 
-import static ir.taxi1880.operatormanagement.app.MyApplication.context;
 import static ir.taxi1880.operatormanagement.helper.SoundHelper.stop;
 import static java.lang.Thread.sleep;
 
@@ -54,6 +53,7 @@ public class LinphoneService extends Service {
   private Core mCore;
   private CoreListenerStub mCoreListener;
   long[] pattern = {0,70,70};
+  Context context = getApplicationContext();
 
   public static boolean isReady() {
     return sInstance != null;
@@ -67,7 +67,7 @@ public class LinphoneService extends Service {
     if (sInstance != null && sInstance.mCore != null) {
       return sInstance.mCore;
     } else {
-      ServiceHelper.start(context, LinphoneService.class);
+      ServiceHelper.start(MyApplication.context, LinphoneService.class);
       while (!LinphoneService.isReady()) {
         try {
           sleep(30);
@@ -112,7 +112,7 @@ public class LinphoneService extends Service {
           DataHolder.getInstance().setConnectedCall(false);
           NotificationManager notificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
           notificationManager.cancel(0);
-          VibratorHelper.setVibrator(MyApplication.context,pattern);
+          VibratorHelper.setVibrator(context,pattern);
           stop();
         } else {
           DataHolder.getInstance().setEndCall(false);
@@ -128,10 +128,10 @@ public class LinphoneService extends Service {
 
         if (state == Call.State.Connected) {
           DataHolder.getInstance().setConnectedCall(true);
-          VibratorHelper.setVibrator(MyApplication.context,pattern);
+          VibratorHelper.setVibrator(context,pattern);
           //if don't receive push notification from server we call missingPushApi
           AvaFactory.getInstance(getApplicationContext()).readMissingPush();
-          MyApplication.Toast("Connected", Toast.LENGTH_SHORT);
+          Toast.makeText(getApplicationContext(), "connected", Toast.LENGTH_SHORT).show();
           stop();
         }
       }

@@ -1664,8 +1664,12 @@ public class TripRegisterActivity extends AppCompatActivity {
     } else { // Worst quality
       imageRes = (R.drawable.call_quality_indicator_0);
     }
-    ImageView img = findViewById(R.id.imgCallQuality);
-    img.setImageResource(imageRes);
+    try {
+      ImageView img = findViewById(R.id.imgCallQuality);
+      img.setImageResource(imageRes);
+    }catch (Exception e){
+      e.printStackTrace();
+    }
     mDisplayedQuality = iQuality;
   }
 

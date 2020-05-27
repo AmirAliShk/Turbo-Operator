@@ -21,8 +21,8 @@ public class ServiceHelper {
     try {
       if (activity != null)
         if (!isRunning(activity, serviceClass))
-          activity.startService(new Intent(activity, serviceClass));
-//          ContextCompat.startForegroundService(MyApplication.context, new Intent(activity, serviceClass));
+//          activity.startService(new Intent(activity, serviceClass));
+          ContextCompat.startForegroundService(MyApplication.context, new Intent(activity, serviceClass));
     } catch (Exception e) {
       AvaCrashReporter.send(e,114);
       e.printStackTrace();
