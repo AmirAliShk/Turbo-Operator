@@ -99,14 +99,14 @@ public class SplashActivity extends AppCompatActivity {
 
   }
 
-  String[] permissionsRequired = new String[]{
-          Manifest.permission.RECORD_AUDIO};
+  String[] permissionsRequired = new String[]{Manifest.permission.RECORD_AUDIO ,Manifest.permission.INTERNET,Manifest.permission.FOREGROUND_SERVICE};
   private static final int PERMISSION_CALLBACK_CONSTANT = 100;
 
   public void checkPermission() {
     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
       if ((ContextCompat.checkSelfPermission(MyApplication.currentActivity, Manifest.permission.RECORD_AUDIO) != PackageManager.PERMISSION_GRANTED)
-              || (ContextCompat.checkSelfPermission(MyApplication.currentActivity, Manifest.permission.INTERNET) != PackageManager.PERMISSION_GRANTED)) {
+              || (ContextCompat.checkSelfPermission(MyApplication.currentActivity, Manifest.permission.INTERNET) != PackageManager.PERMISSION_GRANTED)
+              || (ContextCompat.checkSelfPermission(MyApplication.currentActivity, Manifest.permission.FOREGROUND_SERVICE) != PackageManager.PERMISSION_GRANTED)) {
         new GeneralDialog()
                 .title("دسترسی")
                 .message("برای ورود به برنامه ضروری است تا دسترسی های لازم را برای عملکرد بهتر به برنامه داده شود لطفا جهت بهبود عملکرد دسترسی های لازم را اعمال نمایید")
@@ -114,6 +114,7 @@ public class SplashActivity extends AppCompatActivity {
                 .firstButton("باشه", new Runnable() {
                   @Override
                   public void run() {
+                    MyApplication.Toast("ela", Toast.LENGTH_SHORT);
                     ActivityCompat.requestPermissions(MyApplication.currentActivity, permissionsRequired, PERMISSION_CALLBACK_CONSTANT);
                   }
                 })

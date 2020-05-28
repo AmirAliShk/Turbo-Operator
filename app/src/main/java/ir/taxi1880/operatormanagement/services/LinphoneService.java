@@ -30,6 +30,7 @@ import java.util.Timer;
 import java.util.TimerTask;
 
 import androidx.annotation.Nullable;
+import androidx.core.app.NotificationCompat;
 import ir.taxi1880.operatormanagement.R;
 import ir.taxi1880.operatormanagement.activity.CallIncomingActivity;
 import ir.taxi1880.operatormanagement.activity.TripRegisterActivity;
@@ -159,6 +160,25 @@ public class LinphoneService extends Service {
   @Override
   public int onStartCommand(Intent intent, int flags, int startId) {
     super.onStartCommand(intent, flags, startId);
+
+    try {
+      if (Build.VERSION.SDK_INT >= 26) {
+        String CHANNEL_ID = "my_channel_01";
+        NotificationChannel channel = new NotificationChannel(CHANNEL_ID,
+                "Channel human readable title",
+                NotificationManager.IMPORTANCE_DEFAULT);
+
+        ((NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE)).createNotificationChannel(channel);
+
+        Notification notification = new NotificationCompat.Builder(this, CHANNEL_ID)
+                .setContentTitle("elahe")
+                .setContentText("elahe").build();
+
+        startForeground(1, notification);
+      }
+    }catch (Exception e){
+      e.printStackTrace();
+    }
 
     // If our Service is already running, no need to continue
     if (sInstance != null) {
