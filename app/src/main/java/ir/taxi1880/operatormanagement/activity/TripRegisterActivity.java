@@ -728,6 +728,8 @@ public class TripRegisterActivity extends AppCompatActivity {
     RipplePulseLayout mRipplePulseLayout = findViewById(R.id.layout_ripplepulse);
     mRipplePulseLayout.startRippleAnimation();
 
+
+
   }
 
   private void initServiceCountSpinner() {
@@ -1649,7 +1651,9 @@ public class TripRegisterActivity extends AppCompatActivity {
   }
 
   private void updateQualityOfSignalIcon(float quality) {
+    Log.d(TAG, "updateQualityOfSignalIcon: "+quality);
     int iQuality = (int) quality;
+
     int imageRes = R.drawable.call_quality_indicator_0;
 
     if (iQuality == mDisplayedQuality) return;

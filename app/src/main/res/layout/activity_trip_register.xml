@@ -152,6 +152,17 @@
             android:layout_alignParentLeft="true"
             android:src="@drawable/ic_back" />
 
+        <ImageView
+
+            android:id="@+id/imgCallQuality"
+            android:layout_width="35dp"
+            android:layout_height="50dp"
+            android:padding="10dp"
+            android:layout_toRightOf="@+id/imgBack"
+            android:background="@color/colorPrimaryDark"
+            android:src="@drawable/call_quality_indicator_0" />
+
+
         <LinearLayout
             android:id="@+id/llEndCall"
             android:layout_width="80dp"
@@ -203,14 +214,6 @@
 
     </RelativeLayout>
 
-    <ImageView
-        android:id="@+id/imgCallQuality"
-        android:layout_width="50dp"
-        android:layout_height="50dp"
-        android:padding="10dp"
-        android:background="@color/colorPrimaryDark"
-        android:layout_toLeftOf="@id/llEndCall"
-        android:src="@drawable/call_quality_indicator_0" />
 
     <ScrollView
         android:id="@+id/svTripRegister"

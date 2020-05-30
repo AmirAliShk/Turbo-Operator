@@ -96,7 +96,7 @@ public class LinphoneService extends Service {
     String basePath = getFilesDir().getAbsolutePath();
     Factory.instance().setLogCollectionPath(basePath);
     Factory.instance().enableLogCollection(LogCollectionState.Enabled);
-    Factory.instance().setDebugMode(true, "AMIR SIP => ");
+    Factory.instance().setDebugMode(false, "AMIR SIP => ");
 
     // Dump some useful information about the device we're running on
     Log.i(START_LINPHONE_LOGS);
