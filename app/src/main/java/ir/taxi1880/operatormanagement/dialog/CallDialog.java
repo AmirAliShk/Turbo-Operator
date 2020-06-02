@@ -76,6 +76,7 @@ public class CallDialog {
 
   }
 
+//  @Optional
   @OnClick(R.id.llEndCall)
   void onEndCallPress() {
     Core mCore = LinphoneService.getCore();
