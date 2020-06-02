@@ -36,9 +36,9 @@
                     android:layout_width="90dp"
                     android:layout_height="90dp"
                     android:layout_gravity="center"
-                    android:background="@drawable/bg_circle_green"
+                    android:background="@drawable/bg_circle_purple"
                     android:elevation="3dp"
-                    android:padding="25dp"
+                    android:padding="15dp"
                     android:src="@drawable/ic_online_support" />
 
                 <TextView
@@ -67,9 +67,9 @@
                     android:layout_width="90dp"
                     android:layout_height="90dp"
                     android:layout_gravity="center"
-                    android:background="@drawable/bg_circle_green"
+                    android:background="@drawable/bg_circle_purple"
                     android:elevation="3dp"
-                    android:padding="25dp"
+                    android:padding="15dp"
                     android:src="@drawable/ic_status" />
 
                 <TextView
@@ -96,10 +96,10 @@
                     android:layout_width="90dp"
                     android:layout_height="90dp"
                     android:layout_gravity="center"
-                    android:background="@drawable/bg_circle_green"
+                    android:background="@drawable/bg_circle_purple"
                     android:elevation="3dp"
-                    android:padding="25dp"
-                    android:src="@drawable/ic_status" />
+                    android:padding="15dp"
+                    android:src="@drawable/ic_lastcall" />
 
                 <TextView
                     android:layout_width="match_parent"

@@ -82,6 +82,7 @@ import ir.taxi1880.operatormanagement.model.PassengerAddressModel;
 import ir.taxi1880.operatormanagement.model.StationInfoModel;
 import ir.taxi1880.operatormanagement.model.TypeServiceModel;
 import ir.taxi1880.operatormanagement.okHttp.RequestHelper;
+import ir.taxi1880.operatormanagement.push.AvaCrashReporter;
 import ir.taxi1880.operatormanagement.services.LinphoneService;
 
 import static ir.taxi1880.operatormanagement.activity.MainActivity.active;
@@ -1167,11 +1168,18 @@ public class TripRegisterActivity extends AppCompatActivity {
     if (v) {
       if (getTellNumber().trim().isEmpty()) {
         try {
-          call = core.getCurrentCall();
-          Address address = call.getRemoteAddress();
-          edtTell.setText(address.getUsername());
-        } catch (Exception e) {
+          Core core = LinphoneService.getCore();
+          Call[] calls = core.getCalls();
+          for (Call callList : calls){
+            if (callList.getState() == Call.State.Connected){
+              call = core.getCurrentCall();
+              Address address = call.getRemoteAddress();
+              edtTell.setText(address.getUsername());
+            }
+          }
+        }catch (Exception e){
           e.printStackTrace();
+          AvaCrashReporter.send(e,"callIncomingActivity");
         }
       }
     }
