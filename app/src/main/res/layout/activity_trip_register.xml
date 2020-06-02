@@ -157,7 +157,9 @@
             android:id="@+id/imgCallQuality"
             android:layout_width="35dp"
             android:layout_height="50dp"
-            android:padding="10dp"
+            android:paddingStart="2dp"
+            android:paddingEnd="2dp"
+            android:visibility="invisible"
             android:layout_toRightOf="@+id/imgBack"
             android:background="@color/colorPrimaryDark"
             android:src="@drawable/call_quality_indicator_0" />

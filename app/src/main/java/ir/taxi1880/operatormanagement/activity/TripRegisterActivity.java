@@ -109,6 +109,7 @@ public class TripRegisterActivity extends AppCompatActivity {
   Boolean inComingCall = false;
   NotificationManager mNotificationManager;
   int notifManagerId = 0;
+  ImageView imgCallQuality;
 
 
   @OnClick(R.id.imgBack)
@@ -726,7 +727,7 @@ public class TripRegisterActivity extends AppCompatActivity {
     RipplePulseLayout mRipplePulseLayout = findViewById(R.id.layout_ripplepulse);
     mRipplePulseLayout.startRippleAnimation();
 
-
+    imgCallQuality = findViewById(R.id.imgCallQuality);
 
   }
 
@@ -1673,8 +1674,8 @@ public class TripRegisterActivity extends AppCompatActivity {
       imageRes = (R.drawable.call_quality_indicator_0);
     }
     try {
-      ImageView img = findViewById(R.id.imgCallQuality);
-      img.setImageResource(imageRes);
+      imgCallQuality.setVisibility(View.VISIBLE);
+      imgCallQuality.setImageResource(imageRes);
     }catch (Exception e){
       e.printStackTrace();
     }
@@ -1723,6 +1724,7 @@ public class TripRegisterActivity extends AppCompatActivity {
       } else if (state == Call.State.Error) {
         showTitleBar();
       } else if (state == Call.State.End) {
+        imgCallQuality.setVisibility(View.INVISIBLE);
         showTitleBar();
       }
     }
