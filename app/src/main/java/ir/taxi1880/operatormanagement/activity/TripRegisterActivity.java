@@ -1,6 +1,5 @@
 package ir.taxi1880.operatormanagement.activity;
 
-import android.app.ActivityManager;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
@@ -11,7 +10,6 @@ import android.content.IntentFilter;
 import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
-import android.os.Handler;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
@@ -47,7 +45,6 @@ import org.linphone.core.Core;
 import org.linphone.core.CoreListenerStub;
 
 import java.util.ArrayList;
-import java.util.List;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.NotificationCompat;
@@ -1259,7 +1256,6 @@ public class TripRegisterActivity extends AppCompatActivity {
         @Override
         public void run() {
           try {
-
             Log.i(TAG, "onResponse: " + args[0].toString());
             JSONObject obj = new JSONObject(args[0].toString());
             boolean success = obj.getBoolean("success");
