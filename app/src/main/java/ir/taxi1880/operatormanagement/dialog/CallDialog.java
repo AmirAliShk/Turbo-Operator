@@ -23,6 +23,7 @@ import org.linphone.core.CoreListenerStub;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import butterknife.Optional;
 import butterknife.Unbinder;
 import ir.taxi1880.operatormanagement.R;
 import ir.taxi1880.operatormanagement.app.MyApplication;
@@ -45,6 +46,7 @@ public class CallDialog {
   @BindView(R.id.vfPause)
   ViewFlipper vfPause;
 
+  @Optional
   @OnClick(R.id.llTransfer)
   void onTransferCallPress() {
     Call[] calls = core.getCalls();
@@ -75,7 +77,7 @@ public class CallDialog {
 
   }
 
-  //  @Optional
+  @Optional
   @OnClick(R.id.llEndCall)
   void onEndCallPress() {
     Core mCore = LinphoneService.getCore();
@@ -103,6 +105,7 @@ public class CallDialog {
     dismiss();
   }
 
+  @Optional
   @OnClick(R.id.imgEndCall)
   void onEndPress() {
 
@@ -203,13 +206,9 @@ public class CallDialog {
     this.callBack = callBack;
     //TODO  if call is available this layer must be visible
     core = LinphoneService.getCore();
-
     call = core.getCurrentCall();
     vfCall.setDisplayedChild((call == null) ? 0 : 1);
-
-
     core.addListener(coreListener);
-
     dialog.show();
   }
 

@@ -111,7 +111,7 @@
 
         <LinearLayout
             android:id="@+id/llStatus"
-            android:layout_width="180dp"
+            android:layout_width="160dp"
             android:layout_height="45dp"
             android:layout_centerInParent="true"
             android:background="@drawable/bg_activate_status"
@@ -156,10 +156,12 @@
 
             android:id="@+id/imgCallQuality"
             android:layout_width="35dp"
-            android:layout_height="50dp"
-            android:paddingStart="2dp"
-            android:paddingEnd="2dp"
-            android:visibility="invisible"
+            android:layout_height="match_parent"
+            android:layout_marginTop="15dp"
+            android:layout_marginBottom="15dp"
+            android:layout_marginRight="15dp"
+            android:layout_marginLeft="1dp"
+            android:visibility="visible"
             android:layout_toRightOf="@+id/imgBack"
             android:background="@color/colorPrimaryDark"
             android:src="@drawable/call_quality_indicator_0" />
