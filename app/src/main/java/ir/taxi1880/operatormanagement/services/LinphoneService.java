@@ -12,7 +12,6 @@ import android.os.Build;
 import android.os.Handler;
 import android.os.IBinder;
 import android.os.Looper;
-import android.widget.Toast;
 
 import org.linphone.core.Call;
 import org.linphone.core.Core;
@@ -133,7 +132,6 @@ public class LinphoneService extends Service {
           VibratorHelper.setVibrator(MyApplication.context,pattern);
           //if don't receive push notification from server we call missingPushApi
           AvaFactory.getInstance(getApplicationContext()).readMissingPush();
-          Toast.makeText(getApplicationContext(), "connected", Toast.LENGTH_SHORT).show();
           stop();
         }
       }

@@ -18,7 +18,6 @@ import org.linphone.core.Address;
 import org.linphone.core.Call;
 import org.linphone.core.CallParams;
 import org.linphone.core.Core;
-import org.linphone.core.CoreListener;
 import org.linphone.core.CoreListenerStub;
 
 import butterknife.BindView;
@@ -49,9 +48,9 @@ public class CallDialog {
   @OnClick(R.id.llTransfer)
   void onTransferCallPress() {
     Call[] calls = core.getCalls();
-    for (Call call : calls){
-      if (call != null && call.getState() == Call.State.StreamsRunning){
-        call.transfer("950");
+    for (Call call : calls) {
+      if (call != null && call.getState() == Call.State.StreamsRunning) {
+        call.transfer("998");
       }
     }
     MyApplication.Toast("تماس به صف پشتیبانی منتقل شد", Toast.LENGTH_SHORT);
@@ -76,7 +75,7 @@ public class CallDialog {
 
   }
 
-//  @Optional
+  //  @Optional
   @OnClick(R.id.llEndCall)
   void onEndCallPress() {
     Core mCore = LinphoneService.getCore();
@@ -115,8 +114,8 @@ public class CallDialog {
       e.printStackTrace();
     }
 
-    setCancelable(true);
     vfCall.setDisplayedChild(0);
+    setCancelable(true);
   }
 
   @OnClick(R.id.llCallSupport)
@@ -152,7 +151,7 @@ public class CallDialog {
   @OnClick(R.id.llLastCall)
   void onLastCallPress() {
     if (MyApplication.prefManager.getLastCall() == "null") {
-      MyApplication.Toast("اخیرا تماسی برقرار نشده است." , Toast.LENGTH_LONG);
+      MyApplication.Toast("اخیرا تماسی برقرار نشده است.", Toast.LENGTH_LONG);
     } else {
       Address addressToCall = core.interpretUrl(MyApplication.prefManager.getLastCall());
       CallParams params = core.createCallParams(null);
@@ -188,7 +187,7 @@ public class CallDialog {
   Address callAddress;
 
   public void show(CallBack callBack) {
-    if (MyApplication.currentActivity==null)return;
+    if (MyApplication.currentActivity == null) return;
     dialog = new Dialog(MyApplication.currentActivity);
     dialog.getWindow().requestFeature(Window.FEATURE_NO_TITLE);
     dialog.getWindow().getAttributes().windowAnimations = R.style.ExpandAnimation;
@@ -204,33 +203,33 @@ public class CallDialog {
     this.callBack = callBack;
     //TODO  if call is available this layer must be visible
     core = LinphoneService.getCore();
+
     call = core.getCurrentCall();
     vfCall.setDisplayedChild((call == null) ? 0 : 1);
 
-    CoreListener coreListener = new CoreListenerStub() {
-      @Override
-      public void onCallStateChanged(Core lc, Call _call, Call.State state, String message) {
-        super.onCallStateChanged(lc, _call, state, message);
-        call = _call;
-
-        if (state == Call.State.IncomingReceived) {
-          callBack.onCallReceived();
-        } else if (state == Call.State.Released) {
-          dismiss();
-          setCancelable(true);
-          vfCall.setDisplayedChild(0);
-        } else if (state == Call.State.Connected) {
-        } else if (state == Call.State.End) {
-          dismiss();
-        }
-      }
-    };
 
     core.addListener(coreListener);
 
-
     dialog.show();
   }
+
+  CoreListenerStub coreListener = new CoreListenerStub() {
+
+    @Override
+    public void onCallStateChanged(Core lc, Call _call, Call.State state, String message) {
+      super.onCallStateChanged(lc, _call, state, message);
+      call = _call;
+
+      if (state == Call.State.IncomingReceived) {
+        callBack.onCallReceived();
+      } else if (state == Call.State.Released) {
+        dismiss();
+      } else if (state == Call.State.Connected) {
+      } else if (state == Call.State.End) {
+        dismiss();
+      }
+    }
+  };
 
   private void dismiss() {
     if (callBack != null)
@@ -248,8 +247,9 @@ public class CallDialog {
   }
 
   private void setCancelable(boolean v) {
-    dialog.setCancelable(v);
-
-    imgClose.setVisibility(v ? View.VISIBLE : View.GONE);
+    if (dialog != null) {
+      dialog.setCancelable(v);
+      imgClose.setVisibility(v ? View.VISIBLE : View.GONE);
+    }
   }
 }
