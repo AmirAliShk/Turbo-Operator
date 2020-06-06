@@ -57,7 +57,6 @@ import butterknife.OnFocusChange;
 import butterknife.Unbinder;
 import ir.taxi1880.operatormanagement.R;
 import ir.taxi1880.operatormanagement.adapter.SpinnerAdapter;
-import ir.taxi1880.operatormanagement.app.DataHolder;
 import ir.taxi1880.operatormanagement.app.EndPoints;
 import ir.taxi1880.operatormanagement.app.Keys;
 import ir.taxi1880.operatormanagement.app.MyApplication;
@@ -85,8 +84,6 @@ import ir.taxi1880.operatormanagement.okHttp.RequestHelper;
 import ir.taxi1880.operatormanagement.push.AvaCrashReporter;
 import ir.taxi1880.operatormanagement.services.LinphoneService;
 
-import static ir.taxi1880.operatormanagement.activity.MainActivity.active;
-
 public class TripRegisterActivity extends AppCompatActivity {
 
   public static final String TAG = TripRegisterActivity.class.getSimpleName();
@@ -106,10 +103,8 @@ public class TripRegisterActivity extends AppCompatActivity {
   private boolean isTellValidable = false;
   String queue = "0";
   String voipId = "0";
-  Boolean inComingCall = false;
   NotificationManager mNotificationManager;
   int notifManagerId = 0;
-  ImageView imgCallQuality;
 
 
   @OnClick(R.id.imgBack)
@@ -134,6 +129,9 @@ public class TripRegisterActivity extends AppCompatActivity {
 
   @BindView(R.id.spServiceCount)
   Spinner spServiceCount;
+
+  @BindView(R.id.imgCallQuality)
+  ImageView imgCallQuality;
 
   @BindView(R.id.spServiceType)
   Spinner spServiceType;
@@ -642,71 +640,9 @@ public class TripRegisterActivity extends AppCompatActivity {
 
     edtTell.requestFocus();
 
-    edtTell.addTextChangedListener(new TextWatcher() {
-      @Override
-      public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+    edtTell.addTextChangedListener(edtTellTextWather);
 
-      }
-
-      @Override
-      public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-//        if (charSequence.toString().isEmpty()) {
-//        spCity.setSelection(0);
-        isEnableView = false;
-        disableViews();
-        spCity.setSelection(0);
-        initServiceCountSpinner();
-        initServiceTypeSpinner();
-//        }
-      }
-
-      @Override
-      public void afterTextChanged(Editable editable) {
-
-        if (PhoneNumberValidation.havePrefix(editable.toString()))
-          edtTell.setText(PhoneNumberValidation.removePrefix(editable.toString()));
-
-
-        if (PhoneNumberValidation.isValid(editable.toString())) {
-          edtMobile.setText(editable.toString());
-          edtMobile.setNextFocusDownId(R.id.edtMobile);
-        } else {
-//          clearData();
-//          edtMobile.setText("");
-          isTellValidable = true;
-          edtFamily.setText("");
-          edtAddress.setText("");
-          edtOrigin.setText("");
-          txtDescription.setText("");
-          rgCarClass.clearCheck();
-          txtLockPassenger.setVisibility(View.GONE);
-          txtNewPassenger.setVisibility(View.GONE);
-          rbUnknow.setChecked(true);
-          chbAlways.setChecked(false);
-          edtTell.setNextFocusDownId(R.id.edtMobile);
-          edtMobile.setNextFocusDownId(R.id.edtMobile);
-        }
-      }
-    });
-
-    edtMobile.addTextChangedListener(new TextWatcher() {
-      @Override
-      public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-
-      }
-
-      @Override
-      public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-
-      }
-
-      @Override
-      public void afterTextChanged(Editable editable) {
-        if (editable.toString().length() == 1 && editable.toString().startsWith("0")) {
-          editable.clear();
-        }
-      }
-    });
+    edtMobile.addTextChangedListener(edtMobileTW);
 
     rgCarClass.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
       @Override
@@ -726,10 +662,72 @@ public class TripRegisterActivity extends AppCompatActivity {
 
     RipplePulseLayout mRipplePulseLayout = findViewById(R.id.layout_ripplepulse);
     mRipplePulseLayout.startRippleAnimation();
-
-    imgCallQuality = findViewById(R.id.imgCallQuality);
-
   }
+
+  TextWatcher edtMobileTW = new TextWatcher() {
+    @Override
+    public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+    }
+
+    @Override
+    public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+    }
+
+    @Override
+    public void afterTextChanged(Editable editable) {
+      if (editable.toString().length() == 1 && editable.toString().startsWith("0")) {
+        editable.clear();
+      }
+    }
+  };
+  TextWatcher edtTellTextWather = new TextWatcher() {
+    @Override
+    public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+    }
+
+    @Override
+    public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+//        if (charSequence.toString().isEmpty()) {
+//        spCity.setSelection(0);
+      isEnableView = false;
+      disableViews();
+      spCity.setSelection(0);
+      initServiceCountSpinner();
+      initServiceTypeSpinner();
+//        }
+    }
+
+    @Override
+    public void afterTextChanged(Editable editable) {
+
+      if (PhoneNumberValidation.havePrefix(editable.toString()))
+        edtTell.setText(PhoneNumberValidation.removePrefix(editable.toString()));
+
+
+      if (PhoneNumberValidation.isValid(editable.toString())) {
+        edtMobile.setText(editable.toString());
+        edtMobile.setNextFocusDownId(R.id.edtMobile);
+      } else {
+//          clearData();
+//          edtMobile.setText("");
+        isTellValidable = true;
+        edtFamily.setText("");
+        edtAddress.setText("");
+        edtOrigin.setText("");
+        txtDescription.setText("");
+        rgCarClass.clearCheck();
+        txtLockPassenger.setVisibility(View.GONE);
+        txtNewPassenger.setVisibility(View.GONE);
+        rbUnknow.setChecked(true);
+        chbAlways.setChecked(false);
+        edtTell.setNextFocusDownId(R.id.edtMobile);
+        edtMobile.setNextFocusDownId(R.id.edtMobile);
+      }
+    }
+  };
 
   private void initServiceCountSpinner() {
     try {
@@ -1171,16 +1169,16 @@ public class TripRegisterActivity extends AppCompatActivity {
         try {
           Core core = LinphoneService.getCore();
           Call[] calls = core.getCalls();
-          for (Call callList : calls){
-            if (callList.getState() == Call.State.Connected){
+          for (Call callList : calls) {
+            if (callList.getState() == Call.State.Connected) {
               call = core.getCurrentCall();
               Address address = call.getRemoteAddress();
               edtTell.setText(address.getUsername());
             }
           }
-        }catch (Exception e){
+        } catch (Exception e) {
           e.printStackTrace();
-          AvaCrashReporter.send(e,"callIncomingActivity");
+          AvaCrashReporter.send(e, "callIncomingActivity");
         }
       }
     }
@@ -1561,21 +1559,21 @@ public class TripRegisterActivity extends AppCompatActivity {
     super.onResume();
     MyApplication.currentActivity = this;
     showTitleBar();
-    if (DataHolder.getInstance().getConnectedCall()){
-      inComingCall = true;
+    if (MyApplication.prefManager.getConnectedCall()) {
       startCallQuality();
       imgEndCall.setColorFilter(ContextCompat.getColor(MyApplication.context, R.color.colorRed), android.graphics.PorterDuff.Mode.MULTIPLY);
 
       Call[] calls = core.getCalls();
-      for (Call call : calls){
-        if (call != null && call.getState() == Call.State.StreamsRunning){
-          if (voipId.equals("0")){
+      for (Call call : calls) {
+        if (call != null && call.getState() == Call.State.StreamsRunning) {
+          if (voipId.equals("0")) {
             Address address = call.getRemoteAddress();
             edtTell.setText(address.getUsername());
           }
         }
       }
-    };
+    }
+    ;
 
 //    Call call = core.getCurrentCall();
 //    if (call != null) {
@@ -1632,31 +1630,33 @@ public class TripRegisterActivity extends AppCompatActivity {
     }
   }
 
-  private Runnable mCallQualityUpdater;
+  private Runnable mCallQualityUpdater = null;
   private int mDisplayedQuality = -1;
 
   private void startCallQuality() {
-    LinphoneService.dispatchOnUIThreadAfter(
-            mCallQualityUpdater =
-                    new Runnable() {
-                      final Call mCurrentCall = LinphoneService.getCore().getCurrentCall();
+    if (mCallQualityUpdater == null)
+      LinphoneService.dispatchOnUIThreadAfter(
+      mCallQualityUpdater =
+              new Runnable() {
+                final Call mCurrentCall = LinphoneService.getCore().getCurrentCall();
 
-                      public void run() {
-                        if (mCurrentCall == null) {
-                          mCallQualityUpdater = null;
-                          return;
-                        }
-                        float newQuality = mCurrentCall.getCurrentQuality();
-                        updateQualityOfSignalIcon(newQuality);
+                public void run() {
+                  if (mCurrentCall == null) {
+                    mCallQualityUpdater = null;
+                    return;
+                  }
+                  float newQuality = mCurrentCall.getCurrentQuality();
+                  updateQualityOfSignalIcon(newQuality);
 
-                        LinphoneService.dispatchOnUIThreadAfter(this, 1000);
-                      }
-                    },
-            1000);
+                  if (MyApplication.prefManager.getConnectedCall())
+                    LinphoneService.dispatchOnUIThreadAfter(this, 1000);
+                }
+              },
+              1000);
   }
 
   private void updateQualityOfSignalIcon(float quality) {
-    Log.d(TAG, "updateQualityOfSignalIcon: "+quality);
+    Log.d(TAG, "updateQualityOfSignalIcon: " + quality);
     int iQuality = (int) quality;
 
     int imageRes = R.drawable.ic_quality_0;
@@ -1676,7 +1676,7 @@ public class TripRegisterActivity extends AppCompatActivity {
     try {
       imgCallQuality.setVisibility(View.VISIBLE);
       imgCallQuality.setImageResource(imageRes);
-    }catch (Exception e){
+    } catch (Exception e) {
       e.printStackTrace();
     }
     mDisplayedQuality = iQuality;
@@ -1695,10 +1695,6 @@ public class TripRegisterActivity extends AppCompatActivity {
     super.onPause();
     KeyBoardHelper.hideKeyboard();
     isRunning = false;
-    if (mCallQualityUpdater != null) {
-      LinphoneService.removeFromUIThreadDispatcher(mCallQualityUpdater);
-      mCallQualityUpdater = null;
-    }
   }
 
   @BindView(R.id.imgEndCall)
@@ -1713,7 +1709,10 @@ public class TripRegisterActivity extends AppCompatActivity {
       } else if (state == Call.State.Released) {
         imgEndCall.setColorFilter(ContextCompat.getColor(MyApplication.context, R.color.colorWhite), android.graphics.PorterDuff.Mode.MULTIPLY);
         showTitleBar();
-
+        if (mCallQualityUpdater != null) {
+          LinphoneService.removeFromUIThreadDispatcher(mCallQualityUpdater);
+          mCallQualityUpdater = null;
+        }
       } else if (state == Call.State.Connected) {
         startCallQuality();
         imgEndCall.setColorFilter(ContextCompat.getColor(MyApplication.context, R.color.colorRed), android.graphics.PorterDuff.Mode.MULTIPLY);
@@ -1726,6 +1725,10 @@ public class TripRegisterActivity extends AppCompatActivity {
       } else if (state == Call.State.End) {
         imgCallQuality.setVisibility(View.INVISIBLE);
         showTitleBar();
+        if (mCallQualityUpdater != null) {
+          LinphoneService.removeFromUIThreadDispatcher(mCallQualityUpdater);
+          mCallQualityUpdater = null;
+        }
       }
     }
   };
@@ -1761,23 +1764,14 @@ public class TripRegisterActivity extends AppCompatActivity {
               @Override
               public void run() {
                 try {
-
                   Call[] calls = core.getCalls();
-                  for (Call call : calls){
-
-                    if (call != null && call.getState() == Call.State.IncomingReceived){
+                  for (Call call : calls) {
+                    if (call != null && call.getState() == Call.State.IncomingReceived) {
                       createNotification();
                     }
-
                   }
-
-                  if (inComingCall && !active){
-                    inComingCall = false;
-                    startActivity(new Intent(MyApplication.context, MainActivity.class));
-                    finish();
-                  }else {
-                    TripRegisterActivity.super.onBackPressed();
-                  }
+                  startActivity(new Intent(MyApplication.context, MainActivity.class));
+                  finish();
                 } catch (Exception e) {
                   e.printStackTrace();
                 }
@@ -1813,7 +1807,6 @@ public class TripRegisterActivity extends AppCompatActivity {
     mNotificationManager.notify(notifManagerId, mBuilder.build());
 
   }
-
 
   @OnClick(R.id.imgAccept)
   void onAcceptPress() {

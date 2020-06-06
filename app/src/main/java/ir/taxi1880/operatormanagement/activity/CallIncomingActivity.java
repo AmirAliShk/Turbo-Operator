@@ -59,6 +59,7 @@ public class CallIncomingActivity extends AppCompatActivity {
   void onRejectPress() {
     Core mCore = LinphoneService.getCore();
     Call currentCall = mCore.getCurrentCall();
+    boolean flagTerminate = false;
     for (Call call : mCore.getCalls()) {
       if (call != null && call.getConference() != null) {
 //        if (mCore.isInConference()) {
@@ -72,10 +73,15 @@ public class CallIncomingActivity extends AppCompatActivity {
         Call.State state = call.getState();
         if (state == Call.State.Paused || state == Call.State.PausedByRemote || state == Call.State.Pausing) {
           call.terminate();
+          flagTerminate = true;
         }
       } else if (call != null && call == currentCall) {
+        flagTerminate = true;
         call.terminate();
       }
+    }
+    if(!flagTerminate){
+      finish();
     }
   }
 
@@ -98,6 +104,11 @@ public class CallIncomingActivity extends AppCompatActivity {
     }
     NotificationManager notificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
     notificationManager.cancel(notifManagerId);
+
+    getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON|
+            WindowManager.LayoutParams.FLAG_DISMISS_KEYGUARD|
+            WindowManager.LayoutParams.FLAG_SHOW_WHEN_LOCKED|
+            WindowManager.LayoutParams.FLAG_TURN_SCREEN_ON);
 
     unbinder = ButterKnife.bind(this);
     TypefaceUtil.overrideFonts(view);

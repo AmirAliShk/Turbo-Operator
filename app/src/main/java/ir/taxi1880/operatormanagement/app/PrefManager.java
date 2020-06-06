@@ -42,6 +42,8 @@ public class PrefManager {
   private static final String CARD_NUMBER = "cardNumber";
   private static final String ACCOUNT_NUMBER = "accountNumber";
   private static final String BALANCE = "balance";
+  private static final String ACTIVEMAINACTIVITY = "activeMainActivity";
+  private static final String CONNECTEDCALL = "connectedCall";
   private static final String SERVICE_TYPE = "typeService";
   private static final String QUEUE_LIST = "queueList";
   private static final String QUEUE = "queue";
@@ -326,5 +328,14 @@ public class PrefManager {
 
   public String getLastCall() {
     return pref.getString(LAST_CALL_NUMBER, "null");
+  }
+
+  public boolean getConnectedCall() {
+    return pref.getBoolean(CONNECTEDCALL, false);
+  }
+
+  public void setConnectedCall(Boolean connected) {
+    editor.putBoolean(CONNECTEDCALL, connected);
+    editor.commit();
   }
 }

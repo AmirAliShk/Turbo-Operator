@@ -39,7 +39,6 @@ public class MainActivity extends AppCompatActivity implements NotificationFragm
   public static final String TAG = MainActivity.class.getSimpleName();
   Unbinder unbinder;
   boolean doubleBackToExitPressedOnce = false;
-  static boolean active = false;
 
   @OnClick(R.id.llNotification)
   void onNotification() {
@@ -67,6 +66,7 @@ public class MainActivity extends AppCompatActivity implements NotificationFragm
               .show();
     } else {
       startActivity(new Intent(MyApplication.context, TripRegisterActivity.class));
+      finish();
     }
   }
 
@@ -191,7 +191,6 @@ public class MainActivity extends AppCompatActivity implements NotificationFragm
   protected void onResume() {
     super.onResume();
     MyApplication.currentActivity = this;
-
   }
 
   @Override
@@ -199,14 +198,12 @@ public class MainActivity extends AppCompatActivity implements NotificationFragm
     super.onStart();
     MyApplication.currentActivity = this;
     getBalance(MyApplication.prefManager.getUserCode());
-    active = true;
   }
 
   @Override
   protected void onDestroy() {
     super.onDestroy();
     unbinder.unbind();
-    active = false;
   }
 
   @Override
@@ -217,7 +214,8 @@ public class MainActivity extends AppCompatActivity implements NotificationFragm
         super.onBackPressed();
       } else {
         if (doubleBackToExitPressedOnce) {
-          super.onBackPressed();
+//          super.onBackPressed();
+          finish();
         } else {
           this.doubleBackToExitPressedOnce = true;
           MyApplication.Toast(getString(R.string.txt_please_for_exit_reenter_back), Toast.LENGTH_SHORT);
