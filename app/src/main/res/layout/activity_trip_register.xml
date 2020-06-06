@@ -164,7 +164,7 @@
             android:visibility="visible"
             android:layout_toRightOf="@+id/imgBack"
             android:background="@color/colorPrimaryDark"
-            android:src="@drawable/call_quality_indicator_0" />
+            android:src="@drawable/ic_quality_0" />
 
 
         <LinearLayout

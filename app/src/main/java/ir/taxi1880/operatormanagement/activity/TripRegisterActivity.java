@@ -1659,19 +1659,19 @@ public class TripRegisterActivity extends AppCompatActivity {
     Log.d(TAG, "updateQualityOfSignalIcon: "+quality);
     int iQuality = (int) quality;
 
-    int imageRes = R.drawable.call_quality_indicator_0;
+    int imageRes = R.drawable.ic_quality_0;
 
     if (iQuality == mDisplayedQuality) return;
     if (quality >= 4) { // Good Quality
-      imageRes = R.drawable.call_quality_indicator_4;
+      imageRes = R.drawable.ic_quality_4;
     } else if (quality >= 3) {// Average quality
-      imageRes = (R.drawable.call_quality_indicator_3);
+      imageRes = (R.drawable.ic_quality_3);
     } else if (quality >= 2) { // Low quality
-      imageRes = (R.drawable.call_quality_indicator_2);
+      imageRes = (R.drawable.ic_quality_2);
     } else if (quality >= 1) { // Very low quality
-      imageRes = (R.drawable.call_quality_indicator_1);
+      imageRes = (R.drawable.ic_quality_1);
     } else { // Worst quality
-      imageRes = (R.drawable.call_quality_indicator_0);
+      imageRes = (R.drawable.ic_quality_0);
     }
     try {
       imgCallQuality.setVisibility(View.VISIBLE);

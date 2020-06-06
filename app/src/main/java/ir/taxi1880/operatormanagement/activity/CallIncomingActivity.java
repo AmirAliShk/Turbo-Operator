@@ -30,6 +30,7 @@ import ir.taxi1880.operatormanagement.R;
 import ir.taxi1880.operatormanagement.app.DataHolder;
 import ir.taxi1880.operatormanagement.app.MyApplication;
 import ir.taxi1880.operatormanagement.helper.SoundHelper;
+import ir.taxi1880.operatormanagement.helper.TypefaceUtil;
 import ir.taxi1880.operatormanagement.push.AvaCrashReporter;
 import ir.taxi1880.operatormanagement.services.LinphoneService;
 
@@ -99,6 +100,8 @@ public class CallIncomingActivity extends AppCompatActivity {
     notificationManager.cancel(notifManagerId);
 
     unbinder = ButterKnife.bind(this);
+    TypefaceUtil.overrideFonts(view);
+
     mListener =
             new CoreListenerStub() {
               @Override
@@ -160,6 +163,7 @@ public class CallIncomingActivity extends AppCompatActivity {
   @Override
   protected void onResume() {
     super.onResume();
+    MyApplication.currentActivity = this;
     try {
       Core core = LinphoneService.getCore();
       if (core != null) {
