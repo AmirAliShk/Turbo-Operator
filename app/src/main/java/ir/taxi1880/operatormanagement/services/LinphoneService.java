@@ -11,6 +11,7 @@ import android.os.Handler;
 import android.os.IBinder;
 import android.os.Looper;
 
+import org.linphone.core.Address;
 import org.linphone.core.Call;
 import org.linphone.core.Core;
 import org.linphone.core.CoreListenerStub;
@@ -106,6 +107,7 @@ public class LinphoneService extends Service {
       public void onCallStateChanged(Core core, final Call call, Call.State state, String message) {
 
         if (state == Call.State.End) {
+          MyApplication.prefManager.setCallIncoming(false);
           DataHolder.getInstance().setEndCall(true);
           MyApplication.prefManager.setConnectedCall(false);
           NotificationManager notificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
@@ -122,9 +124,14 @@ public class LinphoneService extends Service {
 
         if (state == Call.State.IncomingReceived) {
           onIncomingReceived();
+          MyApplication.prefManager.setCallIncoming(true);
         }
 
         if (state == Call.State.Connected) {
+          if (MyApplication.prefManager.isCallIncoming()){
+            Address address = call.getRemoteAddress();
+            MyApplication.prefManager.setLastCall(address.getUsername());
+          }
           MyApplication.prefManager.setConnectedCall(true);
           VibratorHelper.setVibrator(MyApplication.context,pattern);
           //if don't receive push notification from server we call missingPushApi

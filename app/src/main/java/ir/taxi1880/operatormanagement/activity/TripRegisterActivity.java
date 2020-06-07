@@ -1700,29 +1700,35 @@ public class TripRegisterActivity extends AppCompatActivity {
   @BindView(R.id.imgEndCall)
   ImageView imgEndCall;
 
+
   CoreListenerStub mCoreListener = new CoreListenerStub() {
     @Override
     public void onCallStateChanged(Core core, final Call call, Call.State state, String message) {
       TripRegisterActivity.this.call = call;
+
       if (state == Call.State.IncomingReceived) {
         showCallIncoming();
-      } else if (state == Call.State.Released) {
+      }
+      else if (state == Call.State.Released) {
         imgEndCall.setColorFilter(ContextCompat.getColor(MyApplication.context, R.color.colorWhite), android.graphics.PorterDuff.Mode.MULTIPLY);
         showTitleBar();
         if (mCallQualityUpdater != null) {
           LinphoneService.removeFromUIThreadDispatcher(mCallQualityUpdater);
           mCallQualityUpdater = null;
         }
-      } else if (state == Call.State.Connected) {
+      }
+      else if (state == Call.State.Connected) {
         startCallQuality();
         imgEndCall.setColorFilter(ContextCompat.getColor(MyApplication.context, R.color.colorRed), android.graphics.PorterDuff.Mode.MULTIPLY);
         Address address = call.getRemoteAddress();
         if (voipId.equals("0"))
           edtTell.setText(address.getUsername());
         showTitleBar();
-      } else if (state == Call.State.Error) {
+      }
+      else if (state == Call.State.Error) {
         showTitleBar();
-      } else if (state == Call.State.End) {
+      }
+      else if (state == Call.State.End) {
         imgCallQuality.setVisibility(View.INVISIBLE);
         showTitleBar();
         if (mCallQualityUpdater != null) {

@@ -44,6 +44,7 @@ public class PrefManager {
   private static final String BALANCE = "balance";
   private static final String ACTIVEMAINACTIVITY = "activeMainActivity";
   private static final String CONNECTEDCALL = "connectedCall";
+  private static final String INCOMINGCALL = "incomingCall";
   private static final String SERVICE_TYPE = "typeService";
   private static final String QUEUE_LIST = "queueList";
   private static final String QUEUE = "queue";
@@ -336,6 +337,14 @@ public class PrefManager {
 
   public void setConnectedCall(Boolean connected) {
     editor.putBoolean(CONNECTEDCALL, connected);
+    editor.commit();
+  }
+  public boolean isCallIncoming() {
+    return pref.getBoolean(INCOMINGCALL, false);
+  }
+
+  public void setCallIncoming(Boolean incoming) {
+    editor.putBoolean(INCOMINGCALL, incoming);
     editor.commit();
   }
 }

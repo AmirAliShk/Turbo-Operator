@@ -128,14 +128,9 @@ public class CallIncomingActivity extends AppCompatActivity {
             };
     RipplePulseLayout mRipplePulseLayout = findViewById(R.id.layout_ripplepulse);
     mRipplePulseLayout.startRippleAnimation();
-
   }
 
   private void gotoCalling() {
-    Core core = LinphoneService.getCore();
-    call = core.getCurrentCall();
-    Address address = call.getRemoteAddress();
-    MyApplication.prefManager.setLastCall(address.getUsername());
     Intent intent = new Intent(this, TripRegisterActivity.class);
     // This flag is required to start an Activity from a Service context
     intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
