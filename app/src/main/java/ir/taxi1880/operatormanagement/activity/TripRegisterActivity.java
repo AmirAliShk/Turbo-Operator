@@ -14,6 +14,7 @@ import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.AdapterView;
@@ -662,7 +663,37 @@ public class TripRegisterActivity extends AppCompatActivity {
 
     RipplePulseLayout mRipplePulseLayout = findViewById(R.id.layout_ripplepulse);
     mRipplePulseLayout.startRippleAnimation();
+
+    setCursorEnd(getWindow().getDecorView().getRootView());
+
   }
+
+  public static void setCursorEnd(final View v) {
+    try {
+      if (v instanceof ViewGroup) {
+        ViewGroup vg = (ViewGroup) v;
+        for (int i = 0; i < vg.getChildCount(); i++) {
+          View child = vg.getChildAt(i);
+          setCursorEnd(child);
+        }
+      } else if (v instanceof EditText) {
+        EditText e = (EditText) v;
+        e.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+          @Override
+          public void onFocusChange(View view, boolean b) {
+            if (b)
+              MyApplication.handler.postDelayed(()->e.setSelection(e.getText().length()),200);
+          }
+        });
+      }
+    }
+    catch (Exception e) {
+      e.printStackTrace();
+      // ignore
+    }
+  }
+
+
 
   TextWatcher edtMobileTW = new TextWatcher() {
     @Override
@@ -775,6 +806,8 @@ public class TripRegisterActivity extends AppCompatActivity {
         }
       }
     });
+
+
   }
 
   private void initServiceTypeSpinner() {
@@ -1636,22 +1669,22 @@ public class TripRegisterActivity extends AppCompatActivity {
   private void startCallQuality() {
     if (mCallQualityUpdater == null)
       LinphoneService.dispatchOnUIThreadAfter(
-      mCallQualityUpdater =
-              new Runnable() {
-                final Call mCurrentCall = LinphoneService.getCore().getCurrentCall();
+              mCallQualityUpdater =
+                      new Runnable() {
+                        final Call mCurrentCall = LinphoneService.getCore().getCurrentCall();
 
-                public void run() {
-                  if (mCurrentCall == null) {
-                    mCallQualityUpdater = null;
-                    return;
-                  }
-                  float newQuality = mCurrentCall.getCurrentQuality();
-                  updateQualityOfSignalIcon(newQuality);
+                        public void run() {
+                          if (mCurrentCall == null) {
+                            mCallQualityUpdater = null;
+                            return;
+                          }
+                          float newQuality = mCurrentCall.getCurrentQuality();
+                          updateQualityOfSignalIcon(newQuality);
 
-                  if (MyApplication.prefManager.getConnectedCall())
-                    LinphoneService.dispatchOnUIThreadAfter(this, 1000);
-                }
-              },
+                          if (MyApplication.prefManager.getConnectedCall())
+                            LinphoneService.dispatchOnUIThreadAfter(this, 1000);
+                        }
+                      },
               1000);
   }
 
@@ -1708,27 +1741,23 @@ public class TripRegisterActivity extends AppCompatActivity {
 
       if (state == Call.State.IncomingReceived) {
         showCallIncoming();
-      }
-      else if (state == Call.State.Released) {
+      } else if (state == Call.State.Released) {
         imgEndCall.setColorFilter(ContextCompat.getColor(MyApplication.context, R.color.colorWhite), android.graphics.PorterDuff.Mode.MULTIPLY);
         showTitleBar();
         if (mCallQualityUpdater != null) {
           LinphoneService.removeFromUIThreadDispatcher(mCallQualityUpdater);
           mCallQualityUpdater = null;
         }
-      }
-      else if (state == Call.State.Connected) {
+      } else if (state == Call.State.Connected) {
         startCallQuality();
         imgEndCall.setColorFilter(ContextCompat.getColor(MyApplication.context, R.color.colorRed), android.graphics.PorterDuff.Mode.MULTIPLY);
         Address address = call.getRemoteAddress();
         if (voipId.equals("0"))
           edtTell.setText(address.getUsername());
         showTitleBar();
-      }
-      else if (state == Call.State.Error) {
+      } else if (state == Call.State.Error) {
         showTitleBar();
-      }
-      else if (state == Call.State.End) {
+      } else if (state == Call.State.End) {
         imgCallQuality.setVisibility(View.INVISIBLE);
         showTitleBar();
         if (mCallQualityUpdater != null) {
