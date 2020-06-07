@@ -25,6 +25,7 @@ import org.linphone.core.TransportType;
 import java.util.Locale;
 
 import androidx.fragment.app.FragmentManager;
+import ir.taxi1880.operatormanagement.BuildConfig;
 import ir.taxi1880.operatormanagement.R;
 import ir.taxi1880.operatormanagement.helper.TypefaceUtil;
 import ir.taxi1880.operatormanagement.push.AvaFactory;
@@ -72,7 +73,7 @@ public class MyApplication extends Application {
     if (MyApplication.prefManager.getUserCode() != 0)
       avaStart();
 
-      ACRA.init(this);
+    ACRA.init(this);
 
   }
 
@@ -137,7 +138,9 @@ public class MyApplication extends Application {
       // No account configured, we display the configuration activity
       AccountCreator mAccountCreator = LinphoneService.getCore().createAccountCreator(null);
 
-      mAccountCreator.setDomain(prefManager.getSipServer());
+      mAccountCreator.setDomain((BuildConfig.DEBUG)
+              ? "172.16.2.216:4060"
+              : prefManager.getSipServer());
       mAccountCreator.setUsername(prefManager.getSipNumber() + "");
       mAccountCreator.setPassword(prefManager.getSipPassword());
       mAccountCreator.setTransport(TransportType.Udp);
@@ -149,13 +152,12 @@ public class MyApplication extends Application {
       core.setDefaultProxyConfig(cfg);
 
       // At least the 3 below values are required
-    }catch (Exception e){
+    } catch (Exception e) {
       e.printStackTrace();
     }
 
 
   }
-
 
 
 }

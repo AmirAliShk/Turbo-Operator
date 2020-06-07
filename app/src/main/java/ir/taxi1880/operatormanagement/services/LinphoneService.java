@@ -11,6 +11,7 @@ import android.os.Handler;
 import android.os.IBinder;
 import android.os.Looper;
 
+import org.acra.ACRA;
 import org.linphone.core.Address;
 import org.linphone.core.Call;
 import org.linphone.core.Core;
@@ -302,4 +303,7 @@ public class LinphoneService extends Service {
     sHandler.postDelayed(r, after);
   }
 
+  public static void trackBreadcrumb(String event) {
+    ACRA.getErrorReporter().putCustomData("Event details", event);
+  }
 }
