@@ -43,7 +43,6 @@
             android:launchMode="singleInstance"
             android:windowSoftInputMode="adjustResize|stateHidden"/>
 
-
         <service
             android:name=".services.LinphoneService"
             android:label="@string/app_name" />
@@ -67,5 +66,4 @@
             android:enabled="true" />
 
     </application>
-
 </manifest>
