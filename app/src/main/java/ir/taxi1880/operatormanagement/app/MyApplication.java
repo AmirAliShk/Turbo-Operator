@@ -140,6 +140,7 @@ public class MyApplication extends Application {
 
       mAccountCreator.setDomain((BuildConfig.DEBUG)
               ? "172.16.2.216:4060"
+//              ? prefManager.getSipServer()
               : prefManager.getSipServer());
       mAccountCreator.setUsername(prefManager.getSipNumber() + "");
       mAccountCreator.setPassword(prefManager.getSipPassword());

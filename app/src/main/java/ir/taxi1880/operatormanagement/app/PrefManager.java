@@ -3,6 +3,7 @@ package ir.taxi1880.operatormanagement.app;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
+import android.util.Log;
 
 
 public class PrefManager {
@@ -224,6 +225,7 @@ public class PrefManager {
   }
 
   public void setCity(String city) {
+    Log.d("LOG", "setCity: "+city);
     editor.putString(CITY, city);
     editor.commit();
   }

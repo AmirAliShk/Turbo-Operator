@@ -55,6 +55,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import butterknife.OnFocusChange;
+import butterknife.OnLongClick;
 import butterknife.Unbinder;
 import ir.taxi1880.operatormanagement.R;
 import ir.taxi1880.operatormanagement.adapter.SpinnerAdapter;
@@ -181,25 +182,49 @@ public class TripRegisterActivity extends AppCompatActivity {
   @BindView(R.id.llSearchBg)
   ImageButton llSearchBg;
 
+
+
+
+  @OnLongClick(R.id.edtDestination)
+  boolean onDestinationLongPress() {
+    edtDestination.requestFocus();
+    onSearchPress();
+
+    return false;
+  }
+  @OnLongClick(R.id.edtOrigin)
+  boolean onOriginLongPress() {
+    edtOrigin.requestFocus();
+    onSearchPress();
+    return false;
+  }
   @OnClick(R.id.llSearchBg)
   void onSearchPress() {
+
+    View view = getCurrentFocus();
     new SearchLocationDialog().show(new SearchLocationDialog.Listener() {
       @Override
       public void description(String address, int code) {
-        new GeneralDialog()
-                .message("انتخاب شود برای")
-                .firstButton("مبدا", new Runnable() {
-                  @Override
-                  public void run() {
-                    edtOrigin.setText(code + "");
 
-                  }
-                }).secondButton("مقصد", new Runnable() {
-          @Override
-          public void run() {
-            edtDestination.setText(code + "");
-          }
-        }).show();
+        if (view.getId() == R.id.edtDestination) {
+          edtDestination.setText(code + "");
+        } else if (view.getId() == R.id.edtOrigin) {
+          edtOrigin.setText(code + "");
+        } else
+          new GeneralDialog()
+                  .message("انتخاب شود برای")
+                  .firstButton("مبدا", new Runnable() {
+                    @Override
+                    public void run() {
+                      edtOrigin.setText(code + "");
+
+                    }
+                  }).secondButton("مقصد", new Runnable() {
+            @Override
+            public void run() {
+              edtDestination.setText(code + "");
+            }
+          }).show();
       }
     }, "جست و جوی آدرس", cityLatinName);
   }
@@ -682,17 +707,15 @@ public class TripRegisterActivity extends AppCompatActivity {
           @Override
           public void onFocusChange(View view, boolean b) {
             if (b)
-              MyApplication.handler.postDelayed(()->e.setSelection(e.getText().length()),200);
+              MyApplication.handler.postDelayed(() -> e.setSelection(e.getText().length()), 200);
           }
         });
       }
-    }
-    catch (Exception e) {
+    } catch (Exception e) {
       e.printStackTrace();
       // ignore
     }
   }
-
 
 
   TextWatcher edtMobileTW = new TextWatcher() {
@@ -711,6 +734,7 @@ public class TripRegisterActivity extends AppCompatActivity {
       if (editable.toString().length() == 1 && editable.toString().startsWith("0")) {
         editable.clear();
       }
+
     }
   };
   TextWatcher edtTellTextWather = new TextWatcher() {
@@ -845,8 +869,10 @@ public class TripRegisterActivity extends AppCompatActivity {
     }
   }
 
+  ArrayList<CityModel> cityModels;
+
   private void initCitySpinner() {
-    ArrayList<CityModel> cityModels = new ArrayList<>();
+    cityModels = new ArrayList<>();
     ArrayList<String> cityList = new ArrayList<String>();
     try {
       JSONArray cityArr = new JSONArray(MyApplication.prefManager.getCity());
@@ -945,7 +971,11 @@ public class TripRegisterActivity extends AppCompatActivity {
             initServiceCountSpinner();
             initServiceTypeSpinner();
             enableViews();
-            spCity.setSelection(cityCode, true);
+            for (int i = 0; i < cityModels.size(); i++) {
+              if (cityModels.get(i).getId() == cityCode)
+                spCity.setSelection(i + 1, true);
+            }
+
             if (cityCode == 0) {
               KeyBoardHelper.hideKeyboard();
               new CityDialog().show(new CityDialog.Listener() {
@@ -1634,6 +1664,7 @@ public class TripRegisterActivity extends AppCompatActivity {
         queue = callModel.getQueue();
         voipId = callModel.getVoipId();
         edtTell.setText(participant);
+        MyApplication.handler.postDelayed(() -> onPressDownload(), 100);
       }
     } catch (Exception e) {
       e.printStackTrace();
@@ -1849,9 +1880,11 @@ public class TripRegisterActivity extends AppCompatActivity {
     Call[] calls = core.getCalls();
     int i = calls.length;
     Log.i(TAG, "onRejectPress: " + i);
-    if (call != null)
+    if (call != null) {
       call.accept();
-    else if (calls.length > 0) {
+      if (getMobileNumber().isEmpty() && !isTellValidable)
+        MyApplication.handler.postDelayed(() -> onPressDownload(), 500);
+    } else if (calls.length > 0) {
       calls[0].accept();
     }
   }

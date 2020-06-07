@@ -272,6 +272,7 @@ public class LinphoneService extends Service {
   }
 
   private void copyFromPackage(int ressourceId, String target) throws IOException {
+
     FileOutputStream lOutputStream = openFileOutput(target, 0);
     InputStream lInputStream = getResources().openRawResource(ressourceId);
     int readByte;
