@@ -170,7 +170,8 @@ public class MainActivity extends AppCompatActivity implements NotificationFragm
             JSONObject dataObj = obj.getJSONObject("data");
             int accountBalance = dataObj.getInt("accountBalance");
 
-            txtOperatorCharge.setText(StringHelper.toPersianDigits(accountBalance + " تومان "));
+            if (txtOperatorCharge != null)
+              txtOperatorCharge.setText(StringHelper.toPersianDigits(accountBalance + " تومان "));
             if (vfBalance != null)
               vfBalance.setDisplayedChild(1);
 
