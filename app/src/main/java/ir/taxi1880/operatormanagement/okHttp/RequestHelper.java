@@ -28,7 +28,6 @@ import ir.taxi1880.operatormanagement.app.MyApplication;
 import ir.taxi1880.operatormanagement.helper.StringHelper;
 import ir.taxi1880.operatormanagement.helper.TypefaceUtil;
 import okhttp3.Call;
-import okhttp3.Callback;
 import okhttp3.HttpUrl;
 import okhttp3.MediaType;
 import okhttp3.OkHttpClient;
@@ -40,7 +39,7 @@ import okhttp3.Response;
  * Created by Amirreza Erfanian on 2018/01/12.
  * implementation 'com.squareup.okhttp3:okhttp:3.10.0'
  */
-public class RequestHelper implements Callback {
+public class RequestHelper  implements okhttp3.Callback {
 
     public static final String TAG = RequestHelper.class.getSimpleName();
     public static final String POST = "POST";
@@ -60,10 +59,10 @@ public class RequestHelper implements Callback {
     private Request req;
     private Object[] object;
 
-    public interface Callback {
-        void onResponse(Runnable reCall, Object... args);
-
-        void onFailure(Runnable reCall, Exception e);
+    public static abstract class Callback {
+        public void onReloadPress(boolean v) {}
+        public void onFailure(Runnable reCall, Exception e){}
+        public abstract void onResponse(Runnable reCall, Object... args);
     }
 
     public RequestHelper setErrorHandling(Boolean v) {
@@ -174,6 +173,7 @@ public class RequestHelper implements Callback {
         }
         if (paths != null) {
             for (String ob : paths) {
+                if(ob==null)continue;
                 urlBuilder.addPathSegment(ob);
             }
         }
@@ -376,6 +376,11 @@ public class RequestHelper implements Callback {
             listener.onResponse(runnable, resTemp);
         }
     }
+    private void reloadPress(boolean v) {
+        if (listener != null) {
+            listener.onReloadPress(v);
+        }
+    }
 
     private void requestFailed(int code, Exception e) {
 
@@ -462,8 +467,10 @@ public class RequestHelper implements Callback {
 
 
         btnClose.setOnClickListener(v -> {
-            if (dialog != null)
+            if (dialog != null) {
                 dialog.dismiss();
+                reloadPress(false);
+            }
         });
 
         btnTryAgain.setOnClickListener(v -> {
@@ -471,6 +478,7 @@ public class RequestHelper implements Callback {
 //        vfRetry.setDisplayedChild(1);
             dialog.dismiss();
             runnable.run();
+            reloadPress(true);
 
 //      MyApplication.handler.postDelayed(new Runnable() {
 //        @Override

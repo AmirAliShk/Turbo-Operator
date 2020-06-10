@@ -74,7 +74,6 @@ import ir.taxi1880.operatormanagement.dialog.SearchLocationDialog;
 import ir.taxi1880.operatormanagement.dialog.StationInfoDialog;
 import ir.taxi1880.operatormanagement.helper.KeyBoardHelper;
 import ir.taxi1880.operatormanagement.helper.PhoneNumberValidation;
-import ir.taxi1880.operatormanagement.helper.SoundHelper;
 import ir.taxi1880.operatormanagement.helper.StringHelper;
 import ir.taxi1880.operatormanagement.helper.TypefaceUtil;
 import ir.taxi1880.operatormanagement.model.CallModel;
@@ -183,8 +182,6 @@ public class TripRegisterActivity extends AppCompatActivity {
   ImageButton llSearchBg;
 
 
-
-
   @OnLongClick(R.id.edtDestination)
   boolean onDestinationLongPress() {
     edtDestination.requestFocus();
@@ -192,12 +189,14 @@ public class TripRegisterActivity extends AppCompatActivity {
 
     return false;
   }
+
   @OnLongClick(R.id.edtOrigin)
   boolean onOriginLongPress() {
     edtOrigin.requestFocus();
     onSearchPress();
     return false;
   }
+
   @OnClick(R.id.llSearchBg)
   void onSearchPress() {
 
@@ -1537,6 +1536,21 @@ public class TripRegisterActivity extends AppCompatActivity {
     public void onFailure(Runnable reCall, Exception e) {
       MyApplication.handler.post(LoadingDialog::dismiss);
     }
+
+    @Override
+    public void onReloadPress(boolean v) {
+
+      super.onReloadPress(v);
+      try {
+        if (v)
+          MyApplication.handler.post(LoadingDialog::makeLoader);
+        else
+          MyApplication.handler.post(LoadingDialog::dismiss);
+
+      } catch (Exception e) {
+        e.printStackTrace();
+      }
+    }
   };
 
   private void clearData() {
@@ -1827,6 +1841,7 @@ public class TripRegisterActivity extends AppCompatActivity {
 
   @Override
   public void onBackPressed() {
+
     KeyBoardHelper.hideKeyboard();
     new GeneralDialog()
             .title("خروج")
@@ -1937,7 +1952,6 @@ public class TripRegisterActivity extends AppCompatActivity {
   private void showTitleBar() {
     rlNewInComingCall.setVisibility(View.GONE);
     rlActionBar.setVisibility(View.VISIBLE);
-    SoundHelper.stop();
   }
 
 }

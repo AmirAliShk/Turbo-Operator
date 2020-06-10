@@ -29,7 +29,6 @@ import butterknife.Unbinder;
 import ir.taxi1880.operatormanagement.R;
 import ir.taxi1880.operatormanagement.app.DataHolder;
 import ir.taxi1880.operatormanagement.app.MyApplication;
-import ir.taxi1880.operatormanagement.helper.SoundHelper;
 import ir.taxi1880.operatormanagement.helper.TypefaceUtil;
 import ir.taxi1880.operatormanagement.push.AvaCrashReporter;
 import ir.taxi1880.operatormanagement.services.LinphoneService;
@@ -194,7 +193,6 @@ public class CallIncomingActivity extends AppCompatActivity {
   protected void onDestroy() {
     super.onDestroy();
     unbinder.unbind();
-    SoundHelper.stop();
 
   }
 

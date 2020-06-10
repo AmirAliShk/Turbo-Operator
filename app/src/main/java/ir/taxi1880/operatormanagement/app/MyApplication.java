@@ -73,7 +73,8 @@ public class MyApplication extends Application {
     if (MyApplication.prefManager.getUserCode() != 0)
       avaStart();
 
-    ACRA.init(this);
+    if (!BuildConfig.DEBUG)
+      ACRA.init(this);
 
   }
 
