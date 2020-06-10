@@ -232,34 +232,6 @@ public class TripRegisterActivity extends AppCompatActivity {
         }
       }, "جست و جوی آدرس", cityLatinName);
     }
-//    View view = getCurrentFocus();
-//    new SearchLocationDialog().show(new SearchLocationDialog.Listener() {
-//      @Override
-//      public void description(String address, int code) {
-//
-//        MyApplication.Toast("elah", Toast.LENGTH_SHORT);
-//
-//        if (view.getId() == R.id.edtDestination) {
-//          edtDestination.setText(code + "");
-//        } else if (view.getId() == R.id.edtOrigin) {
-//          edtOrigin.setText(code + "");
-//        } else
-//          new GeneralDialog()
-//                  .message("انتخاب شود برای")
-//                  .firstButton("مبدا", new Runnable() {
-//                    @Override
-//                    public void run() {
-//                      edtOrigin.setText(code + "");
-//
-//                    }
-//                  }).secondButton("مقصد", new Runnable() {
-//            @Override
-//            public void run() {
-//              edtDestination.setText(code + "");
-//            }
-//          }).show();
-//      }
-//    }, "جست و جوی آدرس", cityLatinName);
   }
 
   //TODO HEAR
