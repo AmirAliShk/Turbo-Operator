@@ -24,7 +24,6 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 
-import ir.taxi1880.operatormanagement.okHttp.RequestHelper;
 import ir.taxi1880.operatormanagement.R;
 import ir.taxi1880.operatormanagement.adapter.StationAdapter;
 import ir.taxi1880.operatormanagement.app.EndPoints;
@@ -33,6 +32,7 @@ import ir.taxi1880.operatormanagement.helper.KeyBoardHelper;
 import ir.taxi1880.operatormanagement.helper.StringHelper;
 import ir.taxi1880.operatormanagement.helper.TypefaceUtil;
 import ir.taxi1880.operatormanagement.model.StationModel;
+import ir.taxi1880.operatormanagement.okHttp.RequestHelper;
 
 public class SearchLocationDialog {
 
@@ -53,8 +53,8 @@ public class SearchLocationDialog {
   private Listener listener;
   private static Dialog dialog;
 
-  public void show(Listener listener, String title,String cityLatin) {
-    if (MyApplication.currentActivity==null)return;
+  public void show(Listener listener, String title, String cityLatin) {
+    if (MyApplication.currentActivity == null) return;
     dialog = new Dialog(MyApplication.currentActivity);
     dialog.getWindow().requestFeature(Window.FEATURE_NO_TITLE);
     dialog.getWindow().getAttributes().windowAnimations = R.style.ExpandAnimation;
@@ -84,7 +84,7 @@ public class SearchLocationDialog {
       @Override
       public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 
-        listener.description(stationModels.get(position).getAddress(),stationModels.get(position).getCode());
+        listener.description(stationModels.get(position).getAddress(), stationModels.get(position).getCode());
 //        listener.selectedAddress(true);
         dismiss();
       }
@@ -165,7 +165,7 @@ public class SearchLocationDialog {
         @Override
         public void run() {
           try {
-            stationModels=new ArrayList<>();
+            stationModels = new ArrayList<>();
             JSONArray arr = new JSONArray(args[0].toString());
             for (int i = 0; i < arr.length(); i++) {
               JSONObject object = arr.getJSONObject(i);
@@ -194,9 +194,21 @@ public class SearchLocationDialog {
       });
     }
 
-    @Override
-    public void onFailure(Runnable reCall, Exception e) {
 
+    @Override
+    public void onReloadPress(boolean v) {
+
+      super.onReloadPress(v);
+      try {
+
+        if (v)
+          vfLocation.setDisplayedChild(1);
+        else
+          vfLocation.setDisplayedChild(2);
+
+      } catch (Exception e) {
+        e.printStackTrace();
+      }
     }
   };
 
