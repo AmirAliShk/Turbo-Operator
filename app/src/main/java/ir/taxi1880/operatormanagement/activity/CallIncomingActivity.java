@@ -46,7 +46,11 @@ public class CallIncomingActivity extends AppCompatActivity {
 
   @OnClick(R.id.imgAccept)
   void onAcceptPress() {
-    call.accept();
+    try {
+      call.accept();
+    }catch (Exception e){
+      e.printStackTrace();
+    }
 //    txtTimer.setVisibility(View.VISIBLE);
 //    startTimer();
   }

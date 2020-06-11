@@ -43,10 +43,11 @@
                     android:layout_marginLeft="25dp"
                     android:orientation="vertical">
 
-                    <de.hdodenhof.circleimageview.CircleImageView
+                    <ImageView
                         android:id="@+id/profile_image"
                         android:layout_width="50dp"
                         android:layout_height="50dp"
+                        android:padding="8dp"
                         android:background="@drawable/bg_circle"
                         android:src="@drawable/ic_operator_user" />
 

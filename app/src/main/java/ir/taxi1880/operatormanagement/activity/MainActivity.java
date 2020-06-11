@@ -12,7 +12,6 @@ import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.ViewFlipper;
 
-import org.json.JSONException;
 import org.json.JSONObject;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -174,7 +173,7 @@ public class MainActivity extends AppCompatActivity implements NotificationFragm
             if (vfBalance != null)
               vfBalance.setDisplayedChild(1);
 
-          } catch (JSONException e) {
+          } catch (Exception e) {
             e.printStackTrace();
           }
         }

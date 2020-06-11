@@ -134,7 +134,7 @@ public class AccountFragment extends Fragment {
             txtOperatorCharge.setText(StringHelper.toPersianDigits(accountBalance + " تومان "));
             if (vfBalance != null)
               vfBalance.setDisplayedChild(1);
-          } catch (JSONException e) {
+          } catch (Exception e) {
             e.printStackTrace();
           }
         }
