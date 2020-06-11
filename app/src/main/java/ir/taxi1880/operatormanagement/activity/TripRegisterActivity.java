@@ -200,32 +200,37 @@ public class TripRegisterActivity extends AppCompatActivity {
   @OnClick(R.id.llSearchBg)
   void onSearchPress() {
 
-    View view = getCurrentFocus();
-    new SearchLocationDialog().show(new SearchLocationDialog.Listener() {
-      @Override
-      public void description(String address, int code) {
+    if(cityCode == -1){
+      MyApplication.Toast("شهر را وارد نمایید", Toast.LENGTH_SHORT);
+      spCity.performClick();
+    }else {
+      View view = getCurrentFocus();
+      new SearchLocationDialog().show(new SearchLocationDialog.Listener() {
+        @Override
+        public void description(String address, int code) {
 
-        if (view.getId() == R.id.edtDestination) {
-          edtDestination.setText(code + "");
-        } else if (view.getId() == R.id.edtOrigin) {
-          edtOrigin.setText(code + "");
-        } else
-          new GeneralDialog()
-                  .message("انتخاب شود برای")
-                  .firstButton("مبدا", new Runnable() {
-                    @Override
-                    public void run() {
-                      edtOrigin.setText(code + "");
+          if (view.getId() == R.id.edtDestination) {
+            edtDestination.setText(code + "");
+          } else if (view.getId() == R.id.edtOrigin) {
+            edtOrigin.setText(code + "");
+          } else
+            new GeneralDialog()
+                    .message("انتخاب شود برای")
+                    .firstButton("مبدا", new Runnable() {
+                      @Override
+                      public void run() {
+                        edtOrigin.setText(code + "");
 
-                    }
-                  }).secondButton("مقصد", new Runnable() {
-            @Override
-            public void run() {
-              edtDestination.setText(code + "");
-            }
-          }).show();
-      }
-    }, "جست و جوی آدرس", cityLatinName);
+                      }
+                    }).secondButton("مقصد", new Runnable() {
+              @Override
+              public void run() {
+                edtDestination.setText(code + "");
+              }
+            }).show();
+        }
+      }, "جست و جوی آدرس", cityLatinName);
+    }
   }
 
   //TODO HEAR
