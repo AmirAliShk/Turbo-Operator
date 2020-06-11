@@ -31,8 +31,8 @@ public class EndPoints {
           : "http://turbotaxi.ir:6060";
 
   public static final String APIPort = (BuildConfig.DEBUG) ? "1881" : "1881";
-  public static final String TRIP_APIPort = (BuildConfig.DEBUG) ? "1881" : "2323";
-//  public static final String TRIP_APIPort = (BuildConfig.DEBUG) ? "2323" : "2323";
+//  public static final String TRIP_APIPort = (BuildConfig.DEBUG) ? "1881" : "2323";
+  public static final String TRIP_APIPort = (BuildConfig.DEBUG) ? "2323" : "2323";
   public static final String FIND_WAY_APIPort = (BuildConfig.DEBUG) ? "1885" : "1885";
 
   public static final String WEBSERVICE_PATH = IP + ":" + APIPort + "/api/operator/";

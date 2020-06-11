@@ -619,7 +619,11 @@ public class TripRegisterActivity extends AppCompatActivity {
             .firstButton("مطمئنم", new Runnable() {
               @Override
               public void run() {
-                setDeActivate(MyApplication.prefManager.getUserCode(), MyApplication.prefManager.getSipNumber());
+                if (MyApplication.prefManager.isCallIncoming()) {
+                  MyApplication.Toast(getString(R.string.exit),Toast.LENGTH_SHORT);
+                }else {
+                  setDeActivate(MyApplication.prefManager.getUserCode(), MyApplication.prefManager.getSipNumber());
+                }
               }
             })
             .secondButton("نیستم", null)
