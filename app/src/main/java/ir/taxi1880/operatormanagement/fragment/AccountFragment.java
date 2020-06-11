@@ -107,7 +107,7 @@ public class AccountFragment extends Fragment {
 
   private void getBalance(int userId) {
     if (vfBalance != null)
-    vfBalance.setDisplayedChild(0);
+      vfBalance.setDisplayedChild(0);
 
     RequestHelper.builder(EndPoints.BALANCE)
             .addPath(userId + "")
@@ -131,7 +131,8 @@ public class AccountFragment extends Fragment {
             JSONObject dataObj = obj.getJSONObject("data");
             int accountBalance = dataObj.getInt("accountBalance");
 
-            txtOperatorCharge.setText(StringHelper.toPersianDigits(accountBalance + " تومان "));
+            if (txtOperatorCharge != null)
+              txtOperatorCharge.setText(StringHelper.toPersianDigits(accountBalance + " تومان "));
             if (vfBalance != null)
               vfBalance.setDisplayedChild(1);
           } catch (Exception e) {
@@ -152,8 +153,8 @@ public class AccountFragment extends Fragment {
     RequestHelper.builder(EndPoints.UPDATE_PROFILE)
             .addParam("userId", userId)
             .addParam("accountNumber", StringHelper.toEnglishDigits(accountNumber))
-            .addParam("cardNumber",  StringHelper.toEnglishDigits(cardNumber.replaceAll("-","")))
-            .addParam("sheba",  StringHelper.toEnglishDigits(sheba))
+            .addParam("cardNumber", StringHelper.toEnglishDigits(cardNumber.replaceAll("-", "")))
+            .addParam("sheba", StringHelper.toEnglishDigits(sheba))
             .listener(updateProfile)
             .put();
 
@@ -180,9 +181,12 @@ public class AccountFragment extends Fragment {
                       .message("اطلاعات شما با موفقـیت به روز رسانی شد")
                       .firstButton("باشه", null)
                       .show();
-              MyApplication.prefManager.setAccountNumber(edtAccountNum.getText().toString());
-              MyApplication.prefManager.setSheba(edtIben.getText().toString());
-              MyApplication.prefManager.setCardNumber(edtCardNumber.getText().toString());
+              if (edtAccountNum != null)
+                MyApplication.prefManager.setAccountNumber(edtAccountNum.getText().toString());
+              if (edtIben != null)
+                MyApplication.prefManager.setSheba(edtIben.getText().toString());
+              if (edtCardNumber != null)
+                MyApplication.prefManager.setCardNumber(edtCardNumber.getText().toString());
             }
 
           } catch (JSONException e) {

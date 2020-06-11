@@ -182,7 +182,8 @@ public class ReplacementFragment extends Fragment {
           e.printStackTrace();
         }
 
-        llLoader.setVisibility(View.GONE);
+        if (llLoader != null)
+          llLoader.setVisibility(View.GONE);
       });
     }
 
@@ -218,7 +219,8 @@ public class ReplacementFragment extends Fragment {
         if (vfOperator != null)
           vfOperator.setDisplayedChild(0);
         new OperatorDialog().show((op) -> {
-          edtOperator.setText(op.getOperatorName());
+          if (edtOperator != null)
+            edtOperator.setText(op.getOperatorName());
           opId = op.getOperatorId();
         });
       });

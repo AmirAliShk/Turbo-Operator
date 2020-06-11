@@ -129,7 +129,8 @@ public class MessageFragment extends Fragment {
           }
 
           messageAdapter = new MessageAdapter(MyApplication.context, messageModels);
-          listMessage.setAdapter(messageAdapter);
+          if (listMessage != null)
+            listMessage.setAdapter(messageAdapter);
           MyApplication.handler.postDelayed(() -> listMessage.smoothScrollToPosition(messageModels.size()), 100);
           messageAdapter.notifyDataSetChanged();
 
@@ -168,7 +169,8 @@ public class MessageFragment extends Fragment {
           JSONObject object = new JSONObject(args[0].toString());
           int status = object.getInt("status");
           if (status == 1) {
-            edtMessage.setText("");
+            if (edtMessage != null)
+              edtMessage.setText("");
             messageAdapter.notifyDataSetChanged();
             getMessages(MyApplication.prefManager.getUserCode());
           }

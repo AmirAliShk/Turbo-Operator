@@ -54,7 +54,8 @@ public class SearchLocationDialog {
   private static Dialog dialog;
 
   public void show(Listener listener, String title, String cityLatin) {
-    if (MyApplication.currentActivity == null) return;
+    if (MyApplication.currentActivity == null || MyApplication.currentActivity.isFinishing())
+      return;
     dialog = new Dialog(MyApplication.currentActivity);
     dialog.getWindow().requestFeature(Window.FEATURE_NO_TITLE);
     dialog.getWindow().getAttributes().windowAnimations = R.style.ExpandAnimation;
@@ -179,12 +180,15 @@ public class SearchLocationDialog {
               stationModels.add(stationModel);
             }
 
-            vfLocation.setDisplayedChild(2);
+            if (vfLocation != null)
+              vfLocation.setDisplayedChild(2);
             addressAdapter = new StationAdapter(stationModels, MyApplication.context);
-            listPlace.setAdapter(addressAdapter);
+            if (listPlace != null)
+              listPlace.setAdapter(addressAdapter);
 
             if (stationModels.size() == 0) {
-              vfLocation.setDisplayedChild(0);
+              if (vfLocation != null)
+                vfLocation.setDisplayedChild(0);
             }
 
           } catch (JSONException e) {

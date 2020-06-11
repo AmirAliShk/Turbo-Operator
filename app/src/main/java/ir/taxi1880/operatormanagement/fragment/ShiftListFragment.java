@@ -80,7 +80,7 @@ public class ShiftListFragment extends Fragment {
     public void onResponse(Runnable reCall, Object... args) {
       MyApplication.handler.post(() -> {
         try {
-          Log.i(TAG, "onResponse: "+args[0].toString());
+          Log.i(TAG, "onResponse: " + args[0].toString());
           JSONArray arr = new JSONArray(args[0].toString());
           for (int i = 0; i < arr.length(); i++) {
             JSONObject object = arr.getJSONObject(i);
@@ -93,14 +93,16 @@ public class ShiftListFragment extends Fragment {
           }
 
           shiftAdapter = new ShiftAdapter(shiftModels, MyApplication.context);
-          listShift.setAdapter(shiftAdapter);
+          if (listShift != null)
+            listShift.setAdapter(shiftAdapter);
 
           if (shiftModels.size() == 0) {
             if (vfShift != null)
               vfShift.setDisplayedChild(2);
-          }else
-          if (vfShift != null)
-            vfShift.setDisplayedChild(1);
+          } else {
+            if (vfShift != null)
+              vfShift.setDisplayedChild(1);
+          }
 
         } catch (Exception e) {
           e.printStackTrace();

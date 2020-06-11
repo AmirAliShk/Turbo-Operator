@@ -27,21 +27,21 @@ public class ShiftFragment extends Fragment {
   }
 
   @OnClick(R.id.llShiftList)
-  void llShifts(){
+  void llShifts() {
     FragmentHelper
             .toFragment(MyApplication.currentActivity, new ShiftListFragment())
             .replace();
   }
 
   @OnClick(R.id.llSendReplacement)
-  void llSendReplacement(){
+  void llSendReplacement() {
     FragmentHelper
             .toFragment(MyApplication.currentActivity, new SendReplacementReqFragment())
             .replace();
   }
 
   @OnClick(R.id.llGetReplacement)
-  void llGetReplacement(){
+  void llGetReplacement() {
     FragmentHelper
             .toFragment(MyApplication.currentActivity, new ReplacementWaitingFragment())
             .replace();
@@ -50,8 +50,15 @@ public class ShiftFragment extends Fragment {
   @Override
   public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
     View view = inflater.inflate(R.layout.fragment_shift, container, false);
-    unbinder= ButterKnife.bind(this,view);
+    unbinder = ButterKnife.bind(this, view);
     TypefaceUtil.overrideFonts(view);
     return view;
   }
+
+  @Override
+  public void onDestroyView() {
+    super.onDestroyView();
+    unbinder.unbind();
+  }
+
 }

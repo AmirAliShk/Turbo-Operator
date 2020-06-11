@@ -49,21 +49,21 @@ public class ScoresFragment extends Fragment {
   TextView txtMonthScore;
 
   @OnClick(R.id.llBest)
-  void llBest(){
+  void llBest() {
     FragmentHelper
             .toFragment(MyApplication.currentActivity, new BestsFragment())
             .replace();
   }
 
   @OnClick(R.id.llRewards)
-  void llRewards(){
+  void llRewards() {
     FragmentHelper
             .toFragment(MyApplication.currentActivity, new RewardsFragment())
             .replace();
   }
 
   @OnClick(R.id.llScoreList)
-  void llScoreList(){
+  void llScoreList() {
     FragmentHelper
             .toFragment(MyApplication.currentActivity, new ScoreListFragment())
             .replace();
@@ -72,7 +72,7 @@ public class ScoresFragment extends Fragment {
   @Override
   public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
     View view = inflater.inflate(R.layout.fragment_scores, container, false);
-    unbinder= ButterKnife.bind(this,view);
+    unbinder = ButterKnife.bind(this, view);
     TypefaceUtil.overrideFonts(view);
     getSingleScore();
     return view;
@@ -80,9 +80,9 @@ public class ScoresFragment extends Fragment {
 
   private void getSingleScore() {
     if (vfScores != null)
-    vfScores.setDisplayedChild(0);
+      vfScores.setDisplayedChild(0);
     RequestHelper.builder(EndPoints.SINGLE)
-            .addPath(MyApplication.prefManager.getUserCode()+"")
+            .addPath(MyApplication.prefManager.getUserCode() + "")
             .listener(getSingleScore)
             .get();
   }
@@ -99,16 +99,18 @@ public class ScoresFragment extends Fragment {
             String message = bestObj.getString("message");
             JSONObject data = bestObj.getJSONObject("data");
 
-            int totalScore=data.getInt("totalScore");
-            int monthScore=data.getInt("monthScore");
-            int weekScore=data.getInt("weekScore");
-            int todayScore=data.getInt("todayScore");
+            int totalScore = data.getInt("totalScore");
+            int monthScore = data.getInt("monthScore");
+            int weekScore = data.getInt("weekScore");
+            int todayScore = data.getInt("todayScore");
 
-            txtDayScore.setText(StringHelper.toPersianDigits(todayScore+""));
-            txtMonthScore.setText(StringHelper.toPersianDigits(monthScore+""));
+            if (txtDayScore != null)
+              txtDayScore.setText(StringHelper.toPersianDigits(todayScore + ""));
+            if (txtMonthScore!=null)
+            txtMonthScore.setText(StringHelper.toPersianDigits(monthScore + ""));
 
             if (vfScores != null)
-            vfScores.setDisplayedChild(1);
+              vfScores.setDisplayedChild(1);
 
           } catch (Exception e) {
             e.printStackTrace();

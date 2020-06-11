@@ -190,7 +190,7 @@ public class CallDialog {
   Address callAddress;
 
   public void show(CallBack callBack) {
-    if (MyApplication.currentActivity == null) return;
+    if (MyApplication.currentActivity == null|| MyApplication.currentActivity.isFinishing()) return;
     dialog = new Dialog(MyApplication.currentActivity);
     dialog.getWindow().requestFeature(Window.FEATURE_NO_TITLE);
     dialog.getWindow().getAttributes().windowAnimations = R.style.ExpandAnimation;

@@ -107,7 +107,8 @@ public class ReplacementWaitingFragment extends Fragment {
           replacementModels.remove(position);
           replacementWaitingAdapter.notifyDataSetChanged();
         });
-        listReplacement.setAdapter(replacementWaitingAdapter);
+        if (listReplacement != null)
+          listReplacement.setAdapter(replacementWaitingAdapter);
         if (replacementModels.size() == 0) {
           if (vfGetReq != null)
             vfGetReq.setDisplayedChild(2);

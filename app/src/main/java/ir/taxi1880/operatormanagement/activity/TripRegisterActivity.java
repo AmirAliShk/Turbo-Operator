@@ -200,10 +200,10 @@ public class TripRegisterActivity extends AppCompatActivity {
   @OnClick(R.id.llSearchBg)
   void onSearchPress() {
 
-    if(cityCode == -1){
+    if (cityCode == -1) {
       MyApplication.Toast("شهر را وارد نمایید", Toast.LENGTH_SHORT);
       spCity.performClick();
-    }else {
+    } else {
       View view = getCurrentFocus();
       new SearchLocationDialog().show(new SearchLocationDialog.Listener() {
         @Override
@@ -942,7 +942,8 @@ public class TripRegisterActivity extends AppCompatActivity {
             MyApplication.handler.postDelayed(new Runnable() {
               @Override
               public void run() {
-                spServiceType.setSelection(2, true);
+                if (spServiceType != null)
+                  spServiceType.setSelection(2, true);
               }
             }, 500);
           }
@@ -970,7 +971,8 @@ public class TripRegisterActivity extends AppCompatActivity {
           int cityCode = passengerInfoObj.getInt("cityCode");
 
           if (success) {
-            edtTell.setNextFocusDownId(R.id.edtFamily);
+            if (edtTell != null)
+              edtTell.setNextFocusDownId(R.id.edtFamily);
             isEnableView = true;
             initServiceCountSpinner();
             initServiceTypeSpinner();
@@ -990,47 +992,63 @@ public class TripRegisterActivity extends AppCompatActivity {
               });
             }
             if (callerCode == 0) {
-              txtNewPassenger.setVisibility(View.VISIBLE);
-              txtLockPassenger.setVisibility(View.GONE);
-              edtFamily.requestFocus();
+              if (txtNewPassenger != null)
+                txtNewPassenger.setVisibility(View.VISIBLE);
+              if (txtLockPassenger != null)
+                txtLockPassenger.setVisibility(View.GONE);
+              if (edtTell != null)
+                edtFamily.requestFocus();
             } else {
               switch (status) {
                 case 0:
-                  txtNewPassenger.setVisibility(View.GONE);
-                  txtLockPassenger.setVisibility(View.GONE);
+                  if (txtNewPassenger != null)
+                    txtNewPassenger.setVisibility(View.GONE);
+                  if (txtLockPassenger != null)
+                    txtLockPassenger.setVisibility(View.GONE);
                   break;
                 case 1:
-                  txtNewPassenger.setVisibility(View.GONE);
-                  txtLockPassenger.setVisibility(View.VISIBLE);
+                  if (txtNewPassenger != null)
+                    txtNewPassenger.setVisibility(View.GONE);
+                  if (txtLockPassenger != null)
+                    txtLockPassenger.setVisibility(View.VISIBLE);
                   break;
               }
-              edtFamily.setText(name);
-              edtAddress.setText(address);
-              edtOrigin.setText(staion + "");
-              txtDescription.setText(permanentDesc + "");
-              rgCarClass.clearCheck();
-              edtDiscount.setText(discountCode);
-              switch (carType) {
-                case 0:
-                  rbUnknow.setChecked(true);
-                  break;
-                case 1:
-                  rbEconomical.setChecked(true);
-                  chbAlways.setChecked(true);
-                  break;
-                case 2:
-                  rbPrivilage.setChecked(true);
-                  chbAlways.setChecked(true);
-                  break;
-                case 3:
-                  rbFormality.setChecked(true);
-                  chbAlways.setChecked(true);
-                  break;
-                case 4:
-                  rbTaxi.setChecked(true);
-                  chbAlways.setChecked(true);
-                  break;
+              if (edtFamily != null)
+                edtFamily.setText(name);
+              if (edtAddress != null)
+                edtAddress.setText(address);
+              if (edtOrigin != null)
+                edtOrigin.setText(staion + "");
+              if (txtDescription != null)
+                txtDescription.setText(permanentDesc + "");
+              if (rgCarClass != null)
+                rgCarClass.clearCheck();
+              if (edtDiscount != null)
+                edtDiscount.setText(discountCode);
+              if (rgCarClass != null) {
+                switch (carType) {
+                  case 0:
+                    rbUnknow.setChecked(true);
+                    break;
+                  case 1:
+                    rbEconomical.setChecked(true);
+                    chbAlways.setChecked(true);
+                    break;
+                  case 2:
+                    rbPrivilage.setChecked(true);
+                    chbAlways.setChecked(true);
+                    break;
+                  case 3:
+                    rbFormality.setChecked(true);
+                    chbAlways.setChecked(true);
+                    break;
+                  case 4:
+                    rbTaxi.setChecked(true);
+                    chbAlways.setChecked(true);
+                    break;
+                }
               }
+
             }
           }
 
@@ -1091,9 +1109,11 @@ public class TripRegisterActivity extends AppCompatActivity {
               new AddressListDialog().show(new AddressListDialog.Listener() {
                 @Override
                 public void description(String address, int stationCode) {
-                  edtAddress.setText(address);
+                  if (edtAddress != null)
+                    edtAddress.setText(address);
                   originStationCode = stationCode;
-                  edtOrigin.setText(stationCode + "");
+                  if (edtOrigin != null)
+                    edtOrigin.setText(stationCode + "");
 
                 }
               }, passengerAddressModels);
@@ -1145,7 +1165,8 @@ public class TripRegisterActivity extends AppCompatActivity {
                       .firstButton("اصلاح میکنم", new Runnable() {
                         @Override
                         public void run() {
-                          edtOrigin.requestFocus();
+                          if (edtOrigin != null)
+                            edtOrigin.requestFocus();
                         }
                       })
                       .show();
@@ -1199,7 +1220,8 @@ public class TripRegisterActivity extends AppCompatActivity {
                       .firstButton("اصلاح میکنم", new Runnable() {
                         @Override
                         public void run() {
-                          edtDestination.requestFocus();
+                          if (edtDestination != null)
+                            edtDestination.requestFocus();
                         }
                       })
                       .show();
@@ -1338,10 +1360,13 @@ public class TripRegisterActivity extends AppCompatActivity {
 
             if (success) {
               MyApplication.Toast("شما باموفقیت وارد صف شدید", Toast.LENGTH_SHORT);
-              btnActivate.setBackgroundResource(R.drawable.bg_green_edge);
+              if (btnActivate != null)
+                btnActivate.setBackgroundResource(R.drawable.bg_green_edge);
               MyApplication.prefManager.setActivateStatus(true);
-              btnDeActivate.setBackgroundColor(Color.parseColor("#00FFB2B2"));
-              btnDeActivate.setTextColor(Color.parseColor("#000000"));
+              if (btnDeActivate != null) {
+                btnDeActivate.setBackgroundColor(Color.parseColor("#00FFB2B2"));
+                btnDeActivate.setTextColor(Color.parseColor("#000000"));
+              }
             } else {
               new GeneralDialog()
                       .title("هشدار")
@@ -1407,9 +1432,12 @@ public class TripRegisterActivity extends AppCompatActivity {
             if (success) {
               MyApplication.Toast("شما باموفقیت از صف خارج شدید", Toast.LENGTH_SHORT);
               MyApplication.prefManager.setActivateStatus(false);
-              btnDeActivate.setBackgroundResource(R.drawable.bg_pink_edge);
-              btnActivate.setBackgroundColor(Color.parseColor("#00FFB2B2"));
-              btnDeActivate.setTextColor(Color.parseColor("#ffffff"));
+              if (btnActivate != null)
+                btnActivate.setBackgroundColor(Color.parseColor("#00FFB2B2"));
+              if (btnDeActivate != null) {
+                btnDeActivate.setBackgroundResource(R.drawable.bg_pink_edge);
+                btnDeActivate.setTextColor(Color.parseColor("#ffffff"));
+              }
             } else {
               new GeneralDialog()
                       .title("هشدار")
@@ -1501,7 +1529,8 @@ public class TripRegisterActivity extends AppCompatActivity {
                       })
 
                       .show();
-              svTripRegister.scrollTo(0, 0);
+              if (svTripRegister != null)
+                svTripRegister.scrollTo(0, 0);
             } else {
               new GeneralDialog()
                       .title("خطا")
@@ -1792,6 +1821,8 @@ public class TripRegisterActivity extends AppCompatActivity {
       if (state == Call.State.IncomingReceived) {
         showCallIncoming();
       } else if (state == Call.State.Released) {
+        //TODO Do you think this is true?  if (imgEndCall!=null)
+        if (imgEndCall!=null)
         imgEndCall.setColorFilter(ContextCompat.getColor(MyApplication.context, R.color.colorWhite), android.graphics.PorterDuff.Mode.MULTIPLY);
         showTitleBar();
         if (mCallQualityUpdater != null) {
@@ -1800,6 +1831,8 @@ public class TripRegisterActivity extends AppCompatActivity {
         }
       } else if (state == Call.State.Connected) {
         startCallQuality();
+        //TODO Do you think this is true?  if (imgEndCall!=null)
+        if (imgEndCall!=null)
         imgEndCall.setColorFilter(ContextCompat.getColor(MyApplication.context, R.color.colorRed), android.graphics.PorterDuff.Mode.MULTIPLY);
         Address address = call.getRemoteAddress();
         if (voipId.equals("0"))
@@ -1808,6 +1841,8 @@ public class TripRegisterActivity extends AppCompatActivity {
       } else if (state == Call.State.Error) {
         showTitleBar();
       } else if (state == Call.State.End) {
+        //TODO Do you think this is true?  if (imgEndCall!=null)
+        if (imgEndCall!=null)
         imgCallQuality.setVisibility(View.INVISIBLE);
         showTitleBar();
         if (mCallQualityUpdater != null) {

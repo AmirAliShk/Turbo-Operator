@@ -79,14 +79,15 @@ public class ScoreListFragment extends Fragment {
             }
 
             scoreAdapter = new ScoreAdapter(scoreModels);
-            recycleScore.setAdapter(scoreAdapter);
+            if (recycleScore != null)
+              recycleScore.setAdapter(scoreAdapter);
 
             if (scoreModels.size() == 0) {
               if (vfScore != null)
                 vfScore.setDisplayedChild(2);
-            }else
-            if (vfScore != null)
-              vfScore.setDisplayedChild(1);
+            } else{
+              if (vfScore != null)
+              vfScore.setDisplayedChild(1);}
 
           } catch (Exception e) {
             e.printStackTrace();

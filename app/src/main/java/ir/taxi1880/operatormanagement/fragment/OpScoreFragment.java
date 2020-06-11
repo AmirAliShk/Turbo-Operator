@@ -36,7 +36,7 @@ public class OpScoreFragment extends Fragment {
 
   @Override
   public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-    View view= inflater.inflate(R.layout.fragment_op_score, container, false);
+    View view = inflater.inflate(R.layout.fragment_op_score, container, false);
     unbinder = ButterKnife.bind(this, view);
     getSingle();
     return view;
@@ -44,7 +44,7 @@ public class OpScoreFragment extends Fragment {
 
   private void getSingle() {
     RequestHelper.builder(EndPoints.SINGLE)
-            .addPath(MyApplication.prefManager.getUserCode()+"")
+            .addPath(MyApplication.prefManager.getUserCode() + "")
             .listener(getSingle)
             .get();
   }
@@ -62,15 +62,18 @@ public class OpScoreFragment extends Fragment {
             String message = scoreObj.getString("message");
             JSONObject bestObj = scoreObj.getJSONObject("data");
 
-            String totalScore=bestObj.getString("totalScore");
-            String monthScore=bestObj.getString("monthScore");
-            String weekScore=bestObj.getString("weekScore");
-            String todayScore=bestObj.getString("todayScore");
-
-            txtTotalScore.setText(totalScore+" totalScore");
-            txtMonthScore.setText(monthScore+" monthScore");
-            txtWeekScore.setText(weekScore+" weekScore");
-            txtTodayScore.setText(todayScore+" todayScore");
+            String totalScore = bestObj.getString("totalScore");
+            String monthScore = bestObj.getString("monthScore");
+            String weekScore = bestObj.getString("weekScore");
+            String todayScore = bestObj.getString("todayScore");
+            if (txtTotalScore != null)
+              txtTotalScore.setText(totalScore + " totalScore");
+            if (txtMonthScore != null)
+              txtMonthScore.setText(monthScore + " monthScore");
+            if (txtWeekScore != null)
+              txtWeekScore.setText(weekScore + " weekScore");
+            if (txtTodayScore != null)
+              txtTodayScore.setText(todayScore + " todayScore");
 
           } catch (Exception e) {
             e.printStackTrace();

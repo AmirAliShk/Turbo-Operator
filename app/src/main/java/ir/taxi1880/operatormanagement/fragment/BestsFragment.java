@@ -91,9 +91,12 @@ public class BestsFragment extends Fragment {
             JSONObject obj0 = bestArr.getJSONObject(0);
             JSONObject obj1 = bestArr.getJSONObject(1);
             JSONObject obj2 = bestArr.getJSONObject(2);
-            txtGolden.setText((obj0.getInt("rowNumber") + "." + obj0.getString("name") + " " + obj0.getString("lastName")));
-            txtSilver.setText((obj1.getInt("rowNumber") + "." + obj1.getString("name") + " " + obj1.getString("lastName")));
-            txtBronze.setText((obj2.getInt("rowNumber") + "." + obj2.getString("name") + " " + obj2.getString("lastName")));
+            if (txtGolden != null)
+              txtGolden.setText((obj0.getInt("rowNumber") + "." + obj0.getString("name") + " " + obj0.getString("lastName")));
+            if (txtSilver != null)
+              txtSilver.setText((obj1.getInt("rowNumber") + "." + obj1.getString("name") + " " + obj1.getString("lastName")));
+            if (txtBronze != null)
+              txtBronze.setText((obj2.getInt("rowNumber") + "." + obj2.getString("name") + " " + obj2.getString("lastName")));
             for (int i = 3; i < bestArr.length(); i++) {
               JSONObject obj = bestArr.getJSONObject(i);
               BestModel bestModel = new BestModel();
@@ -106,13 +109,13 @@ public class BestsFragment extends Fragment {
             }
 
             bestAdapter = new BestAdapter(bestModels);
+            if (recycleBest != null)
             recycleBest.setAdapter(bestAdapter);
 
             if (bestModels.size() == 0) {
               if (vfBest != null)
                 vfBest.setDisplayedChild(2);
-            }else
-            if (vfBest != null)
+            } else if (vfBest != null)
               vfBest.setDisplayedChild(1);
 
           } catch (Exception e) {

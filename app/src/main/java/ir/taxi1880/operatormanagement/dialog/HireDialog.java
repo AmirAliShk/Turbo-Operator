@@ -44,8 +44,9 @@ public class HireDialog {
 
   static Dialog dialog;
 
-  public void show(Listener listener,String mobile, String name, int cityCode) {
-    if (MyApplication.currentActivity==null)return;
+  public void show(Listener listener, String mobile, String name, int cityCode) {
+    if (MyApplication.currentActivity == null || MyApplication.currentActivity.isFinishing())
+      return;
     dialog = new Dialog(MyApplication.currentActivity);
     dialog.getWindow().requestFeature(Window.FEATURE_NO_TITLE);
     dialog.getWindow().getAttributes().windowAnimations = R.style.ExpandAnimation;
@@ -57,7 +58,7 @@ public class HireDialog {
     wlp.windowAnimations = R.style.ExpandAnimation;
     dialog.getWindow().setAttributes(wlp);
     dialog.setCancelable(true);
-    this.listener=listener;
+    this.listener = listener;
 
     getHireType();
 
@@ -81,7 +82,7 @@ public class HireDialog {
                 .message("آیا از ثبت درخواست اطمینان دارید؟")
                 .firstButton("بله", () ->
                         setHire(MyApplication.prefManager.getUserCode(), name, mobile, edtComment.getText().toString(), hireType, cityCode))
-                .secondButton("خیر",null)
+                .secondButton("خیر", null)
                 .show();
       }
     });
@@ -172,7 +173,7 @@ public class HireDialog {
           ArrayList<HireTypeModel> hireTypeModels = new ArrayList<>();
           ArrayList<String> hireTypes = new ArrayList<String>();
           try {
-            Log.i(TAG, "run: "+args[0].toString());
+            Log.i(TAG, "run: " + args[0].toString());
             JSONObject hireObj = new JSONObject(args[0].toString());
             boolean success = hireObj.getBoolean("success");
             String message = hireObj.getString("message");
@@ -187,19 +188,21 @@ public class HireDialog {
               hireTypeModels.add(hireTypeModel);
               hireTypes.add(obj.getString("name"));
             }
-            spHireType.setAdapter(new SpinnerAdapter(MyApplication.currentActivity, R.layout.item_spinner_right, hireTypes));
+            if (spHireType != null) {
+              //TODO test it (fatiNoori)
+              spHireType.setAdapter(new SpinnerAdapter(MyApplication.currentActivity, R.layout.item_spinner_right, hireTypes));
 
-            spHireType.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-              @Override
-              public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                hireType = hireTypeModels.get(position).getId();
-              }
+              spHireType.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                @Override
+                public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                  hireType = hireTypeModels.get(position).getId();
+                }
 
-              @Override
-              public void onNothingSelected(AdapterView<?> parent) {
-              }
-            });
-
+                @Override
+                public void onNothingSelected(AdapterView<?> parent) {
+                }
+              });
+            }
           } catch (JSONException e) {
             e.printStackTrace();
           }

@@ -96,21 +96,21 @@ public class SendReplacementReqFragment extends Fragment {
             }
 
           }
-
+          if (vfSendReq != null)
+            vfSendReq.setDisplayedChild(1);
+          sendReplacementAdapter = new SendReplacementAdapter(replacementModels, MyApplication.context, position -> {
+            replacementModels.remove(position);
+            sendReplacementAdapter.notifyDataSetChanged();
+          });
+          if (listReplacement != null)
+            listReplacement.setAdapter(sendReplacementAdapter);
+          if (replacementModels.size() == 0) {
+            if (vfSendReq != null)
+              vfSendReq.setDisplayedChild(2);
+          }
 
         } catch (Exception e) {
           e.printStackTrace();
-        }
-        if (vfSendReq != null)
-          vfSendReq.setDisplayedChild(1);
-        sendReplacementAdapter = new SendReplacementAdapter(replacementModels, MyApplication.context, position -> {
-          replacementModels.remove(position);
-          sendReplacementAdapter.notifyDataSetChanged();
-        });
-        listReplacement.setAdapter(sendReplacementAdapter);
-        if (replacementModels.size() == 0) {
-          if (vfSendReq != null)
-            vfSendReq.setDisplayedChild(2);
         }
       });
     }

@@ -199,7 +199,7 @@ public class GeneralDialog {
   Dialog dialog;
 
   public void show() {
-    if (MyApplication.currentActivity==null)return;
+    if (MyApplication.currentActivity==null|| MyApplication.currentActivity.isFinishing())return;
     dialog = new Dialog(MyApplication.currentActivity);
     dialog.getWindow().requestFeature(Window.FEATURE_NO_TITLE);
     dialog.setContentView(R.layout.dialog_general);
