@@ -46,5 +46,7 @@
     <string name="today">امروز</string>
     <string name="month">ماه</string>
 
+    <bool name="allow_ringing_while_early_media">false</bool>
+    <bool name="isTablet">false</bool>
 
 </resources>

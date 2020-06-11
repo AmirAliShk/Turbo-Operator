@@ -161,10 +161,10 @@
             android:layout_marginBottom="15dp"
             android:layout_marginRight="15dp"
             android:layout_marginLeft="1dp"
-            android:visibility="visible"
+            android:visibility="invisible"
             android:layout_toRightOf="@+id/imgBack"
             android:background="@color/colorPrimaryDark"
-            android:src="@drawable/call_quality_indicator_0" />
+            android:src="@drawable/ic_quality_0" />
 
 
         <LinearLayout

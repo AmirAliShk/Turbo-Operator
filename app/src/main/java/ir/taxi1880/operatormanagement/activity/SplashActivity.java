@@ -100,16 +100,13 @@ public class SplashActivity extends AppCompatActivity {
 
     }
 
-    String[] permissionsRequired = new String[]{Manifest.permission.RECORD_AUDIO, Manifest.permission.INTERNET, Manifest.permission.FOREGROUND_SERVICE};
+    String[] permissionsRequired = new String[]{Manifest.permission.RECORD_AUDIO};
     private static final int PERMISSION_CALLBACK_CONSTANT = 100;
 
     public void checkPermission() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            boolean forgrandPermission = (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O
-                    && (ContextCompat.checkSelfPermission(MyApplication.currentActivity, Manifest.permission.FOREGROUND_SERVICE) != PackageManager.PERMISSION_GRANTED));
             boolean recordAudioPermission = (ContextCompat.checkSelfPermission(MyApplication.currentActivity, Manifest.permission.RECORD_AUDIO) != PackageManager.PERMISSION_GRANTED);
-            if (recordAudioPermission || forgrandPermission
-            ) {
+            if (recordAudioPermission) {
 
                 new GeneralDialog()
                         .title("دسترسی")

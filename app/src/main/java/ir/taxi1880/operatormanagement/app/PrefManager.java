@@ -3,6 +3,7 @@ package ir.taxi1880.operatormanagement.app;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
+import android.util.Log;
 
 
 public class PrefManager {
@@ -42,6 +43,9 @@ public class PrefManager {
   private static final String CARD_NUMBER = "cardNumber";
   private static final String ACCOUNT_NUMBER = "accountNumber";
   private static final String BALANCE = "balance";
+  private static final String ACTIVEMAINACTIVITY = "activeMainActivity";
+  private static final String CONNECTEDCALL = "connectedCall";
+  private static final String INCOMINGCALL = "incomingCall";
   private static final String SERVICE_TYPE = "typeService";
   private static final String QUEUE_LIST = "queueList";
   private static final String QUEUE = "queue";
@@ -221,6 +225,7 @@ public class PrefManager {
   }
 
   public void setCity(String city) {
+    Log.d("LOG", "setCity: "+city);
     editor.putString(CITY, city);
     editor.commit();
   }
@@ -326,5 +331,22 @@ public class PrefManager {
 
   public String getLastCall() {
     return pref.getString(LAST_CALL_NUMBER, "null");
+  }
+
+  public boolean getConnectedCall() {
+    return pref.getBoolean(CONNECTEDCALL, false);
+  }
+
+  public void setConnectedCall(Boolean connected) {
+    editor.putBoolean(CONNECTEDCALL, connected);
+    editor.commit();
+  }
+  public boolean isCallIncoming() {
+    return pref.getBoolean(INCOMINGCALL, false);
+  }
+
+  public void setCallIncoming(Boolean incoming) {
+    editor.putBoolean(INCOMINGCALL, incoming);
+    editor.commit();
   }
 }

@@ -14,6 +14,7 @@ import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.AdapterView;
@@ -54,10 +55,10 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import butterknife.OnFocusChange;
+import butterknife.OnLongClick;
 import butterknife.Unbinder;
 import ir.taxi1880.operatormanagement.R;
 import ir.taxi1880.operatormanagement.adapter.SpinnerAdapter;
-import ir.taxi1880.operatormanagement.app.DataHolder;
 import ir.taxi1880.operatormanagement.app.EndPoints;
 import ir.taxi1880.operatormanagement.app.Keys;
 import ir.taxi1880.operatormanagement.app.MyApplication;
@@ -73,7 +74,6 @@ import ir.taxi1880.operatormanagement.dialog.SearchLocationDialog;
 import ir.taxi1880.operatormanagement.dialog.StationInfoDialog;
 import ir.taxi1880.operatormanagement.helper.KeyBoardHelper;
 import ir.taxi1880.operatormanagement.helper.PhoneNumberValidation;
-import ir.taxi1880.operatormanagement.helper.SoundHelper;
 import ir.taxi1880.operatormanagement.helper.StringHelper;
 import ir.taxi1880.operatormanagement.helper.TypefaceUtil;
 import ir.taxi1880.operatormanagement.model.CallModel;
@@ -84,8 +84,6 @@ import ir.taxi1880.operatormanagement.model.TypeServiceModel;
 import ir.taxi1880.operatormanagement.okHttp.RequestHelper;
 import ir.taxi1880.operatormanagement.push.AvaCrashReporter;
 import ir.taxi1880.operatormanagement.services.LinphoneService;
-
-import static ir.taxi1880.operatormanagement.activity.MainActivity.active;
 
 public class TripRegisterActivity extends AppCompatActivity {
 
@@ -106,10 +104,8 @@ public class TripRegisterActivity extends AppCompatActivity {
   private boolean isTellValidable = false;
   String queue = "0";
   String voipId = "0";
-  Boolean inComingCall = false;
   NotificationManager mNotificationManager;
   int notifManagerId = 0;
-  ImageView imgCallQuality;
 
 
   @OnClick(R.id.imgBack)
@@ -134,6 +130,9 @@ public class TripRegisterActivity extends AppCompatActivity {
 
   @BindView(R.id.spServiceCount)
   Spinner spServiceCount;
+
+  @BindView(R.id.imgCallQuality)
+  ImageView imgCallQuality;
 
   @BindView(R.id.spServiceType)
   Spinner spServiceType;
@@ -182,27 +181,56 @@ public class TripRegisterActivity extends AppCompatActivity {
   @BindView(R.id.llSearchBg)
   ImageButton llSearchBg;
 
+
+  @OnLongClick(R.id.edtDestination)
+  boolean onDestinationLongPress() {
+    edtDestination.requestFocus();
+    onSearchPress();
+
+    return false;
+  }
+
+  @OnLongClick(R.id.edtOrigin)
+  boolean onOriginLongPress() {
+    edtOrigin.requestFocus();
+    onSearchPress();
+    return false;
+  }
+
   @OnClick(R.id.llSearchBg)
   void onSearchPress() {
-    new SearchLocationDialog().show(new SearchLocationDialog.Listener() {
-      @Override
-      public void description(String address, int code) {
-        new GeneralDialog()
-                .message("انتخاب شود برای")
-                .firstButton("مبدا", new Runnable() {
-                  @Override
-                  public void run() {
-                    edtOrigin.setText(code + "");
 
-                  }
-                }).secondButton("مقصد", new Runnable() {
-          @Override
-          public void run() {
+    if(cityCode == -1){
+      MyApplication.Toast("شهر را وارد نمایید", Toast.LENGTH_SHORT);
+      spCity.performClick();
+    }else {
+      View view = getCurrentFocus();
+      new SearchLocationDialog().show(new SearchLocationDialog.Listener() {
+        @Override
+        public void description(String address, int code) {
+
+          if (view.getId() == R.id.edtDestination) {
             edtDestination.setText(code + "");
-          }
-        }).show();
-      }
-    }, "جست و جوی آدرس", cityLatinName);
+          } else if (view.getId() == R.id.edtOrigin) {
+            edtOrigin.setText(code + "");
+          } else
+            new GeneralDialog()
+                    .message("انتخاب شود برای")
+                    .firstButton("مبدا", new Runnable() {
+                      @Override
+                      public void run() {
+                        edtOrigin.setText(code + "");
+
+                      }
+                    }).secondButton("مقصد", new Runnable() {
+              @Override
+              public void run() {
+                edtDestination.setText(code + "");
+              }
+            }).show();
+        }
+      }, "جست و جوی آدرس", cityLatinName);
+    }
   }
 
   //TODO HEAR
@@ -642,71 +670,9 @@ public class TripRegisterActivity extends AppCompatActivity {
 
     edtTell.requestFocus();
 
-    edtTell.addTextChangedListener(new TextWatcher() {
-      @Override
-      public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+    edtTell.addTextChangedListener(edtTellTextWather);
 
-      }
-
-      @Override
-      public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-//        if (charSequence.toString().isEmpty()) {
-//        spCity.setSelection(0);
-        isEnableView = false;
-        disableViews();
-        spCity.setSelection(0);
-        initServiceCountSpinner();
-        initServiceTypeSpinner();
-//        }
-      }
-
-      @Override
-      public void afterTextChanged(Editable editable) {
-
-        if (PhoneNumberValidation.havePrefix(editable.toString()))
-          edtTell.setText(PhoneNumberValidation.removePrefix(editable.toString()));
-
-
-        if (PhoneNumberValidation.isValid(editable.toString())) {
-          edtMobile.setText(editable.toString());
-          edtMobile.setNextFocusDownId(R.id.edtMobile);
-        } else {
-//          clearData();
-//          edtMobile.setText("");
-          isTellValidable = true;
-          edtFamily.setText("");
-          edtAddress.setText("");
-          edtOrigin.setText("");
-          txtDescription.setText("");
-          rgCarClass.clearCheck();
-          txtLockPassenger.setVisibility(View.GONE);
-          txtNewPassenger.setVisibility(View.GONE);
-          rbUnknow.setChecked(true);
-          chbAlways.setChecked(false);
-          edtTell.setNextFocusDownId(R.id.edtMobile);
-          edtMobile.setNextFocusDownId(R.id.edtMobile);
-        }
-      }
-    });
-
-    edtMobile.addTextChangedListener(new TextWatcher() {
-      @Override
-      public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-
-      }
-
-      @Override
-      public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-
-      }
-
-      @Override
-      public void afterTextChanged(Editable editable) {
-        if (editable.toString().length() == 1 && editable.toString().startsWith("0")) {
-          editable.clear();
-        }
-      }
-    });
+    edtMobile.addTextChangedListener(edtMobileTW);
 
     rgCarClass.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
       @Override
@@ -727,9 +693,100 @@ public class TripRegisterActivity extends AppCompatActivity {
     RipplePulseLayout mRipplePulseLayout = findViewById(R.id.layout_ripplepulse);
     mRipplePulseLayout.startRippleAnimation();
 
-    imgCallQuality = findViewById(R.id.imgCallQuality);
+    setCursorEnd(getWindow().getDecorView().getRootView());
 
   }
+
+  public static void setCursorEnd(final View v) {
+    try {
+      if (v instanceof ViewGroup) {
+        ViewGroup vg = (ViewGroup) v;
+        for (int i = 0; i < vg.getChildCount(); i++) {
+          View child = vg.getChildAt(i);
+          setCursorEnd(child);
+        }
+      } else if (v instanceof EditText) {
+        EditText e = (EditText) v;
+        e.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+          @Override
+          public void onFocusChange(View view, boolean b) {
+            if (b)
+              MyApplication.handler.postDelayed(() -> e.setSelection(e.getText().length()), 200);
+          }
+        });
+      }
+    } catch (Exception e) {
+      e.printStackTrace();
+      // ignore
+    }
+  }
+
+
+  TextWatcher edtMobileTW = new TextWatcher() {
+    @Override
+    public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+    }
+
+    @Override
+    public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+    }
+
+    @Override
+    public void afterTextChanged(Editable editable) {
+      if (editable.toString().length() == 1 && editable.toString().startsWith("0")) {
+        editable.clear();
+      }
+
+    }
+  };
+  TextWatcher edtTellTextWather = new TextWatcher() {
+    @Override
+    public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+    }
+
+    @Override
+    public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+//        if (charSequence.toString().isEmpty()) {
+//        spCity.setSelection(0);
+      isEnableView = false;
+      disableViews();
+      spCity.setSelection(0);
+      initServiceCountSpinner();
+      initServiceTypeSpinner();
+//        }
+    }
+
+    @Override
+    public void afterTextChanged(Editable editable) {
+
+      if (PhoneNumberValidation.havePrefix(editable.toString()))
+        edtTell.setText(PhoneNumberValidation.removePrefix(editable.toString()));
+
+
+      if (PhoneNumberValidation.isValid(editable.toString())) {
+        edtMobile.setText(editable.toString());
+        edtMobile.setNextFocusDownId(R.id.edtMobile);
+      } else {
+//          clearData();
+//          edtMobile.setText("");
+        isTellValidable = true;
+        edtFamily.setText("");
+        edtAddress.setText("");
+        edtOrigin.setText("");
+        txtDescription.setText("");
+        rgCarClass.clearCheck();
+        txtLockPassenger.setVisibility(View.GONE);
+        txtNewPassenger.setVisibility(View.GONE);
+        rbUnknow.setChecked(true);
+        chbAlways.setChecked(false);
+        edtTell.setNextFocusDownId(R.id.edtMobile);
+        edtMobile.setNextFocusDownId(R.id.edtMobile);
+      }
+    }
+  };
 
   private void initServiceCountSpinner() {
     try {
@@ -777,6 +834,8 @@ public class TripRegisterActivity extends AppCompatActivity {
         }
       }
     });
+
+
   }
 
   private void initServiceTypeSpinner() {
@@ -814,8 +873,10 @@ public class TripRegisterActivity extends AppCompatActivity {
     }
   }
 
+  ArrayList<CityModel> cityModels;
+
   private void initCitySpinner() {
-    ArrayList<CityModel> cityModels = new ArrayList<>();
+    cityModels = new ArrayList<>();
     ArrayList<String> cityList = new ArrayList<String>();
     try {
       JSONArray cityArr = new JSONArray(MyApplication.prefManager.getCity());
@@ -914,7 +975,11 @@ public class TripRegisterActivity extends AppCompatActivity {
             initServiceCountSpinner();
             initServiceTypeSpinner();
             enableViews();
-            spCity.setSelection(cityCode, true);
+            for (int i = 0; i < cityModels.size(); i++) {
+              if (cityModels.get(i).getId() == cityCode)
+                spCity.setSelection(i + 1, true);
+            }
+
             if (cityCode == 0) {
               KeyBoardHelper.hideKeyboard();
               new CityDialog().show(new CityDialog.Listener() {
@@ -1171,16 +1236,16 @@ public class TripRegisterActivity extends AppCompatActivity {
         try {
           Core core = LinphoneService.getCore();
           Call[] calls = core.getCalls();
-          for (Call callList : calls){
-            if (callList.getState() == Call.State.Connected){
+          for (Call callList : calls) {
+            if (callList.getState() == Call.State.Connected) {
               call = core.getCurrentCall();
               Address address = call.getRemoteAddress();
               edtTell.setText(address.getUsername());
             }
           }
-        }catch (Exception e){
+        } catch (Exception e) {
           e.printStackTrace();
-          AvaCrashReporter.send(e,"callIncomingActivity");
+          AvaCrashReporter.send(e, "callIncomingActivity");
         }
       }
     }
@@ -1471,6 +1536,21 @@ public class TripRegisterActivity extends AppCompatActivity {
     public void onFailure(Runnable reCall, Exception e) {
       MyApplication.handler.post(LoadingDialog::dismiss);
     }
+
+    @Override
+    public void onReloadPress(boolean v) {
+
+      super.onReloadPress(v);
+      try {
+        if (v)
+          MyApplication.handler.post(LoadingDialog::makeLoader);
+        else
+          MyApplication.handler.post(LoadingDialog::dismiss);
+
+      } catch (Exception e) {
+        e.printStackTrace();
+      }
+    }
   };
 
   private void clearData() {
@@ -1561,21 +1641,21 @@ public class TripRegisterActivity extends AppCompatActivity {
     super.onResume();
     MyApplication.currentActivity = this;
     showTitleBar();
-    if (DataHolder.getInstance().getConnectedCall()){
-      inComingCall = true;
+    if (MyApplication.prefManager.getConnectedCall()) {
       startCallQuality();
       imgEndCall.setColorFilter(ContextCompat.getColor(MyApplication.context, R.color.colorRed), android.graphics.PorterDuff.Mode.MULTIPLY);
 
       Call[] calls = core.getCalls();
-      for (Call call : calls){
-        if (call != null && call.getState() == Call.State.StreamsRunning){
-          if (voipId.equals("0")){
+      for (Call call : calls) {
+        if (call != null && call.getState() == Call.State.StreamsRunning) {
+          if (voipId.equals("0")) {
             Address address = call.getRemoteAddress();
             edtTell.setText(address.getUsername());
           }
         }
       }
-    };
+    }
+    ;
 
 //    Call call = core.getCurrentCall();
 //    if (call != null) {
@@ -1603,6 +1683,7 @@ public class TripRegisterActivity extends AppCompatActivity {
         queue = callModel.getQueue();
         voipId = callModel.getVoipId();
         edtTell.setText(participant);
+        MyApplication.handler.postDelayed(() -> onPressDownload(), 100);
       }
     } catch (Exception e) {
       e.printStackTrace();
@@ -1632,51 +1713,53 @@ public class TripRegisterActivity extends AppCompatActivity {
     }
   }
 
-  private Runnable mCallQualityUpdater;
+  private Runnable mCallQualityUpdater = null;
   private int mDisplayedQuality = -1;
 
   private void startCallQuality() {
-    LinphoneService.dispatchOnUIThreadAfter(
-            mCallQualityUpdater =
-                    new Runnable() {
-                      final Call mCurrentCall = LinphoneService.getCore().getCurrentCall();
+    if (mCallQualityUpdater == null)
+      LinphoneService.dispatchOnUIThreadAfter(
+              mCallQualityUpdater =
+                      new Runnable() {
+                        final Call mCurrentCall = LinphoneService.getCore().getCurrentCall();
 
-                      public void run() {
-                        if (mCurrentCall == null) {
-                          mCallQualityUpdater = null;
-                          return;
+                        public void run() {
+                          if (mCurrentCall == null) {
+                            mCallQualityUpdater = null;
+                            return;
+                          }
+                          float newQuality = mCurrentCall.getCurrentQuality();
+                          updateQualityOfSignalIcon(newQuality);
+
+                          if (MyApplication.prefManager.getConnectedCall())
+                            LinphoneService.dispatchOnUIThreadAfter(this, 1000);
                         }
-                        float newQuality = mCurrentCall.getCurrentQuality();
-                        updateQualityOfSignalIcon(newQuality);
-
-                        LinphoneService.dispatchOnUIThreadAfter(this, 1000);
-                      }
-                    },
-            1000);
+                      },
+              1000);
   }
 
   private void updateQualityOfSignalIcon(float quality) {
-    Log.d(TAG, "updateQualityOfSignalIcon: "+quality);
+    Log.d(TAG, "updateQualityOfSignalIcon: " + quality);
     int iQuality = (int) quality;
 
-    int imageRes = R.drawable.call_quality_indicator_0;
+    int imageRes = R.drawable.ic_quality_0;
 
     if (iQuality == mDisplayedQuality) return;
     if (quality >= 4) { // Good Quality
-      imageRes = R.drawable.call_quality_indicator_4;
+      imageRes = R.drawable.ic_quality_4;
     } else if (quality >= 3) {// Average quality
-      imageRes = (R.drawable.call_quality_indicator_3);
+      imageRes = (R.drawable.ic_quality_3);
     } else if (quality >= 2) { // Low quality
-      imageRes = (R.drawable.call_quality_indicator_2);
+      imageRes = (R.drawable.ic_quality_2);
     } else if (quality >= 1) { // Very low quality
-      imageRes = (R.drawable.call_quality_indicator_1);
+      imageRes = (R.drawable.ic_quality_1);
     } else { // Worst quality
-      imageRes = (R.drawable.call_quality_indicator_0);
+      imageRes = (R.drawable.ic_quality_0);
     }
     try {
       imgCallQuality.setVisibility(View.VISIBLE);
       imgCallQuality.setImageResource(imageRes);
-    }catch (Exception e){
+    } catch (Exception e) {
       e.printStackTrace();
     }
     mDisplayedQuality = iQuality;
@@ -1695,25 +1778,26 @@ public class TripRegisterActivity extends AppCompatActivity {
     super.onPause();
     KeyBoardHelper.hideKeyboard();
     isRunning = false;
-    if (mCallQualityUpdater != null) {
-      LinphoneService.removeFromUIThreadDispatcher(mCallQualityUpdater);
-      mCallQualityUpdater = null;
-    }
   }
 
   @BindView(R.id.imgEndCall)
   ImageView imgEndCall;
 
+
   CoreListenerStub mCoreListener = new CoreListenerStub() {
     @Override
     public void onCallStateChanged(Core core, final Call call, Call.State state, String message) {
       TripRegisterActivity.this.call = call;
+
       if (state == Call.State.IncomingReceived) {
         showCallIncoming();
       } else if (state == Call.State.Released) {
         imgEndCall.setColorFilter(ContextCompat.getColor(MyApplication.context, R.color.colorWhite), android.graphics.PorterDuff.Mode.MULTIPLY);
         showTitleBar();
-
+        if (mCallQualityUpdater != null) {
+          LinphoneService.removeFromUIThreadDispatcher(mCallQualityUpdater);
+          mCallQualityUpdater = null;
+        }
       } else if (state == Call.State.Connected) {
         startCallQuality();
         imgEndCall.setColorFilter(ContextCompat.getColor(MyApplication.context, R.color.colorRed), android.graphics.PorterDuff.Mode.MULTIPLY);
@@ -1726,6 +1810,10 @@ public class TripRegisterActivity extends AppCompatActivity {
       } else if (state == Call.State.End) {
         imgCallQuality.setVisibility(View.INVISIBLE);
         showTitleBar();
+        if (mCallQualityUpdater != null) {
+          LinphoneService.removeFromUIThreadDispatcher(mCallQualityUpdater);
+          mCallQualityUpdater = null;
+        }
       }
     }
   };
@@ -1753,6 +1841,7 @@ public class TripRegisterActivity extends AppCompatActivity {
 
   @Override
   public void onBackPressed() {
+
     KeyBoardHelper.hideKeyboard();
     new GeneralDialog()
             .title("خروج")
@@ -1761,23 +1850,14 @@ public class TripRegisterActivity extends AppCompatActivity {
               @Override
               public void run() {
                 try {
-
                   Call[] calls = core.getCalls();
-                  for (Call call : calls){
-
-                    if (call != null && call.getState() == Call.State.IncomingReceived){
+                  for (Call call : calls) {
+                    if (call != null && call.getState() == Call.State.IncomingReceived) {
                       createNotification();
                     }
-
                   }
-
-                  if (inComingCall && !active){
-                    inComingCall = false;
-                    startActivity(new Intent(MyApplication.context, MainActivity.class));
-                    finish();
-                  }else {
-                    TripRegisterActivity.super.onBackPressed();
-                  }
+                  startActivity(new Intent(MyApplication.context, MainActivity.class));
+                  finish();
                 } catch (Exception e) {
                   e.printStackTrace();
                 }
@@ -1814,16 +1894,17 @@ public class TripRegisterActivity extends AppCompatActivity {
 
   }
 
-
   @OnClick(R.id.imgAccept)
   void onAcceptPress() {
     call = core.getCurrentCall();
     Call[] calls = core.getCalls();
     int i = calls.length;
     Log.i(TAG, "onRejectPress: " + i);
-    if (call != null)
+    if (call != null) {
       call.accept();
-    else if (calls.length > 0) {
+      if (getMobileNumber().isEmpty() && !isTellValidable)
+        MyApplication.handler.postDelayed(() -> onPressDownload(), 500);
+    } else if (calls.length > 0) {
       calls[0].accept();
     }
   }
@@ -1871,7 +1952,6 @@ public class TripRegisterActivity extends AppCompatActivity {
   private void showTitleBar() {
     rlNewInComingCall.setVisibility(View.GONE);
     rlActionBar.setVisibility(View.VISIBLE);
-    SoundHelper.stop();
   }
 
 }

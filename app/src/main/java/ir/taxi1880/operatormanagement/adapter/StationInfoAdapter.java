@@ -11,9 +11,7 @@ import android.widget.TextView;
 import java.util.ArrayList;
 
 import ir.taxi1880.operatormanagement.R;
-import ir.taxi1880.operatormanagement.app.MyApplication;
 import ir.taxi1880.operatormanagement.helper.TypefaceUtil;
-import ir.taxi1880.operatormanagement.model.PassengerAddressModel;
 import ir.taxi1880.operatormanagement.model.StationInfoModel;
 
 public class StationInfoAdapter extends BaseAdapter {
@@ -85,6 +83,7 @@ public class StationInfoAdapter extends BaseAdapter {
 
     } catch (Exception e) {
       e.printStackTrace();
+
     }
 
     return myView;

@@ -29,7 +29,7 @@ import butterknife.Unbinder;
 import ir.taxi1880.operatormanagement.R;
 import ir.taxi1880.operatormanagement.app.DataHolder;
 import ir.taxi1880.operatormanagement.app.MyApplication;
-import ir.taxi1880.operatormanagement.helper.SoundHelper;
+import ir.taxi1880.operatormanagement.helper.TypefaceUtil;
 import ir.taxi1880.operatormanagement.push.AvaCrashReporter;
 import ir.taxi1880.operatormanagement.services.LinphoneService;
 
@@ -58,6 +58,7 @@ public class CallIncomingActivity extends AppCompatActivity {
   void onRejectPress() {
     Core mCore = LinphoneService.getCore();
     Call currentCall = mCore.getCurrentCall();
+    boolean flagTerminate = false;
     for (Call call : mCore.getCalls()) {
       if (call != null && call.getConference() != null) {
 //        if (mCore.isInConference()) {
@@ -71,10 +72,15 @@ public class CallIncomingActivity extends AppCompatActivity {
         Call.State state = call.getState();
         if (state == Call.State.Paused || state == Call.State.PausedByRemote || state == Call.State.Pausing) {
           call.terminate();
+          flagTerminate = true;
         }
       } else if (call != null && call == currentCall) {
+        flagTerminate = true;
         call.terminate();
       }
+    }
+    if(!flagTerminate){
+      finish();
     }
   }
 
@@ -98,7 +104,14 @@ public class CallIncomingActivity extends AppCompatActivity {
     NotificationManager notificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
     notificationManager.cancel(notifManagerId);
 
+    getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON|
+            WindowManager.LayoutParams.FLAG_DISMISS_KEYGUARD|
+            WindowManager.LayoutParams.FLAG_SHOW_WHEN_LOCKED|
+            WindowManager.LayoutParams.FLAG_TURN_SCREEN_ON);
+
     unbinder = ButterKnife.bind(this);
+    TypefaceUtil.overrideFonts(view);
+
     mListener =
             new CoreListenerStub() {
               @Override
@@ -114,14 +127,9 @@ public class CallIncomingActivity extends AppCompatActivity {
             };
     RipplePulseLayout mRipplePulseLayout = findViewById(R.id.layout_ripplepulse);
     mRipplePulseLayout.startRippleAnimation();
-
   }
 
   private void gotoCalling() {
-    Core core = LinphoneService.getCore();
-    call = core.getCurrentCall();
-    Address address = call.getRemoteAddress();
-    MyApplication.prefManager.setLastCall(address.getUsername());
     Intent intent = new Intent(this, TripRegisterActivity.class);
     // This flag is required to start an Activity from a Service context
     intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
@@ -160,6 +168,7 @@ public class CallIncomingActivity extends AppCompatActivity {
   @Override
   protected void onResume() {
     super.onResume();
+    MyApplication.currentActivity = this;
     try {
       Core core = LinphoneService.getCore();
       if (core != null) {
@@ -184,7 +193,6 @@ public class CallIncomingActivity extends AppCompatActivity {
   protected void onDestroy() {
     super.onDestroy();
     unbinder.unbind();
-    SoundHelper.stop();
 
   }
 
