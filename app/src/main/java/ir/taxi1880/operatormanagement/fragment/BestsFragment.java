@@ -111,7 +111,7 @@ public class BestsFragment extends Fragment {
             if (bestModels.size() == 0) {
               if (vfBest != null)
                 vfBest.setDisplayedChild(2);
-            }
+            }else
             if (vfBest != null)
               vfBest.setDisplayedChild(1);
 

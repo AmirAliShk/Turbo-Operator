@@ -88,7 +88,7 @@ public class RewardsFragment extends Fragment {
             if (rewardsModels.size() == 0) {
               if (vfReward != null)
                 vfReward.setDisplayedChild(2);
-            }
+            }else
             if (vfReward != null)
               vfReward.setDisplayedChild(1);
 

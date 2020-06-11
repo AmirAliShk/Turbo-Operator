@@ -2,6 +2,7 @@ package ir.taxi1880.operatormanagement.fragment;
 
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -79,6 +80,7 @@ public class ShiftListFragment extends Fragment {
     public void onResponse(Runnable reCall, Object... args) {
       MyApplication.handler.post(() -> {
         try {
+          Log.i(TAG, "onResponse: "+args[0].toString());
           JSONArray arr = new JSONArray(args[0].toString());
           for (int i = 0; i < arr.length(); i++) {
             JSONObject object = arr.getJSONObject(i);
@@ -96,7 +98,7 @@ public class ShiftListFragment extends Fragment {
           if (shiftModels.size() == 0) {
             if (vfShift != null)
               vfShift.setDisplayedChild(2);
-          }
+          }else
           if (vfShift != null)
             vfShift.setDisplayedChild(1);
 

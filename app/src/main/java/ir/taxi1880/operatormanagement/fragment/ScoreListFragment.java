@@ -84,7 +84,7 @@ public class ScoreListFragment extends Fragment {
             if (scoreModels.size() == 0) {
               if (vfScore != null)
                 vfScore.setDisplayedChild(2);
-            }
+            }else
             if (vfScore != null)
               vfScore.setDisplayedChild(1);
 
