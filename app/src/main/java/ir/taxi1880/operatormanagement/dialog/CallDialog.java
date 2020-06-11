@@ -52,7 +52,7 @@ public class CallDialog {
     Call[] calls = core.getCalls();
     for (Call call : calls) {
       if (call != null && call.getState() == Call.State.StreamsRunning) {
-        call.transfer("998");
+        call.transfer("950");
       }
     }
     MyApplication.Toast("تماس به صف پشتیبانی منتقل شد", Toast.LENGTH_SHORT);

@@ -5,26 +5,28 @@ import ir.taxi1880.operatormanagement.BuildConfig;
 
 public class EndPoints {
 
+/*TODO : check apis and ports before release*/
+
 //    http://172.16.2.201:1881/api/operator/*****
 //    http://api.parsian.ir:1881/api/operator/
 //    http://172.16.2.210:1885/api/findway/citylatinname/address
 
   public static final String IP = (BuildConfig.DEBUG)
-          ? "http://172.16.2.203"
-//          ? "http://turbotaxi.ir"
+//          ? "http://172.16.2.203"
+          ? "http://turbotaxi.ir"
           : "http://turbotaxi.ir";
 //          : "http://172.16.2.203";
 
 
   public static final String FIND_WAY_IP = (BuildConfig.DEBUG)
-//          ? "http://turbotaxi.ir"
-          ? "http://172.16.2.210"
+          ? "http://turbotaxi.ir"
+//          ? "http://172.16.2.210"
           : "http://turbotaxi.ir";
 //          : "http://172.16.2.210";
 
   public static final String PUSH_ADDRESS =   (BuildConfig.DEBUG)
-//          ? "http://turbotaxi.ir:6060"
-          ? "http://172.16.2.212:6060"
+          ? "http://turbotaxi.ir:6060"
+//          ? "http://172.16.2.212:6060"
 //          : "http://172.16.2.212:6060";
           : "http://turbotaxi.ir:6060";
 
