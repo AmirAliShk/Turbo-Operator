@@ -243,14 +243,10 @@ public class LinphoneService extends Service {
 
         if (state == Call.State.End) {
           MyApplication.prefManager.setCallIncoming(false);
-          DataHolder.getInstance().setEndCall(true);
           MyApplication.prefManager.setConnectedCall(false);
           NotificationManager notificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
           notificationManager.cancel(0);
-        } else {
-          DataHolder.getInstance().setEndCall(false);
         }
-
 
         if (state == Call.State.IncomingReceived) {
           onIncomingReceived();

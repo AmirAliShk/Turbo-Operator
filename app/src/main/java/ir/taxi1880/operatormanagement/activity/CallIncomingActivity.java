@@ -1,8 +1,6 @@
 package ir.taxi1880.operatormanagement.activity;
 
-import android.app.NotificationChannel;
 import android.app.NotificationManager;
-import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Build;
@@ -10,7 +8,6 @@ import android.os.Bundle;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
-import android.widget.RemoteViews;
 import android.widget.TextView;
 
 import com.gauravbhola.ripplepulsebackground.RipplePulseLayout;
@@ -21,13 +18,11 @@ import org.linphone.core.Core;
 import org.linphone.core.CoreListenerStub;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.app.NotificationCompat;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import butterknife.Unbinder;
 import ir.taxi1880.operatormanagement.R;
-import ir.taxi1880.operatormanagement.app.DataHolder;
 import ir.taxi1880.operatormanagement.app.MyApplication;
 import ir.taxi1880.operatormanagement.helper.TypefaceUtil;
 import ir.taxi1880.operatormanagement.push.AvaCrashReporter;
@@ -142,33 +137,6 @@ public class CallIncomingActivity extends AppCompatActivity {
 
   }
 
-  public void createNotification() {
-    String CALLCHANNEL = "callChannel";
-
-    RemoteViews collapsedView = new RemoteViews(getPackageName(), R.layout.notification_collapsed);
-    RemoteViews expandedView = new RemoteViews(getPackageName(), R.layout.notification_expanded);
-
-    Intent intent = new Intent(MyApplication.context, CallIncomingActivity.class);
-    collapsedView.setOnClickPendingIntent(R.id.linearNotif, PendingIntent.getActivity(MyApplication.context, 1, intent, PendingIntent.FLAG_UPDATE_CURRENT));
-    expandedView.setOnClickPendingIntent(R.id.btnBackToCall, PendingIntent.getActivity(MyApplication.context, 1, intent, PendingIntent.FLAG_UPDATE_CURRENT));
-
-    NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(MyApplication.context.getApplicationContext(), "notify_timer")
-            .setSmallIcon(R.drawable.return_call)
-            .setCustomContentView(collapsedView)
-            .setAutoCancel(true)
-            .setCustomBigContentView(expandedView)
-            .setStyle(new NotificationCompat.DecoratedCustomViewStyle());
-    mNotificationManager = (NotificationManager) MyApplication.context.getSystemService(Context.NOTIFICATION_SERVICE);
-
-    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-      NotificationChannel channel = new NotificationChannel(CALLCHANNEL, "call channel", NotificationManager.IMPORTANCE_HIGH);
-      mNotificationManager.createNotificationChannel(channel);
-      mBuilder.setChannelId(CALLCHANNEL);
-    }
-    mNotificationManager.notify(notifManagerId, mBuilder.build());
-
-  }
-
   @Override
   protected void onResume() {
     super.onResume();
@@ -211,9 +179,6 @@ public class CallIncomingActivity extends AppCompatActivity {
 
   @Override
   public void onBackPressed() {
-    if (!DataHolder.getInstance().isEndCall()) {
-      createNotification();
-    }
     super.onBackPressed();
   }
 }

@@ -1,8 +1,6 @@
 package ir.taxi1880.operatormanagement.activity;
 
-import android.app.NotificationChannel;
 import android.app.NotificationManager;
-import android.app.PendingIntent;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
@@ -28,7 +26,6 @@ import android.widget.LinearLayout;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.RelativeLayout;
-import android.widget.RemoteViews;
 import android.widget.ScrollView;
 import android.widget.Spinner;
 import android.widget.TextView;
@@ -48,7 +45,6 @@ import org.linphone.core.CoreListenerStub;
 import java.util.ArrayList;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.app.NotificationCompat;
 import androidx.core.content.ContextCompat;
 import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 import butterknife.BindView;
@@ -1889,12 +1885,6 @@ public class TripRegisterActivity extends AppCompatActivity {
               @Override
               public void run() {
                 try {
-                  Call[] calls = core.getCalls();
-                  for (Call call : calls) {
-                    if (call != null && call.getState() == Call.State.IncomingReceived) {
-                      createNotification();
-                    }
-                  }
                   startActivity(new Intent(MyApplication.context, MainActivity.class));
                   finish();
                 } catch (Exception e) {
@@ -1904,33 +1894,6 @@ public class TripRegisterActivity extends AppCompatActivity {
             })
             .secondButton("خیر", null)
             .show();
-  }
-
-  public void createNotification() {
-    String CALLCHANNEL = "callChannel";
-
-    RemoteViews collapsedView = new RemoteViews(getPackageName(), R.layout.notification_collapsed);
-    RemoteViews expandedView = new RemoteViews(getPackageName(), R.layout.notification_expanded);
-
-    Intent intent = new Intent(MyApplication.context, CallIncomingActivity.class);
-    collapsedView.setOnClickPendingIntent(R.id.linearNotif, PendingIntent.getActivity(MyApplication.context, 1, intent, PendingIntent.FLAG_UPDATE_CURRENT));
-    expandedView.setOnClickPendingIntent(R.id.btnBackToCall, PendingIntent.getActivity(MyApplication.context, 1, intent, PendingIntent.FLAG_UPDATE_CURRENT));
-
-    NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(MyApplication.context.getApplicationContext(), "notify_timer")
-            .setSmallIcon(R.drawable.return_call)
-            .setCustomContentView(collapsedView)
-            .setAutoCancel(true)
-            .setCustomBigContentView(expandedView)
-            .setStyle(new NotificationCompat.DecoratedCustomViewStyle());
-    mNotificationManager = (NotificationManager) MyApplication.context.getSystemService(Context.NOTIFICATION_SERVICE);
-
-    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-      NotificationChannel channel = new NotificationChannel(CALLCHANNEL, "call channel", NotificationManager.IMPORTANCE_HIGH);
-      mNotificationManager.createNotificationChannel(channel);
-      mBuilder.setChannelId(CALLCHANNEL);
-    }
-    mNotificationManager.notify(notifManagerId, mBuilder.build());
-
   }
 
   @OnClick(R.id.imgAccept)
