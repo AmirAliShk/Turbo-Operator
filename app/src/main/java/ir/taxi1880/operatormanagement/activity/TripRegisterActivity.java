@@ -1,6 +1,5 @@
 package ir.taxi1880.operatormanagement.activity;
 
-import android.app.NotificationManager;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
@@ -100,8 +99,6 @@ public class TripRegisterActivity extends AppCompatActivity {
   private boolean isTellValidable = false;
   String queue = "0";
   String voipId = "0";
-  NotificationManager mNotificationManager;
-  int notifManagerId = 0;
 
 
   @OnClick(R.id.imgBack)
@@ -616,8 +613,8 @@ public class TripRegisterActivity extends AppCompatActivity {
               @Override
               public void run() {
                 if (MyApplication.prefManager.isCallIncoming()) {
-                  MyApplication.Toast(getString(R.string.exit),Toast.LENGTH_SHORT);
-                }else {
+                  MyApplication.Toast(getString(R.string.exit), Toast.LENGTH_SHORT);
+                } else {
                   setDeActivate(MyApplication.prefManager.getUserCode(), MyApplication.prefManager.getSipNumber());
                 }
               }
@@ -717,6 +714,7 @@ public class TripRegisterActivity extends AppCompatActivity {
       }
     } catch (Exception e) {
       e.printStackTrace();
+      AvaCrashReporter.send(e,"TripRegisterActivity class, setCursorEnd method");
       // ignore
     }
   }
@@ -814,6 +812,7 @@ public class TripRegisterActivity extends AppCompatActivity {
 
     } catch (ArrayIndexOutOfBoundsException e) {
       e.printStackTrace();
+      AvaCrashReporter.send(e,"TripRegisterActivity class, initServiceCountSpinner method");
     }
 
     edtAddress.addTextChangedListener(new TextWatcher() {
@@ -870,6 +869,7 @@ public class TripRegisterActivity extends AppCompatActivity {
       });
     } catch (JSONException e) {
       e.printStackTrace();
+      AvaCrashReporter.send(e,"TripRegisterActivity class, initServiceTypeSpinner method");
     }
   }
 
@@ -890,6 +890,7 @@ public class TripRegisterActivity extends AppCompatActivity {
         cityModels.add(cityModel);
         cityList.add(i + 1, cityObj.getString("cityname"));
       }
+      if (spCity == null) return;
       spCity.setAdapter(new SpinnerAdapter(MyApplication.currentActivity, R.layout.item_spinner, cityList));
       spCity.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
         @Override
@@ -915,6 +916,7 @@ public class TripRegisterActivity extends AppCompatActivity {
 
     } catch (JSONException e) {
       e.printStackTrace();
+      AvaCrashReporter.send(e,"TripRegisterActivity class, initCitySpinner method");
     }
   }
 
@@ -1057,6 +1059,7 @@ public class TripRegisterActivity extends AppCompatActivity {
 
         } catch (JSONException e) {
           e.printStackTrace();
+          AvaCrashReporter.send(e,"TripRegisterActivity class, getPassengerInfo onResponse method");
         }
       });
     }
@@ -1123,6 +1126,7 @@ public class TripRegisterActivity extends AppCompatActivity {
 
           } catch (JSONException e) {
             e.printStackTrace();
+            AvaCrashReporter.send(e,"TripRegisterActivity class, getPassengerAddress onResponse method");
           }
         }
       });
@@ -1822,8 +1826,8 @@ public class TripRegisterActivity extends AppCompatActivity {
         showCallIncoming();
       } else if (state == Call.State.Released) {
         //TODO Do you think this is true?  if (imgEndCall!=null)
-        if (imgEndCall!=null)
-        imgEndCall.setColorFilter(ContextCompat.getColor(MyApplication.context, R.color.colorWhite), android.graphics.PorterDuff.Mode.MULTIPLY);
+        if (imgEndCall != null)
+          imgEndCall.setColorFilter(ContextCompat.getColor(MyApplication.context, R.color.colorWhite), android.graphics.PorterDuff.Mode.MULTIPLY);
         showTitleBar();
         if (mCallQualityUpdater != null) {
           LinphoneService.removeFromUIThreadDispatcher(mCallQualityUpdater);
@@ -1832,8 +1836,8 @@ public class TripRegisterActivity extends AppCompatActivity {
       } else if (state == Call.State.Connected) {
         startCallQuality();
         //TODO Do you think this is true?  if (imgEndCall!=null)
-        if (imgEndCall!=null)
-        imgEndCall.setColorFilter(ContextCompat.getColor(MyApplication.context, R.color.colorRed), android.graphics.PorterDuff.Mode.MULTIPLY);
+        if (imgEndCall != null)
+          imgEndCall.setColorFilter(ContextCompat.getColor(MyApplication.context, R.color.colorRed), android.graphics.PorterDuff.Mode.MULTIPLY);
         Address address = call.getRemoteAddress();
         if (voipId.equals("0"))
           edtTell.setText(address.getUsername());
@@ -1842,8 +1846,8 @@ public class TripRegisterActivity extends AppCompatActivity {
         showTitleBar();
       } else if (state == Call.State.End) {
         //TODO Do you think this is true?  if (imgEndCall!=null)
-        if (imgEndCall!=null)
-        imgCallQuality.setVisibility(View.INVISIBLE);
+        if (imgEndCall != null)
+          imgCallQuality.setVisibility(View.INVISIBLE);
         showTitleBar();
         if (mCallQualityUpdater != null) {
           LinphoneService.removeFromUIThreadDispatcher(mCallQualityUpdater);

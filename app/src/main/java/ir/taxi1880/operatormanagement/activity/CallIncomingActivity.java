@@ -45,6 +45,7 @@ public class CallIncomingActivity extends AppCompatActivity {
       call.accept();
     }catch (Exception e){
       e.printStackTrace();
+      AvaCrashReporter.send(e,"CallIncomingActivity class, onAcceptPress");
     }
 //    txtTimer.setVisibility(View.VISIBLE);
 //    startTimer();
@@ -156,7 +157,7 @@ public class CallIncomingActivity extends AppCompatActivity {
       }
     }catch (Exception e){
       e.printStackTrace();
-      AvaCrashReporter.send(e,"callIncomingActivity");
+      AvaCrashReporter.send(e,"callIncomingActivity class, onResume method");
     }
 
   }

@@ -11,6 +11,7 @@ import java.util.regex.Pattern;
 
 import androidx.annotation.StringRes;
 import ir.taxi1880.operatormanagement.app.MyApplication;
+import ir.taxi1880.operatormanagement.push.AvaCrashReporter;
 
 
 /**
@@ -282,6 +283,7 @@ public class StringHelper {
       res = MyApplication.context.getResources().getString(id);
     } catch (Exception e) {
       e.printStackTrace();
+      AvaCrashReporter.send(e,"StringHelper class, getString method");
     }
     return res;
   }

@@ -24,7 +24,6 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
-
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
@@ -39,6 +38,7 @@ import ir.taxi1880.operatormanagement.helper.ServiceHelper;
 import ir.taxi1880.operatormanagement.helper.StringHelper;
 import ir.taxi1880.operatormanagement.helper.TypefaceUtil;
 import ir.taxi1880.operatormanagement.okHttp.RequestHelper;
+import ir.taxi1880.operatormanagement.push.AvaCrashReporter;
 import ir.taxi1880.operatormanagement.services.LinphoneService;
 
 import static ir.taxi1880.operatormanagement.app.MyApplication.context;
@@ -255,6 +255,7 @@ public class SplashActivity extends AppCompatActivity {
 
                 } catch (JSONException e) {
                     e.printStackTrace();
+                    AvaCrashReporter.send(e,"SplashActivity class, onAppInfo onResponse method");
                 }
 
             });
@@ -311,6 +312,7 @@ public class SplashActivity extends AppCompatActivity {
             }
         } catch (Exception e) {
             e.printStackTrace();
+            AvaCrashReporter.send(e,"SplashActivity class, onBackPressed method");
         }
     }
 

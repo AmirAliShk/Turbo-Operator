@@ -52,9 +52,9 @@ import androidx.annotation.RequiresApi;
 import ir.taxi1880.operatormanagement.R;
 import ir.taxi1880.operatormanagement.activity.CallIncomingActivity;
 import ir.taxi1880.operatormanagement.activity.TripRegisterActivity;
-import ir.taxi1880.operatormanagement.app.DataHolder;
 import ir.taxi1880.operatormanagement.app.MyApplication;
 import ir.taxi1880.operatormanagement.helper.ServiceHelper;
+import ir.taxi1880.operatormanagement.push.AvaCrashReporter;
 import ir.taxi1880.operatormanagement.push.AvaFactory;
 import ir.taxi1880.operatormanagement.receiver.BluetoothReceiver;
 import ir.taxi1880.operatormanagement.receiver.HeadsetReceiver;
@@ -75,7 +75,7 @@ public class LinphoneService extends Service {
 
   private Core mCore;
   private CoreListenerStub mCoreListener;
-  long[] pattern = {0,70,70};
+  long[] pattern = {0, 70, 70};
   public static final String CHANNEL_ID = "ForegroundServiceChannel";
 
   public static boolean isReady() {
@@ -85,7 +85,6 @@ public class LinphoneService extends Service {
   public static LinphoneService getInstance() {
     return sInstance;
   }
-
 
 
   public static Core getCore() {
@@ -137,7 +136,6 @@ public class LinphoneService extends Service {
     mBasePath = basePath;
 
     startBluetooth();
-
 
 
     // This will be our main Core listener, it will change activities depending on events
@@ -254,7 +252,7 @@ public class LinphoneService extends Service {
         }
 
         if (state == Call.State.Connected) {
-          if (MyApplication.prefManager.isCallIncoming()){
+          if (MyApplication.prefManager.isCallIncoming()) {
             Address address = call.getRemoteAddress();
             MyApplication.prefManager.setLastCall(address.getUsername());
           }
@@ -266,6 +264,7 @@ public class LinphoneService extends Service {
 
 
       }
+
       @Override
       public void onEcCalibrationResult(
               Core core, EcCalibratorStatus status, int delay_ms) {
@@ -444,7 +443,6 @@ public class LinphoneService extends Service {
   }
 
 
-
   /****************************************Audio manager*********************************************/
   private Context mContext;
   private AudioManager mAudioManager;
@@ -595,6 +593,7 @@ public class LinphoneService extends Service {
       if (res == AudioManager.AUDIOFOCUS_REQUEST_GRANTED) mAudioFocused = true;
     }
   }
+
   public boolean isDeviceRingtoneEnabled() {
     int readExternalStorage =
             mContext.getPackageManager()
@@ -611,6 +610,7 @@ public class LinphoneService extends Service {
 
     return LinphoneService.getCore();
   }
+
   private String mBasePath;
   private static final String LINPHONE_DEFAULT_RC = "/.linphonerc";
 
@@ -656,6 +656,7 @@ public class LinphoneService extends Service {
     if (getConfig() == null) return true;
     return getConfig().getBool("app", "incoming_call_vibration", true);
   }
+
   public String getRingtone(String defaultRingtone) {
     String ringtone = getConfig().getString("app", "ringtone", defaultRingtone);
     if (ringtone == null || ringtone.isEmpty()) ringtone = defaultRingtone;
@@ -847,78 +848,85 @@ public class LinphoneService extends Service {
   }
 
   public void bluetoothAdapterStateChanged() {
-    if (mBluetoothAdapter.isEnabled()) {
-      Log.i("[Audio Manager] [Bluetooth] Adapter enabled");
-      mIsBluetoothHeadsetConnected = false;
-      mIsBluetoothHeadsetScoConnected = false;
+    try {
 
-      BluetoothProfile.ServiceListener bluetoothServiceListener =
-              new BluetoothProfile.ServiceListener() {
-                public void onServiceConnected(int profile, BluetoothProfile proxy) {
-                  if (profile == BluetoothProfile.HEADSET) {
-                    Log.i("[Audio Manager] [Bluetooth] HEADSET profile connected");
-                    mBluetoothHeadset = (BluetoothHeadset) proxy;
 
-                    List<BluetoothDevice> devices =
-                            mBluetoothHeadset.getConnectedDevices();
-                    if (devices.size() > 0) {
-                      Log.i(
-                              "[Audio Manager] [Bluetooth] A device is already connected");
-                      bluetoothHeadsetConnectionChanged(true);
-                    }
+      if (mBluetoothAdapter.isEnabled()) {
+        Log.i("[Audio Manager] [Bluetooth] Adapter enabled");
+        mIsBluetoothHeadsetConnected = false;
+        mIsBluetoothHeadsetScoConnected = false;
 
-                    Log.i("[Audio Manager] [Bluetooth] Registering bluetooth receiver");
+        BluetoothProfile.ServiceListener bluetoothServiceListener =
+                new BluetoothProfile.ServiceListener() {
+                  public void onServiceConnected(int profile, BluetoothProfile proxy) {
+                    if (profile == BluetoothProfile.HEADSET) {
+                      Log.i("[Audio Manager] [Bluetooth] HEADSET profile connected");
+                      mBluetoothHeadset = (BluetoothHeadset) proxy;
 
-                    IntentFilter filter = new IntentFilter();
-                    filter.addAction(BluetoothHeadset.ACTION_AUDIO_STATE_CHANGED);
-                    filter.addAction(BluetoothHeadset.ACTION_CONNECTION_STATE_CHANGED);
-                    filter.addAction(AudioManager.ACTION_SCO_AUDIO_STATE_UPDATED);
-                    filter.addAction(
-                            BluetoothHeadset.ACTION_VENDOR_SPECIFIC_HEADSET_EVENT);
+                      List<BluetoothDevice> devices =
+                              mBluetoothHeadset.getConnectedDevices();
+                      if (devices.size() > 0) {
+                        Log.i(
+                                "[Audio Manager] [Bluetooth] A device is already connected");
+                        bluetoothHeadsetConnectionChanged(true);
+                      }
 
-                    Intent sticky =
-                            mContext.registerReceiver(mBluetoothReceiver, filter);
-                    Log.i("[Audio Manager] [Bluetooth] Bluetooth receiver registered");
-                    int state =
-                            sticky.getIntExtra(
-                                    AudioManager.EXTRA_SCO_AUDIO_STATE,
-                                    AudioManager.SCO_AUDIO_STATE_DISCONNECTED);
-                    if (state == AudioManager.SCO_AUDIO_STATE_CONNECTED) {
-                      Log.i(
-                              "[Audio Manager] [Bluetooth] Bluetooth headset SCO connected");
-                      bluetoothHeadetScoConnectionChanged(true);
-                    } else if (state == AudioManager.SCO_AUDIO_STATE_DISCONNECTED) {
-                      Log.i(
-                              "[Audio Manager] [Bluetooth] Bluetooth headset SCO disconnected");
-                      bluetoothHeadetScoConnectionChanged(false);
-                    } else if (state == AudioManager.SCO_AUDIO_STATE_CONNECTING) {
-                      Log.i(
-                              "[Audio Manager] [Bluetooth] Bluetooth headset SCO connecting");
-                    } else if (state == AudioManager.SCO_AUDIO_STATE_ERROR) {
-                      Log.i(
-                              "[Audio Manager] [Bluetooth] Bluetooth headset SCO connection error");
-                    } else {
-                      Log.w(
-                              "[Audio Manager] [Bluetooth] Bluetooth headset unknown SCO state changed: "
-                                      + state);
+                      Log.i("[Audio Manager] [Bluetooth] Registering bluetooth receiver");
+
+                      IntentFilter filter = new IntentFilter();
+                      filter.addAction(BluetoothHeadset.ACTION_AUDIO_STATE_CHANGED);
+                      filter.addAction(BluetoothHeadset.ACTION_CONNECTION_STATE_CHANGED);
+                      filter.addAction(AudioManager.ACTION_SCO_AUDIO_STATE_UPDATED);
+                      filter.addAction(
+                              BluetoothHeadset.ACTION_VENDOR_SPECIFIC_HEADSET_EVENT);
+
+                      Intent sticky =
+                              mContext.registerReceiver(mBluetoothReceiver, filter);
+                      Log.i("[Audio Manager] [Bluetooth] Bluetooth receiver registered");
+                      int state =
+                              sticky.getIntExtra(
+                                      AudioManager.EXTRA_SCO_AUDIO_STATE,
+                                      AudioManager.SCO_AUDIO_STATE_DISCONNECTED);
+                      if (state == AudioManager.SCO_AUDIO_STATE_CONNECTED) {
+                        Log.i(
+                                "[Audio Manager] [Bluetooth] Bluetooth headset SCO connected");
+                        bluetoothHeadetScoConnectionChanged(true);
+                      } else if (state == AudioManager.SCO_AUDIO_STATE_DISCONNECTED) {
+                        Log.i(
+                                "[Audio Manager] [Bluetooth] Bluetooth headset SCO disconnected");
+                        bluetoothHeadetScoConnectionChanged(false);
+                      } else if (state == AudioManager.SCO_AUDIO_STATE_CONNECTING) {
+                        Log.i(
+                                "[Audio Manager] [Bluetooth] Bluetooth headset SCO connecting");
+                      } else if (state == AudioManager.SCO_AUDIO_STATE_ERROR) {
+                        Log.i(
+                                "[Audio Manager] [Bluetooth] Bluetooth headset SCO connection error");
+                      } else {
+                        Log.w(
+                                "[Audio Manager] [Bluetooth] Bluetooth headset unknown SCO state changed: "
+                                        + state);
+                      }
                     }
                   }
-                }
 
-                public void onServiceDisconnected(int profile) {
-                  if (profile == BluetoothProfile.HEADSET) {
-                    Log.i("[Audio Manager] [Bluetooth] HEADSET profile disconnected");
-                    mBluetoothHeadset = null;
-                    mIsBluetoothHeadsetConnected = false;
-                    mIsBluetoothHeadsetScoConnected = false;
+                  public void onServiceDisconnected(int profile) {
+                    if (profile == BluetoothProfile.HEADSET) {
+                      Log.i("[Audio Manager] [Bluetooth] HEADSET profile disconnected");
+                      mBluetoothHeadset = null;
+                      mIsBluetoothHeadsetConnected = false;
+                      mIsBluetoothHeadsetScoConnected = false;
+                    }
                   }
-                }
-              };
+                };
 
-      mBluetoothAdapter.getProfileProxy(
-              mContext, bluetoothServiceListener, BluetoothProfile.HEADSET);
-    } else {
-      Log.w("[Audio Manager] [Bluetooth] Adapter disabled");
+        mBluetoothAdapter.getProfileProxy(
+                mContext, bluetoothServiceListener, BluetoothProfile.HEADSET);
+      } else {
+        Log.w("[Audio Manager] [Bluetooth] Adapter disabled");
+      }
+    } catch (Exception e) {
+      e.printStackTrace();
+      AvaCrashReporter.send(e,"Bluetooth receiver Crash");
     }
   }
 

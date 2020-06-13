@@ -32,6 +32,7 @@ import ir.taxi1880.operatormanagement.helper.FragmentHelper;
 import ir.taxi1880.operatormanagement.helper.StringHelper;
 import ir.taxi1880.operatormanagement.helper.TypefaceUtil;
 import ir.taxi1880.operatormanagement.okHttp.RequestHelper;
+import ir.taxi1880.operatormanagement.push.AvaCrashReporter;
 
 public class MainActivity extends AppCompatActivity implements NotificationFragment.RefreshNotificationCount {
 
@@ -176,6 +177,7 @@ public class MainActivity extends AppCompatActivity implements NotificationFragm
 
           } catch (Exception e) {
             e.printStackTrace();
+            AvaCrashReporter.send(e,"MainActivity class, getBalance onResponse method");
           }
         }
       });
@@ -224,6 +226,7 @@ public class MainActivity extends AppCompatActivity implements NotificationFragm
       }
     } catch (Exception e) {
       e.printStackTrace();
+      AvaCrashReporter.send(e,"MainActivity class, onBackPressed method");
     }
   }
 

@@ -23,6 +23,7 @@ import ir.taxi1880.operatormanagement.app.MyApplication;
 import ir.taxi1880.operatormanagement.helper.KeyBoardHelper;
 import ir.taxi1880.operatormanagement.helper.TypefaceUtil;
 import ir.taxi1880.operatormanagement.model.CityModel;
+import ir.taxi1880.operatormanagement.push.AvaCrashReporter;
 
 public class CityDialog {
 
@@ -39,7 +40,8 @@ public class CityDialog {
   private static Dialog dialog;
 
   public void show(Listener listener) {
-    if (MyApplication.currentActivity==null|| MyApplication.currentActivity.isFinishing())return;
+    if (MyApplication.currentActivity == null || MyApplication.currentActivity.isFinishing())
+      return;
     dialog = new Dialog(MyApplication.currentActivity);
     dialog.getWindow().requestFeature(Window.FEATURE_NO_TITLE);
     dialog.getWindow().getAttributes().windowAnimations = R.style.ExpandAnimation;
@@ -55,7 +57,7 @@ public class CityDialog {
 
     listCity = dialog.findViewById(R.id.listCity);
 
-      ArrayList<CityModel> cityModels = new ArrayList<>();
+    ArrayList<CityModel> cityModels = new ArrayList<>();
     try {
       JSONArray cityArr = new JSONArray(MyApplication.prefManager.getCity());
       for (int i = 0; i < cityArr.length(); i++) {
@@ -80,8 +82,13 @@ public class CityDialog {
         dismiss();
       }
     });
+    try {
+      dialog.show();
+    } catch (Exception e) {
+      e.printStackTrace();
+      AvaCrashReporter.send(e,"CityDialog: Crash in show dialog line 89");
 
-    dialog.show();
+    }
 
   }
 

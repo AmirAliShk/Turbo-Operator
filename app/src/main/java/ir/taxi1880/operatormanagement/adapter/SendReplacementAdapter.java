@@ -22,6 +22,7 @@ import ir.taxi1880.operatormanagement.dialog.GeneralDialog;
 import ir.taxi1880.operatormanagement.helper.TypefaceUtil;
 import ir.taxi1880.operatormanagement.model.ReplacementModel;
 import ir.taxi1880.operatormanagement.okHttp.RequestHelper;
+import ir.taxi1880.operatormanagement.push.AvaCrashReporter;
 
 public class SendReplacementAdapter extends BaseAdapter {
 
@@ -102,6 +103,7 @@ public class SendReplacementAdapter extends BaseAdapter {
 
     } catch (Exception e) {
       e.printStackTrace();
+      AvaCrashReporter.send(e,"SendReplacementAdapter class, getView method");
     }
     return convertView;
   }
