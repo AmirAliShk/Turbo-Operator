@@ -1181,6 +1181,7 @@ public class TripRegisterActivity extends AppCompatActivity {
 
           } catch (JSONException e) {
             e.printStackTrace();
+            AvaCrashReporter.send(e,"TripRegisterActivity class, getCheckOriginStation onResponse method");
           }
         }
       });
@@ -1235,6 +1236,7 @@ public class TripRegisterActivity extends AppCompatActivity {
 
           } catch (JSONException e) {
             e.printStackTrace();
+            AvaCrashReporter.send(e,"TripRegisterActivity class, getCheckDestStation onResponse method");
           }
         }
       });
@@ -1327,6 +1329,7 @@ public class TripRegisterActivity extends AppCompatActivity {
 
           } catch (JSONException e) {
             e.printStackTrace();
+            AvaCrashReporter.send(e,"TripRegisterActivity class, getStationInfo onResponse method");
           }
         }
       });
@@ -1387,6 +1390,7 @@ public class TripRegisterActivity extends AppCompatActivity {
 
           } catch (JSONException e) {
             e.printStackTrace();
+            AvaCrashReporter.send(e,"TripRegisterActivity class, setActivate onResponse method");
           }
           LoadingDialog.dismiss();
 
@@ -1417,6 +1421,8 @@ public class TripRegisterActivity extends AppCompatActivity {
               .post();
     } catch (JSONException e) {
       e.printStackTrace();
+      AvaCrashReporter.send(e,"TripRegisterActivity class, setDeActivate method");
+
     }
   }
 
@@ -1458,6 +1464,7 @@ public class TripRegisterActivity extends AppCompatActivity {
 
           } catch (JSONException e) {
             e.printStackTrace();
+            AvaCrashReporter.send(e,"TripRegisterActivity class, setDeActivate onResponse method");
           }
           LoadingDialog.dismiss();
         }
@@ -1560,6 +1567,7 @@ public class TripRegisterActivity extends AppCompatActivity {
 
           } catch (JSONException e) {
             e.printStackTrace();
+            AvaCrashReporter.send(e,"TripRegisterActivity class, insertService onResponse method");
           }
         }
       });
@@ -1582,6 +1590,7 @@ public class TripRegisterActivity extends AppCompatActivity {
 
       } catch (Exception e) {
         e.printStackTrace();
+        AvaCrashReporter.send(e,"TripRegisterActivity class, onReloadPress method");
       }
     }
   };
@@ -1720,6 +1729,7 @@ public class TripRegisterActivity extends AppCompatActivity {
       }
     } catch (Exception e) {
       e.printStackTrace();
+      AvaCrashReporter.send(e,"TripRegisterActivity class, handleCallerInfo method");
     }
   }
 
@@ -1742,6 +1752,7 @@ public class TripRegisterActivity extends AppCompatActivity {
       return callModel;
     } catch (JSONException e) {
       e.printStackTrace();
+      AvaCrashReporter.send(e,"TripRegisterActivity class, parseNotification method");
       return null;
     }
   }
@@ -1794,6 +1805,7 @@ public class TripRegisterActivity extends AppCompatActivity {
       imgCallQuality.setImageResource(imageRes);
     } catch (Exception e) {
       e.printStackTrace();
+      AvaCrashReporter.send(e,"TripRegisterActivity class, updateQualityOfSignalIcon method");
     }
     mDisplayedQuality = iQuality;
   }
@@ -1893,6 +1905,7 @@ public class TripRegisterActivity extends AppCompatActivity {
                   finish();
                 } catch (Exception e) {
                   e.printStackTrace();
+                  AvaCrashReporter.send(e,"TripRegisterActivity class, onBackPressed method");
                 }
               }
             })

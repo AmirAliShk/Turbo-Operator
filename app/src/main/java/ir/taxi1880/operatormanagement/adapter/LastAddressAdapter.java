@@ -14,6 +14,7 @@ import ir.taxi1880.operatormanagement.R;
 import ir.taxi1880.operatormanagement.app.MyApplication;
 import ir.taxi1880.operatormanagement.helper.TypefaceUtil;
 import ir.taxi1880.operatormanagement.model.PassengerAddressModel;
+import ir.taxi1880.operatormanagement.push.AvaCrashReporter;
 
 public class LastAddressAdapter extends BaseAdapter {
 
@@ -66,6 +67,7 @@ public class LastAddressAdapter extends BaseAdapter {
 
     } catch (Exception e) {
       e.printStackTrace();
+      AvaCrashReporter.send(e,"LastAddressAdapter class, getView method");
     }
 
     return myView;
