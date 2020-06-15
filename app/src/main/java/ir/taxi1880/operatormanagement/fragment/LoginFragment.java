@@ -27,6 +27,7 @@ import ir.taxi1880.operatormanagement.dialog.GeneralDialog;
 import ir.taxi1880.operatormanagement.helper.KeyBoardHelper;
 import ir.taxi1880.operatormanagement.helper.TypefaceUtil;
 import ir.taxi1880.operatormanagement.okHttp.RequestHelper;
+import ir.taxi1880.operatormanagement.push.AvaCrashReporter;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -155,6 +156,8 @@ public class LoginFragment extends Fragment {
 //                            })
 //                            .show();
           e.printStackTrace();
+          AvaCrashReporter.send(e,"LoginFragment class, onLogIn onResponse method");
+
         }
       });
     }

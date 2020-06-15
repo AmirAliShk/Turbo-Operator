@@ -21,6 +21,7 @@ import ir.taxi1880.operatormanagement.helper.FragmentHelper;
 import ir.taxi1880.operatormanagement.helper.StringHelper;
 import ir.taxi1880.operatormanagement.helper.TypefaceUtil;
 import ir.taxi1880.operatormanagement.okHttp.RequestHelper;
+import ir.taxi1880.operatormanagement.push.AvaCrashReporter;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -114,6 +115,7 @@ public class ScoresFragment extends Fragment {
 
           } catch (Exception e) {
             e.printStackTrace();
+            AvaCrashReporter.send(e,"ScoresFragment class, getSingleScore onResponse method");
           }
 
         }

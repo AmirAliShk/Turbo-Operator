@@ -11,14 +11,15 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import java.util.ArrayList;
+
 import ir.taxi1880.operatormanagement.R;
 import ir.taxi1880.operatormanagement.app.MyApplication;
 import ir.taxi1880.operatormanagement.fragment.ReplacementFragment;
 import ir.taxi1880.operatormanagement.helper.FragmentHelper;
 import ir.taxi1880.operatormanagement.helper.TypefaceUtil;
 import ir.taxi1880.operatormanagement.model.ShiftModel;
-
-import java.util.ArrayList;
+import ir.taxi1880.operatormanagement.push.AvaCrashReporter;
 
 public class ShiftAdapter extends BaseAdapter {
 
@@ -105,6 +106,7 @@ public class ShiftAdapter extends BaseAdapter {
 
         } catch (Exception e) {
             e.printStackTrace();
+            AvaCrashReporter.send(e,"ShiftAdapter class, getView method");
         }
         return convertView;
     }

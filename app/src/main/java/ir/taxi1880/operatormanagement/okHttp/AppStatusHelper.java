@@ -6,6 +6,8 @@ import android.os.AsyncTask;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
 
+import ir.taxi1880.operatormanagement.push.AvaCrashReporter;
+
 /***
  * Created by Amirreza Erfanian on 2018/July/26.
  * v : 1.0.0
@@ -19,8 +21,10 @@ public class AppStatusHelper extends AsyncTask<Context, Void, Boolean> {
       status = new AppStatusHelper().execute(context).get();
     } catch (InterruptedException e) {
       e.printStackTrace();
+      AvaCrashReporter.send(e,"AppStatusHelper class, appIsRun method InterruptedException");
     } catch (ExecutionException e) {
       e.printStackTrace();
+      AvaCrashReporter.send(e,"AppStatusHelper class, appIsRun method ExecutionException");
     }
     return status;
   }

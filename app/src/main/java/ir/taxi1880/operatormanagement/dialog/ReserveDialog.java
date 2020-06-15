@@ -29,6 +29,7 @@ import ir.taxi1880.operatormanagement.helper.DateHelper;
 import ir.taxi1880.operatormanagement.helper.KeyBoardHelper;
 import ir.taxi1880.operatormanagement.helper.StringHelper;
 import ir.taxi1880.operatormanagement.helper.TypefaceUtil;
+import ir.taxi1880.operatormanagement.push.AvaCrashReporter;
 
 public class ReserveDialog {
 
@@ -131,6 +132,7 @@ public class ReserveDialog {
       }
     } catch (Exception e) {
       Log.e("TAG", "dismiss: " + e.getMessage());
+      AvaCrashReporter.send(e,"ReserveDialog class, dismiss method");
     }
     dialog = null;
   }

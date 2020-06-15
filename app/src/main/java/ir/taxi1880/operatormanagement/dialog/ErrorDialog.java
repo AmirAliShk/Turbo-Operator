@@ -15,6 +15,7 @@ import android.widget.TextView;
 import ir.taxi1880.operatormanagement.R;
 import ir.taxi1880.operatormanagement.app.MyApplication;
 import ir.taxi1880.operatormanagement.helper.TypefaceUtil;
+import ir.taxi1880.operatormanagement.push.AvaCrashReporter;
 
 public class ErrorDialog {
   static Dialog dialog;
@@ -133,6 +134,7 @@ public class ErrorDialog {
         dialog.dismiss();
     } catch (Exception e) {
       Log.e("TAG", "dismiss: " + e.getMessage());
+      AvaCrashReporter.send(e,"ErrorDialog class, dismiss method");
     }
     dialog = null;
   }

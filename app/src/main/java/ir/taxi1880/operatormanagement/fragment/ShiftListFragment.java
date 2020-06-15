@@ -27,6 +27,7 @@ import ir.taxi1880.operatormanagement.app.MyApplication;
 import ir.taxi1880.operatormanagement.helper.TypefaceUtil;
 import ir.taxi1880.operatormanagement.model.ShiftModel;
 import ir.taxi1880.operatormanagement.okHttp.RequestHelper;
+import ir.taxi1880.operatormanagement.push.AvaCrashReporter;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -106,6 +107,7 @@ public class ShiftListFragment extends Fragment {
 
         } catch (Exception e) {
           e.printStackTrace();
+          AvaCrashReporter.send(e,"ShiftListFragment class, onGetShifts onResponse method");
         }
       });
     }

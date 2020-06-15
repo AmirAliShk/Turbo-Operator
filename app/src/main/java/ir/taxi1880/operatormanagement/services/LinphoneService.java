@@ -96,6 +96,7 @@ public class LinphoneService extends Service {
         try {
           sleep(30);
         } catch (InterruptedException e) {
+          AvaCrashReporter.send(e,"LinphoneService class, getCore method ");
           throw new RuntimeException("waiting thread sleep() has been interrupted");
         }
       }
@@ -282,6 +283,7 @@ public class LinphoneService extends Service {
       copyFromPackage(R.raw.linphonerc_factory, "linphonerc");
     } catch (IOException ioe) {
       Log.e(ioe);
+      AvaCrashReporter.send(ioe ,"LinphoneService class, getCore method ");
     }
 
     // Create the Core and add our listener
@@ -387,6 +389,7 @@ public class LinphoneService extends Service {
     try {
       info = getPackageManager().getPackageInfo(getPackageName(), 0);
     } catch (PackageManager.NameNotFoundException nnfe) {
+      AvaCrashReporter.send(nnfe ,"LinphoneService class, dumpInstalledLinphoneInformation method ");
       Log.e(nnfe);
     }
 
@@ -643,6 +646,7 @@ public class LinphoneService extends Service {
           }
         } catch (IOException ioe) {
           Log.e(ioe);
+          AvaCrashReporter.send(ioe ,"LinphoneService class, getConfig method ");
         }
         return Factory.instance().createConfigFromString(text.toString());
       }
@@ -704,6 +708,7 @@ public class LinphoneService extends Service {
           }
         } catch (IOException e) {
           Log.e(e, "[Audio Manager] Cannot set ringtone");
+          AvaCrashReporter.send(e ,"LinphoneService class, startRinging method internal");
         }
 
         mRingerPlayer.prepare();
@@ -714,6 +719,7 @@ public class LinphoneService extends Service {
       }
     } catch (Exception e) {
       Log.e(e, "[Audio Manager] Cannot handle incoming call");
+      AvaCrashReporter.send(e ,"LinphoneService class, startRinging method");
     }
     mIsRinging = true;
   }
@@ -825,6 +831,7 @@ public class LinphoneService extends Service {
             Thread.sleep(200);
           } catch (InterruptedException e) {
             Log.e(e);
+            AvaCrashReporter.send(e ,"LinphoneService class, changeBluetoothSco method");
           }
 
           synchronized (LinphoneService.this) {

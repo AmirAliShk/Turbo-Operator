@@ -7,6 +7,7 @@ import android.net.Uri;
 
 import androidx.annotation.RawRes;
 import ir.taxi1880.operatormanagement.app.MyApplication;
+import ir.taxi1880.operatormanagement.push.AvaCrashReporter;
 
 /**
  * Created by mohsen on 18/10/2016.
@@ -25,6 +26,7 @@ public class SoundHelper {
       ringtone.play();
 
     } catch (Exception e) {
+      AvaCrashReporter.send(e,"SoundHelper class, ringing method");
       e.printStackTrace();
     }
 
@@ -38,7 +40,9 @@ public class SoundHelper {
       ringtone.play();
 
     } catch (Exception e) {
+      AvaCrashReporter.send(e,"SoundHelper class, ringing method");
       e.printStackTrace();
+
     }
 
   }
@@ -49,6 +53,7 @@ public class SoundHelper {
       ringtone.play();
 
     } catch (Exception e) {
+      AvaCrashReporter.send(e,"SoundHelper class, ringing method");
       e.printStackTrace();
     }
 

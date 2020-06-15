@@ -23,6 +23,7 @@ import ir.taxi1880.operatormanagement.helper.StringHelper;
 import ir.taxi1880.operatormanagement.helper.TypefaceUtil;
 import ir.taxi1880.operatormanagement.model.NotificationModel;
 import ir.taxi1880.operatormanagement.okHttp.RequestHelper;
+import ir.taxi1880.operatormanagement.push.AvaCrashReporter;
 
 public class NotificationAdapter extends BaseAdapter {
 
@@ -82,6 +83,7 @@ public class NotificationAdapter extends BaseAdapter {
 
         } catch (Exception e) {
             e.printStackTrace();
+            AvaCrashReporter.send(e,"NotificationAdapter class, getView method");
         }
         return convertView;
     }
@@ -131,6 +133,7 @@ public class NotificationAdapter extends BaseAdapter {
                     }
                 } catch (Exception e) {
                     e.printStackTrace();
+                    AvaCrashReporter.send(e,"NotificationAdapter class, onSetNewsSeen onResponse method");
                 }
             });
         }

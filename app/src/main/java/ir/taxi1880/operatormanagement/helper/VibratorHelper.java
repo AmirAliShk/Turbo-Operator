@@ -3,6 +3,8 @@ package ir.taxi1880.operatormanagement.helper;
 import android.content.Context;
 import android.os.Vibrator;
 
+import ir.taxi1880.operatormanagement.push.AvaCrashReporter;
+
 
 /***
  * Created by AmirReza on 2017/06/13.
@@ -19,6 +21,7 @@ public class VibratorHelper {
 
     } catch (Exception e) {
       e.printStackTrace();
+      AvaCrashReporter.send(e,"VibratorHelper class, setVibrator method");
     }
 
   }
@@ -31,6 +34,7 @@ public class VibratorHelper {
 
     } catch (Exception e) {
       e.printStackTrace();
+      AvaCrashReporter.send(e,"VibratorHelper class, setVibrator method");
     }
   }
 
@@ -44,6 +48,7 @@ public class VibratorHelper {
 
     } catch (Exception e) {
       e.printStackTrace();
+      AvaCrashReporter.send(e,"VibratorHelper class, setVibrator method");
     }
 
   }

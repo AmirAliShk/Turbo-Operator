@@ -323,6 +323,7 @@ public class SplashActivity extends AppCompatActivity {
                 try {
                     sleep(30);
                 } catch (InterruptedException e) {
+                    AvaCrashReporter.send(e,"SplashActivity class, ServiceWaitThread onResponse method");
                     throw new RuntimeException("waiting thread sleep() has been interrupted");
                 }
             }

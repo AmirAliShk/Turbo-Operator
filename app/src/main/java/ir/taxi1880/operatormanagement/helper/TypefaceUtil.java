@@ -5,6 +5,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 import ir.taxi1880.operatormanagement.app.MyApplication;
+import ir.taxi1880.operatormanagement.push.AvaCrashReporter;
 
 public class TypefaceUtil {
 
@@ -31,6 +32,7 @@ public class TypefaceUtil {
             }
         }
         catch (Exception e) {
+            AvaCrashReporter.send(e,"TypefaceUtil class, overrideFonts method");
             e.printStackTrace();
             // ignore
         }
@@ -50,6 +52,7 @@ public class TypefaceUtil {
         }
         catch (Exception e) {
             e.printStackTrace();
+            AvaCrashReporter.send(e,"TypefaceUtil class, overrideFonts method");
             // ignore
         }
     }

@@ -13,6 +13,7 @@ import java.util.ArrayList;
 import ir.taxi1880.operatormanagement.R;
 import ir.taxi1880.operatormanagement.helper.TypefaceUtil;
 import ir.taxi1880.operatormanagement.model.StationInfoModel;
+import ir.taxi1880.operatormanagement.push.AvaCrashReporter;
 
 public class StationInfoAdapter extends BaseAdapter {
 
@@ -83,7 +84,7 @@ public class StationInfoAdapter extends BaseAdapter {
 
     } catch (Exception e) {
       e.printStackTrace();
-
+      AvaCrashReporter.send(e,"StationInfoAdapter class,getView method");
     }
 
     return myView;

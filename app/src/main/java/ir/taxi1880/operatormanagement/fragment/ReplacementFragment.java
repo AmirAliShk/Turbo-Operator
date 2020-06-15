@@ -27,6 +27,7 @@ import ir.taxi1880.operatormanagement.dialog.GeneralDialog;
 import ir.taxi1880.operatormanagement.dialog.OperatorDialog;
 import ir.taxi1880.operatormanagement.helper.TypefaceUtil;
 import ir.taxi1880.operatormanagement.okHttp.RequestHelper;
+import ir.taxi1880.operatormanagement.push.AvaCrashReporter;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -180,6 +181,7 @@ public class ReplacementFragment extends Fragment {
 //                    }
         } catch (Exception e) {
           e.printStackTrace();
+          AvaCrashReporter.send(e,"ReplacementFragment class, onShiftReplacementRequest onResponse method");
         }
 
         if (llLoader != null)
@@ -215,6 +217,7 @@ public class ReplacementFragment extends Fragment {
 
         } catch (Exception e) {
           e.printStackTrace();
+          AvaCrashReporter.send(e,"ReplacementFragment class, onGetOnlineOperator onResponse method");
         }
         if (vfOperator != null)
           vfOperator.setDisplayedChild(0);

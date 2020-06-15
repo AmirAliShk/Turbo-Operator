@@ -10,6 +10,7 @@ import android.view.WindowManager;
 
 import ir.taxi1880.operatormanagement.R;
 import ir.taxi1880.operatormanagement.app.MyApplication;
+import ir.taxi1880.operatormanagement.push.AvaCrashReporter;
 
 
 public class LoadingDialog {
@@ -36,6 +37,7 @@ public class LoadingDialog {
 
     } catch (Exception e) {
       Log.e(TAG, "makeLoader: " + e);
+      AvaCrashReporter.send(e,"LoadingDialog class, makeLoader method");
     }
   }
 
@@ -48,6 +50,7 @@ public class LoadingDialog {
     } catch (Exception e) {
       e.printStackTrace();
       Log.e(TAG, "dismiss: " + e.getMessage());
+      AvaCrashReporter.send(e,"LoadingDialog class, dismiss method");
     }
     ldialog = null;
   }

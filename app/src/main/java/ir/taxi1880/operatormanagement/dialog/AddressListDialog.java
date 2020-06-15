@@ -20,6 +20,7 @@ import ir.taxi1880.operatormanagement.app.MyApplication;
 import ir.taxi1880.operatormanagement.helper.KeyBoardHelper;
 import ir.taxi1880.operatormanagement.helper.TypefaceUtil;
 import ir.taxi1880.operatormanagement.model.PassengerAddressModel;
+import ir.taxi1880.operatormanagement.push.AvaCrashReporter;
 
 public class AddressListDialog {
 
@@ -80,6 +81,7 @@ public class AddressListDialog {
       }
     } catch (Exception e) {
       Log.e("TAG", "dismiss: " + e.getMessage());
+      AvaCrashReporter.send(e,"AddressListDialog class, dismiss method");
     }
     dialog = null;
   }

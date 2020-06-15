@@ -17,6 +17,7 @@ import ir.taxi1880.operatormanagement.R;
 import ir.taxi1880.operatormanagement.app.EndPoints;
 import ir.taxi1880.operatormanagement.app.MyApplication;
 import ir.taxi1880.operatormanagement.okHttp.RequestHelper;
+import ir.taxi1880.operatormanagement.push.AvaCrashReporter;
 
 public class OpScoreFragment extends Fragment {
   public final String TAG = OpScoreFragment.class.getSimpleName();
@@ -77,6 +78,7 @@ public class OpScoreFragment extends Fragment {
 
           } catch (Exception e) {
             e.printStackTrace();
+            AvaCrashReporter.send(e,"OpScoreFragment class, getSingle onResponse method");
           }
 
         }

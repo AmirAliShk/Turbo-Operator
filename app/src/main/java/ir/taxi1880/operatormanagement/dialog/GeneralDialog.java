@@ -20,6 +20,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import butterknife.Unbinder;
+import ir.taxi1880.operatormanagement.push.AvaCrashReporter;
 
 /***
  * Created by Amirreza Erfanian on 2018/July/26.
@@ -272,6 +273,7 @@ public class GeneralDialog {
         dialog.dismiss();
     } catch (Exception e) {
       e.printStackTrace();
+      AvaCrashReporter.send(e,"GeneralDialog class, dismiss method");
     }
     dialog = null;
   }

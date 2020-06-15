@@ -27,6 +27,7 @@ import ir.taxi1880.operatormanagement.app.EndPoints;
 import ir.taxi1880.operatormanagement.app.MyApplication;
 import ir.taxi1880.operatormanagement.helper.StringHelper;
 import ir.taxi1880.operatormanagement.helper.TypefaceUtil;
+import ir.taxi1880.operatormanagement.push.AvaCrashReporter;
 import okhttp3.Call;
 import okhttp3.HttpUrl;
 import okhttp3.MediaType;
@@ -85,6 +86,7 @@ public class RequestHelper  implements okhttp3.Callback {
             Log.i(TAG, "addParam: " + params);
         } catch (JSONException e) {
             e.printStackTrace();
+            AvaCrashReporter.send(e,"RequestHelper class, addParam method ");
         }
         return this;
     }
@@ -99,6 +101,7 @@ public class RequestHelper  implements okhttp3.Callback {
             Log.i(TAG, "addParam: " + params);
         } catch (JSONException e) {
             e.printStackTrace();
+            AvaCrashReporter.send(e,"RequestHelper class, addParam method ");
         }
         return this;
     }
@@ -168,6 +171,7 @@ public class RequestHelper  implements okhttp3.Callback {
                     urlBuilder.addQueryParameter(key, value);
                 } catch (JSONException e) {
                     e.printStackTrace();
+                    AvaCrashReporter.send(e,"RequestHelper class, get method ");
                 }
             }
         }
@@ -245,6 +249,7 @@ public class RequestHelper  implements okhttp3.Callback {
 
         } catch (final Exception e) {
             requestFailed(REQUEST_CRASH, e);
+            AvaCrashReporter.send(e,"RequestHelper class, request method ");
         }
     }
 
@@ -320,6 +325,7 @@ public class RequestHelper  implements okhttp3.Callback {
                 requestFailed(response.code(), e);
                 if (listener != null)
                     listener.onFailure(runnable, e);
+                AvaCrashReporter.send(e,"RequestHelper class, onResponse method ");
 
             }
         }
@@ -432,6 +438,7 @@ public class RequestHelper  implements okhttp3.Callback {
 //      }
         } catch (Exception e) {
             e.printStackTrace();
+            AvaCrashReporter.send(e,"RequestHelper class, showError method ");
         }
         Log.d(TAG, "showError: " + message);
     }
@@ -497,6 +504,7 @@ public class RequestHelper  implements okhttp3.Callback {
             dialog.show();
         } catch (Exception e) {
             e.printStackTrace();
+            AvaCrashReporter.send(e,"RequestHelper class, show method ");
         }
     }
 
@@ -506,6 +514,7 @@ public class RequestHelper  implements okhttp3.Callback {
                 dialog.dismiss();
         } catch (Exception e) {
             Log.e(TAG, "dismiss: " + e.getMessage());
+            AvaCrashReporter.send(e,"RequestHelper class, dismiss method ");
         }
         dialog = null;
     }

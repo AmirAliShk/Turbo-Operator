@@ -9,11 +9,12 @@ import android.widget.Filter;
 import android.widget.Filterable;
 import android.widget.TextView;
 
+import java.util.ArrayList;
+
 import ir.taxi1880.operatormanagement.R;
 import ir.taxi1880.operatormanagement.helper.TypefaceUtil;
 import ir.taxi1880.operatormanagement.model.OperatorModel;
-
-import java.util.ArrayList;
+import ir.taxi1880.operatormanagement.push.AvaCrashReporter;
 
 public class OperatorAdapter extends BaseAdapter implements Filterable {
 
@@ -65,6 +66,7 @@ public class OperatorAdapter extends BaseAdapter implements Filterable {
 
         } catch (Exception e) {
             e.printStackTrace();
+            AvaCrashReporter.send(e,"OperatorAdapter class, getView method");
         }
 
         return myView;

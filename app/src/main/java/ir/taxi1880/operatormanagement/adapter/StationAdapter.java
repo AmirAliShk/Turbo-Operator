@@ -14,6 +14,7 @@ import ir.taxi1880.operatormanagement.R;
 import ir.taxi1880.operatormanagement.app.MyApplication;
 import ir.taxi1880.operatormanagement.helper.TypefaceUtil;
 import ir.taxi1880.operatormanagement.model.StationModel;
+import ir.taxi1880.operatormanagement.push.AvaCrashReporter;
 
 public class StationAdapter extends BaseAdapter {
 
@@ -67,6 +68,7 @@ public class StationAdapter extends BaseAdapter {
 
     } catch (Exception e) {
       e.printStackTrace();
+      AvaCrashReporter.send(e,"getView class, getView method");
     }
 
     return myView;

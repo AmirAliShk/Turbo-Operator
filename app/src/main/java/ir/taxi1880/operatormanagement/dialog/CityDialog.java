@@ -70,6 +70,8 @@ public class CityDialog {
       }
     } catch (JSONException e) {
       e.printStackTrace();
+      AvaCrashReporter.send(e,"CityDialog class, show method");
+
     }
 
     cityAdapter = new CityAdapter(cityModels, MyApplication.context);
@@ -100,6 +102,7 @@ public class CityDialog {
       }
     } catch (Exception e) {
       Log.e("TAG", "dismiss: " + e.getMessage());
+      AvaCrashReporter.send(e,"CityDialog class, dismiss method");
     }
     dialog = null;
   }

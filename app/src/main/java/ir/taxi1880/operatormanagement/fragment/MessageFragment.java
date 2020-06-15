@@ -31,6 +31,7 @@ import ir.taxi1880.operatormanagement.helper.KeyBoardHelper;
 import ir.taxi1880.operatormanagement.helper.TypefaceUtil;
 import ir.taxi1880.operatormanagement.model.MessageModel;
 import ir.taxi1880.operatormanagement.okHttp.RequestHelper;
+import ir.taxi1880.operatormanagement.push.AvaCrashReporter;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -139,6 +140,7 @@ public class MessageFragment extends Fragment {
 
         } catch (Exception e) {
           e.printStackTrace();
+          AvaCrashReporter.send(e,"MessageFragment class, onGetMessages onResponse method");
         }
       });
     }
@@ -176,6 +178,7 @@ public class MessageFragment extends Fragment {
           }
         } catch (Exception e) {
           e.printStackTrace();
+          AvaCrashReporter.send(e,"MessageFragment class, onSendMessage onResponse method");
         }
       });
     }

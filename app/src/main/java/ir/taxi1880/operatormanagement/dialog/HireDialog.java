@@ -28,6 +28,7 @@ import ir.taxi1880.operatormanagement.helper.KeyBoardHelper;
 import ir.taxi1880.operatormanagement.helper.TypefaceUtil;
 import ir.taxi1880.operatormanagement.model.HireTypeModel;
 import ir.taxi1880.operatormanagement.okHttp.RequestHelper;
+import ir.taxi1880.operatormanagement.push.AvaCrashReporter;
 
 public class HireDialog {
 
@@ -98,6 +99,7 @@ public class HireDialog {
       }
     } catch (Exception e) {
       Log.e("TAG", "dismiss: " + e.getMessage());
+      AvaCrashReporter.send(e,"HireDialog class, dismiss method");
     }
     dialog = null;
   }
@@ -147,6 +149,7 @@ public class HireDialog {
 
           } catch (JSONException e) {
             e.printStackTrace();
+            AvaCrashReporter.send(e,"HireDialog class, setHire onResponse method");
           }
         }
       });
@@ -205,6 +208,7 @@ public class HireDialog {
             }
           } catch (JSONException e) {
             e.printStackTrace();
+            AvaCrashReporter.send(e,"HireDialog class, getHireType onResponse method");
           }
 
         }

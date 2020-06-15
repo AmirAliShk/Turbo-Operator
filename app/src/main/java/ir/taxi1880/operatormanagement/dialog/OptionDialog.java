@@ -16,6 +16,7 @@ import ir.taxi1880.operatormanagement.R;
 import ir.taxi1880.operatormanagement.app.MyApplication;
 import ir.taxi1880.operatormanagement.helper.KeyBoardHelper;
 import ir.taxi1880.operatormanagement.helper.TypefaceUtil;
+import ir.taxi1880.operatormanagement.push.AvaCrashReporter;
 
 public class OptionDialog {
 
@@ -106,6 +107,7 @@ public class OptionDialog {
       }
     } catch (Exception e) {
       Log.e("TAG", "dismiss: " + e.getMessage());
+      AvaCrashReporter.send(e,"OptionDialog class, dismiss method");
     }
     dialog = null;
   }

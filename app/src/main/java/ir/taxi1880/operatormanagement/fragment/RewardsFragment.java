@@ -25,6 +25,7 @@ import ir.taxi1880.operatormanagement.app.EndPoints;
 import ir.taxi1880.operatormanagement.app.MyApplication;
 import ir.taxi1880.operatormanagement.model.RewardsModel;
 import ir.taxi1880.operatormanagement.okHttp.RequestHelper;
+import ir.taxi1880.operatormanagement.push.AvaCrashReporter;
 
 public class RewardsFragment extends Fragment {
 
@@ -96,6 +97,7 @@ public class RewardsFragment extends Fragment {
 
           } catch (Exception e) {
             e.printStackTrace();
+            AvaCrashReporter.send(e,"RewardsFragment class, onRewards onResponse method");
           }
 
         }

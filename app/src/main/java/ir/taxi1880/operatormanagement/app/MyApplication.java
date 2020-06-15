@@ -28,6 +28,7 @@ import androidx.fragment.app.FragmentManager;
 import ir.taxi1880.operatormanagement.BuildConfig;
 import ir.taxi1880.operatormanagement.R;
 import ir.taxi1880.operatormanagement.helper.TypefaceUtil;
+import ir.taxi1880.operatormanagement.push.AvaCrashReporter;
 import ir.taxi1880.operatormanagement.push.AvaFactory;
 import ir.taxi1880.operatormanagement.services.LinphoneService;
 
@@ -156,6 +157,7 @@ public class MyApplication extends Application {
       // At least the 3 below values are required
     } catch (Exception e) {
       e.printStackTrace();
+      AvaCrashReporter.send(e,"MyApplication class, configureAccount method");
     }
 
 

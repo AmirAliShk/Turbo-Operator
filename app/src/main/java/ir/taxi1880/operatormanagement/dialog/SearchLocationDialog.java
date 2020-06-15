@@ -33,6 +33,7 @@ import ir.taxi1880.operatormanagement.helper.StringHelper;
 import ir.taxi1880.operatormanagement.helper.TypefaceUtil;
 import ir.taxi1880.operatormanagement.model.StationModel;
 import ir.taxi1880.operatormanagement.okHttp.RequestHelper;
+import ir.taxi1880.operatormanagement.push.AvaCrashReporter;
 
 public class SearchLocationDialog {
 
@@ -144,6 +145,7 @@ public class SearchLocationDialog {
       }
     } catch (Exception e) {
       Log.e("TAG", "dismiss: " + e.getMessage());
+      AvaCrashReporter.send(e,"SearchLocationDialog class, dismiss method");
     }
     dialog = null;
   }
@@ -193,6 +195,7 @@ public class SearchLocationDialog {
 
           } catch (JSONException e) {
             e.printStackTrace();
+            AvaCrashReporter.send(e,"SearchLocationDialog class, onFindWay onResponse method");
           }
         }
       });
@@ -212,6 +215,7 @@ public class SearchLocationDialog {
 
       } catch (Exception e) {
         e.printStackTrace();
+        AvaCrashReporter.send(e,"SearchLocationDialog class, onReloadPress onResponse method");
       }
     }
   };

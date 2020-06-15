@@ -8,6 +8,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import ir.taxi1880.operatormanagement.app.MyApplication;
+import ir.taxi1880.operatormanagement.push.AvaCrashReporter;
 
 public class CheckEmptyView {
 
@@ -83,6 +84,7 @@ public class CheckEmptyView {
 
     } catch (Exception e) {
       e.printStackTrace();
+      AvaCrashReporter.send(e,"CheckEmptyView class, checkView method");
       // ignore
     }
 
@@ -123,6 +125,7 @@ public class CheckEmptyView {
 
     } catch (Exception e) {
       e.printStackTrace();
+      AvaCrashReporter.send(e,"CheckEmptyView class, setValue method");
       // ignore
     }
   }

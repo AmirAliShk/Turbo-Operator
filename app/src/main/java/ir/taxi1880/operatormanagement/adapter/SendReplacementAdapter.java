@@ -146,6 +146,7 @@ public class SendReplacementAdapter extends BaseAdapter {
           }
         } catch (Exception e) {
           e.printStackTrace();
+          AvaCrashReporter.send(e,"SendReplacementAdapter class, onCancel onResponse method");
         }
       });
     }

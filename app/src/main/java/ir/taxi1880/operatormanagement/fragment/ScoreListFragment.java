@@ -23,6 +23,7 @@ import ir.taxi1880.operatormanagement.app.EndPoints;
 import ir.taxi1880.operatormanagement.app.MyApplication;
 import ir.taxi1880.operatormanagement.model.ScoreModel;
 import ir.taxi1880.operatormanagement.okHttp.RequestHelper;
+import ir.taxi1880.operatormanagement.push.AvaCrashReporter;
 
 public class ScoreListFragment extends Fragment {
 
@@ -91,6 +92,7 @@ public class ScoreListFragment extends Fragment {
 
           } catch (Exception e) {
             e.printStackTrace();
+            AvaCrashReporter.send(e,"ScoreListFragment class, onScore onResponse method");
           }
 
         }

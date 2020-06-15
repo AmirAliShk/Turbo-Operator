@@ -15,6 +15,7 @@ import androidx.annotation.AnimRes;
 import androidx.annotation.ColorInt;
 import androidx.annotation.IdRes;
 import androidx.fragment.app.FragmentActivity;
+import ir.taxi1880.operatormanagement.push.AvaCrashReporter;
 
 /***********************************************
  * Created by AmirReza Erfanian at 23 jun 2019 *
@@ -176,6 +177,7 @@ public class FragmentHelper {
       setWindowStyle();
     } catch (Exception e) {
       e.printStackTrace();
+      AvaCrashReporter.send(e,"FragmentHelper class, add method");
       Log.e(TAG, "can't add " + flag + " to " + frame);
     }
 
@@ -213,6 +215,7 @@ public class FragmentHelper {
       setWindowStyle();
     } catch (Exception e) {
       e.printStackTrace();
+      AvaCrashReporter.send(e,"FragmentHelper class, replace method");
       Log.e(TAG, "can't replace " + flag + " to " + frame);
     }
 
@@ -260,6 +263,7 @@ public class FragmentHelper {
         instance.fragmentManagerV4.popBackStack();
       }
     }catch (Exception e){
+      AvaCrashReporter.send(e,"FragmentHelper class, remove method");
       e.printStackTrace();
     }
 
@@ -291,6 +295,7 @@ public class FragmentHelper {
       }
     } catch (Exception e) {
       e.printStackTrace();
+      AvaCrashReporter.send(e,"FragmentHelper class, setWindowStyle method");
     }
   }
 

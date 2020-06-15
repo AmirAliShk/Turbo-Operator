@@ -29,6 +29,7 @@ import ir.taxi1880.operatormanagement.R;
 import ir.taxi1880.operatormanagement.app.MyApplication;
 import ir.taxi1880.operatormanagement.helper.KeyBoardHelper;
 import ir.taxi1880.operatormanagement.helper.TypefaceUtil;
+import ir.taxi1880.operatormanagement.push.AvaCrashReporter;
 import ir.taxi1880.operatormanagement.services.LinphoneService;
 
 public class CallDialog {
@@ -115,6 +116,8 @@ public class CallDialog {
         call.terminate();
     } catch (Exception e) {
       e.printStackTrace();
+      AvaCrashReporter.send(e,"CallDialog class, onEndPress method");
+
     }
 
     vfCall.setDisplayedChild(0);
@@ -240,6 +243,7 @@ public class CallDialog {
       }
     } catch (Exception e) {
       Log.e("TAG", "dismiss: " + e.getMessage());
+      AvaCrashReporter.send(e,"CallDialog class, dismiss method");
     }
 
     dialog = null;

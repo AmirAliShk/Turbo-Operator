@@ -20,6 +20,7 @@ import ir.taxi1880.operatormanagement.app.MyApplication;
 import ir.taxi1880.operatormanagement.helper.KeyBoardHelper;
 import ir.taxi1880.operatormanagement.helper.TypefaceUtil;
 import ir.taxi1880.operatormanagement.model.StationInfoModel;
+import ir.taxi1880.operatormanagement.push.AvaCrashReporter;
 
 public class StationInfoDialog {
 
@@ -85,6 +86,7 @@ public class StationInfoDialog {
       }
     } catch (Exception e) {
       Log.e("TAG", "dismiss: " + e.getMessage());
+      AvaCrashReporter.send(e,"StationInfoDialog class, dismiss method");
     }
     dialog = null;
   }

@@ -9,6 +9,8 @@ import java.util.Date;
 import java.util.Locale;
 import java.util.TimeZone;
 
+import ir.taxi1880.operatormanagement.push.AvaCrashReporter;
+
 /**
  * Created by Amirreza Erfanian on 30/12/2017.
  * A.E
@@ -483,6 +485,7 @@ public class DateHelper {
       return d;
     } catch (ParseException e) {
       e.printStackTrace();
+      AvaCrashReporter.send(e,"DateHelper class, parseFormat method");
       return null;
     }
   }
@@ -529,6 +532,7 @@ public class DateHelper {
       return String.format(new Locale("en_US"), "%02d:%02d %s", date.getHours(), date.getMinutes(), sc.strWeekDay);
     } catch (Exception e) {
       e.printStackTrace();
+      AvaCrashReporter.send(e,"DateHelper class, strPersianFour method");
       return "";
     }
   }
@@ -544,6 +548,7 @@ public class DateHelper {
       return String.format(new Locale("en_US"), "%02d:%02d", date.getHours(), date.getMinutes());
     } catch (Exception e) {
       e.printStackTrace();
+      AvaCrashReporter.send(e,"DateHelper class, strPersianFour1 method");
       return "";
     }
   }
@@ -559,6 +564,7 @@ public class DateHelper {
       return String.format(new Locale("en_US"), "%04d/%02d/%02d", sc.year,sc.month,sc.date);
     } catch (Exception e) {
       e.printStackTrace();
+      AvaCrashReporter.send(e,"DateHelper class, strPersianSeven method");
       return "";
     }
   }
@@ -574,6 +580,7 @@ public class DateHelper {
       return String.format(new Locale("en_US"), "%02d %s %02d:%02d", sc.date,sc.strMonth ,date.getHours(), date.getMinutes());
     } catch (Exception e) {
       e.printStackTrace();
+      AvaCrashReporter.send(e,"DateHelper class, strPersianEghit method");
       return "";
     }
   }
@@ -602,6 +609,7 @@ public class DateHelper {
 
     } catch (Exception e) {
       e.printStackTrace();
+      AvaCrashReporter.send(e,"DateHelper class, strPersianFive method");
       return "";
     }
   }
@@ -653,6 +661,7 @@ public class DateHelper {
               , Integer.parseInt(time1[2])));
       return DateHelper.strPersianDate(d);
     } catch (Exception e) {
+      AvaCrashReporter.send(e,"DateHelper class, parseStrDate method");
       return DateHelper.strPersianDate(new Date());
     }
   }
