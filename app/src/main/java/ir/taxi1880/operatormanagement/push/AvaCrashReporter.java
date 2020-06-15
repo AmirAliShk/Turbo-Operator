@@ -29,7 +29,6 @@ public class AvaCrashReporter {
 
     try {
       JSONObject customeData = new JSONObject();
-      customeData.put("userId", MyApplication.prefManager.getUserCode());
       customeData.put("LineCode", MyApplication.prefManager.getUserCode());
       customeData.put("operatorName", MyApplication.prefManager.getOperatorName());
       customeData.put("projectId", PUSH_PROJECT_ID);
