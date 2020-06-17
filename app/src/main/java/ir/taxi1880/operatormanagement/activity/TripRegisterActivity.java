@@ -1515,8 +1515,8 @@ public class TripRegisterActivity extends AppCompatActivity {
         @Override
         public void run() {
           try {
-
-            Log.i(TAG, "onResponse: " + args[0].toString());
+            //TODO delete log
+            Log.i("Avamohsen", "onResponse:insertService " + args[0].toString());
             JSONObject obj = new JSONObject(args[0].toString());
             boolean success = obj.getBoolean("success");
             String message = obj.getString("message");
@@ -1730,6 +1730,8 @@ public class TripRegisterActivity extends AppCompatActivity {
     } catch (Exception e) {
       e.printStackTrace();
       AvaCrashReporter.send(e, "TripRegisterActivity class, handleCallerInfo method");
+      //TODO delete log
+      Log.i("Avamohsen", "Exception:handleCallerInfo: edtTell: " + e.getMessage());
     }
   }
 
@@ -1752,6 +1754,9 @@ public class TripRegisterActivity extends AppCompatActivity {
       return callModel;
     } catch (JSONException e) {
       e.printStackTrace();
+      //TODO delete log
+      Log.i("Avamohsen", "JSONException:parseNotification:  " + e.getMessage() + " value: " + info);
+
       AvaCrashReporter.send(e, "TripRegisterActivity class, parseNotification method");
       return null;
     }

@@ -53,6 +53,8 @@ public class PushReceiver extends BroadcastReceiver {
     } catch (JSONException e) {
       e.printStackTrace();
       AvaCrashReporter.send(e,"PushReceiver class, onReceive method ");
+      //TODO delete log
+      Log.i("Avamohsen", "JSONException:PushReceiver:  "+ e.getMessage());
     }
   }
 

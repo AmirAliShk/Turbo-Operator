@@ -3,6 +3,7 @@ package ir.taxi1880.operatormanagement.push;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.provider.Settings;
+import android.util.Log;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -281,6 +282,8 @@ public class AvaSocket {
     @Override
     public void call(Object... args) {
       String result = args[0].toString();
+      //TODO delete log
+      Log.i("Avamohsen", "call: "+result);
       AvaReporter.Message(context, Keys.PUSH_RECEIVE, result);
       try {
         socket.emit(Keys.EVENT_PUSH, new JSONObject(result));
