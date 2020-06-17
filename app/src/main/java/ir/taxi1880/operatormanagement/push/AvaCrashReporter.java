@@ -43,7 +43,7 @@ public class AvaCrashReporter {
               .addParam("PACKAGE_NAME", MyApplication.context.getPackageName())
               .addParam("PHONE_MODEL", Build.MODEL)
               .addParam("BRAND", Build.BRAND)
-              .addParam("ANDROID_VERSION", android.os.Build.VERSION.SDK_INT)
+              .addParam("ANDROID_VERSION", Build.VERSION.RELEASE)
               .addParam("TOTAL_MEM_SIZE", "")
               .addParam("AVAILABLE_MEM_SIZE", "")
               .addParam("IS_SILENT", "")
