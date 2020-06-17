@@ -42,17 +42,21 @@ public class CallIncomingActivity extends AppCompatActivity {
   @OnClick(R.id.imgAccept)
   void onAcceptPress() {
     try {
-      call.accept();
+      Core core;
+      core = LinphoneService.getCore();
+      call = core.getCurrentCall();
+      Call[] calls = core.getCalls();
+      int i = calls.length;
+      if (call != null) {
+        call.accept();
+      } else if (calls.length > 0) {
+        calls[0].accept();
+      }
     }catch (Exception e){
       e.printStackTrace();
       AvaCrashReporter.send(e,"CallIncomingActivity class, onAcceptPress");
     }
-//    txtTimer.setVisibility(View.VISIBLE);
-//    startTimer();
   }
-
-//  @BindView(R.id.txtTimer)
-//  TextView txtTimer;
 
   @OnClick(R.id.imgReject)
   void onRejectPress() {
