@@ -17,7 +17,8 @@ public class AvaCrashReporter {
    * @param e
    * @param arg
    */
-  public static void send(Exception e, Object... arg) {
+  public static void send(Exception e, Object... arg
+  ) {
 
 //    try {
 //      if (!MyApplication.prefManager.isCatchCrashReportEnable()) return;

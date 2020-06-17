@@ -1801,8 +1801,10 @@ public class TripRegisterActivity extends AppCompatActivity {
       imageRes = (R.drawable.ic_quality_0);
     }
     try {
-      imgCallQuality.setVisibility(View.VISIBLE);
-      imgCallQuality.setImageResource(imageRes);
+      if (imgCallQuality != null) {
+        imgCallQuality.setVisibility(View.VISIBLE);
+        imgCallQuality.setImageResource(imageRes);
+      }
     } catch (Exception e) {
       e.printStackTrace();
       AvaCrashReporter.send(e, "TripRegisterActivity class, updateQualityOfSignalIcon method");
