@@ -1730,21 +1730,22 @@ public class TripRegisterActivity extends AppCompatActivity {
             edtTell.setText(participant);
           }, 1000);
         } catch (Exception e) {
-          AvaCrashReporter.send(e, "TripRegisterActivity class, handleCallerInfo method, with postDelayed");
+          AvaCrashReporter.send(e, "edtTell test, with postDelayed");
           if (edtTell != null) {
             edtTell.setText(participant);
-            AvaCrashReporter.send(e, "TripRegisterActivity class, handleCallerInfo method, edtTell != null");
+            AvaCrashReporter.send(e, "edtTell test, edtTell != null");
           } else if (edtTell == null){
-            AvaCrashReporter.send(e, "TripRegisterActivity class, handleCallerInfo method, edtTell == null");
+            AvaCrashReporter.send(e, "edtTell test, edtTell == null");
           }else if (participant == null){
-            AvaCrashReporter.send(e, "TripRegisterActivity class, handleCallerInfo method, participant == null");
+            AvaCrashReporter.send(e, "edtTell test, participant == null");
           }
         }
         MyApplication.handler.postDelayed(() -> onPressDownload(), 100);
       }
     } catch (Exception e) {
       e.printStackTrace();
-      AvaCrashReporter.send(e, "TripRegisterActivity class, handleCallerInfo method");
+      /*TODO: remove edtTell test from AvaCrashReporter*/
+      AvaCrashReporter.send(e, "TripRegisterActivity class, handleCallerInfo method, edtTell test");
       //TODO delete log
       Log.i("Avamohsen", "Exception:handleCallerInfo: edtTell: " + e.getMessage());
     }
@@ -1771,8 +1772,8 @@ public class TripRegisterActivity extends AppCompatActivity {
       e.printStackTrace();
       //TODO delete log
       Log.i("Avamohsen", "JSONException:parseNotification:  " + e.getMessage() + " value: " + info);
-
-      AvaCrashReporter.send(e, "TripRegisterActivity class, parseNotification method");
+      /*TODO: AvaCrashReporter correction, remove info from end  */
+      AvaCrashReporter.send(e, "push test, parseNotification " + info);
       return null;
     }
   }

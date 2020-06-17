@@ -21,12 +21,16 @@ import static ir.taxi1880.operatormanagement.app.Keys.KEY_MESSAGE;
 public class PushReceiver extends BroadcastReceiver {
   public static final String TAG = PushReceiver.class.getSimpleName();
 
+  String res;
+
   @Override
   public void onReceive(Context context, Intent intent) {
     try {
 
       Bundle bundle = intent.getExtras();
       String result = bundle.getString(Keys.KEY_MESSAGE);
+      res = result;
+      /*TODO: remove res*/
       int type = bundle.getInt(Keys.KEY_BROADCAST_TYPE);
 
       JSONObject object = new JSONObject(result);
@@ -52,7 +56,10 @@ public class PushReceiver extends BroadcastReceiver {
 
     } catch (JSONException e) {
       e.printStackTrace();
-      AvaCrashReporter.send(e,"PushReceiver class, onReceive method ");
+      /*TODO: AvaCrashReporter correction, remove res from end  */
+      if (res == null)
+        res = "res is nulllll";
+      AvaCrashReporter.send(e,"push test, onReceive " + res );
       //TODO delete log
       Log.i("Avamohsen", "JSONException:PushReceiver:  "+ e.getMessage());
     }
