@@ -192,15 +192,12 @@ public class HireDialog {
               hireTypes.add(obj.getString("name"));
             }
             if (spHireType != null) {
-              //TODO test it (fatiNoori)
               spHireType.setAdapter(new SpinnerAdapter(MyApplication.currentActivity, R.layout.item_spinner_right, hireTypes));
-
               spHireType.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
                 @Override
                 public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                   hireType = hireTypeModels.get(position).getId();
                 }
-
                 @Override
                 public void onNothingSelected(AdapterView<?> parent) {
                 }
