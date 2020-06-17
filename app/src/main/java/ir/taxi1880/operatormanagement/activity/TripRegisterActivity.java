@@ -1724,7 +1724,22 @@ public class TripRegisterActivity extends AppCompatActivity {
         String participant = PhoneNumberValidation.removePrefix(callModel.getParticipant());
         queue = callModel.getQueue();
         voipId = callModel.getVoipId();
-        edtTell.setText(participant);
+        /*TODO: remove  try/catch and replace with [ edtTell.setText(participant);] */
+        try {
+          MyApplication.handler.postDelayed(() -> {
+            edtTell.setText(participant);
+          }, 1000);
+        } catch (Exception e) {
+          AvaCrashReporter.send(e, "TripRegisterActivity class, handleCallerInfo method, with postDelayed");
+          if (edtTell != null) {
+            edtTell.setText(participant);
+            AvaCrashReporter.send(e, "TripRegisterActivity class, handleCallerInfo method, edtTell != null");
+          } else if (edtTell == null){
+            AvaCrashReporter.send(e, "TripRegisterActivity class, handleCallerInfo method, edtTell == null");
+          }else if (participant == null){
+            AvaCrashReporter.send(e, "TripRegisterActivity class, handleCallerInfo method, participant == null");
+          }
+        }
         MyApplication.handler.postDelayed(() -> onPressDownload(), 100);
       }
     } catch (Exception e) {
