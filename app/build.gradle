@@ -10,6 +10,7 @@ android {
         versionName "2.1.2"
     }
 
+    //NOTE= version 2000 is a version for test
     //recent change: add bestScore,rewardList,scoreList
     //versionCode: version 4
     //versionName: 2.0

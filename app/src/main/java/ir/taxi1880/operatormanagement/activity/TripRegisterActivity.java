@@ -1740,7 +1740,7 @@ public class TripRegisterActivity extends AppCompatActivity {
             AvaCrashReporter.send(e, "edtTell test, participant == null");
           }
         }
-        MyApplication.handler.postDelayed(() -> onPressDownload(), 100);
+        MyApplication.handler.postDelayed(() -> onPressDownload(), 1100);
       }
     } catch (Exception e) {
       e.printStackTrace();
@@ -1851,7 +1851,6 @@ public class TripRegisterActivity extends AppCompatActivity {
   @BindView(R.id.imgEndCall)
   ImageView imgEndCall;
 
-
   CoreListenerStub mCoreListener = new CoreListenerStub() {
     @Override
     public void onCallStateChanged(Core core, final Call call, Call.State state, String message) {
@@ -1878,7 +1877,7 @@ public class TripRegisterActivity extends AppCompatActivity {
       } else if (state == Call.State.Error) {
         showTitleBar();
       } else if (state == Call.State.End) {
-        if (imgEndCall != null)
+        if (imgCallQuality != null)
           imgCallQuality.setVisibility(View.INVISIBLE);
         showTitleBar();
         if (mCallQualityUpdater != null) {
