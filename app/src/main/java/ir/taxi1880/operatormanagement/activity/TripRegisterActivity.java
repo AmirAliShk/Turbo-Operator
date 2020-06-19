@@ -533,6 +533,18 @@ public class TripRegisterActivity extends AppCompatActivity {
       public void onCallReceived() {
         showCallIncoming();
       }
+
+      @Override
+      public void onCallTransferred() {
+        MyApplication.Toast("im in onCallTransferred ", Toast.LENGTH_SHORT);
+        //TODO this handler must be removed or decrease when the handlers in handleCallerInfo removed
+        MyApplication.handler.postDelayed(new Runnable() {
+          @Override
+          public void run() {
+            clearData();
+          }
+        }, 1000);
+      }
     });
 
 //    Call call = LinphoneService.getCore().getCurrentCall();
@@ -1728,19 +1740,19 @@ public class TripRegisterActivity extends AppCompatActivity {
         try {
           MyApplication.handler.postDelayed(() -> {
             edtTell.setText(participant);
-          }, 400);
+          }, 300);
         } catch (Exception e) {
           AvaCrashReporter.send(e, "edtTell test, with postDelayed");
           if (edtTell != null) {
             edtTell.setText(participant);
             AvaCrashReporter.send(e, "edtTell test, edtTell != null");
-          } else if (edtTell == null){
+          } else if (edtTell == null) {
             AvaCrashReporter.send(e, "edtTell test, edtTell == null");
-          }else if (participant == null){
+          } else if (participant == null) {
             AvaCrashReporter.send(e, "edtTell test, participant == null");
           }
         }
-        MyApplication.handler.postDelayed(() -> onPressDownload(), 500);
+        MyApplication.handler.postDelayed(() -> onPressDownload(), 400);
       }
     } catch (Exception e) {
       e.printStackTrace();
@@ -1941,7 +1953,7 @@ public class TripRegisterActivity extends AppCompatActivity {
     if (call != null) {
       call.accept();
       if (getMobileNumber().isEmpty() && !isTellValidable)
-        MyApplication.handler.postDelayed(() -> onPressDownload(), 500);
+        MyApplication.handler.postDelayed(() -> onPressDownload(), 400);
     } else if (calls.length > 0) {
       calls[0].accept();
     }

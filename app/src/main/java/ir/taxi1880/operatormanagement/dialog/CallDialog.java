@@ -40,6 +40,9 @@ public class CallDialog {
     void onDismiss();
 
     void onCallReceived();
+
+    void onCallTransferred();
+
   }
 
   Unbinder unbinder;
@@ -54,9 +57,11 @@ public class CallDialog {
     for (Call call : calls) {
       if (call != null && call.getState() == Call.State.StreamsRunning) {
         call.transfer("950");
+        callBack.onCallTransferred();
       }
     }
     MyApplication.Toast("تماس به صف پشتیبانی منتقل شد", Toast.LENGTH_SHORT);
+//    if (callBack != null)
     dismiss();
   }
 
@@ -116,7 +121,7 @@ public class CallDialog {
         call.terminate();
     } catch (Exception e) {
       e.printStackTrace();
-      AvaCrashReporter.send(e,"CallDialog class, onEndPress method");
+      AvaCrashReporter.send(e, "CallDialog class, onEndPress method");
 
     }
 
@@ -193,7 +198,8 @@ public class CallDialog {
   Address callAddress;
 
   public void show(CallBack callBack) {
-    if (MyApplication.currentActivity == null|| MyApplication.currentActivity.isFinishing()) return;
+    if (MyApplication.currentActivity == null || MyApplication.currentActivity.isFinishing())
+      return;
     dialog = new Dialog(MyApplication.currentActivity);
     dialog.getWindow().requestFeature(Window.FEATURE_NO_TITLE);
     dialog.getWindow().getAttributes().windowAnimations = R.style.ExpandAnimation;
@@ -243,7 +249,7 @@ public class CallDialog {
       }
     } catch (Exception e) {
       Log.e("TAG", "dismiss: " + e.getMessage());
-      AvaCrashReporter.send(e,"CallDialog class, dismiss method");
+      AvaCrashReporter.send(e, "CallDialog class, dismiss method");
     }
 
     dialog = null;
