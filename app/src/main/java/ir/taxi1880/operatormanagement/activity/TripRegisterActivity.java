@@ -1728,7 +1728,7 @@ public class TripRegisterActivity extends AppCompatActivity {
         try {
           MyApplication.handler.postDelayed(() -> {
             edtTell.setText(participant);
-          }, 1000);
+          }, 400);
         } catch (Exception e) {
           AvaCrashReporter.send(e, "edtTell test, with postDelayed");
           if (edtTell != null) {
@@ -1740,7 +1740,7 @@ public class TripRegisterActivity extends AppCompatActivity {
             AvaCrashReporter.send(e, "edtTell test, participant == null");
           }
         }
-        MyApplication.handler.postDelayed(() -> onPressDownload(), 1100);
+        MyApplication.handler.postDelayed(() -> onPressDownload(), 500);
       }
     } catch (Exception e) {
       e.printStackTrace();
