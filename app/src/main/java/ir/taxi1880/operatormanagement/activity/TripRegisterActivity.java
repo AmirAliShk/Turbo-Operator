@@ -538,7 +538,6 @@ public class TripRegisterActivity extends AppCompatActivity {
 
       @Override
       public void onCallTransferred() {
-        MyApplication.Toast("im in onCallTransferred ", Toast.LENGTH_SHORT);
         //TODO this handler must be removed or decrease when the handlers in handleCallerInfo removed
         MyApplication.handler.postDelayed(new Runnable() {
           @Override
@@ -1704,6 +1703,8 @@ public class TripRegisterActivity extends AppCompatActivity {
           if (voipId.equals("0")) {
             Address address = call.getRemoteAddress();
             edtTell.setText(address.getUsername());
+            MyApplication.handler.postDelayed(() -> onPressDownload(), 400);
+
           }
         }
       }
@@ -1951,7 +1952,7 @@ public class TripRegisterActivity extends AppCompatActivity {
     Log.i(TAG, "onRejectPress: " + i);
     if (call != null) {
       call.accept();
-      if (getMobileNumber().isEmpty() && !isTellValidable)
+      if (getMobileNumber().isEmpty() && isTellValidable)
         MyApplication.handler.postDelayed(() -> onPressDownload(), 400);
     } else if (calls.length > 0) {
       calls[0].accept();
