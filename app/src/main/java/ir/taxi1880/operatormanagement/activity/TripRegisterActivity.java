@@ -97,6 +97,8 @@ public class TripRegisterActivity extends AppCompatActivity {
   private boolean isOriginValid;
   private boolean isDestinationValid;
   private boolean isTellValidable = false;
+  RipplePulseLayout mRipplePulseLayout;
+
   String queue = "0";
   String voipId = "0";
 
@@ -655,6 +657,7 @@ public class TripRegisterActivity extends AppCompatActivity {
     }
     unbinder = ButterKnife.bind(this, view);
     TypefaceUtil.overrideFonts(view);
+    mRipplePulseLayout = findViewById(R.id.layout_ripplepulse);
 
     if (MyApplication.prefManager.getActivateStatus()) {
       btnActivate.setBackgroundResource(R.drawable.bg_green_edge);
@@ -697,10 +700,6 @@ public class TripRegisterActivity extends AppCompatActivity {
         KeyBoardHelper.showKeyboard(MyApplication.context);
       }
     }, 300);
-
-
-    RipplePulseLayout mRipplePulseLayout = findViewById(R.id.layout_ripplepulse);
-    mRipplePulseLayout.startRippleAnimation();
 
     setCursorEnd(getWindow().getDecorView().getRootView());
 
@@ -1992,6 +1991,7 @@ public class TripRegisterActivity extends AppCompatActivity {
   Call call;
 
   private void showCallIncoming() {
+    mRipplePulseLayout.startRippleAnimation();
     call = core.getCurrentCall();
     Address address = call.getRemoteAddress();
     txtCallerNum.setText(address.getUsername());
@@ -2000,6 +2000,7 @@ public class TripRegisterActivity extends AppCompatActivity {
   }
 
   private void showTitleBar() {
+    mRipplePulseLayout.stopRippleAnimation();
     rlNewInComingCall.setVisibility(View.GONE);
     rlActionBar.setVisibility(View.VISIBLE);
   }
