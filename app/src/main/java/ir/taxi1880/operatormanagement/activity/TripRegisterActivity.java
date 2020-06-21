@@ -349,7 +349,11 @@ public class TripRegisterActivity extends AppCompatActivity {
   }
 
   private String getTellNumber() {
-    return edtTell.getText().toString();
+    String txtTell = edtTell.getText().toString();
+    if (txtTell == null)
+      return "";
+    else
+      return txtTell;
   }
 
   private String getMobileNumber() {
@@ -1739,18 +1743,12 @@ public class TripRegisterActivity extends AppCompatActivity {
         /*TODO: remove  try/catch and replace with [ edtTell.setText(participant);] */
         try {
           MyApplication.handler.postDelayed(() -> {
+            if(edtTell==null)return;
+            if(participant==null)return;
             edtTell.setText(participant);
           }, 300);
         } catch (Exception e) {
           AvaCrashReporter.send(e, "edtTell test, with postDelayed");
-          if (edtTell != null) {
-            edtTell.setText(participant);
-            AvaCrashReporter.send(e, "edtTell test, edtTell != null");
-          } else if (edtTell == null) {
-            AvaCrashReporter.send(e, "edtTell test, edtTell == null");
-          } else if (participant == null) {
-            AvaCrashReporter.send(e, "edtTell test, participant == null");
-          }
         }
         MyApplication.handler.postDelayed(() -> onPressDownload(), 400);
       }
