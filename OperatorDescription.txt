@@ -1,0 +1,8 @@
+version 6:
+release on 1399/03/14 - 2020/11/06
+This version only has acra to save crashes.
+
+version 7:
+release on 1399/03/27 - 2020/24/06
+add avaCrashReporter to try/catch.
+The number of crashes dropped from 600 crashes per day to 4 crashed per user.
