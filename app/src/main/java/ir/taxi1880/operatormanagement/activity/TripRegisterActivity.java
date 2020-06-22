@@ -1730,36 +1730,26 @@ public class TripRegisterActivity extends AppCompatActivity {
     }
   };
 
-  private void handleCallerInfo(CallModel callModel) {
-    try {
-      if (voipId.equals("0")) {
-        //show CallerId
-        if (callModel == null) {
-          return;
-        }
-        String participant = PhoneNumberValidation.removePrefix(callModel.getParticipant());
-        queue = callModel.getQueue();
-        voipId = callModel.getVoipId();
-        /*TODO: remove  try/catch and replace with [ edtTell.setText(participant);] */
+    private void handleCallerInfo(CallModel callModel) {
         try {
-          MyApplication.handler.postDelayed(() -> {
-            if (edtTell == null) return;
-            if (participant == null) return;
-            edtTell.setText(participant);
-          }, 300);
+            if (voipId.equals("0")) {
+                //show CallerId
+                if (callModel == null) {
+                    return;
+                }
+                String participant = PhoneNumberValidation.removePrefix(callModel.getParticipant());
+                queue = callModel.getQueue();
+                voipId = callModel.getVoipId();
+                if (edtTell == null) return;
+                if (participant == null) return;
+                edtTell.setText(participant);
+                MyApplication.handler.postDelayed(this::onPressDownload, 400);
+            }
         } catch (Exception e) {
-          AvaCrashReporter.send(e, "edtTell test, with postDelayed");
+            e.printStackTrace();
+            AvaCrashReporter.send(e, "TripRegisterActivity class, handleCallerInfo method");
         }
-        MyApplication.handler.postDelayed(() -> onPressDownload(), 400);
-      }
-    } catch (Exception e) {
-      e.printStackTrace();
-      /*TODO: remove edtTell test from AvaCrashReporter*/
-      AvaCrashReporter.send(e, "TripRegisterActivity class, handleCallerInfo method, edtTell test");
-      //TODO delete log
-      Log.i("Avamohsen", "Exception:handleCallerInfo: edtTell: " + e.getMessage());
     }
-  }
 
   /**
    * @param info have below format

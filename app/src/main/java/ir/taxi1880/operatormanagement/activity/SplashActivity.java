@@ -181,7 +181,7 @@ public class SplashActivity extends AppCompatActivity {
                 try {
                     Log.i(TAG, "onResponse: " + args[0].toString());
                     JSONObject object = new JSONObject(args[0].toString());
-                    int block = 0;
+                    int block = object.getInt("isBlock");
                     int updateAvailable = object.getInt("updateAvailable");
                     int forceUpdate = object.getInt("forceUpdate");
                     String updateUrl = object.getString("updateUrl");
