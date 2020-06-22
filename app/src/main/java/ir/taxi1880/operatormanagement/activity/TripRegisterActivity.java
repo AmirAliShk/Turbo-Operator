@@ -318,11 +318,22 @@ public class TripRegisterActivity extends AppCompatActivity {
     }
 
     private String getTellNumber() {
-        String txtTell = edtTell.getText().toString();
-        if (txtTell == null)
-            return "";
+        String txtTell;
+//        if (edtTell == null) {
+//
+//        }else {
+        if (edtTell.getText() == null)
+            txtTell = "";
         else
-            return txtTell;
+            txtTell = edtTell.getText().toString();
+        return txtTell;
+//        }
+
+//        String txtTell = edtTell.getText().toString();
+//        if (txtTell == null)
+//            return "";
+//        else
+//            return txtTell;
     }
 
     private String getMobileNumber() {
@@ -1582,7 +1593,7 @@ public class TripRegisterActivity extends AppCompatActivity {
 
             Call[] calls = core.getCalls();
             for (Call call : calls) {
-                if (call != null && call.getState() == Call.State.StreamsRunning) {
+                if (call != null && call.getState() == Call.State.Connected) {
                     if (voipId.equals("0")) {
                         Address address = call.getRemoteAddress();
                         edtTell.setText(address.getUsername());
@@ -1613,13 +1624,10 @@ public class TripRegisterActivity extends AppCompatActivity {
                 String participant = PhoneNumberValidation.removePrefix(callModel.getParticipant());
                 queue = callModel.getQueue();
                 voipId = callModel.getVoipId();
-                /*TODO: still we nedd postDelay? */
-                MyApplication.handler.postDelayed(() -> {
-                    if (edtTell == null) return;
-                    if (participant == null) return;
-                    edtTell.setText(participant);
-                }, 300);
-                MyApplication.handler.postDelayed(() -> onPressDownload(), 400);
+                if (edtTell == null) return;
+                if (participant == null) return;
+                edtTell.setText(participant);
+                MyApplication.handler.postDelayed(this::onPressDownload, 400);
             }
         } catch (Exception e) {
             e.printStackTrace();
