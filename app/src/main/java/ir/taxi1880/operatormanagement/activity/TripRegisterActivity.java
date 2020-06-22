@@ -1743,8 +1743,8 @@ public class TripRegisterActivity extends AppCompatActivity {
         /*TODO: remove  try/catch and replace with [ edtTell.setText(participant);] */
         try {
           MyApplication.handler.postDelayed(() -> {
-            if(edtTell==null)return;
-            if(participant==null)return;
+            if (edtTell == null) return;
+            if (participant == null) return;
             edtTell.setText(participant);
           }, 300);
         } catch (Exception e) {
@@ -1828,17 +1828,10 @@ public class TripRegisterActivity extends AppCompatActivity {
       imageRes = (R.drawable.ic_quality_2);
     } else if (quality >= 1) { // Very low quality
       imageRes = (R.drawable.ic_quality_1);
-    } else { // Worst quality
-      imageRes = (R.drawable.ic_quality_0);
     }
-    try {
-      if (imgCallQuality != null) {
-        imgCallQuality.setVisibility(View.VISIBLE);
-        imgCallQuality.setImageResource(imageRes);
-      }
-    } catch (Exception e) {
-      e.printStackTrace();
-      AvaCrashReporter.send(e, "TripRegisterActivity class, updateQualityOfSignalIcon method");
+    if (imgCallQuality != null) {
+      imgCallQuality.setVisibility(View.VISIBLE);
+      imgCallQuality.setImageResource(imageRes);
     }
     mDisplayedQuality = iQuality;
   }
