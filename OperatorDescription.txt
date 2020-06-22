@@ -1,8 +1,25 @@
+Note: don't remove this file never never never....
+//TODO Make a brief explanation for each release
+
+version 4:
+release on 1399/02/27 - 2020/05/16
+add bestScore,rewardList,scoreList.
+
+
 version 6:
-release on 1399/03/14 - 2020/11/06
+release on 1399/03/14 - 2020/06/11
 This version only has acra to save crashes.
 
 version 7:
-release on 1399/03/27 - 2020/24/06
+release on 1399/03/27 - 2020/06/16
 add avaCrashReporter to try/catch.
 The number of crashes dropped from 600 crashes per day to 4 crashed per user.
+
+version 2000:
+This version is a version for avaCrashReporter test.
+
+version 8:
+release on 1399/04/02 - 2020/06/22
+remove bugs of version 7:
+- edtTell.setText(participant) : setText on a null object refrence.
+- imgCallQuality.setVisibility(View.VISIBLE) : setVisibility on a null object refrence.
