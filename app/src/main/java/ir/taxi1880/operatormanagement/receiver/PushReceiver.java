@@ -57,7 +57,6 @@ public class PushReceiver extends BroadcastReceiver {
       e.printStackTrace();
       if (res == null)
         res = "res is null !";
-      /*TODO: AvaCrashReporter correction, remove res from end ?  */
       AvaCrashReporter.send(e,"PushReceiver class, onReceive method, info : " + res );
     }
   }

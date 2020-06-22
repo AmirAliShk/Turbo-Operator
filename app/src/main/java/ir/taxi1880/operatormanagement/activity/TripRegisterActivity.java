@@ -508,8 +508,7 @@ public class TripRegisterActivity extends AppCompatActivity {
 
             @Override
             public void onCallTransferred() {
-                //TODO this handler must be removed or decrease when the handlers in handleCallerInfo removed
-                MyApplication.handler.postDelayed(() -> clearData(), 1000);
+                MyApplication.handler.postDelayed(() -> clearData(), 100);
             }
         });
     }
@@ -1654,7 +1653,6 @@ public class TripRegisterActivity extends AppCompatActivity {
             return callModel;
         } catch (JSONException e) {
             e.printStackTrace();
-            /*TODO: AvaCrashReporter correction, remove info from end ?  */
             AvaCrashReporter.send(e, "push test, parseNotification, info : " + info);
             return null;
         }
