@@ -542,13 +542,12 @@ public class TripRegisterActivity extends AppCompatActivity {
 
       @Override
       public void onCallTransferred() {
-        //TODO this handler must be removed or decrease when the handlers in handleCallerInfo removed
         MyApplication.handler.postDelayed(new Runnable() {
           @Override
           public void run() {
             clearData();
           }
-        }, 1000);
+        }, 100);
       }
     });
 
@@ -1529,8 +1528,6 @@ public class TripRegisterActivity extends AppCompatActivity {
         @Override
         public void run() {
           try {
-            //TODO delete log
-            Log.i("Avamohsen", "onResponse:insertService " + args[0].toString());
             JSONObject obj = new JSONObject(args[0].toString());
             boolean success = obj.getBoolean("success");
             String message = obj.getString("message");
@@ -1770,10 +1767,7 @@ public class TripRegisterActivity extends AppCompatActivity {
       return callModel;
     } catch (JSONException e) {
       e.printStackTrace();
-      //TODO delete log
-      Log.i("Avamohsen", "JSONException:parseNotification:  " + e.getMessage() + " value: " + info);
-      /*TODO: AvaCrashReporter correction, remove info from end  */
-      AvaCrashReporter.send(e, "push test, parseNotification " + info);
+      AvaCrashReporter.send(e, "TripRegisterActivity class, parseNotification method ,info : " + info);
       return null;
     }
   }
