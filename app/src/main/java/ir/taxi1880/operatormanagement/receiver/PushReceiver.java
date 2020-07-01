@@ -17,6 +17,9 @@ import ir.taxi1880.operatormanagement.push.Keys;
 
 import static ir.taxi1880.operatormanagement.app.Keys.KEY_BROADCAST_PUSH;
 import static ir.taxi1880.operatormanagement.app.Keys.KEY_MESSAGE;
+import static ir.taxi1880.operatormanagement.app.Keys.KEY_MESSAGE_USER_STATUS;
+import static ir.taxi1880.operatormanagement.app.Keys.KEY_REFRESH_USER_STATUS;
+import static ir.taxi1880.operatormanagement.app.Keys.KEY_USER_STATUS;
 
 public class PushReceiver extends BroadcastReceiver {
   public static final String TAG = PushReceiver.class.getSimpleName();
@@ -37,22 +40,32 @@ public class PushReceiver extends BroadcastReceiver {
       Log.i(TAG, "AMIRREZA=> onReceive: " + strMessage);
 
 
-      JSONObject message = new JSONObject(strMessage);
-      String typee = message.getString("type");
-      int exten = message.getInt("exten");
-      String participant = message.getString("participant");
-      String queue = message.getString("queue");
-      String voipId = message.getString("voipId");
+      JSONObject messages = new JSONObject(strMessage);
+      String typee = messages.getString("type");
+      if (typee.equals("callerInfo")){
+        int exten = messages.getInt("exten");
+        String participant = messages.getString("participant");
+        String queue = messages.getString("queue");
+        String voipId = messages.getString("voipId");
 
-      LocalBroadcastManager broadcaster = LocalBroadcastManager.getInstance(MyApplication.context);
-      Intent broadcastIntent = new Intent(KEY_BROADCAST_PUSH);
-      broadcastIntent.putExtra(KEY_MESSAGE, result);
-      broadcaster.sendBroadcast(broadcastIntent);
+        MyApplication.prefManager.setVoipId(voipId);
+        MyApplication.prefManager.setQueue(queue);
 
-      MyApplication.prefManager.setVoipId(voipId);
-      MyApplication.prefManager.setQueue(queue);
+        LocalBroadcastManager broadcaster = LocalBroadcastManager.getInstance(MyApplication.context);
+        Intent broadcastIntent = new Intent(KEY_BROADCAST_PUSH);
+        broadcastIntent.putExtra(KEY_MESSAGE, result);
+        broadcaster.sendBroadcast(broadcastIntent);
 
+      }else if (typee.equals("userStatus")){
+        int status = messages.getInt("status");
+        String message = messages.getString("message");
 
+        LocalBroadcastManager broadcaster = LocalBroadcastManager.getInstance(MyApplication.context);
+        Intent broadcastIntent = new Intent(KEY_REFRESH_USER_STATUS);
+        broadcastIntent.putExtra(KEY_USER_STATUS, status);
+        broadcastIntent.putExtra(KEY_MESSAGE_USER_STATUS, message);
+        broadcaster.sendBroadcast(broadcastIntent);
+      }
     } catch (JSONException e) {
       e.printStackTrace();
       if (res == null)

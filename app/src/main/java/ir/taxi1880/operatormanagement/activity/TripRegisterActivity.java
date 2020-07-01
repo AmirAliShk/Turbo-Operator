@@ -1727,6 +1727,20 @@ public class TripRegisterActivity extends AppCompatActivity {
     }
   };
 
+  int userStatus;
+  String messageUserStatus;
+
+  //receive userStatus from local broadcast
+  BroadcastReceiver userStatusReceiver = new BroadcastReceiver() {
+    @Override
+    public void onReceive(Context context, Intent intent) {
+      messageUserStatus = intent.getStringExtra(Keys.KEY_MESSAGE_USER_STATUS);
+      userStatus = intent.getIntExtra(Keys.KEY_USER_STATUS,0);
+
+      MyApplication.Toast(messageUserStatus,Toast.LENGTH_SHORT);
+    }
+  };
+
     private void handleCallerInfo(CallModel callModel) {
         try {
             if (voipId.equals("0")) {
@@ -1825,6 +1839,7 @@ public class TripRegisterActivity extends AppCompatActivity {
     super.onStop();
     if (pushReceiver != null)
       unregisterReceiver(pushReceiver);
+      unregisterReceiver(userStatusReceiver);
 
   }
 
@@ -1880,8 +1895,8 @@ public class TripRegisterActivity extends AppCompatActivity {
     super.onStart();
     MyApplication.currentActivity = this;
     registerReceiver(pushReceiver, new IntentFilter());
-    LocalBroadcastManager.getInstance(MyApplication.currentActivity).registerReceiver((pushReceiver),
-            new IntentFilter(Keys.KEY_BROADCAST_PUSH));
+    LocalBroadcastManager.getInstance(MyApplication.currentActivity).registerReceiver((pushReceiver), new IntentFilter(Keys.KEY_BROADCAST_PUSH));
+    LocalBroadcastManager.getInstance(MyApplication.currentActivity).registerReceiver((userStatusReceiver), new IntentFilter(Keys.KEY_REFRESH_USER_STATUS));
 
     core = LinphoneService.getCore();
     core.addListener(mCoreListener);
