@@ -42,7 +42,7 @@ public class PushReceiver extends BroadcastReceiver {
 
       JSONObject messages = new JSONObject(strMessage);
       String typee = messages.getString("type");
-      if (typee.equals("callerInfo")){
+      if (typee.equals("callerInfo")) {
         int exten = messages.getInt("exten");
         String participant = messages.getString("participant");
         String queue = messages.getString("queue");
@@ -56,8 +56,8 @@ public class PushReceiver extends BroadcastReceiver {
         broadcastIntent.putExtra(KEY_MESSAGE, result);
         broadcaster.sendBroadcast(broadcastIntent);
 
-      }else if (typee.equals("userStatus")){
-        int status = messages.getInt("status");
+      } else if (typee.equals("userStatus")) {
+        boolean status = messages.getBoolean("status");
         String message = messages.getString("message");
 
         LocalBroadcastManager broadcaster = LocalBroadcastManager.getInstance(MyApplication.context);
@@ -70,7 +70,7 @@ public class PushReceiver extends BroadcastReceiver {
       e.printStackTrace();
       if (res == null)
         res = "res is null !";
-      AvaCrashReporter.send(e,"PushReceiver class, onReceive method, info : " + res );
+      AvaCrashReporter.send(e, "PushReceiver class, onReceive method, info : " + res);
     }
   }
 

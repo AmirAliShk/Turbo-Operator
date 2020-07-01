@@ -1727,40 +1727,49 @@ public class TripRegisterActivity extends AppCompatActivity {
     }
   };
 
-  int userStatus;
-  String messageUserStatus;
-
   //receive userStatus from local broadcast
   BroadcastReceiver userStatusReceiver = new BroadcastReceiver() {
     @Override
     public void onReceive(Context context, Intent intent) {
-      messageUserStatus = intent.getStringExtra(Keys.KEY_MESSAGE_USER_STATUS);
-      userStatus = intent.getIntExtra(Keys.KEY_USER_STATUS,0);
+      String messageUserStatus = intent.getStringExtra(Keys.KEY_MESSAGE_USER_STATUS);
+      boolean userStatus = intent.getBooleanExtra(Keys.KEY_USER_STATUS, false);
 
-      MyApplication.Toast(messageUserStatus,Toast.LENGTH_SHORT);
+      if (!userStatus) {
+        btnDeActivate.setBackgroundResource(R.drawable.bg_pink_edge);
+        btnActivate.setBackgroundColor(Color.parseColor("#00FFB2B2"));
+        btnDeActivate.setTextColor(Color.parseColor("#ffffff"));
+        MyApplication.prefManager.setActivateStatus(false);
+      }else{
+        btnActivate.setBackgroundResource(R.drawable.bg_green_edge);
+        btnDeActivate.setBackgroundColor(Color.parseColor("#00FFB2B2"));
+        btnDeActivate.setTextColor(Color.parseColor("#000000"));
+        MyApplication.prefManager.setActivateStatus(true);
+      }
+      //TODO remove this when set notification
+      MyApplication.Toast(messageUserStatus, Toast.LENGTH_SHORT);
     }
   };
 
-    private void handleCallerInfo(CallModel callModel) {
-        try {
-            if (voipId.equals("0")) {
-                //show CallerId
-                if (callModel == null) {
-                    return;
-                }
-                String participant = PhoneNumberValidation.removePrefix(callModel.getParticipant());
-                queue = callModel.getQueue();
-                voipId = callModel.getVoipId();
-                if (edtTell == null) return;
-                if (participant == null) return;
-                edtTell.setText(participant);
-                MyApplication.handler.postDelayed(this::onPressDownload, 400);
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-            AvaCrashReporter.send(e, "TripRegisterActivity class, handleCallerInfo method");
+  private void handleCallerInfo(CallModel callModel) {
+    try {
+      if (voipId.equals("0")) {
+        //show CallerId
+        if (callModel == null) {
+          return;
         }
+        String participant = PhoneNumberValidation.removePrefix(callModel.getParticipant());
+        queue = callModel.getQueue();
+        voipId = callModel.getVoipId();
+        if (edtTell == null) return;
+        if (participant == null) return;
+        edtTell.setText(participant);
+        MyApplication.handler.postDelayed(this::onPressDownload, 400);
+      }
+    } catch (Exception e) {
+      e.printStackTrace();
+      AvaCrashReporter.send(e, "TripRegisterActivity class, handleCallerInfo method");
     }
+  }
 
   /**
    * @param info have below format
@@ -1839,6 +1848,7 @@ public class TripRegisterActivity extends AppCompatActivity {
     super.onStop();
     if (pushReceiver != null)
       unregisterReceiver(pushReceiver);
+    if (userStatusReceiver != null)
       unregisterReceiver(userStatusReceiver);
 
   }
@@ -1896,6 +1906,7 @@ public class TripRegisterActivity extends AppCompatActivity {
     MyApplication.currentActivity = this;
     registerReceiver(pushReceiver, new IntentFilter());
     LocalBroadcastManager.getInstance(MyApplication.currentActivity).registerReceiver((pushReceiver), new IntentFilter(Keys.KEY_BROADCAST_PUSH));
+    registerReceiver(userStatusReceiver, new IntentFilter());
     LocalBroadcastManager.getInstance(MyApplication.currentActivity).registerReceiver((userStatusReceiver), new IntentFilter(Keys.KEY_REFRESH_USER_STATUS));
 
     core = LinphoneService.getCore();

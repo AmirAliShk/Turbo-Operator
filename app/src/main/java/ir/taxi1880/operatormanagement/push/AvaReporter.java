@@ -5,6 +5,9 @@ import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 import ir.taxi1880.operatormanagement.app.MyApplication;
 import ir.taxi1880.operatormanagement.receiver.PushReceiver;
@@ -24,25 +27,35 @@ public class AvaReporter {
       AlarmManager alarmManager = (AlarmManager) context.getSystemService(ALARM_SERVICE);
       alarmManager.set(AlarmManager.RTC_WAKEUP, System.currentTimeMillis(), pendingIntent);
 
-
       MyApplication.handler.postDelayed(() -> {
-        LocalBroadcastManager broadcaster = LocalBroadcastManager.getInstance(MyApplication.context);
-        Intent broadcastIntent = new Intent(KEY_BROADCAST_PUSH);
-        broadcastIntent.putExtra(KEY_MESSAGE, msg);
-        broadcaster.sendBroadcast(broadcastIntent);
-      }, 1000);
+        try {
+          JSONObject object = new JSONObject(msg);
+          String strMessage = object.getString("message");
+          JSONObject messages = new JSONObject(strMessage);
+          String typee = messages.getString("type");
 
-      AvaLog.i("Message receive : " + msg);
+          if (typee.equals("callerInfo")) {
+            LocalBroadcastManager broadcaster = LocalBroadcastManager.getInstance(MyApplication.context);
+            Intent broadcastIntent = new Intent(KEY_BROADCAST_PUSH);
+            broadcastIntent.putExtra(KEY_MESSAGE, msg);
+            broadcaster.sendBroadcast(broadcastIntent);
+          }
+          } catch(JSONException e){
+            e.printStackTrace();
+          }
+        },1000);
 
-      MyApplication.prefManager.setLastNotification(msg);
+        AvaLog.i("Message receive : " + msg);
 
-    } catch (Exception e1) {
-      AvaCrashReporter.send(e1, 109);
+        MyApplication.prefManager.setLastNotification(msg);
+
+      } catch(Exception e1){
+        AvaCrashReporter.send(e1, 109);
+      }
     }
-  }
 
 
-  public static void MessageLog(String msg) {
+    public static void MessageLog (String msg){
 //    try {
 //      Intent intent = new Intent(AvaFactory.getContext().getPackageName() + "." + Keys.KEY_ACTION_RECEIVE_MESSAGE);
 //      intent.putExtra(Keys.KEY_MESSAGE, msg);
@@ -51,6 +64,6 @@ public class AvaReporter {
 //    } catch (Exception e1) {
 //      AvaCrashReporter.send(e1,110);
 //    }
-  }
+    }
 
-}
+  }
