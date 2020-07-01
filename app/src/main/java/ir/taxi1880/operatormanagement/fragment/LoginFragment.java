@@ -104,6 +104,7 @@ public class LoginFragment extends Fragment {
           String cardNumber = object.getString("cardNumber");
           String accountNumber = object.getString("accountNumber");
           int balance = object.getInt("balance");
+          int activeInQueue = object.getInt("activeInQueue");
 
           MyApplication.prefManager.setOperatorName(object.getString("name"));
 
@@ -118,6 +119,7 @@ public class LoginFragment extends Fragment {
               return;
             }
 
+            MyApplication.prefManager.setActivateStatus(activeInQueue == 1 ? true : false);
             MyApplication.prefManager.setUserCode(userId);
             MyApplication.prefManager.setAccessInsertService(accessInsertService);
             MyApplication.prefManager.setSipServer(sipServer);
