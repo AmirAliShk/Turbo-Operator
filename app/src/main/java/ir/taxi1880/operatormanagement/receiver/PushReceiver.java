@@ -75,6 +75,7 @@ public class PushReceiver extends BroadcastReceiver {
                   .message(message)
                   .cancelable(false)
                   .firstButton("باشه", null)
+                  .isSingleMode(true)
                   .show();
         } else {
           createUserStatusNotification(MyApplication.context, message);
@@ -102,6 +103,7 @@ public class PushReceiver extends BroadcastReceiver {
                   .message(value)
                   .cancelable(false)
                   .firstButton("باشه", null)
+                  .isSingleMode(true)
                   .show();
         } else {
           createMessageNotification(MyApplication.context, messageType, value);

@@ -40,6 +40,7 @@ public class GeneralDialog {
   private String titleText = "";
   private int visibility;
   private boolean cancelable = true;
+  private boolean singleInstance = false;
   public static final String ERROR = "error";
 
   private class ButtonModel {
@@ -69,6 +70,11 @@ public class GeneralDialog {
 
   public interface Listener {
     void onDescription(String message);
+  }
+
+  public GeneralDialog isSingleMode(boolean singleInstance) {
+    this.singleInstance = singleInstance;
+    return this;
   }
 
   public GeneralDialog onDescriptionListener(Listener listener) {
@@ -197,19 +203,31 @@ public class GeneralDialog {
   @BindView(R.id.divider_fs)
   ImageView divider_fs;
 
-  Dialog dialog;
+  private Dialog dialog;
+  private static Dialog staticDialog = null;
 
   public void show() {
     if (MyApplication.currentActivity==null|| MyApplication.currentActivity.isFinishing())return;
-    dialog = new Dialog(MyApplication.currentActivity);
-    dialog.getWindow().requestFeature(Window.FEATURE_NO_TITLE);
-    dialog.setContentView(R.layout.dialog_general);
-    dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
-    WindowManager.LayoutParams wlp = dialog.getWindow().getAttributes();
-    dialog.getWindow().setAttributes(wlp);
-    dialog.setCancelable(cancelable);
-    unbinder = ButterKnife.bind(this, dialog);
-    TypefaceUtil.overrideFonts( dialog.getWindow().getDecorView());
+    Dialog tempDialog = null;
+    if (singleInstance) {
+      if (staticDialog != null) {
+        staticDialog.dismiss();
+        staticDialog = null;
+      }
+      staticDialog = new Dialog(MyApplication.currentActivity);
+      tempDialog = staticDialog;
+    } else {
+      dialog = new Dialog(MyApplication.currentActivity);
+      tempDialog = dialog;
+    }
+    tempDialog.getWindow().requestFeature(Window.FEATURE_NO_TITLE);
+    tempDialog.setContentView(R.layout.dialog_general);
+    tempDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+    WindowManager.LayoutParams wlp = tempDialog.getWindow().getAttributes();
+    tempDialog.getWindow().setAttributes(wlp);
+    tempDialog.setCancelable(cancelable);
+    unbinder = ButterKnife.bind(this, tempDialog);
+    TypefaceUtil.overrideFonts( tempDialog.getWindow().getDecorView());
 
     txtMessage.setText(messageText);
     txtTitle.setText(titleText);
@@ -256,11 +274,11 @@ public class GeneralDialog {
     if (bodyRunnable != null)
       bodyRunnable.run();
 
-    dialog.setOnDismissListener(dialog -> {
+    tempDialog.setOnDismissListener(dialog -> {
       if (dismissBody != null)
         dismissBody.run();
     });
-    dialog.show();
+    tempDialog.show();
   }
 
   // dismiss center control
@@ -269,8 +287,17 @@ public class GeneralDialog {
       if (listener != null) {
         listener.onDismiss();
       }
-      if (dialog != null)
-        dialog.dismiss();
+      if (singleInstance) {
+        if (staticDialog != null) {
+          staticDialog.dismiss();
+          staticDialog = null;
+        }
+      } else {
+        if (dialog != null) {
+          dialog.dismiss();
+          dialog = null;
+        }
+      }
     } catch (Exception e) {
       e.printStackTrace();
       AvaCrashReporter.send(e,"GeneralDialog class, dismiss method");
