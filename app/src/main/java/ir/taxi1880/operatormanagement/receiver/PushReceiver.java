@@ -18,12 +18,11 @@ import org.json.JSONObject;
 import androidx.core.app.NotificationCompat;
 import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 import ir.taxi1880.operatormanagement.R;
-import ir.taxi1880.operatormanagement.activity.MainActivity;
 import ir.taxi1880.operatormanagement.activity.SplashActivity;
-import ir.taxi1880.operatormanagement.activity.TripRegisterActivity;
 import ir.taxi1880.operatormanagement.app.Constant;
 import ir.taxi1880.operatormanagement.app.DataHolder;
 import ir.taxi1880.operatormanagement.app.MyApplication;
+import ir.taxi1880.operatormanagement.dialog.GeneralDialog;
 import ir.taxi1880.operatormanagement.push.AvaCrashReporter;
 import ir.taxi1880.operatormanagement.push.Keys;
 
@@ -65,9 +64,21 @@ public class PushReceiver extends BroadcastReceiver {
         boolean status = messages.getBoolean("status");
         String message = messages.getString("message");
 
-        if (!status)
+        if (status)
+          MyApplication.prefManager.setActivateStatus(true);
+        else
           MyApplication.prefManager.setActivateStatus(false);
-        createUserStatusNotification(MyApplication.context, message);
+
+        if (MyApplication.prefManager.isAppRun()) {
+          new GeneralDialog()
+                  .title("هشدار")
+                  .message(message)
+                  .cancelable(false)
+                  .firstButton("باشه", null)
+                  .show();
+        } else {
+          createUserStatusNotification(MyApplication.context, message);
+        }
 
         LocalBroadcastManager broadcaster = LocalBroadcastManager.getInstance(MyApplication.context);
         Intent broadcastIntent = new Intent(KEY_REFRESH_USER_STATUS);
@@ -78,7 +89,24 @@ public class PushReceiver extends BroadcastReceiver {
       } else if (typee.equals("message")) {
         String value = messages.getString("value");
         String messageType = messages.getString("messageType");
-        createMessageNotification(MyApplication.context, messageType, value);
+
+        String title = "پیام";
+        if (messageType.equals("message"))
+          title = "پیام";
+        else if (messageType.equals("announcement"))
+          title = "اطلاعیه";
+
+        if (MyApplication.prefManager.isAppRun()) {
+          new GeneralDialog()
+                  .title(title)
+                  .message(value)
+                  .cancelable(false)
+                  .firstButton("باشه", null)
+                  .show();
+        } else {
+          createMessageNotification(MyApplication.context, messageType, value);
+        }
+
       }
 
     } catch (JSONException e) {
@@ -93,24 +121,13 @@ public class PushReceiver extends BroadcastReceiver {
 
     NotificationManager mNotificationManager;
     String CHANNEL = "pushChannel";
-    Intent intent;
+    Intent intent = new Intent(context, SplashActivity.class);
     RemoteViews collapsedView = new RemoteViews(context.getPackageName(), R.layout.notification_collapsed);
-
-    if (MyApplication.prefManager.isAppRun()) {
-      if (TripRegisterActivity.isRunning) {
-        intent = new Intent(context, TripRegisterActivity.class);
-      } else {
-        intent = new Intent(context, MainActivity.class);
-      }
-    } else {
-      intent = new Intent(context, SplashActivity.class);
-    }
 
     if (type.equals(Constant.PUSH_NOTIFICATION_MESSAGE_TYPE)) {
       DataHolder.getInstance().setPushType(Constant.PUSH_NOTIFICATION_MESSAGE_TYPE);
     } else if (type.equals(Constant.PUSH_NOTIFICATION_ANNOUNCEMENT_TYPE)) {
       DataHolder.getInstance().setPushType(Constant.PUSH_NOTIFICATION_ANNOUNCEMENT_TYPE);
-
     }
 
     collapsedView.setTextViewText(R.id.txtValue, value);
@@ -144,13 +161,7 @@ public class PushReceiver extends BroadcastReceiver {
 
     NotificationManager mNotificationManager;
     String CHANNEL = "pushStatusChannel";
-    Intent intent;
-
-    if (MyApplication.prefManager.isAppRun()) {
-      intent = new Intent();
-    } else {
-      intent = new Intent(context, SplashActivity.class);
-    }
+    Intent intent = new Intent(context, SplashActivity.class);
 
     PendingIntent pendingIntent = PendingIntent.getActivity(context, Constant.USER_STATUS_NOTIFICATION_REQUEST_CODE, intent, PendingIntent.FLAG_UPDATE_CURRENT);
 
@@ -162,8 +173,7 @@ public class PushReceiver extends BroadcastReceiver {
             .setVibrate(new long[]{200, 200})
             .setAutoCancel(true)
             .setContentIntent(pendingIntent)
-            .setSound(Uri.parse(MyApplication.SOUND + R.raw.short_notification))
-            .setStyle(new NotificationCompat.DecoratedCustomViewStyle());
+            .setSound(Uri.parse(MyApplication.SOUND + R.raw.short_notification));
     mNotificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
 
     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
@@ -175,6 +185,5 @@ public class PushReceiver extends BroadcastReceiver {
     mNotificationManager.notify(Constant.USER_STATUS_NOTIFICATION_ID, mBuilder.build());
 
   }
-
 
 }

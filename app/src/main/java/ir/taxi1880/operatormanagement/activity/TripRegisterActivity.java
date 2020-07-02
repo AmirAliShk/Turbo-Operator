@@ -54,8 +54,6 @@ import butterknife.OnLongClick;
 import butterknife.Unbinder;
 import ir.taxi1880.operatormanagement.R;
 import ir.taxi1880.operatormanagement.adapter.SpinnerAdapter;
-import ir.taxi1880.operatormanagement.app.Constant;
-import ir.taxi1880.operatormanagement.app.DataHolder;
 import ir.taxi1880.operatormanagement.app.EndPoints;
 import ir.taxi1880.operatormanagement.app.Keys;
 import ir.taxi1880.operatormanagement.app.MyApplication;
@@ -69,9 +67,6 @@ import ir.taxi1880.operatormanagement.dialog.LoadingDialog;
 import ir.taxi1880.operatormanagement.dialog.OptionDialog;
 import ir.taxi1880.operatormanagement.dialog.SearchLocationDialog;
 import ir.taxi1880.operatormanagement.dialog.StationInfoDialog;
-import ir.taxi1880.operatormanagement.fragment.MessageFragment;
-import ir.taxi1880.operatormanagement.fragment.NotificationFragment;
-import ir.taxi1880.operatormanagement.helper.FragmentHelper;
 import ir.taxi1880.operatormanagement.helper.KeyBoardHelper;
 import ir.taxi1880.operatormanagement.helper.PhoneNumberValidation;
 import ir.taxi1880.operatormanagement.helper.StringHelper;
@@ -1899,18 +1894,6 @@ public class TripRegisterActivity extends AppCompatActivity {
       }
     }
 
-    if (DataHolder.getInstance().getPushType() != null) {
-      if (DataHolder.getInstance().getPushType().equals(Constant.PUSH_NOTIFICATION_MESSAGE_TYPE)) {
-        FragmentHelper.toFragment(this, new MessageFragment())
-                .replace();
-        DataHolder.getInstance().setPushType(null);
-      } else if (DataHolder.getInstance().getPushType().equals(Constant.PUSH_NOTIFICATION_ANNOUNCEMENT_TYPE)) {
-        FragmentHelper.toFragment(this, new NotificationFragment())
-                .replace();
-        DataHolder.getInstance().setPushType(null);
-      }
-    }
-
 //    Call call = core.getCurrentCall();
 //    if (call != null) {
 //      startCallQuality();
@@ -1948,28 +1931,23 @@ public class TripRegisterActivity extends AppCompatActivity {
   @Override
   public void onBackPressed() {
 
-    KeyBoardHelper.hideKeyboard();
-    if (getFragmentManager().getBackStackEntryCount() > 0 || getSupportFragmentManager().getBackStackEntryCount() > 0) {
-      super.onBackPressed();
-    }else {
-      new GeneralDialog()
-              .title("خروج")
-              .message("آیا از خروج خود اطمینان دارید؟")
-              .firstButton("بله", new Runnable() {
-                @Override
-                public void run() {
-                  try {
-                    startActivity(new Intent(MyApplication.context, MainActivity.class));
-                    finish();
-                  } catch (Exception e) {
-                    e.printStackTrace();
-                    AvaCrashReporter.send(e, "TripRegisterActivity class, onBackPressed method");
-                  }
+    new GeneralDialog()
+            .title("خروج")
+            .message("آیا از خروج خود اطمینان دارید؟")
+            .firstButton("بله", new Runnable() {
+              @Override
+              public void run() {
+                try {
+                  startActivity(new Intent(MyApplication.context, MainActivity.class));
+                  finish();
+                } catch (Exception e) {
+                  e.printStackTrace();
+                  AvaCrashReporter.send(e, "TripRegisterActivity class, onBackPressed method");
                 }
-              })
-              .secondButton("خیر", null)
-              .show();
-    }
+              }
+            })
+            .secondButton("خیر", null)
+            .show();
 
   }
 
