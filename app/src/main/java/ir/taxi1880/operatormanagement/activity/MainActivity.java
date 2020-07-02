@@ -198,7 +198,7 @@ public class MainActivity extends AppCompatActivity implements NotificationFragm
 
           } catch (Exception e) {
             e.printStackTrace();
-            AvaCrashReporter.send(e,"MainActivity class, getBalance onResponse method");
+            AvaCrashReporter.send(e, "MainActivity class, getBalance onResponse method");
           }
         }
       });
@@ -214,6 +214,7 @@ public class MainActivity extends AppCompatActivity implements NotificationFragm
   protected void onResume() {
     super.onResume();
     MyApplication.currentActivity = this;
+    MyApplication.prefManager.setAppRun(true);
     if (DataHolder.getInstance().getPushType() != null) {
       if (DataHolder.getInstance().getPushType().equals(Constant.PUSH_NOTIFICATION_MESSAGE_TYPE)) {
         FragmentHelper.toFragment(this, new MessageFragment())
@@ -230,6 +231,12 @@ public class MainActivity extends AppCompatActivity implements NotificationFragm
   @Override
   protected void onStop() {
     super.onStop();
+
+  }
+
+  @Override
+  protected void onPause() {
+    super.onPause();
     MyApplication.prefManager.setAppRun(false);
   }
 
@@ -237,7 +244,7 @@ public class MainActivity extends AppCompatActivity implements NotificationFragm
   protected void onStart() {
     super.onStart();
     MyApplication.currentActivity = this;
-    MyApplication.prefManager.setAppRun(true);
+
     getBalance(MyApplication.prefManager.getUserCode());
   }
 
@@ -265,7 +272,7 @@ public class MainActivity extends AppCompatActivity implements NotificationFragm
       }
     } catch (Exception e) {
       e.printStackTrace();
-      AvaCrashReporter.send(e,"MainActivity class, onBackPressed method");
+      AvaCrashReporter.send(e, "MainActivity class, onBackPressed method");
     }
   }
 

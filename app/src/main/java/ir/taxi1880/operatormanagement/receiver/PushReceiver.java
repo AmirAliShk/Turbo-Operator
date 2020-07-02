@@ -149,7 +149,6 @@ public class PushReceiver extends BroadcastReceiver {
 
     PendingIntent pendingIntent = PendingIntent.getActivity(context, Constant.USER_STATUS_NOTIFICATION_REQUEST_CODE, intent, PendingIntent.FLAG_UPDATE_CURRENT);
 
-
     NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(context.getApplicationContext(), "statusPush")
             .setSmallIcon(R.drawable.ic_baseline_remove_from_queue_24)
             .setStyle(new NotificationCompat.BigTextStyle().bigText(value))
