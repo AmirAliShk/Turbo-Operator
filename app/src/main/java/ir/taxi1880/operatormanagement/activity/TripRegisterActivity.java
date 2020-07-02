@@ -1905,9 +1905,10 @@ public class TripRegisterActivity extends AppCompatActivity {
     super.onStop();
 
     if (pushReceiver != null)
-      unregisterReceiver(pushReceiver);
+      LocalBroadcastManager.getInstance(MyApplication.currentActivity).unregisterReceiver(pushReceiver);
+
     if (userStatusReceiver != null)
-      unregisterReceiver(userStatusReceiver);
+      LocalBroadcastManager.getInstance(MyApplication.currentActivity).unregisterReceiver(userStatusReceiver);
 
   }
 
