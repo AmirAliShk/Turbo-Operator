@@ -20,6 +20,7 @@ import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 import ir.taxi1880.operatormanagement.R;
 import ir.taxi1880.operatormanagement.activity.MainActivity;
 import ir.taxi1880.operatormanagement.activity.SplashActivity;
+import ir.taxi1880.operatormanagement.activity.TripRegisterActivity;
 import ir.taxi1880.operatormanagement.app.Constant;
 import ir.taxi1880.operatormanagement.app.DataHolder;
 import ir.taxi1880.operatormanagement.app.MyApplication;
@@ -96,7 +97,11 @@ public class PushReceiver extends BroadcastReceiver {
     RemoteViews collapsedView = new RemoteViews(context.getPackageName(), R.layout.notification_collapsed);
 
     if (MyApplication.prefManager.isAppRun()) {
-      intent = new Intent(context, MainActivity.class);
+      if (TripRegisterActivity.isRunning) {
+        intent = new Intent(context, TripRegisterActivity.class);
+      } else {
+        intent = new Intent(context, MainActivity.class);
+      }
     } else {
       intent = new Intent(context, SplashActivity.class);
     }

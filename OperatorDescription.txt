@@ -23,3 +23,8 @@ release on 1399/04/02 - 2020/06/22
 remove bugs of version 7:
 - edtTell.setText(participant) : setText on a null object refrence.
 - imgCallQuality.setVisibility(View.VISIBLE) : setVisibility on a null object refrence.
+
+version 9:
+release on هنوز ندادم
+change user activation with push
+add message type for push (message=open messageFragment, announcement=open notificationFragment)
