@@ -17,8 +17,10 @@ public class NotificationHelper {
     private String channelName = "turboTaxi";
     private String activityName = "";
     private String channelId = "";
+    private String message = "";
     private int collapsedView = 0;
     private int expandedView = 0;
+    private int textView = 0;
     private int smallIcon = 0;
     private int notificationId = 0;
     private int clickableView = 0;
@@ -71,6 +73,12 @@ public class NotificationHelper {
         return this;
     }
 
+    public NotificationHelper notificationMessage(int textViewId, String message) {
+        this.textView = textViewId;
+        this.message = message;
+        return this;
+    }
+
     public void show() {
 
         RemoteViews collapse = new RemoteViews(MyApplication.currentActivity.getPackageName(), collapsedView);
@@ -80,11 +88,14 @@ public class NotificationHelper {
             RemoteViews expandedView = new RemoteViews(MyApplication.currentActivity.getPackageName(), expandedLayout);
         }
 
-        if (activityName != null) {
-            Intent intent = new Intent(MyApplication.context, activityName.getClass());
-            collapse.setOnClickPendingIntent(clickableView, PendingIntent.getActivity(MyApplication.context, 1, intent, PendingIntent.FLAG_UPDATE_CURRENT));
+        if (message != null && textView != 0){
+            collapse.setTextViewText(textView, message);
         }
 
+        if (activityName != null) {
+            Intent intent = new Intent(MyApplication.context, activityName.getClass());
+            collapse.setOnClickPendingIntent(clickableView, PendingIntent.getActivity(MyApplication.context, 123, intent, PendingIntent.FLAG_UPDATE_CURRENT));
+        }
 
         NotificationCompat.Builder builder = new NotificationCompat.Builder(MyApplication.context.getApplicationContext(), channelId)
                 /*TODO: small icon shoudnt be null*/
@@ -96,12 +107,17 @@ public class NotificationHelper {
         notificationManager = (NotificationManager) MyApplication.context.getSystemService(Context.NOTIFICATION_SERVICE);
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            NotificationChannel channel = new NotificationChannel(channelName, channelName, NotificationManager.IMPORTANCE_HIGH);
+            NotificationChannel channel = new NotificationChannel(channelName, "lkjhgf", NotificationManager.IMPORTANCE_HIGH);
             notificationManager.createNotificationChannel(channel);
             builder.setChannelId(channelId);
         }
 
         notificationManager.notify(notificationId, builder.build());
+    }
+
+    public void cancel(int cancelNotificationId){
+
+        notificationManager.cancel(cancelNotificationId);
     }
 
 }
