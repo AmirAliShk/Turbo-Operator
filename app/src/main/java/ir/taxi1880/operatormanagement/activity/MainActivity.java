@@ -1,7 +1,5 @@
 package ir.taxi1880.operatormanagement.activity;
 
-import android.app.NotificationManager;
-import android.content.Context;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
@@ -130,9 +128,6 @@ public class MainActivity extends AppCompatActivity implements NotificationFragm
 
     unbinder = ButterKnife.bind(this, view);
     TypefaceUtil.overrideFonts(view);
-
-    NotificationManager notificationManager = (NotificationManager) MyApplication.currentActivity.getSystemService(Context.NOTIFICATION_SERVICE);
-    notificationManager.cancel(Constant.USER_STATUS_NOTIFICATION_ID);
 
     if (MyApplication.prefManager.getCountNotification() == 0) {
       txtBadgeCount.setVisibility(View.GONE);
