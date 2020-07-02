@@ -2,6 +2,8 @@ package ir.taxi1880.operatormanagement.activity;
 
 import android.Manifest;
 import android.annotation.SuppressLint;
+import android.app.NotificationManager;
+import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.net.Uri;
@@ -28,6 +30,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
 import ir.taxi1880.operatormanagement.R;
+import ir.taxi1880.operatormanagement.app.Constant;
 import ir.taxi1880.operatormanagement.app.EndPoints;
 import ir.taxi1880.operatormanagement.app.MyApplication;
 import ir.taxi1880.operatormanagement.dialog.GeneralDialog;
@@ -262,6 +265,9 @@ public class SplashActivity extends AppCompatActivity {
           MyApplication.prefManager.setQueueList(queue);
           MyApplication.prefManager.setCity(city);
           MyApplication.prefManager.setAccessInsertService(accessInsertService);
+
+          NotificationManager notificationManager = (NotificationManager) MyApplication.currentActivity.getSystemService(Context.NOTIFICATION_SERVICE);
+          notificationManager.cancel(Constant.USER_STATUS_NOTIFICATION_ID);
 
         } catch (JSONException e) {
           e.printStackTrace();

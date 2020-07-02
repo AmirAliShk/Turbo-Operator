@@ -1731,8 +1731,6 @@ public class TripRegisterActivity extends AppCompatActivity {
     public void onReceive(Context context, Intent intent) {
       String messageUserStatus = intent.getStringExtra(Keys.KEY_MESSAGE_USER_STATUS);
       boolean userStatus = intent.getBooleanExtra(Keys.KEY_USER_STATUS, false);
-
-      Log.i(TAG, "onReceive: userStatus received horrrrrrrey");
       if (!userStatus) {
         btnDeActivate.setBackgroundResource(R.drawable.bg_pink_edge);
         btnActivate.setBackgroundColor(Color.parseColor("#00FFB2B2"));
@@ -1744,8 +1742,6 @@ public class TripRegisterActivity extends AppCompatActivity {
         btnDeActivate.setTextColor(Color.parseColor("#000000"));
         MyApplication.prefManager.setActivateStatus(true);
       }
-      //TODO remove this when set notification
-      MyApplication.Toast(messageUserStatus, Toast.LENGTH_SHORT);
     }
   };
 

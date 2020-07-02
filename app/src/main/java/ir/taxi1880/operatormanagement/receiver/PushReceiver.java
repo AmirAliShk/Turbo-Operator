@@ -23,7 +23,6 @@ import ir.taxi1880.operatormanagement.activity.SplashActivity;
 import ir.taxi1880.operatormanagement.app.Constant;
 import ir.taxi1880.operatormanagement.app.DataHolder;
 import ir.taxi1880.operatormanagement.app.MyApplication;
-import ir.taxi1880.operatormanagement.dialog.GeneralDialog;
 import ir.taxi1880.operatormanagement.push.AvaCrashReporter;
 import ir.taxi1880.operatormanagement.push.Keys;
 
@@ -115,7 +114,7 @@ public class PushReceiver extends BroadcastReceiver {
     collapsedView.setOnClickPendingIntent(R.id.linearNotif, pendingIntent);
 
     NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(context.getApplicationContext(), "push")
-            .setSmallIcon(R.drawable.ic_operator_user)
+            .setSmallIcon(R.drawable.ic_baseline_message_24)
             .setContent(collapsedView)
             .setStyle(new NotificationCompat.BigTextStyle().bigText(value))
             .setContentText(value)
@@ -141,33 +140,24 @@ public class PushReceiver extends BroadcastReceiver {
     NotificationManager mNotificationManager;
     String CHANNEL = "pushStatusChannel";
     Intent intent;
-    RemoteViews collapsedView = new RemoteViews(context.getPackageName(), R.layout.notification_collapsed);
 
     if (MyApplication.prefManager.isAppRun()) {
-      new GeneralDialog()
-              .title("پیام")
-              .message(value)
-              .cancelable(true)
-              .show();
-      //todo check it (empty intent is true?)
       intent = new Intent();
     } else {
       intent = new Intent(context, SplashActivity.class);
     }
 
-    collapsedView.setTextViewText(R.id.txtValue, value);
     PendingIntent pendingIntent = PendingIntent.getActivity(context, Constant.USER_STATUS_NOTIFICATION_REQUEST_CODE, intent, PendingIntent.FLAG_UPDATE_CURRENT);
 
-    collapsedView.setOnClickPendingIntent(R.id.linearNotif, pendingIntent);
 
     NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(context.getApplicationContext(), "statusPush")
-            .setSmallIcon(R.drawable.traffic)
-            .setContent(collapsedView)
+            .setSmallIcon(R.drawable.ic_baseline_remove_from_queue_24)
             .setStyle(new NotificationCompat.BigTextStyle().bigText(value))
             .setContentText(value)
             .setOngoing(false)
             .setVibrate(new long[]{200, 200})
-            .setAutoCancel(false)
+            .setAutoCancel(true)
+            .setContentIntent(pendingIntent)
             .setSound(Uri.parse(MyApplication.SOUND + R.raw.short_notification))
             .setStyle(new NotificationCompat.DecoratedCustomViewStyle());
     mNotificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
