@@ -1,6 +1,7 @@
 package ir.taxi1880.operatormanagement.fragment;
 
 
+import android.app.NotificationManager;
 import android.content.Context;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -22,6 +23,7 @@ import butterknife.OnClick;
 import butterknife.Unbinder;
 import ir.taxi1880.operatormanagement.R;
 import ir.taxi1880.operatormanagement.adapter.NotificationAdapter;
+import ir.taxi1880.operatormanagement.app.Constant;
 import ir.taxi1880.operatormanagement.app.EndPoints;
 import ir.taxi1880.operatormanagement.app.MyApplication;
 import ir.taxi1880.operatormanagement.helper.TypefaceUtil;
@@ -57,6 +59,9 @@ public class NotificationFragment extends Fragment {
     View view = inflater.inflate(R.layout.fragment_notification, container, false);
     unbinder = ButterKnife.bind(this, view);
     TypefaceUtil.overrideFonts(view);
+
+    NotificationManager notificationManager = (NotificationManager) MyApplication.currentActivity.getSystemService(Context.NOTIFICATION_SERVICE);
+    notificationManager.cancel(Constant.PUSH_NOTIFICATION_ID);
 
     notificationModels = new ArrayList<>();
     getNews(MyApplication.prefManager.getUserCode());

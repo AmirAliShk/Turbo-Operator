@@ -11,7 +11,6 @@ import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.widget.RemoteViews;
-import android.widget.Toast;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -19,8 +18,10 @@ import org.json.JSONObject;
 import androidx.core.app.NotificationCompat;
 import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 import ir.taxi1880.operatormanagement.R;
+import ir.taxi1880.operatormanagement.activity.MainActivity;
 import ir.taxi1880.operatormanagement.activity.SplashActivity;
 import ir.taxi1880.operatormanagement.app.Constant;
+import ir.taxi1880.operatormanagement.app.DataHolder;
 import ir.taxi1880.operatormanagement.app.MyApplication;
 import ir.taxi1880.operatormanagement.dialog.GeneralDialog;
 import ir.taxi1880.operatormanagement.push.AvaCrashReporter;
@@ -63,8 +64,9 @@ public class PushReceiver extends BroadcastReceiver {
       } else if (typee.equals("userStatus")) {
         boolean status = messages.getBoolean("status");
         String message = messages.getString("message");
-        //todo remove toast
-        MyApplication.Toast(message, Toast.LENGTH_SHORT);
+
+        createUserStatusNotification(MyApplication.context,message);
+
         LocalBroadcastManager broadcaster = LocalBroadcastManager.getInstance(MyApplication.context);
         Intent broadcastIntent = new Intent(KEY_REFRESH_USER_STATUS);
         broadcastIntent.putExtra(KEY_USER_STATUS, status);
@@ -93,21 +95,16 @@ public class PushReceiver extends BroadcastReceiver {
     RemoteViews collapsedView = new RemoteViews(context.getPackageName(), R.layout.notification_collapsed);
 
     if (MyApplication.prefManager.isAppRun()) {
-      new GeneralDialog()
-              .title("پیام")
-              .message(value)
-              .cancelable(true)
-              .show();
-      //todo check it (empty intent is true?)
-      intent = new Intent();
+      intent = new Intent(context, MainActivity.class);
     } else {
       intent = new Intent(context, SplashActivity.class);
     }
 
     if (type.equals(Constant.PUSH_NOTIFICATION_MESSAGE_TYPE)) {
-      intent.putExtra(Constant.PUSH_NOTIFICATION_EXTRA_NAME, Constant.PUSH_NOTIFICATION_MESSAGE_TYPE);
+      DataHolder.getInstance().setPushType(Constant.PUSH_NOTIFICATION_MESSAGE_TYPE);
     } else if (type.equals(Constant.PUSH_NOTIFICATION_ANNOUNCEMENT_TYPE)) {
-      intent.putExtra(Constant.PUSH_NOTIFICATION_EXTRA_NAME, Constant.PUSH_NOTIFICATION_ANNOUNCEMENT_TYPE);
+      DataHolder.getInstance().setPushType(Constant.PUSH_NOTIFICATION_ANNOUNCEMENT_TYPE);
+
     }
 
     collapsedView.setTextViewText(R.id.txtValue, value);
@@ -134,6 +131,52 @@ public class PushReceiver extends BroadcastReceiver {
     }
 
     mNotificationManager.notify(Constant.PUSH_NOTIFICATION_ID, mBuilder.build());
+
+  }
+
+  public void createUserStatusNotification(Context context, String value) {
+
+    NotificationManager mNotificationManager;
+    String CHANNEL = "pushStatusChannel";
+    Intent intent;
+    RemoteViews collapsedView = new RemoteViews(context.getPackageName(), R.layout.notification_collapsed);
+
+    if (MyApplication.prefManager.isAppRun()) {
+      new GeneralDialog()
+              .title("پیام")
+              .message(value)
+              .cancelable(true)
+              .show();
+      //todo check it (empty intent is true?)
+      intent = new Intent();
+    } else {
+      intent = new Intent(context, SplashActivity.class);
+    }
+
+    collapsedView.setTextViewText(R.id.txtValue, value);
+    PendingIntent pendingIntent = PendingIntent.getActivity(context, Constant.USER_STATUS_NOTIFICATION_REQUEST_CODE, intent, PendingIntent.FLAG_UPDATE_CURRENT);
+
+    collapsedView.setOnClickPendingIntent(R.id.linearNotif, pendingIntent);
+
+    NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(context.getApplicationContext(), "statusPush")
+            .setSmallIcon(R.drawable.traffic)
+            .setContent(collapsedView)
+            .setStyle(new NotificationCompat.BigTextStyle().bigText(value))
+            .setContentText(value)
+            .setOngoing(false)
+            .setVibrate(new long[]{200, 200})
+            .setAutoCancel(false)
+            .setSound(Uri.parse(MyApplication.SOUND + R.raw.short_notification))
+            .setStyle(new NotificationCompat.DecoratedCustomViewStyle());
+    mNotificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
+
+    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+      NotificationChannel channel = new NotificationChannel(CHANNEL, "turboTaxi_userStatus", NotificationManager.IMPORTANCE_HIGH);
+      mNotificationManager.createNotificationChannel(channel);
+      mBuilder.setChannelId(CHANNEL);
+    }
+
+    mNotificationManager.notify(Constant.USER_STATUS_NOTIFICATION_ID, mBuilder.build());
 
   }
 

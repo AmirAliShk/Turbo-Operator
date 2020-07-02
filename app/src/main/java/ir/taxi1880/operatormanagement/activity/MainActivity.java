@@ -24,6 +24,8 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import butterknife.Unbinder;
 import ir.taxi1880.operatormanagement.R;
+import ir.taxi1880.operatormanagement.app.Constant;
+import ir.taxi1880.operatormanagement.app.DataHolder;
 import ir.taxi1880.operatormanagement.app.EndPoints;
 import ir.taxi1880.operatormanagement.app.Keys;
 import ir.taxi1880.operatormanagement.app.MyApplication;
@@ -214,6 +216,17 @@ public class MainActivity extends AppCompatActivity implements NotificationFragm
   protected void onResume() {
     super.onResume();
     MyApplication.currentActivity = this;
+    if (DataHolder.getInstance().getPushType() != null) {
+      if (DataHolder.getInstance().getPushType().equals(Constant.PUSH_NOTIFICATION_MESSAGE_TYPE)) {
+        FragmentHelper.toFragment(this, new MessageFragment())
+                .replace();
+        DataHolder.getInstance().setPushType(null);
+      } else if (DataHolder.getInstance().getPushType().equals(Constant.PUSH_NOTIFICATION_ANNOUNCEMENT_TYPE)) {
+        FragmentHelper.toFragment(this, new NotificationFragment())
+                .replace();
+        DataHolder.getInstance().setPushType(null);
+      }
+    }
   }
 
   @Override

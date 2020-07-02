@@ -1,6 +1,8 @@
 package ir.taxi1880.operatormanagement.fragment;
 
 
+import android.app.NotificationManager;
+import android.content.Context;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -25,6 +27,7 @@ import butterknife.OnClick;
 import butterknife.Unbinder;
 import ir.taxi1880.operatormanagement.R;
 import ir.taxi1880.operatormanagement.adapter.MessageAdapter;
+import ir.taxi1880.operatormanagement.app.Constant;
 import ir.taxi1880.operatormanagement.app.EndPoints;
 import ir.taxi1880.operatormanagement.app.MyApplication;
 import ir.taxi1880.operatormanagement.helper.KeyBoardHelper;
@@ -82,6 +85,9 @@ public class MessageFragment extends Fragment {
     TypefaceUtil.overrideFonts(view);
 
     messageModels = new ArrayList<>();
+
+    NotificationManager notificationManager = (NotificationManager) MyApplication.currentActivity.getSystemService(Context.NOTIFICATION_SERVICE);
+    notificationManager.cancel(Constant.PUSH_NOTIFICATION_ID);
 
     RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(MyApplication.context);
     listMessage.setLayoutManager(layoutManager);
