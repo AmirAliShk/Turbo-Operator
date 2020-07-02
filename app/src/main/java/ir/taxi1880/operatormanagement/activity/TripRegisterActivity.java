@@ -1688,34 +1688,6 @@ public class TripRegisterActivity extends AppCompatActivity {
 
   }
 
-  @Override
-  protected void onResume() {
-    super.onResume();
-    MyApplication.currentActivity = this;
-    showTitleBar();
-    if (MyApplication.prefManager.getConnectedCall()) {
-      startCallQuality();
-      imgEndCall.setColorFilter(ContextCompat.getColor(MyApplication.context, R.color.colorRed), android.graphics.PorterDuff.Mode.MULTIPLY);
-
-      Call[] calls = core.getCalls();
-      for (Call call : calls) {
-        if (call != null && call.getState() == Call.State.StreamsRunning) {
-          if (voipId.equals("0")) {
-            Address address = call.getRemoteAddress();
-            edtTell.setText(address.getUsername());
-            MyApplication.handler.postDelayed(() -> onPressDownload(), 400);
-
-          }
-        }
-      }
-    }
-
-//    Call call = core.getCurrentCall();
-//    if (call != null) {
-//      startCallQuality();
-//    }
-  }
-
   //receive push notification from local broadcast
   BroadcastReceiver pushReceiver = new BroadcastReceiver() {
     @Override
@@ -1845,24 +1817,6 @@ public class TripRegisterActivity extends AppCompatActivity {
     mDisplayedQuality = iQuality;
   }
 
-  @Override
-  protected void onStop() {
-    super.onStop();
-    MyApplication.prefManager.setAppRun(false);
-    if (pushReceiver != null)
-      unregisterReceiver(pushReceiver);
-    if (userStatusReceiver != null)
-      unregisterReceiver(userStatusReceiver);
-
-  }
-
-  @Override
-  protected void onPause() {
-    super.onPause();
-    KeyBoardHelper.hideKeyboard();
-    isRunning = false;
-  }
-
   @BindView(R.id.imgEndCall)
   ImageView imgEndCall;
 
@@ -1907,7 +1861,6 @@ public class TripRegisterActivity extends AppCompatActivity {
   protected void onStart() {
     super.onStart();
     MyApplication.currentActivity = this;
-    MyApplication.prefManager.setAppRun(true);
     registerReceiver(pushReceiver, new IntentFilter());
     LocalBroadcastManager.getInstance(MyApplication.currentActivity).registerReceiver((pushReceiver), new IntentFilter(Keys.KEY_BROADCAST_PUSH));
     registerReceiver(userStatusReceiver, new IntentFilter());
@@ -1916,6 +1869,54 @@ public class TripRegisterActivity extends AppCompatActivity {
     core = LinphoneService.getCore();
     core.addListener(mCoreListener);
     isRunning = true;
+  }
+
+  @Override
+  protected void onResume() {
+    super.onResume();
+    MyApplication.currentActivity = this;
+    MyApplication.prefManager.setAppRun(true);
+    showTitleBar();
+    if (MyApplication.prefManager.getConnectedCall()) {
+      startCallQuality();
+      imgEndCall.setColorFilter(ContextCompat.getColor(MyApplication.context, R.color.colorRed), android.graphics.PorterDuff.Mode.MULTIPLY);
+
+      Call[] calls = core.getCalls();
+      for (Call call : calls) {
+        if (call != null && call.getState() == Call.State.StreamsRunning) {
+          if (voipId.equals("0")) {
+            Address address = call.getRemoteAddress();
+            edtTell.setText(address.getUsername());
+            MyApplication.handler.postDelayed(() -> onPressDownload(), 400);
+
+          }
+        }
+      }
+    }
+
+//    Call call = core.getCurrentCall();
+//    if (call != null) {
+//      startCallQuality();
+//    }
+  }
+
+  @Override
+  protected void onStop() {
+    super.onStop();
+
+    if (pushReceiver != null)
+      unregisterReceiver(pushReceiver);
+    if (userStatusReceiver != null)
+      unregisterReceiver(userStatusReceiver);
+
+  }
+
+  @Override
+  protected void onPause() {
+    super.onPause();
+    KeyBoardHelper.hideKeyboard();
+    MyApplication.prefManager.setAppRun(false);
+    isRunning = false;
   }
 
   @Override
