@@ -219,6 +219,7 @@ public class MainActivity extends AppCompatActivity implements NotificationFragm
   @Override
   protected void onStop() {
     super.onStop();
+    MyApplication.prefManager.setAppRun(false);
     if (userStatusReceiver != null)
       unregisterReceiver(userStatusReceiver);
   }
@@ -227,6 +228,7 @@ public class MainActivity extends AppCompatActivity implements NotificationFragm
   protected void onStart() {
     super.onStart();
     MyApplication.currentActivity = this;
+    MyApplication.prefManager.setAppRun(true);
     registerReceiver(userStatusReceiver, new IntentFilter());
     LocalBroadcastManager.getInstance(MyApplication.currentActivity).registerReceiver((userStatusReceiver), new IntentFilter(Keys.KEY_REFRESH_USER_STATUS));
     getBalance(MyApplication.prefManager.getUserCode());

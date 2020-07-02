@@ -1542,7 +1542,6 @@ public class TripRegisterActivity extends AppCompatActivity {
                         clearData();
                         CallModel callModel = parseNotification(MyApplication.prefManager.getLastNotification());
                         if (callModel != null)
-
                           if (!callModel.getVoipId().equals(tempVoipId)) {
                             MyApplication.prefManager.setLastNotification(null);
                             handleCallerInfo(callModel);
@@ -1734,12 +1733,13 @@ public class TripRegisterActivity extends AppCompatActivity {
       String messageUserStatus = intent.getStringExtra(Keys.KEY_MESSAGE_USER_STATUS);
       boolean userStatus = intent.getBooleanExtra(Keys.KEY_USER_STATUS, false);
 
+      Log.i(TAG, "onReceive: userStatus received horrrrrrrey");
       if (!userStatus) {
         btnDeActivate.setBackgroundResource(R.drawable.bg_pink_edge);
         btnActivate.setBackgroundColor(Color.parseColor("#00FFB2B2"));
         btnDeActivate.setTextColor(Color.parseColor("#ffffff"));
         MyApplication.prefManager.setActivateStatus(false);
-      }else{
+      } else {
         btnActivate.setBackgroundResource(R.drawable.bg_green_edge);
         btnDeActivate.setBackgroundColor(Color.parseColor("#00FFB2B2"));
         btnDeActivate.setTextColor(Color.parseColor("#000000"));
@@ -1780,19 +1780,26 @@ public class TripRegisterActivity extends AppCompatActivity {
     try {
       JSONObject object = new JSONObject(info);
       String strMessage = object.getString("message");
-      JSONObject message = new JSONObject(strMessage);
-      CallModel callModel = new CallModel();
-      callModel.setType(message.getString("type"));
-      callModel.setExten(message.getInt("exten"));
-      callModel.setParticipant(message.getString("participant"));
-      callModel.setQueue(message.getString("queue"));
-      callModel.setVoipId(message.getString("voipId"));
-      return callModel;
+      JSONObject messages = new JSONObject(strMessage);
+      String typee = messages.getString("type");
+
+      if (typee.equals("callerInfo")) {
+        JSONObject message = new JSONObject(strMessage);
+        CallModel callModel = new CallModel();
+        callModel.setType(message.getString("type"));
+        callModel.setExten(message.getInt("exten"));
+        callModel.setParticipant(message.getString("participant"));
+        callModel.setQueue(message.getString("queue"));
+        callModel.setVoipId(message.getString("voipId"));
+        return callModel;
+      }
+
     } catch (JSONException e) {
       e.printStackTrace();
       AvaCrashReporter.send(e, "TripRegisterActivity class, parseNotification method ,info : " + info);
       return null;
     }
+    return null;
   }
 
   private Runnable mCallQualityUpdater = null;
@@ -1846,6 +1853,7 @@ public class TripRegisterActivity extends AppCompatActivity {
   @Override
   protected void onStop() {
     super.onStop();
+    MyApplication.prefManager.setAppRun(false);
     if (pushReceiver != null)
       unregisterReceiver(pushReceiver);
     if (userStatusReceiver != null)
@@ -1904,6 +1912,7 @@ public class TripRegisterActivity extends AppCompatActivity {
   protected void onStart() {
     super.onStart();
     MyApplication.currentActivity = this;
+    MyApplication.prefManager.setAppRun(true);
     registerReceiver(pushReceiver, new IntentFilter());
     LocalBroadcastManager.getInstance(MyApplication.currentActivity).registerReceiver((pushReceiver), new IntentFilter(Keys.KEY_BROADCAST_PUSH));
     registerReceiver(userStatusReceiver, new IntentFilter());

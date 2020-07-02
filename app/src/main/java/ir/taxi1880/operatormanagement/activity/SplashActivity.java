@@ -144,6 +144,13 @@ public class SplashActivity extends AppCompatActivity {
   protected void onResume() {
     super.onResume();
     MyApplication.currentActivity = this;
+    MyApplication.prefManager.setAppRun(true);
+  }
+
+  @Override
+  protected void onPause() {
+    super.onPause();
+    MyApplication.prefManager.setAppRun(false);
   }
 
   @Override

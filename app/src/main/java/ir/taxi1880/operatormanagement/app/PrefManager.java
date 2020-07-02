@@ -55,11 +55,21 @@ public class PrefManager {
   private static final String VOIP_ID = "voipId";
   private static final String LAST_NOTIFICATION = "lastNotification";
   private static final String LAST_CALL_NUMBER = "lastCallNumber";
+  private static final String KEY_APP_STATUS = "AppStatus";
 
   public PrefManager(Context context) {
     this._context = context;
     pref = _context.getSharedPreferences(PREF_NAME, PRIVATE_MODE);
     editor = pref.edit();
+  }
+
+  public void setAppRun(boolean v) {
+    editor.putBoolean(KEY_APP_STATUS, v);
+    editor.commit();
+  }
+
+  public boolean isAppRun() {
+    return pref.getBoolean(KEY_APP_STATUS, false);
   }
 
   public String getVoipId() {
