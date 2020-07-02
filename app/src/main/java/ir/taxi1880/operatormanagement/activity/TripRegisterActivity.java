@@ -1709,7 +1709,6 @@ public class TripRegisterActivity extends AppCompatActivity {
         }
       }
     }
-    ;
 
 //    Call call = core.getCurrentCall();
 //    if (call != null) {

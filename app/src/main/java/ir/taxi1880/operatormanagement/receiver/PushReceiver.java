@@ -65,7 +65,9 @@ public class PushReceiver extends BroadcastReceiver {
         boolean status = messages.getBoolean("status");
         String message = messages.getString("message");
 
-        createUserStatusNotification(MyApplication.context,message);
+        if (!status)
+          MyApplication.prefManager.setActivateStatus(false);
+        createUserStatusNotification(MyApplication.context, message);
 
         LocalBroadcastManager broadcaster = LocalBroadcastManager.getInstance(MyApplication.context);
         Intent broadcastIntent = new Intent(KEY_REFRESH_USER_STATUS);

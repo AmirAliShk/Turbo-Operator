@@ -1,9 +1,6 @@
 package ir.taxi1880.operatormanagement.activity;
 
-import android.content.BroadcastReceiver;
-import android.content.Context;
 import android.content.Intent;
-import android.content.IntentFilter;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
@@ -18,7 +15,6 @@ import android.widget.ViewFlipper;
 import org.json.JSONObject;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
@@ -27,7 +23,6 @@ import ir.taxi1880.operatormanagement.R;
 import ir.taxi1880.operatormanagement.app.Constant;
 import ir.taxi1880.operatormanagement.app.DataHolder;
 import ir.taxi1880.operatormanagement.app.EndPoints;
-import ir.taxi1880.operatormanagement.app.Keys;
 import ir.taxi1880.operatormanagement.app.MyApplication;
 import ir.taxi1880.operatormanagement.dialog.GeneralDialog;
 import ir.taxi1880.operatormanagement.fragment.AccountFragment;
@@ -196,22 +191,6 @@ public class MainActivity extends AppCompatActivity implements NotificationFragm
     }
   };
 
-  //receive userStatus from local broadcast
-  BroadcastReceiver userStatusReceiver = new BroadcastReceiver() {
-    @Override
-    public void onReceive(Context context, Intent intent) {
-      String messageUserStatus = intent.getStringExtra(Keys.KEY_MESSAGE_USER_STATUS);
-      boolean userStatus = intent.getBooleanExtra(Keys.KEY_USER_STATUS, false);
-
-      if (userStatus) {
-        MyApplication.prefManager.setActivateStatus(false);
-      }
-      //TODO remove this when set notification
-      MyApplication.Toast(messageUserStatus, Toast.LENGTH_SHORT);
-    }
-  };
-
-
   @Override
   protected void onResume() {
     super.onResume();
@@ -233,8 +212,6 @@ public class MainActivity extends AppCompatActivity implements NotificationFragm
   protected void onStop() {
     super.onStop();
     MyApplication.prefManager.setAppRun(false);
-    if (userStatusReceiver != null)
-      unregisterReceiver(userStatusReceiver);
   }
 
   @Override
@@ -242,8 +219,6 @@ public class MainActivity extends AppCompatActivity implements NotificationFragm
     super.onStart();
     MyApplication.currentActivity = this;
     MyApplication.prefManager.setAppRun(true);
-    registerReceiver(userStatusReceiver, new IntentFilter());
-    LocalBroadcastManager.getInstance(MyApplication.currentActivity).registerReceiver((userStatusReceiver), new IntentFilter(Keys.KEY_REFRESH_USER_STATUS));
     getBalance(MyApplication.prefManager.getUserCode());
   }
 
