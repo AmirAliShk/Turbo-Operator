@@ -5,9 +5,6 @@ import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 
-import org.json.JSONException;
-import org.json.JSONObject;
-
 import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 import ir.taxi1880.operatormanagement.app.MyApplication;
 import ir.taxi1880.operatormanagement.receiver.PushReceiver;
@@ -28,21 +25,10 @@ public class AvaReporter {
       alarmManager.set(AlarmManager.RTC_WAKEUP, System.currentTimeMillis(), pendingIntent);
 
       MyApplication.handler.postDelayed(() -> {
-        try {
-          JSONObject object = new JSONObject(msg);
-          String strMessage = object.getString("message");
-          JSONObject messages = new JSONObject(strMessage);
-          String typee = messages.getString("type");
-
-          if (typee.equals("callerInfo")) {
             LocalBroadcastManager broadcaster = LocalBroadcastManager.getInstance(MyApplication.context);
             Intent broadcastIntent = new Intent(KEY_BROADCAST_PUSH);
             broadcastIntent.putExtra(KEY_MESSAGE, msg);
             broadcaster.sendBroadcast(broadcastIntent);
-          }
-          } catch(JSONException e){
-            e.printStackTrace();
-          }
         },1000);
 
         AvaLog.i("Message receive : " + msg);
