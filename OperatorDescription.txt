@@ -24,7 +24,7 @@ remove bugs of version 7:
 - imgCallQuality.setVisibility(View.VISIBLE) : setVisibility on a null object refrence.
 
 version 9:
-release on هنوز ندادم
+release on 12/04/99
 change user activation with push
 add two type for push (message:(message=open messageFragment, announcement=open notificationFragment) , userStatus)
 When receiving the push, if the program is open, a dialog will appear, otherwise notification

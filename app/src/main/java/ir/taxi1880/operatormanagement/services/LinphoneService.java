@@ -96,7 +96,7 @@ public class LinphoneService extends Service {
         try {
           sleep(30);
         } catch (InterruptedException e) {
-          AvaCrashReporter.send(e,"LinphoneService class, getCore method ");
+          AvaCrashReporter.send(e, "LinphoneService class, getCore method ");
           throw new RuntimeException("waiting thread sleep() has been interrupted");
         }
       }
@@ -144,11 +144,7 @@ public class LinphoneService extends Service {
       @Override
       public void onCallStateChanged(Core core, final Call call, Call.State state, String message) {
 
-        if (state == Call.State.IncomingReceived
-                || (state == Call.State.IncomingEarlyMedia
-                && mContext.getResources()
-                .getBoolean(
-                        R.bool.allow_ringing_while_early_media))) {
+        if (state == Call.State.IncomingReceived || (state == Call.State.IncomingEarlyMedia && mContext.getResources().getBoolean(R.bool.allow_ringing_while_early_media))) {
           // Brighten screen for at least 10 seconds
           if (core.getCallsNb() == 1) {
             requestAudioFocus(STREAM_RING);
@@ -209,16 +205,12 @@ public class LinphoneService extends Service {
               mHeadsetReceiverRegistered = false;
             }
 
-            TelephonyManager tm =
-                    (TelephonyManager)
-                            mContext.getSystemService(
-                                    Context.TELEPHONY_SERVICE);
+            TelephonyManager tm = (TelephonyManager) mContext.getSystemService(Context.TELEPHONY_SERVICE);
+
             if (tm.getCallState() == TelephonyManager.CALL_STATE_IDLE) {
-              Log.d(
-                      "[Audio Manager] ---AndroidAudioManager: back to MODE_NORMAL");
+              Log.d("[Audio Manager] ---AndroidAudioManager: back to MODE_NORMAL");
               mAudioManager.setMode(AudioManager.MODE_NORMAL);
-              Log.d(
-                      "[Audio Manager] All call terminated, routing back to earpiece");
+              Log.d("[Audio Manager] All call terminated, routing back to earpiece");
               routeAudioToEarPiece();
             }
           }
@@ -263,12 +255,10 @@ public class LinphoneService extends Service {
 
         }
 
-
       }
 
       @Override
-      public void onEcCalibrationResult(
-              Core core, EcCalibratorStatus status, int delay_ms) {
+      public void onEcCalibrationResult(Core core, EcCalibratorStatus status, int delay_ms) {
         mAudioManager.setMode(AudioManager.MODE_NORMAL);
         mAudioManager.abandonAudioFocus(null);
         Log.i("[Audio Manager] Set audio mode on 'Normal'");
@@ -283,12 +273,11 @@ public class LinphoneService extends Service {
       copyFromPackage(R.raw.linphonerc_factory, "linphonerc");
     } catch (IOException ioe) {
       Log.e(ioe);
-      AvaCrashReporter.send(ioe ,"LinphoneService class, getCore method ");
+      AvaCrashReporter.send(ioe, "LinphoneService class, getCore method ");
     }
 
     // Create the Core and add our listener
-    mCore = Factory.instance()
-            .createCore(basePath + "/.linphonerc", basePath + "/linphonerc", this);
+    mCore = Factory.instance().createCore(basePath + "/.linphonerc", basePath + "/linphonerc", this);
     mCore.addListener(mCoreListener);
     // Core is ready to be configured
     configureCore();
@@ -313,21 +302,20 @@ public class LinphoneService extends Service {
     // Core must be started after being created and configured
     mCore.start();
     // We also MUST call the iterate() method of the Core on a regular basis
-    TimerTask lTask =
-            new TimerTask() {
-              @Override
-              public void run() {
-                mHandler.post(
-                        new Runnable() {
-                          @Override
-                          public void run() {
-                            if (mCore != null) {
-                              mCore.iterate();
-                            }
-                          }
-                        });
-              }
-            };
+    TimerTask lTask = new TimerTask() {
+      @Override
+      public void run() {
+        mHandler.post(
+                new Runnable() {
+                  @Override
+                  public void run() {
+                    if (mCore != null) {
+                      mCore.iterate();
+                    }
+                  }
+                });
+      }
+    };
     mTimer = new Timer("Linphone scheduler");
     mTimer.schedule(lTask, 0, 20);
 
@@ -389,7 +377,7 @@ public class LinphoneService extends Service {
     try {
       info = getPackageManager().getPackageInfo(getPackageName(), 0);
     } catch (PackageManager.NameNotFoundException nnfe) {
-      AvaCrashReporter.send(nnfe ,"LinphoneService class, dumpInstalledLinphoneInformation method ");
+      AvaCrashReporter.send(nnfe, "LinphoneService class, dumpInstalledLinphoneInformation method ");
       Log.e(nnfe);
     }
 
@@ -585,27 +573,16 @@ public class LinphoneService extends Service {
 
   private void requestAudioFocus(int stream) {
     if (!mAudioFocused) {
-      int res =
-              mAudioManager.requestAudioFocus(
-                      null, stream, AudioManager.AUDIOFOCUS_GAIN_TRANSIENT_EXCLUSIVE);
-      Log.d(
-              "[Audio Manager] Audio focus requested: "
-                      + (res == AudioManager.AUDIOFOCUS_REQUEST_GRANTED
-                      ? "Granted"
-                      : "Denied"));
+      int res = mAudioManager.requestAudioFocus(null, stream, AudioManager.AUDIOFOCUS_GAIN_TRANSIENT_EXCLUSIVE);
+      Log.d("[Audio Manager] Audio focus requested: " + (res == AudioManager.AUDIOFOCUS_REQUEST_GRANTED ? "Granted" : "Denied"));
       if (res == AudioManager.AUDIOFOCUS_REQUEST_GRANTED) mAudioFocused = true;
     }
   }
 
   public boolean isDeviceRingtoneEnabled() {
-    int readExternalStorage =
-            mContext.getPackageManager()
-                    .checkPermission(
-                            Manifest.permission.READ_EXTERNAL_STORAGE,
-                            mContext.getPackageName());
+    int readExternalStorage = mContext.getPackageManager().checkPermission(Manifest.permission.READ_EXTERNAL_STORAGE, mContext.getPackageName());
     if (getConfig() == null) return readExternalStorage == PackageManager.PERMISSION_GRANTED;
-    return getConfig().getBool("app", "device_ringtone", true)
-            && readExternalStorage == PackageManager.PERMISSION_GRANTED;
+    return getConfig().getBool("app", "device_ringtone", true) && readExternalStorage == PackageManager.PERMISSION_GRANTED;
   }
 
   private Core getLc() {
@@ -620,7 +597,6 @@ public class LinphoneService extends Service {
   public String getLinphoneDefaultConfig() {
     return mBasePath + LINPHONE_DEFAULT_RC;
   }
-
 
   public Config getConfig() {
     Core core = getLc();
@@ -646,7 +622,7 @@ public class LinphoneService extends Service {
           }
         } catch (IOException ioe) {
           Log.e(ioe);
-          AvaCrashReporter.send(ioe ,"LinphoneService class, getConfig method ");
+          AvaCrashReporter.send(ioe, "LinphoneService class, getConfig method ");
         }
         return Factory.instance().createConfigFromString(text.toString());
       }
@@ -708,7 +684,7 @@ public class LinphoneService extends Service {
           }
         } catch (IOException e) {
           Log.e(e, "[Audio Manager] Cannot set ringtone");
-          AvaCrashReporter.send(e ,"LinphoneService class, startRinging method internal");
+          AvaCrashReporter.send(e, "LinphoneService class, startRinging method internal");
         }
 
         mRingerPlayer.prepare();
@@ -719,7 +695,7 @@ public class LinphoneService extends Service {
       }
     } catch (Exception e) {
       Log.e(e, "[Audio Manager] Cannot handle incoming call");
-      AvaCrashReporter.send(e ,"LinphoneService class, startRinging method");
+      AvaCrashReporter.send(e, "LinphoneService class, startRinging method");
     }
     mIsRinging = true;
   }
@@ -756,8 +732,7 @@ public class LinphoneService extends Service {
 
     int stream = STREAM_VOICE_CALL;
     if (mIsBluetoothHeadsetScoConnected) {
-      Log.i(
-              "[Audio Manager] Bluetooth is connected, try to change the volume on STREAM_BLUETOOTH_SCO");
+      Log.i("[Audio Manager] Bluetooth is connected, try to change the volume on STREAM_BLUETOOTH_SCO");
       stream = 6; // STREAM_BLUETOOTH_SCO, it's hidden...
     }
 
@@ -801,8 +776,7 @@ public class LinphoneService extends Service {
       return;
     }
     if (mAudioManager.getMode() != AudioManager.MODE_IN_COMMUNICATION) {
-      Log.w(
-              "[Audio Manager] [Bluetooth] Changing audio mode to MODE_IN_COMMUNICATION and requesting STREAM_VOICE_CALL focus");
+      Log.w("[Audio Manager] [Bluetooth] Changing audio mode to MODE_IN_COMMUNICATION and requesting STREAM_VOICE_CALL focus");
       mAudioManager.setMode(AudioManager.MODE_IN_COMMUNICATION);
       requestAudioFocus(STREAM_VOICE_CALL);
     }
@@ -831,19 +805,15 @@ public class LinphoneService extends Service {
             Thread.sleep(200);
           } catch (InterruptedException e) {
             Log.e(e);
-            AvaCrashReporter.send(e ,"LinphoneService class, changeBluetoothSco method");
+            AvaCrashReporter.send(e, "LinphoneService class, changeBluetoothSco method");
           }
 
           synchronized (LinphoneService.this) {
             if (enable) {
-              Log.i(
-                      "[Audio Manager] [Bluetooth] Starting SCO: try number "
-                              + retries);
+              Log.i("[Audio Manager] [Bluetooth] Starting SCO: try number " + retries);
               mAudioManager.startBluetoothSco();
             } else {
-              Log.i(
-                      "[Audio Manager] [Bluetooth] Stopping SCO: try number "
-                              + retries);
+              Log.i("[Audio Manager] [Bluetooth] Stopping SCO: try number " + retries);
               mAudioManager.stopBluetoothSco();
             }
             resultAcknowledged = isUsingBluetoothAudioRoute() == enable;
@@ -856,15 +826,12 @@ public class LinphoneService extends Service {
 
   public void bluetoothAdapterStateChanged() {
     try {
-
-
       if (mBluetoothAdapter.isEnabled()) {
         Log.i("[Audio Manager] [Bluetooth] Adapter enabled");
         mIsBluetoothHeadsetConnected = false;
         mIsBluetoothHeadsetScoConnected = false;
 
-        BluetoothProfile.ServiceListener bluetoothServiceListener =
-                new BluetoothProfile.ServiceListener() {
+        BluetoothProfile.ServiceListener bluetoothServiceListener = new BluetoothProfile.ServiceListener() {
                   public void onServiceConnected(int profile, BluetoothProfile proxy) {
                     if (profile == BluetoothProfile.HEADSET) {
                       Log.i("[Audio Manager] [Bluetooth] HEADSET profile connected");
@@ -926,14 +893,13 @@ public class LinphoneService extends Service {
                   }
                 };
 
-        mBluetoothAdapter.getProfileProxy(
-                mContext, bluetoothServiceListener, BluetoothProfile.HEADSET);
+        mBluetoothAdapter.getProfileProxy(mContext, bluetoothServiceListener, BluetoothProfile.HEADSET);
       } else {
         Log.w("[Audio Manager] [Bluetooth] Adapter disabled");
       }
     } catch (Exception e) {
       e.printStackTrace();
-      AvaCrashReporter.send(e,"Bluetooth receiver Crash");
+      AvaCrashReporter.send(e, "Bluetooth receiver Crash");
     }
   }
 
@@ -961,10 +927,8 @@ public class LinphoneService extends Service {
     mHeadsetReceiver = new HeadsetReceiver();
 
     Log.i("[Audio Manager] Registering headset receiver");
-    mContext.registerReceiver(
-            mHeadsetReceiver, new IntentFilter(AudioManager.ACTION_AUDIO_BECOMING_NOISY));
-    mContext.registerReceiver(
-            mHeadsetReceiver, new IntentFilter(AudioManager.ACTION_HEADSET_PLUG));
+    mContext.registerReceiver(mHeadsetReceiver, new IntentFilter(AudioManager.ACTION_AUDIO_BECOMING_NOISY));
+    mContext.registerReceiver(mHeadsetReceiver, new IntentFilter(AudioManager.ACTION_HEADSET_PLUG));
     mHeadsetReceiverRegistered = true;
   }
 }

@@ -65,9 +65,7 @@ public class BluetoothReceiver extends BroadcastReceiver {
                     break;
             }
         } else if (action.equals(BluetoothHeadset.ACTION_CONNECTION_STATE_CHANGED)) {
-            int state =
-                    intent.getIntExtra(
-                            BluetoothHeadset.EXTRA_STATE, BluetoothHeadset.STATE_DISCONNECTED);
+            int state = intent.getIntExtra(BluetoothHeadset.EXTRA_STATE, BluetoothHeadset.STATE_DISCONNECTED);
             if (state == BluetoothHeadset.STATE_CONNECTED) {
                 Log.i("[Bluetooth] Bluetooth headset connected");
                 LinphoneService.getInstance().bluetoothHeadsetConnectionChanged(true);
@@ -78,10 +76,7 @@ public class BluetoothReceiver extends BroadcastReceiver {
                 Log.w("[Bluetooth] Bluetooth headset unknown state changed: " + state);
             }
         } else if (action.equals(BluetoothHeadset.ACTION_AUDIO_STATE_CHANGED)) {
-            int state =
-                    intent.getIntExtra(
-                            BluetoothHeadset.EXTRA_STATE,
-                            BluetoothHeadset.STATE_AUDIO_DISCONNECTED);
+            int state = intent.getIntExtra(BluetoothHeadset.EXTRA_STATE, BluetoothHeadset.STATE_AUDIO_DISCONNECTED);
             if (state == BluetoothHeadset.STATE_AUDIO_CONNECTED) {
                 Log.i("[Bluetooth] Bluetooth headset audio connected");
                 LinphoneService.getInstance().bluetoothHeadetAudioConnectionChanged(true);
@@ -94,10 +89,7 @@ public class BluetoothReceiver extends BroadcastReceiver {
                 Log.w("[Bluetooth] Bluetooth headset unknown audio state changed: " + state);
             }
         } else if (action.equals(AudioManager.ACTION_SCO_AUDIO_STATE_UPDATED)) {
-            int state =
-                    intent.getIntExtra(
-                            AudioManager.EXTRA_SCO_AUDIO_STATE,
-                            AudioManager.SCO_AUDIO_STATE_DISCONNECTED);
+            int state = intent.getIntExtra(AudioManager.EXTRA_SCO_AUDIO_STATE, AudioManager.SCO_AUDIO_STATE_DISCONNECTED);
             if (state == AudioManager.SCO_AUDIO_STATE_CONNECTED) {
                 Log.i("[Bluetooth] Bluetooth headset SCO connected");
                 LinphoneService.getInstance().bluetoothHeadetScoConnectionChanged(true);
@@ -112,11 +104,8 @@ public class BluetoothReceiver extends BroadcastReceiver {
                 Log.w("[Bluetooth] Bluetooth headset unknown SCO state changed: " + state);
             }
         } else if (action.equals(BluetoothHeadset.ACTION_VENDOR_SPECIFIC_HEADSET_EVENT)) {
-            String command =
-                    intent.getStringExtra(BluetoothHeadset.EXTRA_VENDOR_SPECIFIC_HEADSET_EVENT_CMD);
-            int type =
-                    intent.getIntExtra(
-                            BluetoothHeadset.EXTRA_VENDOR_SPECIFIC_HEADSET_EVENT_CMD_TYPE, -1);
+            String command = intent.getStringExtra(BluetoothHeadset.EXTRA_VENDOR_SPECIFIC_HEADSET_EVENT_CMD);
+            int type = intent.getIntExtra(BluetoothHeadset.EXTRA_VENDOR_SPECIFIC_HEADSET_EVENT_CMD_TYPE, -1);
 
             String commandType;
             switch (type) {
