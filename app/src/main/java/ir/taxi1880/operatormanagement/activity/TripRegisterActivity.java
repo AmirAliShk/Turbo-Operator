@@ -1528,6 +1528,7 @@ public class TripRegisterActivity extends AppCompatActivity {
         @Override
         public void run() {
           try {
+            Log.i(TAG, "run: "+args[0].toString());
             JSONObject obj = new JSONObject(args[0].toString());
             boolean success = obj.getBoolean("success");
             String message = obj.getString("message");
@@ -1536,7 +1537,7 @@ public class TripRegisterActivity extends AppCompatActivity {
 
               new GeneralDialog()
                       .title("ثبت شد")
-                      .message("اطلاعات با موفقیت ثبت شد")
+                      .message(message)
                       .cancelable(false)
                       .firstButton("باشه", () -> {
                         String tempVoipId = voipId;
