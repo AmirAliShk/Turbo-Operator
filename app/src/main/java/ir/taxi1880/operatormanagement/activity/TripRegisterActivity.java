@@ -1537,6 +1537,7 @@ public class TripRegisterActivity extends AppCompatActivity {
               new GeneralDialog()
                       .title("ثبت شد")
                       .message("اطلاعات با موفقیت ثبت شد")
+                      .cancelable(false)
                       .firstButton("باشه", () -> {
                         String tempVoipId = voipId;
                         clearData();
