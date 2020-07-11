@@ -1,10 +1,8 @@
 package ir.taxi1880.operatormanagement.dialog;
 
 import android.app.Dialog;
-import android.content.Context;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
-import android.media.AudioManager;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
@@ -133,8 +131,6 @@ public class CallDialog {
   void onCallSupportPress() {
     Address addressToCall = core.interpretUrl("950");
     CallParams params = core.createCallParams(null);
-    AudioManager mAudioManager = ((AudioManager) LinphoneService.getInstance().getApplicationContext().getSystemService(Context.AUDIO_SERVICE));
-    mAudioManager.setSpeakerphoneOn(true);
     params.enableVideo(false);
     if (addressToCall != null) {
       core.inviteAddressWithParams(addressToCall, params);
