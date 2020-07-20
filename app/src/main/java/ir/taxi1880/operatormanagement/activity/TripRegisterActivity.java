@@ -365,9 +365,6 @@ public class TripRegisterActivity extends AppCompatActivity {
   byte traffic = 0;
   byte defaultClass = 0;
 
-//  @BindView(R.id.imgCallQuality)
-//  ImageView imgCallQuality;
-
   @OnClick(R.id.btnSubmit)
   void onPressSubmit() {
 
