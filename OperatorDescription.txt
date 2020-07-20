@@ -28,3 +28,8 @@ release on 12/04/99
 change user activation with push
 add two type for push (message:(message=open messageFragment, announcement=open notificationFragment) , userStatus)
 When receiving the push, if the program is open, a dialog will appear, otherwise notification
+
+version 10:
+release on 30/04/99
+disable speaker when you call to support(950)
+set message for insertService response(get message Text from server)
