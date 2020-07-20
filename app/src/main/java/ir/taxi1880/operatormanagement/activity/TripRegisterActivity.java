@@ -450,21 +450,25 @@ public class TripRegisterActivity extends AppCompatActivity {
         break;
     }
 
-    if (isOriginValid && isDestinationValid) {
-      new GeneralDialog()
-              .title("ثبت اطلاعات")
-              .message("آیا از ثبت اطلاعات اطمینان دارید؟")
-              .firstButton("بله", () ->
-                      insertService(MyApplication.prefManager.getUserCode(), serviceCount, tell, mobile, cityCode, stationCode,
-                              name, address, fixedComment, destinationStation,
-                              stationName, serviceType, carClass, normalDescription, traffic, defaultClass))
-              .secondButton("خیر", new Runnable() {
-                @Override
-                public void run() {
-                }
-              })
-              .show();
-    }
+    MyApplication.handler.postDelayed(()->
+    {
+      if (isOriginValid && isDestinationValid) {
+        new GeneralDialog()
+                .title("ثبت اطلاعات")
+                .message("آیا از ثبت اطلاعات اطمینان دارید؟")
+                .firstButton("بله", () ->
+                        insertService(MyApplication.prefManager.getUserCode(), serviceCount, tell, mobile, cityCode, stationCode,
+                                name, address, fixedComment, destinationStation,
+                                stationName, serviceType, carClass, normalDescription, traffic, defaultClass))
+                .secondButton("خیر", new Runnable() {
+                  @Override
+                  public void run() {
+                  }
+                })
+                .show();
+      }
+    }, 1000);
+
   }
 
   @OnClick(R.id.btnOptions)
