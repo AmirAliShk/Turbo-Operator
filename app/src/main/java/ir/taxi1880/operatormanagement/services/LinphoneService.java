@@ -151,7 +151,6 @@ public class LinphoneService extends Service {
             requestAudioFocus(STREAM_RING);
 
             mRingingCall = call;
-            Log.i("elahetest", "start");
             startRinging(call.getRemoteAddress());
             // otherwise there is the beep
           }
@@ -663,35 +662,28 @@ public class LinphoneService extends Service {
     mAudioManager.setMode(MODE_RINGTONE);
 
     try {
-      Log.i("elahetest", "first try");
       if ((mAudioManager.getRingerMode() == AudioManager.RINGER_MODE_VIBRATE
               || mAudioManager.getRingerMode() == AudioManager.RINGER_MODE_NORMAL)
               && mVibrator != null
               && isIncomingCallVibrationEnabled()) {
-        Log.d("elahetest", "start if 669");
         long[] patern = {0, 1000, 1000};
         mVibrator.vibrate(patern, 1);
       }
       if (mRingerPlayer == null) {
-        Log.d("elahetest", "start if 674");
         requestAudioFocus(STREAM_RING);
         mRingerPlayer = new MediaPlayer();
         mRingerPlayer.setAudioStreamType(STREAM_RING);
 
         String ringtone = getRingtone(Settings.System.DEFAULT_RINGTONE_URI.toString());
         try {
-          Log.d("elahetest", "second try");
           if (ringtone.startsWith("content://")) {
-            Log.d("elahetest", "start if 683");
             mRingerPlayer.setDataSource(mContext, Uri.parse(ringtone));
           } else {
-            Log.d("elahetest", "start else 686");
             FileInputStream fis = new FileInputStream(ringtone);
             mRingerPlayer.setDataSource(fis.getFD());
             fis.close();
           }
         } catch (IOException e) {
-          Log.d("elahetest", "catch 692");
           Log.e(e, "[Audio Manager] Cannot set ringtone");
           AvaCrashReporter.send(e, "LinphoneService class, startRinging method internal");
         }
@@ -700,11 +692,9 @@ public class LinphoneService extends Service {
         mRingerPlayer.setLooping(true);
         mRingerPlayer.start();
       } else {
-        Log.d("elahetest", "start else 701");
         Log.w("[Audio Manager] Already ringing");
       }
     } catch (Exception e) {
-      Log.d("elahetest", "catch 705");
       Log.e(e, "[Audio Manager] Cannot handle incoming call");
       AvaCrashReporter.send(e, "LinphoneService class, startRinging method");
     }
