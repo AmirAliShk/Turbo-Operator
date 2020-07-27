@@ -807,6 +807,10 @@ public class TripRegisterActivity extends AppCompatActivity {
         countService[i] = i + "";
         countServices.add(countService[i]);
       }
+
+      if (spServiceCount == null)
+        return;
+
       if (isEnableView) {
         spServiceCount.setEnabled(true);
       } else {
