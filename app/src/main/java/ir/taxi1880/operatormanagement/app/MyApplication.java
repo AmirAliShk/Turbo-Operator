@@ -80,9 +80,9 @@ public class MyApplication extends Application {
   }
 
   public static void avaStart() {
-//        if (prefManager.getLineCode().equals("0")) return;
-//        if (prefManager.getAvaPID()==0) return;
-//        if (prefManager.getAvaToken()==null) return;
+    if (prefManager.getUserCode() == 0) return;
+    if (prefManager.getPushId() == 0) return;
+    if (prefManager.getPushToken() == null) return;
 
     Log.i(TAG, "avaStart: " + MyApplication.prefManager.getUserCode());
     Log.i(TAG, "avaStart: " + MyApplication.prefManager.getPushId());
@@ -157,7 +157,7 @@ public class MyApplication extends Application {
       // At least the 3 below values are required
     } catch (Exception e) {
       e.printStackTrace();
-      AvaCrashReporter.send(e,"MyApplication class, configureAccount method");
+      AvaCrashReporter.send(e, "MyApplication class, configureAccount method");
     }
 
 
