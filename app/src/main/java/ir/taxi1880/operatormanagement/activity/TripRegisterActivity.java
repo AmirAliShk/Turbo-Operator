@@ -84,24 +84,19 @@ public class TripRegisterActivity extends AppCompatActivity {
 
   public static final String TAG = TripRegisterActivity.class.getSimpleName();
   Unbinder unbinder;
-  //  View view;
   private String cityName = "";
   private String cityLatinName = "";
   private String normalDescription = "";
   private int cityCode;
   private String stationName = " ";
-  private int originStationCode = -1;
   private int serviceType;
   private int serviceCount;
   private boolean isEnableView = false;
-  private boolean isOriginValid;
-  private boolean isDestinationValid;
   private boolean isTellValidable = false;
   RipplePulseLayout mRipplePulseLayout;
 
   String queue = "0";
   String voipId = "0";
-
 
   @OnClick(R.id.imgBack)
   void onBack() {
@@ -406,65 +401,6 @@ public class TripRegisterActivity extends AppCompatActivity {
 
     getCheckOriginStation(cityCode, Integer.parseInt(StringHelper.toEnglishDigits(edtOrigin.getText().toString())));
 
-    //TODO Two line change comment
-    /***********************************/
-//    getCheckDestStation(cityCode, Integer.parseInt(StringHelper.toEnglishDigits(edtDestination.getText().toString())));
-    isDestinationValid = true;
-    /***********************************/
-    String mobile = isTellValidable && getMobileNumber().isEmpty() ? "0" : getMobileNumber();
-    String tell = getTellNumber();
-    String name = edtFamily.getText().toString();
-    String address = edtAddress.getText().toString();
-    String fixedComment = txtDescription.getText().toString();
-    int stationCode = Integer.parseInt(edtOrigin.getText().toString());
-    int destinationStation = Integer.parseInt(edtDestination.getText().toString());
-
-    if (chbTraffic.isChecked())
-      traffic = 1;
-    else
-      traffic = 0;
-
-    if (chbAlways.isChecked())
-      defaultClass = 1;
-    else
-      defaultClass = 0;
-
-    switch (rgCarClass.getCheckedRadioButtonId()) {
-      case R.id.rbUnknow:
-        carClass = 0;
-        break;
-      case R.id.rbTaxi:
-        carClass = 4;
-        break;
-      case R.id.rbPrivilage:
-        carClass = 2;
-        break;
-      case R.id.rbEconomical:
-        carClass = 1;
-        break;
-      case R.id.rbFormality:
-        carClass = 3;
-        break;
-    }
-
-    MyApplication.handler.postDelayed(() ->
-    {
-      if (isOriginValid && isDestinationValid) {
-        new GeneralDialog()
-                .title("ثبت اطلاعات")
-                .message("آیا از ثبت اطلاعات اطمینان دارید؟")
-                .firstButton("بله", () ->
-                        insertService(MyApplication.prefManager.getUserCode(), serviceCount, tell, mobile, cityCode, stationCode,
-                                name, address, fixedComment, destinationStation,
-                                stationName, serviceType, carClass, normalDescription, traffic, defaultClass))
-                .secondButton("خیر", new Runnable() {
-                  @Override
-                  public void run() {
-                  }
-                })
-                .show();
-      }
-    }, 1000);
 
   }
 
@@ -483,6 +419,9 @@ public class TripRegisterActivity extends AppCompatActivity {
 
   @BindView(R.id.edtDestination)
   EditText edtDestination;
+
+  @BindView(R.id.vfSubmit)
+  ViewFlipper vfSubmit;
 
   @BindView(R.id.vfPassengerAddress)
   ViewFlipper vfPassengerAddress;
@@ -1134,7 +1073,6 @@ public class TripRegisterActivity extends AppCompatActivity {
                 public void description(String address, int stationCode) {
                   if (edtAddress != null)
                     edtAddress.setText(address);
-                  originStationCode = stationCode;
                   if (edtOrigin != null)
                     edtOrigin.setText(stationCode + "");
 
@@ -1158,6 +1096,8 @@ public class TripRegisterActivity extends AppCompatActivity {
   };
 
   private void getCheckOriginStation(int cityCode, int stationCode) {
+    if (vfSubmit != null)
+      vfSubmit.setDisplayedChild(1);
     RequestHelper.builder(EndPoints.CHECK_STATION)
             .addPath(cityCode + "")
             .addPath(stationCode + "")
@@ -1183,6 +1123,8 @@ public class TripRegisterActivity extends AppCompatActivity {
             String desc = dataObj.getString("descriptionStatus");
 
             if (status != 0) {
+              if (vfSubmit != null)
+                vfSubmit.setDisplayedChild(0);
               new GeneralDialog()
                       .title("منطقه مبدا")
                       .message(desc)
@@ -1196,8 +1138,8 @@ public class TripRegisterActivity extends AppCompatActivity {
                       .show();
               return;
             }
-            isOriginValid = true;
 
+            callInsertService();
 
           } catch (JSONException e) {
             e.printStackTrace();
@@ -1209,9 +1151,74 @@ public class TripRegisterActivity extends AppCompatActivity {
 
     @Override
     public void onFailure(Runnable reCall, Exception e) {
-
+      MyApplication.handler.post(new Runnable() {
+        @Override
+        public void run() {
+          try {
+            if (vfSubmit != null)
+              vfSubmit.setDisplayedChild(0);
+          } catch (Exception e) {
+            e.printStackTrace();
+          }
+        }
+      });
     }
   };
+
+  private void callInsertService() {
+    String mobile = isTellValidable && getMobileNumber().isEmpty() ? "0" : getMobileNumber();
+    String tell = getTellNumber();
+    String name = edtFamily.getText().toString();
+    String address = edtAddress.getText().toString();
+    String fixedComment = txtDescription.getText().toString();
+    int stationCode = Integer.parseInt(edtOrigin.getText().toString());
+    int destinationStation = Integer.parseInt(edtDestination.getText().toString());
+
+    if (chbTraffic.isChecked())
+      traffic = 1;
+    else
+      traffic = 0;
+
+    if (chbAlways.isChecked())
+      defaultClass = 1;
+    else
+      defaultClass = 0;
+
+    switch (rgCarClass.getCheckedRadioButtonId()) {
+      case R.id.rbUnknow:
+        carClass = 0;
+        break;
+      case R.id.rbTaxi:
+        carClass = 4;
+        break;
+      case R.id.rbPrivilage:
+        carClass = 2;
+        break;
+      case R.id.rbEconomical:
+        carClass = 1;
+        break;
+      case R.id.rbFormality:
+        carClass = 3;
+        break;
+    }
+
+        new GeneralDialog()
+                .title("ثبت اطلاعات")
+                .cancelable(false)
+                .message("آیا از ثبت اطلاعات اطمینان دارید؟")
+                .firstButton("بله", () ->
+                        insertService(MyApplication.prefManager.getUserCode(), serviceCount, tell, mobile, cityCode, stationCode,
+                                name, address, fixedComment, destinationStation,
+                                stationName, serviceType, carClass, normalDescription, traffic, defaultClass))
+                .secondButton("خیر", new Runnable() {
+                  @Override
+                  public void run() {
+                    if (vfSubmit != null)
+                      vfSubmit.setDisplayedChild(0);
+                  }
+                })
+                .show();
+  }
 
   private void getCheckDestStation(int cityCode, int stationCode) {
     RequestHelper.builder(EndPoints.CHECK_STATION)
@@ -1252,7 +1259,6 @@ public class TripRegisterActivity extends AppCompatActivity {
                       .show();
               return;
             }
-            isDestinationValid = true;
 
           } catch (JSONException e) {
             e.printStackTrace();
@@ -1535,6 +1541,8 @@ public class TripRegisterActivity extends AppCompatActivity {
         @Override
         public void run() {
           try {
+            if (vfSubmit != null)
+              vfSubmit.setDisplayedChild(0);
             Log.i(TAG, "run: " + args[0].toString());
             JSONObject obj = new JSONObject(args[0].toString());
             boolean success = obj.getBoolean("success");
@@ -1594,7 +1602,11 @@ public class TripRegisterActivity extends AppCompatActivity {
 
     @Override
     public void onFailure(Runnable reCall, Exception e) {
-      MyApplication.handler.post(LoadingDialog::dismiss);
+      MyApplication.handler.post(() -> {
+        LoadingDialog.dismiss();
+        if (vfSubmit != null)
+          vfSubmit.setDisplayedChild(1);
+      });
     }
 
     @Override
