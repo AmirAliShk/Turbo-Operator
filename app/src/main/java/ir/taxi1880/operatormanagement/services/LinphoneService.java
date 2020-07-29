@@ -682,20 +682,28 @@ public class LinphoneService extends Service {
             mRingerPlayer.setDataSource(fis.getFD());
             fis.close();
           }
+          mRingerPlayer.prepare();
+          mRingerPlayer.setLooping(true);
+          mRingerPlayer.start();
         } catch (IOException e) {
-          Log.e(e, "[Audio Manager] Cannot set ringtone");
-          AvaCrashReporter.send(e, "LinphoneService class, startRinging method internal");
+          try {
+            mRingerPlayer.setDataSource(mContext, Uri.parse(MyApplication.SOUND + R.raw.ring));
+            mRingerPlayer.prepare();
+            mRingerPlayer.setLooping(true);
+            mRingerPlayer.start();
+          } catch (IOException ex) {
+            Log.e(e, "[Audio Manager] Cannot set ringtone");
+            AvaCrashReporter.send(e, "LinphoneService class, startRinging method internal");
+          }
         }
-
-        mRingerPlayer.prepare();
-        mRingerPlayer.setLooping(true);
-        mRingerPlayer.start();
       } else {
         Log.w("[Audio Manager] Already ringing");
       }
     } catch (Exception e) {
-      Log.e(e, "[Audio Manager] Cannot handle incoming call");
-      AvaCrashReporter.send(e, "LinphoneService class, startRinging method");
+        e.printStackTrace();
+        Log.e(e, "[Audio Manager] Cannot handle incoming call");
+        AvaCrashReporter.send(e, "LinphoneService class, startRinging method");
+
     }
     mIsRinging = true;
   }
