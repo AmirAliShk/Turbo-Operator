@@ -255,9 +255,9 @@ public class RequestHelper  implements okhttp3.Callback {
 
     public static final MediaType JSON = MediaType.parse("application/json; charset=utf-8");
 
-    private int connectionTimeout = 10;
-    private int writeTimeout = 10;
-    private int readTimeout = 15;
+    private int connectionTimeout = 20;
+    private int writeTimeout = 20;
+    private int readTimeout = 25;
     private Object object1 = null;
     private Object object2 = null;
 
