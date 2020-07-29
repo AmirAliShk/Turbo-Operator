@@ -642,12 +642,12 @@ public class TripRegisterActivity extends AppCompatActivity {
 
   String permanentDesc = "";
 
-  View view;
   private String[] countService = new String[6];
 
   @Override
   protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
+    View view;
     setContentView(R.layout.activity_trip_register);
     view = getWindow().getDecorView();
     getSupportActionBar().hide();
