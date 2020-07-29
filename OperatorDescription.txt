@@ -23,8 +23,14 @@ remove bugs of version 7:
 - edtTell.setText(participant) : setText on a null object refrence.
 - imgCallQuality.setVisibility(View.VISIBLE) : setVisibility on a null object refrence.
 
-version 9:
+versionCode 9, versionName 2.2 :
+This release was not used by anyone !
 release on 12/04/99
 change user activation with push
 add two type for push (message:(message=open messageFragment, announcement=open notificationFragment) , userStatus)
 When receiving the push, if the program is open, a dialog will appear, otherwise notification
+
+versionCode 10, versionName 2.3 :
+release on 02/05/99
+disable speaker when you call to support(950)
+set message for insertService response(get message Text from server)

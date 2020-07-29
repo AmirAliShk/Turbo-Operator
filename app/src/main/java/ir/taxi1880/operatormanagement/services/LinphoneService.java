@@ -147,6 +147,7 @@ public class LinphoneService extends Service {
         if (state == Call.State.IncomingReceived || (state == Call.State.IncomingEarlyMedia && mContext.getResources().getBoolean(R.bool.allow_ringing_while_early_media))) {
           // Brighten screen for at least 10 seconds
           if (core.getCallsNb() == 1) {
+
             requestAudioFocus(STREAM_RING);
 
             mRingingCall = call;

@@ -365,9 +365,6 @@ public class TripRegisterActivity extends AppCompatActivity {
   byte traffic = 0;
   byte defaultClass = 0;
 
-//  @BindView(R.id.imgCallQuality)
-//  ImageView imgCallQuality;
-
   @OnClick(R.id.btnSubmit)
   void onPressSubmit() {
 
@@ -450,21 +447,25 @@ public class TripRegisterActivity extends AppCompatActivity {
         break;
     }
 
-    if (isOriginValid && isDestinationValid) {
-      new GeneralDialog()
-              .title("ثبت اطلاعات")
-              .message("آیا از ثبت اطلاعات اطمینان دارید؟")
-              .firstButton("بله", () ->
-                      insertService(MyApplication.prefManager.getUserCode(), serviceCount, tell, mobile, cityCode, stationCode,
-                              name, address, fixedComment, destinationStation,
-                              stationName, serviceType, carClass, normalDescription, traffic, defaultClass))
-              .secondButton("خیر", new Runnable() {
-                @Override
-                public void run() {
-                }
-              })
-              .show();
-    }
+    MyApplication.handler.postDelayed(() ->
+    {
+      if (isOriginValid && isDestinationValid) {
+        new GeneralDialog()
+                .title("ثبت اطلاعات")
+                .message("آیا از ثبت اطلاعات اطمینان دارید؟")
+                .firstButton("بله", () ->
+                        insertService(MyApplication.prefManager.getUserCode(), serviceCount, tell, mobile, cityCode, stationCode,
+                                name, address, fixedComment, destinationStation,
+                                stationName, serviceType, carClass, normalDescription, traffic, defaultClass))
+                .secondButton("خیر", new Runnable() {
+                  @Override
+                  public void run() {
+                  }
+                })
+                .show();
+      }
+    }, 1000);
+
   }
 
   @OnClick(R.id.btnOptions)
@@ -641,12 +642,12 @@ public class TripRegisterActivity extends AppCompatActivity {
 
   String permanentDesc = "";
 
-  View view;
   private String[] countService = new String[6];
 
   @Override
   protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
+    View view;
     setContentView(R.layout.activity_trip_register);
     view = getWindow().getDecorView();
     getSupportActionBar().hide();
@@ -806,6 +807,10 @@ public class TripRegisterActivity extends AppCompatActivity {
         countService[i] = i + "";
         countServices.add(countService[i]);
       }
+
+      if (spServiceCount == null)
+        return;
+
       if (isEnableView) {
         spServiceCount.setEnabled(true);
       } else {
@@ -986,8 +991,9 @@ public class TripRegisterActivity extends AppCompatActivity {
           int cityCode = passengerInfoObj.getInt("cityCode");
 
           if (success) {
-            if (edtTell != null)
-              edtTell.setNextFocusDownId(R.id.edtFamily);
+            if (edtTell == null)
+              return;
+            edtTell.setNextFocusDownId(R.id.edtFamily);
             isEnableView = true;
             initServiceCountSpinner();
             initServiceTypeSpinner();
@@ -1067,8 +1073,9 @@ public class TripRegisterActivity extends AppCompatActivity {
             }
           }
 
-          if (vfPassengerInfo != null)
-            vfPassengerInfo.setDisplayedChild(0);
+          if (vfPassengerInfo == null)
+            return;
+          vfPassengerInfo.setDisplayedChild(0);
 
         } catch (JSONException e) {
           e.printStackTrace();
@@ -1528,7 +1535,7 @@ public class TripRegisterActivity extends AppCompatActivity {
         @Override
         public void run() {
           try {
-            Log.i(TAG, "run: "+args[0].toString());
+            Log.i(TAG, "run: " + args[0].toString());
             JSONObject obj = new JSONObject(args[0].toString());
             boolean success = obj.getBoolean("success");
             String message = obj.getString("message");
