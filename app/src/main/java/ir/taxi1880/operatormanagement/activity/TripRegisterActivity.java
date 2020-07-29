@@ -447,7 +447,7 @@ public class TripRegisterActivity extends AppCompatActivity {
         break;
     }
 
-    MyApplication.handler.postDelayed(()->
+    MyApplication.handler.postDelayed(() ->
     {
       if (isOriginValid && isDestinationValid) {
         new GeneralDialog()
@@ -991,8 +991,9 @@ public class TripRegisterActivity extends AppCompatActivity {
           int cityCode = passengerInfoObj.getInt("cityCode");
 
           if (success) {
-            if (edtTell != null)
-              edtTell.setNextFocusDownId(R.id.edtFamily);
+            if (edtTell == null)
+              return;
+            edtTell.setNextFocusDownId(R.id.edtFamily);
             isEnableView = true;
             initServiceCountSpinner();
             initServiceTypeSpinner();
@@ -1072,8 +1073,9 @@ public class TripRegisterActivity extends AppCompatActivity {
             }
           }
 
-          if (vfPassengerInfo != null)
-            vfPassengerInfo.setDisplayedChild(0);
+          if (vfPassengerInfo == null)
+            return;
+          vfPassengerInfo.setDisplayedChild(0);
 
         } catch (JSONException e) {
           e.printStackTrace();
@@ -1533,7 +1535,7 @@ public class TripRegisterActivity extends AppCompatActivity {
         @Override
         public void run() {
           try {
-            Log.i(TAG, "run: "+args[0].toString());
+            Log.i(TAG, "run: " + args[0].toString());
             JSONObject obj = new JSONObject(args[0].toString());
             boolean success = obj.getBoolean("success");
             String message = obj.getString("message");
