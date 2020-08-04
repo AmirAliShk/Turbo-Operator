@@ -319,6 +319,9 @@ public class TripRegisterActivity extends AppCompatActivity {
   @BindView(R.id.rgCarClass)
   MultiRowsRadioGroup rgCarClass;
 
+  @BindView(R.id.txtPassengerAddress)
+  TextView txtPassengerAddress;
+
   @OnClick(R.id.llDescriptionDetail)
   void onPressLlDescriptionDetail() {
     new DescriptionDialog().show(new DescriptionDialog.Listener() {
@@ -334,8 +337,8 @@ public class TripRegisterActivity extends AppCompatActivity {
     }, txtDescription.getText().toString(), normalDescription);
   }
 
-  @OnClick(R.id.llSearchAddress)
-  void onPressSearchAddress() {
+  @OnClick(R.id.txtPassengerAddress)
+  void txtPassengerAddress() {
     if (getTellNumber().isEmpty()) {
       MyApplication.Toast("ابتدا شماره تلفن را وارد کنید", Toast.LENGTH_SHORT);
       return;
@@ -502,9 +505,6 @@ public class TripRegisterActivity extends AppCompatActivity {
 
   @BindView(R.id.llDownload)
   LinearLayout llDownload;
-
-  @BindView(R.id.llSearchAddress)
-  LinearLayout llSearchAddress;
 
   @BindView(R.id.llDescriptionDetail)
   LinearLayout llDescriptionDetail;
@@ -1646,7 +1646,7 @@ public class TripRegisterActivity extends AppCompatActivity {
     chbTraffic.setEnabled(true);
     llTrafficBg.setEnabled(true);
     chbAlways.setEnabled(true);
-    llSearchAddress.setEnabled(true);
+    txtPassengerAddress.setEnabled(true);
     llSearchOrigin.setEnabled(true);
     llDescriptionDetail.setEnabled(true);
     llServiceType.setEnabled(true);
@@ -1674,7 +1674,7 @@ public class TripRegisterActivity extends AppCompatActivity {
     chbTraffic.setEnabled(false);
     llTrafficBg.setEnabled(false);
     chbAlways.setEnabled(false);
-    llSearchAddress.setEnabled(false);
+    txtPassengerAddress.setEnabled(false);
     llSearchOrigin.setEnabled(false);
     llDescriptionDetail.setEnabled(false);
     llServiceType.setEnabled(false);
