@@ -399,8 +399,10 @@ public class TripRegisterActivity extends AppCompatActivity {
       return;
     }
 
-    getCheckOriginStation(cityCode, Integer.parseInt(StringHelper.toEnglishDigits(edtOrigin.getText().toString())));
+    if (vfSubmit != null)
+      vfSubmit.setDisplayedChild(1);
 
+    getCheckOriginStation(cityCode, Integer.parseInt(StringHelper.toEnglishDigits(edtOrigin.getText().toString())));
 
   }
 
@@ -575,6 +577,9 @@ public class TripRegisterActivity extends AppCompatActivity {
             .secondButton("نیستم", null)
             .show();
   }
+
+  @BindView(R.id.vfSubmit)
+  ViewFlipper vfSubmit;
 
   String permanentDesc = "";
 
@@ -1117,6 +1122,9 @@ public class TripRegisterActivity extends AppCompatActivity {
             int status = dataObj.getInt("status");
             String desc = dataObj.getString("descriptionStatus");
 
+            if (vfSubmit != null)
+              vfSubmit.setDisplayedChild(0);
+
             if (status != 0) {
               new GeneralDialog()
                       .title("منطقه مبدا")
@@ -1147,6 +1155,8 @@ public class TripRegisterActivity extends AppCompatActivity {
       MyApplication.handler.post(new Runnable() {
         @Override
         public void run() {
+          if (vfSubmit != null)
+            vfSubmit.setDisplayedChild(0);
         }
       });
     }
@@ -1189,16 +1199,16 @@ public class TripRegisterActivity extends AppCompatActivity {
         break;
     }
 
-        new GeneralDialog()
-                .title("ثبت اطلاعات")
-                .cancelable(false)
-                .message("آیا از ثبت اطلاعات اطمینان دارید؟")
-                .firstButton("بله", () ->
-                        insertService(MyApplication.prefManager.getUserCode(), serviceCount, tell, mobile, cityCode, stationCode,
-                                name, address, fixedComment, destinationStation,
-                                stationName, serviceType, carClass, normalDescription, traffic, defaultClass))
-                .secondButton("خیر",null)
-                .show();
+    new GeneralDialog()
+            .title("ثبت اطلاعات")
+            .cancelable(false)
+            .message("آیا از ثبت اطلاعات اطمینان دارید؟")
+            .firstButton("بله", () ->
+                    insertService(MyApplication.prefManager.getUserCode(), serviceCount, tell, mobile, cityCode, stationCode,
+                            name, address, fixedComment, destinationStation,
+                            stationName, serviceType, carClass, normalDescription, traffic, defaultClass))
+            .secondButton("خیر", null)
+            .show();
   }
 
   private void getCheckDestStation(int cityCode, int stationCode) {

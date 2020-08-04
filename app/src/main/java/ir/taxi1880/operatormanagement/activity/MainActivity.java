@@ -31,7 +31,6 @@ import ir.taxi1880.operatormanagement.fragment.NotificationFragment;
 import ir.taxi1880.operatormanagement.fragment.ScoresFragment;
 import ir.taxi1880.operatormanagement.fragment.ShiftFragment;
 import ir.taxi1880.operatormanagement.helper.FragmentHelper;
-import ir.taxi1880.operatormanagement.helper.NotificationHelper;
 import ir.taxi1880.operatormanagement.helper.StringHelper;
 import ir.taxi1880.operatormanagement.helper.TypefaceUtil;
 import ir.taxi1880.operatormanagement.okHttp.RequestHelper;
@@ -201,7 +200,8 @@ public class MainActivity extends AppCompatActivity implements NotificationFragm
 
     @Override
     public void onFailure(Runnable reCall, Exception e) {
-
+      if (vfBalance != null)
+        vfBalance.setDisplayedChild(1);
     }
   };
 
