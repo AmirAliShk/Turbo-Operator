@@ -448,7 +448,7 @@ public class TripRegisterActivity extends AppCompatActivity {
             .show();
   }
 
-  @OnClick(R.id.llDownload)
+  @OnClick(R.id.imgPassengerInfo)
   void onPressDownload() {
     if (getTellNumber().isEmpty()) {
       edtTell.setError("شماره تلفن را وارد نمایید");
@@ -502,9 +502,6 @@ public class TripRegisterActivity extends AppCompatActivity {
 
   @BindView(R.id.rlActionBar)
   RelativeLayout rlActionBar;
-
-  @BindView(R.id.llDownload)
-  LinearLayout llDownload;
 
   @BindView(R.id.llDescriptionDetail)
   LinearLayout llDescriptionDetail;
