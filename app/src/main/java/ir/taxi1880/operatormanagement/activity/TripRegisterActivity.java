@@ -1908,7 +1908,7 @@ public class TripRegisterActivity extends AppCompatActivity {
           if (voipId.equals("0")) {
             Address address = call.getRemoteAddress();
             edtTell.setText(address.getUsername());
-            MyApplication.handler.postDelayed(() -> onPressDownload(), 400);
+            MyApplication.handler.postDelayed(() -> onPressDownload(), 600);
 
           }
         }
