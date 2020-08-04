@@ -1500,7 +1500,7 @@ public class TripRegisterActivity extends AppCompatActivity {
                              int classType, String description, int TrafficPlan, int defaultClass) {
 
 
-    LoadingDialog.makeLoader();
+    LoadingDialog.makeCancelableLoader();
     RequestHelper.builder(EndPoints.INSERT)
             .addParam("userId", userId)
             .addParam("count", count)
@@ -1579,7 +1579,7 @@ public class TripRegisterActivity extends AppCompatActivity {
                       .secondButton("بستن", null)
                       .show();
             }
-            LoadingDialog.dismiss();
+            LoadingDialog.dismissCancelableDialog();
 
           } catch (JSONException e) {
             e.printStackTrace();
@@ -1592,7 +1592,7 @@ public class TripRegisterActivity extends AppCompatActivity {
     @Override
     public void onFailure(Runnable reCall, Exception e) {
       MyApplication.handler.post(() -> {
-        LoadingDialog.dismiss();
+        LoadingDialog.dismissCancelableDialog();
       });
     }
 
@@ -1602,9 +1602,9 @@ public class TripRegisterActivity extends AppCompatActivity {
       super.onReloadPress(v);
       try {
         if (v)
-          MyApplication.handler.post(LoadingDialog::makeLoader);
+          MyApplication.handler.post(LoadingDialog::makeCancelableLoader);
         else
-          MyApplication.handler.post(LoadingDialog::dismiss);
+          MyApplication.handler.post(LoadingDialog::dismissCancelableDialog);
 
       } catch (Exception e) {
         e.printStackTrace();
