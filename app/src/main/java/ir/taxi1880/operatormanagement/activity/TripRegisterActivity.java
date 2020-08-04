@@ -189,6 +189,11 @@ public class TripRegisterActivity extends AppCompatActivity {
 
   @OnClick(R.id.llSearchBg)
   void onSearchPress() {
+    llSearchBg.setEnabled(false);
+
+    MyApplication.handler.postDelayed(()->{
+      llSearchBg.setEnabled(true);
+    }, 200);
 
     if (cityCode == -1) {
       MyApplication.Toast("شهر را وارد نمایید", Toast.LENGTH_SHORT);
@@ -221,6 +226,7 @@ public class TripRegisterActivity extends AppCompatActivity {
         }
       }, "جست و جوی آدرس", cityLatinName);
     }
+
   }
 
   //TODO HEAR
@@ -1013,7 +1019,9 @@ public class TripRegisterActivity extends AppCompatActivity {
 
           if (vfPassengerInfo == null)
             return;
-          vfPassengerInfo.setDisplayedChild(0);
+          MyApplication.handler.postDelayed(()->{
+            vfPassengerInfo.setDisplayedChild(0);
+          }, 500);
 
         } catch (JSONException e) {
           e.printStackTrace();
@@ -1063,8 +1071,6 @@ public class TripRegisterActivity extends AppCompatActivity {
               passengerAddressModels.add(addressModel);
             }
             if (passengerAddressModels.size() == 0) {
-              if (vfPassengerAddress != null)
-                vfPassengerAddress.setDisplayedChild(0);
               MyApplication.Toast("آدرسی موجود نیست", Toast.LENGTH_SHORT);
             } else {
               new AddressListDialog().show(new AddressListDialog.Listener() {
@@ -1077,10 +1083,11 @@ public class TripRegisterActivity extends AppCompatActivity {
 
                 }
               }, passengerAddressModels);
+            }
+            MyApplication.handler.postDelayed(()->{
               if (vfPassengerAddress != null)
                 vfPassengerAddress.setDisplayedChild(0);
-            }
-
+            }, 500);
           } catch (JSONException e) {
             e.printStackTrace();
             AvaCrashReporter.send(e, "TripRegisterActivity class, getPassengerAddress onResponse method");
