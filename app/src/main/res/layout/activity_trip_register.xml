@@ -1,13 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
     android:background="@color/colorPrimaryLighter"
     android:layoutDirection="rtl"
+    android:orientation="vertical"
     tools:context=".activity.TripRegisterActivity">
 
     <RelativeLayout
@@ -17,83 +16,83 @@
         android:background="@drawable/bg_action_bar_purple">
 
         <LinearLayout
-            android:orientation="horizontal"
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="match_parent"
+            android:orientation="horizontal">
 
             <RelativeLayout
-                android:layout_marginRight="20dp"
                 android:id="@+id/imgAccept"
                 android:layout_width="80dp"
-                android:gravity="center"
-                android:layout_height="match_parent">
+                android:layout_height="match_parent"
+                android:layout_marginRight="20dp"
+                android:gravity="center">
 
                 <com.gauravbhola.ripplepulsebackground.RipplePulseLayout
+                    android:id="@+id/layout_ripplepulse"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:clipChildren="false"
-                    app:rippleColor="#ffffff"
-                    android:gravity="center"
                     android:layout_centerInParent="true"
-                    app:rippleType="stroke"
-                    app:strokeWidth="3dp"
-                    app:startRadius="13dp"
-                    app:endRadius="40dp"
-                    android:id="@+id/layout_ripplepulse"
+                    android:clipChildren="false"
+                    android:gravity="center"
                     app:duration="2000"
-                    />
+                    app:endRadius="40dp"
+                    app:rippleColor="#ffffff"
+                    app:rippleType="stroke"
+                    app:startRadius="13dp"
+                    app:strokeWidth="3dp" />
 
                 <ImageView
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:padding="10dp"
-
                     android:layout_centerInParent="true"
+
+                    android:padding="10dp"
                     android:src="@drawable/ic_call_answer"
                     android:visibility="visible" />
 
             </RelativeLayout>
 
             <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
                 android:layout_weight="1"
                 android:gravity="center"
-                android:orientation="vertical"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent">
+                android:orientation="vertical">
+
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="تماس ورودی جدید از "
                     android:gravity="center"
+                    android:text="تماس ورودی جدید از "
                     android:textAppearance="?android:attr/textAppearanceSmall"
                     android:textColor="#fff"
-                    android:textStyle="bold"/>
+                    android:textStyle="bold" />
 
                 <TextView
                     android:id="@+id/txtCallerNum"
 
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="235"
                     android:gravity="center"
+                    android:text="235"
                     android:textAppearance="?android:attr/textAppearanceLarge"
                     android:textColor="#fff"
-                    android:textStyle="bold"/>
+                    android:textStyle="bold" />
 
             </LinearLayout>
 
             <RelativeLayout
-                android:layout_marginLeft="20dp"
                 android:id="@+id/imgReject"
                 android:layout_width="80dp"
-                android:gravity="center"
-                android:layout_height="match_parent">
+                android:layout_height="match_parent"
+                android:layout_marginLeft="20dp"
+                android:gravity="center">
 
                 <ImageView
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:padding="10dp"
                     android:layout_gravity="center"
+                    android:padding="10dp"
                     android:src="@drawable/ic_call_end" />
 
             </RelativeLayout>
@@ -115,32 +114,32 @@
             android:layout_height="45dp"
             android:layout_centerInParent="true"
             android:background="@drawable/bg_activate_status"
-            android:orientation="horizontal"
-            android:gravity="center">
+            android:gravity="center"
+            android:orientation="horizontal">
 
             <Button
-                android:background="@android:color/transparent"
                 android:id="@+id/btnActivate"
-                android:text="فعال"
-                android:textColor="@color/colorBlack"
-                android:layout_margin="3dp"
-                android:gravity="center"
-                android:textAppearance="?android:attr/textAppearanceMedium"
                 android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_margin="3dp"
                 android:layout_weight="1"
-                android:layout_height="match_parent"/>
+                android:background="@android:color/transparent"
+                android:gravity="center"
+                android:text="فعال"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:textColor="@color/colorBlack" />
 
             <Button
-                android:background="@android:color/transparent"
                 android:id="@+id/btnDeActivate"
-                android:layout_margin="3dp"
-                android:text="غیر فعال"
-                android:gravity="center"
-                android:layout_weight="1"
-                android:textColor="@color/colorBlack"
-                android:textAppearance="?android:attr/textAppearanceMedium"
                 android:layout_width="wrap_content"
-                android:layout_height="match_parent"/>
+                android:layout_height="match_parent"
+                android:layout_margin="3dp"
+                android:layout_weight="1"
+                android:background="@android:color/transparent"
+                android:gravity="center"
+                android:text="غیر فعال"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:textColor="@color/colorBlack" />
 
         </LinearLayout>
 
@@ -148,8 +147,8 @@
             android:id="@+id/imgBack"
             android:layout_width="?android:attr/actionBarSize"
             android:layout_height="match_parent"
-            android:padding="15dp"
             android:layout_alignParentLeft="true"
+            android:padding="15dp"
             android:src="@drawable/ic_back" />
 
         <ImageView
@@ -157,58 +156,57 @@
             android:id="@+id/imgCallQuality"
             android:layout_width="35dp"
             android:layout_height="match_parent"
-            android:layout_marginTop="15dp"
-            android:layout_marginBottom="15dp"
-            android:layout_marginRight="15dp"
             android:layout_marginLeft="1dp"
-            android:visibility="invisible"
+            android:layout_marginTop="15dp"
+            android:layout_marginRight="15dp"
+            android:layout_marginBottom="15dp"
             android:layout_toRightOf="@+id/imgBack"
             android:background="@color/colorPrimaryDark"
-            android:src="@drawable/ic_quality_0" />
+            android:src="@drawable/ic_quality_0"
+            android:visibility="invisible" />
 
 
         <LinearLayout
             android:id="@+id/llEndCall"
             android:layout_width="80dp"
+            android:layout_height="match_parent"
             android:gravity="right"
-            android:orientation="vertical"
-            android:layout_height="match_parent">
+            android:orientation="vertical">
 
             <TextView
-                android:textColor="@color/colorWhite"
                 android:layout_width="?android:attr/actionBarSize"
                 android:layout_height="wrap_content"
-                android:gravity="center|bottom"
                 android:layout_marginTop="5dp"
-                android:visibility="gone"
+                android:gravity="center|bottom"
+                android:text="00:58"
                 android:textAppearance="?android:attr/textAppearanceSmall"
-                android:text="00:58"/>
+                android:textColor="@color/colorWhite"
+                android:visibility="gone" />
 
             <RelativeLayout
                 android:layout_width="80dp"
-                android:gravity="center"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content"
+                android:gravity="center">
 
                 <com.gauravbhola.ripplepulsebackground.RipplePulseLayout
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:clipChildren="false"
-                    app:rippleColor="@color/colorWhite"
-                    android:gravity="center"
                     android:layout_centerInParent="true"
-                    app:rippleType="stroke"
-                    app:strokeWidth="1dp"
-                    app:startRadius="13dp"
-                    app:endRadius="25dp"
+                    android:clipChildren="false"
+                    android:gravity="center"
                     app:duration="1500"
-                   />
+                    app:endRadius="25dp"
+                    app:rippleColor="@color/colorWhite"
+                    app:rippleType="stroke"
+                    app:startRadius="13dp"
+                    app:strokeWidth="1dp" />
 
                 <ImageView
                     android:id="@+id/imgEndCall"
                     android:layout_width="60dp"
                     android:layout_height="50dp"
-                    android:layout_weight="1"
                     android:layout_centerInParent="true"
+                    android:layout_weight="1"
                     android:padding="15dp"
                     android:src="@drawable/ic_end_call" />
 
@@ -225,200 +223,123 @@
         android:layout_height="match_parent"
         android:fillViewport="true">
 
-<!--        <LinearLayout-->
-<!--            android:layout_width="match_parent"-->
-<!--            android:layout_height="wrap_content"-->
-<!--            android:orientation="vertical">-->
+        <!--        <LinearLayout-->
+        <!--            android:layout_width="match_parent"-->
+        <!--            android:layout_height="wrap_content"-->
+        <!--            android:orientation="vertical">-->
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:paddingLeft="15dp"
+            android:paddingRight="15dp">
 
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:orientation="vertical"
-                android:paddingLeft="15dp"
-                android:paddingRight="15dp">
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
+                android:layout_weight="1"
+                android:orientation="horizontal">
 
                 <LinearLayout
-                    android:layout_marginTop="5dp"
-                    android:layout_width="match_parent"
+                    android:id="@+id/llCity"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:orientation="horizontal">
+                    android:layout_weight="0.3"
+                    android:orientation="vertical">
 
                     <LinearLayout
-                        android:id="@+id/llCity"
-                        android:layout_width="0dp"
-                        android:layout_weight="0.3"
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:orientation="vertical">
+                        android:orientation="horizontal">
 
-                        <LinearLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:orientation="horizontal">
-
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="25dp"
-                                android:layout_weight="1"
-                                android:text="شهر"
-                                android:paddingRight="5dp"
-                                android:textAppearance="?android:attr/textAppearanceSmall"
-                                android:textColor="@color/grayMedium"/>
-
-                            <ImageView
-                                android:layout_width="20dp"
-                                android:layout_height="match_parent"
-                                android:src="@drawable/ic_drop_down"/>
-
-                        </LinearLayout>
-
-                        <LinearLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:gravity="center"
-                            android:background="@drawable/bg_edit_text">
-
-                            <RelativeLayout
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content">
-
-                                <EditText
-                                    android:enabled="false"
-                                    android:focusable="false"
-
-                                    android:id="@+id/txtSpError"
-                                    android:layout_width="20dp"
-                                    android:layout_height="40dp"/>
-                                <Spinner
-                                    android:id="@+id/spCity"
-                                    android:layout_width="match_parent"
-                                    android:layout_height="40dp"
-                                    android:background="@drawable/edit_text_style"
-                                    android:dropDownWidth="match_parent"
-                                    android:gravity="center"
-                                    android:paddingBottom="5dp"
-                                    android:paddingTop="5dp" />
-
-                            </RelativeLayout>
-
-                        </LinearLayout>
-
-                    </LinearLayout>
-
-                    <ImageView
-                        android:layout_width="5dp"
-                        android:layout_height="match_parent"/>
-
-                    <LinearLayout
-                        android:orientation="horizontal"
-                        android:layout_width="0dp"
-                        android:layout_weight="0.7"
-                        android:layout_height="wrap_content">
-                        <LinearLayout
-                            android:id="@+id/llTell"
-                            android:layout_width="0dp"
-                            android:layout_weight="0.6"
-                            android:layout_height="wrap_content"
-                            android:orientation="vertical">
-
-                            <TextView
-                                android:layout_width="match_parent"
-                                android:layout_height="25dp"
-                                android:text="تلفن"
-                                android:paddingRight="5dp"
-                                android:textAppearance="?android:attr/textAppearanceSmall"
-                                android:textColor="@color/grayMedium"/>
-
-                            <EditText
-                                android:id="@+id/edtTell"
-                                android:layout_width="match_parent"
-                                android:layout_height="40dp"
-                                android:padding="5dp"
-                                android:maxLength="11"
-                                android:gravity="left|center_vertical"
-                                android:textAppearance="?android:attr/textAppearanceMedium"
-                                android:textColor="@color/colorBlack"
-                                android:singleLine="true"
-                                android:inputType="number|textNoSuggestions"
-                                android:nextFocusDown="@id/edtMobile"
-                                android:background="@drawable/edit_text_style"/>
-
-                        </LinearLayout>
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="25dp"
+                            android:layout_weight="1"
+                            android:paddingRight="5dp"
+                            android:text="شهر"
+                            android:textAppearance="?android:attr/textAppearanceSmall"
+                            android:textColor="@color/grayMedium" />
 
                         <ImageView
-                            android:layout_width="5dp"
-                            android:layout_height="match_parent"/>
+                            android:layout_width="20dp"
+                            android:layout_height="match_parent"
+                            android:src="@drawable/ic_drop_down" />
 
-                        <LinearLayout
-                            android:layout_width="50dp"
-                            android:id="@+id/llClear"
-                            android:clickable="true"
-                            android:layout_height="wrap_content"
-                            android:orientation="vertical">
-
-                            <TextView
-                                android:layout_width="match_parent"
-                                android:layout_height="25dp"
-                                android:text="حذف"
-                                android:gravity="center"
-                                android:textAppearance="?android:attr/textAppearanceSmall"
-                                android:textColor="@color/grayMedium"/>
-
-                            <LinearLayout
-                                android:layout_width="match_parent"
-                                android:layout_height="match_parent"
-                                android:gravity="center"
-                                android:background="@drawable/bg_strock_corner">
-
-                                <ImageView
-                                    android:id="@+id/imgClear"
-                                    android:layout_width="match_parent"
-                                    android:layout_height="40dp"
-                                    android:padding="4dp"
-                                    android:src="@drawable/ic_trash"/>
-
-                            </LinearLayout>
-
-                        </LinearLayout>
                     </LinearLayout>
 
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/bg_edit_text"
+                        android:gravity="center">
 
+                        <RelativeLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content">
+
+                            <EditText
+                                android:id="@+id/txtSpError"
+                                android:layout_width="20dp"
+
+                                android:layout_height="40dp"
+                                android:enabled="false"
+                                android:focusable="false" />
+
+                            <Spinner
+                                android:id="@+id/spCity"
+                                android:layout_width="match_parent"
+                                android:layout_height="40dp"
+                                android:background="@drawable/edit_text_style"
+                                android:dropDownWidth="match_parent"
+                                android:gravity="center"
+                                android:paddingTop="5dp"
+                                android:paddingBottom="5dp" />
+
+                        </RelativeLayout>
+
+                    </LinearLayout>
 
                 </LinearLayout>
 
+                <ImageView
+                    android:layout_width="5dp"
+                    android:layout_height="match_parent" />
+
                 <LinearLayout
-                    android:layout_width="match_parent"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_weight="1"
+                    android:layout_weight="0.7"
                     android:orientation="horizontal">
 
                     <LinearLayout
-                        android:id="@+id/llDiscount"
+                        android:id="@+id/llTell"
                         android:layout_width="0dp"
-                        android:layout_weight="0.3"
                         android:layout_height="wrap_content"
+                        android:layout_weight="0.6"
                         android:orientation="vertical">
 
                         <TextView
                             android:layout_width="match_parent"
                             android:layout_height="25dp"
-                            android:text="تخفیف"
                             android:paddingRight="5dp"
+                            android:text="تلفن"
                             android:textAppearance="?android:attr/textAppearanceSmall"
-                            android:textColor="@color/grayMedium"/>
+                            android:textColor="@color/grayMedium" />
 
                         <EditText
-                            android:id="@+id/edtDiscount"
+                            android:id="@+id/edtTell"
                             android:layout_width="match_parent"
                             android:layout_height="40dp"
                             android:background="@drawable/edit_text_style"
-                            android:editable="false"
-                            android:focusable="false"
+                            android:gravity="left|center_vertical"
+                            android:inputType="number|textNoSuggestions"
+                            android:maxLength="11"
                             android:nextFocusDown="@id/edtMobile"
                             android:padding="5dp"
-                            android:enabled="false"
                             android:singleLine="true"
-                            android:gravity="center"
                             android:textAppearance="?android:attr/textAppearanceMedium"
                             android:textColor="@color/colorBlack" />
 
@@ -426,101 +347,580 @@
 
                     <ImageView
                         android:layout_width="5dp"
-                        android:layout_height="match_parent"/>
+                        android:layout_height="match_parent" />
 
                     <LinearLayout
-                        android:layout_width="0dp"
+                        android:id="@+id/llClear"
+                        android:layout_width="50dp"
                         android:layout_height="wrap_content"
-                        android:layout_weight="0.7"
-                        android:orientation="horizontal">
+                        android:clickable="true"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="25dp"
+                            android:gravity="center"
+                            android:text="حذف"
+                            android:textAppearance="?android:attr/textAppearanceSmall"
+                            android:textColor="@color/grayMedium" />
 
                         <LinearLayout
-                            android:id="@+id/llMobile"
-                            android:layout_width="0dp"
-                            android:layout_weight="0.6"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:background="@drawable/bg_strock_corner"
+                            android:gravity="center">
+
+                            <ImageView
+                                android:id="@+id/imgClear"
+                                android:layout_width="match_parent"
+                                android:layout_height="40dp"
+                                android:padding="4dp"
+                                android:src="@drawable/ic_trash" />
+
+                        </LinearLayout>
+
+                    </LinearLayout>
+                </LinearLayout>
+
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:orientation="horizontal">
+
+                <LinearLayout
+                    android:id="@+id/llDiscount"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="0.3"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="25dp"
+                        android:paddingRight="5dp"
+                        android:text="تخفیف"
+                        android:textAppearance="?android:attr/textAppearanceSmall"
+                        android:textColor="@color/grayMedium" />
+
+                    <EditText
+                        android:id="@+id/edtDiscount"
+                        android:layout_width="match_parent"
+                        android:layout_height="40dp"
+                        android:background="@drawable/edit_text_style"
+                        android:editable="false"
+                        android:enabled="false"
+                        android:focusable="false"
+                        android:gravity="center"
+                        android:nextFocusDown="@id/edtMobile"
+                        android:padding="5dp"
+                        android:singleLine="true"
+                        android:textAppearance="?android:attr/textAppearanceMedium"
+                        android:textColor="@color/colorBlack" />
+
+                </LinearLayout>
+
+                <ImageView
+                    android:layout_width="5dp"
+                    android:layout_height="match_parent" />
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="0.7"
+                    android:orientation="horizontal">
+
+                    <LinearLayout
+                        android:id="@+id/llMobile"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="0.6"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="25dp"
+                            android:paddingRight="5dp"
+                            android:text="همراه"
+                            android:textAppearance="?android:attr/textAppearanceSmall"
+                            android:textColor="@color/grayMedium" />
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:orientation="vertical">
+                            android:clickable="true"
+                            android:focusable="true"
+                            android:gravity="center_vertical"
+                            android:orientation="horizontal">
+
+                            <EditText
+                                android:id="@+id/edtMobile"
+                                android:layout_width="match_parent"
+                                android:layout_height="40dp"
+                                android:background="@drawable/edit_text_style"
+                                android:gravity="left|center_vertical"
+                                android:inputType="number|textNoSuggestions|textFilter|textVisiblePassword"
+                                android:maxLength="11"
+                                android:nextFocusDown="@id/edtAddress"
+                                android:padding="5dp"
+                                android:singleLine="true"
+                                android:textAppearance="?android:attr/textAppearanceMedium"
+                                android:textColor="@color/colorBlack" />
+
+                            <ImageView
+                                android:layout_width="5dp"
+                                android:layout_height="match_parent" />
+
+                        </LinearLayout>
+
+                    </LinearLayout>
+
+                    <ImageView
+                        android:layout_width="5dp"
+                        android:layout_height="match_parent" />
+
+                    <LinearLayout
+                        android:id="@+id/llDownload"
+                        android:layout_width="50dp"
+                        android:layout_height="match_parent"
+                        android:gravity="left">
+
+
+                        <ViewFlipper
+                            android:id="@+id/vfPassengerInfo"
+                            android:layout_width="match_parent"
+                            android:layout_height="40dp"
+                            android:layout_marginTop="25dp"
+                            android:background="@drawable/edit_text_style">
+
+
+                            <ImageView
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                android:layout_margin="5dp"
+                                android:gravity="left|center_vertical"
+                                android:src="@drawable/ic_download" />
+
+                            <com.wang.avi.AVLoadingIndicatorView
+                                android:layout_width="35dp"
+                                android:layout_height="35dp"
+                                android:layout_gravity="center"
+                                android:padding="5dp"
+                                app:indicatorColor="@color/colorPrimaryDark" />
+
+                        </ViewFlipper>
+
+                    </LinearLayout>
+                </LinearLayout>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/llAddress"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="25dp"
+                    android:paddingRight="5dp"
+                    android:text="آدرس"
+                    android:textAppearance="?android:attr/textAppearanceSmall"
+                    android:textColor="@color/grayMedium" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="40dp"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal">
+
+                    <LinearLayout
+                        android:id="@+id/llSearchAddress"
+                        android:layout_width="50dp"
+                        android:layout_height="match_parent"
+                        android:background="@drawable/edit_text_style">
+
+                        <ViewFlipper
+                            android:id="@+id/vfPassengerAddress"
+                            android:layout_width="match_parent"
+                            android:layout_height="40dp"
+                            android:background="@drawable/bg_ripple">
 
                             <TextView
                                 android:layout_width="match_parent"
-                                android:layout_height="25dp"
-                                android:text="همراه"
-                                android:paddingRight="5dp"
-                                android:textAppearance="?android:attr/textAppearanceSmall"
-                                android:textColor="@color/grayMedium"/>
-
-                            <LinearLayout
-                                android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
-                                android:clickable="true"
-                                android:focusable="true"
-                                android:gravity="center_vertical"
-                                android:orientation="horizontal">
+                                android:layout_gravity="center"
+                                android:layout_margin="5dp"
+                                android:gravity="center"
+                                android:text="بیشتر"
+                                android:textColor="@color/colorPrimaryDark"
+                                android:textStyle="bold" />
 
-                                <EditText
-                                    android:nextFocusDown="@id/edtAddress"
-                                    android:id="@+id/edtMobile"
-                                    android:layout_width="match_parent"
-                                    android:layout_height="40dp"
-                                    android:gravity="left|center_vertical"
-                                    android:background="@drawable/edit_text_style"
-                                    android:padding="5dp"
-                                    android:inputType="number|textNoSuggestions|textFilter|textVisiblePassword"
-                                    android:singleLine="true"
-                                    android:maxLength="11"
-                                    android:textAppearance="?android:attr/textAppearanceMedium"
-                                    android:textColor="@color/colorBlack"/>
+                            <com.wang.avi.AVLoadingIndicatorView
+                                android:layout_width="35dp"
+                                android:layout_height="35dp"
+                                android:layout_gravity="center"
+                                android:padding="5dp"
+                                app:indicatorColor="@color/colorPrimaryDark" />
 
-                                <ImageView
-                                    android:layout_width="5dp"
-                                    android:layout_height="match_parent"/>
+                        </ViewFlipper>
 
-                            </LinearLayout>
+                    </LinearLayout>
 
-                        </LinearLayout>
+                    <ImageView
+                        android:layout_width="5dp"
+                        android:layout_height="match_parent" />
+
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
+
+                        <EditText
+                            android:id="@+id/edtAddress"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:layout_weight="1"
+                            android:background="@drawable/edit_text_style"
+                            android:nextFocusDown="@id/edtFamily"
+                            android:paddingLeft="35dp"
+                            android:paddingRight="5dp"
+                            android:singleLine="true"
+                            android:textAppearance="?android:attr/textAppearanceMedium"
+                            android:textColor="@color/colorBlack" />
 
                         <ImageView
-                            android:layout_width="5dp"
-                            android:layout_height="match_parent"/>
-
-                        <LinearLayout
-                            android:id="@+id/llDownload"
-                            android:layout_width="50dp"
+                            android:id="@+id/clearAddress"
+                            android:layout_width="30dp"
                             android:layout_height="match_parent"
-                            android:gravity="left">
+                            android:layout_alignParentLeft="true"
+                            android:layout_gravity="center"
+                            android:gravity="center"
+                            android:padding="5dp"
+                            android:src="@drawable/ic_reject"
+                            android:tint="#000" />
+
+                    </RelativeLayout>
+
+                    <ImageView
+                        android:layout_width="5dp"
+                        android:layout_height="match_parent" />
 
 
-                            <ViewFlipper
-                                android:layout_marginTop="25dp"
-                                android:background="@drawable/edit_text_style"
-                                android:id="@+id/vfPassengerInfo"
-                                android:layout_width="match_parent"
-                                android:layout_height="40dp">
+                </LinearLayout>
 
+            </LinearLayout>
 
-                                <ImageView
-                                    android:layout_width="match_parent"
-                                    android:layout_height="match_parent"
-                                    android:layout_margin="5dp"
-                                    android:gravity="left|center_vertical"
-                                    android:src="@drawable/ic_download" />
-                                <com.wang.avi.AVLoadingIndicatorView
-                                    app:indicatorColor="@color/colorPrimaryDark"
-                                    android:padding="5dp"
-                                    android:layout_width="35dp"
-                                    android:layout_height="35dp"
-                                    android:layout_gravity="center" />
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:orientation="horizontal">
 
-                            </ViewFlipper>
+                <LinearLayout
+                    android:id="@+id/llServiceType"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="0.3"
+                    android:orientation="vertical">
 
-                        </LinearLayout>
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="25dp"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="match_parent"
+                            android:layout_weight="1"
+                            android:paddingRight="5dp"
+                            android:text="نوع سرویس"
+                            android:textAppearance="?android:attr/textAppearanceSmall"
+                            android:textColor="@color/grayMedium" />
+
+                        <ImageView
+                            android:layout_width="20dp"
+                            android:layout_height="match_parent"
+                            android:src="@drawable/ic_drop_down" />
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="40dp"
+                        android:gravity="center">
+
+                        <Spinner
+                            android:id="@+id/spServiceType"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:background="@drawable/edit_text_style"
+                            android:dropDownWidth="match_parent"
+                            android:gravity="center"
+                            android:paddingTop="5dp"
+                            android:paddingBottom="5dp" />
+
                     </LinearLayout>
 
                 </LinearLayout>
 
+                <ImageView
+                    android:layout_width="5dp"
+                    android:layout_height="match_parent" />
+
                 <LinearLayout
-                    android:id="@+id/llAddress"
-                    android:layout_width="match_parent"
+                    android:id="@+id/llFamily"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="0.7"
+                    android:orientation="vertical">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="25dp"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:paddingRight="5dp"
+                            android:text="نام خانوادگی"
+                            android:textAppearance="?android:attr/textAppearanceSmall"
+                            android:textColor="@color/grayMedium" />
+
+                        <TextView
+                            android:id="@+id/txtNewPassenger"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:paddingRight="10dp"
+                            android:text="جدید"
+                            android:textAppearance="?android:attr/textAppearanceSmall"
+                            android:textColor="@color/colorGreen"
+                            android:textStyle="bold"
+                            android:visibility="gone" />
+
+                        <TextView
+                            android:id="@+id/txtLockPassenger"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:paddingRight="10dp"
+                            android:text="قفل"
+                            android:textAppearance="?android:attr/textAppearanceSmall"
+                            android:textColor="@color/colorRed"
+                            android:textStyle="bold"
+                            android:visibility="gone" />
+
+                    </LinearLayout>
+
+                    <EditText
+                        android:id="@+id/edtFamily"
+                        android:layout_width="match_parent"
+                        android:layout_height="40dp"
+                        android:layout_weight="1"
+                        android:background="@drawable/edit_text_style"
+                        android:maxLength="40"
+                        android:nextFocusDown="@id/edtOrigin"
+                        android:padding="5dp"
+                        android:singleLine="true"
+                        android:textAppearance="?android:attr/textAppearanceMedium"
+                        android:textColor="@color/colorBlack" />
+
+                </LinearLayout>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:orientation="horizontal">
+
+                <LinearLayout
+                    android:id="@+id/llOrigin"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:clickable="true"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="25dp"
+                        android:gravity="right"
+                        android:paddingRight="5dp"
+                        android:text="منطقه مبدا"
+                        android:textAppearance="?android:attr/textAppearanceSmall"
+                        android:textColor="@color/grayMedium" />
+
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="40dp"
+                        android:clickable="true"
+                        android:focusable="true"
+                        android:gravity="center_vertical"
+                        android:orientation="horizontal">
+
+                        <EditText
+                            android:id="@+id/edtOrigin"
+                            style="@style/padding"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:layout_weight="1"
+                            android:background="@drawable/edit_text_style"
+                            android:gravity="left|center_vertical"
+                            android:inputType="number"
+                            android:maxLength="3"
+                            android:nextFocusDown="@id/edtDestination"
+                            android:singleLine="true"
+                            android:textAppearance="?android:attr/textAppearanceMedium"
+                            android:textColor="@color/colorBlack" />
+
+                        <ImageView
+                            android:id="@+id/imgStationInfo"
+                            android:layout_width="30dp"
+                            android:layout_height="match_parent"
+                            android:layout_alignParentLeft="true"
+                            android:padding="5dp"
+                            android:src="@drawable/ic_attach_file_black_24dp" />
+
+                    </RelativeLayout>
+
+                </LinearLayout>
+
+                <ImageView
+                    android:layout_width="5dp"
+                    android:layout_height="match_parent" />
+
+                <LinearLayout
+                    android:id="@+id/llDestination"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:clickable="true"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="25dp"
+                        android:gravity="right"
+                        android:paddingRight="5dp"
+                        android:text="منطقه مقصد"
+                        android:textAppearance="?android:attr/textAppearanceSmall"
+                        android:textColor="@color/grayMedium" />
+
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="40dp"
+                        android:clickable="true"
+                        android:focusable="true"
+                        android:gravity="center_vertical"
+                        android:orientation="horizontal">
+
+                        <EditText
+                            android:id="@+id/edtDestination"
+                            style="@style/padding"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:layout_weight="1"
+                            android:background="@drawable/edit_text_style"
+                            android:gravity="left|center_vertical"
+                            android:inputType="number"
+                            android:maxLength="3"
+                            android:nextFocusDown="@id/edtDescription"
+                            android:singleLine="true"
+                            android:textAppearance="?android:attr/textAppearanceMedium"
+                            android:textColor="@color/colorBlack" />
+
+
+                    </RelativeLayout>
+
+                </LinearLayout>
+
+                <ImageView
+                    android:layout_width="5dp"
+                    android:layout_height="match_parent" />
+
+                <LinearLayout
+                    android:id="@+id/llSearchOrigin"
+                    android:layout_width="50dp"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="25dp"
+                        android:gravity="center"
+                        android:text="جستجو"
+                        android:textAppearance="?android:attr/textAppearanceSmall"
+                        android:textColor="@color/grayMedium" />
+
+                    <ImageButton
+                        android:id="@+id/llSearchBg"
+                        android:layout_width="match_parent"
+                        android:layout_height="40dp"
+                        android:background="@drawable/edit_text_style"
+                        android:gravity="center"
+                        android:padding="3dp"
+                        android:src="@drawable/ic_search" />
+
+
+                </LinearLayout>
+
+                <ImageView
+                    android:layout_width="5dp"
+                    android:layout_height="match_parent" />
+
+                <LinearLayout
+                    android:id="@+id/llTraffic"
+                    android:layout_width="50dp"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="25dp"
+                        android:gravity="center"
+                        android:text="طرح"
+                        android:textAppearance="?android:attr/textAppearanceSmall"
+                        android:textColor="@color/grayMedium" />
+
+                    <LinearLayout
+                        android:id="@+id/llTrafficBg"
+                        android:layout_width="match_parent"
+                        android:layout_height="40dp"
+                        android:background="@drawable/edit_text_style"
+                        android:gravity="center"
+                        android:padding="3dp">
+
+                        <CheckBox
+                            android:id="@+id/chbTraffic"
+                            android:layout_width="40dp"
+                            android:layout_height="40dp"
+                            android:background="@drawable/traffic"
+                            android:button="@null"
+                            android:checked="false" />
+
+                    </LinearLayout>
+
+                </LinearLayout>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:orientation="horizontal">
+
+                <LinearLayout
+                    android:id="@+id/llDescription"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:orientation="vertical">
@@ -528,697 +928,286 @@
                     <TextView
                         android:layout_width="match_parent"
                         android:layout_height="25dp"
-                        android:text="آدرس"
                         android:paddingRight="5dp"
+                        android:text="توضیحات دائمی"
                         android:textAppearance="?android:attr/textAppearanceSmall"
-                        android:textColor="@color/grayMedium"/>
+                        android:textColor="@color/grayMedium" />
 
-                    <LinearLayout
+                    <RelativeLayout
                         android:layout_width="match_parent"
                         android:layout_height="40dp"
                         android:clickable="true"
                         android:focusable="true"
                         android:gravity="center_vertical"
                         android:orientation="horizontal">
-                        <LinearLayout
-                            android:id="@+id/llSearchAddress"
-                            android:layout_width="50dp"
+
+                        <TextView
+                            android:id="@+id/txtDescription"
+                            style="@style/padding"
+                            android:layout_width="match_parent"
                             android:layout_height="match_parent"
-                            android:background="@drawable/edit_text_style"
-                            >
-
-                            <ViewFlipper
-                                android:background="@drawable/bg_ripple"
-                                android:id="@+id/vfPassengerAddress"
-                                android:layout_width="match_parent"
-                                android:layout_height="40dp">
-
-                                <TextView
-                                    android:layout_gravity="center"
-                                    android:layout_width="match_parent"
-                                    android:layout_height="wrap_content"
-                                    android:layout_margin="5dp"
-                                    android:gravity="center"
-                                    android:text="بیشتر"
-                                    android:textColor="@color/colorPrimaryDark"
-                                    android:textStyle="bold" />
-
-                                <com.wang.avi.AVLoadingIndicatorView
-                                    app:indicatorColor="@color/colorPrimaryDark"
-                                    android:padding="5dp"
-                                    android:layout_width="35dp"
-                                    android:layout_height="35dp"
-                                    android:layout_gravity="center" />
-
-                            </ViewFlipper>
-
-                        </LinearLayout>
-                        <ImageView
-                            android:layout_width="5dp"
-                            android:layout_height="match_parent"/>
-
-                        <RelativeLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content">
-                            <EditText
-                                android:paddingLeft="35dp"
-                                android:id="@+id/edtAddress"
-                                android:layout_width="match_parent"
-                                android:layout_height="match_parent"
-                                android:layout_weight="1"
-                                android:background="@drawable/edit_text_style"
-                                android:nextFocusDown="@id/edtFamily"
-                                android:singleLine="true"
-                                android:paddingRight="5dp"
-                                android:textAppearance="?android:attr/textAppearanceMedium"
-                                android:textColor="@color/colorBlack" />
-                            <ImageView
-                                android:id="@+id/clearAddress"
-                                android:layout_alignParentLeft="true"
-                                android:src="@drawable/ic_reject"
-                                android:tint="#000"
-                                android:layout_gravity="center"
-                                android:layout_width="30dp"
-                                android:padding="5dp"
-                                android:layout_height="match_parent"
-                                android:gravity="center"
-                                />
-
-                        </RelativeLayout>
-
-                        <ImageView
-                            android:layout_width="5dp"
-                            android:layout_height="match_parent"/>
-
-
-                    </LinearLayout>
-
-                </LinearLayout>
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:orientation="horizontal">
-
-                    <LinearLayout
-                        android:id="@+id/llServiceType"
-                        android:layout_width="0dp"
-                        android:layout_weight="0.3"
-                        android:layout_height="wrap_content"
-                        android:orientation="vertical">
-
-                        <LinearLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="25dp"
-                            android:orientation="horizontal">
-
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="match_parent"
-                                android:layout_weight="1"
-                                android:text="نوع سرویس"
-                                android:paddingRight="5dp"
-                                android:textAppearance="?android:attr/textAppearanceSmall"
-                                android:textColor="@color/grayMedium"/>
-
-                            <ImageView
-                                android:layout_width="20dp"
-                                android:layout_height="match_parent"
-                                android:src="@drawable/ic_drop_down"/>
-
-                        </LinearLayout>
-
-                        <LinearLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="40dp"
-                            android:gravity="center">
-
-                            <Spinner
-                                android:id="@+id/spServiceType"
-                                android:layout_width="match_parent"
-                                android:layout_height="match_parent"
-                                android:dropDownWidth="match_parent"
-                                android:background="@drawable/edit_text_style"
-                                android:gravity="center"
-                                android:paddingTop="5dp"
-                                android:paddingBottom="5dp"  />
-
-                        </LinearLayout>
-
-                    </LinearLayout>
-
-                    <ImageView
-                        android:layout_width="5dp"
-                        android:layout_height="match_parent"/>
-
-                    <LinearLayout
-                        android:id="@+id/llFamily"
-                        android:layout_width="0dp"
-                        android:layout_weight="0.7"
-                        android:layout_height="wrap_content"
-                        android:orientation="vertical">
-
-                        <LinearLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="25dp"
-                            android:orientation="horizontal">
-
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:text="نام خانوادگی"
-                                android:paddingRight="5dp"
-                                android:textAppearance="?android:attr/textAppearanceSmall"
-                                android:textColor="@color/grayMedium"/>
-
-                            <TextView
-                                android:id="@+id/txtNewPassenger"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:text="جدید"
-                                android:paddingRight="10dp"
-                                android:textAppearance="?android:attr/textAppearanceSmall"
-                                android:textStyle="bold"
-                                android:visibility="gone"
-                                android:textColor="@color/colorGreen"/>
-
-                            <TextView
-                                android:id="@+id/txtLockPassenger"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:text="قفل"
-                                android:paddingRight="10dp"
-                                android:textAppearance="?android:attr/textAppearanceSmall"
-                                android:textStyle="bold"
-                                android:visibility="gone"
-                                android:textColor="@color/colorRed"/>
-
-                        </LinearLayout>
-
-                        <EditText
-                            android:id="@+id/edtFamily"
-                            android:layout_width="match_parent"
-                            android:layout_height="40dp"
                             android:layout_weight="1"
                             android:background="@drawable/edit_text_style"
-                            android:nextFocusDown="@id/edtOrigin"
-                            android:padding="5dp"
-                            android:singleLine="true"
                             android:maxLength="40"
+                            android:nextFocusDown="@id/btnSubmit"
+                            android:singleLine="true"
                             android:textAppearance="?android:attr/textAppearanceMedium"
                             android:textColor="@color/colorBlack" />
 
-                    </LinearLayout>
+                        <LinearLayout
+                            android:id="@+id/llDescriptionDetail"
+                            android:layout_width="50dp"
+                            android:layout_height="match_parent"
+                            android:layout_alignParentLeft="true"
+                            android:background="@drawable/bg_ripple"
+                            android:gravity="center">
 
-                </LinearLayout>
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:orientation="horizontal">
-
-                    <LinearLayout
-                        android:id="@+id/llOrigin"
-                        android:layout_width="0dp"
-                        android:layout_weight="1"
-                        android:layout_height="wrap_content"
-                        android:orientation="vertical"
-                        android:clickable="true">
-
-                        <TextView
-                            android:layout_width="match_parent"
-                            android:layout_height="25dp"
-                            android:text="منطقه مبدا"
-                            android:gravity="right"
-                            android:paddingRight="5dp"
-                            android:textAppearance="?android:attr/textAppearanceSmall"
-                            android:textColor="@color/grayMedium"/>
-
-                        <RelativeLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="40dp"
-                            android:clickable="true"
-                            android:focusable="true"
-                            android:gravity="center_vertical"
-                            android:orientation="horizontal">
-
-                            <EditText
-                                android:id="@+id/edtOrigin"
+                            <TextView
                                 android:layout_width="match_parent"
                                 android:layout_height="match_parent"
-                                android:layout_weight="1"
+                                android:layout_margin="5dp"
                                 android:gravity="left|center_vertical"
-                                android:background="@drawable/edit_text_style"
-                                android:nextFocusDown="@id/edtDestination"
-                                style="@style/padding"
-                                android:singleLine="true"
-                                android:maxLength="3"
-                                android:inputType="number"
-                                android:textAppearance="?android:attr/textAppearanceMedium"
-                                android:textColor="@color/colorBlack" />
+                                android:text="جزئیات"
+                                android:textColor="@color/colorPrimaryDark"
+                                android:textStyle="bold" />
 
-                            <ImageView
-                                android:id="@+id/imgStationInfo"
-                                android:layout_alignParentLeft="true"
-                                android:padding="5dp"
-                                android:layout_width="30dp"
-                                android:layout_height="match_parent"
-                                android:src="@drawable/ic_attach_file_black_24dp"/>
+                        </LinearLayout>
 
                     </RelativeLayout>
 
-                    </LinearLayout>
-                    <ImageView
-                        android:layout_width="5dp"
-                        android:layout_height="match_parent"/>
-
-                    <LinearLayout
-                        android:id="@+id/llDestination"
-                        android:layout_width="0dp"
-                        android:layout_weight="1"
-                        android:layout_height="wrap_content"
-                        android:orientation="vertical"
-                        android:clickable="true">
-
-                        <TextView
-                            android:layout_width="match_parent"
-                            android:layout_height="25dp"
-                            android:text="منطقه مقصد"
-                            android:gravity="right"
-                            android:paddingRight="5dp"
-                            android:textAppearance="?android:attr/textAppearanceSmall"
-                            android:textColor="@color/grayMedium"/>
-
-                        <RelativeLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="40dp"
-                            android:clickable="true"
-                            android:focusable="true"
-                            android:gravity="center_vertical"
-                            android:orientation="horizontal">
-
-                            <EditText
-                                android:id="@+id/edtDestination"
-                                android:layout_width="match_parent"
-                                android:layout_height="match_parent"
-                                android:layout_weight="1"
-                                android:gravity="left|center_vertical"
-                                android:background="@drawable/edit_text_style"
-                                android:nextFocusDown="@id/edtDescription"
-                                style="@style/padding"
-                                android:singleLine="true"
-                                android:maxLength="3"
-                                android:inputType="number"
-                                android:textAppearance="?android:attr/textAppearanceMedium"
-                                android:textColor="@color/colorBlack" />
-
-
-                        </RelativeLayout>
-
-                    </LinearLayout>
-
-                    <ImageView
-                        android:layout_width="5dp"
-                        android:layout_height="match_parent"/>
-
-                    <LinearLayout
-                        android:id="@+id/llSearchOrigin"
-                        android:layout_width="50dp"
-                        android:layout_height="wrap_content"
-                        android:orientation="vertical">
-
-                        <TextView
-                            android:layout_width="match_parent"
-                            android:layout_height="25dp"
-                            android:text="جستجو"
-                            android:gravity="center"
-                            android:textAppearance="?android:attr/textAppearanceSmall"
-                            android:textColor="@color/grayMedium"/>
-
-                        <ImageButton
-                            android:id="@+id/llSearchBg"
-                            android:layout_width="match_parent"
-                            android:layout_height="40dp"
-                            android:gravity="center"
-                            android:src="@drawable/ic_search"
-                            android:padding="3dp"
-                            android:background="@drawable/edit_text_style"/>
-
-
-
-                    </LinearLayout>
-
-                    <ImageView
-                        android:layout_width="5dp"
-                        android:layout_height="match_parent"/>
-
-                    <LinearLayout
-                        android:id="@+id/llTraffic"
-                        android:layout_width="50dp"
-                        android:layout_height="wrap_content"
-                        android:orientation="vertical">
-
-                        <TextView
-                            android:layout_width="match_parent"
-                            android:layout_height="25dp"
-                            android:text="طرح"
-                            android:gravity="center"
-                            android:textAppearance="?android:attr/textAppearanceSmall"
-                            android:textColor="@color/grayMedium"/>
-
-                        <LinearLayout
-                            android:id="@+id/llTrafficBg"
-                            android:layout_width="match_parent"
-                            android:layout_height="40dp"
-                            android:gravity="center"
-                            android:padding="3dp"
-                            android:background="@drawable/edit_text_style">
-
-                            <CheckBox
-                                android:id="@+id/chbTraffic"
-                                android:layout_width="40dp"
-                                android:layout_height="40dp"
-                                android:background="@drawable/traffic"
-                                android:button="@null"
-                                android:checked="false" />
-
-                        </LinearLayout>
-
-                    </LinearLayout>
-
                 </LinearLayout>
 
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:orientation="horizontal">
-
-                    <LinearLayout
-                        android:id="@+id/llDescription"
-                        android:layout_width="0dp"
-                        android:layout_weight="1"
-                        android:layout_height="wrap_content"
-                        android:orientation="vertical">
-
-                        <TextView
-                            android:layout_width="match_parent"
-                            android:layout_height="25dp"
-                            android:text="توضیحات دائمی"
-                            android:paddingRight="5dp"
-                            android:textAppearance="?android:attr/textAppearanceSmall"
-                            android:textColor="@color/grayMedium"/>
-
-                        <RelativeLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="40dp"
-                            android:clickable="true"
-                            android:focusable="true"
-                            android:gravity="center_vertical"
-                            android:orientation="horizontal">
-
-                            <TextView
-                                android:id="@+id/txtDescription"
-                                android:layout_width="match_parent"
-                                android:layout_weight="1"
-                                android:layout_height="match_parent"
-                                android:background="@drawable/edit_text_style"
-                                android:textAppearance="?android:attr/textAppearanceMedium"
-                                android:textColor="@color/colorBlack"
-                                style="@style/padding"
-                                android:maxLength="40"
-                                android:nextFocusDown="@id/btnSubmit"
-                                android:singleLine="true"/>
-
-                            <LinearLayout
-                                android:id="@+id/llDescriptionDetail"
-                                android:layout_width="50dp"
-                                android:gravity="center"
-                                android:layout_alignParentLeft="true"
-                                android:background="@drawable/bg_ripple"
-                                android:layout_height="match_parent">
-
-                                <TextView
-                                    android:layout_width="match_parent"
-                                    android:layout_height="match_parent"
-                                    android:layout_margin="5dp"
-                                    android:gravity="left|center_vertical"
-                                    android:text="جزئیات"
-                                    android:textColor="@color/colorPrimaryDark"
-                                    android:textStyle="bold" />
-
-                            </LinearLayout>
-
-                        </RelativeLayout>
-
-                    </LinearLayout>
-
-                    <ImageView
-                        android:layout_width="5dp"
-                        android:layout_height="match_parent"/>
-
-                    <LinearLayout
-                        android:id="@+id/llServiceCount"
-                        android:layout_width="0dp"
-                        android:layout_weight="0.30"
-                        android:layout_height="wrap_content"
-                        android:orientation="vertical">
-
-                        <LinearLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:orientation="horizontal">
-
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="25dp"
-                                android:layout_weight="1"
-                                android:text="تعداد"
-                                android:paddingRight="5dp"
-                                android:textAppearance="?android:attr/textAppearanceSmall"
-                                android:textColor="@color/grayMedium"/>
-
-                            <ImageView
-                                android:layout_width="20dp"
-                                android:layout_height="match_parent"
-                                android:src="@drawable/ic_drop_down"/>
-
-                        </LinearLayout>
-
-                        <LinearLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="40dp"
-                            android:gravity="center">
-
-                            <Spinner
-                                android:id="@+id/spServiceCount"
-                                android:layout_width="match_parent"
-                                android:layout_height="match_parent"
-                                android:background="@drawable/edit_text_style"
-                                android:dropDownWidth="match_parent"
-                                android:gravity="center"
-                                android:paddingBottom="5dp"
-                                android:paddingTop="5dp" />
-
-                        </LinearLayout>
-
-                    </LinearLayout>
-
-                </LinearLayout>
+                <ImageView
+                    android:layout_width="5dp"
+                    android:layout_height="match_parent" />
 
                 <LinearLayout
-                    android:layout_width="match_parent"
+                    android:id="@+id/llServiceCount"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:orientation="horizontal">
+                    android:layout_weight="0.30"
+                    android:orientation="vertical">
 
                     <LinearLayout
-                        android:layout_width="0dp"
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:orientation="vertical"
-                        >
+                        android:orientation="horizontal">
 
                         <TextView
-                            android:layout_width="match_parent"
+                            android:layout_width="wrap_content"
                             android:layout_height="25dp"
-                            android:text="کلاس خودرو"
+                            android:layout_weight="1"
                             android:paddingRight="5dp"
+                            android:text="تعداد"
                             android:textAppearance="?android:attr/textAppearanceSmall"
                             android:textColor="@color/grayMedium" />
 
-                        <ir.taxi1880.operatormanagement.customView.MultiRowsRadioGroup
-                            xmlns:multi_line_radio_group="http://schemas.android.com/apk/res-auto"
-                            android:id="@+id/rgCarClass"
-                            multi_line_radio_group:default_button="@string/unKnow"
-                            multi_line_radio_group:max_in_row="3"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:background="@drawable/edit_text_style"
-                            android:gravity="center"
-                            android:padding="5dp">
-
-                            <LinearLayout
-
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:orientation="horizontal">
-
-
-                                <RadioButton
-                                    android:id="@+id/rbTaxi"
-                                    android:layout_weight="1"
-                                    android:layout_width="0dp"
-                                    android:layout_height="wrap_content"
-                                    android:buttonTint="@color/colorPrimaryDark"
-                                    android:text="@string/taxi"
-                                    android:textAppearance="?android:attr/textAppearanceSmall" />
-
-                                <RadioButton
-                                    android:id="@+id/rbPrivilage"
-                                    android:layout_weight="1"
-                                    android:layout_width="0dp"
-                                    android:textAppearance="?android:attr/textAppearanceSmall"
-                                    android:layout_height="wrap_content"
-                                    android:buttonTint="@color/colorPrimaryDark"
-                                    android:text="@string/privilege"/>
-                                <RadioButton
-                                    android:id="@+id/rbEconomical"
-                                    android:layout_width="0dp"
-                                    android:layout_weight="1"
-                                    android:layout_height="wrap_content"
-                                    android:buttonTint="@color/colorPrimaryDark"
-                                    android:text="@string/economically"
-                                    android:textAppearance="?android:attr/textAppearanceSmall" />
-
-                            </LinearLayout>
-
-                            <LinearLayout
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:orientation="horizontal">
-
-
-                                <RadioButton
-                                    android:id="@+id/rbFormality"
-                                    android:layout_width="0dp"
-                                    android:layout_weight="1"
-                                    android:layout_height="wrap_content"
-                                    android:textAppearance="?android:attr/textAppearanceSmall"
-                                    android:buttonTint="@color/colorPrimaryDark"
-                                    android:text="@string/formality"/>
-
-                                <RadioButton
-                                    android:checked="true"
-                                    android:id="@+id/rbUnknow"
-                                    android:layout_width="0dp"
-                                    android:layout_weight="2"
-                                    android:textAppearance="?android:attr/textAppearanceSmall"
-                                    android:layout_height="wrap_content"
-                                    android:buttonTint="@color/colorPrimaryDark"
-                                    android:text="@string/unKnow" />
-
-                            </LinearLayout>
-
-                        </ir.taxi1880.operatormanagement.customView.MultiRowsRadioGroup>
+                        <ImageView
+                            android:layout_width="20dp"
+                            android:layout_height="match_parent"
+                            android:src="@drawable/ic_drop_down" />
 
                     </LinearLayout>
-
-                    <ImageView
-                        android:layout_width="5dp"
-                        android:layout_height="match_parent"/>
 
                     <LinearLayout
-                        android:id="@+id/llAlways"
-                        android:layout_width="50dp"
-                        android:layout_height="wrap_content"
-                        android:orientation="vertical">
+                        android:layout_width="match_parent"
+                        android:layout_height="40dp"
+                        android:gravity="center">
 
-                        <TextView
-                            android:layout_width="match_parent"
-                            android:layout_height="25dp"
-                            android:text="دائم"
-                            android:gravity="center"
-                            android:textAppearance="?android:attr/textAppearanceSmall"
-                            android:textColor="@color/grayMedium"/>
-
-                        <LinearLayout
-                            android:id="@+id/llAlwaysBg"
-                            android:layout_width="match_parent"
-                            android:layout_height="40dp"
-                            android:gravity="center"
-                            android:padding="3dp"
-                            android:background="@drawable/edit_text_style">
-
-                            <CheckBox
-                                android:id="@+id/chbAlways"
-                                android:layout_width="40dp"
-                                android:layout_height="40dp"
-                                android:background="@drawable/traffic"
-                                android:button="@null"
-                                android:checked="false" />
-
-                        </LinearLayout>
-
-                    </LinearLayout>
-
-
-                </LinearLayout>
-
-                <LinearLayout
-                    android:layout_marginTop="5dp"
-                    android:layout_marginBottom="10dp"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal">
-
-                    <ViewFlipper
-                        android:id="@+id/vfSubmit"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:background="@drawable/bg_light_pink_edge"
-                        android:layout_weight="2.5">
-
-                        <Button
-                            android:id="@+id/btnSubmit"
+                        <Spinner
+                            android:id="@+id/spServiceCount"
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
-                            android:layout_margin="3dp"
-                            android:text="ثبت سرویس "
-                            android:background="@color/transparent"
-                            android:textColor="@color/colorWhite"
-                            android:textAppearance="?android:attr/textAppearanceLarge"
-                            android:textStyle="bold" />
+                            android:background="@drawable/edit_text_style"
+                            android:dropDownWidth="match_parent"
+                            android:gravity="center"
+                            android:paddingTop="5dp"
+                            android:paddingBottom="5dp" />
 
-                        <com.wang.avi.AVLoadingIndicatorView
-                            android:layout_gravity="center"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content" />
-
-                    </ViewFlipper>
-
-                    <ImageView
-                        android:layout_width="5dp"
-                        android:layout_height="match_parent"/>
-                    <Button
-                        android:id="@+id/btnOptions"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:background="@drawable/bg_strock_corner"
-                        android:text="گزینه ها"
-                        android:layout_margin="3dp"
-                        android:textColor="@color/colorBlack"
-                        android:textSize="@dimen/text_header"
-                        android:textStyle="bold" />
+                    </LinearLayout>
 
                 </LinearLayout>
 
             </LinearLayout>
 
-<!--        </LinearLayout>-->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:orientation="horizontal">
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="25dp"
+                        android:paddingRight="5dp"
+                        android:text="کلاس خودرو"
+                        android:textAppearance="?android:attr/textAppearanceSmall"
+                        android:textColor="@color/grayMedium" />
+
+                    <ir.taxi1880.operatormanagement.customView.MultiRowsRadioGroup xmlns:multi_line_radio_group="http://schemas.android.com/apk/res-auto"
+                        android:id="@+id/rgCarClass"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/edit_text_style"
+                        android:gravity="center"
+                        android:padding="5dp"
+                        multi_line_radio_group:default_button="@string/unKnow"
+                        multi_line_radio_group:max_in_row="3">
+
+                        <LinearLayout
+
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal">
+
+
+                            <RadioButton
+                                android:id="@+id/rbTaxi"
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:buttonTint="@color/colorPrimaryDark"
+                                android:text="@string/taxi"
+                                android:textAppearance="?android:attr/textAppearanceSmall" />
+
+                            <RadioButton
+                                android:id="@+id/rbPrivilage"
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:buttonTint="@color/colorPrimaryDark"
+                                android:text="@string/privilege"
+                                android:textAppearance="?android:attr/textAppearanceSmall" />
+
+                            <RadioButton
+                                android:id="@+id/rbEconomical"
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:buttonTint="@color/colorPrimaryDark"
+                                android:text="@string/economically"
+                                android:textAppearance="?android:attr/textAppearanceSmall" />
+
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal">
+
+
+                            <RadioButton
+                                android:id="@+id/rbFormality"
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:buttonTint="@color/colorPrimaryDark"
+                                android:text="@string/formality"
+                                android:textAppearance="?android:attr/textAppearanceSmall" />
+
+                            <RadioButton
+                                android:id="@+id/rbUnknow"
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="2"
+                                android:buttonTint="@color/colorPrimaryDark"
+                                android:checked="true"
+                                android:text="@string/unKnow"
+                                android:textAppearance="?android:attr/textAppearanceSmall" />
+
+                        </LinearLayout>
+
+                    </ir.taxi1880.operatormanagement.customView.MultiRowsRadioGroup>
+
+                </LinearLayout>
+
+                <ImageView
+                    android:layout_width="5dp"
+                    android:layout_height="match_parent" />
+
+                <LinearLayout
+                    android:id="@+id/llAlways"
+                    android:layout_width="50dp"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="25dp"
+                        android:gravity="center"
+                        android:text="دائم"
+                        android:textAppearance="?android:attr/textAppearanceSmall"
+                        android:textColor="@color/grayMedium" />
+
+                    <LinearLayout
+                        android:id="@+id/llAlwaysBg"
+                        android:layout_width="match_parent"
+                        android:layout_height="40dp"
+                        android:background="@drawable/edit_text_style"
+                        android:gravity="center"
+                        android:padding="3dp">
+
+                        <CheckBox
+                            android:id="@+id/chbAlways"
+                            android:layout_width="40dp"
+                            android:layout_height="40dp"
+                            android:background="@drawable/traffic"
+                            android:button="@null"
+                            android:checked="false" />
+
+                    </LinearLayout>
+
+                </LinearLayout>
+
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
+                android:layout_marginBottom="10dp"
+                android:orientation="horizontal">
+
+                <Button
+                    android:id="@+id/btnSubmit"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_margin="3dp"
+                    android:layout_weight="2.5"
+                    android:background="@drawable/bg_light_pink_edge"
+                    android:text="ثبت سرویس "
+                    android:textAppearance="?android:attr/textAppearanceLarge"
+                    android:textColor="@color/colorWhite"
+                    android:textStyle="bold" />
+
+                <ImageView
+                    android:layout_width="5dp"
+                    android:layout_height="match_parent" />
+
+                <Button
+                    android:id="@+id/btnOptions"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="3dp"
+                    android:layout_weight="1"
+                    android:background="@drawable/bg_strock_corner"
+                    android:text="گزینه ها"
+                    android:textColor="@color/colorBlack"
+                    android:textSize="@dimen/text_header"
+                    android:textStyle="bold" />
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+        <!--        </LinearLayout>-->
 
     </ScrollView>
 

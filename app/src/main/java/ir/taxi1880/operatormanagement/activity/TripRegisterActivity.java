@@ -420,9 +420,6 @@ public class TripRegisterActivity extends AppCompatActivity {
   @BindView(R.id.edtDestination)
   EditText edtDestination;
 
-  @BindView(R.id.vfSubmit)
-  ViewFlipper vfSubmit;
-
   @BindView(R.id.vfPassengerAddress)
   ViewFlipper vfPassengerAddress;
 
@@ -1096,8 +1093,6 @@ public class TripRegisterActivity extends AppCompatActivity {
   };
 
   private void getCheckOriginStation(int cityCode, int stationCode) {
-    if (vfSubmit != null)
-      vfSubmit.setDisplayedChild(1);
     RequestHelper.builder(EndPoints.CHECK_STATION)
             .addPath(cityCode + "")
             .addPath(stationCode + "")
@@ -1123,8 +1118,6 @@ public class TripRegisterActivity extends AppCompatActivity {
             String desc = dataObj.getString("descriptionStatus");
 
             if (status != 0) {
-              if (vfSubmit != null)
-                vfSubmit.setDisplayedChild(0);
               new GeneralDialog()
                       .title("منطقه مبدا")
                       .message(desc)
@@ -1154,12 +1147,6 @@ public class TripRegisterActivity extends AppCompatActivity {
       MyApplication.handler.post(new Runnable() {
         @Override
         public void run() {
-          try {
-            if (vfSubmit != null)
-              vfSubmit.setDisplayedChild(0);
-          } catch (Exception e) {
-            e.printStackTrace();
-          }
         }
       });
     }
@@ -1210,13 +1197,7 @@ public class TripRegisterActivity extends AppCompatActivity {
                         insertService(MyApplication.prefManager.getUserCode(), serviceCount, tell, mobile, cityCode, stationCode,
                                 name, address, fixedComment, destinationStation,
                                 stationName, serviceType, carClass, normalDescription, traffic, defaultClass))
-                .secondButton("خیر", new Runnable() {
-                  @Override
-                  public void run() {
-                    if (vfSubmit != null)
-                      vfSubmit.setDisplayedChild(0);
-                  }
-                })
+                .secondButton("خیر",null)
                 .show();
   }
 
@@ -1541,8 +1522,6 @@ public class TripRegisterActivity extends AppCompatActivity {
         @Override
         public void run() {
           try {
-            if (vfSubmit != null)
-              vfSubmit.setDisplayedChild(0);
             Log.i(TAG, "run: " + args[0].toString());
             JSONObject obj = new JSONObject(args[0].toString());
             boolean success = obj.getBoolean("success");
@@ -1604,8 +1583,6 @@ public class TripRegisterActivity extends AppCompatActivity {
     public void onFailure(Runnable reCall, Exception e) {
       MyApplication.handler.post(() -> {
         LoadingDialog.dismiss();
-        if (vfSubmit != null)
-          vfSubmit.setDisplayedChild(1);
       });
     }
 
