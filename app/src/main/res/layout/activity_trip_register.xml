@@ -501,7 +501,7 @@
                                 android:id="@+id/imgPassengerInfo"
                                 android:layout_width="match_parent"
                                 android:layout_height="match_parent"
-                                android:layout_margin="5dp"
+                                android:padding="5dp"
                                 android:gravity="left|center_vertical"
                                 android:src="@drawable/ic_download" />
 
