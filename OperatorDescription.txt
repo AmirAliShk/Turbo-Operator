@@ -34,3 +34,10 @@ versionCode 10, versionName 2.3 :
 release on 02/05/99
 disable speaker when you call to support(950)
 set message for insertService response(get message Text from server)
+
+versionCode 11, versionName 2.3.1 :
+this version was for test.
+
+versionCode 12, versionName 2.3.2 :
+release on 14/05/99
+change in submitService. citySpinner correction.
