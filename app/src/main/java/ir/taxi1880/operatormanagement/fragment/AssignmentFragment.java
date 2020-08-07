@@ -1,5 +1,9 @@
 package ir.taxi1880.operatormanagement.fragment;
 
+import android.graphics.Bitmap;
+import android.graphics.Canvas;
+import android.graphics.Color;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.util.DisplayMetrics;
 import android.view.LayoutInflater;
@@ -32,6 +36,11 @@ public class AssignmentFragment extends Fragment {
     void btnClearAssignment() {
         if (paintView != null)
             paintView.clear();
+    }
+
+    @OnClick(R.id.btnSubmitAssignment)
+    void btnSubmitAssignment() {
+        /*TODO(najafi): complete*/
     }
 
     @Override
