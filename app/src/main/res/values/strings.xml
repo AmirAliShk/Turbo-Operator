@@ -9,6 +9,8 @@
     <string name="replacement">جا به جایی</string>
     <string name="get_request">درخواست های دریافتی</string>
     <string name="send_request">درخواست های ارسالی</string>
+    <string name="text_of_contract">متن قرارداد</string>
+    <string name="assignment_of_contract">امضا قرارداد</string>
     <string name="message">پیام ها</string>
     <string name="ok_notify">متوجه شدم</string>
     <string name="date">تاریخ : </string>

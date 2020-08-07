@@ -34,6 +34,8 @@ import ir.taxi1880.operatormanagement.app.Constant;
 import ir.taxi1880.operatormanagement.app.EndPoints;
 import ir.taxi1880.operatormanagement.app.MyApplication;
 import ir.taxi1880.operatormanagement.dialog.GeneralDialog;
+import ir.taxi1880.operatormanagement.fragment.AssignmentFragment;
+import ir.taxi1880.operatormanagement.fragment.ContractFragment;
 import ir.taxi1880.operatormanagement.fragment.LoginFragment;
 import ir.taxi1880.operatormanagement.helper.AppVersionHelper;
 import ir.taxi1880.operatormanagement.helper.FragmentHelper;
@@ -211,12 +213,37 @@ public class SplashActivity extends AppCompatActivity {
           int pushId = object.getInt("pushId");
           String pushToken = object.getString("pushToken");
           int activeInQueue = object.getInt("activeInQueue");
+//          Boolean signature = object.getBoolean("signature");
+          Boolean signature = false;
 
           if (block == 1) {
             new GeneralDialog()
                     .title("هشدار")
                     .message("اکانت شما توسط سیستم مسدود شده است")
                     .firstButton("خروج از برنامه", () -> MyApplication.currentActivity.finish())
+                    .show();
+            return;
+          }
+
+          /*TODO:(najafi) : this place is correct? */
+          if (!signature){
+            new GeneralDialog()
+                    .title("اتمام قرار داد")
+                    .message("مدت قرار داد شما به اتمام رسیده است. لطفا برای تمدید آن اقدام کنید.")
+                    .cancelable(false)
+                    .firstButton("مشاهذه قرارداد", () -> {
+                      FragmentHelper
+                              .toFragment(MyApplication.currentActivity, new ContractFragment())
+                              /*TODO(najafi) : dos it needed? and line 244*/
+                              .setAddToBackStack(false)
+                              .replace();
+                    })
+                    .secondButton("امضا قرارداد", () -> {
+                      FragmentHelper
+                              .toFragment(MyApplication.currentActivity, new AssignmentFragment())
+                              .setAddToBackStack(false)
+                              .replace();
+                    })
                     .show();
             return;
           }

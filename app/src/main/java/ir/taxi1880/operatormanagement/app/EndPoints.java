@@ -81,4 +81,10 @@ public class EndPoints {
   public static final String REWARDS = SCORE_WEBSERVICE_PATH + "rewards";
   public static final String SINGLE = SCORE_WEBSERVICE_PATH + "single";
 
+
+  /******************************** Contract Api *********************************/
+
+  /*TODO(najafi) : change x */
+  public static final String CONTRACT = ACCOUNT_WEBSERVICE_PATH + "X";
+
 }
