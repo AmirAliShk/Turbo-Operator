@@ -34,7 +34,7 @@ import ir.taxi1880.operatormanagement.app.Constant;
 import ir.taxi1880.operatormanagement.app.EndPoints;
 import ir.taxi1880.operatormanagement.app.MyApplication;
 import ir.taxi1880.operatormanagement.dialog.GeneralDialog;
-import ir.taxi1880.operatormanagement.fragment.AssignmentFragment;
+import ir.taxi1880.operatormanagement.fragment.SignatureFragment;
 import ir.taxi1880.operatormanagement.fragment.ContractFragment;
 import ir.taxi1880.operatormanagement.fragment.LoginFragment;
 import ir.taxi1880.operatormanagement.helper.AppVersionHelper;
@@ -240,7 +240,7 @@ public class SplashActivity extends AppCompatActivity {
                     })
                     .secondButton("امضا قرارداد", () -> {
                       FragmentHelper
-                              .toFragment(MyApplication.currentActivity, new AssignmentFragment())
+                              .toFragment(MyApplication.currentActivity, new SignatureFragment())
                               .setAddToBackStack(false)
                               .replace();
                     })

@@ -5,6 +5,8 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:layoutDirection="ltr"
+    android:background="@color/colorPrimaryLighter"
+    android:clickable="true"
     tools:context="ir.taxi1880.operatormanagement.fragment.ContractFragment">
 
     <RelativeLayout
