@@ -47,10 +47,8 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/btnSubmitSignature"
-        android:background="@color/transparent"
-        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:background="@color/colorPrimaryDark"
         android:textColor="@color/colorWhite"
-        android:textStyle="bold"
         android:text="clear"/>
 
     <Button
@@ -61,9 +59,7 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/btnClearSignature"
-        android:background="@color/transparent"
-        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:background="@color/colorPrimaryDark"
         android:textColor="@color/colorWhite"
-        android:textStyle="bold"
         android:text="submit"/>
 </androidx.constraintlayout.widget.ConstraintLayout>
