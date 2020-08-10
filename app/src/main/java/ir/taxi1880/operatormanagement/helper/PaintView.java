@@ -18,10 +18,11 @@ import android.view.View;
 import java.util.ArrayList;
 
 import ir.taxi1880.operatormanagement.R;
+import ir.taxi1880.operatormanagement.app.MyApplication;
 
 public class PaintView extends View {
 
-    public static int BRUSH_SIZE = 18;
+    public static int BRUSH_SIZE = 10;
     public static final int DEFAULT_COLOR = R.color.colorBlueBic;
     public static final int DEFAULT_BG_COLOR = Color.WHITE;
     private static final float TOUCH_TOLERANCE = 4;
@@ -49,7 +50,7 @@ public class PaintView extends View {
         mPaint = new Paint();
         mPaint.setAntiAlias(true);
         mPaint.setDither(true);
-        mPaint.setColor(getResources().getColor(DEFAULT_COLOR));
+        mPaint.setColor(MyApplication.currentActivity.getResources().getColor(DEFAULT_COLOR));
         mPaint.setStyle(Paint.Style.STROKE);
         mPaint.setStrokeJoin(Paint.Join.ROUND);
         mPaint.setStrokeCap(Paint.Cap.ROUND);
@@ -118,7 +119,7 @@ public class PaintView extends View {
 
     private void touchStart(float x, float y) {
         mPath = new Path();
-        FingerPath fp = new FingerPath(currentColor, emboss, blur, strokeWidth, mPath);
+        FingerPath fp = new FingerPath(MyApplication.currentActivity.getResources().getColor(currentColor), emboss, blur, strokeWidth, mPath);
         paths.add(fp);
 
         mPath.reset();
