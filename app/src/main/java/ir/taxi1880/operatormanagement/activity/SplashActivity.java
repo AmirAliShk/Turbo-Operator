@@ -213,6 +213,7 @@ public class SplashActivity extends AppCompatActivity {
           int pushId = object.getInt("pushId");
           String pushToken = object.getString("pushToken");
           int activeInQueue = object.getInt("activeInQueue");
+          /*TODO(najafi) : change this.*/
 //          Boolean signature = object.getBoolean("signature");
           Boolean signature = false;
 

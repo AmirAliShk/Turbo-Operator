@@ -28,14 +28,14 @@ public class SignatureFragment extends Fragment {
         MyApplication.currentActivity.onBackPressed();
     }
 
-    @OnClick(R.id.btnClearAssignment)
+    @OnClick(R.id.btnClearSignature)
     void btnClearAssignment() {
         if (paintView != null)
             paintView.clear();
     }
 
-    @OnClick(R.id.btnSubmitAssignment)
-    void btnSubmitAssignment() {
+    @OnClick(R.id.btnSubmitSignature)
+    void btnSubmitSignature() {
         /*TODO(najafi): complete*/
     }
 

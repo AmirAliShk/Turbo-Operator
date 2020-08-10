@@ -21,7 +21,7 @@ import ir.taxi1880.operatormanagement.R;
 
 public class PaintView extends View {
 
-    public static int BRUSH_SIZE = 20;
+    public static int BRUSH_SIZE = 18;
     public static final int DEFAULT_COLOR = R.color.colorBlueBic;
     public static final int DEFAULT_BG_COLOR = Color.WHITE;
     private static final float TOUCH_TOLERANCE = 4;
@@ -49,7 +49,7 @@ public class PaintView extends View {
         mPaint = new Paint();
         mPaint.setAntiAlias(true);
         mPaint.setDither(true);
-        mPaint.setColor(DEFAULT_COLOR);
+        mPaint.setColor(getResources().getColor(DEFAULT_COLOR));
         mPaint.setStyle(Paint.Style.STROKE);
         mPaint.setStrokeJoin(Paint.Join.ROUND);
         mPaint.setStrokeCap(Paint.Cap.ROUND);

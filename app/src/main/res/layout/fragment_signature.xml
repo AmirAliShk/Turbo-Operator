@@ -40,18 +40,30 @@
         app:layout_constraintBottom_toBottomOf="parent"/>
 
     <Button
-        android:id="@+id/btnClearAssignment"
-        android:layout_width="wrap_content"
+        android:id="@+id/btnClearSignature"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        app:layout_constraintTop_toTopOf="@+id/paintView"
-        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_margin="10dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/btnSubmitSignature"
+        android:background="@color/transparent"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:textColor="@color/colorWhite"
+        android:textStyle="bold"
         android:text="clear"/>
 
     <Button
-        android:id="@+id/btnSubmitAssignment"
-        android:layout_width="wrap_content"
+        android:id="@+id/btnSubmitSignature"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        app:layout_constraintTop_toBottomOf="@+id/btnClearAssignment"
+        android:layout_margin="10dp"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/btnClearSignature"
+        android:background="@color/transparent"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:textColor="@color/colorWhite"
+        android:textStyle="bold"
         android:text="submit"/>
 </androidx.constraintlayout.widget.ConstraintLayout>
