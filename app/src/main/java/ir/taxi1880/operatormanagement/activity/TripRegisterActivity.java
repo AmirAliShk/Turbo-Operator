@@ -1020,7 +1020,8 @@ public class TripRegisterActivity extends AppCompatActivity {
           if (vfPassengerInfo == null)
             return;
           MyApplication.handler.postDelayed(()->{
-            vfPassengerInfo.setDisplayedChild(0);
+            if (vfPassengerInfo != null)
+              vfPassengerInfo.setDisplayedChild(0);
           }, 500);
 
         } catch (JSONException e) {
@@ -1033,7 +1034,8 @@ public class TripRegisterActivity extends AppCompatActivity {
     @Override
     public void onFailure(Runnable reCall, Exception e) {
       MyApplication.handler.post(() -> {
-        if (vfPassengerInfo != null) vfPassengerInfo.setDisplayedChild(0);
+        if (vfPassengerInfo != null)
+          vfPassengerInfo.setDisplayedChild(0);
       });
     }
   };
