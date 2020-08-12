@@ -200,8 +200,10 @@ public class MainActivity extends AppCompatActivity implements NotificationFragm
 
     @Override
     public void onFailure(Runnable reCall, Exception e) {
-      if (vfBalance != null)
-        vfBalance.setDisplayedChild(1);
+      MyApplication.handler.post(()->{
+        if (vfBalance != null)
+          vfBalance.setDisplayedChild(1);
+      });
     }
   };
 
