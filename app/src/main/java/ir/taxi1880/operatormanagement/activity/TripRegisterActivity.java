@@ -814,7 +814,10 @@ public class TripRegisterActivity extends AppCompatActivity {
         typeServiceModels.add(typeServiceModel);
         serviceList.add(serviceObj.getString("name"));
       }
-      if (isEnableView) {
+      if (spServiceType == null)
+        return;
+      
+        if (isEnableView) {
         spServiceType.setEnabled(true);
       } else {
         spServiceType.setEnabled(false);
