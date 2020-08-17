@@ -353,6 +353,8 @@ public class TripRegisterActivity extends AppCompatActivity {
   }
 
   private String getTellNumber() {
+    if (edtTell == null)
+      return "";
     String txtTell = edtTell.getText().toString();
     if (txtTell == null)
       return "";
@@ -1918,11 +1920,15 @@ public class TripRegisterActivity extends AppCompatActivity {
   protected void onStop() {
     super.onStop();
 
-    if (pushReceiver != null)
+    if (pushReceiver != null){
+      unregisterReceiver(pushReceiver);
       LocalBroadcastManager.getInstance(MyApplication.currentActivity).unregisterReceiver(pushReceiver);
+    }
 
-    if (userStatusReceiver != null)
+    if (userStatusReceiver != null){
+      unregisterReceiver(userStatusReceiver);
       LocalBroadcastManager.getInstance(MyApplication.currentActivity).unregisterReceiver(userStatusReceiver);
+    }
 
   }
 
@@ -1939,6 +1945,7 @@ public class TripRegisterActivity extends AppCompatActivity {
     super.onDestroy();
     unbinder.unbind();
     core.removeListener(mCoreListener);
+    core = null;
 
   }
 
@@ -1973,8 +1980,8 @@ public class TripRegisterActivity extends AppCompatActivity {
     Log.i(TAG, "onRejectPress: " + i);
     if (call != null) {
       call.accept();
-      if (getMobileNumber().isEmpty() && isTellValidable)
-        MyApplication.handler.postDelayed(() -> onPressDownload(), 400);
+//      if (getMobileNumber().isEmpty() && isTellValidable)
+//        MyApplication.handler.postDelayed(() -> onPressDownload(), 400);
     } else if (calls.length > 0) {
       calls[0].accept();
     }

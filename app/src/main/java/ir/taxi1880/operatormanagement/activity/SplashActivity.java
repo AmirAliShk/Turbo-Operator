@@ -227,7 +227,7 @@ public class SplashActivity extends AppCompatActivity {
           }
 
           /*TODO:(najafi) : this place is correct? */
-          if (!signature){
+          if (signature){
             new GeneralDialog()
                     .title("اتمام قرار داد")
                     .message("مدت قرار داد شما به اتمام رسیده است. لطفا برای تمدید آن اقدام کنید.")
