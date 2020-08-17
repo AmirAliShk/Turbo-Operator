@@ -453,7 +453,6 @@ public class LinphoneService extends Service {
   private boolean mIsBluetoothHeadsetConnected;
   private boolean mIsBluetoothHeadsetScoConnected;
 
-
   public void destroy() {
     if (mBluetoothAdapter != null && mBluetoothHeadset != null) {
       Log.i("[Audio Manager] [Bluetooth] Closing HEADSET profile proxy");
@@ -686,6 +685,16 @@ public class LinphoneService extends Service {
           mRingerPlayer.prepare();
           mRingerPlayer.setLooping(true);
           mRingerPlayer.start();
+          //TODO In the next version, check for these crashes(startRinging crash), if the problem was solved, remove the extra caches in bel0ow
+        }catch (SecurityException ex){
+          try {
+            mRingerPlayer.setDataSource(mContext, Uri.parse(MyApplication.SOUND + R.raw.ring));
+            mRingerPlayer.prepare();
+            mRingerPlayer.setLooping(true);
+            mRingerPlayer.start();
+          } catch (Exception e) {
+            AvaCrashReporter.send(ex, "LinphoneService class, startRinging method internal SecurityException");
+          }
         } catch (IOException e) {
           try {
             mRingerPlayer.setDataSource(mContext, Uri.parse(MyApplication.SOUND + R.raw.ring));
@@ -693,8 +702,7 @@ public class LinphoneService extends Service {
             mRingerPlayer.setLooping(true);
             mRingerPlayer.start();
           } catch (IOException ex) {
-            Log.e(e, "[Audio Manager] Cannot set ringtone");
-            AvaCrashReporter.send(e, "LinphoneService class, startRinging method internal");
+            AvaCrashReporter.send(e, "LinphoneService class, startRinging method internal IOException");
           }
         }
       } else {

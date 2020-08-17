@@ -52,7 +52,8 @@ public class BluetoothReceiver extends BroadcastReceiver {
           break;
         case BluetoothAdapter.STATE_ON:
           Log.i("[Bluetooth] Adapter has been turned on");
-          LinphoneService.getInstance().bluetoothAdapterStateChanged();
+          if (LinphoneService.getInstance() != null)
+            LinphoneService.getInstance().bluetoothAdapterStateChanged();
           break;
         case BluetoothAdapter.STATE_TURNING_ON:
           Log.i("[Bluetooth] Adapter is being turned on");

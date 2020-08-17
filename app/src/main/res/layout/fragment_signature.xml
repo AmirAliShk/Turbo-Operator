@@ -1,18 +1,26 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/colorPrimaryLighter"
-    android:clickable="true"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    android:layoutDirection="ltr"
+    android:clickable="true">
+
+    <com.github.gcacace.signaturepad.views.SignaturePad
+        android:id="@+id/paintView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:layout_constraintTop_toBottomOf="@id/rlActionBar"
+        app:penColor="#07289C" />
 
     <RelativeLayout
         android:id="@+id/rlActionBar"
         android:layout_width="match_parent"
         android:layout_height="?android:attr/actionBarSize"
         android:background="@color/colorPrimaryDark"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintStart_toStartOf="parent">
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
 
         <ImageView
             android:id="@+id/imgBack"
@@ -31,35 +39,33 @@
             android:textSize="@dimen/text_header" />
 
     </RelativeLayout>
-    <!--TODO(najafi) : change view-->
-    <ir.taxi1880.operatormanagement.helper.PaintView
-        android:id="@+id/paintView"
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        app:layout_constraintTop_toBottomOf="@+id/rlActionBar"
-        app:layout_constraintBottom_toBottomOf="parent"/>
 
     <Button
         android:id="@+id/btnClearSignature"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_margin="10dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/btnSubmitSignature"
-        android:background="@color/colorPrimaryDark"
+        android:background="@drawable/bg_light_pink_edge"
+        android:text="پاک کردن"
+        android:textAppearance="?android:attr/textAppearanceLarge"
         android:textColor="@color/colorWhite"
-        android:text="clear"/>
+        android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/btnSubmitSignature"
+        app:layout_constraintStart_toStartOf="parent" />
 
     <Button
         android:id="@+id/btnSubmitSignature"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_margin="10dp"
+        android:background="@drawable/bg_light_pink_edge"
+        android:text="ارسال امضا"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:textColor="@color/colorWhite"
+        android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/btnClearSignature"
-        android:background="@color/colorPrimaryDark"
-        android:textColor="@color/colorWhite"
-        android:text="submit"/>
+        app:layout_constraintStart_toEndOf="@+id/btnClearSignature" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>

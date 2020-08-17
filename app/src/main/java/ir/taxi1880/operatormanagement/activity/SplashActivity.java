@@ -232,7 +232,7 @@ public class SplashActivity extends AppCompatActivity {
                     .title("اتمام قرار داد")
                     .message("مدت قرار داد شما به اتمام رسیده است. لطفا برای تمدید آن اقدام کنید.")
                     .cancelable(false)
-                    .firstButton("مشاهذه قرارداد", () -> {
+                    .firstButton("مشاهده قرارداد", () -> {
                       FragmentHelper
                               .toFragment(MyApplication.currentActivity, new ContractFragment())
                               /*TODO(najafi) : dos it needed? and line 244*/

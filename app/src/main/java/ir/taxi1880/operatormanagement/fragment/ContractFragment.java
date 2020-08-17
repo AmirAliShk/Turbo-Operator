@@ -23,7 +23,6 @@ public class ContractFragment extends Fragment {
 
     private Unbinder unbinder;
 
-
     @OnClick(R.id.imgBack)
     void onBack() {
         MyApplication.currentActivity.onBackPressed();
@@ -32,10 +31,10 @@ public class ContractFragment extends Fragment {
     @BindView(R.id.vfTxtOfContract)
     ViewFlipper vfTxtOfContract;
 
-    @OnClick(R.id.btnAssignment)
-    void btnAssignment() {
+    @OnClick(R.id.btnSign)
+    void btnSign() {
         FragmentHelper
-                .toFragment(MyApplication.currentActivity, new LoginFragment())
+                .toFragment(MyApplication.currentActivity, new SignatureFragment())
                 .setAddToBackStack(false)
                 .replace();
     }
