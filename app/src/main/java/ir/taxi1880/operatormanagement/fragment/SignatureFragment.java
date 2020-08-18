@@ -8,6 +8,7 @@ import android.view.ViewGroup;
 
 import com.github.gcacace.signaturepad.views.SignaturePad;
 
+import androidx.core.app.ActivityCompat;
 import androidx.fragment.app.Fragment;
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -15,66 +16,75 @@ import butterknife.OnClick;
 import butterknife.Unbinder;
 import ir.taxi1880.operatormanagement.R;
 import ir.taxi1880.operatormanagement.app.MyApplication;
+import ir.taxi1880.operatormanagement.dialog.GeneralDialog;
 import ir.taxi1880.operatormanagement.helper.TypefaceUtil;
 
 public class SignatureFragment extends Fragment {
 
-  private Unbinder unbinder;
+    private Unbinder unbinder;
 
-  @BindView(R.id.paintView)
-  SignaturePad paintView;
+    @BindView(R.id.paintView)
+    SignaturePad paintView;
 
-  @OnClick(R.id.imgBack)
-  void onBack() {
-    MyApplication.currentActivity.onBackPressed();
-  }
-
-  @OnClick(R.id.btnClearSignature)
-  void btnClearAssignment() {
-    if (paintView != null)
-      paintView.clear();
-  }
-
-  @OnClick(R.id.btnSubmitSignature)
-  void btnSubmitSignature() {
-    /*TODO(najafi): complete this*/
-    if (paintView != null) {
-      String svgPath = paintView.getSignatureSvg();
-      Log.i("TAG", "btnSubmitSignature: "+svgPath);
+    @OnClick(R.id.imgBack)
+    void onBack() {
+        MyApplication.currentActivity.onBackPressed();
     }
-  }
 
-  @Override
-  public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-    View view = inflater.inflate(R.layout.fragment_signature, container, false);
-    TypefaceUtil.overrideFonts(view);
-    unbinder = ButterKnife.bind(this, view);
+    @OnClick(R.id.btnClearSignature)
+    void btnClearAssignment() {
+        if (paintView != null)
+            paintView.clear();
+    }
 
-    paintView.setOnSignedListener(new SignaturePad.OnSignedListener() {
-      @Override
-      public void onStartSigning() {
-      }
+    @OnClick(R.id.btnSubmitSignature)
+    void btnSubmitSignature() {
+        if (paintView != null) {
+            GeneralDialog generalDialog = new GeneralDialog();
+            generalDialog.title("تاییدیه");
+            generalDialog.message("از ارسال امضاء خود برای قرارداد جدید، مطمئن هستید؟");
+            generalDialog.cancelable(false);
+            generalDialog.firstButton("بله", () -> {
+                String svgPath = paintView.getSignatureSvg();
+                Log.i("TAG", "btnSubmitSignature: " + svgPath);
+            });
+            generalDialog.secondButton("خیر", generalDialog::dismiss);
+            generalDialog.show();
 
-      @Override
-      public void onSigned() {
-      }
+        }
+    }
 
-      @Override
-      public void onClear() {
-      }
-    });
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        View view = inflater.inflate(R.layout.fragment_signature, container, false);
+        TypefaceUtil.overrideFonts(view);
+        unbinder = ButterKnife.bind(this, view);
 
-    return view;
-  }
+        paintView.setOnSignedListener(new SignaturePad.OnSignedListener() {
+            @Override
+            public void onStartSigning() {
+            }
 
-  @Override
-  public void onDestroyView() {
-    super.onDestroyView();
-    unbinder.unbind();
-  }
+            @Override
+            public void onSigned() {
+            }
 
-  @Override
-  public void onDestroy() {
-    super.onDestroy();
-  }
+            @Override
+            public void onClear() {
+            }
+        });
+
+        return view;
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        unbinder.unbind();
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+    }
 }
