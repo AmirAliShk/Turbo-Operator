@@ -21,6 +21,7 @@ import ir.taxi1880.operatormanagement.push.AvaCrashReporter;
 
 public class ContractFragment extends Fragment {
 
+    public static final String TAG = ContractFragment.class.getSimpleName();
     private Unbinder unbinder;
 
     @OnClick(R.id.imgBack)
@@ -51,7 +52,6 @@ public class ContractFragment extends Fragment {
     private void getTextOfContract() {
         if (vfTxtOfContract != null)
             vfTxtOfContract.setDisplayedChild(0);
-        /*TODO (najafi) : change patameter of this api*/
         RequestHelper.builder(EndPoints.CONTRACT)
                 .listener(onContract)
                 .get();

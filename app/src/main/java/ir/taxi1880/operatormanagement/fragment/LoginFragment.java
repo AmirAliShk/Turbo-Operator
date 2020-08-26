@@ -4,6 +4,7 @@ package ir.taxi1880.operatormanagement.fragment;
 import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -24,6 +25,7 @@ import ir.taxi1880.operatormanagement.app.EndPoints;
 import ir.taxi1880.operatormanagement.app.MyApplication;
 import ir.taxi1880.operatormanagement.dialog.ErrorDialog;
 import ir.taxi1880.operatormanagement.dialog.GeneralDialog;
+import ir.taxi1880.operatormanagement.helper.FragmentHelper;
 import ir.taxi1880.operatormanagement.helper.KeyBoardHelper;
 import ir.taxi1880.operatormanagement.helper.TypefaceUtil;
 import ir.taxi1880.operatormanagement.okHttp.RequestHelper;
@@ -90,6 +92,7 @@ public class LoginFragment extends Fragment {
     public void onResponse(Runnable reCall, Object... args) {
       MyApplication.handler.post(() -> {
         try {
+          Log.i(TAG, "onResponse: " + args[0].toString());
           JSONObject object = new JSONObject(args[0].toString());
           int status = object.getInt("status");
           int userId = object.getInt("userId");
@@ -105,6 +108,8 @@ public class LoginFragment extends Fragment {
           String accountNumber = object.getString("accountNumber");
           int balance = object.getInt("balance");
           int activeInQueue = object.getInt("activeInQueue");
+//          int isFinishContract = object.getInt("isFinishContract");
+          int isFinishContract = 1;
 
           MyApplication.prefManager.setOperatorName(object.getString("name"));
 
@@ -133,6 +138,28 @@ public class LoginFragment extends Fragment {
             MyApplication.prefManager.setBalance(balance);
             MyApplication.prefManager.setUserName((edtUserName.getText().toString()));
             MyApplication.prefManager.setPassword(edtPassword.getText().toString());
+            /*TODO:(najafi) : this place is correct? */
+            if (isFinishContract == 1){
+              new GeneralDialog()
+                      .title("اتمام قرار داد")
+                      .message("مدت قرار داد شما به اتمام رسیده است. لطفا برای تمدید آن اقدام کنید.")
+                      .cancelable(false)
+                      .firstButton("مشاهده قرارداد", () -> {
+                        FragmentHelper
+                                .toFragment(MyApplication.currentActivity, new ContractFragment())
+                                /*TODO(najafi) : dos it needed? and line 244*/
+                                .setAddToBackStack(false)
+                                .replace();
+                      })
+                      .secondButton("امضا قرارداد", () -> {
+                        FragmentHelper
+                                .toFragment(MyApplication.currentActivity, new SignatureFragment())
+                                .setAddToBackStack(false)
+                                .replace();
+                      })
+                      .show();
+              return;
+            }
             MyApplication.prefManager.isLoggedIn(true);
             MyApplication.avaStart();
             startActivity(new Intent(MyApplication.currentActivity, MainActivity.class));

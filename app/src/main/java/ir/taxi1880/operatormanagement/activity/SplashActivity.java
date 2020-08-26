@@ -56,6 +56,7 @@ public class SplashActivity extends AppCompatActivity {
   boolean doubleBackToExitPressedOnce = false;
   Unbinder unbinder;
   private final String PUSH_PROJECT_ID = "5";
+  int isFinishContract;
 
   @BindView(R.id.txtVersion)
   TextView txtVersion;
@@ -135,6 +136,28 @@ public class SplashActivity extends AppCompatActivity {
 
   private void continueProcessing() {
     if (MyApplication.prefManager.getLoggedIn()) {
+      /*TODO:(najafi) : this place is correct? */
+      if (isFinishContract == 1){
+        new GeneralDialog()
+                .title("اتمام قرار داد")
+                .message("مدت قرار داد شما به اتمام رسیده است. لطفا برای تمدید آن اقدام کنید.")
+                .cancelable(false)
+                .firstButton("مشاهده قرارداد", () -> {
+                  FragmentHelper
+                          .toFragment(MyApplication.currentActivity, new ContractFragment())
+                          /*TODO(najafi) : dos it needed? and line 244*/
+                          .setAddToBackStack(false)
+                          .replace();
+                })
+                .secondButton("امضا قرارداد", () -> {
+                  FragmentHelper
+                          .toFragment(MyApplication.currentActivity, new SignatureFragment())
+                          .setAddToBackStack(false)
+                          .replace();
+                })
+                .show();
+        return;
+      }
       startActivity(new Intent(MyApplication.currentActivity, MainActivity.class));
       MyApplication.currentActivity.finish();
     } else {
@@ -214,37 +237,14 @@ public class SplashActivity extends AppCompatActivity {
           String pushToken = object.getString("pushToken");
           int activeInQueue = object.getInt("activeInQueue");
           /*TODO(najafi) : change this.*/
-//          Boolean signature = object.getBoolean("signature");
-          Boolean signature = false;
+//          int isFinishContract = object.getInt("isFinishContract");
+          isFinishContract  = 1;
 
           if (block == 1) {
             new GeneralDialog()
                     .title("هشدار")
                     .message("اکانت شما توسط سیستم مسدود شده است")
                     .firstButton("خروج از برنامه", () -> MyApplication.currentActivity.finish())
-                    .show();
-            return;
-          }
-
-          /*TODO:(najafi) : this place is correct? */
-          if (signature){
-            new GeneralDialog()
-                    .title("اتمام قرار داد")
-                    .message("مدت قرار داد شما به اتمام رسیده است. لطفا برای تمدید آن اقدام کنید.")
-                    .cancelable(false)
-                    .firstButton("مشاهده قرارداد", () -> {
-                      FragmentHelper
-                              .toFragment(MyApplication.currentActivity, new ContractFragment())
-                              /*TODO(najafi) : dos it needed? and line 244*/
-                              .setAddToBackStack(false)
-                              .replace();
-                    })
-                    .secondButton("امضا قرارداد", () -> {
-                      FragmentHelper
-                              .toFragment(MyApplication.currentActivity, new SignatureFragment())
-                              .setAddToBackStack(false)
-                              .replace();
-                    })
                     .show();
             return;
           }

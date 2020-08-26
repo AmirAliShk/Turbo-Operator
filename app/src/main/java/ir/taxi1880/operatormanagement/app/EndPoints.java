@@ -85,6 +85,6 @@ public class EndPoints {
   /******************************** Contract Api *********************************/
 
   /*TODO(najafi) : change x */
-  public static final String CONTRACT = ACCOUNT_WEBSERVICE_PATH + "X";
+  public static final String CONTRACT = WEBSERVICE_PATH + "getContractText";
 
 }
