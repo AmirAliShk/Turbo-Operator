@@ -108,6 +108,7 @@ public class LoginFragment extends Fragment {
           String accountNumber = object.getString("accountNumber");
           int balance = object.getInt("balance");
           int activeInQueue = object.getInt("activeInQueue");
+          /*TODO(najafi): uncomment*/
 //          int isFinishContract = object.getInt("isFinishContract");
           int isFinishContract = 1;
 
