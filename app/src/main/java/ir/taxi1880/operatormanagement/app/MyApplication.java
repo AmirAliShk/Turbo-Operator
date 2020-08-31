@@ -53,6 +53,7 @@ public class MyApplication extends Application {
   public static String DIR_ROOT;
   public static FragmentManager fragmentManagerV4;
   public static final String SOUND = "android.resource://ir.taxi1880.operatormanagement/";
+  public static final String image_path_save = DIR_SDCARD + "/operatormanagement/Image/";
 
   @Override
   public void onCreate() {
