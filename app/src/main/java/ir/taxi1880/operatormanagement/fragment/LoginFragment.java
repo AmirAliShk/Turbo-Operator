@@ -139,6 +139,7 @@ public class LoginFragment extends Fragment {
             MyApplication.prefManager.setBalance(balance);
             MyApplication.prefManager.setUserName((edtUserName.getText().toString()));
             MyApplication.prefManager.setPassword(edtPassword.getText().toString());
+            MyApplication.prefManager.isLoggedIn(true);
             /*TODO:(najafi) : this place is correct? */
             if (isFinishContract == 1){
               new GeneralDialog()
@@ -161,7 +162,6 @@ public class LoginFragment extends Fragment {
                       .show();
               return;
             }
-            MyApplication.prefManager.isLoggedIn(true);
             MyApplication.avaStart();
             startActivity(new Intent(MyApplication.currentActivity, MainActivity.class));
             MyApplication.currentActivity.finish();

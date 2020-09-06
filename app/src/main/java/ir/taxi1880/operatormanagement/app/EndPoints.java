@@ -86,5 +86,6 @@ public class EndPoints {
 
   /*TODO(najafi) : change x */
   public static final String CONTRACT = WEBSERVICE_PATH + "getContractText";
+  public static final String UPLOAD_NATIONAL_CARD = IP + ":" + APIPort + "/api/setContract";
 
 }

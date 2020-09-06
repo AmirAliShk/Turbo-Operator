@@ -34,6 +34,7 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import butterknife.Unbinder;
 import ir.taxi1880.operatormanagement.R;
+import ir.taxi1880.operatormanagement.app.EndPoints;
 import ir.taxi1880.operatormanagement.app.MyApplication;
 import ir.taxi1880.operatormanagement.dialog.GeneralDialog;
 import ir.taxi1880.operatormanagement.dialog.LoadingDialog;
@@ -135,14 +136,12 @@ public class SignatureFragment extends Fragment {
 
     private void uploadImage(Uri uri) {
         try {
-            /*TODO(najafi): change Endpoint*/
-            String uploadNationalPathUrl = "EndPoints.ACTIVATE";
+            String uploadNationalPathUrl = EndPoints.UPLOAD_NATIONAL_CARD;
 
             MultipartUploadRequest multipartUploadRequest = null;
             multipartUploadRequest = new MultipartUploadRequest(MyApplication.context, uploadNationalPathUrl);
-            multipartUploadRequest.addFileToUpload(getRealPathFromUri(MyApplication.context, uri), "image", "ela" + ".png");
-            /*TODO(najafi): getVoipId is currect?*/
-            multipartUploadRequest.addParameter("code", MyApplication.prefManager.getVoipId() + "");
+            multipartUploadRequest.addFileToUpload(getRealPathFromUri(MyApplication.context, uri), "image", MyApplication.prefManager.getUserCode() + ".png");
+            multipartUploadRequest.addParameter("userId", MyApplication.prefManager.getUserCode() + "");
             multipartUploadRequest.setMaxRetries(2);
             multipartUploadRequest.setDelegate(new UploadStatusDelegate() {
                 @Override
