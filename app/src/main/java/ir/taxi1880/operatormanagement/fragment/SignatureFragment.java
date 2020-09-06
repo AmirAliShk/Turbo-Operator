@@ -24,6 +24,7 @@ import net.gotev.uploadservice.UploadStatusDelegate;
 
 import java.io.File;
 import java.io.FileOutputStream;
+import java.io.IOException;
 
 import androidx.annotation.NonNull;
 import androidx.core.app.ActivityCompat;
@@ -70,11 +71,11 @@ public class SignatureFragment extends Fragment {
             generalDialog.firstButton("بله", () -> {
                 Bitmap bitmap = paintView.getSignatureBitmap();
 
-                saveBitmap("ela.png", bitmap);
+                saveBitmap(MyApplication.prefManager.getUserCode() + ".png", bitmap);
 
                 checkPermission();
 
-                uploadImage(Uri.parse(MyApplication.image_path_save + "ela.png"));
+                uploadImage(Uri.parse(MyApplication.image_path_save + MyApplication.prefManager.getUserCode() + ".png"));
 
             });
             generalDialog.secondButton("خیر", generalDialog::dismiss);
@@ -86,11 +87,12 @@ public class SignatureFragment extends Fragment {
 
         File file = new File(MyApplication.image_path_save, bitName);
         file.mkdirs();
-//        try {
-//            f.createNewFile();
-//        } catch (IOException e) {
-//            // TODO Auto-generated catch block
-//        }
+        try {
+//            // TODO(najafi): is this needed?
+            file.createNewFile();
+        } catch (IOException e) {
+            MyApplication.Toast("ela", Toast.LENGTH_SHORT);
+        }
         if (file.exists()) file.delete();
         try {
             FileOutputStream out = new FileOutputStream(file);
