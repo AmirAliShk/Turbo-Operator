@@ -76,15 +76,6 @@ public class SignatureFragment extends Fragment {
 
                 uploadImage(Uri.parse(MyApplication.image_path_save + "ela.png"));
 
-                /*TODO: for svg*/
-//                String svgPath = paintView.getSignatureSvg();
-//                svgPath = Pattern.compile("black").matcher(svgPath).replaceAll("blue");
-//                Log.i("TAG", "btnSubmitSignature: " + svgPath);
-//                /*TODO: add api for send svg*/
-////                MyApplication.prefManager.isLoggedIn(true);
-////                MyApplication.avaStart();
-////                startActivity(new Intent(MyApplication.currentActivity, MainActivity.class));
-////                MyApplication.currentActivity.finish();
             });
             generalDialog.secondButton("خیر", generalDialog::dismiss);
             generalDialog.show();
