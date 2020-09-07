@@ -50,8 +50,6 @@ import static ir.taxi1880.operatormanagement.app.MyApplication.context;
 
 public class SplashActivity extends AppCompatActivity {
 
-  //    @BindView(R.id.splashAvl)
-//    AVLoadingIndicatorView splashAvl;
   public static final String TAG = SplashActivity.class.getSimpleName();
   boolean doubleBackToExitPressedOnce = false;
   Unbinder unbinder;
@@ -61,19 +59,6 @@ public class SplashActivity extends AppCompatActivity {
   @BindView(R.id.txtVersion)
   TextView txtVersion;
 
-//  @OnClick(R.id.btnTextConnection)
-//  void onCallPress(){
-//    Core core = LinphoneService.getCore();
-//    Address addressToCall = core.interpretUrl("998");
-//    CallParams params = core.createCallParams(null);
-//    AudioManager mAudioManager = ((AudioManager) MyApplication.context.getSystemService(Context.AUDIO_SERVICE));
-//
-//    mAudioManager.setSpeakerphoneOn(true);
-//    params.enableVideo(false);
-//    if (addressToCall != null) {
-//      core.inviteAddressWithParams(addressToCall, params);
-//    }
-//  }
 
   @SuppressLint("SetTextI18n")
   @Override
@@ -144,7 +129,6 @@ public class SplashActivity extends AppCompatActivity {
                 .firstButton("مشاهده قرارداد", () -> {
                   FragmentHelper
                           .toFragment(MyApplication.currentActivity, new ContractFragment())
-                          /*TODO(najafi) : dos it needed? and line 244*/
                           .setAddToBackStack(false)
                           .replace();
                 })
@@ -235,9 +219,7 @@ public class SplashActivity extends AppCompatActivity {
           int pushId = object.getInt("pushId");
           String pushToken = object.getString("pushToken");
           int activeInQueue = object.getInt("activeInQueue");
-          /*TODO(najafi) : change this.*/
-//          int isFinishContract = object.getInt("isFinishContract");
-          isFinishContract  = 1;
+          isFinishContract = object.getInt("isFinishContract");
 
           if (block == 1) {
             new GeneralDialog()
@@ -274,7 +256,7 @@ public class SplashActivity extends AppCompatActivity {
             }
           }
 
-          MyApplication.prefManager.setActivateStatus(activeInQueue == 1 ? true : false);
+          MyApplication.prefManager.setActivateStatus(activeInQueue == 1);
 
           JSONArray shiftArr = object.getJSONArray("shifs");
           MyApplication.prefManager.setShiftList(shiftArr.toString());

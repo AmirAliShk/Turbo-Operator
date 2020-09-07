@@ -70,7 +70,7 @@ public class ContractFragment extends Fragment {
         public void onResponse(Runnable reCall, Object... args) {
             MyApplication.handler.post(() -> {
                 try {
-                    Log.i("elaheeeeeeeeee", "onResponse: " + args[0].toString());
+                    Log.i(TAG, "onResponse: " + args[0].toString());
                     JSONObject object = new JSONObject(args[0].toString());
                     String accountNumber = object.getString("message");
                     Boolean success = object.getBoolean("success");
