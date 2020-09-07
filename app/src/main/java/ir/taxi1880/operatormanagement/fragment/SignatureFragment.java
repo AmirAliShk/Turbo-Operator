@@ -66,7 +66,18 @@ public class SignatureFragment extends Fragment {
     @OnClick(R.id.btnSubmitSignature)
     void btnSubmitSignature() {
         if (paintView != null) {
+
+            if (paintView.isEmpty()){
+                new GeneralDialog()
+                        .title("هشدار")
+                        .message("لطفا امضای خود را کامل کنید")
+                        .secondButton("باشه",null)
+                        .show();
+                return;
+            }
+
             paintView.setEnabled(false);
+
             GeneralDialog generalDialog = new GeneralDialog();
             generalDialog.title("تاییدیه");
             generalDialog.message("از ارسال امضاء خود برای قرارداد جدید، مطمئن هستید؟");
@@ -88,7 +99,6 @@ public class SignatureFragment extends Fragment {
         File file = new File(MyApplication.image_path_save, bitName);
         file.mkdirs();
         try {
-//            // TODO(najafi): is this needed?
             file.createNewFile();
         } catch (IOException e) {
             MyApplication.Toast("ela", Toast.LENGTH_SHORT);
@@ -157,7 +167,7 @@ public class SignatureFragment extends Fragment {
 
                 @Override
                 public void onCompleted(Context context, UploadInfo uploadInfo, ServerResponse serverResponse) {
-                    Log.i(TAG, "uploaderrrrrr => onCompleted: uploadInfo: " + uploadInfo + " ,serverResponse: " + serverResponse);
+                    Log.i(TAG, "uploaderrrrrr => onCompleted: uploadInfo: " + uploadInfo + " ,serverResponse: " + serverResponse.getBodyAsString());
 
                     new GeneralDialog()
                             .title("ارسال شد")
