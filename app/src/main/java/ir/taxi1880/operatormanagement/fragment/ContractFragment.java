@@ -5,7 +5,11 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 import android.widget.ViewFlipper;
+
+import org.json.JSONArray;
+import org.json.JSONObject;
 
 import androidx.fragment.app.Fragment;
 import butterknife.BindView;
@@ -32,6 +36,9 @@ public class ContractFragment extends Fragment {
 
     @BindView(R.id.vfTxtOfContract)
     ViewFlipper vfTxtOfContract;
+
+    @BindView(R.id.txtContract)
+    TextView txtContract;
 
     @OnClick(R.id.btnSign)
     void btnSign() {
@@ -64,9 +71,14 @@ public class ContractFragment extends Fragment {
             MyApplication.handler.post(() -> {
                 try {
                     Log.i("elaheeeeeeeeee", "onResponse: " + args[0].toString());
-
-                    /*TODO(najafi) : get response and set textView*/
-
+                    JSONObject object = new JSONObject(args[0].toString());
+                    String accountNumber = object.getString("message");
+                    Boolean success = object.getBoolean("success");
+                    JSONObject data = object.getJSONObject("data");
+                    String contract = data.getString("contract");
+                    txtContract.setText(contract);
+                    if (vfTxtOfContract != null)
+                        vfTxtOfContract.setDisplayedChild(1);
                 } catch (Exception e) {
                     e.printStackTrace();
                     AvaCrashReporter.send(e,"Contract class, onContract onResponse method");

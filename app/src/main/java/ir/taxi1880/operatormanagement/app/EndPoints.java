@@ -85,7 +85,7 @@ public class EndPoints {
 
   /******************************** Contract Api *********************************/
 
-  public static final String CONTRACT = WEBSERVICE_PATH + "getContractText";
+  public static final String CONTRACT = WEBSERVICE_PATH + "v2/getContractText";
   public static final String UPLOAD_NATIONAL_CARD = IP + ":" + PIC_APIPort + "/api/setContract";
 
 }
