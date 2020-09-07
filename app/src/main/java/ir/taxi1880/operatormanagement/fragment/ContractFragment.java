@@ -1,6 +1,7 @@
 package ir.taxi1880.operatormanagement.fragment;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -45,7 +46,7 @@ public class ContractFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_contract, container, false);
         TypefaceUtil.overrideFonts(view);
         unbinder = ButterKnife.bind(this, view);
-//        getTextOfContract();
+        getTextOfContract();
         return view;
     }
 
@@ -62,6 +63,7 @@ public class ContractFragment extends Fragment {
         public void onResponse(Runnable reCall, Object... args) {
             MyApplication.handler.post(() -> {
                 try {
+                    Log.i("elaheeeeeeeeee", "onResponse: " + args[0].toString());
 
                     /*TODO(najafi) : get response and set textView*/
 

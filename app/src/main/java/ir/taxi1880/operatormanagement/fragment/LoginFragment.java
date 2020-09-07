@@ -140,7 +140,6 @@ public class LoginFragment extends Fragment {
             MyApplication.prefManager.setUserName((edtUserName.getText().toString()));
             MyApplication.prefManager.setPassword(edtPassword.getText().toString());
             MyApplication.prefManager.isLoggedIn(true);
-            /*TODO:(najafi) : this place is correct? */
             if (isFinishContract == 1){
               new GeneralDialog()
                       .title("اتمام قرار داد")
@@ -149,7 +148,6 @@ public class LoginFragment extends Fragment {
                       .firstButton("مشاهده قرارداد", () -> {
                         FragmentHelper
                                 .toFragment(MyApplication.currentActivity, new ContractFragment())
-                                /*TODO(najafi) : dos it needed? and line 244*/
                                 .setAddToBackStack(false)
                                 .replace();
                       })
