@@ -66,11 +66,16 @@ public class SignatureFragment extends Fragment {
     @OnClick(R.id.btnSubmitSignature)
     void btnSubmitSignature() {
         if (paintView != null) {
+            paintView.setEnabled(false);
             GeneralDialog generalDialog = new GeneralDialog();
             generalDialog.title("تاییدیه");
             generalDialog.message("از ارسال امضاء خود برای قرارداد جدید، مطمئن هستید؟");
             generalDialog.cancelable(false);
             generalDialog.firstButton("بله", () -> {
+
+
+                LoadingDialog.makeLoader();
+
                 Bitmap bitmap = paintView.getSignatureBitmap();
 
                 saveBitmap(MyApplication.prefManager.getUserCode() + ".png", bitmap);
@@ -80,7 +85,10 @@ public class SignatureFragment extends Fragment {
                 uploadImage();
 
             });
-            generalDialog.secondButton("خیر", generalDialog::dismiss);
+            generalDialog.secondButton("خیر",()->{
+                generalDialog.dismiss();
+                paintView.setEnabled(true);
+            });
             generalDialog.show();
         }
     }
@@ -147,30 +155,33 @@ public class SignatureFragment extends Fragment {
                 @Override
                 public void onError(Context context, UploadInfo uploadInfo, ServerResponse serverResponse, Exception e) {
                     Log.i(TAG, "uploaderrrrrr => onError: Exception: " + e.getMessage() + " ,uploadInfo: " + uploadInfo);
-                    LoadingDialog.dismiss();
                     new GeneralDialog()
                             .title("هشدار")
                             .message("ارسال تصویر با خطا روبه رو شد، میخوای دوباره تلاش کنی؟")
                             .firstButton("تلاش مجدد", () -> uploadImage())
-                            .secondButton("بستن", null)
+                            .secondButton("بستن", ()->paintView.setEnabled(true))
                             .cancelable(false)
                             .show();
+                    LoadingDialog.dismiss();
+
                 }
 
                 @Override
                 public void onCompleted(Context context, UploadInfo uploadInfo, ServerResponse serverResponse) {
                     Log.i(TAG, "uploaderrrrrr => onCompleted: uploadInfo: " + uploadInfo + " ,serverResponse: " + serverResponse);
-                    LoadingDialog.dismiss();
 
                     new GeneralDialog()
                             .title("ارسال شد")
                             .message("تصویر با موفقیت ارسال شد")
+                            .cancelable(false)
                             .firstButton("باشه", ()->{
+                                MyApplication.avaStart();
                                 startActivity(new Intent(MyApplication.currentActivity, MainActivity.class));
                                 MyApplication.currentActivity.finish();
                             })
                             .cancelable(false)
                             .show();
+                    LoadingDialog.dismiss();
 
                 }
 
@@ -182,7 +193,7 @@ public class SignatureFragment extends Fragment {
                             .title("هشدار")
                             .message("ارسال تصویر با خطا روبه رو شد، میخوای دوباره تلاش کنی؟")
                             .firstButton("تلاش مجدد", () -> uploadImage())
-                            .secondButton("بستن", null)
+                            .secondButton("بستن", ()->paintView.setEnabled(true))
                             .cancelable(false)
                             .show();
                 }

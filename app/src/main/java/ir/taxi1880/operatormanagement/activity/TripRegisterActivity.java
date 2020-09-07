@@ -1277,7 +1277,7 @@ public class TripRegisterActivity extends AppCompatActivity {
   };
 
   private void getStationInfo(String stationCode) {
-    LoadingDialog.makeLoader();
+    LoadingDialog.makeCancelableLoader();
     RequestHelper.builder(EndPoints.STATION_INFO)
             .addPath(stationCode + "")
             .listener(getStationInfo)
@@ -1371,7 +1371,7 @@ public class TripRegisterActivity extends AppCompatActivity {
 
   private void setActivate(int userId, int sipNumber) {
 
-    LoadingDialog.makeLoader();
+    LoadingDialog.makeCancelableLoader();
     RequestHelper.builder(EndPoints.ACTIVATE)
             .addParam("userId", userId)
             .addParam("sipNumber", sipNumber)
@@ -1441,7 +1441,7 @@ public class TripRegisterActivity extends AppCompatActivity {
 
       Log.i(TAG, "setDeActivate: " + params);
 
-      LoadingDialog.makeLoader();
+      LoadingDialog.makeCancelableLoader();
       RequestHelper.builder(EndPoints.DEACTIVATE)
               .addParam("userId", userId)
               .addParam("sipNumber", sipNumber)

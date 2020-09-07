@@ -35,7 +35,7 @@ public class LoadingDialog {
       ldialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
       WindowManager.LayoutParams wlp = ldialog.getWindow().getAttributes();
       ldialog.getWindow().setAttributes(wlp);
-      // ldialog.setCancelable(false);
+       ldialog.setCancelable(false);
       ldialog.show();
 
     } catch (Exception e) {
