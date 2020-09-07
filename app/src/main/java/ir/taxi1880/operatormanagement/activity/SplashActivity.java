@@ -136,7 +136,6 @@ public class SplashActivity extends AppCompatActivity {
 
   private void continueProcessing() {
     if (MyApplication.prefManager.getLoggedIn()) {
-      /*TODO:(najafi) : this place is correct? */
       if (isFinishContract == 1){
         new GeneralDialog()
                 .title("اتمام قرار داد")

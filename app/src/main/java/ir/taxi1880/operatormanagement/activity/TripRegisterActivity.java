@@ -229,20 +229,6 @@ public class TripRegisterActivity extends AppCompatActivity {
 
   }
 
-  //TODO HEAR
-//  @OnClick(R.id.llSearchDestination)
-//  void onDestination() {
-//    edtDestination.requestFocus();
-//    new SearchLocationDialog().show(new SearchLocationDialog.Listener() {
-//      @Override
-//      public void description(String address, int code) {
-//
-//        stationName = address;
-//        Log.i(TAG, "description: " + address);
-//      }
-//    }, "جست و جوی مقصد", cityLatinName);
-//  }
-
   @OnClick(R.id.llCity)
   void onPressllCity() {
     spCity.performClick();
