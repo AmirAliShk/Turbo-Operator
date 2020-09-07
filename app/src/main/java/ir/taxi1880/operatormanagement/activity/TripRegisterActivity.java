@@ -1304,7 +1304,7 @@ public class TripRegisterActivity extends AppCompatActivity {
           try {
             boolean isCountrySide = false;
             String stationName = "";
-            LoadingDialog.dismiss();
+            LoadingDialog.dismissCancelableDialog();
             Log.i(TAG, "onResponse: " + args[0].toString());
             stationInfoModels = new ArrayList<>();
             JSONObject obj = new JSONObject(args[0].toString());
@@ -1373,6 +1373,7 @@ public class TripRegisterActivity extends AppCompatActivity {
         @Override
         public void run() {
           try {
+            LoadingDialog.dismissCancelableDialog();
             Log.i(TAG, "onResponse: " + args[0].toString());
             JSONObject obj = new JSONObject(args[0].toString());
             boolean success = obj.getBoolean("success");
@@ -1447,6 +1448,7 @@ public class TripRegisterActivity extends AppCompatActivity {
         @Override
         public void run() {
           try {
+            LoadingDialog.dismissCancelableDialog();
             Log.i(TAG, "onResponse: " + args[0].toString());
             JSONObject obj = new JSONObject(args[0].toString());
             boolean success = obj.getBoolean("success");
@@ -1529,6 +1531,7 @@ public class TripRegisterActivity extends AppCompatActivity {
         @Override
         public void run() {
           try {
+            LoadingDialog.dismissCancelableDialog();
             Log.i(TAG, "run: " + args[0].toString());
             JSONObject obj = new JSONObject(args[0].toString());
             boolean success = obj.getBoolean("success");
