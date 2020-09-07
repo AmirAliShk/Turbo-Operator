@@ -2,6 +2,7 @@ package ir.taxi1880.operatormanagement.fragment;
 
 import android.Manifest;
 import android.content.Context;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.graphics.Bitmap;
@@ -35,6 +36,7 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import butterknife.Unbinder;
 import ir.taxi1880.operatormanagement.R;
+import ir.taxi1880.operatormanagement.activity.MainActivity;
 import ir.taxi1880.operatormanagement.app.EndPoints;
 import ir.taxi1880.operatormanagement.app.MyApplication;
 import ir.taxi1880.operatormanagement.dialog.GeneralDialog;
@@ -163,11 +165,13 @@ public class SignatureFragment extends Fragment {
                     new GeneralDialog()
                             .title("ارسال شد")
                             .message("تصویر با موفقیت ارسال شد")
-                            .firstButton("باشه", null)
+                            .firstButton("باشه", ()->{
+                                startActivity(new Intent(MyApplication.currentActivity, MainActivity.class));
+                                MyApplication.currentActivity.finish();
+                            })
                             .cancelable(false)
                             .show();
 
-                    MyApplication.Toast("done", Toast.LENGTH_SHORT);
                 }
 
                 @Override
