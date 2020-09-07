@@ -31,6 +31,7 @@ public class EndPoints {
           : "http://turbotaxi.ir:6060";
 
   public static final String APIPort = (BuildConfig.DEBUG) ? "1881" : "1881";
+  public static final String PIC_APIPort = (BuildConfig.DEBUG) ? "1880" : "1880";
   public static final String TRIP_APIPort = (BuildConfig.DEBUG) ? "1881" : "1881";
   public static final String FIND_WAY_APIPort = (BuildConfig.DEBUG) ? "1885" : "1885";
 
@@ -84,8 +85,7 @@ public class EndPoints {
 
   /******************************** Contract Api *********************************/
 
-  /*TODO(najafi) : change x */
   public static final String CONTRACT = WEBSERVICE_PATH + "getContractText";
-  public static final String UPLOAD_NATIONAL_CARD = IP + ":" + APIPort + "/api/setContract";
+  public static final String UPLOAD_NATIONAL_CARD = IP + ":" + PIC_APIPort + "/api/setContract";
 
 }

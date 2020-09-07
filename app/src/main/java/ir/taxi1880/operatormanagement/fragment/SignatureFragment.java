@@ -75,7 +75,7 @@ public class SignatureFragment extends Fragment {
 
                 checkPermission();
 
-                uploadImage(Uri.parse(MyApplication.image_path_save + MyApplication.prefManager.getUserCode() + ".png"));
+                uploadImage();
 
             });
             generalDialog.secondButton("خیر", generalDialog::dismiss);
@@ -127,13 +127,13 @@ public class SignatureFragment extends Fragment {
         checkPermission();
     }
 
-    private void uploadImage(Uri uri) {
+    private void uploadImage() {
         try {
             String uploadNationalPathUrl = EndPoints.UPLOAD_NATIONAL_CARD;
 
             MultipartUploadRequest multipartUploadRequest = null;
             multipartUploadRequest = new MultipartUploadRequest(MyApplication.context, uploadNationalPathUrl);
-            multipartUploadRequest.addFileToUpload(getRealPathFromUri(MyApplication.context, uri), "image", MyApplication.prefManager.getUserCode() + ".png");
+            multipartUploadRequest.addFileToUpload(MyApplication.image_path_save + MyApplication.prefManager.getUserCode() + ".png", "image", MyApplication.prefManager.getUserCode() + ".png");
             multipartUploadRequest.addParameter("userId", MyApplication.prefManager.getUserCode() + "");
             multipartUploadRequest.setMaxRetries(2);
             multipartUploadRequest.setDelegate(new UploadStatusDelegate() {
@@ -149,7 +149,7 @@ public class SignatureFragment extends Fragment {
                     new GeneralDialog()
                             .title("هشدار")
                             .message("ارسال تصویر با خطا روبه رو شد، میخوای دوباره تلاش کنی؟")
-                            .firstButton("تلاش مجدد", () -> uploadImage(uri))
+                            .firstButton("تلاش مجدد", () -> uploadImage())
                             .secondButton("بستن", null)
                             .cancelable(false)
                             .show();
@@ -177,7 +177,7 @@ public class SignatureFragment extends Fragment {
                     new GeneralDialog()
                             .title("هشدار")
                             .message("ارسال تصویر با خطا روبه رو شد، میخوای دوباره تلاش کنی؟")
-                            .firstButton("تلاش مجدد", () -> uploadImage(uri))
+                            .firstButton("تلاش مجدد", () -> uploadImage())
                             .secondButton("بستن", null)
                             .cancelable(false)
                             .show();
