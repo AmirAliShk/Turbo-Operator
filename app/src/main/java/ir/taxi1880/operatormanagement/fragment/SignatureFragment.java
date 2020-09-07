@@ -72,18 +72,8 @@ public class SignatureFragment extends Fragment {
             generalDialog.message("از ارسال امضاء خود برای قرارداد جدید، مطمئن هستید؟");
             generalDialog.cancelable(false);
             generalDialog.firstButton("بله", () -> {
-
-
                 LoadingDialog.makeLoader();
-
-                Bitmap bitmap = paintView.getSignatureBitmap();
-
-                saveBitmap(MyApplication.prefManager.getUserCode() + ".png", bitmap);
-
                 checkPermission();
-
-                uploadImage();
-
             });
             generalDialog.secondButton("خیر",()->{
                 generalDialog.dismiss();
@@ -114,7 +104,7 @@ public class SignatureFragment extends Fragment {
             e.printStackTrace();
             AvaCrashReporter.send(e, "SignatureFragment class, saveBitmap method");
         }
-
+        uploadImage();
     }
 
     public void checkPermission() {
@@ -125,8 +115,7 @@ public class SignatureFragment extends Fragment {
             if (externalStoragePermission) {
                 ActivityCompat.requestPermissions(MyApplication.currentActivity, permissionsRequired, PERMISSION_CALLBACK_CONSTANT);
             } else {
-                /*TODO(najafi): what now?*/
-
+                saveBitmap(MyApplication.prefManager.getUserCode() + ".png", paintView.getTransparentSignatureBitmap());
             }
         }
     }

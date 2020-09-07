@@ -19,7 +19,9 @@ import butterknife.Unbinder;
 import ir.taxi1880.operatormanagement.R;
 import ir.taxi1880.operatormanagement.app.EndPoints;
 import ir.taxi1880.operatormanagement.app.MyApplication;
+import ir.taxi1880.operatormanagement.dialog.GeneralDialog;
 import ir.taxi1880.operatormanagement.helper.FragmentHelper;
+import ir.taxi1880.operatormanagement.helper.StringHelper;
 import ir.taxi1880.operatormanagement.helper.TypefaceUtil;
 import ir.taxi1880.operatormanagement.okHttp.RequestHelper;
 import ir.taxi1880.operatormanagement.push.AvaCrashReporter;
@@ -72,13 +74,25 @@ public class ContractFragment extends Fragment {
                 try {
                     Log.i(TAG, "onResponse: " + args[0].toString());
                     JSONObject object = new JSONObject(args[0].toString());
-                    String accountNumber = object.getString("message");
-                    Boolean success = object.getBoolean("success");
-                    JSONObject data = object.getJSONObject("data");
-                    String contract = data.getString("contract");
+                    String message = object.getString("message");
+                    boolean success = object.getBoolean("success");
+                    String contract = object.getString("data");
                     txtContract.setText(contract);
-                    if (vfTxtOfContract != null)
-                        vfTxtOfContract.setDisplayedChild(1);
+
+                    if (success){
+
+                        if (txtContract!=null && vfTxtOfContract != null){
+                            vfTxtOfContract.setDisplayedChild(1);
+                            txtContract.setText(StringHelper.toPersianDigits(contract));
+                        }
+
+                    }else {
+                        new GeneralDialog()
+                                .title("خطا")
+                                .message(message)
+                                .secondButton("باشه",null)
+                                .show();
+                    }
                 } catch (Exception e) {
                     e.printStackTrace();
                     AvaCrashReporter.send(e,"Contract class, onContract onResponse method");
