@@ -12,15 +12,15 @@ public class EndPoints {
 //    http://172.16.2.210:1885/api/findway/citylatinname/address
 
   public static final String IP = (BuildConfig.DEBUG)
-//          ? "http://172.16.2.203"
-          ? "http://turbotaxi.ir"
+          ? "http://172.16.2.203"
+//          ? "http://turbotaxi.ir"
           : "http://turbotaxi.ir";
 //          : "http://172.16.2.203";
 
 
   public static final String FIND_WAY_IP = (BuildConfig.DEBUG)
-          ? "http://turbotaxi.ir"
-//          ? "http://172.16.2.210"
+//          ? "http://turbotaxi.ir"
+          ? "http://172.16.2.210"
           : "http://turbotaxi.ir";
 //          : "http://172.16.2.210";
 

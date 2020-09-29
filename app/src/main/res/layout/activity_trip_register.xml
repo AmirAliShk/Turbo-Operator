@@ -283,7 +283,6 @@
                             <EditText
                                 android:id="@+id/txtSpError"
                                 android:layout_width="20dp"
-
                                 android:layout_height="40dp"
                                 android:enabled="false"
                                 android:focusable="false" />
