@@ -12,8 +12,6 @@ import android.widget.ImageView;
 import android.widget.Toast;
 import android.widget.ViewFlipper;
 
-import com.ramotion.fluidslider.FluidSlider;
-
 import org.linphone.core.Address;
 import org.linphone.core.Call;
 import org.linphone.core.CallParams;
@@ -31,7 +29,6 @@ import ir.taxi1880.operatormanagement.helper.KeyBoardHelper;
 import ir.taxi1880.operatormanagement.helper.TypefaceUtil;
 import ir.taxi1880.operatormanagement.push.AvaCrashReporter;
 import ir.taxi1880.operatormanagement.services.LinphoneService;
-import kotlin.Unit;
 
 public class CallDialog {
 
@@ -64,6 +61,14 @@ public class CallDialog {
     MyApplication.Toast("تماس به صف پشتیبانی منتقل شد", Toast.LENGTH_SHORT);
 //    if (callBack != null)
     dismiss();
+  }
+
+  @OnClick(R.id.imgBackDialog)
+  void onBackDialog() {
+    //TODO at the first stop voice
+    if (vfCall != null) {
+      vfCall.setDisplayedChild(0);
+    }
   }
 
   @OnClick(R.id.llPause)
@@ -113,7 +118,7 @@ public class CallDialog {
   }
 
   @Optional
-  @OnClick(R.id.imgEndCall)
+  @OnClick(R.id.llEndCall2)
   void onEndPress() {
 
     try {
@@ -189,14 +194,8 @@ public class CallDialog {
   @BindView(R.id.vfCall)
   ViewFlipper vfCall;
 
-  @BindView(R.id.imgEndCall)
-  ImageView imgEndCall;
-
   @BindView(R.id.imgClose)
   ImageView imgClose;
-
-  @BindView(R.id.fluidSlider)
-  FluidSlider slider;
 
   Dialog dialog;
   Call call;
@@ -225,19 +224,6 @@ public class CallDialog {
     call = core.getCurrentCall();
     vfCall.setDisplayedChild((call == null) ? 0 : 1);
     core.addListener(coreListener);
-
-    final String max = "02:00";
-    final String min = "00:00";
-
-    slider.setPositionListener(pos -> {
-      final String value = String.valueOf( (int)((1 - pos) * 100) );
-      slider.setBubbleText(value);
-      return Unit.INSTANCE;
-    });
-
-    slider.setPosition(0.3f);
-    slider.setStartText(min);
-    slider.setEndText(max);
 
     dialog.show();
   }
