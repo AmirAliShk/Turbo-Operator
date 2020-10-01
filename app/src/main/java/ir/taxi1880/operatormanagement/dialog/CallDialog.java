@@ -63,14 +63,6 @@ public class CallDialog {
     dismiss();
   }
 
-  @OnClick(R.id.imgBackDialog)
-  void onBackDialog() {
-    //TODO at the first stop voice
-    if (vfCall != null) {
-      vfCall.setDisplayedChild(0);
-    }
-  }
-
   @OnClick(R.id.llPause)
   void onPausePress() {
     core.getCurrentCall().pause();
@@ -151,7 +143,7 @@ public class CallDialog {
 
   @OnClick(R.id.llLastConversation)
   void onLastConversation() {
-    vfCall.setDisplayedChild(3);
+    new PlayLastConversationDialog().show();
   }
 
   @OnClick(R.id.llTestConnection)

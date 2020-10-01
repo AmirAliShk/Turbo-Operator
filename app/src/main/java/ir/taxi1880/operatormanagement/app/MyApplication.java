@@ -51,6 +51,7 @@ public class MyApplication extends Application {
   public static final String DIR_SDCARD = Environment.getExternalStorageDirectory().getAbsolutePath();
   public static String DIR_DOWNLOAD;
   public static String DIR_ROOT;
+  public static final String VOICE_FOLDER_NAME = "voice";
   public static FragmentManager fragmentManagerV4;
   public static final String SOUND = "android.resource://ir.taxi1880.operatormanagement/";
   public static final String image_path_save = DIR_SDCARD + "/operatormanagement/Image/";
