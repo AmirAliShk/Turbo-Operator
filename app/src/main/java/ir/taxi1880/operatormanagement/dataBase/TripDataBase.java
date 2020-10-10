@@ -25,21 +25,22 @@ public class TripDataBase extends SQLiteOpenHelper {
 
   @Override
   public void onCreate(SQLiteDatabase sqLiteDatabase) {
-
+    createTripTable(sqLiteDatabase);
   }
 
   @Override
   public void onUpgrade(SQLiteDatabase sqLiteDatabase, int i, int i1) {
-
+    sqLiteDatabase.execSQL("DROP TABLE IF EXISTS " + TRIP_TABLE);
+    onCreate(sqLiteDatabase);
   }
 
   private static void createTripTable(SQLiteDatabase database) {
     database.execSQL("create table " + TRIP_TABLE + "(" + COLUMN_TRIP_ID + " integer primary key AUTOINCREMENT, " +
             COLUMN_ORIGIN_TEXT + "text, " +
             COLUMN_DESTINATION_TEXT + "text, " +
-                    COLUMN_ORIGIN_STATION+""
-
-            );
+            COLUMN_ORIGIN_STATION + "int, " +
+            COLUMN_DESTINATION_STATION + "int, " +
+            COLUMN_CITY + "text)");
   }
 
 }
