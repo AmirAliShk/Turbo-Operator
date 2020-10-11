@@ -1,0 +1,193 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/colorPrimaryLighter"
+    android:clickable="true"
+    android:layoutDirection="ltr"
+    android:orientation="vertical"
+    tools:context=".fragment.RangeFragment">
+
+    <RelativeLayout
+        android:id="@+id/rlActionBar"
+        android:layout_width="match_parent"
+        android:layout_height="?android:attr/actionBarSize"
+        android:background="@drawable/bg_action_bar_purple">
+
+        <LinearLayout
+            android:id="@+id/llStatus"
+            android:layout_width="160dp"
+            android:layout_height="45dp"
+            android:layout_centerInParent="true"
+            android:background="@drawable/bg_activate_status"
+            android:gravity="center"
+            android:orientation="horizontal">
+
+            <Button
+                android:id="@+id/btnActivate"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_margin="3dp"
+                android:layout_weight="1"
+                android:background="@android:color/transparent"
+                android:gravity="center"
+                android:text="فعال"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:textColor="@color/colorBlack" />
+
+            <Button
+                android:id="@+id/btnDeActivate"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_margin="3dp"
+                android:layout_weight="1"
+                android:background="@android:color/transparent"
+                android:gravity="center"
+                android:text="غیر فعال"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:textColor="@color/colorBlack" />
+
+        </LinearLayout>
+
+        <ImageView
+            android:id="@+id/imgBack"
+            android:layout_width="?android:attr/actionBarSize"
+            android:layout_height="match_parent"
+            android:layout_alignParentLeft="true"
+            android:padding="15dp"
+            android:src="@drawable/ic_back" />
+
+        <ImageView
+
+            android:id="@+id/imgCallQuality"
+            android:layout_width="35dp"
+            android:layout_height="match_parent"
+            android:layout_marginLeft="1dp"
+            android:layout_marginTop="15dp"
+            android:layout_marginRight="15dp"
+            android:layout_marginBottom="15dp"
+            android:layout_toRightOf="@+id/imgBack"
+            android:background="@color/colorPrimaryDark"
+            android:src="@drawable/ic_quality_0"
+            android:visibility="invisible" />
+
+        <LinearLayout
+            android:id="@+id/llEndCall"
+            android:layout_width="80dp"
+            android:layout_height="match_parent"
+            android:gravity="right"
+            android:orientation="vertical">
+
+            <TextView
+                android:layout_width="?android:attr/actionBarSize"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
+                android:gravity="center|bottom"
+                android:text="00:58"
+                android:textAppearance="?android:attr/textAppearanceSmall"
+                android:textColor="@color/colorWhite"
+                android:visibility="gone" />
+
+        </LinearLayout>
+
+    </RelativeLayout>
+
+    <TextView
+        android:id="@+id/txtAddress"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:padding="10dp"
+        android:text="مشهد، آبادگران 4 برج یاس"
+        android:textColor="@color/colorBlack"
+        android:textSize="@dimen/text_title"
+        android:textStyle="bold" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="70dp"
+        android:gravity="center"
+        android:orientation="horizontal"
+        android:paddingLeft="10dp"
+        android:paddingRight="10dp">
+
+        <ImageView
+            android:id="@+id/btnHelp"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_margin="5dp"
+            android:layout_weight="0.5"
+            android:background="@drawable/bg_white_edge"
+            android:elevation="3dp"
+            android:src="@drawable/ic_notify"
+            android:text="help" />
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_margin="5dp"
+            android:layout_weight="1"
+            android:background="@drawable/bg_white_edge"
+            android:elevation="3dp"
+            android:gravity="center">
+
+            <com.poovam.pinedittextfield.LinePinField
+                android:id="@+id/txtStation"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:inputType="text"
+                android:clickable="false"
+                android:editable="false"
+                android:focusable="false"
+                app:distanceInBetween="12dp"
+                app:fieldColor="@color/colorPurpleLight"
+                android:textSelectHandle="@drawable/text_handle"
+                android:textAppearance="?android:attr/textAppearanceLarge"
+                android:textStyle="bold"
+                app:lineThickness="1dp"
+                app:noOfFields="3"/>
+
+        </LinearLayout>
+
+        <ImageView
+            android:id="@+id/btnDelete"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_margin="5dp"
+            android:layout_weight="0.5"
+            android:background="@drawable/bg_white_edge"
+            android:elevation="3dp"
+            android:padding="10dp"
+            android:src="@drawable/ic_close"
+            android:text="del" />
+
+    </LinearLayout>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:padding="10dp"
+        android:text="15آدرس"
+        android:textColor="@color/colorBlack"
+        android:textSize="@dimen/text_title"
+        android:textStyle="bold" />
+
+    <GridView
+        android:id="@+id/gridNumber"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:gravity="center"
+        android:numColumns="3"
+        android:padding="10dp" />
+
+    <Button
+        android:id="@+id/btnSubmit"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="submit" />
+
+</LinearLayout>

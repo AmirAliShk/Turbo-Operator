@@ -144,6 +144,35 @@
                     </LinearLayout>
 
                     <LinearLayout
+                        android:id="@+id/llRange"
+                        android:layout_width="match_parent"
+                        android:layout_height="0dp"
+                        android:layout_margin="5dp"
+                        android:layout_weight="1"
+                        android:background="@drawable/bg_white_edge"
+                        android:elevation="3dp"
+                        android:gravity="center"
+                        android:orientation="vertical">
+
+                        <ImageView
+                            android:layout_width="wrap_content"
+                            android:layout_height="0dp"
+                            android:layout_weight="1.5"
+                            android:src="@drawable/ic_golden" />
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="0dp"
+                            android:layout_weight="0.75"
+                            android:gravity="center"
+                            android:text="تعیین محدوده"
+                            android:textColor="@color/colorBlack"
+                            android:textSize="@dimen/text_title"
+                            android:textStyle="bold" />
+
+                    </LinearLayout>
+
+                    <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="0dp"
                         android:layout_weight="1"

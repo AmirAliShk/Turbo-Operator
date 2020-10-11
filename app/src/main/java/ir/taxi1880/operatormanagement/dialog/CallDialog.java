@@ -143,7 +143,8 @@ public class CallDialog {
 
   @OnClick(R.id.llLastConversation)
   void onLastConversation() {
-    new PlayLastConversationDialog().show();
+    //TODO currect this
+    new PlayLastConversationDialog().show("","");
   }
 
   @OnClick(R.id.llTestConnection)
