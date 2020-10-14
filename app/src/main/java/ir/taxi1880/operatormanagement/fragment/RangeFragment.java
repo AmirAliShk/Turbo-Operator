@@ -27,6 +27,11 @@ public class RangeFragment extends Fragment {
   Unbinder unbinder;
   boolean status = false;
 
+  @OnClick(R.id.imgBack)
+  void onBack() {
+    MyApplication.currentActivity.onBackPressed();
+  }
+
   @BindView(R.id.gridNumber)
   GridView gridNumber;
 
@@ -54,6 +59,11 @@ public class RangeFragment extends Fragment {
   @BindView(R.id.btnDeActivate)
   Button btnDeActivate;
 
+  @OnClick(R.id.llMenu)
+  void onMenu() {
+    MyApplication.Toast("Menu", Toast.LENGTH_SHORT);
+  }
+
   @OnClick(R.id.btnActivate)
   void onActivePress() {
     changeStatus();
@@ -69,6 +79,8 @@ public class RangeFragment extends Fragment {
     View view = inflater.inflate(R.layout.fragment_range, container, false);
     unbinder = ButterKnife.bind(this, view);
     TypefaceUtil.overrideFonts(view);
+
+    changeStatus();
 
     gridNumber.setAdapter(new NumberPadAdapter(MyApplication.context, new NumberPadAdapter.NumberListener() {
       @Override

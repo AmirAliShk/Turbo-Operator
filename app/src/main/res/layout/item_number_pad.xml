@@ -20,7 +20,7 @@
             android:layout_height="wrap_content"
             android:textColor="@color/colorBlack"
             android:padding="20dp"
-            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:textSize="@dimen/text_large_header"
             android:layout_centerInParent="true"/>
 
     </LinearLayout>
