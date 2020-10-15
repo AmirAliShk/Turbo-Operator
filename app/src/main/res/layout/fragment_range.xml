@@ -83,7 +83,6 @@
         android:layout_height="wrap_content"
         android:gravity="center"
         android:padding="20dp"
-        android:text="مشهد، آبادگران 4 برج یاس"
         android:textColor="@color/colorBlack"
         android:textSize="@dimen/text_title"
         android:textStyle="bold" />
@@ -150,11 +149,11 @@
     </LinearLayout>
 
     <TextView
+        android:id="@+id/txtRemainingAddress"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:gravity="center"
         android:padding="20dp"
-        android:text="15آدرس"
         android:textColor="@color/colorBlack"
         android:textSize="@dimen/text_title"
         android:textStyle="bold" />

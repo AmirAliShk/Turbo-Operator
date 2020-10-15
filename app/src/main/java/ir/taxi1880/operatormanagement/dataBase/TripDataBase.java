@@ -39,12 +39,13 @@ public class TripDataBase extends SQLiteOpenHelper {
   }
 
   public static void createTripTable(SQLiteDatabase database) {
-    database.execSQL("create table " + TRIP_TABLE + "(" + COLUMN_TRIP_ID + " integer primary key AUTOINCREMENT, " +
-            COLUMN_ORIGIN_TEXT + "text, " +
-            COLUMN_DESTINATION_TEXT + "text, " +
-            COLUMN_ORIGIN_STATION + "int, " +
-            COLUMN_DESTINATION_STATION + "int, " +
-            COLUMN_CITY + "text)");
+    database.execSQL("CREATE TABLE " + TRIP_TABLE +
+            "("+ COLUMN_TRIP_ID + " INTEGER PRIMARY KEY, " +
+            COLUMN_ORIGIN_TEXT + " TEXT," +
+            COLUMN_DESTINATION_TEXT + " TEXT," +
+            COLUMN_ORIGIN_STATION + " INTEGER," +
+            COLUMN_DESTINATION_STATION + " INTEGER," +
+            COLUMN_CITY + " TEXT)");
   }
 
   public void insertTripRow(TripModel tripModel) {
@@ -58,7 +59,7 @@ public class TripDataBase extends SQLiteOpenHelper {
       contentValues.put(COLUMN_DESTINATION_STATION, tripModel.getDestinationStation());
       contentValues.put(COLUMN_CITY, tripModel.getCity());
       //TODO insert with conflict or without
-      sqLiteDatabase.insert(TRIP_TABLE, null, contentValues);
+      sqLiteDatabase.insertWithOnConflict(TRIP_TABLE, COLUMN_TRIP_ID, contentValues, SQLiteDatabase.CONFLICT_REPLACE);
     } catch (Exception e) {
       e.printStackTrace();
     }

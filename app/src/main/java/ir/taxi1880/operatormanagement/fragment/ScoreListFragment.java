@@ -60,7 +60,6 @@ public class ScoreListFragment extends Fragment {
             .get();
   }
 
-
   private RequestHelper.Callback onScore = new RequestHelper.Callback() {
     @Override
     public void onResponse(Runnable reCall, Object... args) {
