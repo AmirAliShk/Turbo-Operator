@@ -12,7 +12,7 @@
         android:layout_margin="3dp"
         android:elevation="3dp"
         android:gravity="center"
-        android:background="@drawable/bg_disable">
+        android:background="@drawable/bg_white_edge">
 
         <TextView
             android:id="@+id/txtNumber"

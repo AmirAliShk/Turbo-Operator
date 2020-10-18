@@ -59,6 +59,7 @@ public class TripDataBase extends SQLiteOpenHelper {
       contentValues.put(COLUMN_DESTINATION_STATION, tripModel.getDestinationStation());
       contentValues.put(COLUMN_CITY, tripModel.getCity());
       //TODO insert with conflict or without
+      // this will insert if record is new, update otherwise
       sqLiteDatabase.insertWithOnConflict(TRIP_TABLE, COLUMN_TRIP_ID, contentValues, SQLiteDatabase.CONFLICT_REPLACE);
     } catch (Exception e) {
       e.printStackTrace();

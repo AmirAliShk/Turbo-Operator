@@ -62,9 +62,21 @@ public class RangeFragment extends Fragment {
 
   @OnClick(R.id.btnSubmit)
   void onSubmit() {
-    isRegistered = true;
-    if (counter != 0) counter = counter - 1;
-    MyApplication.Toast("submit", Toast.LENGTH_SHORT);
+//    isRegistered = true;
+//    if (counter != 0) counter = counter - 1;
+//    MyApplication.Toast("submit", Toast.LENGTH_SHORT);
+
+
+    if (counter < tripModels.size()) {
+//      if (isRegistered) {
+//        address = tripModels.get(counter).getDestinationText();
+//      } else {
+//      }
+      address = tripModels.get(counter).getOriginText();
+      txtAddress.setText(address);
+      txtRemainingAddress.setText(tripModels.size() - counter + " آدرس ");
+      counter = counter + 1;
+    }
   }
 
   @OnClick(R.id.btnHelp)
@@ -101,11 +113,11 @@ public class RangeFragment extends Fragment {
 
     tripDataBase = new TripDataBase(MyApplication.context);
     tripModels = new ArrayList<>();
-    tripModels = tripDataBase.getTripRow();
 
     changeStatus();
 
-    getAddress(addressList);
+    //TODO when the operator press the enable button this function must be work.
+    showAddress();
 
     gridNumber.setAdapter(new NumberPadAdapter(MyApplication.context, new NumberPadAdapter.NumberListener() {
       @Override
@@ -137,12 +149,13 @@ public class RangeFragment extends Fragment {
   ArrayList<TripModel> tripModels;
   TripDataBase tripDataBase;
   Timer addressTimer;
+  String address;
   String addressList = " {\"success\":true,\"message\":\"\",\"data\":[" +
-          "{\"tripId\":1,\"originText\":\"مبدا فداییان اسلام\",\"destinationText\":\"مقصد سیدرضی55\",\"originStation\":14,\"destinationStation\":18,\"city\":\"مشهد\"}," +
-          "{\"tripId\":2,\"originText\":\"مبدا هاشمیه 6\",\"destinationText\":\"مقصد لادن 12\",\"originStation\":14,\"destinationStation\":18,\"city\":\"مشهد\"}," +
-          "{\"tripId\":3,\"originText\":\"مبدا بیمارستان امام رضا\",\"destinationText\":\"مقصد وکیل آباد 24\",\"originStation\":14,\"destinationStation\":18,\"city\":\"مشهد\"}," +
-          "{\"tripId\":4,\"originText\":\"مبدا قاسم آباد-یوسفی 7\",\"destinationText\":\"مقصد خیابان امام رضا14\",\"originStation\":14,\"destinationStation\":18,\"city\":\"مشهد\"}," +
-          "{\"tripId\":5,\"originText\":\"مبدا کوهسنگی 44\",\"destinationText\":\"مقصد وکیل آباد-عارف3\",\"originStation\":14,\"destinationStation\":18,\"city\":\"مشهد\"}]}";
+          "{\"tripId\":1,\"originText\":\"مبدا 1 فداییان اسلام\",\"destinationText\":\"مقصد 1 سیدرضی55\",\"originStation\":14,\"destinationStation\":18,\"city\":\"مشهد\"}," +
+          "{\"tripId\":2,\"originText\":\"مبدا 2 هاشمیه 6\",\"destinationText\":\"مقصد 2 لادن 12\",\"originStation\":14,\"destinationStation\":18,\"city\":\"مشهد\"}," +
+          "{\"tripId\":3,\"originText\":\"مبدا 3 بیمارستان امام رضا\",\"destinationText\":\"مقصد 3 وکیل آباد 24\",\"originStation\":14,\"destinationStation\":18,\"city\":\"مشهد\"}," +
+          "{\"tripId\":4,\"originText\":\"مبدا 4 قاسم آباد-یوسفی 7\",\"destinationText\":\"مقصد 4 خیابان امام رضا14\",\"originStation\":14,\"destinationStation\":18,\"city\":\"مشهد\"}," +
+          "{\"tripId\":5,\"originText\":\"مبدا 5 کوهسنگی 44\",\"destinationText\":\"مقصد 5 وکیل آباد-عارف3\",\"originStation\":14,\"destinationStation\":18,\"city\":\"مشهد\"}]}";
 
   private void getAddress(String addressList) {
     try {
@@ -165,8 +178,10 @@ public class RangeFragment extends Fragment {
           tripDataBase.insertTripRow(tripModel);
         }
       }
+      tripModels = tripDataBase.getTripRow();
 
-      showAddress();
+      address = tripModels.get(counter).getOriginText();
+      txtAddress.setText(address);
 
     } catch (JSONException e) {
       e.printStackTrace();
@@ -178,20 +193,9 @@ public class RangeFragment extends Fragment {
   TimerTask addressTt = new TimerTask() {
     @Override
     public void run() {
-      String address;
-      if (counter < tripModels.size()) {
-        if (isRegistered) {
-          address = tripModels.get(counter).getDestinationText();
-        } else {
-          address = tripModels.get(counter).getOriginText();
-        }
-        txtAddress.setText(address);
-        txtRemainingAddress.setText(tripModels.size() - counter + " آدرس ");
-        counter = counter + 1;
-      } else {
-        counter = 0;
-        //TODO here call API again????
-      }
+      //TODO call API every 10 sec
+      getAddress(addressList);
+
     }
   };
 
@@ -199,8 +203,8 @@ public class RangeFragment extends Fragment {
     if (addressTimer == null) {
       addressTimer = new Timer();
     }
-    //TODO set period to 15000
-    addressTimer.scheduleAtFixedRate(addressTt, 500, 5000);
+    //TODO set period to 10000
+    addressTimer.scheduleAtFixedRate(addressTt, 0, 5000);
   }
 
   private void changeStatus() {
