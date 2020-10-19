@@ -5,6 +5,7 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.util.Log;
 
 import java.util.ArrayList;
 
@@ -40,7 +41,7 @@ public class TripDataBase extends SQLiteOpenHelper {
 
   public static void createTripTable(SQLiteDatabase database) {
     database.execSQL("CREATE TABLE " + TRIP_TABLE +
-            "("+ COLUMN_TRIP_ID + " INTEGER PRIMARY KEY, " +
+            "(" + COLUMN_TRIP_ID + " INTEGER PRIMARY KEY, " +
             COLUMN_ORIGIN_TEXT + " TEXT," +
             COLUMN_DESTINATION_TEXT + " TEXT," +
             COLUMN_ORIGIN_STATION + " INTEGER," +
@@ -89,6 +90,17 @@ public class TripDataBase extends SQLiteOpenHelper {
       e.printStackTrace();
     }
     return tripModels;
+  }
+
+  public void deleteRow(int tripId) {
+    SQLiteDatabase sqLiteDatabase = this.getWritableDatabase();
+    boolean b = sqLiteDatabase.delete(TRIP_TABLE, COLUMN_TRIP_ID + "=" + tripId, null) > 0;
+
+    if (b) {
+      Log.i("TripDataBase", "deleteRow: = true");
+    } else {
+      Log.i("TripDataBase", "deleteRow: = false");
+    }
   }
 
 }
