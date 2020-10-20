@@ -7,7 +7,7 @@ android {
         minSdkVersion 16
         targetSdkVersion 19
         versionCode 13
-        versionName "2.4.0."
+        versionName "2.4.0"
     }
 
     signingConfigs {
@@ -42,6 +42,7 @@ android {
 }
 
 dependencies {
+    implementation 'androidx.gridlayout:gridlayout:1.0.0'
     def version = '27.1.1'
     implementation fileTree(dir: 'libs', include: ['*.jar'])
     testImplementation 'junit:junit:4.12'
@@ -78,5 +79,4 @@ dependencies {
 
     implementation 'com.mindorks.android:prdownloader:0.6.0'
 
-    implementation 'com.poovam:pin-edittext-field:1.2.3'
 }

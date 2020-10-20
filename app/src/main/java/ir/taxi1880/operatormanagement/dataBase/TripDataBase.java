@@ -9,7 +9,6 @@ import android.util.Log;
 
 import java.util.ArrayList;
 
-
 public class TripDataBase extends SQLiteOpenHelper {
   private static int VERSION = 1;
   private static String DB_NAME = "operators";
@@ -18,9 +17,7 @@ public class TripDataBase extends SQLiteOpenHelper {
   //**************************** Trip Column ****************************
   private static String COLUMN_TRIP_ID = "tripId";
   private static String COLUMN_ORIGIN_TEXT = "originText";
-  private static String COLUMN_DESTINATION_TEXT = "destinationText";
   private static String COLUMN_ORIGIN_STATION = "originStation";
-  private static String COLUMN_DESTINATION_STATION = "destinationStation";
   private static String COLUMN_CITY = "city";
   //*********************************************************************
 
@@ -43,9 +40,7 @@ public class TripDataBase extends SQLiteOpenHelper {
     database.execSQL("CREATE TABLE " + TRIP_TABLE +
             "(" + COLUMN_TRIP_ID + " INTEGER PRIMARY KEY, " +
             COLUMN_ORIGIN_TEXT + " TEXT," +
-            COLUMN_DESTINATION_TEXT + " TEXT," +
             COLUMN_ORIGIN_STATION + " INTEGER," +
-            COLUMN_DESTINATION_STATION + " INTEGER," +
             COLUMN_CITY + " TEXT)");
   }
 
@@ -55,9 +50,7 @@ public class TripDataBase extends SQLiteOpenHelper {
       ContentValues contentValues = new ContentValues();
       contentValues.put(COLUMN_TRIP_ID, tripModel.getId());
       contentValues.put(COLUMN_ORIGIN_TEXT, tripModel.getOriginText());
-      contentValues.put(COLUMN_DESTINATION_TEXT, tripModel.getDestinationText());
       contentValues.put(COLUMN_ORIGIN_STATION, tripModel.getOriginStation());
-      contentValues.put(COLUMN_DESTINATION_STATION, tripModel.getDestinationStation());
       contentValues.put(COLUMN_CITY, tripModel.getCity());
       //TODO insert with conflict or without
       // this will insert if record is new, update otherwise
@@ -79,9 +72,7 @@ public class TripDataBase extends SQLiteOpenHelper {
         TripModel tripModel = new TripModel();
         tripModel.setId(cursor.getInt(cursor.getColumnIndex(COLUMN_TRIP_ID)));
         tripModel.setOriginText(cursor.getString(cursor.getColumnIndex(COLUMN_ORIGIN_TEXT)));
-        tripModel.setDestinationText(cursor.getString(cursor.getColumnIndex(COLUMN_DESTINATION_TEXT)));
         tripModel.setOriginStation(cursor.getInt(cursor.getColumnIndex(COLUMN_ORIGIN_STATION)));
-        tripModel.setDestinationStation(cursor.getInt(cursor.getColumnIndex(COLUMN_DESTINATION_STATION)));
         tripModel.setCity(cursor.getString(cursor.getColumnIndex(COLUMN_CITY)));
         tripModels.add(tripModel);
         cursor.moveToNext();
@@ -101,6 +92,11 @@ public class TripDataBase extends SQLiteOpenHelper {
     } else {
       Log.i("TripDataBase", "deleteRow: = false");
     }
+  }
+
+  public void deleteAllData() {
+    SQLiteDatabase sqLiteDatabase = this.getWritableDatabase();
+    sqLiteDatabase.execSQL("delete from " + TRIP_TABLE);
   }
 
 }

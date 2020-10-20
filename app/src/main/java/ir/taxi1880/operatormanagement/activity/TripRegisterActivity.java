@@ -399,6 +399,7 @@ public class TripRegisterActivity extends AppCompatActivity {
     if (vfSubmit != null)
       vfSubmit.setDisplayedChild(1);
 
+    //TODO change API depend on last modify
     getCheckOriginStation(cityCode, Integer.parseInt(StringHelper.toEnglishDigits(edtOrigin.getText().toString())));
 
   }
@@ -614,7 +615,6 @@ public class TripRegisterActivity extends AppCompatActivity {
       initServiceCountSpinner();
     }, 200);
 
-
     edtTell.requestFocus();
 
     edtTell.addTextChangedListener(edtTellTextWather);
@@ -664,7 +664,6 @@ public class TripRegisterActivity extends AppCompatActivity {
       // ignore
     }
   }
-
 
   TextWatcher edtMobileTW = new TextWatcher() {
     @Override

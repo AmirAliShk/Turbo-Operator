@@ -99,7 +99,6 @@
 
         </LinearLayout>
 
-
     </RelativeLayout>
 
     <RelativeLayout
@@ -215,7 +214,6 @@
         </LinearLayout>
 
     </RelativeLayout>
-
 
     <ScrollView
         android:id="@+id/svTripRegister"
@@ -379,8 +377,8 @@
                         </LinearLayout>
 
                     </LinearLayout>
-                </LinearLayout>
 
+                </LinearLayout>
 
             </LinearLayout>
 
@@ -514,6 +512,7 @@
                         </ViewFlipper>
 
                     </LinearLayout>
+
                 </LinearLayout>
 
             </LinearLayout>
@@ -640,7 +639,7 @@
                             android:layout_height="match_parent"
                             android:layout_weight="1"
                             android:paddingRight="5dp"
-                            android:text="نوع سرویس"
+                            android:text="نوع سفر"
                             android:textAppearance="?android:attr/textAppearanceSmall"
                             android:textColor="@color/grayMedium" />
 
@@ -733,9 +732,49 @@
 
                 </LinearLayout>
 
+                <ImageView
+                    android:layout_width="5dp"
+                    android:layout_height="match_parent" />
+
+                <LinearLayout
+                    android:id="@+id/llTraffic"
+                    android:layout_width="50dp"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="25dp"
+                        android:gravity="center"
+                        android:text="طرح"
+                        android:textAppearance="?android:attr/textAppearanceSmall"
+                        android:textColor="@color/grayMedium" />
+
+                    <LinearLayout
+                        android:id="@+id/llTrafficBg"
+                        android:layout_width="match_parent"
+                        android:layout_height="40dp"
+                        android:background="@drawable/edit_text_style"
+                        android:gravity="center"
+                        android:padding="3dp">
+
+                        <CheckBox
+                            android:id="@+id/chbTraffic"
+                            android:layout_width="40dp"
+                            android:layout_height="40dp"
+                            android:background="@drawable/traffic"
+                            android:button="@null"
+                            android:checked="false" />
+
+                    </LinearLayout>
+
+                </LinearLayout>
+
             </LinearLayout>
 
+<!--            TODO if you sure, remove this view-->
             <LinearLayout
+                android:visibility="gone"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
@@ -869,44 +908,6 @@
                         android:padding="3dp"
                         android:src="@drawable/ic_search" />
 
-
-                </LinearLayout>
-
-                <ImageView
-                    android:layout_width="5dp"
-                    android:layout_height="match_parent" />
-
-                <LinearLayout
-                    android:id="@+id/llTraffic"
-                    android:layout_width="50dp"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical">
-
-                    <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="25dp"
-                        android:gravity="center"
-                        android:text="طرح"
-                        android:textAppearance="?android:attr/textAppearanceSmall"
-                        android:textColor="@color/grayMedium" />
-
-                    <LinearLayout
-                        android:id="@+id/llTrafficBg"
-                        android:layout_width="match_parent"
-                        android:layout_height="40dp"
-                        android:background="@drawable/edit_text_style"
-                        android:gravity="center"
-                        android:padding="3dp">
-
-                        <CheckBox
-                            android:id="@+id/chbTraffic"
-                            android:layout_width="40dp"
-                            android:layout_height="40dp"
-                            android:background="@drawable/traffic"
-                            android:button="@null"
-                            android:checked="false" />
-
-                    </LinearLayout>
 
                 </LinearLayout>
 
@@ -1050,7 +1051,8 @@
                         android:textAppearance="?android:attr/textAppearanceSmall"
                         android:textColor="@color/grayMedium" />
 
-                    <ir.taxi1880.operatormanagement.customView.MultiRowsRadioGroup xmlns:multi_line_radio_group="http://schemas.android.com/apk/res-auto"
+                    <ir.taxi1880.operatormanagement.customView.MultiRowsRadioGroup
+                        xmlns:multi_line_radio_group="http://schemas.android.com/apk/res-auto"
                         android:id="@+id/rgCarClass"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -1061,28 +1063,18 @@
                         multi_line_radio_group:max_in_row="3">
 
                         <LinearLayout
-
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:orientation="horizontal">
 
-
                             <RadioButton
-                                android:id="@+id/rbTaxi"
+                                android:id="@+id/rbUnknow"
                                 android:layout_width="0dp"
                                 android:layout_height="wrap_content"
                                 android:layout_weight="1"
                                 android:buttonTint="@color/colorPrimaryDark"
-                                android:text="@string/taxi"
-                                android:textAppearance="?android:attr/textAppearanceSmall" />
-
-                            <RadioButton
-                                android:id="@+id/rbPrivilage"
-                                android:layout_width="0dp"
-                                android:layout_height="wrap_content"
-                                android:layout_weight="1"
-                                android:buttonTint="@color/colorPrimaryDark"
-                                android:text="@string/privilege"
+                                android:checked="true"
+                                android:text="@string/unKnow"
                                 android:textAppearance="?android:attr/textAppearanceSmall" />
 
                             <RadioButton
@@ -1094,6 +1086,15 @@
                                 android:text="@string/economically"
                                 android:textAppearance="?android:attr/textAppearanceSmall" />
 
+                            <RadioButton
+                                android:id="@+id/rbPrivilage"
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:buttonTint="@color/colorPrimaryDark"
+                                android:text="@string/privilege"
+                                android:textAppearance="?android:attr/textAppearanceSmall" />
+
                         </LinearLayout>
 
                         <LinearLayout
@@ -1101,24 +1102,22 @@
                             android:layout_height="wrap_content"
                             android:orientation="horizontal">
 
+                            <RadioButton
+                                android:id="@+id/rbTaxi"
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:buttonTint="@color/colorPrimaryDark"
+                                android:text="@string/taxi"
+                                android:textAppearance="?android:attr/textAppearanceSmall" />
 
                             <RadioButton
                                 android:id="@+id/rbFormality"
                                 android:layout_width="0dp"
                                 android:layout_height="wrap_content"
-                                android:layout_weight="1"
-                                android:buttonTint="@color/colorPrimaryDark"
-                                android:text="@string/formality"
-                                android:textAppearance="?android:attr/textAppearanceSmall" />
-
-                            <RadioButton
-                                android:id="@+id/rbUnknow"
-                                android:layout_width="0dp"
-                                android:layout_height="wrap_content"
                                 android:layout_weight="2"
                                 android:buttonTint="@color/colorPrimaryDark"
-                                android:checked="true"
-                                android:text="@string/unKnow"
+                                android:text="@string/formality"
                                 android:textAppearance="?android:attr/textAppearanceSmall" />
 
                         </LinearLayout>
@@ -1165,20 +1164,21 @@
 
                 </LinearLayout>
 
-
             </LinearLayout>
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="5dp"
-                android:layout_marginBottom="10dp"
+                android:layout_weight="2"
+                android:gravity="bottom"
+                android:paddingBottom="10dp"
+                android:paddingTop="10dp"
                 android:orientation="horizontal">
 
                 <ViewFlipper
                     android:id="@+id/vfSubmit"
                     android:layout_width="0dp"
-                    android:layout_height="wrap_content"
+                    android:layout_height="?android:attr/actionBarSize"
                     android:layout_weight="2.5"
                     android:background="@drawable/bg_light_pink_edge">
 
@@ -1186,7 +1186,6 @@
                         android:id="@+id/btnSubmit"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
-                        android:layout_margin="3dp"
                         android:background="@color/transparent"
                         android:text="ثبت سرویس "
                         android:textAppearance="?android:attr/textAppearanceLarge"
@@ -1201,14 +1200,13 @@
                 </ViewFlipper>
 
                 <ImageView
-                    android:layout_width="5dp"
+                    android:layout_width="10dp"
                     android:layout_height="match_parent" />
 
                 <Button
                     android:id="@+id/btnOptions"
                     android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_margin="3dp"
+                    android:layout_height="?android:attr/actionBarSize"
                     android:layout_weight="1"
                     android:background="@drawable/bg_strock_corner"
                     android:text="گزینه ها"

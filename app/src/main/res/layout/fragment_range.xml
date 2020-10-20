@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:background="@color/colorPrimaryLighter"
     android:clickable="true"
-    android:layoutDirection="ltr"
+    android:layoutDirection="rtl"
     android:orientation="vertical"
     tools:context=".fragment.RangeFragment">
 
@@ -60,122 +60,265 @@
             android:src="@drawable/ic_back" />
 
         <LinearLayout
-            android:id="@+id/llMenu"
+            android:id="@+id/llRefresh"
             android:gravity="right"
             android:layout_width="80dp"
-            android:layout_height="match_parent"
-            android:layout_alignParentEnd="true"
-            android:layout_alignParentRight="true">
+            android:layout_height="match_parent">
 
             <ImageView
                 android:layout_width="?android:attr/actionBarSize"
                 android:padding="15dp"
                 android:layout_height="match_parent"
-                android:src="@drawable/ic_menu"/>
+                android:src="@drawable/ic_refresh"/>
 
         </LinearLayout>
 
     </RelativeLayout>
 
-    <TextView
-        android:id="@+id/txtAddress"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:gravity="center"
-        android:padding="20dp"
-        android:textColor="@color/colorBlack"
-        android:textSize="@dimen/text_title"
-        android:textStyle="bold" />
-
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="70dp"
-        android:gravity="center"
-        android:orientation="horizontal"
-        android:paddingLeft="10dp"
-        android:paddingRight="10dp">
+        android:layout_height="match_parent"
+        android:orientation="vertical">
 
-        <ImageView
-            android:id="@+id/btnHelp"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_margin="5dp"
-            android:layout_weight="0.5"
-            android:background="@drawable/bg_white_edge"
-            android:elevation="5dp"
-            android:src="@drawable/ic_notify"
-            android:text="help" />
+        <TextView
+            android:id="@+id/txtAddress"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:padding="20dp"
+            android:textColor="@color/colorBlack"
+            android:textSize="@dimen/text_title"
+            android:textStyle="bold" />
 
         <LinearLayout
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_margin="5dp"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
             android:layout_weight="1"
-            android:background="@drawable/bg_white_edge"
-            android:elevation="5dp"
-            android:gravity="center">
+            android:gravity="center"
+            android:orientation="horizontal"
+            android:paddingLeft="10dp"
+            android:paddingRight="10dp">
 
-            <com.poovam.pinedittextfield.LinePinField
-                android:id="@+id/txtStation"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:inputType="text"
-                android:clickable="false"
-                android:editable="false"
-                android:focusable="false"
-                app:distanceInBetween="12dp"
-                app:fieldColor="@color/colorPurpleLight"
-                android:textSize="25sp"
-                android:textSelectHandle="@drawable/text_handle"
-                app:lineThickness="1dp"
-                app:noOfFields="3"
-                app:isCursorEnabled="false"
-                app:bottomTextPaddingDp="0dp"/>
+            <ImageView
+                android:id="@+id/btnDelete"
+                android:layout_width="0dp"
+                android:layout_height="60dp"
+                android:layout_margin="5dp"
+                android:layout_weight="0.5"
+                android:background="@drawable/bg_white_edge"
+                android:elevation="5dp"
+                android:padding="8dp"
+                android:src="@drawable/ic_reject"
+                android:text="del" />
+
+            <View
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="0.15"/>
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="60dp"
+                android:layout_margin="5dp"
+                android:layout_weight="1.5"
+                android:background="@drawable/bg_white_edge"
+                android:elevation="5dp"
+                android:gravity="center">
+
+                <ir.taxi1880.operatormanagement.customView.PinEntryEditText
+                    android:id="@+id/txtStation"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:cursorVisible="false"
+                    android:clickable="false"
+                    android:enabled="false"
+                    android:focusable="false"
+                    android:textIsSelectable="false"
+                    android:digits="1234567890"
+                    android:inputType="number"
+                    android:maxLength="3"
+                    android:maxLines="1"
+                    android:textSize="30dp" />
+
+            </LinearLayout>
+
+            <View
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="0.15" />
+
+            <ImageView
+                android:id="@+id/btnHelp"
+                android:layout_width="0dp"
+                android:layout_height="60dp"
+                android:padding="12dp"
+                android:layout_margin="5dp"
+                android:layout_weight="0.5"
+                android:background="@drawable/bg_white_edge"
+                android:elevation="5dp"
+                android:src="@drawable/ic_info"
+                android:text="help" />
 
         </LinearLayout>
 
-        <ImageView
-            android:id="@+id/btnDelete"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_margin="5dp"
-            android:layout_weight="0.5"
-            android:background="@drawable/bg_white_edge"
-            android:elevation="5dp"
-            android:padding="8dp"
-            android:src="@drawable/ic_reject"
-            android:text="del" />
+        <TextView
+            android:id="@+id/txtRemainingAddress"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:padding="20dp"
+            android:textColor="@color/colorBlack"
+            android:textSize="@dimen/text_title"
+            android:textStyle="bold" />
+
+        <androidx.gridlayout.widget.GridLayout
+            android:id="@+id/gridNumber"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_gravity="bottom"
+            android:layout_weight="5"
+            android:layoutDirection="ltr"
+            android:padding="20dp"
+            app:columnCount="3"
+            app:orientation="horizontal"
+            app:rowCount="4">
+
+            <Button
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:layout_margin="1dp"
+                android:background="@drawable/selector_top_left"
+                android:text="@string/one"
+                android:textAppearance="?android:attr/textAppearanceLarge"
+                android:textColor="@color/colorBlack"
+                android:textStyle="bold"
+                app:layout_columnWeight="1"
+                app:layout_rowWeight="1" />
+
+            <Button
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:layout_margin="1dp"
+                android:background="@drawable/selector_normal_btn"
+                android:text="@string/two"
+                android:textAppearance="?android:attr/textAppearanceLarge"
+                android:textColor="@color/colorBlack"
+                android:textStyle="bold"
+                app:layout_columnWeight="1"
+                app:layout_rowWeight="1" />
+
+            <Button
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:layout_margin="1dp"
+                android:background="@drawable/selector_top_right"
+                android:text="@string/three"
+                android:textAppearance="?android:attr/textAppearanceLarge"
+                android:textColor="@color/colorBlack"
+                android:textStyle="bold"
+                app:layout_columnWeight="1"
+                app:layout_rowWeight="1" />
+
+            <Button
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:layout_margin="1dp"
+                android:background="@drawable/selector_normal_btn"
+                android:text="@string/foure"
+                android:textAppearance="?android:attr/textAppearanceLarge"
+                android:textColor="@color/colorBlack"
+                android:textStyle="bold"
+                app:layout_columnWeight="1"
+                app:layout_rowWeight="1" />
+
+            <Button
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:layout_margin="1dp"
+                android:background="@drawable/selector_normal_btn"
+                android:text="@string/five"
+                android:textAppearance="?android:attr/textAppearanceLarge"
+                android:textColor="@color/colorBlack"
+                android:textStyle="bold"
+                app:layout_columnWeight="1"
+                app:layout_rowWeight="1" />
+
+            <Button
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:layout_margin="1dp"
+                android:background="@drawable/selector_normal_btn"
+                android:text="@string/six"
+                android:textAppearance="?android:attr/textAppearanceLarge"
+                android:textColor="@color/colorBlack"
+                android:textStyle="bold"
+                app:layout_columnWeight="1"
+                app:layout_rowWeight="1" />
+
+            <Button
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:layout_margin="1dp"
+                android:background="@drawable/selector_normal_btn"
+                android:text="@string/seven"
+                android:textAppearance="?android:attr/textAppearanceLarge"
+                android:textColor="@color/colorBlack"
+                android:textStyle="bold"
+                app:layout_columnWeight="1"
+                app:layout_rowWeight="1" />
+
+            <Button
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:layout_margin="1dp"
+                android:background="@drawable/selector_normal_btn"
+                android:text="@string/eight"
+                android:textAppearance="?android:attr/textAppearanceLarge"
+                android:textColor="@color/colorBlack"
+                android:textStyle="bold"
+                app:layout_columnWeight="1"
+                app:layout_rowWeight="1" />
+
+            <Button
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:layout_margin="1dp"
+                android:background="@drawable/selector_normal_btn"
+                android:text="@string/nine"
+                android:textAppearance="?android:attr/textAppearanceLarge"
+                android:textColor="@color/colorBlack"
+                android:textStyle="bold"
+                app:layout_columnWeight="1"
+                app:layout_rowWeight="1" />
+
+            <Button
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:layout_margin="1dp"
+                android:background="@drawable/selector_bot_left"
+                android:text="@string/zero"
+                android:textAppearance="?android:attr/textAppearanceLarge"
+                android:textColor="@color/colorBlack"
+                android:textStyle="bold"
+                app:layout_columnWeight="1"
+                app:layout_rowWeight="1" />
+
+            <Button
+                android:id="@+id/btnSubmit"
+                android:layout_margin="1dp"
+                android:background="@drawable/bg_register"
+                android:gravity="center"
+                android:text="@string/register"
+                android:textColor="@color/colorWhite"
+                android:textSize="@dimen/text_large_header"
+                android:textStyle="bold"
+                app:layout_columnSpan="2"
+                app:layout_gravity="fill" />
+
+        </androidx.gridlayout.widget.GridLayout>
 
     </LinearLayout>
-
-    <TextView
-        android:id="@+id/txtRemainingAddress"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:gravity="center"
-        android:padding="20dp"
-        android:textColor="@color/colorBlack"
-        android:textSize="@dimen/text_title"
-        android:textStyle="bold" />
-
-    <GridView
-        android:id="@+id/gridNumber"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_weight="1"
-        android:gravity="center"
-        android:numColumns="3"
-        android:padding="10dp" />
-
-    <Button
-        android:id="@+id/btnSubmit"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@drawable/bg_light_pink_edge"
-        android:textColor="@color/colorWhite"
-        android:textAppearance="?android:attr/textAppearanceLarge"
-        android:textStyle="bold"
-        android:layout_margin="5dp"
-        android:text="@string/register" />
 
 </LinearLayout>

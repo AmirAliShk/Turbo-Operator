@@ -3,9 +3,7 @@ package ir.taxi1880.operatormanagement.dataBase;
 public class TripModel {
   int id;
   String originText;
-  String destinationText;
   int originStation;
-  int destinationStation;
   String city;
 
   public String getCity() {
@@ -32,14 +30,6 @@ public class TripModel {
     this.originText = originText;
   }
 
-  public String getDestinationText() {
-    return destinationText;
-  }
-
-  public void setDestinationText(String destinationText) {
-    this.destinationText = destinationText;
-  }
-
   public int getOriginStation() {
     return originStation;
   }
@@ -48,11 +38,4 @@ public class TripModel {
     this.originStation = originStation;
   }
 
-  public int getDestinationStation() {
-    return destinationStation;
-  }
-
-  public void setDestinationStation(int destinationStation) {
-    this.destinationStation = destinationStation;
-  }
 }
