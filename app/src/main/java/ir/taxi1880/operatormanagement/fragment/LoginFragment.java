@@ -109,6 +109,7 @@ public class LoginFragment extends Fragment {
           int balance = object.getInt("balance");
           int activeInQueue = object.getInt("activeInQueue");
           int isFinishContract = object.getInt("isFinishContract");
+          int accessStationDeterminationPage = object.getInt("accessStationDeterminationPage");
 
           MyApplication.prefManager.setOperatorName(object.getString("name"));
 
@@ -126,6 +127,7 @@ public class LoginFragment extends Fragment {
             MyApplication.prefManager.setActivateStatus(activeInQueue == 1);
             MyApplication.prefManager.setUserCode(userId);
             MyApplication.prefManager.setAccessInsertService(accessInsertService);
+            MyApplication.prefManager.setAccessStationDeterminationPage(accessStationDeterminationPage);
             MyApplication.prefManager.setSipServer(sipServer);
             MyApplication.prefManager.setSipNumber(sipNumber);
             MyApplication.prefManager.setSipPassword(sipPassword);

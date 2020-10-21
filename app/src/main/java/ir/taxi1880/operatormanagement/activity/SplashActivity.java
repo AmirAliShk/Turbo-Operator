@@ -212,6 +212,7 @@ public class SplashActivity extends AppCompatActivity {
           String cardNumber = object.getString("cardNumber");
           String accountNumber = object.getString("accountNumber");
           int accessInsertService = object.getInt("accessInsertService");
+          int accessStationDeterminationPage = object.getInt("accessStationDeterminationPage");
           int balance = object.getInt("balance");
           String typeService = object.getString("typeService");
           String queue = object.getString("queue");
@@ -274,6 +275,7 @@ public class SplashActivity extends AppCompatActivity {
           MyApplication.prefManager.setQueueList(queue);
           MyApplication.prefManager.setCity(city);
           MyApplication.prefManager.setAccessInsertService(accessInsertService);
+          MyApplication.prefManager.setAccessStationDeterminationPage(accessStationDeterminationPage);
 
           NotificationManager notificationManager = (NotificationManager) MyApplication.currentActivity.getSystemService(Context.NOTIFICATION_SERVICE);
           notificationManager.cancel(Constant.USER_STATUS_NOTIFICATION_ID);

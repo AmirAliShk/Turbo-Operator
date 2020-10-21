@@ -31,6 +31,7 @@ import ir.taxi1880.operatormanagement.app.MyApplication;
 import ir.taxi1880.operatormanagement.customView.PinEntryEditText;
 import ir.taxi1880.operatormanagement.dataBase.TripDataBase;
 import ir.taxi1880.operatormanagement.dataBase.TripModel;
+import ir.taxi1880.operatormanagement.dialog.GeneralDialog;
 import ir.taxi1880.operatormanagement.dialog.LoadingDialog;
 import ir.taxi1880.operatormanagement.dialog.StationInfoDialog;
 import ir.taxi1880.operatormanagement.helper.StringHelper;
@@ -39,11 +40,16 @@ import ir.taxi1880.operatormanagement.model.StationInfoModel;
 import ir.taxi1880.operatormanagement.okHttp.RequestHelper;
 import ir.taxi1880.operatormanagement.push.AvaCrashReporter;
 
-public class RangeFragment extends Fragment {
-  String TAG = RangeFragment.class.getSimpleName();
+public class DeterminationPageFragment extends Fragment {
+  String TAG = DeterminationPageFragment.class.getSimpleName();
   Unbinder unbinder;
   boolean isOriginSelected = false;
   ArrayList<StationInfoModel> stationInfoModels;
+  ArrayList<TripModel> tripModels;
+  TripDataBase tripDataBase;
+  Timer addressTimer;
+  String address;
+  int counter = 0;
 
   @OnClick(R.id.imgBack)
   void onBack() {
@@ -69,7 +75,7 @@ public class RangeFragment extends Fragment {
 
   @OnClick(R.id.btnSubmit)
   void onSubmit() {
-    if (!MyApplication.prefManager.getActivateStatus()) {
+    if (!MyApplication.prefManager.isStartGettingAddress()) {
       MyApplication.Toast("لطفا فعال شوید", Toast.LENGTH_SHORT);
       return;
     }
@@ -77,13 +83,8 @@ public class RangeFragment extends Fragment {
       MyApplication.Toast("لطفا شماره ایستگاه را وارد کنید", Toast.LENGTH_SHORT);
       return;
     }
-    if (counter < tripModels.size()) {
-      MyApplication.Toast("registered", Toast.LENGTH_SHORT);
-      //TODO set API here
-      registerStation(counter);
-      counter = counter + 1;
-      txtStation.setText("");
-    }
+      setStationCode(MyApplication.prefManager.getUserCode(), tripModels.get(counter).getId(), tripModels.get(counter).getOriginStation());
+
   }
 
   @OnClick(R.id.btnHelp)
@@ -104,13 +105,13 @@ public class RangeFragment extends Fragment {
 
   @OnClick(R.id.llRefresh)
   void onMenu() {
+    if (!MyApplication.prefManager.isStartGettingAddress()) {
+      MyApplication.Toast("لطفا فعال شوید", Toast.LENGTH_SHORT);
+      return;
+    }
     tripDataBase.deleteAllData();
-    getAddress(addressList);
+    getAddressList();
     //TODO correct bellow code
-    tripModels = tripDataBase.getTripRow();
-    address = tripModels.get(0).getOriginText();
-    txtAddress.setText(address);
-    txtRemainingAddress.setText(tripModels.size() - 1 + " آدرس ");
   }
 
   @OnClick(R.id.btnActivate)
@@ -125,22 +126,22 @@ public class RangeFragment extends Fragment {
 
   @Override
   public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-    View view = inflater.inflate(R.layout.fragment_range, container, false);
+    View view = inflater.inflate(R.layout.fragment_determination_page, container, false);
     unbinder = ButterKnife.bind(this, view);
     TypefaceUtil.overrideFonts(view);
 
     tripDataBase = new TripDataBase(MyApplication.context);
     tripModels = new ArrayList<>();
-    tripModelsNewData = new ArrayList<>();
 
-    changeStatus(MyApplication.prefManager.getActivateStatus());
+    changeStatus(MyApplication.prefManager.isStartGettingAddress());
 
-    if (MyApplication.prefManager.getActivateStatus()) {
+    if (MyApplication.prefManager.isStartGettingAddress()) {
+      getAddressList();
       //TODO Do I need to check if it is empty? or use Handler.postDeley
-      tripModels = tripDataBase.getTripRow();
-      address = tripModels.get(0).getOriginText();
-      txtAddress.setText(address);
-      txtRemainingAddress.setText(tripModels.size() - 1 + " آدرس ");
+//      tripModels = tripDataBase.getTripRow();
+//      address = tripModels.get(0).getOriginText();
+//      txtAddress.setText(address);
+//      txtRemainingAddress.setText(tripModels.size() - 1 + " آدرس ");
     } else {
       txtAddress.setText("برای مشاهده آدرس ها فعال شوید");
       txtRemainingAddress.setText("");
@@ -174,92 +175,67 @@ public class RangeFragment extends Fragment {
     }
   }
 
-  ArrayList<TripModel> tripModels;
-  ArrayList<TripModel> tripModelsNewData;
-  TripDataBase tripDataBase;
-  Timer addressTimer;
-  String address;
-  String addressList = " {\"success\":true,\"message\":\"\",\"data\":[" +
-          "{\"tripId\":1,\"originText\":\"مبدا 1 فداییان اسلام\",\"originStation\":14,\"city\":\"مشهد\"}," +
-          "{\"tripId\":2,\"originText\":\"مبدا 2 هاشمیه 6\",\"originStation\":14,\"city\":\"مشهد\"}," +
-          "{\"tripId\":3,\"originText\":\"مبدا 3 بیمارستان امام رضا\",\"originStation\":14,\"city\":\"مشهد\"}," +
-          "{\"tripId\":4,\"originText\":\"مبدا 4 قاسم آباد-یوسفی 7\",\"originStation\":14,\"city\":\"مشهد\"}," +
-          "{\"tripId\":5,\"originText\":\"مبدا 5 کوهسنگی 44\",\"originStation\":14,\"city\":\"مشهد\"}]}";
+  private void getAddressList() {
+    RequestHelper.builder(EndPoints.GET_TRIP_WITH_ZERO_STATION)
+            .listener(getAddressList)
+            .get();
 
-  private void getAddress(String addressList) {
-    try {
-      //TODO set loader
-      JSONObject objAddress = new JSONObject(addressList);
-      tripModelsNewData.clear();
-
-      boolean success = objAddress.getBoolean("success");
-      String message = objAddress.getString("message");
-      JSONArray arrAddress = objAddress.getJSONArray("data");
-      if (success) {
-        for (int i = 0; i < arrAddress.length(); i++) {
-          JSONObject address = arrAddress.getJSONObject(i);
-          TripModel tripModel = new TripModel();
-          tripModel.setId(address.getInt("tripId"));
-          tripModel.setOriginText(address.getString("originText"));
-          tripModel.setOriginStation(address.getInt("originStation"));
-          tripModel.setCity(address.getString("city"));
-          tripModelsNewData.add(tripModel);
-          tripDataBase.insertTripRow(tripModel);
-        }
-      }
-
-    } catch (JSONException e) {
-      e.printStackTrace();
-    }
   }
 
-  int counter = 0;
-
-  TimerTask addressTt = new TimerTask() {
+  RequestHelper.Callback getAddressList = new RequestHelper.Callback() {
     @Override
-    public void run() {
-      //TODO call API every 10 sec
-      getAddress(addressList);
+    public void onResponse(Runnable reCall, Object... args) {
+      MyApplication.handler.post(new Runnable() {
+        @Override
+        public void run() {
+          try {
+            Log.i(TAG, "onResponse: " + args[0].toString());
+            JSONObject obj = new JSONObject(args[0].toString());
+            boolean success = obj.getBoolean("success");
+            String message = obj.getString("message");
+
+            JSONArray dataArr = obj.getJSONArray("data");
+
+            if (success) {
+              for (int i = 0; i < dataArr.length(); i++) {
+                JSONObject dataObj = dataArr.getJSONObject(i);
+                TripModel tripModel = new TripModel();
+                tripModel.setId(dataObj.getInt("Id"));
+                tripModel.setOriginStation(dataObj.getInt("OriginStation"));
+
+                String content = dataObj.getString("Content");
+                JSONObject contentObj = new JSONObject(content);
+
+                JSONArray cityArr = new JSONArray(MyApplication.prefManager.getCity());
+                for (int city = 0; city < cityArr.length(); city++) {
+                  JSONObject cityObj = cityArr.getJSONObject(city);
+                  if (contentObj.getInt("cityCode") == cityObj.getInt("cityid")) {
+                    tripModel.setCity(cityObj.getString("cityname"));
+                  }
+                }
+
+                tripModel.setOriginText(contentObj.getString("address"));
+
+                tripDataBase.insertTripRow(tripModel);
+              }
+            }
+          } catch (JSONException e) {
+            e.printStackTrace();
+          }
+        }
+      });
+    }
+
+    @Override
+    public void onFailure(Runnable reCall, Exception e) {
+
     }
   };
-
-  private void startGetAddressTimer() {
-    if (addressTimer == null) {
-      addressTimer = new Timer();
-    }
-    addressTimer.scheduleAtFixedRate(addressTt, 0, 10000);
-
-    MyApplication.Toast("timer started", Toast.LENGTH_SHORT);
-  }
-
-  private void stopGetAddressTimer() {
-    if (addressTimer != null) {
-      addressTimer.cancel();
-    }
-    //TODO in this status what shown be in txtAddress and station?
-    MyApplication.Toast("timer stopped", Toast.LENGTH_SHORT);
-  }
-
-  @SuppressLint("SetTextI18n")
-  private void registerStation(int id) {
-    isOriginSelected = false;
-    //TODO if status is true, delete record.
-    tripDataBase.deleteRow(tripModels.get(id).getId());
-    Log.i(TAG, "registerStation: " + tripModels.get(id).getOriginText());
-    if (id + 1 < tripModels.size()) {
-      address = tripModels.get(id + 1).getOriginText(); //show next origin
-      txtAddress.setText(address);
-      txtRemainingAddress.setText(tripModels.size() - (id + 2) + " آدرس ");
-    } else {
-      txtAddress.setText("آدرسی موجود نیست...");
-      MyApplication.Toast("درحال حاضر آدرسی موجود نیست....", Toast.LENGTH_SHORT);
-    }
-  }
 
   private void changeStatus(boolean status) {
     if (status) {
       startGetAddressTimer();
-      MyApplication.prefManager.setActivateStatus(true);
+      MyApplication.prefManager.setStartGettingAddress(true);
       if (btnActivate != null)
         btnActivate.setBackgroundResource(R.drawable.bg_green_edge);
       if (btnDeActivate != null) {
@@ -267,15 +243,15 @@ public class RangeFragment extends Fragment {
         btnDeActivate.setTextColor(Color.parseColor("#000000"));
       }
       //TODO is this correct?
-      tripModels = tripDataBase.getTripRow();
-      address = tripModels.get(0).getOriginText();
-      txtAddress.setText(address);
-      txtRemainingAddress.setText(tripModels.size() - 1 + " آدرس ");
+//      tripModels = tripDataBase.getTripRow();
+//      address = tripModels.get(0).getOriginText();
+//      txtAddress.setText(address);
+//      txtRemainingAddress.setText(tripModels.size() - 1 + " آدرس ");
 
     } else {
       stopGetAddressTimer();
-      getAddress(addressList);
-      MyApplication.prefManager.setActivateStatus(false);
+      getAddressList();
+      MyApplication.prefManager.setStartGettingAddress(false);
       if (btnActivate != null)
         btnActivate.setBackgroundColor(Color.parseColor("#00FFB2B2"));
       if (btnDeActivate != null) {
@@ -339,7 +315,6 @@ public class RangeFragment extends Fragment {
             }
           }
 
-          LoadingDialog.dismissCancelableDialog();
         } catch (JSONException e) {
           e.printStackTrace();
           AvaCrashReporter.send(e, "TripRegisterActivity class, getStationInfo onResponse method");
@@ -357,6 +332,106 @@ public class RangeFragment extends Fragment {
       });
     }
   };
+
+  private void setStationCode(int userId, int tripId, int stationCode) {
+    // TODO this loader is better or viewFlipper??
+    LoadingDialog.makeCancelableLoader();
+    RequestHelper.builder(EndPoints.UPDATE_TRIP_STATION)
+            .addParam("userId", userId)
+            .addParam("tripId", StringHelper.toEnglishDigits(tripId + ""))
+            .addParam("stationCode", StringHelper.toEnglishDigits(stationCode + ""))
+            .listener(setStationCode)
+            .put();
+
+  }
+
+  RequestHelper.Callback setStationCode = new RequestHelper.Callback() {
+    @Override
+    public void onResponse(Runnable reCall, Object... args) {
+      MyApplication.handler.post(() -> {
+        try {
+//          {"success":true,"message":"عملیات با موفقیت انجام شد","data":{"status":true}}
+          JSONObject obj = new JSONObject(args[0].toString());
+          boolean success = obj.getBoolean("success");
+          String message = obj.getString("message");
+          JSONObject dataArr = obj.getJSONObject("data");
+          boolean status = dataArr.getBoolean("status");
+          if (status) {
+            //TODO delete row, show next address
+//            counter = counter + 1;
+//            txtStation.setText("");
+            new GeneralDialog()
+                    .title("ثبت شد")
+                    .message(message)
+                    .cancelable(false)
+                    .firstButton("باشه", null)
+                    .show();
+          }else {
+            new GeneralDialog()
+                    .title("خطا")
+                    .message(message)
+                    .cancelable(false)
+                    .firstButton("باشه", null)
+                    .show();
+          }
+
+        } catch (JSONException e) {
+          e.printStackTrace();
+          AvaCrashReporter.send(e, "TripRegisterActivity class, getStationInfo onResponse method");
+        }
+      });
+    }
+
+    @Override
+    public void onFailure(Runnable reCall, Exception e) {
+      MyApplication.handler.post(new Runnable() {
+        @Override
+        public void run() {
+          LoadingDialog.dismissCancelableDialog();
+        }
+      });
+    }
+  };
+
+  TimerTask addressTt = new TimerTask() {
+    @Override
+    public void run() {
+      getAddressList();
+    }
+  };
+
+  private void startGetAddressTimer() {
+    if (addressTimer == null) {
+      addressTimer = new Timer();
+    }
+    addressTimer.scheduleAtFixedRate(addressTt, 0, 10000);
+
+    MyApplication.Toast("timer started", Toast.LENGTH_SHORT);
+  }
+
+  private void stopGetAddressTimer() {
+    if (addressTimer != null) {
+      addressTimer.cancel();
+    }
+    //TODO in this status what shown be in txtAddress and station?
+    MyApplication.Toast("timer stopped", Toast.LENGTH_SHORT);
+  }
+
+  @SuppressLint("SetTextI18n")
+  private void registerStation(int id) {
+    isOriginSelected = false;
+    //TODO if status is true, delete record.
+    tripDataBase.deleteRow(tripModels.get(id).getId());
+    Log.i(TAG, "registerStation: " + tripModels.get(id).getOriginText());
+    if (id + 1 < tripModels.size()) {
+      address = tripModels.get(id + 1).getOriginText(); //show next origin
+      txtAddress.setText(address);
+      txtRemainingAddress.setText(tripModels.size() - (id + 2) + " آدرس ");
+    } else {
+      txtAddress.setText("آدرسی موجود نیست...");
+      MyApplication.Toast("درحال حاضر آدرسی موجود نیست....", Toast.LENGTH_SHORT);
+    }
+  }
 
   @Override
   public void onDestroyView() {

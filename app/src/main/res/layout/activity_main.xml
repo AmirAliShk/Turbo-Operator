@@ -144,7 +144,7 @@
                     </LinearLayout>
 
                     <LinearLayout
-                        android:id="@+id/llRange"
+                        android:id="@+id/llDeterminationPage"
                         android:layout_width="match_parent"
                         android:layout_height="0dp"
                         android:layout_margin="5dp"
@@ -158,7 +158,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="0dp"
                             android:layout_weight="1.5"
-                            android:src="@drawable/ic_golden" />
+                            android:src="@drawable/ic_determine" />
 
                         <TextView
                             android:layout_width="match_parent"

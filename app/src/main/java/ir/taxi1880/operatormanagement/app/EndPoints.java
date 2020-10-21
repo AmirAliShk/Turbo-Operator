@@ -64,10 +64,13 @@ public class EndPoints {
   public static final String CHECK_STATION = TRIP_WEBSERVICE_PATH + "checkStation";
   public static final String STATION_INFO = TRIP_WEBSERVICE_PATH + "stationInfo";
   public static final String INSERT = TRIP_WEBSERVICE_PATH + "insert";
+  public static final String INSERT_TRIP_SENDING_QUEUE = TRIP_WEBSERVICE_PATH + "insertTripSendingQueue";
   public static final String ACTIVATE = TRIP_WEBSERVICE_PATH + "activate";
   public static final String DEACTIVATE = TRIP_WEBSERVICE_PATH + "deActivate";
   public static final String HIRETYPES  = TRIP_WEBSERVICE_PATH + "hireTypes";
   public static final String HIRE = TRIP_WEBSERVICE_PATH + "hire";
+  public static final String GET_TRIP_WITH_ZERO_STATION = TRIP_WEBSERVICE_PATH + "getTripWithZeroStation";
+  public static final String UPDATE_TRIP_STATION = TRIP_WEBSERVICE_PATH + "updateTripStation";
 
   /******************************** Account Api *********************************/
 

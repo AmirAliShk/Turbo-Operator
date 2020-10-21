@@ -51,7 +51,9 @@ public class PrefManager {
   private static final String QUEUE = "queue";
   private static final String CITY = "city";
   private static final String ACCESS_INSERT_SERVICE = "accessInsertService";
+  private static final String ACCESS_STATION_DETERMINATION_PAGE = "accessStationDeterminationPage";
   private static final String ACTIVATE_STATUS = "activateStatus";
+  private static final String START_GETTING_ADDRESS = "startGettingAddress";
   private static final String VOIP_ID = "voipId";
   private static final String LAST_NOTIFICATION = "lastNotification";
   private static final String LAST_CALL_NUMBER = "lastCallNumber";
@@ -126,6 +128,15 @@ public class PrefManager {
     return pref.getBoolean(ACTIVATE_STATUS, false);
   }
 
+  public void setStartGettingAddress(boolean getAddress) {
+    editor.putBoolean(START_GETTING_ADDRESS, getAddress);
+    editor.commit();
+  }
+
+  public boolean isStartGettingAddress() {
+    return pref.getBoolean(START_GETTING_ADDRESS, false);
+  }
+
   public void setBalance(int balance) {
     editor.putInt(BALANCE, balance);
     editor.commit();
@@ -151,6 +162,15 @@ public class PrefManager {
 
   public int getAccessInsertService() {
     return pref.getInt(ACCESS_INSERT_SERVICE, -1);
+  }
+
+  public void setAccessStationDeterminationPage(int accessStationDeterminationPage) {
+    editor.putInt(ACCESS_STATION_DETERMINATION_PAGE, accessStationDeterminationPage);
+    editor.commit();
+  }
+
+  public int getAccessStationDeterminationPage() {
+    return pref.getInt(ACCESS_STATION_DETERMINATION_PAGE, -1);
   }
 
   public void setSipServer(String sipServer) {

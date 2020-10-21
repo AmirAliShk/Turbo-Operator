@@ -28,7 +28,7 @@ import ir.taxi1880.operatormanagement.dialog.GeneralDialog;
 import ir.taxi1880.operatormanagement.fragment.AccountFragment;
 import ir.taxi1880.operatormanagement.fragment.MessageFragment;
 import ir.taxi1880.operatormanagement.fragment.NotificationFragment;
-import ir.taxi1880.operatormanagement.fragment.RangeFragment;
+import ir.taxi1880.operatormanagement.fragment.DeterminationPageFragment;
 import ir.taxi1880.operatormanagement.fragment.ScoresFragment;
 import ir.taxi1880.operatormanagement.fragment.ShiftFragment;
 import ir.taxi1880.operatormanagement.helper.FragmentHelper;
@@ -50,11 +50,19 @@ public class MainActivity extends AppCompatActivity implements NotificationFragm
             .replace();
   }
 
-  @OnClick(R.id.llRange)
+  @OnClick(R.id.llDeterminationPage)
   void onRange() {
-    FragmentHelper
-            .toFragment(MyApplication.currentActivity, new RangeFragment())
-            .replace();
+    if (MyApplication.prefManager.getAccessStationDeterminationPage() == 0) {
+      new GeneralDialog()
+              .title("هشدار")
+              .message("شما اجازه دسترسی به این بخش از برنامه را ندارید")
+              .firstButton("باشه", null)
+              .show();
+    } else {
+      FragmentHelper
+              .toFragment(MyApplication.currentActivity, new DeterminationPageFragment())
+              .replace();
+    }
   }
 
   @OnClick(R.id.llShifts)
@@ -208,7 +216,7 @@ public class MainActivity extends AppCompatActivity implements NotificationFragm
 
     @Override
     public void onFailure(Runnable reCall, Exception e) {
-      MyApplication.handler.post(()->{
+      MyApplication.handler.post(() -> {
         if (vfBalance != null)
           vfBalance.setDisplayedChild(1);
       });
