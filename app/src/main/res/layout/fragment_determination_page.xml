@@ -61,15 +61,16 @@
 
         <LinearLayout
             android:id="@+id/llRefresh"
-            android:gravity="right"
             android:layout_width="80dp"
-            android:layout_height="match_parent">
+            android:layout_height="match_parent"
+            android:gravity="right">
 
             <ImageView
+                android:id="@+id/imgRefresh"
                 android:layout_width="?android:attr/actionBarSize"
-                android:padding="15dp"
                 android:layout_height="match_parent"
-                android:src="@drawable/ic_refresh"/>
+                android:padding="15dp"
+                android:src="@drawable/ic_refresh" />
 
         </LinearLayout>
 
@@ -115,7 +116,7 @@
             <View
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
-                android:layout_weight="0.15"/>
+                android:layout_weight="0.15" />
 
             <LinearLayout
                 android:layout_width="0dp"
@@ -130,15 +131,15 @@
                     android:id="@+id/txtStation"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:cursorVisible="false"
                     android:clickable="false"
+                    android:cursorVisible="false"
+                    android:digits="1234567890"
                     android:enabled="false"
                     android:focusable="false"
-                    android:textIsSelectable="false"
-                    android:digits="1234567890"
                     android:inputType="number"
                     android:maxLength="3"
                     android:maxLines="1"
+                    android:textIsSelectable="false"
                     android:textSize="30dp" />
 
             </LinearLayout>
@@ -148,17 +149,30 @@
                 android:layout_height="match_parent"
                 android:layout_weight="0.15" />
 
-            <ImageView
-                android:id="@+id/btnHelp"
+            <ViewFlipper
+                android:id="@+id/vfStationInfo"
                 android:layout_width="0dp"
                 android:layout_height="60dp"
-                android:padding="12dp"
-                android:layout_margin="5dp"
                 android:layout_weight="0.5"
-                android:background="@drawable/bg_white_edge"
-                android:elevation="5dp"
-                android:src="@drawable/ic_info"
-                android:text="help" />
+                android:background="@drawable/bg_white_edge">
+
+                <ImageView
+                    android:id="@+id/btnHelp"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_margin="5dp"
+                    android:elevation="5dp"
+                    android:padding="12dp"
+                    android:src="@drawable/ic_info"
+                    android:text="help" />
+
+                <com.wang.avi.AVLoadingIndicatorView
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:layout_gravity="center"
+                    app:indicatorColor="@color/colorPrimaryDark" />
+
+            </ViewFlipper>
 
         </LinearLayout>
 

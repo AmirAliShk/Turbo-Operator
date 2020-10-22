@@ -5,6 +5,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:background="@color/colorPrimaryLighter"
     android:layout_height="match_parent"
+    android:clickable="true"
     tools:context=".fragment.RewardsFragment">
 
     <RelativeLayout

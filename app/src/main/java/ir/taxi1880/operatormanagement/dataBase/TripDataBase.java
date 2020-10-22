@@ -1,5 +1,6 @@
 package ir.taxi1880.operatormanagement.dataBase;
 
+import android.annotation.SuppressLint;
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
@@ -19,6 +20,8 @@ public class TripDataBase extends SQLiteOpenHelper {
   private static String COLUMN_ORIGIN_TEXT = "originText";
   private static String COLUMN_ORIGIN_STATION = "originStation";
   private static String COLUMN_CITY = "city";
+  private static String COLUMN_SAVE_DATE = "saveDate";
+  private static String COLUMN_SEND_DATE = "sendDate";
   //*********************************************************************
 
   public TripDataBase(Context context) {
@@ -41,6 +44,8 @@ public class TripDataBase extends SQLiteOpenHelper {
             "(" + COLUMN_TRIP_ID + " INTEGER PRIMARY KEY, " +
             COLUMN_ORIGIN_TEXT + " TEXT," +
             COLUMN_ORIGIN_STATION + " INTEGER," +
+            COLUMN_SAVE_DATE + " TEXT," +
+            COLUMN_SEND_DATE + " TEXT," +
             COLUMN_CITY + " TEXT)");
   }
 
@@ -51,6 +56,7 @@ public class TripDataBase extends SQLiteOpenHelper {
       contentValues.put(COLUMN_TRIP_ID, tripModel.getId());
       contentValues.put(COLUMN_ORIGIN_TEXT, tripModel.getOriginText());
       contentValues.put(COLUMN_ORIGIN_STATION, tripModel.getOriginStation());
+      contentValues.put(COLUMN_SAVE_DATE, tripModel.getSaveDate());
       contentValues.put(COLUMN_CITY, tripModel.getCity());
       //TODO insert with conflict or without
       // this will insert if record is new, update otherwise
@@ -65,7 +71,7 @@ public class TripDataBase extends SQLiteOpenHelper {
     ArrayList<TripModel> tripModels = new ArrayList<>();
     SQLiteDatabase sqLiteDatabase = this.getReadableDatabase();
     try {
-      Cursor cursor = sqLiteDatabase.rawQuery("select * from " + TRIP_TABLE, null);
+      @SuppressLint("Recycle") Cursor cursor = sqLiteDatabase.rawQuery("select * from " + TRIP_TABLE + " ORDER BY " + COLUMN_TRIP_ID + " ASC; ", null);
       cursor.moveToFirst();
 
       while (!cursor.isAfterLast()) {
@@ -73,6 +79,7 @@ public class TripDataBase extends SQLiteOpenHelper {
         tripModel.setId(cursor.getInt(cursor.getColumnIndex(COLUMN_TRIP_ID)));
         tripModel.setOriginText(cursor.getString(cursor.getColumnIndex(COLUMN_ORIGIN_TEXT)));
         tripModel.setOriginStation(cursor.getInt(cursor.getColumnIndex(COLUMN_ORIGIN_STATION)));
+        tripModel.setSaveDate(cursor.getString(cursor.getColumnIndex(COLUMN_SAVE_DATE)));
         tripModel.setCity(cursor.getString(cursor.getColumnIndex(COLUMN_CITY)));
         tripModels.add(tripModel);
         cursor.moveToNext();
@@ -83,14 +90,22 @@ public class TripDataBase extends SQLiteOpenHelper {
     return tripModels;
   }
 
+  public void insertSendDate(int tripId, String date) {
+    SQLiteDatabase sqLiteDatabase = this.getWritableDatabase();
+    ContentValues cv = new ContentValues();
+    cv.put(COLUMN_SEND_DATE, date);
+    sqLiteDatabase.update(TRIP_TABLE, cv, COLUMN_TRIP_ID + "=" + tripId, null);
+  }
+
   public void deleteRow(int tripId) {
+
     SQLiteDatabase sqLiteDatabase = this.getWritableDatabase();
     boolean b = sqLiteDatabase.delete(TRIP_TABLE, COLUMN_TRIP_ID + "=" + tripId, null) > 0;
 
     if (b) {
-      Log.i("TripDataBase", "deleteRow: = true");
+      Log.i("TripDataBase", "deleteRow: = true  "+ tripId);
     } else {
-      Log.i("TripDataBase", "deleteRow: = false");
+      Log.i("TripDataBase", "deleteRow: = false  "+tripId);
     }
   }
 
