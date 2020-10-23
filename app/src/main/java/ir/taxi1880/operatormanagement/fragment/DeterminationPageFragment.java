@@ -38,6 +38,8 @@ import ir.taxi1880.operatormanagement.dataBase.TripDataBase;
 import ir.taxi1880.operatormanagement.dataBase.TripModel;
 import ir.taxi1880.operatormanagement.dialog.GeneralDialog;
 import ir.taxi1880.operatormanagement.dialog.StationInfoDialog;
+import ir.taxi1880.operatormanagement.helper.DateHelper;
+import ir.taxi1880.operatormanagement.helper.NetworkUtil;
 import ir.taxi1880.operatormanagement.helper.StringHelper;
 import ir.taxi1880.operatormanagement.helper.TypefaceUtil;
 import ir.taxi1880.operatormanagement.model.StationInfoModel;
@@ -47,7 +49,6 @@ import ir.taxi1880.operatormanagement.push.AvaCrashReporter;
 public class DeterminationPageFragment extends Fragment {
   String TAG = DeterminationPageFragment.class.getSimpleName();
   Unbinder unbinder;
-  boolean isOriginSelected = false;
   boolean pressedRefresh = false;
   boolean isEnable = false;
   ArrayList<StationInfoModel> stationInfoModels;
@@ -87,7 +88,7 @@ public class DeterminationPageFragment extends Fragment {
 
   @OnClick(R.id.btnSubmit)
   void onSubmit() {
-    Log.i(TAG, "onSubmit: "+ counter);
+    Log.i(TAG, "onSubmit: " + counter);
     if (!MyApplication.prefManager.isStartGettingAddress()) {
       MyApplication.Toast("لطفا فعال شوید", Toast.LENGTH_SHORT);
       return;
@@ -96,7 +97,12 @@ public class DeterminationPageFragment extends Fragment {
       MyApplication.Toast("لطفا شماره ایستگاه را وارد کنید", Toast.LENGTH_SHORT);
       return;
     }
-//    if (tripModels.get(counter).getId())
+    if (tripModels.size() == 0) {
+      MyApplication.Toast("آدرسی برای ثبت موجود نیست", Toast.LENGTH_SHORT);
+      txtStation.setText("");
+      return;
+    }
+
     setStationCode(MyApplication.prefManager.getUserCode(), tripModels.get(counter).getId(), Integer.parseInt(txtStation.getText().toString()));
 
   }
@@ -124,7 +130,13 @@ public class DeterminationPageFragment extends Fragment {
       return;
     }
     pressedRefresh = true;
-    getAddressList();
+    imgRefresh.startAnimation(AnimationUtils.loadAnimation(MyApplication.context, R.anim.rotate));
+    MyApplication.handler.postDelayed(new Runnable() {
+      @Override
+      public void run() {
+        getAddressList();
+      }
+    }, 500);
   }
 
   @OnClick(R.id.btnActivate)
@@ -135,8 +147,8 @@ public class DeterminationPageFragment extends Fragment {
   @OnClick(R.id.btnDeActivate)
   void onDeActivePress() {
     changeStatus(false);
-    getAddressList();
     //TODO show address
+//    getAddressList();
   }
 
   @Override
@@ -153,14 +165,11 @@ public class DeterminationPageFragment extends Fragment {
     for (int numberCount = 0; numberCount < 10; numberCount++) {
       View grid = (View) gridNumber.getChildAt(numberCount);
       int count = numberCount;
-      grid.setOnClickListener(new View.OnClickListener() {
-        @Override
-        public void onClick(View view) {
-          if (count == 9) {
-            setNumber("0");
-          } else {
-            setNumber(count + 1 + "");
-          }
+      grid.setOnClickListener(view1 -> {
+        if (count == 9) {
+          setNumber("0");
+        } else {
+          setNumber(count + 1 + "");
         }
       });
     }
@@ -179,13 +188,14 @@ public class DeterminationPageFragment extends Fragment {
   }
 
   private void getAddressList() {
-    if (pressedRefresh) {
-      imgRefresh.startAnimation(AnimationUtils.loadAnimation(MyApplication.context, R.anim.rotate));
+    if (NetworkUtil.getConnectivityStatus(MyApplication.context) == NetworkUtil.TYPE_NOT_CONNECTED) {
+      imgRefresh.clearAnimation();
+      return;
     }
+
     RequestHelper.builder(EndPoints.GET_TRIP_WITH_ZERO_STATION)
             .listener(getAddressList)
             .get();
-
   }
 
   RequestHelper.Callback getAddressList = new RequestHelper.Callback() {
@@ -230,6 +240,14 @@ public class DeterminationPageFragment extends Fragment {
                 tripDataBase.insertTripRow(tripModel);
               }
 
+              if (tripDataBase.getTripRow().size() == 0) {
+                txtAddress.setText("آدرسی موجود نیست...");
+                resetCounter();
+              } else {
+                tripModels = tripDataBase.getTripRow();
+                setAddress(counter);
+              }
+
               if (isEnable) {
                 tripModels = tripDataBase.getTripRow();
                 setAddress(counter);
@@ -237,9 +255,9 @@ public class DeterminationPageFragment extends Fragment {
               }
 
               if (pressedRefresh) {
-                pressedRefresh = false;
                 tripModels = tripDataBase.getTripRow();
                 setAddress(counter);
+                pressedRefresh = false;
               }
 
             } else {
@@ -264,6 +282,7 @@ public class DeterminationPageFragment extends Fragment {
         @Override
         public void run() {
           pressedRefresh = false;
+          imgRefresh.clearAnimation();
           isEnable = false;
         }
       });
@@ -272,8 +291,8 @@ public class DeterminationPageFragment extends Fragment {
 
   private void changeStatus(boolean status) {
     if (status) {
-      startGetAddressTimer();
       isEnable = true;
+      startGetAddressTimer();
       MyApplication.prefManager.setStartGettingAddress(true);
       if (btnActivate != null)
         btnActivate.setBackgroundResource(R.drawable.bg_green_edge);
@@ -395,7 +414,7 @@ public class DeterminationPageFragment extends Fragment {
           boolean success = obj.getBoolean("success");
           String message = obj.getString("message");
           JSONObject dataArr = obj.getJSONObject("data");
-          boolean status = dataArr.getBoolean("status");
+          boolean status = false;
 
           if (status) {
             tripDataBase.deleteRow(tripModels.get(counter).getId());
@@ -403,8 +422,12 @@ public class DeterminationPageFragment extends Fragment {
             txtStation.setText("");
             setAddress(counter);
           } else {
+            //TODO does it work?
             @SuppressLint("SimpleDateFormat") String currentDate = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date());
             tripDataBase.insertSendDate(tripModels.get(counter).getId(), currentDate);
+            counter = counter + 1;
+            txtStation.setText("");
+            setAddress(counter);
           }
 
         } catch (JSONException e) {
@@ -427,11 +450,16 @@ public class DeterminationPageFragment extends Fragment {
   @SuppressLint("SetTextI18n")
   private void setAddress(int counter) {
     if (tripModels.size() > counter) {
-      address = tripModels.get(counter).getOriginText();
-      txtAddress.setText(address);
-      txtRemainingAddress.setText(tripModels.size() - (counter + 1) + " آدرس ");
+      if (tripModels.get(counter).getSendDate() == null || DateHelper.parseFormat(tripModels.get(counter).getSendDate(),null).getTime() + 30000 > DateHelper.getCurrentGregorianDate().getTime()){
+        Log.i(TAG, "setAddress: "+ DateHelper.parseFormat(tripModels.get(counter).getSendDate(),null).getTime() + 30000);
+        //TODO Iam here
+      }
+        address = tripModels.get(counter).getOriginText();
+      txtAddress.setText(tripModels.get(counter).getCity() + " , " + address);
+      txtRemainingAddress.setText(tripModels.size() - (counter + 1) + " آدرس باقی مانده ");
       Log.i(TAG, "setAddress: " + tripModels.get(counter).getOriginText());
     } else {
+      resetCounter();
       txtAddress.setText("آدرسی موجود نیست...");
       txtRemainingAddress.setText(" ");
     }
@@ -456,19 +484,25 @@ public class DeterminationPageFragment extends Fragment {
   }
 
   private void stopGetAddressTimer() {
-    if (addressTimer != null) {
-      addressTimer.cancel();
+    try {
+      if (addressTimer != null) {
+        addressTimer.cancel();
+        addressTimer = null;
+      }
+    } catch (Exception e) {
+      e.printStackTrace();
     }
+  }
+
+  private void resetCounter() {
+    counter = 0;
   }
 
   @Override
   public void onDestroyView() {
     super.onDestroyView();
     unbinder.unbind();
-    //TODO it is right?
-    if (addressTimer != null) {
-      addressTimer.cancel();
-    }
+    stopGetAddressTimer();
   }
 
 }

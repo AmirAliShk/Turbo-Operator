@@ -109,6 +109,11 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="1" />
 
+                <View
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1" />
+
                 <LinearLayout
                     android:id="@+id/llCallSupport"
                     android:layout_width="0dp"
@@ -141,6 +146,7 @@
                     android:layout_weight="1" />
 
                 <LinearLayout
+                    android:visibility="gone"
                     android:id="@+id/llLastConversation"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
