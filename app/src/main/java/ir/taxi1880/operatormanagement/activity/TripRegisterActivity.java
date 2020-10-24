@@ -1422,6 +1422,7 @@ public class TripRegisterActivity extends AppCompatActivity {
             .addParam("defaultClass", defaultClass)
             .addParam("count", count)
             .addParam("queue", queue)
+            .addParam("senderClient", 0)
             .listener(insertService)
             .post();
 

@@ -18,9 +18,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -54,7 +52,7 @@ public class DeterminationPageFragment extends Fragment {
   ArrayList<StationInfoModel> stationInfoModels;
   ArrayList<TripModel> tripModels;
   TripDataBase tripDataBase;
-  Timer addressTimer;
+  Timer timer;
   String address;
   int counter = 0;
 
@@ -247,7 +245,6 @@ public class DeterminationPageFragment extends Fragment {
                 tripModels = tripDataBase.getTripRow();
                 setAddress(counter);
               }
-
               if (isEnable) {
                 tripModels = tripDataBase.getTripRow();
                 setAddress(counter);
@@ -292,6 +289,8 @@ public class DeterminationPageFragment extends Fragment {
   private void changeStatus(boolean status) {
     if (status) {
       isEnable = true;
+      txtRemainingAddress.setText("");
+      txtAddress.setText("آدرسی موجود نیست...");
       startGetAddressTimer();
       MyApplication.prefManager.setStartGettingAddress(true);
       if (btnActivate != null)
@@ -357,6 +356,7 @@ public class DeterminationPageFragment extends Fragment {
             if (!dataObj.getString("stationName").equals("")) {
               stationName = dataObj.getString("stationName");
             }
+            if (stationInfoModel.getStreet().isEmpty()) continue;
             stationInfoModels.add(stationInfoModel);
           }
           if (stationInfoModels.size() == 0) {
@@ -414,21 +414,17 @@ public class DeterminationPageFragment extends Fragment {
           boolean success = obj.getBoolean("success");
           String message = obj.getString("message");
           JSONObject dataArr = obj.getJSONObject("data");
-          boolean status = false;
+          boolean status = dataArr.getBoolean("status");
 
           if (status) {
             tripDataBase.deleteRow(tripModels.get(counter).getId());
-            counter = counter + 1;
-            txtStation.setText("");
-            setAddress(counter);
           } else {
-            //TODO does it work?
-            @SuppressLint("SimpleDateFormat") String currentDate = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date());
-            tripDataBase.insertSendDate(tripModels.get(counter).getId(), currentDate);
-            counter = counter + 1;
-            txtStation.setText("");
-            setAddress(counter);
+            tripDataBase.update(tripModels.get(counter).getId(), DateHelper.getCurrentGregorianDate().toString());
           }
+
+          counter = counter + 1;
+          txtStation.setText("");
+          setAddress(counter);
 
         } catch (JSONException e) {
           e.printStackTrace();
@@ -450,14 +446,13 @@ public class DeterminationPageFragment extends Fragment {
   @SuppressLint("SetTextI18n")
   private void setAddress(int counter) {
     if (tripModels.size() > counter) {
-      if (tripModels.get(counter).getSendDate() == null || DateHelper.parseFormat(tripModels.get(counter).getSendDate(),null).getTime() + 30000 > DateHelper.getCurrentGregorianDate().getTime()){
-        Log.i(TAG, "setAddress: "+ DateHelper.parseFormat(tripModels.get(counter).getSendDate(),null).getTime() + 30000);
-        //TODO Iam here
-      }
+      String sendDate = tripModels.get(counter).getSendDate();
+      if (tripModels.get(counter).getSendDate() == null || (sendDate != null && DateHelper.parseFormat(sendDate, null).getTime() + 30000 > DateHelper.getCurrentGregorianDate().getTime())) {
         address = tripModels.get(counter).getOriginText();
-      txtAddress.setText(tripModels.get(counter).getCity() + " , " + address);
-      txtRemainingAddress.setText(tripModels.size() - (counter + 1) + " آدرس باقی مانده ");
-      Log.i(TAG, "setAddress: " + tripModels.get(counter).getOriginText());
+        txtAddress.setText(StringHelper.toPersianDigits(tripModels.get(counter).getCity() + " , " + address));
+        txtRemainingAddress.setText(StringHelper.toPersianDigits(tripModels.size() - (counter + 1) + " آدرس باقی مانده "));
+        Log.i(TAG, "setAddress: " + tripModels.get(counter).getOriginText());
+      }
     } else {
       resetCounter();
       txtAddress.setText("آدرسی موجود نیست...");
@@ -465,31 +460,32 @@ public class DeterminationPageFragment extends Fragment {
     }
   }
 
-  TimerTask addressTt = new TimerTask() {
-    @Override
-    public void run() {
-      getAddressList();
-    }
-  };
-
   private void startGetAddressTimer() {
     try {
-      if (addressTimer != null)
+      if (timer != null) {
         return;
-      addressTimer = new Timer();
-      addressTimer.scheduleAtFixedRate(addressTt, 0, 10000);
+      }
+      timer = new Timer();
+      timer.scheduleAtFixedRate(new TimerTask() {
+        @Override
+        public void run() {
+          getAddressList();
+        }
+      }, 0, 10000);
     } catch (Exception e) {
+      AvaCrashReporter.send(e, TAG + "2");
       e.printStackTrace();
     }
   }
 
   private void stopGetAddressTimer() {
     try {
-      if (addressTimer != null) {
-        addressTimer.cancel();
-        addressTimer = null;
+      if (timer != null) {
+        timer.cancel();
+        timer = null;
       }
     } catch (Exception e) {
+      AvaCrashReporter.send(e, TAG + "3");
       e.printStackTrace();
     }
   }
@@ -499,10 +495,15 @@ public class DeterminationPageFragment extends Fragment {
   }
 
   @Override
+  public void onDestroy() {
+    stopGetAddressTimer();
+    super.onDestroy();
+  }
+
+  @Override
   public void onDestroyView() {
     super.onDestroyView();
     unbinder.unbind();
-    stopGetAddressTimer();
   }
 
 }

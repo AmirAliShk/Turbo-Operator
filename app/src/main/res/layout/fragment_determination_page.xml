@@ -89,7 +89,7 @@
             android:gravity="center"
             android:padding="10dp"
             android:textColor="@color/colorBlack"
-            android:textSize="@dimen/text_title"
+            android:textSize="@dimen/text_22"
             android:textStyle="bold" />
 
         <LinearLayout
@@ -184,7 +184,7 @@
             android:gravity="center"
             android:padding="10dp"
             android:textColor="@color/colorBlack"
-            android:textSize="@dimen/text_title"
+            android:textSize="@dimen/text_22"
             android:textStyle="bold" />
 
         <androidx.gridlayout.widget.GridLayout

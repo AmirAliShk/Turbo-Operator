@@ -80,6 +80,7 @@ public class TripDataBase extends SQLiteOpenHelper {
         tripModel.setOriginText(cursor.getString(cursor.getColumnIndex(COLUMN_ORIGIN_TEXT)));
         tripModel.setOriginStation(cursor.getInt(cursor.getColumnIndex(COLUMN_ORIGIN_STATION)));
         tripModel.setSaveDate(cursor.getString(cursor.getColumnIndex(COLUMN_SAVE_DATE)));
+        tripModel.setSendDate(cursor.getString(cursor.getColumnIndex(COLUMN_SEND_DATE)));
         tripModel.setCity(cursor.getString(cursor.getColumnIndex(COLUMN_CITY)));
         tripModels.add(tripModel);
         cursor.moveToNext();
@@ -94,7 +95,12 @@ public class TripDataBase extends SQLiteOpenHelper {
     SQLiteDatabase sqLiteDatabase = this.getWritableDatabase();
     ContentValues cv = new ContentValues();
     cv.put(COLUMN_SEND_DATE, date);
-    sqLiteDatabase.update(TRIP_TABLE, cv, COLUMN_TRIP_ID + "=" + tripId, null);
+    sqLiteDatabase.update(TRIP_TABLE, cv, COLUMN_TRIP_ID + " = ? ", new String[]{String.valueOf(tripId)});
+  }
+
+  public void update(int tripId, String date) {
+    SQLiteDatabase db = this.getReadableDatabase();
+    db.execSQL("UPDATE " + TRIP_TABLE + " SET " + COLUMN_SEND_DATE + " = " + "'" + date + "' " + "WHERE " + COLUMN_TRIP_ID + " = " + "'" + tripId + "'");
   }
 
   public void deleteRow(int tripId) {
@@ -103,9 +109,9 @@ public class TripDataBase extends SQLiteOpenHelper {
     boolean b = sqLiteDatabase.delete(TRIP_TABLE, COLUMN_TRIP_ID + "=" + tripId, null) > 0;
 
     if (b) {
-      Log.i("TripDataBase", "deleteRow: = true  "+ tripId);
+      Log.i("TripDataBase", "deleteRow: = true  " + tripId);
     } else {
-      Log.i("TripDataBase", "deleteRow: = false  "+tripId);
+      Log.i("TripDataBase", "deleteRow: = false  " + tripId);
     }
   }
 

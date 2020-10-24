@@ -1,5 +1,7 @@
 package ir.taxi1880.operatormanagement.helper;
 
+import android.annotation.SuppressLint;
+
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -469,6 +471,7 @@ public class DateHelper {
     return date1;
   }
 
+  @SuppressLint("SimpleDateFormat")
   public static Date parseFormat(String date, String format) {
     try {
       DateFormat f;
@@ -485,15 +488,15 @@ public class DateHelper {
       return d;
     } catch (ParseException e) {
       e.printStackTrace();
-      AvaCrashReporter.send(e,"DateHelper class, parseFormat method");
+      AvaCrashReporter.send(e, "DateHelper class, parseFormat method");
       return null;
     }
   }
 
   /**
    * @param date <br>
-   * <b>return a value such as: <br>بعد از ظهر دوشنبه،30 دی، ساعت 18:00<b/><br>
-   * */
+   *             <b>return a value such as: <br>بعد از ظهر دوشنبه،30 دی، ساعت 18:00<b/><br>
+   */
   public static String strPersianDate(Date date) {
     DateHelper util = new DateHelper();
     SolarCalendar sc = util.new SolarCalendar(date);
@@ -503,8 +506,8 @@ public class DateHelper {
 
   /**
    * @param date <br>
-   * <b>return a value such as: <br>از دوشنبه 30 دی<b/><br>
-   * */
+   *             <b>return a value such as: <br>از دوشنبه 30 دی<b/><br>
+   */
   public static String strPersianTwo(Date date) {
     DateHelper util = new DateHelper();
     SolarCalendar sc = util.new SolarCalendar(date);
@@ -513,8 +516,8 @@ public class DateHelper {
 
   /**
    * @param date <br>
-   * <b>return a value such as: <br>دوشنبه 30 دی<b/><br>
-   * */
+   *             <b>return a value such as: <br>دوشنبه 30 دی<b/><br>
+   */
   public static String strPersianTree(Date date) {
     DateHelper util = new DateHelper();
     SolarCalendar sc = util.new SolarCalendar(date);
@@ -523,8 +526,8 @@ public class DateHelper {
 
   /**
    * @param date <br>
-   * <b>return a value such as: <br>دوشنبه 18:05<b/><br>
-   * */
+   *             <b>return a value such as: <br>دوشنبه 18:05<b/><br>
+   */
   public static String strPersianFour(Date date) {
     try {
       DateHelper util = new DateHelper();
@@ -532,15 +535,15 @@ public class DateHelper {
       return String.format(new Locale("en_US"), "%02d:%02d %s", date.getHours(), date.getMinutes(), sc.strWeekDay);
     } catch (Exception e) {
       e.printStackTrace();
-      AvaCrashReporter.send(e,"DateHelper class, strPersianFour method");
+      AvaCrashReporter.send(e, "DateHelper class, strPersianFour method");
       return "";
     }
   }
 
   /**
    * @param date <br>
-   * <b>return a value such as: <br>18:05<b/><br>
-   * */
+   *             <b>return a value such as: <br>18:05<b/><br>
+   */
   public static String strPersianFour1(Date date) {
     try {
       DateHelper util = new DateHelper();
@@ -548,46 +551,47 @@ public class DateHelper {
       return String.format(new Locale("en_US"), "%02d:%02d", date.getHours(), date.getMinutes());
     } catch (Exception e) {
       e.printStackTrace();
-      AvaCrashReporter.send(e,"DateHelper class, strPersianFour1 method");
+      AvaCrashReporter.send(e, "DateHelper class, strPersianFour1 method");
       return "";
     }
   }
 
   /**
    * @param date <br>
-   * <b>return a value such as: <br>1398/10/30 <b/><br>
-   * */
+   *             <b>return a value such as: <br>1398/10/30 <b/><br>
+   */
   public static String strPersianSeven(Date date) {
     try {
       DateHelper util = new DateHelper();
       SolarCalendar sc = util.new SolarCalendar(date);
-      return String.format(new Locale("en_US"), "%04d/%02d/%02d", sc.year,sc.month,sc.date);
+      return String.format(new Locale("en_US"), "%04d/%02d/%02d", sc.year, sc.month, sc.date);
     } catch (Exception e) {
       e.printStackTrace();
-      AvaCrashReporter.send(e,"DateHelper class, strPersianSeven method");
+      AvaCrashReporter.send(e, "DateHelper class, strPersianSeven method");
       return "";
     }
   }
 
   /**
    * @param date <br>
-   * <b>return a value such as: <br>30 دی 18:07<b/><br>
-   * */
+   *             <b>return a value such as: <br>30 دی 18:07<b/><br>
+   */
   public static String strPersianEghit(Date date) {
     try {
       DateHelper util = new DateHelper();
       SolarCalendar sc = util.new SolarCalendar(date);
-      return String.format(new Locale("en_US"), "%02d %s %02d:%02d", sc.date,sc.strMonth ,date.getHours(), date.getMinutes());
+      return String.format(new Locale("en_US"), "%02d %s %02d:%02d", sc.date, sc.strMonth, date.getHours(), date.getMinutes());
     } catch (Exception e) {
       e.printStackTrace();
-      AvaCrashReporter.send(e,"DateHelper class, strPersianEghit method");
+      AvaCrashReporter.send(e, "DateHelper class, strPersianEghit method");
       return "";
     }
   }
+
   /**
    * @param date <br>
-   * <b>return a value such as: <br>30 دی <b/><br>
-   * */
+   *             <b>return a value such as: <br>30 دی <b/><br>
+   */
   public static String strPersianTen(Date date) {
     DateHelper util = new DateHelper();
     SolarCalendar sc = util.new SolarCalendar(date);
@@ -596,8 +600,8 @@ public class DateHelper {
 
   /**
    * @param d <br>
-   * <b>return a value such as: <br>2020-01-20<b/><br>
-   * */
+   *          <b>return a value such as: <br>2020-01-20<b/><br>
+   */
   public static String strPersianFive(long d) {
     try {
       Calendar calendar = Calendar.getInstance();
@@ -609,15 +613,15 @@ public class DateHelper {
 
     } catch (Exception e) {
       e.printStackTrace();
-      AvaCrashReporter.send(e,"DateHelper class, strPersianFive method");
+      AvaCrashReporter.send(e, "DateHelper class, strPersianFive method");
       return "";
     }
   }
 
   /**
    * @param d <br>
-   * <b>return a value such as: <br>2020-01-20<b/><br>
-   * */
+   *          <b>return a value such as: <br>2020-01-20<b/><br>
+   */
   public static String strPersianSix(Date d) {
     return strPersianFive(d.getTime());
   }
@@ -661,7 +665,7 @@ public class DateHelper {
               , Integer.parseInt(time1[2])));
       return DateHelper.strPersianDate(d);
     } catch (Exception e) {
-      AvaCrashReporter.send(e,"DateHelper class, parseStrDate method");
+      AvaCrashReporter.send(e, "DateHelper class, parseStrDate method");
       return DateHelper.strPersianDate(new Date());
     }
   }
