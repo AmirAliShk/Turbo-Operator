@@ -143,7 +143,6 @@ public class DeterminationPageFragment extends Fragment {
 
     getAddressList();
     changeStatus(false);
-    //TODO show address
   }
 
   @Override
@@ -401,7 +400,7 @@ public class DeterminationPageFragment extends Fragment {
   private void setStationCode(int userId, int tripId, int stationCode) {
     RequestHelper.builder(EndPoints.UPDATE_TRIP_STATION)
             .addParam("userId", userId)
-            .addParam("tripId", tripId)
+            .addParam("tripId", StringHelper.toEnglishDigits(tripId + ""))
             .addParam("stationCode", StringHelper.toEnglishDigits(stationCode + ""))
             .listener(setStationCode)
             .put();

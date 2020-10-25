@@ -162,18 +162,6 @@ public class MainActivity extends AppCompatActivity implements NotificationFragm
     txtOperatorName.setText(MyApplication.prefManager.getOperatorName());
 //    txtOperatorCharge.setText(StringHelper.toPersianDigits(MyApplication.prefManager.getBalance() + " تومان "));
 
-    /*TODO :this is for test*/
-//    new NotificationHelper()
-//            .channelId("elahe")
-//            .channelName("elahe")
-//            .notificationId(123)
-//            .autoCancel(true)
-//            .notificationMessage(R.id.txtValue, "elahe")
-//            .collapsedView(R.layout.notification_collapsed)
-//            .clickableView(R.id.linearNotif)
-//            .startActivity("TripRegisterActivity")
-//            .smallIcon(R.drawable.ic_baseline_message_24)
-//            .show();
   }
 
   private void getBalance(int userId) {
@@ -275,6 +263,8 @@ public class MainActivity extends AppCompatActivity implements NotificationFragm
         super.onBackPressed();
       } else {
         if (doubleBackToExitPressedOnce) {
+          Log.i(TAG, "onBackPressed:exiiiiiiiiiiiiiiiiiiiiiiiiiiiiitte ");
+          MyApplication.prefManager.setStartGettingAddress(false);
 //          super.onBackPressed();
           finish();
         } else {
