@@ -103,7 +103,7 @@ public class SendReplacementAdapter extends BaseAdapter {
 
     } catch (Exception e) {
       e.printStackTrace();
-      AvaCrashReporter.send(e,"SendReplacementAdapter class, getView method");
+      AvaCrashReporter.send(e, "SendReplacementAdapter class, getView method");
     }
     return convertView;
   }
@@ -125,10 +125,10 @@ public class SendReplacementAdapter extends BaseAdapter {
 
   private void cancelRequest(int requestId) {
 
-      RequestHelper.builder(EndPoints.CANCEL_REPLACEMENT_REQUEST)
-              .addParam("requestId", requestId)
-              .listener(onCancel)
-              .post();
+    RequestHelper.builder(EndPoints.CANCEL_REPLACEMENT_REQUEST)
+            .addParam("requestId", requestId)
+            .listener(onCancel)
+            .post();
 
   }
 
@@ -141,12 +141,13 @@ public class SendReplacementAdapter extends BaseAdapter {
           int status = object.getInt("status");
           if (status == 1) {
             MyApplication.Toast("لغو درخواست با موفقیت انجام شد", Toast.LENGTH_SHORT);
-            new ViewHolder().btnCancel.setVisibility(View.GONE);
+            if (new ViewHolder().btnCancel != null)
+              new ViewHolder().btnCancel.setVisibility(View.GONE);
             notifyDataSetChanged();
           }
         } catch (Exception e) {
           e.printStackTrace();
-          AvaCrashReporter.send(e,"SendReplacementAdapter class, onCancel onResponse method");
+          AvaCrashReporter.send(e, "SendReplacementAdapter class, onCancel onResponse method");
         }
       });
     }

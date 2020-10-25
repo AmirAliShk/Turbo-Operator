@@ -3,19 +3,19 @@ Note: don't remove this file never never never....
 
 version 4:
 release on 1399/02/27 - 2020/05/16
-add bestScore,rewardList,scoreList.
+- add bestScore,rewardList,scoreList.
 
 version 6:
 release on 1399/03/14 - 2020/06/11
-This version only has acra to save crashes.
+- This version only has acra to save crashes.
 
 version 7:
 release on 1399/03/27 - 2020/06/16
-add avaCrashReporter to try/catch.
-The number of crashes dropped from 600 crashes per day to 4 crashed per user.
+- add avaCrashReporter to try/catch.
+- The number of crashes dropped from 600 crashes per day to 4 crashed per user.
 
 version 2000:
-This version is a version for avaCrashReporter test.
+- This version is a version for avaCrashReporter test.
 
 version 8:
 release on 1399/04/02 - 2020/06/22
@@ -26,18 +26,24 @@ remove bugs of version 7:
 versionCode 9, versionName 2.2 :
 This release was not used by anyone !
 release on 12/04/99
-change user activation with push
-add two type for push (message:(message=open messageFragment, announcement=open notificationFragment) , userStatus)
-When receiving the push, if the program is open, a dialog will appear, otherwise notification
+- change user activation with push
+- add two type for push (message:(message=open messageFragment, announcement=open notificationFragment) , userStatus)
+- When receiving the push, if the program is open, a dialog will appear, otherwise notification
 
 versionCode 10, versionName 2.3 :
 release on 02/05/99
-disable speaker when you call to support(950)
-set message for insertService response(get message Text from server)
+- disable speaker when you call to support(950)
+- set message for insertService response(get message Text from server)
 
 versionCode 11, versionName 2.3.1 :
-this version was for test.
+- this version was for test.
 
 versionCode 12, versionName 2.3.2 :
 release on 14/05/99
-change in submitService. citySpinner correction.
+- change in submitService. citySpinner correction.
+
+versionCode 14, versionName 2.5.0 :
+release on
+- add determinationFragment
+- remove all field related on origin and destination station...
+

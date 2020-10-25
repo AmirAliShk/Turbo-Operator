@@ -153,6 +153,9 @@
                 android:id="@+id/vfStationInfo"
                 android:layout_width="0dp"
                 android:layout_height="60dp"
+                android:layout_margin="5dp"
+                android:elevation="5dp"
+                android:padding="3dp"
                 android:layout_weight="0.5"
                 android:background="@drawable/bg_white_edge">
 
@@ -160,8 +163,6 @@
                     android:id="@+id/btnHelp"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:layout_margin="5dp"
-                    android:elevation="5dp"
                     android:padding="12dp"
                     android:src="@drawable/ic_info"
                     android:text="help" />

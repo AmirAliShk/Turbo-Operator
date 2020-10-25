@@ -91,6 +91,7 @@ public class TripRegisterActivity extends AppCompatActivity {
   private boolean isEnableView = false;
   private boolean isTellValidable = false;
   RipplePulseLayout mRipplePulseLayout;
+  ArrayList<CityModel> cityModels;
 
   String queue = "0";
   String voipId = "0";
@@ -270,6 +271,53 @@ public class TripRegisterActivity extends AppCompatActivity {
   private String getMobileNumber() {
     return edtMobile.getText().toString();
   }
+
+  @OnClick(R.id.imgAccept)
+  void onAcceptPress() {
+    call = core.getCurrentCall();
+    Call[] calls = core.getCalls();
+    int i = calls.length;
+    Log.i(TAG, "onRejectPress: " + i);
+    if (call != null) {
+      call.accept();
+//      if (getMobileNumber().isEmpty() && isTellValidable)
+//        MyApplication.handler.postDelayed(() -> onPressDownload(), 400);
+    } else if (calls.length > 0) {
+      calls[0].accept();
+    }
+  }
+
+  @OnClick(R.id.imgReject)
+  void onRejectPress() {
+    Core mCore = LinphoneService.getCore();
+    Call currentCall = mCore.getCurrentCall();
+    for (Call call : mCore.getCalls()) {
+      if (call != null && call.getConference() != null) {
+//        if (mCore.isInConference()) {
+//          displayConferenceCall(call);
+//          conferenceDisplayed = true;
+//        } else if (!pausedConferenceDisplayed) {
+//          displayPausedConference();
+//          pausedConferenceDisplayed = true;
+//        }
+      } else if (call != null && call != currentCall) {
+        Call.State state = call.getState();
+        if (state == Call.State.Paused
+                || state == Call.State.PausedByRemote
+                || state == Call.State.Pausing) {
+          call.terminate();
+        }
+      } else if (call != null && call == currentCall) {
+        call.terminate();
+      }
+    }
+  }
+
+  @BindView(R.id.txtCallerNum)
+  TextView txtCallerNum;
+
+  Core core;
+  Call call;
 
   byte carClass = 0;
   public static boolean isRunning = false;
@@ -480,6 +528,28 @@ public class TripRegisterActivity extends AppCompatActivity {
 
   @BindView(R.id.vfSubmit)
   ViewFlipper vfSubmit;
+
+  @OnFocusChange(R.id.edtTell)
+  void onChangeFocus(boolean v) {
+    if (v) {
+      if (getTellNumber().trim().isEmpty()) {
+        try {
+          Core core = LinphoneService.getCore();
+          Call[] calls = core.getCalls();
+          for (Call callList : calls) {
+            if (callList.getState() == Call.State.Connected) {
+              call = core.getCurrentCall();
+              Address address = call.getRemoteAddress();
+              edtTell.setText(address.getUsername());
+            }
+          }
+        } catch (Exception e) {
+          e.printStackTrace();
+          AvaCrashReporter.send(e, "callIncomingActivity");
+        }
+      }
+    }
+  }
 
   String permanentDesc = "";
 
@@ -732,8 +802,6 @@ public class TripRegisterActivity extends AppCompatActivity {
       AvaCrashReporter.send(e, "TripRegisterActivity class, initServiceTypeSpinner method");
     }
   }
-
-  ArrayList<CityModel> cityModels;
 
   private void initCitySpinner() {
     cityModels = new ArrayList<>();
@@ -997,69 +1065,6 @@ public class TripRegisterActivity extends AppCompatActivity {
     }
   };
 
-  private void getCheckOriginStation(int cityCode, int stationCode) {
-    RequestHelper.builder(EndPoints.CHECK_STATION)
-            .addPath(cityCode + "")
-            .addPath(stationCode + "")
-            .listener(getCheckOriginStation)
-            .get();
-
-  }
-
-  RequestHelper.Callback getCheckOriginStation = new RequestHelper.Callback() {
-    @Override
-    public void onResponse(Runnable reCall, Object... args) {
-      MyApplication.handler.post(new Runnable() {
-        @Override
-        public void run() {
-          try {
-            Log.i(TAG, "onResponse: " + args[0].toString());
-            JSONObject obj = new JSONObject(args[0].toString());
-            boolean success = obj.getBoolean("success");
-            String message = obj.getString("message");
-
-            JSONObject dataObj = obj.getJSONObject("data");
-            int status = dataObj.getInt("status");
-            String desc = dataObj.getString("descriptionStatus");
-
-            if (vfSubmit != null)
-              vfSubmit.setDisplayedChild(0);
-
-            if (status != 0) {
-              new GeneralDialog()
-                      .title("منطقه مبدا")
-                      .message(desc)
-                      .firstButton("اصلاح میکنم", new Runnable() {
-                        @Override
-                        public void run() {
-                        }
-                      })
-                      .show();
-              return;
-            }
-
-            callInsertService();
-
-          } catch (JSONException e) {
-            e.printStackTrace();
-            AvaCrashReporter.send(e, "TripRegisterActivity class, getCheckOriginStation onResponse method");
-          }
-        }
-      });
-    }
-
-    @Override
-    public void onFailure(Runnable reCall, Exception e) {
-      MyApplication.handler.post(new Runnable() {
-        @Override
-        public void run() {
-          if (vfSubmit != null)
-            vfSubmit.setDisplayedChild(0);
-        }
-      });
-    }
-  };
-
   private void callInsertService() {
     String mobile = isTellValidable && getMobileNumber().isEmpty() ? "0" : getMobileNumber();
     String tell = getTellNumber();
@@ -1112,152 +1117,7 @@ public class TripRegisterActivity extends AppCompatActivity {
             .show();
   }
 
-  private void getCheckDestStation(int cityCode, int stationCode) {
-    RequestHelper.builder(EndPoints.CHECK_STATION)
-            .addPath(cityCode + "")
-            .addPath(stationCode + "")
-            .listener(getCheckDestStation)
-            .get();
-
-  }
-
-  RequestHelper.Callback getCheckDestStation = new RequestHelper.Callback() {
-    @Override
-    public void onResponse(Runnable reCall, Object... args) {
-      MyApplication.handler.post(new Runnable() {
-        @Override
-        public void run() {
-          try {
-            Log.i(TAG, "onResponse: " + args[0].toString());
-            JSONObject obj = new JSONObject(args[0].toString());
-            boolean success = obj.getBoolean("success");
-            String message = obj.getString("message");
-
-            JSONObject dataObj = obj.getJSONObject("data");
-            int status = dataObj.getInt("status");
-            String desc = dataObj.getString("descriptionStatus");
-
-            if (status != 0) {
-              new GeneralDialog()
-                      .title("منطقه مقصد")
-                      .message(desc)
-                      .firstButton("اصلاح میکنم", new Runnable() {
-                        @Override
-                        public void run() {
-//                          if (edtDestination != null)
-//                            edtDestination.requestFocus();
-                        }
-                      })
-                      .show();
-              return;
-            }
-
-          } catch (JSONException e) {
-            e.printStackTrace();
-            AvaCrashReporter.send(e, "TripRegisterActivity class, getCheckDestStation onResponse method");
-          }
-        }
-      });
-    }
-
-    @Override
-    public void onFailure(Runnable reCall, Exception e) {
-
-    }
-  };
-
-  private void getStationInfo(String stationCode) {
-    LoadingDialog.makeCancelableLoader();
-    RequestHelper.builder(EndPoints.STATION_INFO)
-            .addPath(stationCode + "")
-            .listener(getStationInfo)
-            .get();
-
-  }
-
-  @OnFocusChange(R.id.edtTell)
-  void onChangeFocus(boolean v) {
-    if (v) {
-      if (getTellNumber().trim().isEmpty()) {
-        try {
-          Core core = LinphoneService.getCore();
-          Call[] calls = core.getCalls();
-          for (Call callList : calls) {
-            if (callList.getState() == Call.State.Connected) {
-              call = core.getCurrentCall();
-              Address address = call.getRemoteAddress();
-              edtTell.setText(address.getUsername());
-            }
-          }
-        } catch (Exception e) {
-          e.printStackTrace();
-          AvaCrashReporter.send(e, "callIncomingActivity");
-        }
-      }
-    }
-  }
-
   ArrayList<StationInfoModel> stationInfoModels;
-
-  RequestHelper.Callback getStationInfo = new RequestHelper.Callback() {
-    @Override
-    public void onResponse(Runnable reCall, Object... args) {
-      MyApplication.handler.post(new Runnable() {
-        @Override
-        public void run() {
-          try {
-            boolean isCountrySide = false;
-            String stationName = "";
-            LoadingDialog.dismissCancelableDialog();
-            Log.i(TAG, "onResponse: " + args[0].toString());
-            stationInfoModels = new ArrayList<>();
-            JSONObject obj = new JSONObject(args[0].toString());
-            boolean success = obj.getBoolean("success");
-            String message = obj.getString("message");
-            JSONArray dataArr = obj.getJSONArray("data");
-            for (int i = 0; i < dataArr.length(); i++) {
-              JSONObject dataObj = dataArr.getJSONObject(i);
-              StationInfoModel stationInfoModel = new StationInfoModel();
-              stationInfoModel.setStcode(dataObj.getInt("stcode"));
-              stationInfoModel.setStreet(dataObj.getString("street"));
-              stationInfoModel.setOdd(dataObj.getString("odd"));
-              stationInfoModel.setEven(dataObj.getString("even"));
-              stationInfoModel.setStationName(dataObj.getString("stationName"));
-              stationInfoModel.setCountrySide(dataObj.getInt("countrySide"));
-              if (dataObj.getInt("countrySide") == 1) {
-                isCountrySide = true;
-              } else {
-                isCountrySide = false;
-              }
-
-              if (!dataObj.getString("stationName").equals("")) {
-                stationName = dataObj.getString("stationName");
-              }
-              stationInfoModels.add(stationInfoModel);
-            }
-            if (stationInfoModels.size() == 0) {
-              MyApplication.Toast("اطلاعاتی موجود نیست", Toast.LENGTH_SHORT);
-            } else {
-//              if (stationName.equals("")) {
-//                new StationInfoDialog().show(stationInfoModels, "کد ایستگاه : " + edtOrigin.getText().toString(), isCountrySide);
-//              } else {
-//                new StationInfoDialog().show(stationInfoModels, stationName + " \n " + "کد ایستگاه : " + edtOrigin.getText().toString(), isCountrySide);
-//              }
-            }
-
-          } catch (JSONException e) {
-            e.printStackTrace();
-            AvaCrashReporter.send(e, "TripRegisterActivity class, getStationInfo onResponse method");
-          }
-        }
-      });
-    }
-
-    @Override
-    public void onFailure(Runnable reCall, Exception e) {
-      MyApplication.handler.post(LoadingDialog::dismiss);
-    }
-  };
 
   private void setActivate(int userId, int sipNumber) {
 
@@ -1862,53 +1722,6 @@ public class TripRegisterActivity extends AppCompatActivity {
             .show();
 
   }
-
-  @OnClick(R.id.imgAccept)
-  void onAcceptPress() {
-    call = core.getCurrentCall();
-    Call[] calls = core.getCalls();
-    int i = calls.length;
-    Log.i(TAG, "onRejectPress: " + i);
-    if (call != null) {
-      call.accept();
-//      if (getMobileNumber().isEmpty() && isTellValidable)
-//        MyApplication.handler.postDelayed(() -> onPressDownload(), 400);
-    } else if (calls.length > 0) {
-      calls[0].accept();
-    }
-  }
-
-  @OnClick(R.id.imgReject)
-  void onRejectPress() {
-    Core mCore = LinphoneService.getCore();
-    Call currentCall = mCore.getCurrentCall();
-    for (Call call : mCore.getCalls()) {
-      if (call != null && call.getConference() != null) {
-//        if (mCore.isInConference()) {
-//          displayConferenceCall(call);
-//          conferenceDisplayed = true;
-//        } else if (!pausedConferenceDisplayed) {
-//          displayPausedConference();
-//          pausedConferenceDisplayed = true;
-//        }
-      } else if (call != null && call != currentCall) {
-        Call.State state = call.getState();
-        if (state == Call.State.Paused
-                || state == Call.State.PausedByRemote
-                || state == Call.State.Pausing) {
-          call.terminate();
-        }
-      } else if (call != null && call == currentCall) {
-        call.terminate();
-      }
-    }
-  }
-
-  @BindView(R.id.txtCallerNum)
-  TextView txtCallerNum;
-
-  Core core;
-  Call call;
 
   private void showCallIncoming() {
     mRipplePulseLayout.startRippleAnimation();

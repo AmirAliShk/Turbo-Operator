@@ -57,14 +57,14 @@ public class TripDataBase extends SQLiteOpenHelper {
       contentValues.put(COLUMN_ORIGIN_TEXT, tripModel.getOriginText());
       contentValues.put(COLUMN_ORIGIN_STATION, tripModel.getOriginStation());
       contentValues.put(COLUMN_SAVE_DATE, tripModel.getSaveDate());
+      contentValues.put(COLUMN_SEND_DATE, tripModel.getSendDate());
       contentValues.put(COLUMN_CITY, tripModel.getCity());
       //TODO insert with conflict or without
       // this will insert if record is new, update otherwise
-      sqLiteDatabase.insertWithOnConflict(TRIP_TABLE, COLUMN_TRIP_ID, contentValues, SQLiteDatabase.CONFLICT_REPLACE);
+      sqLiteDatabase.insertWithOnConflict(TRIP_TABLE, null, contentValues, SQLiteDatabase.CONFLICT_REPLACE);
     } catch (Exception e) {
       e.printStackTrace();
     }
-
   }
 
   public ArrayList<TripModel> getTripRow() {
@@ -91,16 +91,19 @@ public class TripDataBase extends SQLiteOpenHelper {
     return tripModels;
   }
 
-  public void insertSendDate(int tripId, String date) {
+  public int insertSendDate(int tripId, String date) {
     SQLiteDatabase sqLiteDatabase = this.getWritableDatabase();
     ContentValues cv = new ContentValues();
     cv.put(COLUMN_SEND_DATE, date);
-    sqLiteDatabase.update(TRIP_TABLE, cv, COLUMN_TRIP_ID + " = ? ", new String[]{String.valueOf(tripId)});
+    int i = sqLiteDatabase.update(TRIP_TABLE, cv, COLUMN_TRIP_ID + " = " + tripId, null);
+    Log.i("TAG", "insertSendDate:update=== "+i);
+    return i;
   }
 
   public void update(int tripId, String date) {
     SQLiteDatabase db = this.getReadableDatabase();
-    db.execSQL("UPDATE " + TRIP_TABLE + " SET " + COLUMN_SEND_DATE + " = " + "'" + date + "' " + "WHERE " + COLUMN_TRIP_ID + " = " + "'" + tripId + "'");
+    db.execSQL("UPDATE Trip SET sendDate = " + "'" + date + "'" + " WHERE tripId = " + "'" + tripId + "'");
+    //    update Trip set sendDate='12345' where tripId='39403'
   }
 
   public void deleteRow(int tripId) {
@@ -117,7 +120,7 @@ public class TripDataBase extends SQLiteOpenHelper {
 
   public void deleteAllData() {
     SQLiteDatabase sqLiteDatabase = this.getWritableDatabase();
-    sqLiteDatabase.execSQL("delete from " + TRIP_TABLE);
+    sqLiteDatabase.delete(TRIP_TABLE, null, null);
   }
 
 }
