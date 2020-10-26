@@ -77,7 +77,7 @@ public class PlayLastConversationDialog {
   @BindView(R.id.vfPlayPause)
   ViewFlipper vfPlayPause;
 
-  public void show( String serviceId, String urlString) {
+  public void show( int serviceId, String urlString) {
     if (MyApplication.currentActivity == null || MyApplication.currentActivity.isFinishing())
       return;
     dialog = new Dialog(MyApplication.currentActivity);

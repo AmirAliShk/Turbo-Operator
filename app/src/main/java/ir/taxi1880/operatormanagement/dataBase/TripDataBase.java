@@ -61,7 +61,7 @@ public class TripDataBase extends SQLiteOpenHelper {
       contentValues.put(COLUMN_CITY, tripModel.getCity());
       //TODO insert with conflict or without
       // this will insert if record is new, update otherwise
-      sqLiteDatabase.insertWithOnConflict(TRIP_TABLE, null, contentValues, SQLiteDatabase.CONFLICT_REPLACE);
+      sqLiteDatabase.insertWithOnConflict(TRIP_TABLE, COLUMN_TRIP_ID, contentValues, SQLiteDatabase.CONFLICT_REPLACE);
     } catch (Exception e) {
       e.printStackTrace();
     }
@@ -96,7 +96,7 @@ public class TripDataBase extends SQLiteOpenHelper {
     ContentValues cv = new ContentValues();
     cv.put(COLUMN_SEND_DATE, date);
     int i = sqLiteDatabase.update(TRIP_TABLE, cv, COLUMN_TRIP_ID + " = " + tripId, null);
-    Log.i("TAG", "insertSendDate:update=== "+i);
+    Log.i("TAG", "insertSendDate:update=== " + i);
     return i;
   }
 
