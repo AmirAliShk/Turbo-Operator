@@ -140,8 +140,6 @@ public class DeterminationPageFragment extends Fragment {
 
   @OnClick(R.id.btnDeActivate)
   void onDeActivePress() {
-
-    getAddressList();
     changeStatus(false);
   }
 
@@ -183,7 +181,12 @@ public class DeterminationPageFragment extends Fragment {
 
   private void getAddressList() {
     if (NetworkUtil.getConnectivityStatus(MyApplication.context) == NetworkUtil.TYPE_NOT_CONNECTED) {
-      imgRefresh.clearAnimation();
+      MyApplication.currentActivity.runOnUiThread(new Runnable() {
+        @Override
+        public void run() {
+          imgRefresh.clearAnimation();
+        }
+      });
       return;
     }
 
@@ -250,6 +253,7 @@ public class DeterminationPageFragment extends Fragment {
                 setAddress(counter);
               }
 
+
               if (isEnable) {
                 tripModels = tripDataBase.getTripRow();
                 setAddress(counter);
@@ -305,6 +309,9 @@ public class DeterminationPageFragment extends Fragment {
         btnDeActivate.setTextColor(Color.parseColor("#000000"));
       }
     } else {
+      if (isEnable) {
+        getAddressList();
+      }
       isEnable = false;
       txtAddress.setText("برای مشاهده آدرس ها فعال شوید");
       txtRemainingAddress.setText("");
@@ -461,13 +468,18 @@ public class DeterminationPageFragment extends Fragment {
 //        }
       address = tripModels.get(counter).getOriginText();
       txtAddress.setText(StringHelper.toPersianDigits(tripModels.get(counter).getCity() + " , " + address));
-      txtRemainingAddress.setText(StringHelper.toPersianDigits(tripModels.size() - (counter + 1) + " آدرس باقی مانده "));
+      txtRemainingAddress.setText("تعداد آدرس های ثبت نشده : " + StringHelper.toPersianDigits(tripModels.size() - (counter + 1) + ""));
       Log.i(TAG, "setAddress: " + tripModels.get(counter).getOriginText());
 //      }
     } else {
       resetCounter();
-      txtAddress.setText("آدرسی موجود نیست...");
-      txtRemainingAddress.setText(" ");
+      if (!MyApplication.prefManager.isStartGettingAddress()) {
+        txtAddress.setText("برای مشاهده آدرس ها فعال شوید");
+        txtRemainingAddress.setText("");
+      } else {
+        txtAddress.setText("آدرسی موجود نیست...");
+        txtRemainingAddress.setText(" ");
+      }
     }
   }
 
