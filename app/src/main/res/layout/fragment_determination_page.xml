@@ -7,8 +7,7 @@
     android:background="@color/colorPrimaryLighter"
     android:clickable="true"
     android:layoutDirection="rtl"
-    android:orientation="vertical"
-    tools:context=".fragment.DeterminationPageFragment">
+    android:orientation="vertical">
 
     <RelativeLayout
         android:id="@+id/rlActionBar"
@@ -190,6 +189,7 @@
                 android:id="@+id/imgNextAddress"
                 android:layout_width="65dp"
                 android:layout_height="60dp"
+                android:visibility="invisible"
                 android:layout_margin="5dp"
                 android:background="@drawable/bg_white_edge"
                 android:elevation="5dp"

@@ -12,6 +12,7 @@ import java.util.ArrayList;
 
 public class TripDataBase extends SQLiteOpenHelper {
   private static int VERSION = 1;
+  //TODO Do not change names any way
   private static String DB_NAME = "operators";
   private static String TRIP_TABLE = "Trip";
 
@@ -60,7 +61,7 @@ public class TripDataBase extends SQLiteOpenHelper {
       contentValues.put(COLUMN_SEND_DATE, tripModel.getSendDate());
       contentValues.put(COLUMN_CITY, tripModel.getCity());
       //TODO insert with conflict or without
-      // this will insert if record is new, update otherwise
+      // this will insert, if record is new, replace otherwise
       sqLiteDatabase.insertWithOnConflict(TRIP_TABLE, COLUMN_TRIP_ID, contentValues, SQLiteDatabase.CONFLICT_REPLACE);
     } catch (Exception e) {
       e.printStackTrace();
@@ -89,6 +90,64 @@ public class TripDataBase extends SQLiteOpenHelper {
       e.printStackTrace();
     }
     return tripModels;
+  }
+
+  int current = 0;
+
+  public TripModel getTopAddress() {
+    TripModel tripModel = new TripModel();
+    SQLiteDatabase sqLiteDatabase = this.getReadableDatabase();
+    try {
+      @SuppressLint("Recycle") Cursor cursor = sqLiteDatabase.rawQuery("select * from " + TRIP_TABLE + " ORDER BY " + COLUMN_TRIP_ID + " ASC LIMIT 1 ; ", null);
+      if (cursor != null) {
+        cursor.moveToFirst();
+        if (cursor.isFirst()) {
+          tripModel.setId(cursor.getInt(cursor.getColumnIndex(COLUMN_TRIP_ID)));
+          tripModel.setOriginText(cursor.getString(cursor.getColumnIndex(COLUMN_ORIGIN_TEXT)));
+          tripModel.setOriginStation(cursor.getInt(cursor.getColumnIndex(COLUMN_ORIGIN_STATION)));
+          tripModel.setSaveDate(cursor.getString(cursor.getColumnIndex(COLUMN_SAVE_DATE)));
+          tripModel.setSendDate(cursor.getString(cursor.getColumnIndex(COLUMN_SEND_DATE)));
+          tripModel.setCity(cursor.getString(cursor.getColumnIndex(COLUMN_CITY)));
+          current = cursor.getPosition();
+          return tripModel;
+        } else {
+          current = 0;
+          return null;
+        }
+      }
+    } catch (Exception e) {
+      e.printStackTrace();
+    }
+    return null;
+  }
+
+  public boolean goToNextRecord() {
+    SQLiteDatabase sqLiteDatabase = this.getReadableDatabase();
+    Cursor cursor = sqLiteDatabase.rawQuery("select * from " + TRIP_TABLE, null);
+    if (cursor != null && current != 0) {
+      cursor.moveToPosition(current + 1);
+      return true;
+    } else {
+      //TODO do sth
+      if (cursor != null) {
+        cursor.close();
+      }
+      return false;
+    }
+  }
+
+  public String getCityName() {
+    //TODO complete this with outer join.
+    return "";
+  }
+
+  public int getRemainingAddress() {
+    String countQuery = "SELECT  * FROM " + TRIP_TABLE;
+    SQLiteDatabase db = this.getReadableDatabase();
+    Cursor cursor = db.rawQuery(countQuery, null);
+    int count = cursor.getCount();
+    cursor.close();
+    return count;
   }
 
   public int insertSendDate(int tripId, String date) {
@@ -121,6 +180,11 @@ public class TripDataBase extends SQLiteOpenHelper {
   public void deleteAllData() {
     SQLiteDatabase sqLiteDatabase = this.getWritableDatabase();
     sqLiteDatabase.delete(TRIP_TABLE, null, null);
+  }
+
+  public void deleteRemainingRecord(int tripId) {
+    SQLiteDatabase sqLiteDatabase = this.getWritableDatabase();
+    sqLiteDatabase.delete(TRIP_TABLE, COLUMN_TRIP_ID + "!=" + tripId, null);
   }
 
 }

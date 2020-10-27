@@ -26,9 +26,9 @@ import ir.taxi1880.operatormanagement.app.EndPoints;
 import ir.taxi1880.operatormanagement.app.MyApplication;
 import ir.taxi1880.operatormanagement.dialog.GeneralDialog;
 import ir.taxi1880.operatormanagement.fragment.AccountFragment;
+import ir.taxi1880.operatormanagement.fragment.DeterminationPageFragment2;
 import ir.taxi1880.operatormanagement.fragment.MessageFragment;
 import ir.taxi1880.operatormanagement.fragment.NotificationFragment;
-import ir.taxi1880.operatormanagement.fragment.DeterminationPageFragment;
 import ir.taxi1880.operatormanagement.fragment.ScoresFragment;
 import ir.taxi1880.operatormanagement.fragment.ShiftFragment;
 import ir.taxi1880.operatormanagement.helper.FragmentHelper;
@@ -59,8 +59,9 @@ public class MainActivity extends AppCompatActivity implements NotificationFragm
               .firstButton("باشه", null)
               .show();
     } else {
+      //TODO correct fragment name
       FragmentHelper
-              .toFragment(MyApplication.currentActivity, new DeterminationPageFragment())
+              .toFragment(MyApplication.currentActivity, new DeterminationPageFragment2())
               .replace();
     }
   }

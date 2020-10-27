@@ -9,6 +9,7 @@ import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.AdapterView;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -38,8 +39,9 @@ public class StationInfoDialog {
   private Listener listener;
   private static Dialog dialog;
 
-  public void show(ArrayList<StationInfoModel> stationInfoModels,String title,boolean isCountrySide) {
-    if (MyApplication.currentActivity==null|| MyApplication.currentActivity.isFinishing())return;
+  public void show(ArrayList<StationInfoModel> stationInfoModels, String title, boolean isCountrySide) {
+    if (MyApplication.currentActivity == null || MyApplication.currentActivity.isFinishing())
+      return;
     dialog = new Dialog(MyApplication.currentActivity);
     dialog.getWindow().requestFeature(Window.FEATURE_NO_TITLE);
     dialog.getWindow().getAttributes().windowAnimations = R.style.ExpandAnimation;
@@ -53,19 +55,27 @@ public class StationInfoDialog {
     dialog.setCancelable(true);
 
     listStationInfo = dialog.findViewById(R.id.listStationInfo);
-    TextView txtTitle=dialog.findViewById(R.id.txtTitle);
-    TextView txtCountrySide=dialog.findViewById(R.id.txtCountrySide);
+    TextView txtTitle = dialog.findViewById(R.id.txtTitle);
+    TextView txtCountrySide = dialog.findViewById(R.id.txtCountrySide);
+    ImageView imgClose = dialog.findViewById(R.id.imgClose);
 
     txtTitle.setText(title);
 
-    if (isCountrySide){
+    if (isCountrySide) {
       txtCountrySide.setVisibility(View.VISIBLE);
-    }else {
+    } else {
       txtCountrySide.setVisibility(View.GONE);
     }
 
     stationInfoAdapter = new StationInfoAdapter(stationInfoModels, MyApplication.context);
     listStationInfo.setAdapter(stationInfoAdapter);
+
+    imgClose.setOnClickListener(new View.OnClickListener() {
+      @Override
+      public void onClick(View view) {
+        dismiss();
+      }
+    });
 
     listStationInfo.setOnItemClickListener(new AdapterView.OnItemClickListener() {
       @Override
@@ -86,7 +96,7 @@ public class StationInfoDialog {
       }
     } catch (Exception e) {
       Log.e("TAG", "dismiss: " + e.getMessage());
-      AvaCrashReporter.send(e,"StationInfoDialog class, dismiss method");
+      AvaCrashReporter.send(e, "StationInfoDialog class, dismiss method");
     }
     dialog = null;
   }
