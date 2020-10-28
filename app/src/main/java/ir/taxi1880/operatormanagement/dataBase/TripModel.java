@@ -6,13 +6,13 @@ public class TripModel {
   String saveDate;
   String sendDate;
   int originStation;
-  String city;
+  int city;
 
-  public String getCity() {
+  public int getCity() {
     return city;
   }
 
-  public void setCity(String city) {
+  public void setCity(int city) {
     this.city = city;
   }
 

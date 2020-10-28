@@ -27,12 +27,13 @@ import androidx.gridlayout.widget.GridLayout;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import butterknife.OnLongClick;
 import butterknife.Unbinder;
 import ir.taxi1880.operatormanagement.R;
 import ir.taxi1880.operatormanagement.app.EndPoints;
 import ir.taxi1880.operatormanagement.app.MyApplication;
 import ir.taxi1880.operatormanagement.customView.PinEntryEditText;
-import ir.taxi1880.operatormanagement.dataBase.TripDataBase;
+import ir.taxi1880.operatormanagement.dataBase.DataBase;
 import ir.taxi1880.operatormanagement.dataBase.TripModel;
 import ir.taxi1880.operatormanagement.dialog.GeneralDialog;
 import ir.taxi1880.operatormanagement.dialog.StationInfoDialog;
@@ -49,8 +50,9 @@ public class DeterminationPageFragment2 extends Fragment {
   boolean isEnable = false;
   boolean isFinished = false;
   boolean isFragmentOpen = false;
+  boolean pressSubmit = false;
   ArrayList<StationInfoModel> stationInfoModels;
-  TripDataBase tripDataBase;
+  DataBase dataBase;
   Timer timer;
 
   @OnClick(R.id.imgBack)
@@ -81,36 +83,46 @@ public class DeterminationPageFragment2 extends Fragment {
     txtStation.setText("");
   }
 
-  @OnClick(R.id.btnSubmit)
-  void onSubmit() {
+  @OnLongClick(R.id.btnSubmit)
+  public boolean onLongClick() {
     if (txtStation.getText().toString().isEmpty()) {
       MyApplication.Toast("لطفا شماره ایستگاه را وارد کنید", Toast.LENGTH_SHORT);
-      return;
+      return false;
     }
-    if (tripDataBase.getRemainingAddress() == 0) {
+    if (dataBase.getRemainingAddress() == 0) {
       MyApplication.Toast("آدرسی برای ثبت موجود نیست", Toast.LENGTH_SHORT);
       txtStation.setText("");
-      return;
-    }
-    int cityCode = 0;
-    //TODO change this (get id from dataBase)
-    try {
-      JSONArray cityArr = new JSONArray(MyApplication.prefManager.getCity());
-
-      for (int city = 0; city < cityArr.length(); city++) {
-        JSONObject cityObj = cityArr.getJSONObject(city);
-        if (tripDataBase.getTopAddress().getCity().equals(cityObj.getString("cityname"))) {
-          cityCode = cityObj.getInt("cityid");
-        }
-      }
-    } catch (JSONException e) {
-      e.printStackTrace();
+      return false;
     }
 
+    int cityCode = dataBase.getCityName(dataBase.getTopAddress().getCity()).getId();
     String code = StringHelper.toEnglishDigits(txtStation.getText().toString());
-    setStationCode(MyApplication.prefManager.getUserCode(), tripDataBase.getTopAddress().getId(), code, cityCode);
+    setStationCode(MyApplication.prefManager.getUserCode(), dataBase.getTopAddress().getId(), code, cityCode);
 
+    return true;
   }
+
+//  @OnClick(R.id.btnSubmit)
+//  void onSubmit() {
+//    if (txtStation.getText().toString().isEmpty()) {
+//      MyApplication.Toast("لطفا شماره ایستگاه را وارد کنید", Toast.LENGTH_SHORT);
+//      return;
+//    }
+//    if (dataBase.getRemainingAddress() == 0) {
+//      MyApplication.Toast("آدرسی برای ثبت موجود نیست", Toast.LENGTH_SHORT);
+//      txtStation.setText("");
+//      return;
+//    }
+//
+//    if (pressSubmit) {
+//      int cityCode = dataBase.getCityName(dataBase.getTopAddress().getCity()).getId();
+//      String code = StringHelper.toEnglishDigits(txtStation.getText().toString());
+//      setStationCode(MyApplication.prefManager.getUserCode(), dataBase.getTopAddress().getId(), code, cityCode);
+//    } else {
+//      this.pressSubmit = true;
+//      MyApplication.handler.postDelayed(() -> pressSubmit = false, 300);
+//    }
+//  }
 
   @OnClick(R.id.btnHelp)
   void onHelp() {
@@ -127,7 +139,7 @@ public class DeterminationPageFragment2 extends Fragment {
 
   @OnClick(R.id.btnPlayVoice)
   void onPressPlayVoice() {
-    if (tripDataBase.getRemainingAddress() == 0) {
+    if (dataBase.getRemainingAddress() == 0) {
       //TODO what is the text?
       MyApplication.Toast("آدرسی برای ثبت موجود نیست", Toast.LENGTH_SHORT);
       txtStation.setText("");
@@ -187,7 +199,7 @@ public class DeterminationPageFragment2 extends Fragment {
     unbinder = ButterKnife.bind(this, view);
     TypefaceUtil.overrideFonts(view);
 
-    tripDataBase = new TripDataBase(MyApplication.context);
+    dataBase = new DataBase(MyApplication.context);
 
     changeStatus(MyApplication.prefManager.isStartGettingAddress());
 
@@ -196,6 +208,7 @@ public class DeterminationPageFragment2 extends Fragment {
       int count = numberCount;
       grid.setOnClickListener(view1 -> {
         if (count == 9) {
+          if (txtStation.getText().toString().isEmpty()) return;
           setNumber("0");
         } else {
           setNumber(count + 1 + "");
@@ -211,8 +224,14 @@ public class DeterminationPageFragment2 extends Fragment {
     String temp = txtStation.getText().toString();
     if (temp.length() == 3) {
 //      txtStation.setText(StringHelper.toPersianDigits(temp.substring(0, 2) + c));
-      txtStation.setText(StringHelper.toPersianDigits(c));
+//      if (txtStation.getText().toString().indexOf(0)==0)return;
+      if (c.equals("0")) {
+        txtStation.setText("");
+      } else {
+        txtStation.setText(StringHelper.toPersianDigits(c));
+      }
     } else {
+//      if (txtStation.getText().toString().indexOf(0)==0)return;
       txtStation.setText(StringHelper.toPersianDigits(temp + c));
     }
   }
@@ -243,14 +262,15 @@ public class DeterminationPageFragment2 extends Fragment {
               if (pressedRefresh) {
                 if (imgRefresh != null)
                   imgRefresh.clearAnimation();
-                tripDataBase.deleteAllData();
+                dataBase.deleteAllData();
               }
-
               if (dataArr.length() == 0) {
                 isFinished = true;
-                tripDataBase.deleteAllData();
+                dataBase.deleteAllData();
                 setAddress();
               } else {
+                if (dataBase.getRemainingAddress() > 1)
+                  dataBase.deleteRemainingRecord(dataBase.getTopAddress().getId());
                 for (int i = 0; i < dataArr.length(); i++) {
                   JSONObject dataObj = dataArr.getJSONObject(i);
                   TripModel tripModel = new TripModel();
@@ -260,25 +280,17 @@ public class DeterminationPageFragment2 extends Fragment {
                   String content = dataObj.getString("Content");
                   JSONObject contentObj = new JSONObject(content);
 
-                  JSONArray cityArr = new JSONArray(MyApplication.prefManager.getCity());
-                  for (int city = 0; city < cityArr.length(); city++) {
-                    JSONObject cityObj = cityArr.getJSONObject(city);
-                    if (contentObj.getInt("cityCode") == cityObj.getInt("cityid")) {
-                      tripModel.setCity(cityObj.getString("cityname"));
-                    }
-                  }
-
+                  tripModel.setCity(contentObj.getInt("cityCode"));
                   tripModel.setOriginText(contentObj.getString("address"));
                   tripModel.setSaveDate(dataObj.getString("SaveDate"));
 
-                  tripDataBase.insertTripRow(tripModel);
+                  dataBase.insertTripRow(tripModel);
                 }
 
                 if (txtRemainingAddress != null)
-                  txtRemainingAddress.setText("تعداد آدرس های ثبت نشده : " + tripDataBase.getRemainingAddress());
+                  txtRemainingAddress.setText("تعداد آدرس های ثبت نشده : " + dataBase.getRemainingAddress());
 
-                Log.i(TAG, "run:tripDataBase.getRemainingAddress = " + tripDataBase.getRemainingAddress());
-                Log.i(TAG, "run:tripDataBase.getOriginText = " + tripDataBase.getTopAddress().getOriginText());
+                Log.i(TAG, "run:tripDataBase.getRemainingAddress = " + dataBase.getRemainingAddress());
 
                 if (isEnable) {
                   setAddress();
@@ -341,7 +353,7 @@ public class DeterminationPageFragment2 extends Fragment {
         btnDeActivate.setTextColor(Color.parseColor("#000000"));
       }
     } else {
-      tripDataBase.deleteAllData();
+      dataBase.deleteAllData();
       if (isEnable) {
         getAddressList();
       }
@@ -438,17 +450,17 @@ public class DeterminationPageFragment2 extends Fragment {
   };
 
   private void setStationCode(int userId, int tripId, String stationCode, int cityCode) {
-    //TODO remove zero numbers...
-    Log.e(TAG, "setStationCode: getOriginText = " + tripDataBase.getTopAddress().getOriginText() + ", tripId = " + tripId + ", stationCode = " + stationCode + ", cityCode = " + cityCode);
+    //TODO comment zero numbers...
+    Log.e(TAG, "setStationCode: getOriginText = " + dataBase.getTopAddress().getOriginText() + ", stationCode = " + stationCode + ", tripId = " + tripId + ", cityCode = " + cityCode);
 
     RequestHelper.builder(EndPoints.UPDATE_TRIP_STATION)
             .addParam("userId", userId)
-            .addParam("tripId", StringHelper.toEnglishDigits(tripId + ""))
-            .addParam("stationCode", StringHelper.toEnglishDigits(stationCode + ""))
-            .addParam("cityCode", StringHelper.toEnglishDigits(cityCode + ""))
-//            .addParam("tripId", 0)
-//            .addParam("stationCode", 0)
-//            .addParam("cityCode", 0)
+//            .addParam("tripId", StringHelper.toEnglishDigits(tripId + ""))
+//            .addParam("stationCode", StringHelper.toEnglishDigits(stationCode + ""))
+//            .addParam("cityCode", StringHelper.toEnglishDigits(cityCode + ""))
+            .addParam("tripId", 0)
+            .addParam("stationCode", 0)
+            .addParam("cityCode", 0)
             .listener(setStationCode)
             .put();
 
@@ -468,9 +480,9 @@ public class DeterminationPageFragment2 extends Fragment {
           boolean status = dataArr.getBoolean("status");
 
           if (status) {
-            tripDataBase.deleteRow(tripDataBase.getTopAddress().getId());
+            dataBase.deleteRow(dataBase.getTopAddress().getId());
           } else {
-            tripDataBase.insertSendDate(tripDataBase.getTopAddress().getId(), DateHelper.getCurrentGregorianDate().toString());
+            dataBase.insertSendDate(dataBase.getTopAddress().getId(), DateHelper.getCurrentGregorianDate().toString());
           }
           setAddress();
           txtStation.setText("");
@@ -495,9 +507,10 @@ public class DeterminationPageFragment2 extends Fragment {
   private void setAddress() {
     if (txtAddress == null) return;
     if (txtRemainingAddress == null) return;
-    if (tripDataBase.getRemainingAddress() > 0) {
-      txtAddress.setText(tripDataBase.getTopAddress().getCity() + " , " + tripDataBase.getTopAddress().getOriginText());
-      txtRemainingAddress.setText("تعداد آدرس های ثبت نشده : " + tripDataBase.getRemainingAddress());
+    if (dataBase.getRemainingAddress() > 0) {
+      String cityName = dataBase.getCityName(dataBase.getTopAddress().getCity()).getCity();
+      txtAddress.setText(cityName + " , " + dataBase.getTopAddress().getOriginText());
+      txtRemainingAddress.setText("تعداد آدرس های ثبت نشده : " + dataBase.getRemainingAddress());
     } else {
       if (!MyApplication.prefManager.isStartGettingAddress()) {
         txtAddress.setText("برای مشاهده آدرس ها فعال شوید");

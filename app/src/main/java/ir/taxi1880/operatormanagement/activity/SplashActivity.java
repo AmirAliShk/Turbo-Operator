@@ -33,6 +33,7 @@ import ir.taxi1880.operatormanagement.R;
 import ir.taxi1880.operatormanagement.app.Constant;
 import ir.taxi1880.operatormanagement.app.EndPoints;
 import ir.taxi1880.operatormanagement.app.MyApplication;
+import ir.taxi1880.operatormanagement.dataBase.DataBase;
 import ir.taxi1880.operatormanagement.dialog.GeneralDialog;
 import ir.taxi1880.operatormanagement.fragment.SignatureFragment;
 import ir.taxi1880.operatormanagement.fragment.ContractFragment;
@@ -42,6 +43,7 @@ import ir.taxi1880.operatormanagement.helper.FragmentHelper;
 import ir.taxi1880.operatormanagement.helper.ServiceHelper;
 import ir.taxi1880.operatormanagement.helper.StringHelper;
 import ir.taxi1880.operatormanagement.helper.TypefaceUtil;
+import ir.taxi1880.operatormanagement.model.CityModel;
 import ir.taxi1880.operatormanagement.okHttp.RequestHelper;
 import ir.taxi1880.operatormanagement.push.AvaCrashReporter;
 import ir.taxi1880.operatormanagement.services.LinphoneService;
@@ -55,6 +57,7 @@ public class SplashActivity extends AppCompatActivity {
   Unbinder unbinder;
   private final String PUSH_PROJECT_ID = "5";
   int isFinishContract;
+  DataBase dataBase;
 
   @BindView(R.id.txtVersion)
   TextView txtVersion;
@@ -77,12 +80,12 @@ public class SplashActivity extends AppCompatActivity {
     unbinder = ButterKnife.bind(this, view);
     TypefaceUtil.overrideFonts(view);
 
+    dataBase = new DataBase(context);
+
     ACRA.getErrorReporter().putCustomData("projectId", PUSH_PROJECT_ID);
     ACRA.getErrorReporter().putCustomData("LineCode", MyApplication.prefManager.getUserCode() + "");
 
     txtVersion.setText(StringHelper.toPersianDigits("نسخه " + new AppVersionHelper(context).getVerionName() + ""));
-
-//    startVoipService();
 
     MyApplication.handler.postDelayed(() -> {
       checkPermission();
@@ -121,7 +124,7 @@ public class SplashActivity extends AppCompatActivity {
 
   private void continueProcessing() {
     if (MyApplication.prefManager.getLoggedIn()) {
-      if (isFinishContract == 1){
+      if (isFinishContract == 1) {
         new GeneralDialog()
                 .title("اتمام قرار داد")
                 .message("مدت قرار داد شما به اتمام رسیده است. لطفا برای تمدید آن اقدام کنید.")
@@ -221,6 +224,17 @@ public class SplashActivity extends AppCompatActivity {
           String pushToken = object.getString("pushToken");
           int activeInQueue = object.getInt("activeInQueue");
           isFinishContract = object.getInt("isFinishContract");
+
+          //insert all city into dataBase
+          JSONArray cityArr = new JSONArray(city);
+          for (int c = 0; c < cityArr.length(); c++) {
+            JSONObject cityObj = cityArr.getJSONObject(c);
+            CityModel cityModel = new CityModel();
+            cityModel.setId(cityObj.getInt("cityid"));
+            cityModel.setCity(cityObj.getString("cityname"));
+            cityModel.setCityLatin(cityObj.getString("latinName"));
+            dataBase.insertCity(cityModel);
+          }
 
           if (block == 1) {
             new GeneralDialog()

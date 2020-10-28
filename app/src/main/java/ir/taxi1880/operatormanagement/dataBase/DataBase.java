@@ -10,11 +10,14 @@ import android.util.Log;
 
 import java.util.ArrayList;
 
-public class TripDataBase extends SQLiteOpenHelper {
+import ir.taxi1880.operatormanagement.model.CityModel;
+
+public class DataBase extends SQLiteOpenHelper {
   private static int VERSION = 1;
   //TODO Do not change names any way
   private static String DB_NAME = "operators";
   private static String TRIP_TABLE = "Trip";
+  private static String CITY_TABLE = "City";
 
   //**************************** Trip Column ****************************
   private static String COLUMN_TRIP_ID = "tripId";
@@ -23,24 +26,31 @@ public class TripDataBase extends SQLiteOpenHelper {
   private static String COLUMN_CITY = "city";
   private static String COLUMN_SAVE_DATE = "saveDate";
   private static String COLUMN_SEND_DATE = "sendDate";
-  //*********************************************************************
 
-  public TripDataBase(Context context) {
+  //***************************** City Column ***************************
+  private static String COLUMN_CITY_ID = "cityId";
+  private static String COLUMN_CITY_NAME = "cityName";
+  private static String COLUMN_CITY_L_NAME = "cityLName";
+  //**********************************************************************
+
+  public DataBase(Context context) {
     super(context, DB_NAME, null, VERSION);
   }
 
   @Override
   public void onCreate(SQLiteDatabase sqLiteDatabase) {
     createTripTable(sqLiteDatabase);
+    createCityTable(sqLiteDatabase);
   }
 
   @Override
   public void onUpgrade(SQLiteDatabase sqLiteDatabase, int i, int i1) {
     sqLiteDatabase.execSQL("DROP TABLE IF EXISTS " + TRIP_TABLE);
+    sqLiteDatabase.execSQL("DROP TABLE IF EXISTS " + CITY_TABLE);
     onCreate(sqLiteDatabase);
   }
 
-  public static void createTripTable(SQLiteDatabase database) {
+  public void createTripTable(SQLiteDatabase database) {
     database.execSQL("CREATE TABLE " + TRIP_TABLE +
             "(" + COLUMN_TRIP_ID + " INTEGER PRIMARY KEY, " +
             COLUMN_ORIGIN_TEXT + " TEXT," +
@@ -82,7 +92,7 @@ public class TripDataBase extends SQLiteOpenHelper {
         tripModel.setOriginStation(cursor.getInt(cursor.getColumnIndex(COLUMN_ORIGIN_STATION)));
         tripModel.setSaveDate(cursor.getString(cursor.getColumnIndex(COLUMN_SAVE_DATE)));
         tripModel.setSendDate(cursor.getString(cursor.getColumnIndex(COLUMN_SEND_DATE)));
-        tripModel.setCity(cursor.getString(cursor.getColumnIndex(COLUMN_CITY)));
+        tripModel.setCity(cursor.getInt(cursor.getColumnIndex(COLUMN_CITY)));
         tripModels.add(tripModel);
         cursor.moveToNext();
       }
@@ -107,7 +117,7 @@ public class TripDataBase extends SQLiteOpenHelper {
           tripModel.setOriginStation(cursor.getInt(cursor.getColumnIndex(COLUMN_ORIGIN_STATION)));
           tripModel.setSaveDate(cursor.getString(cursor.getColumnIndex(COLUMN_SAVE_DATE)));
           tripModel.setSendDate(cursor.getString(cursor.getColumnIndex(COLUMN_SEND_DATE)));
-          tripModel.setCity(cursor.getString(cursor.getColumnIndex(COLUMN_CITY)));
+          tripModel.setCity(cursor.getInt(cursor.getColumnIndex(COLUMN_CITY)));
           current = cursor.getPosition();
           return tripModel;
         } else {
@@ -134,11 +144,6 @@ public class TripDataBase extends SQLiteOpenHelper {
       }
       return false;
     }
-  }
-
-  public String getCityName() {
-    //TODO complete this with outer join.
-    return "";
   }
 
   public int getRemainingAddress() {
@@ -184,7 +189,45 @@ public class TripDataBase extends SQLiteOpenHelper {
 
   public void deleteRemainingRecord(int tripId) {
     SQLiteDatabase sqLiteDatabase = this.getWritableDatabase();
-    sqLiteDatabase.delete(TRIP_TABLE, COLUMN_TRIP_ID + "!=" + tripId, null);
+    sqLiteDatabase.delete(TRIP_TABLE, COLUMN_TRIP_ID + "<>" + tripId, null);
+    Log.e("TAG", "deleteRemainingRecord: "+tripId);
+  }
+
+// ****************************************************** City Table ******************************************************
+
+  public void createCityTable(SQLiteDatabase database) {
+    database.execSQL("CREATE TABLE " + CITY_TABLE +
+            "(" + COLUMN_CITY_ID + " INTEGER PRIMARY KEY, " +
+            COLUMN_CITY_NAME + " TEXT," +
+            COLUMN_CITY_L_NAME + " TEXT)");
+  }
+
+  public void insertCity(CityModel cityModel) {
+    try {
+      SQLiteDatabase sqLiteDatabase = this.getWritableDatabase();
+      ContentValues contentValues = new ContentValues();
+      contentValues.put(COLUMN_CITY_ID, cityModel.getId());
+      contentValues.put(COLUMN_CITY_NAME, cityModel.getCity());
+      contentValues.put(COLUMN_CITY_L_NAME, cityModel.getCityLatin());
+      sqLiteDatabase.insertWithOnConflict(CITY_TABLE, COLUMN_CITY_ID, contentValues, SQLiteDatabase.CONFLICT_REPLACE);
+    } catch (Exception e) {
+      e.printStackTrace();
+    }
+  }
+
+  public CityModel getCityName(int id) {
+    SQLiteDatabase sqLiteDatabase = this.getReadableDatabase();
+    @SuppressLint("Recycle") Cursor res = sqLiteDatabase.rawQuery("select * from " + CITY_TABLE + " where " + id + " = " + COLUMN_CITY_ID, null);
+    if (!res.moveToFirst()) {
+      return null;
+    }
+    res.moveToFirst();
+    CityModel model = new CityModel();
+    model.setId(res.getInt(res.getColumnIndex(COLUMN_CITY_ID)));
+    model.setCity(res.getString(res.getColumnIndex(COLUMN_CITY_NAME)));
+    model.setCityLatin(res.getString(res.getColumnIndex(COLUMN_CITY_L_NAME)));
+
+    return model;
   }
 
 }

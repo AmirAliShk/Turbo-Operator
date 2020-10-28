@@ -32,7 +32,7 @@ import ir.taxi1880.operatormanagement.R;
 import ir.taxi1880.operatormanagement.app.EndPoints;
 import ir.taxi1880.operatormanagement.app.MyApplication;
 import ir.taxi1880.operatormanagement.customView.PinEntryEditText;
-import ir.taxi1880.operatormanagement.dataBase.TripDataBase;
+import ir.taxi1880.operatormanagement.dataBase.DataBase;
 import ir.taxi1880.operatormanagement.dataBase.TripModel;
 import ir.taxi1880.operatormanagement.dialog.GeneralDialog;
 import ir.taxi1880.operatormanagement.dialog.PlayLastConversationDialog;
@@ -54,7 +54,7 @@ public class DeterminationPageFragment extends Fragment {
   ArrayList<StationInfoModel> stationInfoModels;
   ArrayList<TripModel> tripModels;
   TripModel tripModel;
-  TripDataBase tripDataBase;
+  DataBase dataBase;
   Timer timer;
   String address;
   int counter = 0;
@@ -94,7 +94,7 @@ public class DeterminationPageFragment extends Fragment {
       MyApplication.Toast("لطفا شماره ایستگاه را وارد کنید", Toast.LENGTH_SHORT);
       return;
     }
-    if (tripModels.size() == 0 || tripDataBase.getTripRow().size() == 0) {
+    if (tripModels.size() == 0 || dataBase.getTripRow().size() == 0) {
       MyApplication.Toast("آدرسی برای ثبت موجود نیست", Toast.LENGTH_SHORT);
       txtStation.setText("");
       return;
@@ -124,7 +124,7 @@ public class DeterminationPageFragment extends Fragment {
 
   @OnClick(R.id.btnPlayVoice)
   void onPressPlayVoice() {
-    if (tripModels.size() == 0 || tripDataBase.getTripRow().size() == 0) {
+    if (tripModels.size() == 0 || dataBase.getTripRow().size() == 0) {
       //TODO what is the text?
       MyApplication.Toast("آدرسی برای ثبت موجود نیست", Toast.LENGTH_SHORT);
       txtStation.setText("");
@@ -193,7 +193,7 @@ public class DeterminationPageFragment extends Fragment {
     unbinder = ButterKnife.bind(this, view);
     TypefaceUtil.overrideFonts(view);
 
-    tripDataBase = new TripDataBase(MyApplication.context);
+    dataBase = new DataBase(MyApplication.context);
     tripModels = new ArrayList<>();
 
     changeStatus(MyApplication.prefManager.isStartGettingAddress());
@@ -260,14 +260,14 @@ public class DeterminationPageFragment extends Fragment {
               if (pressedRefresh) {
                 if (imgRefresh != null)
                   imgRefresh.clearAnimation();
-                tripDataBase.deleteAllData();
+                dataBase.deleteAllData();
                 resetCounter();
               }
 
               if (dataArr.length() == 0) {
                 isFinished = true;
-                tripDataBase.deleteAllData();
-                tripModels = tripDataBase.getTripRow();
+                dataBase.deleteAllData();
+                tripModels = dataBase.getTripRow();
                 resetCounter();
                 setAddress(counter);
               } else {
@@ -280,26 +280,26 @@ public class DeterminationPageFragment extends Fragment {
                   String content = dataObj.getString("Content");
                   JSONObject contentObj = new JSONObject(content);
 
-                  JSONArray cityArr = new JSONArray(MyApplication.prefManager.getCity());
-                  for (int city = 0; city < cityArr.length(); city++) {
-                    JSONObject cityObj = cityArr.getJSONObject(city);
-                    if (contentObj.getInt("cityCode") == cityObj.getInt("cityid")) {
-                      tripModel.setCity(cityObj.getString("cityname"));
-                    }
-                  }
+//                  JSONArray cityArr = new JSONArray(MyApplication.prefManager.getCity());
+//                  for (int city = 0; city < cityArr.length(); city++) {
+//                    JSONObject cityObj = cityArr.getJSONObject(city);
+//                    if (contentObj.getInt("cityCode") == cityObj.getInt("cityid")) {
+//                      tripModel.setCity(cityObj.getString("cityname"));
+//                    }
+//                  }
 
                   tripModel.setOriginText(contentObj.getString("address"));
                   tripModel.setSaveDate(dataObj.getString("SaveDate"));
-                  tripDataBase.insertTripRow(tripModel);
+                  dataBase.insertTripRow(tripModel);
                 }
 
-                Log.i(TAG, "setAddress: tripDataBase.getTripRow().size()= " + tripDataBase.getTripRow().size());
+                Log.i(TAG, "setAddress: tripDataBase.getTripRow().size()= " + dataBase.getTripRow().size());
 
 //                if (tripDataBase.getTripRow().size() == 0) {
 //                  txtAddress.setText("آدرسی موجود نیست...");
 //                  resetCounter();
 //                } else {
-                tripModels = tripDataBase.getTripRow();
+                tripModels = dataBase.getTripRow();
                 if (txtRemainingAddress != null)
                   txtRemainingAddress.setText("تعداد آدرس های ثبت نشده : " + StringHelper.toPersianDigits(tripModels.size() - (counter + 1) + ""));
 //                  setAddress(counter);
@@ -311,13 +311,13 @@ public class DeterminationPageFragment extends Fragment {
                 }
 
                 if (isEnable) {
-                  tripModels = tripDataBase.getTripRow();
+                  tripModels = dataBase.getTripRow();
                   setAddress(counter);
                   isEnable = false;
                 }
 
                 if (pressedRefresh) {
-                  tripModels = tripDataBase.getTripRow();
+                  tripModels = dataBase.getTripRow();
                   setAddress(counter);
                   pressedRefresh = false;
                 }
@@ -493,9 +493,9 @@ public class DeterminationPageFragment extends Fragment {
           try {
 
             if (status) {
-              tripDataBase.deleteRow(tripModels.get(counter).getId());
+              dataBase.deleteRow(tripModels.get(counter).getId());
             } else {
-              tripDataBase.insertSendDate(tripModels.get(counter).getId(), DateHelper.getCurrentGregorianDate().toString());
+              dataBase.insertSendDate(tripModels.get(counter).getId(), DateHelper.getCurrentGregorianDate().toString());
             }
 
             counter = counter + 1;
@@ -537,7 +537,7 @@ public class DeterminationPageFragment extends Fragment {
 //          Log.i(TAG, "setAddress:  nullllllllllllllllllllllllllllll");
 //        }
       address = tripModels.get(counter).getOriginText();
-      Log.e(TAG, "setAddress: " + tripDataBase.getTopAddress().getOriginText());
+      Log.e(TAG, "setAddress: " + dataBase.getTopAddress().getOriginText());
       txtAddress.setText(StringHelper.toPersianDigits(tripModels.get(counter).getCity() + " , " + address));
       txtRemainingAddress.setText("تعداد آدرس های ثبت نشده : " + StringHelper.toPersianDigits(tripModels.size() - (counter + 1) + ""));
 //      }
