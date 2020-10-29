@@ -47,14 +47,15 @@ release on 04/08/99 - 25/10/2020
 - add determinationFragment
 - remove all field related on origin and destination station...
 
-
 versionCode 15, versionName 2.5.0 :
 release on 04/08/99 - 25/10/2020
-
 
 versionCode 16, versionName 2.5.0 :
 release on 04/08/99 - 25/10/2020
 
 versionCode 17, versionName 2.5.3 :
+release on 04/08/99 - 25/10/2020
+
+versionCode 18, versionName 2.5.3 :
 release on 04/08/99 - 25/10/2020
 

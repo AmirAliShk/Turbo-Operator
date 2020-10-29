@@ -27,7 +27,6 @@ import androidx.gridlayout.widget.GridLayout;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
-import butterknife.OnLongClick;
 import butterknife.Unbinder;
 import ir.taxi1880.operatormanagement.R;
 import ir.taxi1880.operatormanagement.app.EndPoints;
@@ -78,53 +77,53 @@ public class DeterminationPageFragment2 extends Fragment {
   @BindView(R.id.txtRemainingAddress)
   TextView txtRemainingAddress;
 
-  @OnClick(R.id.btnDelete)
+  @OnClick(R.id.imgDelete)
   void onDelete() {
     txtStation.setText("");
   }
 
-  @OnLongClick(R.id.btnSubmit)
-  public boolean onLongClick() {
-    if (txtStation.getText().toString().isEmpty()) {
-      MyApplication.Toast("لطفا شماره ایستگاه را وارد کنید", Toast.LENGTH_SHORT);
-      return false;
-    }
-    if (dataBase.getRemainingAddress() == 0) {
-      MyApplication.Toast("آدرسی برای ثبت موجود نیست", Toast.LENGTH_SHORT);
-      txtStation.setText("");
-      return false;
-    }
-
-    int cityCode = dataBase.getCityName(dataBase.getTopAddress().getCity()).getId();
-    String code = StringHelper.toEnglishDigits(txtStation.getText().toString());
-    setStationCode(MyApplication.prefManager.getUserCode(), dataBase.getTopAddress().getId(), code, cityCode);
-
-    return true;
-  }
-
-//  @OnClick(R.id.btnSubmit)
-//  void onSubmit() {
+//  @OnLongClick(R.id.btnSubmit)
+//  public boolean onLongClick() {
 //    if (txtStation.getText().toString().isEmpty()) {
 //      MyApplication.Toast("لطفا شماره ایستگاه را وارد کنید", Toast.LENGTH_SHORT);
-//      return;
+//      return false;
 //    }
 //    if (dataBase.getRemainingAddress() == 0) {
 //      MyApplication.Toast("آدرسی برای ثبت موجود نیست", Toast.LENGTH_SHORT);
 //      txtStation.setText("");
-//      return;
+//      return false;
 //    }
 //
-//    if (pressSubmit) {
-//      int cityCode = dataBase.getCityName(dataBase.getTopAddress().getCity()).getId();
-//      String code = StringHelper.toEnglishDigits(txtStation.getText().toString());
-//      setStationCode(MyApplication.prefManager.getUserCode(), dataBase.getTopAddress().getId(), code, cityCode);
-//    } else {
-//      this.pressSubmit = true;
-//      MyApplication.handler.postDelayed(() -> pressSubmit = false, 300);
-//    }
+//    int cityCode = dataBase.getCityName(dataBase.getTopAddress().getCity()).getId();
+//    String code = StringHelper.toEnglishDigits(txtStation.getText().toString());
+//    setStationCode(MyApplication.prefManager.getUserCode(), dataBase.getTopAddress().getId(), code, cityCode);
+//
+//    return true;
 //  }
 
-  @OnClick(R.id.btnHelp)
+  @OnClick(R.id.btnSubmit)
+  void onSubmit() {
+    if (txtStation.getText().toString().isEmpty()) {
+      MyApplication.Toast("لطفا شماره ایستگاه را وارد کنید", Toast.LENGTH_SHORT);
+      return;
+    }
+    if (dataBase.getRemainingAddress() == 0) {
+      MyApplication.Toast("آدرسی برای ثبت موجود نیست", Toast.LENGTH_SHORT);
+      txtStation.setText("");
+      return;
+    }
+
+    if (pressSubmit) {
+      int cityCode = dataBase.getCityName(dataBase.getTopAddress().getCity()).getId();
+      String code = StringHelper.toEnglishDigits(txtStation.getText().toString());
+      setStationCode(MyApplication.prefManager.getUserCode(), dataBase.getTopAddress().getId(), code, cityCode);
+    } else {
+      this.pressSubmit = true;
+      MyApplication.handler.postDelayed(() -> pressSubmit = false, 300);
+    }
+  }
+
+  @OnClick(R.id.imgHelp)
   void onHelp() {
     String origin = txtStation.getText().toString();
     if (origin.isEmpty()) {
@@ -134,20 +133,33 @@ public class DeterminationPageFragment2 extends Fragment {
     getStationInfo(origin);
   }
 
+  @OnClick(R.id.imgSetMistake)
+  void onSetMistake() {
+    if (!MyApplication.prefManager.isStartGettingAddress()) {
+      MyApplication.Toast("لطفا فعال شوید", Toast.LENGTH_SHORT);
+      return;
+    }
+    if (dataBase.getRemainingAddress() == 0) {
+      MyApplication.Toast("آدرسی برای ثبت موجود نیست", Toast.LENGTH_SHORT);
+      return;
+    }
+    setMistake();
+  }
+
   @BindView(R.id.btnActivate)
   Button btnActivate;
 
-  @OnClick(R.id.btnPlayVoice)
-  void onPressPlayVoice() {
-    if (dataBase.getRemainingAddress() == 0) {
-      //TODO what is the text?
-      MyApplication.Toast("آدرسی برای ثبت موجود نیست", Toast.LENGTH_SHORT);
-      txtStation.setText("");
-      return;
-    }
-
-//    new PlayLastConversationDialog().show(tripDataBase.getTopAddress().getId(), "");
-  }
+//  @OnClick(R.id.btnPlayVoice)
+//  void onPressPlayVoice() {
+//    if (dataBase.getRemainingAddress() == 0) {
+//      //TODO what is the text?
+//      MyApplication.Toast("آدرسی برای ثبت موجود نیست", Toast.LENGTH_SHORT);
+//      txtStation.setText("");
+//      return;
+//    }
+//
+////    new PlayLastConversationDialog().show(tripDataBase.getTopAddress().getId(), "");
+//  }
 
   @BindView(R.id.btnDeActivate)
   Button btnDeActivate;
@@ -157,12 +169,14 @@ public class DeterminationPageFragment2 extends Fragment {
 
   @OnClick(R.id.imgNextAddress)
   void onNextAddress() {
-//    if (tripDataBase.getRemainingAddress() > 0) {
-//    if (tripDataBase.goToNextRecord()) {
-//      MyApplication.Toast("نمایش رکورد بعدی", Toast.LENGTH_SHORT);
-//    } else {
-//      MyApplication.Toast("موردی برای نمایش موجود نیست", Toast.LENGTH_SHORT);
-//    }
+    if (dataBase.getRemainingAddress() > 1) {
+      MyApplication.Toast("نمایش رکورد بعدی", Toast.LENGTH_SHORT);
+      dataBase.updateNextRecord(dataBase.getTopAddress().getId());
+      setAddress();
+      //show text of next record
+    } else {
+      MyApplication.Toast("موردی برای نمایش موجود نیست", Toast.LENGTH_SHORT);
+    }
   }
 
   @OnClick(R.id.llRefresh)
@@ -264,23 +278,30 @@ public class DeterminationPageFragment2 extends Fragment {
                   imgRefresh.clearAnimation();
                 dataBase.deleteAllData();
               }
+
               if (dataArr.length() == 0) {
                 isFinished = true;
                 dataBase.deleteAllData();
-                setAddress();
+                if (txtAddress != null)
+                  txtAddress.setText("آدرسی موجود نیست...");
+                if (txtRemainingAddress != null)
+                  txtRemainingAddress.setText("");
               } else {
                 if (dataBase.getRemainingAddress() > 1)
                   dataBase.deleteRemainingRecord(dataBase.getTopAddress().getId());
                 for (int i = 0; i < dataArr.length(); i++) {
                   JSONObject dataObj = dataArr.getJSONObject(i);
                   TripModel tripModel = new TripModel();
-                  tripModel.setId(dataObj.getInt("Id"));
+                  tripModel.setId(dataObj.getInt("Id")); // the unique id for each trip
                   tripModel.setOriginStation(dataObj.getInt("OriginStation"));
 
                   String content = dataObj.getString("Content");
                   JSONObject contentObj = new JSONObject(content);
-
+                  tripModel.setOperatorId(contentObj.getInt("userId")); // ID of the person who registered the service
                   tripModel.setCity(contentObj.getInt("cityCode"));
+                  tripModel.setCustomerName(contentObj.getString("callerName"));
+                  tripModel.setTell(contentObj.getString("phoneNumber"));
+                  tripModel.setVoipId(contentObj.getString("voipId"));
                   tripModel.setOriginText(contentObj.getString("address"));
                   tripModel.setSaveDate(dataObj.getString("SaveDate"));
 
@@ -331,6 +352,7 @@ public class DeterminationPageFragment2 extends Fragment {
         @Override
         public void run() {
           isFinished = false;
+          pressedRefresh = false;
           if (imgRefresh != null)
             imgRefresh.clearAnimation();
 
@@ -450,8 +472,8 @@ public class DeterminationPageFragment2 extends Fragment {
   };
 
   private void setStationCode(int userId, int tripId, String stationCode, int cityCode) {
-    //TODO comment zero numbers...
-    Log.e(TAG, "setStationCode: getOriginText = " + dataBase.getTopAddress().getOriginText() + ", stationCode = " + stationCode + ", tripId = " + tripId + ", cityCode = " + cityCode);
+    //TODO comment zero numbers... and bellow log
+    Log.e(TAG, "setStation = " + dataBase.getTopAddress().getOriginText() + ", stationCode = " + stationCode + ", tripId = " + tripId + ", cityCode = " + cityCode);
 
     RequestHelper.builder(EndPoints.UPDATE_TRIP_STATION)
             .addParam("userId", userId)
@@ -480,12 +502,14 @@ public class DeterminationPageFragment2 extends Fragment {
           boolean status = dataArr.getBoolean("status");
 
           if (status) {
-            dataBase.deleteRow(dataBase.getTopAddress().getId());
+            if (dataBase.getRemainingAddress() > 0)
+              dataBase.deleteRow(dataBase.getTopAddress().getId());
           } else {
             dataBase.insertSendDate(dataBase.getTopAddress().getId(), DateHelper.getCurrentGregorianDate().toString());
           }
           setAddress();
-          txtStation.setText("");
+          if (txtStation != null)
+            txtStation.setText("");
 
         } catch (JSONException e) {
           e.printStackTrace();
@@ -499,6 +523,52 @@ public class DeterminationPageFragment2 extends Fragment {
         @Override
         public void run() {
         }
+      });
+    }
+  };
+
+  private void setMistake() {
+
+    RequestHelper.builder(EndPoints.SET_MISTAKE)
+            .addParam("userId", StringHelper.toEnglishDigits(dataBase.getTopAddress().getOperatorId()+""))
+            .addParam("tell", StringHelper.toEnglishDigits(dataBase.getTopAddress().getTell()))
+            .addParam("adrs", StringHelper.toEnglishDigits(dataBase.getTopAddress().getOriginText()))
+            .addParam("customerName", StringHelper.toEnglishDigits(dataBase.getTopAddress().getCustomerName()))
+            .addParam("voipId", StringHelper.toEnglishDigits(dataBase.getTopAddress().getVoipId()))
+//            .addParam("tell", StringHelper.toEnglishDigits("9015693808"))
+//            .addParam("adrs", StringHelper.toEnglishDigits("station 199 تست اندروید"))
+//            .addParam("customerName", StringHelper.toEnglishDigits("fatemeh noori"))
+//            .addParam("voipId", StringHelper.toEnglishDigits("11111.0101010"))
+            .listener(setMistake)
+            .post();
+
+  }
+
+  RequestHelper.Callback setMistake = new RequestHelper.Callback() {
+    @Override
+    public void onResponse(Runnable reCall, Object... args) {
+      MyApplication.handler.post(() -> {
+        try {
+//          {"success":true,"message":"عملیات با موفقیت انجام شد","data":{"listenId":42057}}
+          Log.i(TAG, "onResponse: " + args[0].toString());
+          JSONObject obj = new JSONObject(args[0].toString());
+          boolean success = obj.getBoolean("success");
+          String message = obj.getString("message");
+
+          if (success) {
+            MyApplication.Toast(message, Toast.LENGTH_SHORT);
+          }
+
+        } catch (JSONException e) {
+          e.printStackTrace();
+        }
+      });
+    }
+
+    @Override
+    public void onFailure(Runnable reCall, Exception e) {
+      MyApplication.handler.post(() -> {
+
       });
     }
   };

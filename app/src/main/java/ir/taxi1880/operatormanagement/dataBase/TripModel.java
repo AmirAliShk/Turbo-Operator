@@ -1,12 +1,48 @@
 package ir.taxi1880.operatormanagement.dataBase;
 
 public class TripModel {
-  int id;
+  int id;// the unique id for each trip
+  int operatorId;// ID of the person who registered the service
   String originText;
   String saveDate;
   String sendDate;
   int originStation;
   int city;
+  String tell;
+  String customerName;
+  String voipId;
+
+  public int getOperatorId() {
+    return operatorId;
+  }
+
+  public void setOperatorId(int operatorId) {
+    this.operatorId = operatorId;
+  }
+
+  public String getTell() {
+    return tell;
+  }
+
+  public void setTell(String tell) {
+    this.tell = tell;
+  }
+
+  public String getCustomerName() {
+    return customerName;
+  }
+
+  public void setCustomerName(String customerName) {
+    this.customerName = customerName;
+  }
+
+  public String getVoipId() {
+    return voipId;
+  }
+
+  public void setVoipId(String voipId) {
+    this.voipId = voipId;
+  }
 
   public int getCity() {
     return city;

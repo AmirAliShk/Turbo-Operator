@@ -101,7 +101,7 @@
             android:paddingRight="10dp">
 
             <ImageView
-                android:id="@+id/btnDelete"
+                android:id="@+id/imgDelete"
                 android:layout_width="0dp"
                 android:layout_height="60dp"
                 android:layout_margin="5dp"
@@ -159,7 +159,7 @@
                 android:padding="3dp">
 
                 <ImageView
-                    android:id="@+id/btnHelp"
+                    android:id="@+id/imgHelp"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:padding="12dp"
@@ -208,18 +208,27 @@
                 android:textSize="@dimen/text_title"
                 android:textStyle="bold" />
 
+<!--                android:id="@+id/imgPlayVoice"-->
             <ImageView
-                android:id="@+id/btnPlayVoice"
                 android:layout_width="65dp"
                 android:layout_height="60dp"
                 android:layout_margin="5dp"
-                android:visibility="invisible"
+                android:visibility="gone"
                 android:background="@drawable/bg_white_edge"
                 android:elevation="5dp"
                 android:padding="8dp"
                 android:src="@drawable/ic_play"
-                android:text="del"
                 android:tint="@color/colorPrimaryDark" />
+
+            <ImageView
+                android:id="@+id/imgSetMistake"
+                android:layout_width="65dp"
+                android:layout_height="60dp"
+                android:layout_margin="5dp"
+                android:background="@drawable/bg_white_edge"
+                android:elevation="5dp"
+                android:padding="14dp"
+                android:src="@drawable/ic_mistake" />
 
         </LinearLayout>
 

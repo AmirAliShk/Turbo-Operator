@@ -400,12 +400,12 @@ public class TripRegisterActivity extends AppCompatActivity {
 
   @OnClick(R.id.imgPassengerInfo)
   void onPressDownload() {
-    if (getTellNumber().isEmpty()) {
+    if (getTellNumber().isEmpty() && edtTell != null) {
       edtTell.setError("شماره تلفن را وارد نمایید");
       edtTell.requestFocus();
       return;
     }
-    if (getMobileNumber().isEmpty() && !isTellValidable) {
+    if (getMobileNumber().isEmpty() && !isTellValidable && edtMobile != null) {
       edtMobile.setError("شماره تلفن همراه را وارد نمایید");
       edtMobile.requestFocus();
       return;

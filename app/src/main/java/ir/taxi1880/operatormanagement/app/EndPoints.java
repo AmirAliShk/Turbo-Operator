@@ -71,6 +71,7 @@ public class EndPoints {
   public static final String HIRE = TRIP_WEBSERVICE_PATH + "hire";
   public static final String GET_TRIP_WITH_ZERO_STATION = TRIP_WEBSERVICE_PATH + "getTripWithZeroStation";
   public static final String UPDATE_TRIP_STATION = TRIP_WEBSERVICE_PATH + "updateTripStation";
+  public static final String SET_MISTAKE = TRIP_WEBSERVICE_PATH + "setMistake";
 
   /******************************** Account Api *********************************/
 

@@ -9,7 +9,7 @@ import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.AdapterView;
-import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -57,7 +57,7 @@ public class StationInfoDialog {
     listStationInfo = dialog.findViewById(R.id.listStationInfo);
     TextView txtTitle = dialog.findViewById(R.id.txtTitle);
     TextView txtCountrySide = dialog.findViewById(R.id.txtCountrySide);
-    ImageView imgClose = dialog.findViewById(R.id.imgClose);
+    LinearLayout llCLose = dialog.findViewById(R.id.llCLose);
 
     txtTitle.setText(title);
 
@@ -70,7 +70,7 @@ public class StationInfoDialog {
     stationInfoAdapter = new StationInfoAdapter(stationInfoModels, MyApplication.context);
     listStationInfo.setAdapter(stationInfoAdapter);
 
-    imgClose.setOnClickListener(new View.OnClickListener() {
+    llCLose.setOnClickListener(new View.OnClickListener() {
       @Override
       public void onClick(View view) {
         dismiss();
