@@ -86,6 +86,7 @@
             android:layout_height="0dp"
             android:layout_weight="1"
             android:gravity="center"
+            android:layout_margin="3dp"
             android:padding="10dp"
             android:textColor="@color/colorBlack"
             android:textSize="@dimen/text_22"
@@ -186,10 +187,20 @@
             android:paddingRight="10dp">
 
             <ImageView
+                android:id="@+id/imgSetMistake"
+                android:layout_width="65dp"
+                android:layout_height="60dp"
+                android:layout_margin="5dp"
+                android:background="@drawable/bg_white_edge"
+                android:elevation="5dp"
+                android:padding="14dp"
+                android:src="@drawable/ic_mistake" />
+
+            <ImageView
                 android:id="@+id/imgNextAddress"
                 android:layout_width="65dp"
                 android:layout_height="60dp"
-                android:visibility="invisible"
+                android:visibility="gone"
                 android:layout_margin="5dp"
                 android:background="@drawable/bg_white_edge"
                 android:elevation="5dp"
@@ -208,27 +219,17 @@
                 android:textSize="@dimen/text_title"
                 android:textStyle="bold" />
 
-<!--                android:id="@+id/imgPlayVoice"-->
             <ImageView
+                android:id="@+id/imgPlayVoice"
                 android:layout_width="65dp"
                 android:layout_height="60dp"
                 android:layout_margin="5dp"
-                android:visibility="gone"
+                android:visibility="visible"
                 android:background="@drawable/bg_white_edge"
                 android:elevation="5dp"
                 android:padding="8dp"
                 android:src="@drawable/ic_play"
                 android:tint="@color/colorPrimaryDark" />
-
-            <ImageView
-                android:id="@+id/imgSetMistake"
-                android:layout_width="65dp"
-                android:layout_height="60dp"
-                android:layout_margin="5dp"
-                android:background="@drawable/bg_white_edge"
-                android:elevation="5dp"
-                android:padding="14dp"
-                android:src="@drawable/ic_mistake" />
 
         </LinearLayout>
 

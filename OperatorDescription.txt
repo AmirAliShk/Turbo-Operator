@@ -56,6 +56,16 @@ release on 04/08/99 - 25/10/2020
 versionCode 17, versionName 2.5.3 :
 release on 04/08/99 - 25/10/2020
 
-versionCode 18, versionName 2.5.3 :
+versionCode 18, versionName 2.5.4 :
 release on 04/08/99 - 25/10/2020
+- rebase determinationPage Fragment
+
+versionCode 19, versionName 2.5.5 :
+release on 10/08/99 - 30/10/2020
+- fix some crash on version 18
+    - dataBase.TripModel.getId() is null
+    - String.equals(java.lang.Object) is null when click on submit button
+    - setText and getText is null for PinEntryEditText
+- play call voice
+- report mistake of operator
 

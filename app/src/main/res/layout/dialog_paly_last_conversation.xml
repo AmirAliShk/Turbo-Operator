@@ -9,6 +9,20 @@
     android:layoutDirection="ltr"
     android:orientation="vertical">
 
+    <LinearLayout
+        android:id="@+id/llDismissDialog"
+        android:gravity="center"
+        android:paddingTop="10dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <ImageView
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:src="@drawable/ic_down_arrow" />
+
+    </LinearLayout>
+
     <ViewFlipper
         android:id="@+id/vfDownload"
         android:layout_width="match_parent"
@@ -62,12 +76,6 @@
             android:orientation="vertical"
             android:padding="20dp">
 
-            <ImageView
-                android:id="@+id/imgBackDialog"
-                android:layout_width="40dp"
-                android:layout_height="40dp"
-                android:src="@drawable/ic_down_arrow" />
-
             <com.warkiz.widget.IndicatorSeekBar
                 android:id="@+id/skbTimer"
                 android:layout_width="match_parent"
@@ -96,6 +104,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="00:00"
+                    android:visibility="invisible"
                     android:textColor="@color/colorBlack" />
 
                 <View
@@ -140,12 +149,22 @@
                     android:id="@+id/txtTimeRemaining"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="02:00"
+                    android:text="00:00"
                     android:textColor="@color/colorBlack" />
 
             </LinearLayout>
 
         </LinearLayout>
+
+        <TextView
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:textStyle="bold"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textColor="@color/colorBlack"
+            android:text="متاسفیم خطایی در هنگام دانلود رخ داد لطفا پس از چند دقیقه مجدد تلاش فرمایید"/>
 
     </ViewFlipper>
 

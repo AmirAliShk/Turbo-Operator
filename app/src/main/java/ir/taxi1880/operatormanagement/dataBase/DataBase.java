@@ -124,7 +124,6 @@ public class DataBase extends SQLiteOpenHelper {
       Cursor cursor;
 //      if (goNext) {
 //        cursor = sqLiteDatabase.rawQuery("select * from " + TRIP_TABLE + " ORDER BY " + COLUMN_NEXT_RECORD + " ASC LIMIT 1; ", null);
-//        goNext = false;
 //      } else {
         cursor = sqLiteDatabase.rawQuery("select * from " + TRIP_TABLE + " ORDER BY " + COLUMN_TRIP_ID + " ASC LIMIT 1 ; ", null);
 //      }
@@ -151,6 +150,7 @@ public class DataBase extends SQLiteOpenHelper {
     }
     return null;
   }
+
 
   public void updateNextRecord(int tripId) {
     SQLiteDatabase sqLiteDatabase = this.getWritableDatabase();
@@ -236,6 +236,31 @@ public class DataBase extends SQLiteOpenHelper {
   public CityModel getCityName(int id) {
     SQLiteDatabase sqLiteDatabase = this.getReadableDatabase();
     @SuppressLint("Recycle") Cursor res = sqLiteDatabase.rawQuery("select * from " + CITY_TABLE + " where " + id + " = " + COLUMN_CITY_ID, null);
+    if (!res.moveToFirst()) {
+      return null;
+    }
+    res.moveToFirst();
+    CityModel model = new CityModel();
+    model.setId(res.getInt(res.getColumnIndex(COLUMN_CITY_ID)));
+    model.setCity(res.getString(res.getColumnIndex(COLUMN_CITY_NAME)));
+    model.setCityLatin(res.getString(res.getColumnIndex(COLUMN_CITY_L_NAME)));
+
+    return model;
+  }
+
+  public CityModel getCityName2(int id) {
+    SQLiteDatabase sqLiteDatabase = this.getReadableDatabase();
+    String query = "select " + CITY_TABLE + "." + COLUMN_CITY_NAME + " from " + CITY_TABLE + " left join " + TRIP_TABLE +
+            " on " + CITY_TABLE + "." + COLUMN_CITY_ID + "=" + TRIP_TABLE + "." + COLUMN_CITY +
+            " where " + CITY_TABLE + "." + COLUMN_CITY_ID + "=" + id;
+    @SuppressLint("Recycle") Cursor res = sqLiteDatabase.rawQuery(query, null);
+
+//    select City.cityName
+//    from City
+//    left join Trip
+//    on City.cityId = Trip.city
+//    where City.cityId = id
+
     if (!res.moveToFirst()) {
       return null;
     }

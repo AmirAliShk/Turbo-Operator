@@ -50,9 +50,8 @@ public class PlayLastConversationDialog {
   Unbinder unbinder;
   MediaPlayer mediaPlayer;
 
-  @OnClick(R.id.imgBackDialog)
+  @OnClick(R.id.llDismissDialog)
   void onBack() {
-    //TODO at the first stop voice
     dismiss();
   }
 
@@ -77,7 +76,7 @@ public class PlayLastConversationDialog {
   @BindView(R.id.vfPlayPause)
   ViewFlipper vfPlayPause;
 
-  public void show( int serviceId, String urlString) {
+  public void show(int tripId, String urlString) {
     if (MyApplication.currentActivity == null || MyApplication.currentActivity.isFinishing())
       return;
     dialog = new Dialog(MyApplication.currentActivity);
@@ -94,7 +93,8 @@ public class PlayLastConversationDialog {
     unbinder = ButterKnife.bind(this, dialog);
 
     skbTimer.setProgress(0);
-    String voiceName=serviceId+".mp3";
+    Log.i("URL", "show: "+urlString);
+    String voiceName = tripId + ".mp3";
     File file = new File(MyApplication.DIR_ROOT + MyApplication.VOICE_FOLDER_NAME + "/" + voiceName);
     if (file.exists()) {
       initVoice(Uri.fromFile(file));
@@ -150,72 +150,84 @@ public class PlayLastConversationDialog {
       URL url = new URL(urlString);
 
       String dirPath = MyApplication.DIR_ROOT + "voice/";
-      String dirPathTemp = MyApplication.DIR_ROOT + "        emp/";
-      File file = new File(dirPathTemp + fileName);
+      String dirPathTemp = MyApplication.DIR_ROOT + "temp/";
+
+      new File(dirPath).mkdirs();
+      File file = new File(dirPath);
+      if (file.isDirectory()) {
+        String[] children = file.list();
+        for (int i = 0; i < children.length; i++) {
+          new File(file, children[i]).delete();
+        }
+      }
+
+//      File file = new File(dirPathTemp + fileName);
 //      int downloadId = FindDownloadId.execte(urlString);
 //      if (file.exists() && downloadId != -1) {
 //        PRDownloader.resume(downloadId);
 //      } else {
 //        downloadId =
-                PRDownloader.download(url.toString(), dirPathTemp, fileName)
-                .build()
-                .setOnStartOrResumeListener(new OnStartOrResumeListener() {
-                  @Override
-                  public void onStartOrResume() {
+      PRDownloader.download(url.toString(), dirPathTemp, fileName)
+              .build()
+              .setOnStartOrResumeListener(new OnStartOrResumeListener() {
+                @Override
+                public void onStartOrResume() {
 
+                }
+              })
+              .setOnPauseListener(new OnPauseListener() {
+                @Override
+                public void onPause() {
+
+                }
+              })
+              .setOnCancelListener(new OnCancelListener() {
+                @Override
+                public void onCancel() {
+
+                }
+              })
+              .setOnProgressListener(new OnProgressListener() {
+                @Override
+                public void onProgress(Progress progress) {
+                  int percent = (int) ((progress.currentBytes / (double) progress.totalBytes) * 100);
+                  Log.i("PlayConversationDialog", "onProgress: " + percent);
+
+                  progressBar.setProgress(percent);
+                  if (Calendar.getInstance().getTimeInMillis() - lastTime > 500) {
+                    textProgress.setText(percent + " %");
+                    lastTime = Calendar.getInstance().getTimeInMillis();
                   }
-                })
-                .setOnPauseListener(new OnPauseListener() {
-                  @Override
-                  public void onPause() {
 
-                  }
-                })
-                .setOnCancelListener(new OnCancelListener() {
-                  @Override
-                  public void onCancel() {
+                }
+              })
+              .start(new OnDownloadListener() {
 
-                  }
-                })
-                .setOnProgressListener(new OnProgressListener() {
-                  @Override
-                  public void onProgress(Progress progress) {
-                    int percent = (int) ((progress.currentBytes / (double) progress.totalBytes) * 100);
-                    Log.i("PlayConversationDialog", "onProgress: " + percent);
-
-                    progressBar.setProgress(percent);
-                    if (Calendar.getInstance().getTimeInMillis() - lastTime > 500) {
-                      textProgress.setText(percent + " %");
-                      lastTime = Calendar.getInstance().getTimeInMillis();
-                    }
-
-                  }
-                })
-                .start(new OnDownloadListener() {
-
-                  @Override
-                  public void onDownloadComplete() {
+                @Override
+                public void onDownloadComplete() {
 //                    FinishedDownload.execute(urlString);
-                    FileHelper.moveFile(dirPathTemp, fileName, dirPath);
-                    vfDownload.setDisplayedChild(1);
-                    File file = new File(dirPath + fileName);
+                  FileHelper.moveFile(dirPathTemp, fileName, dirPath);
+                  vfDownload.setDisplayedChild(1);
+                  File file = new File(dirPath + fileName);
 
-                    MyApplication.handler.postDelayed(new Runnable() {
-                      @Override
-                      public void run() {
-                        initVoice(Uri.fromFile(file));
-                        playVoice();
-                      }
-                    }, 500);
-                  }
-                  @Override
-                  public void onError(Error error) {
+                  MyApplication.handler.postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                      initVoice(Uri.fromFile(file));
+                      playVoice();
+                    }
+                  }, 500);
+                }
+
+                @Override
+                public void onError(Error error) {
 //                    error.getConnectionException().printStackTrace();
-                    Log.e("PlayConversationDialog", "onError: " + error.getResponseCode() + "");
-                    vfDownload.setDisplayedChild(2);
-                    FileHelper.deleteFile(dirPathTemp, fileName);
-                  }
-                });
+                  Log.e("PlayConversationDialog", "onError: " + error.getResponseCode() + "");
+                  Log.e("PlayConversationDialog", "onError: " + error.getServerErrorMessage() + "");
+                  vfDownload.setDisplayedChild(2);
+                  FileHelper.deleteFile(dirPathTemp, fileName);
+                }
+              });
 
 //        StartDownload.execute(downloadId, url.toString(), dirPathTemp + fileName);
 //      }
@@ -232,8 +244,9 @@ public class PlayLastConversationDialog {
       mediaPlayer.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
         @Override
         public void onCompletion(MediaPlayer mp) {
-          skbTimer.setProgress(0);
-          pauseVoice();
+          dismiss();
+//          skbTimer.setProgress(0);
+//          pauseVoice();
         }
       });
       TOTAL_VOICE_DURATION = mediaPlayer.getDuration();

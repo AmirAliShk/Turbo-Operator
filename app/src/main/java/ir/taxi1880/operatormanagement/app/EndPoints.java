@@ -12,8 +12,8 @@ public class EndPoints {
 //    http://172.16.2.210:1885/api/findway/citylatinname/address
 
   public static final String IP = (BuildConfig.DEBUG)
-          ? "http://172.16.2.203"
-//          ? "http://turbotaxi.ir"
+//          ? "http://172.16.2.203"
+          ? "http://turbotaxi.ir"
           : "http://turbotaxi.ir";
 //          : "http://172.16.2.203";
 
@@ -34,12 +34,15 @@ public class EndPoints {
   public static final String PIC_APIPort = (BuildConfig.DEBUG) ? "1880" : "1880";
   public static final String TRIP_APIPort = (BuildConfig.DEBUG) ? "1881" : "1881";
   public static final String FIND_WAY_APIPort = (BuildConfig.DEBUG) ? "1885" : "1885";
+  public static final String CALL_VOICE_APIPort = (BuildConfig.DEBUG) ? "1884" : "1884";
 
   public static final String WEBSERVICE_PATH = IP + ":" + APIPort + "/api/operator/";
   public static final String TRIP_WEBSERVICE_PATH = IP + ":" + TRIP_APIPort + "/api/operator/v2/trip/";
   public static final String FIND_WAY_WEBSERVICE_PATH = FIND_WAY_IP + ":" + FIND_WAY_APIPort + "/api/";
   public static final String ACCOUNT_WEBSERVICE_PATH = IP + ":" + TRIP_APIPort + "/api/operator/v2/";
   public static final String SCORE_WEBSERVICE_PATH = IP + ":" + TRIP_APIPort + "/api/operator/v2/score/";
+  public static final String CALL_VOICE_PATH = IP + ":" + CALL_VOICE_APIPort + "/api/getCallvoice/caldX:23V32/";
+//  http://turbotaxi.ir:1884/api/getCallvoice/caldX:23V32/1604130536.10343290
 
   /******************************** Base Api *********************************/
   public static final String GET_APP_INFO = WEBSERVICE_PATH + "getAppInfo";
@@ -72,6 +75,7 @@ public class EndPoints {
   public static final String GET_TRIP_WITH_ZERO_STATION = TRIP_WEBSERVICE_PATH + "getTripWithZeroStation";
   public static final String UPDATE_TRIP_STATION = TRIP_WEBSERVICE_PATH + "updateTripStation";
   public static final String SET_MISTAKE = TRIP_WEBSERVICE_PATH + "setMistake";
+  public static final String CALL_VOICE = CALL_VOICE_PATH;
 
   /******************************** Account Api *********************************/
 
