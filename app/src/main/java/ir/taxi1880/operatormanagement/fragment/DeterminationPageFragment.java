@@ -35,6 +35,7 @@ import ir.taxi1880.operatormanagement.customView.PinEntryEditText;
 import ir.taxi1880.operatormanagement.dataBase.DataBase;
 import ir.taxi1880.operatormanagement.dataBase.TripModel;
 import ir.taxi1880.operatormanagement.dialog.GeneralDialog;
+import ir.taxi1880.operatormanagement.dialog.LoadingDialog;
 import ir.taxi1880.operatormanagement.dialog.PlayLastConversationDialog;
 import ir.taxi1880.operatormanagement.dialog.StationInfoDialog;
 import ir.taxi1880.operatormanagement.helper.DateHelper;
@@ -145,7 +146,15 @@ public class DeterminationPageFragment extends Fragment {
       MyApplication.Toast("موردی برای ثبت موجود نیست", Toast.LENGTH_SHORT);
       return;
     }
-    setMistake();
+
+    new GeneralDialog()
+            .title("هشدار")
+            .message("آیا از اشتباه بودن آدرس اطمینان دارید؟")
+            .cancelable(true)
+            .firstButton("بله", () -> setMistake())
+            .secondButton("خیر", null)
+            .show();
+
   }
 
   @BindView(R.id.btnActivate)
@@ -318,8 +327,6 @@ public class DeterminationPageFragment extends Fragment {
 
                 if (txtRemainingAddress != null)
                   txtRemainingAddress.setText("تعداد آدرس های ثبت نشده : " + dataBase.getRemainingAddress());
-
-                Log.i(TAG, "run:tripDataBase.getRemainingAddress = " + dataBase.getRemainingAddress());
 
                 if (isEnable) {
                   setAddress();
@@ -540,7 +547,7 @@ public class DeterminationPageFragment extends Fragment {
   };
 
   private void setMistake() {
-
+    LoadingDialog.makeCancelableLoader();
     RequestHelper.builder(EndPoints.SET_MISTAKE)
             .addParam("userId", StringHelper.toEnglishDigits(dataBase.getTopAddress().getOperatorId() + ""))
             .addParam("tell", StringHelper.toEnglishDigits(dataBase.getTopAddress().getTell()))
@@ -562,13 +569,26 @@ public class DeterminationPageFragment extends Fragment {
       MyApplication.handler.post(() -> {
         try {
 //          {"success":true,"message":"عملیات با موفقیت انجام شد","data":{"listenId":42057}}
+          LoadingDialog.dismissCancelableDialog();
           Log.i(TAG, "onResponse: " + args[0].toString());
           JSONObject obj = new JSONObject(args[0].toString());
           boolean success = obj.getBoolean("success");
           String message = obj.getString("message");
 
           if (success) {
-            MyApplication.Toast(message, Toast.LENGTH_SHORT);
+            new GeneralDialog()
+                    .title("تایید")
+                    .message(message)
+                    .cancelable(false)
+                    .firstButton("باشه", null)
+                    .show();
+          }else{
+            new GeneralDialog()
+                    .title("خطا")
+                    .message(message)
+                    .cancelable(false)
+                    .firstButton("باشه", null)
+                    .show();
           }
 
         } catch (JSONException e) {
@@ -580,7 +600,7 @@ public class DeterminationPageFragment extends Fragment {
     @Override
     public void onFailure(Runnable reCall, Exception e) {
       MyApplication.handler.post(() -> {
-
+        LoadingDialog.dismissCancelableDialog();
       });
     }
   };
