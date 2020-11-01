@@ -5,7 +5,6 @@ import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.util.Log;
 import android.view.Gravity;
-import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.ImageView;
@@ -14,6 +13,8 @@ import android.widget.Toast;
 
 import ir.taxi1880.operatormanagement.R;
 import ir.taxi1880.operatormanagement.app.MyApplication;
+import ir.taxi1880.operatormanagement.fragment.SupportFragment;
+import ir.taxi1880.operatormanagement.helper.FragmentHelper;
 import ir.taxi1880.operatormanagement.helper.KeyBoardHelper;
 import ir.taxi1880.operatormanagement.helper.TypefaceUtil;
 import ir.taxi1880.operatormanagement.push.AvaCrashReporter;
@@ -46,55 +47,49 @@ public class OptionDialog {
     this.listener = listener;
 
     LinearLayout llHire = dialog.findViewById(R.id.llHire);
+    LinearLayout llSupport = dialog.findViewById(R.id.llSupport);
     LinearLayout llReserve = dialog.findViewById(R.id.llReserve);
     ImageView imgClose = dialog.findViewById(R.id.imgClose);
 
-    llHire.setOnClickListener(new View.OnClickListener() {
-      @Override
-      public void onClick(View view) {
-        if (mobile.isEmpty()) {
-          MyApplication.Toast("لطفا شماره موبایل را وارد کنید", Toast.LENGTH_SHORT);
-          dismiss();
-          return;
-        }
-        if (name.isEmpty()) {
-          MyApplication.Toast("لطفا نام و نام خانوادگی را وارد کنید", Toast.LENGTH_SHORT);
-          dismiss();
-          return;
-        }
-        if (cityCode == 0) {
-          MyApplication.Toast("لطفا شهر را مشخص کنید", Toast.LENGTH_SHORT);
-          dismiss();
-          return;
-        }
-        new HireDialog().show(new HireDialog.Listener() {
-          @Override
-          public void onClose(boolean b) {
+    llHire.setOnClickListener(view -> {
+      if (mobile.isEmpty()) {
+        MyApplication.Toast("لطفا شماره موبایل را وارد کنید", Toast.LENGTH_SHORT);
+        dismiss();
+        return;
+      }
+      if (name.isEmpty()) {
+        MyApplication.Toast("لطفا نام و نام خانوادگی را وارد کنید", Toast.LENGTH_SHORT);
+        dismiss();
+        return;
+      }
+      if (cityCode == 0) {
+        MyApplication.Toast("لطفا شهر را مشخص کنید", Toast.LENGTH_SHORT);
+        dismiss();
+        return;
+      }
+      new HireDialog().show(new HireDialog.Listener() {
+        @Override
+        public void onClose(boolean b) {
 //            if (b) {
 
-              listener.onClose(b);
+            listener.onClose(b);
 //            }
-          }
-        }, mobile, name, cityCode);
-        dismiss();
-      }
+        }
+      }, mobile, name, cityCode);
+      dismiss();
     });
 
-    llReserve.setOnClickListener(new View.OnClickListener() {
-      @Override
-      public void onClick(View view) {
-        new ReserveDialog().show();
-        dismiss();
-      }
+    llSupport.setOnClickListener(view -> {
+      FragmentHelper.toFragment(MyApplication.currentActivity,new SupportFragment()).replace();
+      dismiss();
     });
 
-    imgClose.setOnClickListener(new View.OnClickListener() {
-      @Override
-      public void onClick(View view) {
-        dismiss();
-      }
+    llReserve.setOnClickListener(view -> {
+      new ReserveDialog().show();
+      dismiss();
     });
 
+    imgClose.setOnClickListener(view -> dismiss());
 
     dialog.show();
   }

@@ -3,15 +3,23 @@
     xmlns:tools="http://schemas.android.com/tools"
     package="ir.taxi1880.operatormanagement">
 
+    <!--
+         The ACCESS_COARSE/FINE_LOCATION permissions are not required to use
+         Google Maps Android API v2, but you must specify either coarse or fine
+         location permissions for the "MyLocation" functionality.
+    -->
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="android.permission.BLUETOOTH" />
     <uses-permission android:name="android.permission.WAKE_LOCK" />
+
     <uses-permission-sdk-23 android:name="android.permission.WAKE_LOCK" />
+
     <uses-permission android:name="android.permission.RECORD_AUDIO" />
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.VIBRATE" />
-    <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW"/>
-    <uses-permission android:name="android.permission.FOREGROUND_SERVICE"/>
+    <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW" />
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
     <uses-permission android:name="android.permission.MODIFY_AUDIO_SETTINGS" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
 
@@ -25,14 +33,19 @@
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true">
 
-        <activity android:name=".activity.TripRegisterActivity"
+        <activity
+            android:name=".activity.TripRegisterActivity"
+            android:launchMode="singleInstance"
             android:screenOrientation="portrait"
-            android:windowSoftInputMode="adjustResize|stateHidden"
-            android:launchMode="singleInstance"/>
+            android:windowSoftInputMode="adjustResize|stateHidden" />
 
-        <activity android:name=".activity.CallIncomingActivity" android:screenOrientation="portrait"/>
+        <activity
+            android:name=".activity.CallIncomingActivity"
+            android:screenOrientation="portrait" />
 
-        <activity android:name=".activity.SplashActivity" android:screenOrientation="portrait">
+        <activity
+            android:name=".activity.SplashActivity"
+            android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <action android:name="android.intent.action.VIEW" />
@@ -43,31 +56,46 @@
 
         <activity
             android:name=".activity.MainActivity"
-            android:screenOrientation="portrait"
             android:launchMode="singleInstance"
-            android:windowSoftInputMode="adjustResize|stateHidden"/>
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="adjustResize|stateHidden" />
 
         <service
             android:name=".services.LinphoneService"
-            android:label="@string/app_name" />
+            android:label="@string/app_name" /> <!-- Ava PUSH -->
 
-        <!-- Ava PUSH -->
-        <receiver android:name=".push.AutoStart"
-            android:exported="true"
-            android:enabled="true">
+        <receiver
+            android:name=".push.AutoStart"
+            android:enabled="true"
+            android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.BOOT_COMPLETED" />
                 <action android:name="android.net.conn.CONNECTIVITY_CHANGE" />
             </intent-filter>
         </receiver>
 
-        <service android:name=".push.AvaService"
-            android:exported="false"
-            android:enabled="true"/>
+        <service
+            android:name=".push.AvaService"
+            android:enabled="true"
+            android:exported="false" />
 
-        <receiver android:name=".receiver.PushReceiver"
-            android:exported="false"
-            android:enabled="true" />
+        <receiver
+            android:name=".receiver.PushReceiver"
+            android:enabled="true"
+            android:exported="false" />
+
+        <!--
+     The API key for Google Maps-based APIs is defined as a string resource.
+     (See the file "res/values/google_maps_api.xml").
+     Note that the API key is linked to the encryption key used to sign the APK.
+     You need a different API key for each encryption key, including the release key that is used to
+     sign the APK for publishing.
+     You can define the keys for the debug and release targets in src/debug/ and src/release/.
+-->
+        <meta-data
+            android:name="com.google.android.geo.API_KEY"
+            android:value="AIzaSyDLymwM3CV948dnkclaKd3USWCtwge1M9k" />
 
     </application>
+
 </manifest>

@@ -1702,25 +1702,27 @@ public class TripRegisterActivity extends AppCompatActivity {
 
   @Override
   public void onBackPressed() {
-
-    new GeneralDialog()
-            .title("خروج")
-            .message("آیا از خروج خود اطمینان دارید؟")
-            .firstButton("بله", new Runnable() {
-              @Override
-              public void run() {
-                try {
-                  startActivity(new Intent(MyApplication.context, MainActivity.class));
-                  finish();
-                } catch (Exception e) {
-                  e.printStackTrace();
-                  AvaCrashReporter.send(e, "TripRegisterActivity class, onBackPressed method");
+    if (getFragmentManager().getBackStackEntryCount() > 0 || getSupportFragmentManager().getBackStackEntryCount() > 0) {
+      super.onBackPressed();
+    } else {
+      new GeneralDialog()
+              .title("خروج")
+              .message("آیا از خروج خود اطمینان دارید؟")
+              .firstButton("بله", new Runnable() {
+                @Override
+                public void run() {
+                  try {
+                    startActivity(new Intent(MyApplication.context, MainActivity.class));
+                    finish();
+                  } catch (Exception e) {
+                    e.printStackTrace();
+                    AvaCrashReporter.send(e, "TripRegisterActivity class, onBackPressed method");
+                  }
                 }
-              }
-            })
-            .secondButton("خیر", null)
-            .show();
-
+              })
+              .secondButton("خیر", null)
+              .show();
+    }
   }
 
   private void showCallIncoming() {
