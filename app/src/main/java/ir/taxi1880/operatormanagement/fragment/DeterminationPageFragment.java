@@ -582,7 +582,7 @@ public class DeterminationPageFragment extends Fragment {
                     .cancelable(false)
                     .firstButton("باشه", null)
                     .show();
-          }else{
+          } else {
             new GeneralDialog()
                     .title("خطا")
                     .message(message)

@@ -47,17 +47,9 @@ public class DriverLocationFragment extends Fragment implements OnMapReadyCallba
   }
 
   @Override
-  public void onDestroyView() {
-    super.onDestroyView();
-    unbinder.unbind();
-  }
-
-  @Override
   public void onMapReady(GoogleMap googleMap) {
     myGoogleMap = googleMap;
-    myGoogleMap.getUiSettings().setMapToolbarEnabled(false);
-    myGoogleMap.getUiSettings().setZoomControlsEnabled(false);
-    myGoogleMap.getUiSettings().setRotateGesturesEnabled(false);
+
     LatLng myLocation = new LatLng(36.256924, 59.619964);
 
     CameraPosition cameraPosition = new CameraPosition.Builder()
@@ -67,11 +59,34 @@ public class DriverLocationFragment extends Fragment implements OnMapReadyCallba
 
     myGoogleMap.moveCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
 
-    if (map != null)
+    if (myGoogleMap != null)
       myLocationMarker = myGoogleMap.addMarker(
               new MarkerOptions()
-                      .icon(BitmapDescriptorFactory.fromResource(R.mipmap.turbo))
+//                      .icon(BitmapDescriptorFactory.fromResource(R.mipmap.turbo))
+                      .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_ROSE))
                       .position(myLocation));
 
+  }
+
+  @Override
+  public void onDestroyView() {
+    super.onDestroyView();
+    if (map != null)
+      map.onDestroy();
+    unbinder.unbind();
+  }
+
+  @Override
+  public void onPause() {
+    super.onPause();
+    if (map != null)
+      map.onPause();
+  }
+
+  @Override
+  public void onResume() {
+    super.onResume();
+    if (map != null)
+      map.onResume();
   }
 }
