@@ -6,6 +6,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:background="@color/colorPrimaryLighter"
     android:clickable="true"
+    android:layoutDirection="rtl"
     android:orientation="vertical"
     tools:context=".fragment.SupportFragment">
 
@@ -27,57 +28,108 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
+            android:textStyle="bold"
             android:text="@string/support"
             android:textColor="@color/colorWhite"
             android:textSize="@dimen/text_header" />
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:padding="5dp"
+            android:layout_alignParentEnd="true"
+            android:orientation="horizontal"
+            android:layout_alignParentRight="true">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="بازه زمانی بزرگتر"
+                android:textColor="@color/colorWhite"
+                android:textStyle="bold"
+                android:textAppearance="?android:attr/textAppearanceSmall" />
+
+            <CheckBox
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:buttonTint="@color/colorWhite"/>
+
+        </LinearLayout>
 
     </RelativeLayout>
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="?android:attr/actionBarSize"
-        android:layoutDirection="ltr"
-        android:orientation="horizontal">
+        android:layout_height="match_parent"
+        android:padding="20dp"
+        android:orientation="vertical">
 
-        <ImageView
-            android:id="@+id/imgSearch"
-            android:layout_width="?android:attr/actionBarSize"
-            android:layout_height="match_parent"
-            android:padding="15dp"
-            android:src="@drawable/ic_search" />
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="?android:attr/actionBarSize"
+            android:background="@drawable/bg_blue_border_edge"
+            android:layoutDirection="ltr"
+            android:layout_margin="5dp"
+            android:elevation="5dp"
+            android:orientation="horizontal">
 
-        <ImageView
-            android:id="@+id/imgClear"
-            android:layout_width="?android:attr/actionBarSize"
-            android:layout_height="match_parent"
-            android:padding="10dp"
-            android:src="@drawable/ic_reject" />
+            <ImageView
+                android:id="@+id/imgSearch"
+                android:layout_width="?android:attr/actionBarSize"
+                android:layout_height="match_parent"
+                android:padding="15dp"
+                android:src="@drawable/ic_search" />
 
-        <EditText
-            android:id="@+id/edtSearchTrip"
-            android:layout_width="wrap_content"
-            android:layout_weight="1"
-            android:hint="search box"
-            android:maxLines="1"
-            android:singleLine="true"
-            android:textColorHint="@color/grayMedium"
-            android:layout_height="match_parent"
-            android:padding="10dp" />
+            <View
+                android:layout_width="1dp"
+                android:layout_height="match_parent"
+                android:layout_marginTop="10dp"
+                android:layout_marginBottom="10dp"
+                android:background="@color/grayLight"/>
 
-        <ImageView
-            android:id="@+id/imgSearchType"
-            android:layout_width="?android:attr/actionBarSize"
+            <ImageView
+                android:id="@+id/imgClear"
+                android:layout_width="?android:attr/actionBarSize"
+                android:layout_height="match_parent"
+                android:padding="8dp"
+                android:src="@drawable/ic_reject" />
+
+            <EditText
+                android:id="@+id/edtSearchTrip"
+                android:layout_width="wrap_content"
+                android:layout_weight="1"
+                android:hint="جست و جو"
+                android:maxLines="1"
+                android:singleLine="true"
+                android:background="@color/transparent"
+                android:textColorHint="@color/grayMedium"
+                android:layout_height="match_parent"
+                android:padding="10dp" />
+
+            <View
+                android:layout_width="1dp"
+                android:layout_height="match_parent"
+                android:layout_marginTop="10dp"
+                android:layout_marginBottom="10dp"
+                android:background="@color/grayLight"/>
+
+            <ImageView
+                android:id="@+id/imgSearchType"
+                android:layout_width="?android:attr/actionBarSize"
+                android:layout_height="match_parent"
+                android:padding="14dp"
+                android:src="@drawable/ic_call" />
+
+        </LinearLayout>
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recycleTrip"
+            android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:padding="10dp"
-            android:src="@drawable/ic_call_1" />
+            tools:listitem="@layout/item_trip"
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"/>
 
     </LinearLayout>
-
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/recycleTrip"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        tools:listitem="@layout/item_trip"
-        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"/>
 
 </LinearLayout>

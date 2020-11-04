@@ -91,6 +91,7 @@
     <string name="price">مبلغ</string>
     <string name="endTime">ساعت پایان</string>
     <string name="plaque">پلاک</string>
+    <string name="sendCall">ساعت تماس</string>
 
 
 </resources>
