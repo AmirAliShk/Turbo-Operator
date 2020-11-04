@@ -75,23 +75,25 @@
     <string name="zero">0</string>
     <string name="sendTime">ساعت ارسال</string>
     <string name="customerName">نام مشتری</string>
-    <string name="customerTell">تلفن ثابت</string>
-    <string name="customerMobile">تلفن همراه</string>
+    <string name="customerTell">تلفن </string>
+    <string name="customerMobile"> همراه</string>
     <string name="customerAddress">آدرس</string>
     <string name="carType">نوع خودرو</string>
-    <string name="driverMob">موبایل راننده</string>
+    <string name="driverMob">همراه راننده</string>
     <string name="time">ساعت</string>
     <string name="tripType">نوع سفر</string>
     <string name="city">شهر</string>
     <string name="percent">تخفیف</string>
     <string name="maxPercent">سقف تخفیف</string>
     <string name="sendDate">تاریخ اعزام</string>
+    <string name="sendTime2">ساعت اعزام</string>
     <string name="driverCode">کد راننده</string>
     <string name="driverName">نام راننده</string>
-    <string name="price">مبلغ</string>
+    <string name="price">مبلغ راننده</string>
     <string name="endTime">ساعت پایان</string>
-    <string name="plaque">پلاک</string>
+    <string name="plaque">پلاک خودرو</string>
     <string name="sendCall">ساعت تماس</string>
+    <string name="callTime">ساعت تماس</string>
 
 
 </resources>

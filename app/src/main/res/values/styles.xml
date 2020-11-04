@@ -32,7 +32,7 @@
     </style>
 
     <style name="tripItemTitle">
-        <item name="android:textColor">@color/grayDark</item>
+        <item name="android:textColor">@color/grayMedium</item>
         <item name="android:layout_marginEnd">10dp</item>
         <item name="android:layout_marginRight">10dp</item>
         <item name="android:textAppearance">?android:attr/textAppearanceSmall</item>
@@ -41,7 +41,16 @@
     <style name="tripItemValue">
         <item name="android:textStyle">bold</item>
         <item name="android:textColor">@color/colorBlack</item>
-        <item name="android:textAppearance">?android:attr/textAppearanceSmall</item>
+        <item name="android:textAppearance">?android:attr/textAppearanceMedium</item>
+    </style>
+
+    <style name="button">
+        <item name="android:background">@drawable/bg_light_pink_edge</item>
+        <item name="android:textAppearance">?android:attr/textAppearanceLarge</item>
+        <item name="android:textColor">@color/colorWhite</item>
+        <item name="android:layout_marginRight">10dp</item>
+        <item name="android:layout_marginLeft">10dp</item>
+        <item name="android:layout_marginTop">10dp</item>
     </style>
 
 </resources>
