@@ -41,6 +41,7 @@ public class EndPoints {
   public static final String FIND_WAY_WEBSERVICE_PATH = FIND_WAY_IP + ":" + FIND_WAY_APIPort + "/api/";
   public static final String ACCOUNT_WEBSERVICE_PATH = IP + ":" + TRIP_APIPort + "/api/operator/v2/";
   public static final String SCORE_WEBSERVICE_PATH = IP + ":" + TRIP_APIPort + "/api/operator/v2/score/";
+  public static final String SUPPORT_WEBSERVICE_PATH = IP + ":" + TRIP_APIPort + "/api/operator/v2/support/";
   public static final String CALL_VOICE_PATH = IP + ":" + CALL_VOICE_APIPort + "/api/getCallvoice/caldX:23V32/";
 //  http://turbotaxi.ir:1884/api/getCallvoice/caldX:23V32/1604130536.10343290
 
@@ -90,10 +91,18 @@ public class EndPoints {
   public static final String REWARDS = SCORE_WEBSERVICE_PATH + "rewards";
   public static final String SINGLE = SCORE_WEBSERVICE_PATH + "single";
 
-
   /******************************** Contract Api *********************************/
 
   public static final String CONTRACT = WEBSERVICE_PATH + "v2/getContractText";
   public static final String UPLOAD_NATIONAL_CARD = IP + ":" + PIC_APIPort + "/api/setContract";
+
+  /******************************** Support Api *********************************/
+
+  public static final String SEARCH_SERVICE = SUPPORT_WEBSERVICE_PATH + "searchService";
+  public static final String SERVICE_DETAIL = SUPPORT_WEBSERVICE_PATH + "serviceDetail";
+  public static final String LAST_DRIVER_POSITION = SUPPORT_WEBSERVICE_PATH + "lastDriverPosition";
+  public static final String INSERT_MISTAKE = SUPPORT_WEBSERVICE_PATH + "insertMistake";
+  public static final String INSERT_COMPLAINT = SUPPORT_WEBSERVICE_PATH + "insertComplaint";
+  public static final String INSERT_LOST_OBJECT = SUPPORT_WEBSERVICE_PATH + "insertLostObject";
 
 }

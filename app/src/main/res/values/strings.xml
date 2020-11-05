@@ -94,6 +94,10 @@
     <string name="plaque">پلاک خودرو</string>
     <string name="sendCall">ساعت تماس</string>
     <string name="callTime">ساعت تماس</string>
+    <string name="call">تماس</string>
+    <string name="name">نام</string>
+    <string name="stationCode">کد ایستگاه</string>
+    <string name="taxiCode">کد تاکسی</string>
 
 
 </resources>

@@ -1,6 +1,7 @@
 package ir.taxi1880.operatormanagement.fragment;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -23,7 +24,10 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
 import ir.taxi1880.operatormanagement.R;
+import ir.taxi1880.operatormanagement.app.EndPoints;
+import ir.taxi1880.operatormanagement.app.MyApplication;
 import ir.taxi1880.operatormanagement.helper.TypefaceUtil;
+import ir.taxi1880.operatormanagement.okHttp.RequestHelper;
 
 public class DriverLocationFragment extends Fragment implements OnMapReadyCallback {
   Unbinder unbinder;
@@ -67,6 +71,38 @@ public class DriverLocationFragment extends Fragment implements OnMapReadyCallba
                       .position(myLocation));
 
   }
+
+  private void getLastLocation(String searchText) {
+
+    RequestHelper.builder(EndPoints.LAST_DRIVER_POSITION)
+            .addParam("taxiCode", 1)
+            .listener(onGetTripList)
+            .post();
+  }
+
+  RequestHelper.Callback onGetTripList = new RequestHelper.Callback() {
+    @Override
+    public void onResponse(Runnable reCall, Object... args) {
+      MyApplication.handler.post(new Runnable() {
+        @Override
+        public void run() {
+          try {
+            Log.i("DriverLocationFragment", "run: "+args[0].toString());
+
+          } catch (Exception e) {
+            e.printStackTrace();
+          }
+        }
+      });
+    }
+
+    @Override
+    public void onFailure(Runnable reCall, Exception e) {
+      MyApplication.handler.post(() -> {
+
+      });
+    }
+  };
 
   @Override
   public void onDestroyView() {

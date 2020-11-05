@@ -34,6 +34,7 @@
             android:textSize="@dimen/text_header" />
 
         <LinearLayout
+            android:id="@+id/llExtendedTime"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:gravity="center"
@@ -51,6 +52,7 @@
                 android:textAppearance="?android:attr/textAppearanceSmall" />
 
             <CheckBox
+                android:id="@+id/chbExtendedTime"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:buttonTint="@color/colorWhite"/>
@@ -123,12 +125,42 @@
 
         </LinearLayout>
 
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/recycleTrip"
+        <ViewFlipper
+            android:id="@+id/vfTrip"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            tools:listitem="@layout/item_trip"
-            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"/>
+            android:layout_height="match_parent">
+
+            <com.wang.avi.AVLoadingIndicatorView
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                app:indicatorName="BallSpinFadeLoaderIndicator"
+                android:layout_gravity="center"
+                app:indicatorColor="@color/colorPrimaryDark" />
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/recycleTrip"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                tools:listitem="@layout/item_trip"
+                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"/>
+
+            <TextView
+                android:gravity="center"
+                android:textSize="@dimen/text_title"
+                android:textColor="@color/colorBlack"
+                android:text="هنوز موردی ثبت نشده!"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"/>
+
+            <TextView
+                android:gravity="center"
+                android:textSize="@dimen/text_title"
+                android:textColor="@color/colorBlack"
+                android:text="خطایی رخ داده! \n لطفا پس از چند لحظه مجدد تلاش کنید"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"/>
+
+        </ViewFlipper>
 
     </LinearLayout>
 

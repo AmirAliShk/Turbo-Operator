@@ -610,6 +610,7 @@ public class DeterminationPageFragment extends Fragment {
     if (txtAddress == null) return;
     if (txtRemainingAddress == null) return;
     if (dataBase.getRemainingAddress() > 0) {
+      //TODO fix crash
       String cityName = dataBase.getCityName(dataBase.getTopAddress().getCity()).getCity();
       txtAddress.setText(cityName + " , " + dataBase.getTopAddress().getOriginText());
       txtRemainingAddress.setText("تعداد آدرس های ثبت نشده : " + dataBase.getRemainingAddress());
