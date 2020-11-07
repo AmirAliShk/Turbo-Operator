@@ -918,7 +918,8 @@ public class TripRegisterActivity extends AppCompatActivity {
               new CityDialog().show(new CityDialog.Listener() {
                 @Override
                 public void selectedCity(int position) {
-                  spCity.setSelection(position + 1);
+                  if (spCity != null)
+                    spCity.setSelection(position + 1);
                 }
               });
             }

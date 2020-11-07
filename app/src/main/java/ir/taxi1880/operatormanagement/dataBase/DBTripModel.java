@@ -1,6 +1,6 @@
 package ir.taxi1880.operatormanagement.dataBase;
 
-public class TripModel {
+public class DBTripModel {
   int id;// the unique id for each trip
   int operatorId;// ID of the person who registered the service
   String originText;

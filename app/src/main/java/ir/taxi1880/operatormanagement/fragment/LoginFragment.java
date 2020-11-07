@@ -79,11 +79,11 @@ public class LoginFragment extends Fragment {
 
   private void logIn(String userName, String password) {
 
-      RequestHelper.builder(EndPoints.LOGIN)
-              .addParam("userName", userName)
-              .addParam("password", password)
-              .listener(onLogIn)
-              .post();
+    RequestHelper.builder(EndPoints.LOGIN)
+            .addParam("userName", userName)
+            .addParam("password", password)
+            .listener(onLogIn)
+            .post();
 
   }
 
@@ -110,7 +110,8 @@ public class LoginFragment extends Fragment {
           int activeInQueue = object.getInt("activeInQueue");
           int isFinishContract = object.getInt("isFinishContract");
           int accessStationDeterminationPage = object.getInt("accessStationDeterminationPage");
-
+          String name = edtUserName.getText().toString();
+          String pass = edtPassword.getText().toString();
           MyApplication.prefManager.setOperatorName(object.getString("name"));
 
           if (status == 1) {
@@ -137,10 +138,10 @@ public class LoginFragment extends Fragment {
             MyApplication.prefManager.setCardNumber(cardNumber);
             MyApplication.prefManager.setAccountNumber(accountNumber);
             MyApplication.prefManager.setBalance(balance);
-            MyApplication.prefManager.setUserName((edtUserName.getText().toString()));
-            MyApplication.prefManager.setPassword(edtPassword.getText().toString());
+            MyApplication.prefManager.setUserName(name);
+            MyApplication.prefManager.setPassword(pass);
             MyApplication.prefManager.isLoggedIn(true);
-            if (isFinishContract == 1){
+            if (isFinishContract == 1) {
               new GeneralDialog()
                       .title("اتمام قرار داد")
                       .message("مدت قرار داد شما به اتمام رسیده است. لطفا برای تمدید آن اقدام کنید.")
@@ -184,7 +185,7 @@ public class LoginFragment extends Fragment {
 //                            })
 //                            .show();
           e.printStackTrace();
-          AvaCrashReporter.send(e,"LoginFragment class, onLogIn onResponse method");
+          AvaCrashReporter.send(e, "LoginFragment class, onLogIn onResponse method");
 
         }
       });

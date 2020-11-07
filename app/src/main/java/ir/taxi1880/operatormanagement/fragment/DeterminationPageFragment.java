@@ -33,7 +33,7 @@ import ir.taxi1880.operatormanagement.app.EndPoints;
 import ir.taxi1880.operatormanagement.app.MyApplication;
 import ir.taxi1880.operatormanagement.customView.PinEntryEditText;
 import ir.taxi1880.operatormanagement.dataBase.DataBase;
-import ir.taxi1880.operatormanagement.dataBase.TripModel;
+import ir.taxi1880.operatormanagement.dataBase.DBTripModel;
 import ir.taxi1880.operatormanagement.dialog.GeneralDialog;
 import ir.taxi1880.operatormanagement.dialog.LoadingDialog;
 import ir.taxi1880.operatormanagement.dialog.PlayLastConversationDialog;
@@ -308,21 +308,21 @@ public class DeterminationPageFragment extends Fragment {
                   dataBase.deleteRemainingRecord(dataBase.getTopAddress().getId());
                 for (int i = 0; i < dataArr.length(); i++) {
                   JSONObject dataObj = dataArr.getJSONObject(i);
-                  TripModel tripModel = new TripModel();
-                  tripModel.setId(dataObj.getInt("Id")); // the unique id for each trip
-                  tripModel.setOriginStation(dataObj.getInt("OriginStation"));
+                  DBTripModel DBTripModel = new DBTripModel();
+                  DBTripModel.setId(dataObj.getInt("Id")); // the unique id for each trip
+                  DBTripModel.setOriginStation(dataObj.getInt("OriginStation"));
 
                   String content = dataObj.getString("Content");
                   JSONObject contentObj = new JSONObject(content);
-                  tripModel.setOperatorId(contentObj.getInt("userId")); // ID of the person who registered the service
-                  tripModel.setCity(contentObj.getInt("cityCode"));
-                  tripModel.setCustomerName(contentObj.getString("callerName"));
-                  tripModel.setTell(contentObj.getString("phoneNumber"));
-                  tripModel.setVoipId(contentObj.getString("voipId"));
-                  tripModel.setOriginText(contentObj.getString("address"));
-                  tripModel.setSaveDate(dataObj.getString("SaveDate"));
+                  DBTripModel.setOperatorId(contentObj.getInt("userId")); // ID of the person who registered the service
+                  DBTripModel.setCity(contentObj.getInt("cityCode"));
+                  DBTripModel.setCustomerName(contentObj.getString("callerName"));
+                  DBTripModel.setTell(contentObj.getString("phoneNumber"));
+                  DBTripModel.setVoipId(contentObj.getString("voipId"));
+                  DBTripModel.setOriginText(contentObj.getString("address"));
+                  DBTripModel.setSaveDate(dataObj.getString("SaveDate"));
 
-                  dataBase.insertTripRow(tripModel);
+                  dataBase.insertTripRow(DBTripModel);
                 }
 
                 if (txtRemainingAddress != null)

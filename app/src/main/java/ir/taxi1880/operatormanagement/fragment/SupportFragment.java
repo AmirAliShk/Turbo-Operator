@@ -9,6 +9,12 @@ import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.ViewFlipper;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.util.ArrayList;
+
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.RecyclerView;
 import butterknife.BindView;
@@ -16,15 +22,19 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import butterknife.Unbinder;
 import ir.taxi1880.operatormanagement.R;
+import ir.taxi1880.operatormanagement.adapter.TripAdapter;
 import ir.taxi1880.operatormanagement.app.EndPoints;
 import ir.taxi1880.operatormanagement.app.MyApplication;
 import ir.taxi1880.operatormanagement.dialog.SearchFilterDialog;
 import ir.taxi1880.operatormanagement.helper.FragmentHelper;
 import ir.taxi1880.operatormanagement.helper.TypefaceUtil;
+import ir.taxi1880.operatormanagement.model.TripModel;
 import ir.taxi1880.operatormanagement.okHttp.RequestHelper;
 
 public class SupportFragment extends Fragment {
   Unbinder unbinder;
+  ArrayList<TripModel> tripModels;
+  TripAdapter tripAdapter;
   int searchCase = 2;
 
   @OnClick(R.id.imgBack)
@@ -37,7 +47,7 @@ public class SupportFragment extends Fragment {
 
   @OnClick(R.id.imgSearch)
   void onSearchPress() {
-    String searchText=edtSearchTrip.getText().toString();
+    String searchText = edtSearchTrip.getText().toString();
 
     searchService(searchText);
   }
@@ -74,13 +84,53 @@ public class SupportFragment extends Fragment {
     unbinder = ButterKnife.bind(this, view);
     TypefaceUtil.overrideFonts(view);
 
+    getList();
+
     return view;
   }
 
+  String tripList = "{\"success\":true,\"message\":\"\",\"data\":[\n" +
+          "{\"callTime\":\"13:52\",\"sendTime\":\"14:00\",\"city\":\"مشهد\",\"customerName\":\"فاطمه نوری\",\"customerTell\":\"09015693808\",\"customerMob\":\"33710834\",\"address\":\"مشهد، فداییان اسلا\",\"carType\":\"تاکسی\",\"driverMobile\":\"09015693808\"},\n" +
+          "{\"callTime\":\"14:52\",\"sendTime\":\"15:00\",\"city\":\"نیشابور\",\"customerName\":\"سارانوری\",\"customerTell\":\"09015693806\",\"customerMob\":\"33710836\",\"address\":\"ممشهد، فداییان اسلا\",\"carType\":\"اقتصادی\",\"driverMobile\":\"09015693806\"},\n" +
+          "{\"callTime\":\"15:52\",\"sendTime\":\"16:00\",\"city\":\"کاشمر\",\"customerName\":\"فائزه نوری\",\"customerTell\":\"09015693855\",\"customerMob\":\"33710834\",\"address\":\"مشهد، فداییان اسلا\",\"carType\":\"تشریفات\",\"driverMobile\":\"09015693855\"}]}";
+
+  private void getList() {
+    try {
+      tripModels = new ArrayList<>();
+      JSONObject tripObject = new JSONObject(tripList);
+      Boolean success = tripObject.getBoolean("success");
+      String message = tripObject.getString("message");
+      JSONArray data = tripObject.getJSONArray("data");
+      for (int i = 0; i < data.length(); i++) {
+        JSONObject dataObj = data.getJSONObject(i);
+        TripModel tripModel = new TripModel();
+        tripModel.setCallTime(dataObj.getString("callTime"));
+        tripModel.setSendTime(dataObj.getString("sendTime"));
+        tripModel.setCustomerName(dataObj.getString("customerName"));
+        tripModel.setCustomerTell(dataObj.getString("customerTell"));
+        tripModel.setCustomerMob(dataObj.getString("customerMob"));
+        tripModel.setAddress(dataObj.getString("address"));
+        tripModel.setCarType(dataObj.getString("carType"));
+        tripModel.setCity(dataObj.getString("city"));
+        tripModel.setDriverMobile(dataObj.getString("driverMobile"));
+        tripModels.add(tripModel);
+      }
+
+      tripAdapter = new TripAdapter(tripModels);
+      if (recycleTrip != null)
+        recycleTrip.setAdapter(tripAdapter);
+
+      vfTrip.setDisplayedChild(1);
+
+    } catch (JSONException e) {
+      e.printStackTrace();
+    }
+  }
+
   private void searchService(String searchText) {
-   if (vfTrip!=null){
-     vfTrip.setDisplayedChild(0);
-   }
+    if (vfTrip != null) {
+      vfTrip.setDisplayedChild(0);
+    }
 
     int extendedTime = chbExtendedTime.isChecked() ? 1 : 0;
 
@@ -99,7 +149,7 @@ public class SupportFragment extends Fragment {
         @Override
         public void run() {
           try {
-            Log.i("SupportFragment", "run: "+args[0].toString());
+            Log.i("SupportFragment", "run: " + args[0].toString());
 
           } catch (Exception e) {
             e.printStackTrace();
@@ -111,7 +161,7 @@ public class SupportFragment extends Fragment {
     @Override
     public void onFailure(Runnable reCall, Exception e) {
       MyApplication.handler.post(() -> {
-        if (vfTrip!=null){
+        if (vfTrip != null) {
           vfTrip.setDisplayedChild(3);
         }
       });

@@ -71,76 +71,76 @@ public class DataBase extends SQLiteOpenHelper {
             COLUMN_VOIP_ID + " TEXT)");
   }
 
-  public void insertTripRow(TripModel tripModel) {
+  public void insertTripRow(DBTripModel DBTripModel) {
     try {
       SQLiteDatabase sqLiteDatabase = this.getWritableDatabase();
       ContentValues contentValues = new ContentValues();
-      contentValues.put(COLUMN_TRIP_ID, tripModel.getId());
-      contentValues.put(COLUMN_OPERATOR_ID, tripModel.getOperatorId());
-      contentValues.put(COLUMN_ORIGIN_TEXT, tripModel.getOriginText());
-      contentValues.put(COLUMN_ORIGIN_STATION, tripModel.getOriginStation());
-      contentValues.put(COLUMN_SAVE_DATE, tripModel.getSaveDate());
-      contentValues.put(COLUMN_SEND_DATE, tripModel.getSendDate());
-      contentValues.put(COLUMN_CITY, tripModel.getCity());
-      contentValues.put(COLUMN_TELL, tripModel.getTell());
-      contentValues.put(COLUMN_CUSTOMER_NAME, tripModel.getCustomerName());
-      contentValues.put(COLUMN_VOIP_ID, tripModel.getVoipId());
+      contentValues.put(COLUMN_TRIP_ID, DBTripModel.getId());
+      contentValues.put(COLUMN_OPERATOR_ID, DBTripModel.getOperatorId());
+      contentValues.put(COLUMN_ORIGIN_TEXT, DBTripModel.getOriginText());
+      contentValues.put(COLUMN_ORIGIN_STATION, DBTripModel.getOriginStation());
+      contentValues.put(COLUMN_SAVE_DATE, DBTripModel.getSaveDate());
+      contentValues.put(COLUMN_SEND_DATE, DBTripModel.getSendDate());
+      contentValues.put(COLUMN_CITY, DBTripModel.getCity());
+      contentValues.put(COLUMN_TELL, DBTripModel.getTell());
+      contentValues.put(COLUMN_CUSTOMER_NAME, DBTripModel.getCustomerName());
+      contentValues.put(COLUMN_VOIP_ID, DBTripModel.getVoipId());
       sqLiteDatabase.insertWithOnConflict(TRIP_TABLE, COLUMN_TRIP_ID, contentValues, SQLiteDatabase.CONFLICT_REPLACE);
     } catch (Exception e) {
       e.printStackTrace();
     }
   }
 
-  public ArrayList<TripModel> getTripRow() {
-    ArrayList<TripModel> tripModels = new ArrayList<>();
+  public ArrayList<DBTripModel> getTripRow() {
+    ArrayList<DBTripModel> DBTripModels = new ArrayList<>();
     SQLiteDatabase sqLiteDatabase = this.getReadableDatabase();
     try {
       @SuppressLint("Recycle") Cursor cursor = sqLiteDatabase.rawQuery("select * from " + TRIP_TABLE + " ORDER BY " + COLUMN_TRIP_ID + " ASC; ", null);
       cursor.moveToFirst();
 
       while (!cursor.isAfterLast()) {
-        TripModel tripModel = new TripModel();
-        tripModel.setId(cursor.getInt(cursor.getColumnIndex(COLUMN_TRIP_ID)));
-        tripModel.setOperatorId(cursor.getInt(cursor.getColumnIndex(COLUMN_OPERATOR_ID)));
-        tripModel.setOriginText(cursor.getString(cursor.getColumnIndex(COLUMN_ORIGIN_TEXT)));
-        tripModel.setOriginStation(cursor.getInt(cursor.getColumnIndex(COLUMN_ORIGIN_STATION)));
-        tripModel.setSaveDate(cursor.getString(cursor.getColumnIndex(COLUMN_SAVE_DATE)));
-        tripModel.setSendDate(cursor.getString(cursor.getColumnIndex(COLUMN_SEND_DATE)));
-        tripModel.setCity(cursor.getInt(cursor.getColumnIndex(COLUMN_CITY)));
-        tripModels.add(tripModel);
+        DBTripModel DBTripModel = new DBTripModel();
+        DBTripModel.setId(cursor.getInt(cursor.getColumnIndex(COLUMN_TRIP_ID)));
+        DBTripModel.setOperatorId(cursor.getInt(cursor.getColumnIndex(COLUMN_OPERATOR_ID)));
+        DBTripModel.setOriginText(cursor.getString(cursor.getColumnIndex(COLUMN_ORIGIN_TEXT)));
+        DBTripModel.setOriginStation(cursor.getInt(cursor.getColumnIndex(COLUMN_ORIGIN_STATION)));
+        DBTripModel.setSaveDate(cursor.getString(cursor.getColumnIndex(COLUMN_SAVE_DATE)));
+        DBTripModel.setSendDate(cursor.getString(cursor.getColumnIndex(COLUMN_SEND_DATE)));
+        DBTripModel.setCity(cursor.getInt(cursor.getColumnIndex(COLUMN_CITY)));
+        DBTripModels.add(DBTripModel);
         cursor.moveToNext();
       }
     } catch (Exception e) {
       e.printStackTrace();
     }
-    return tripModels;
+    return DBTripModels;
   }
 
   @SuppressLint("Recycle")
-  public TripModel getTopAddress() {
-    TripModel tripModel = new TripModel();
+  public DBTripModel getTopAddress() {
+    DBTripModel DBTripModel = new DBTripModel();
     SQLiteDatabase sqLiteDatabase = this.getReadableDatabase();
     try {
       Cursor cursor;
 //      if (goNext) {
 //        cursor = sqLiteDatabase.rawQuery("select * from " + TRIP_TABLE + " ORDER BY " + COLUMN_NEXT_RECORD + " ASC LIMIT 1; ", null);
 //      } else {
-        cursor = sqLiteDatabase.rawQuery("select * from " + TRIP_TABLE + " ORDER BY " + COLUMN_TRIP_ID + " ASC LIMIT 1 ; ", null);
+      cursor = sqLiteDatabase.rawQuery("select * from " + TRIP_TABLE + " ORDER BY " + COLUMN_TRIP_ID + " ASC LIMIT 1 ; ", null);
 //      }
       if (cursor != null) {
         cursor.moveToFirst();
         if (cursor.isFirst()) {
-          tripModel.setId(cursor.getInt(cursor.getColumnIndex(COLUMN_TRIP_ID)));
-          tripModel.setOperatorId(cursor.getInt(cursor.getColumnIndex(COLUMN_OPERATOR_ID)));
-          tripModel.setOriginText(cursor.getString(cursor.getColumnIndex(COLUMN_ORIGIN_TEXT)));
-          tripModel.setOriginStation(cursor.getInt(cursor.getColumnIndex(COLUMN_ORIGIN_STATION)));
-          tripModel.setSaveDate(cursor.getString(cursor.getColumnIndex(COLUMN_SAVE_DATE)));
-          tripModel.setSendDate(cursor.getString(cursor.getColumnIndex(COLUMN_SEND_DATE)));
-          tripModel.setCity(cursor.getInt(cursor.getColumnIndex(COLUMN_CITY)));
-          tripModel.setTell(cursor.getString(cursor.getColumnIndex(COLUMN_TELL)));
-          tripModel.setCustomerName(cursor.getString(cursor.getColumnIndex(COLUMN_CUSTOMER_NAME)));
-          tripModel.setVoipId(cursor.getString(cursor.getColumnIndex(COLUMN_VOIP_ID)));
-          return tripModel;
+          DBTripModel.setId(cursor.getInt(cursor.getColumnIndex(COLUMN_TRIP_ID)));
+          DBTripModel.setOperatorId(cursor.getInt(cursor.getColumnIndex(COLUMN_OPERATOR_ID)));
+          DBTripModel.setOriginText(cursor.getString(cursor.getColumnIndex(COLUMN_ORIGIN_TEXT)));
+          DBTripModel.setOriginStation(cursor.getInt(cursor.getColumnIndex(COLUMN_ORIGIN_STATION)));
+          DBTripModel.setSaveDate(cursor.getString(cursor.getColumnIndex(COLUMN_SAVE_DATE)));
+          DBTripModel.setSendDate(cursor.getString(cursor.getColumnIndex(COLUMN_SEND_DATE)));
+          DBTripModel.setCity(cursor.getInt(cursor.getColumnIndex(COLUMN_CITY)));
+          DBTripModel.setTell(cursor.getString(cursor.getColumnIndex(COLUMN_TELL)));
+          DBTripModel.setCustomerName(cursor.getString(cursor.getColumnIndex(COLUMN_CUSTOMER_NAME)));
+          DBTripModel.setVoipId(cursor.getString(cursor.getColumnIndex(COLUMN_VOIP_ID)));
+          return DBTripModel;
         } else {
           return null;
         }
@@ -235,10 +235,10 @@ public class DataBase extends SQLiteOpenHelper {
 
   public CityModel getCityName(int id) {
     SQLiteDatabase sqLiteDatabase = this.getReadableDatabase();
-    @SuppressLint("Recycle") Cursor res = sqLiteDatabase.rawQuery("select * from " + CITY_TABLE + " where " + id + " = " + COLUMN_CITY_ID, null);
-    if (!res.moveToFirst()) {
-      return null;
-    }
+    @SuppressLint("Recycle") Cursor res = sqLiteDatabase.rawQuery("select * from " + CITY_TABLE + " where " + COLUMN_CITY_ID + " = " + id, null);
+
+    if (res.getCount() == 0) return null;
+
     res.moveToFirst();
     CityModel model = new CityModel();
     model.setId(res.getInt(res.getColumnIndex(COLUMN_CITY_ID)));
