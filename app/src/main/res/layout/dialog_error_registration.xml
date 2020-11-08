@@ -7,71 +7,90 @@
     android:orientation="vertical">
 
     <LinearLayout
-            android:layout_width="350dp"
-            android:background="@drawable/bg_gray_lite_edge"
-            android:layout_height="wrap_content"
-            android:layout_gravity="top|center_horizontal"
-            android:gravity="top"
-            android:padding="10dp"
-            android:minWidth="350dp"
+        android:layout_width="350dp"
+        android:layout_height="wrap_content"
+        android:layout_gravity="top|center_horizontal"
+        android:background="@drawable/bg_white_edge"
+        android:gravity="top"
+        android:minWidth="350dp"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:id="@+id/llTitle"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:background="@drawable/bg_dialog_header"
+            android:gravity="center"
             android:orientation="vertical">
 
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:padding="10dp"
-                android:orientation="vertical">
-
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="دلایل ثبت خطا را وارد کنید : "
-                    android:padding="10dp"
-                    android:textAppearance="?android:attr/textAppearanceMedium"
-                    android:textColor="@color/grayMedium"/>
-
-                <EditText
-                    android:id="@+id/edtErrorText"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:minHeight="150dp"
-                    android:gravity="top|right"
-                    android:layout_margin="5dp"
-                    android:padding="10dp"
-                    android:elevation="3dp"
-                    android:background="@drawable/bg_strock_corner"/>
-
-            </LinearLayout>
-
-            <LinearLayout
+            <TextView
+                android:id="@+id/txtTitle"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:gravity="center"
-                android:layout_weight="1"
-                android:layout_margin="10dp"
-                android:orientation="vertical">
+                android:text="ثبت خطا"
+                android:textColor="@color/colorWhite"
+                android:textSize="@dimen/text_header"
+                android:textStyle="bold" />
+        </LinearLayout>
 
-                <Button
-                    android:id="@+id/btnSubmit"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:background="@drawable/bg_light_pink_edge"
-                    android:text="ثبت"
-                    android:layout_marginLeft="40dp"
-                    android:layout_marginRight="40dp"
-                    android:textColor="@color/colorWhite"
-                    android:textAppearance="?android:attr/textAppearanceLarge"
-                    android:textStyle="bold" />
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="10dp">
 
-            </LinearLayout>
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="10dp"
+                android:text="دلایل ثبت خطا را وارد کنید : "
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:textColor="@color/grayMedium" />
+
+            <EditText
+                android:id="@+id/edtErrorText"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_margin="5dp"
+                android:background="@drawable/bg_strock_corner"
+                android:maxLines="3"
+                android:elevation="3dp"
+                android:gravity="top|right"
+                android:minHeight="100dp"
+                android:padding="10dp" />
 
         </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="10dp"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:orientation="vertical">
+
+            <Button
+                android:id="@+id/btnSubmit"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="40dp"
+                android:layout_marginRight="40dp"
+                android:background="@drawable/bg_light_pink_edge"
+                android:text="ثبت"
+                android:textAppearance="?android:attr/textAppearanceLarge"
+                android:textColor="@color/colorWhite"
+                android:textStyle="bold" />
+
+        </LinearLayout>
+
+    </LinearLayout>
 
     <ImageView
         android:id="@+id/imgClose"
         android:layout_width="80dp"
         android:layout_height="80dp"
         android:padding="20dp"
-        android:src="@drawable/ic_close_black_24dp"/>
+        android:src="@drawable/ic_close_black_24dp" />
 
 </LinearLayout>

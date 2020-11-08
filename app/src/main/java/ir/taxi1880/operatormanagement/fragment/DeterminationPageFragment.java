@@ -85,25 +85,6 @@ public class DeterminationPageFragment extends Fragment {
     txtStation.setText("");
   }
 
-//  @OnLongClick(R.id.btnSubmit)
-//  public boolean onLongClick() {
-//    if (txtStation.getText().toString().isEmpty()) {
-//      MyApplication.Toast("لطفا شماره ایستگاه را وارد کنید", Toast.LENGTH_SHORT);
-//      return false;
-//    }
-//    if (dataBase.getRemainingAddress() == 0) {
-//      MyApplication.Toast("آدرسی برای ثبت موجود نیست", Toast.LENGTH_SHORT);
-//      txtStation.setText("");
-//      return false;
-//    }
-//
-//    int cityCode = dataBase.getCityName(dataBase.getTopAddress().getCity()).getId();
-//    String code = StringHelper.toEnglishDigits(txtStation.getText().toString());
-//    setStationCode(MyApplication.prefManager.getUserCode(), dataBase.getTopAddress().getId(), code, cityCode);
-//
-//    return true;
-//  }
-
   @OnClick(R.id.btnSubmit)
   void onSubmit() {
     if (txtStation.getText().toString().isEmpty()) {
@@ -117,7 +98,7 @@ public class DeterminationPageFragment extends Fragment {
     }
 
     if (pressSubmit) {
-      int cityCode = dataBase.getCityName(dataBase.getTopAddress().getCity()).getId();
+      int cityCode = dataBase.getTopAddress().getCity();
       String code = StringHelper.toEnglishDigits(txtStation.getText().toString());
       setStationCode(MyApplication.prefManager.getUserCode(), dataBase.getTopAddress().getId(), code, cityCode);
     } else {
@@ -492,16 +473,16 @@ public class DeterminationPageFragment extends Fragment {
 
   private void setStationCode(int userId, int tripId, String stationCode, int cityCode) {
     //TODO comment zero numbers... and bellow log
-//    Log.e(TAG, "setStation = " + dataBase.getTopAddress().getOriginText() + ", stationCode = " + stationCode + ", tripId = " + tripId + ", cityCode = " + cityCode);
+    Log.e(TAG, "setStation = " + dataBase.getTopAddress().getOriginText() + ", stationCode = " + stationCode + ", tripId = " + tripId + ", cityCode = " + cityCode);
 
     RequestHelper.builder(EndPoints.UPDATE_TRIP_STATION)
             .addParam("userId", userId)
-            .addParam("tripId", StringHelper.toEnglishDigits(tripId + ""))
-            .addParam("stationCode", StringHelper.toEnglishDigits(stationCode + ""))
-            .addParam("cityCode", StringHelper.toEnglishDigits(cityCode + ""))
-//            .addParam("tripId", 0)
-//            .addParam("stationCode", 0)
-//            .addParam("cityCode", 0)
+//            .addParam("tripId", StringHelper.toEnglishDigits(tripId + ""))
+//            .addParam("stationCode", StringHelper.toEnglishDigits(stationCode + ""))
+//            .addParam("cityCode", StringHelper.toEnglishDigits(cityCode + ""))
+            .addParam("tripId", 0)
+            .addParam("stationCode", 0)
+            .addParam("cityCode", 0)
             .listener(setStationCode)
             .put();
 
@@ -611,7 +592,7 @@ public class DeterminationPageFragment extends Fragment {
     if (txtRemainingAddress == null) return;
     if (dataBase.getRemainingAddress() > 0) {
       //TODO fix crash
-      String cityName = dataBase.getCityName(dataBase.getTopAddress().getCity()).getCity();
+      String cityName = dataBase.getCityName2(dataBase.getTopAddress().getCity());
       txtAddress.setText(cityName + " , " + dataBase.getTopAddress().getOriginText());
       txtRemainingAddress.setText("تعداد آدرس های ثبت نشده : " + dataBase.getRemainingAddress());
     } else {
@@ -668,13 +649,11 @@ public class DeterminationPageFragment extends Fragment {
   public void onResume() {
     super.onResume();
     isFragmentOpen = true;
-    Log.i(TAG, "onResume: ");
   }
 
   @Override
   public void onPause() {
     super.onPause();
     isFragmentOpen = false;
-    Log.i(TAG, "onPause: ");
   }
 }

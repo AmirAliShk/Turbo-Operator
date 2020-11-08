@@ -31,26 +31,31 @@ public class SearchFilterDialog {
   @OnClick(R.id.llName)
   void onPressName() {
     searchCaseListener.searchCase(1);
+    dismiss();
   }
 
   @OnClick(R.id.llTell)
   void onPressTell() {
     searchCaseListener.searchCase(2);
+    dismiss();
   }
 
   @OnClick(R.id.llAddress)
   void onPressAddress() {
     searchCaseListener.searchCase(3);
+    dismiss();
   }
 
   @OnClick(R.id.llTaxiCode)
   void onPressTaxiCode() {
     searchCaseListener.searchCase(4);
+    dismiss();
   }
 
   @OnClick(R.id.llStationCode)
   void onPressStationCode() {
     searchCaseListener.searchCase(5);
+    dismiss();
   }
 
   public void show(SearchCaseListener searchCaseListener) {
@@ -61,7 +66,7 @@ public class SearchFilterDialog {
     dialog.getWindow().getAttributes().windowAnimations = R.style.ExpandAnimation;
     dialog.setContentView(R.layout.dialog_search_filter);
     unbinder = ButterKnife.bind(this, dialog);
-    TypefaceUtil.overrideFonts(dialog.getWindow().getDecorView());
+    TypefaceUtil.overrideFonts(dialog.getWindow().getDecorView(),MyApplication.IraSanSMedume);
     dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
     WindowManager.LayoutParams wlp = dialog.getWindow().getAttributes();
     wlp.gravity = Gravity.TOP | Gravity.RIGHT;
@@ -78,15 +83,16 @@ public class SearchFilterDialog {
   private static void dismiss() {
     try {
       if (dialog != null) {
-        dialog.dismiss();
+        if (dialog.isShowing())
+          dialog.dismiss();
         unbinder.unbind();
         KeyBoardHelper.hideKeyboard();
       }
+      dialog = null;
     } catch (Exception e) {
       Log.e("TAG", "dismiss: " + e.getMessage());
       AvaCrashReporter.send(e, "CityDialog class, dismiss method");
     }
-    dialog = null;
   }
 
 }

@@ -17,18 +17,12 @@
         android:orientation="vertical">
 
         <LinearLayout
+            android:id="@+id/llHeaderStatus"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
-            android:paddingRight="10dp"
-            android:paddingTop="5dp"
-            android:paddingBottom="5dp">
-
-            <ImageView
-                android:id="@+id/imgStatus"
-                android:layout_width="15dp"
-                android:layout_height="15dp"
-                android:background="@drawable/circle_blue" />
+            android:padding="10dp"
+            android:background="@drawable/header_blue">
 
             <TextView
                 android:id="@+id/txtStatus"
@@ -38,7 +32,7 @@
                 android:gravity="center"
                 android:text="اعزام نشده"
                 android:textAppearance="?android:attr/textAppearanceSmall"
-                android:textColor="@color/colorBlue"
+                android:textColor="@color/colorWhite"
                 android:textStyle="bold" />
 
         </LinearLayout>
@@ -61,10 +55,11 @@
                 android:layout_height="wrap_content"
                 android:gravity="center_vertical"
                 android:orientation="horizontal"
-                android:padding="3dp">
+                android:padding="5dp">
 
                 <TextView
                     style="@style/tripItemTitle"
+                    android:minWidth="70dp"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/sendCall" />
@@ -83,6 +78,7 @@
 
                 <TextView
                     style="@style/tripItemTitle"
+                    android:minWidth="70dp"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/sendTime" />
@@ -106,10 +102,11 @@
                 android:layout_height="wrap_content"
                 android:gravity="center_vertical"
                 android:orientation="horizontal"
-                android:padding="3dp">
+                android:padding="5dp">
 
                 <TextView
                     style="@style/tripItemTitle"
+                    android:minWidth="70dp"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/customerName" />
@@ -128,10 +125,11 @@
                 android:layout_height="wrap_content"
                 android:gravity="center_vertical"
                 android:orientation="horizontal"
-                android:padding="3dp">
+                android:padding="5dp">
 
                 <TextView
                     style="@style/tripItemTitle"
+                    android:minWidth="70dp"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/customerTell" />
@@ -141,19 +139,16 @@
                     style="@style/tripItemValue"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@string/customerTell" />
+                    android:minWidth="80dp"/>
 
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:gravity="center_vertical"
-                android:orientation="horizontal"
-                android:padding="3dp">
+                <View
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1" />
 
                 <TextView
                     style="@style/tripItemTitle"
+                    android:minWidth="50dp"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/customerMobile" />
@@ -161,9 +156,14 @@
                 <TextView
                     android:id="@+id/txtCustomerMobile"
                     style="@style/tripItemValue"
+                    android:minWidth="80dp"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/customerMobile" />
+                    android:layout_height="wrap_content"/>
+
+                <View
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1" />
 
             </LinearLayout>
 
@@ -172,10 +172,20 @@
                 android:layout_height="wrap_content"
                 android:gravity="center_vertical"
                 android:orientation="horizontal"
-                android:padding="3dp">
+                android:padding="5dp">
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center_vertical"
+                android:orientation="horizontal"
+                android:padding="5dp">
 
                 <TextView
                     android:layout_width="wrap_content"
+                    android:minWidth="70dp"
                     android:layout_height="wrap_content"
                     android:text="@string/city"
                     style="@style/tripItemTitle"/>
@@ -194,19 +204,22 @@
                 android:layout_height="wrap_content"
                 android:gravity="center_vertical"
                 android:orientation="horizontal"
-                android:padding="3dp">
+                android:padding="5dp">
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/customerAddress"
+                    android:layout_gravity="right"
+                    android:minWidth="70dp"
                     style="@style/tripItemTitle"/>
 
                 <TextView
                     android:id="@+id/txtCustomerAddress"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="امیریه 31، آراسته 1"
+                    android:layout_marginLeft="5dp"
+                    android:text=" 31، آراسته 1"
                     style="@style/tripItemValue"/>
 
             </LinearLayout>
@@ -216,12 +229,13 @@
                 android:layout_height="wrap_content"
                 android:gravity="center_vertical"
                 android:orientation="horizontal"
-                android:padding="3dp">
+                android:padding="5dp">
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/carType"
+                    android:minWidth="70dp"
                     style="@style/tripItemTitle"/>
 
                 <TextView
@@ -238,12 +252,13 @@
                 android:layout_height="wrap_content"
                 android:gravity="center_vertical"
                 android:orientation="horizontal"
-                android:padding="3dp">
+                android:padding="5dp">
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/driverMob"
+                    android:minWidth="70dp"
                     style="@style/tripItemTitle"/>
 
                 <TextView

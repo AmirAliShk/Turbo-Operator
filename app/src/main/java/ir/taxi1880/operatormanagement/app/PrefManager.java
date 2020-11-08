@@ -58,6 +58,7 @@ public class PrefManager {
   private static final String LAST_NOTIFICATION = "lastNotification";
   private static final String LAST_CALL_NUMBER = "lastCallNumber";
   private static final String KEY_APP_STATUS = "AppStatus";
+  private static final String CUSTOMER_SUPPORT = "customerSupport";
 
   public PrefManager(Context context) {
     this._context = context;
@@ -126,6 +127,15 @@ public class PrefManager {
 
   public boolean getActivateStatus() {
     return pref.getBoolean(ACTIVATE_STATUS, false);
+  }
+
+  public void setCustomerSupport(boolean customerSupport) {
+    editor.putBoolean(CUSTOMER_SUPPORT, customerSupport);
+    editor.commit();
+  }
+
+  public boolean getCustomerSupport() {
+    return pref.getBoolean(CUSTOMER_SUPPORT, false);
   }
 
   public void setStartGettingAddress(boolean getAddress) {

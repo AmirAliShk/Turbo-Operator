@@ -22,6 +22,7 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 import butterknife.Unbinder;
 import ir.taxi1880.operatormanagement.R;
 import ir.taxi1880.operatormanagement.app.EndPoints;
@@ -31,6 +32,11 @@ import ir.taxi1880.operatormanagement.okHttp.RequestHelper;
 
 public class DriverLocationFragment extends Fragment implements OnMapReadyCallback {
   Unbinder unbinder;
+
+  @OnClick(R.id.imgBack)
+  void onBack() {
+    MyApplication.currentActivity.onBackPressed();
+  }
 
   @BindView(R.id.map)
   MapView map;
@@ -58,7 +64,7 @@ public class DriverLocationFragment extends Fragment implements OnMapReadyCallba
 
     CameraPosition cameraPosition = new CameraPosition.Builder()
             .target(myLocation)
-            .zoom(12)
+            .zoom(16)
             .build();
 
     myGoogleMap.moveCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));

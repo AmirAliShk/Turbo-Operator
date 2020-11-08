@@ -63,6 +63,8 @@ import ir.taxi1880.operatormanagement.dialog.DescriptionDialog;
 import ir.taxi1880.operatormanagement.dialog.GeneralDialog;
 import ir.taxi1880.operatormanagement.dialog.LoadingDialog;
 import ir.taxi1880.operatormanagement.dialog.OptionDialog;
+import ir.taxi1880.operatormanagement.fragment.SupportFragment;
+import ir.taxi1880.operatormanagement.helper.FragmentHelper;
 import ir.taxi1880.operatormanagement.helper.KeyBoardHelper;
 import ir.taxi1880.operatormanagement.helper.PhoneNumberValidation;
 import ir.taxi1880.operatormanagement.helper.StringHelper;
@@ -900,7 +902,24 @@ public class TripRegisterActivity extends AppCompatActivity {
           int carType = passengerInfoObj.getInt("carType");
           int cityCode = passengerInfoObj.getInt("cityCode");
 
+          //TODO correct this parameter
+          boolean activeTrip = true;
+
           if (success) {
+            if (activeTrip) {
+              if (vfPassengerInfo != null)
+                vfPassengerInfo.setDisplayedChild(0);
+              new GeneralDialog()
+                      .message("مسافر 8 دقیقه پیش سفری درخواست داده است \n وضعیت سفر : اعزام نشده")
+                      .firstButton("بستن",null)
+                      .secondButton("پشتیبانی", () -> {
+                        Bundle bundle = new Bundle();
+                        bundle.putString("tellNumber",getTellNumber());
+                        FragmentHelper.toFragment(MyApplication.currentActivity, new SupportFragment()).setArguments(bundle).replace();
+                      })
+                      .show();
+            }
+
             if (edtTell == null)
               return;
             edtTell.setNextFocusDownId(R.id.edtFamily);

@@ -7,124 +7,142 @@
     android:orientation="vertical">
 
     <LinearLayout
-            android:layout_width="350dp"
-            android:background="@drawable/bg_gray_lite_edge"
-            android:layout_height="wrap_content"
-            android:layout_gravity="top|center_horizontal"
-            android:gravity="top"
-            android:padding="10dp"
-            android:minWidth="350dp"
+        android:layout_width="350dp"
+        android:layout_height="wrap_content"
+        android:layout_gravity="top|center_horizontal"
+        android:background="@drawable/bg_white_edge"
+        android:gravity="top"
+        android:minWidth="350dp"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:id="@+id/llTitle"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:background="@drawable/bg_dialog_header"
+            android:gravity="center"
             android:orientation="vertical">
 
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:padding="10dp">
-
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="نوع"
-                    android:padding="10dp"
-                    android:textAppearance="?android:attr/textAppearanceMedium"
-                    android:textColor="@color/grayMedium"/>
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:elevation="3dp"
-                    android:layout_margin="5dp"
-                    android:padding="5dp"
-                    android:background="@drawable/bg_strock_corner">
-
-                    <Spinner
-                        android:id="@+id/spType"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:dropDownWidth="match_parent"
-                        android:backgroundTint="@color/colorPurple"
-                        android:gravity="right"
-                         />
-
-                </LinearLayout>
-
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:padding="10dp"
-                android:orientation="vertical">
-
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="آدرس"
-                    android:padding="10dp"
-                    android:textAppearance="?android:attr/textAppearanceMedium"
-                    android:textColor="@color/grayMedium"/>
-
-                <EditText
-                    android:id="@+id/edtAddress"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:gravity="top|right"
-                    android:layout_margin="5dp"
-                    android:padding="10dp"
-                    android:elevation="3dp"
-                    android:background="@drawable/bg_strock_corner"/>
-
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="توضیحات"
-                    android:padding="10dp"
-                    android:textAppearance="?android:attr/textAppearanceMedium"
-                    android:textColor="@color/grayMedium"/>
-
-                <EditText
-                    android:id="@+id/edtComment"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:minHeight="150dp"
-                    android:gravity="top|right"
-                    android:layout_margin="5dp"
-                    android:padding="10dp"
-                    android:elevation="3dp"
-                    android:background="@drawable/bg_strock_corner"/>
-
-            </LinearLayout>
-
-            <LinearLayout
+            <TextView
+                android:id="@+id/txtTitle"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:gravity="center"
-                android:layout_weight="1"
-                android:layout_margin="10dp"
-                android:orientation="vertical">
+                android:text="ثبت اشیا گمشده"
+                android:textColor="@color/colorWhite"
+                android:textSize="@dimen/text_header"
+                android:textStyle="bold" />
+        </LinearLayout>
 
-                <Button
-                    android:id="@+id/btnSubmit"
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="10dp"
+                android:text="نوع"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:textColor="@color/grayMedium" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="5dp"
+                android:background="@drawable/bg_strock_corner"
+                android:elevation="3dp"
+                android:padding="5dp">
+
+                <Spinner
+                    android:id="@+id/spType"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:background="@drawable/bg_light_pink_edge"
-                    android:text="ثبت"
-                    android:layout_marginLeft="40dp"
-                    android:layout_marginRight="40dp"
-                    android:textColor="@color/colorWhite"
-                    android:textAppearance="?android:attr/textAppearanceLarge"
-                    android:textStyle="bold" />
+                    android:backgroundTint="@color/colorPurple"
+                    android:dropDownWidth="match_parent"
+                    android:gravity="right" />
 
             </LinearLayout>
 
         </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="10dp"
+                android:text="آدرس"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:textColor="@color/grayMedium" />
+
+            <EditText
+                android:id="@+id/edtAddress"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="5dp"
+                android:maxLines="2"
+                android:background="@drawable/bg_strock_corner"
+                android:elevation="3dp"
+                android:gravity="top|right"
+                android:padding="10dp" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="10dp"
+                android:text="توضیحات"
+                android:maxLines="2"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:textColor="@color/grayMedium" />
+
+            <EditText
+                android:id="@+id/edtComment"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="5dp"
+                android:minHeight="100dp"
+                android:background="@drawable/bg_strock_corner"
+                android:elevation="3dp"
+                android:gravity="top|right"
+                android:maxLines="2"
+                android:padding="10dp" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="10dp"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:orientation="vertical">
+
+            <Button
+                android:id="@+id/btnSubmit"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="40dp"
+                android:layout_marginRight="40dp"
+                android:background="@drawable/bg_light_pink_edge"
+                android:text="ثبت"
+                android:textAppearance="?android:attr/textAppearanceLarge"
+                android:textColor="@color/colorWhite"
+                android:textStyle="bold" />
+
+        </LinearLayout>
+
+    </LinearLayout>
 
     <ImageView
         android:id="@+id/imgClose"
         android:layout_width="80dp"
         android:layout_height="80dp"
         android:padding="20dp"
-        android:src="@drawable/ic_close_black_24dp"/>
+        android:src="@drawable/ic_close_black_24dp" />
 
 </LinearLayout>

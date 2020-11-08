@@ -248,29 +248,26 @@ public class DataBase extends SQLiteOpenHelper {
     return model;
   }
 
-  public CityModel getCityName2(int id) {
+  public String getCityName2(int id) {
     SQLiteDatabase sqLiteDatabase = this.getReadableDatabase();
-    String query = "select " + CITY_TABLE + "." + COLUMN_CITY_NAME + " from " + CITY_TABLE + " left join " + TRIP_TABLE +
+    String query = "select " + COLUMN_CITY_NAME +
+            " from " + CITY_TABLE +
+            " left join " + TRIP_TABLE +
             " on " + CITY_TABLE + "." + COLUMN_CITY_ID + "=" + TRIP_TABLE + "." + COLUMN_CITY +
-            " where " + CITY_TABLE + "." + COLUMN_CITY_ID + "=" + id;
+            " where " + TRIP_TABLE + "." + COLUMN_CITY + "=" + id;
     @SuppressLint("Recycle") Cursor res = sqLiteDatabase.rawQuery(query, null);
 
 //    select City.cityName
 //    from City
 //    left join Trip
-//    on City.cityId = Trip.city
-//    where City.cityId = id
+//    on City.cityId = Trip.cityId
+//    where Trip.CityId = id
 
-    if (!res.moveToFirst()) {
-      return null;
-    }
+    if (res.getCount() == 0)
+      return " ";
+
     res.moveToFirst();
-    CityModel model = new CityModel();
-    model.setId(res.getInt(res.getColumnIndex(COLUMN_CITY_ID)));
-    model.setCity(res.getString(res.getColumnIndex(COLUMN_CITY_NAME)));
-    model.setCityLatin(res.getString(res.getColumnIndex(COLUMN_CITY_L_NAME)));
-
-    return model;
+    return res.getString(res.getColumnIndex(COLUMN_CITY_NAME));
   }
 
 }

@@ -5,6 +5,7 @@ import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.util.Log;
 import android.view.Gravity;
+import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.ImageView;
@@ -32,7 +33,8 @@ public class OptionDialog {
   static Dialog dialog;
 
   public void show(Listener listener, String mobile, String name, int cityCode) {
-    if (MyApplication.currentActivity==null|| MyApplication.currentActivity.isFinishing())return;
+    if (MyApplication.currentActivity == null || MyApplication.currentActivity.isFinishing())
+      return;
     dialog = new Dialog(MyApplication.currentActivity);
     dialog.getWindow().requestFeature(Window.FEATURE_NO_TITLE);
     dialog.getWindow().getAttributes().windowAnimations = R.style.ExpandAnimation;
@@ -50,6 +52,15 @@ public class OptionDialog {
     LinearLayout llSupport = dialog.findViewById(R.id.llSupport);
     LinearLayout llReserve = dialog.findViewById(R.id.llReserve);
     ImageView imgClose = dialog.findViewById(R.id.imgClose);
+
+    if (MyApplication.prefManager.getCustomerSupport()) {
+      llSupport.setOnClickListener(view -> {
+        FragmentHelper.toFragment(MyApplication.currentActivity, new SupportFragment()).replace();
+        dismiss();
+      });
+    } else {
+      llSupport.setVisibility(View.GONE);
+    }
 
     llHire.setOnClickListener(view -> {
       if (mobile.isEmpty()) {
@@ -72,15 +83,10 @@ public class OptionDialog {
         public void onClose(boolean b) {
 //            if (b) {
 
-            listener.onClose(b);
+          listener.onClose(b);
 //            }
         }
       }, mobile, name, cityCode);
-      dismiss();
-    });
-
-    llSupport.setOnClickListener(view -> {
-      FragmentHelper.toFragment(MyApplication.currentActivity,new SupportFragment()).replace();
       dismiss();
     });
 
@@ -102,7 +108,7 @@ public class OptionDialog {
       }
     } catch (Exception e) {
       Log.e("TAG", "dismiss: " + e.getMessage());
-      AvaCrashReporter.send(e,"OptionDialog class, dismiss method");
+      AvaCrashReporter.send(e, "OptionDialog class, dismiss method");
     }
     dialog = null;
   }

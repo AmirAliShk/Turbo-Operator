@@ -107,7 +107,6 @@ public class ContractFragment extends Fragment {
     }
   };
 
-
   @Override
   public void onDestroy() {
     super.onDestroy();

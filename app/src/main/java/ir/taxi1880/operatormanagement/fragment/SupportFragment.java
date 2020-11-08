@@ -7,6 +7,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CheckBox;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.ViewFlipper;
 
 import org.json.JSONArray;
@@ -26,7 +27,6 @@ import ir.taxi1880.operatormanagement.adapter.TripAdapter;
 import ir.taxi1880.operatormanagement.app.EndPoints;
 import ir.taxi1880.operatormanagement.app.MyApplication;
 import ir.taxi1880.operatormanagement.dialog.SearchFilterDialog;
-import ir.taxi1880.operatormanagement.helper.FragmentHelper;
 import ir.taxi1880.operatormanagement.helper.TypefaceUtil;
 import ir.taxi1880.operatormanagement.model.TripModel;
 import ir.taxi1880.operatormanagement.okHttp.RequestHelper;
@@ -45,21 +45,43 @@ public class SupportFragment extends Fragment {
   @BindView(R.id.vfTrip)
   ViewFlipper vfTrip;
 
+  @BindView(R.id.imgSearchType)
+  ImageView imgSearchType;
+
   @OnClick(R.id.imgSearch)
   void onSearchPress() {
     String searchText = edtSearchTrip.getText().toString();
 
-    searchService(searchText);
+//    searchService(searchText);
   }
 
   @OnClick(R.id.imgClear)
   void onClearPress() {
-    FragmentHelper.toFragment(MyApplication.currentActivity, new TripDetailsFragment()).replace();
+    edtSearchTrip.setText("");
   }
 
   @OnClick(R.id.imgSearchType)
   void onSearchTypePress() {
     new SearchFilterDialog().show(type -> {
+      int imageType = R.drawable.ic_call;
+      switch (type) {
+        case 1:
+          imageType = R.drawable.ic_user;
+          break;
+        case 2:
+          imageType = R.drawable.ic_call;
+          break;
+        case 3:
+          imageType = R.drawable.ic_gps;
+          break;
+        case 4:
+          imageType = R.drawable.ic_taxi;
+          break;
+        case 5:
+          imageType = R.drawable.ic_code;
+          break;
+      }
+      imgSearchType.setImageResource(imageType);
       this.searchCase = type;
     });
   }
@@ -83,6 +105,12 @@ public class SupportFragment extends Fragment {
     View view = inflater.inflate(R.layout.fragment_support, container, false);
     unbinder = ButterKnife.bind(this, view);
     TypefaceUtil.overrideFonts(view);
+    String tellNumber;
+    Bundle bundle = getArguments();
+    if (bundle != null){
+      tellNumber = bundle.getString("tellNumber");
+      edtSearchTrip.setText(tellNumber);
+    }
 
     getList();
 
@@ -90,9 +118,9 @@ public class SupportFragment extends Fragment {
   }
 
   String tripList = "{\"success\":true,\"message\":\"\",\"data\":[\n" +
-          "{\"callTime\":\"13:52\",\"sendTime\":\"14:00\",\"city\":\"مشهد\",\"customerName\":\"فاطمه نوری\",\"customerTell\":\"09015693808\",\"customerMob\":\"33710834\",\"address\":\"مشهد، فداییان اسلا\",\"carType\":\"تاکسی\",\"driverMobile\":\"09015693808\"},\n" +
-          "{\"callTime\":\"14:52\",\"sendTime\":\"15:00\",\"city\":\"نیشابور\",\"customerName\":\"سارانوری\",\"customerTell\":\"09015693806\",\"customerMob\":\"33710836\",\"address\":\"ممشهد، فداییان اسلا\",\"carType\":\"اقتصادی\",\"driverMobile\":\"09015693806\"},\n" +
-          "{\"callTime\":\"15:52\",\"sendTime\":\"16:00\",\"city\":\"کاشمر\",\"customerName\":\"فائزه نوری\",\"customerTell\":\"09015693855\",\"customerMob\":\"33710834\",\"address\":\"مشهد، فداییان اسلا\",\"carType\":\"تشریفات\",\"driverMobile\":\"09015693855\"}]}";
+          "{\"callTime\":\"13:52\",\"sendTime\":\"14:00\",\"city\":\"مشهد\",\"customerName\":\"فاطمه نوری\",\"customerTell\":\"33710834\",\"customerMob\":\"09015693808\",\"address\":\"مشهد، فداییانفداییانفداییانفداییانفداییانفداییانفداییانفداییانفداییانفداییانفداییانفداییانفداییانفداییان اسلا\",\"carType\":\"تاکسی\",\"driverMobile\":\"09015693808\"},\n" +
+          "{\"callTime\":\"14:52\",\"sendTime\":\"15:00\",\"city\":\"نیشابور\",\"customerName\":\"سارانوری\",\"customerTell\":\"09015693806\",\"customerMob\":\"09015693806\",\"address\":\"ممشهد، فداییان اسلا\",\"carType\":\"اقتصادی\",\"driverMobile\":\"09015693806\"},\n" +
+          "{\"callTime\":\"15:52\",\"sendTime\":\"16:00\",\"city\":\"کاشمر\",\"customerName\":\"فائزه نوری\",\"customerTell\":\"09015693855\",\"customerMob\":\"09015693855\",\"address\":\"مشهد، فداییان اسلا\",\"carType\":\"تشریفات\",\"driverMobile\":\"09015693855\"}]}";
 
   private void getList() {
     try {

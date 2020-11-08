@@ -29,7 +29,6 @@
     <string name="callNotificationButton">بازگشت به صفحه تماس</string>
 
     <string name="cancelTrip">لغو سفر</string>
-    <string name="driverLocation">موقعیت راننده</string>
     <string name="errorRegistration">ثبت خطا</string>
     <string name="complaintRegistration">ثبت شکایت</string>
     <string name="lost">ثبت اشیا گمشده</string>
@@ -98,6 +97,7 @@
     <string name="name">نام</string>
     <string name="stationCode">کد ایستگاه</string>
     <string name="taxiCode">کد تاکسی</string>
+    <string name="driverLocation">موقعیت راننده</string>
 
 
 </resources>

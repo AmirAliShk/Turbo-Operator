@@ -80,15 +80,17 @@
                 android:id="@+id/imgSearch"
                 android:layout_width="?android:attr/actionBarSize"
                 android:layout_height="match_parent"
-                android:padding="15dp"
+                android:padding="10dp"
+                android:layout_margin="5dp"
+                android:background="@drawable/bg_button_gray_edge"
                 android:src="@drawable/ic_search" />
 
-            <View
-                android:layout_width="1dp"
-                android:layout_height="match_parent"
-                android:layout_marginTop="10dp"
-                android:layout_marginBottom="10dp"
-                android:background="@color/grayLight"/>
+<!--            <View-->
+<!--                android:layout_width="1dp"-->
+<!--                android:layout_height="match_parent"-->
+<!--                android:layout_marginTop="10dp"-->
+<!--                android:layout_marginBottom="10dp"-->
+<!--                android:background="@color/grayLight"/>-->
 
             <ImageView
                 android:id="@+id/imgClear"
@@ -104,23 +106,26 @@
                 android:hint="جست و جو"
                 android:maxLines="1"
                 android:singleLine="true"
+                android:gravity="right"
                 android:background="@color/transparent"
                 android:textColorHint="@color/grayMedium"
                 android:layout_height="match_parent"
                 android:padding="10dp" />
 
-            <View
-                android:layout_width="1dp"
-                android:layout_height="match_parent"
-                android:layout_marginTop="10dp"
-                android:layout_marginBottom="10dp"
-                android:background="@color/grayLight"/>
+<!--            <View-->
+<!--                android:layout_width="1dp"-->
+<!--                android:layout_height="match_parent"-->
+<!--                android:layout_marginTop="10dp"-->
+<!--                android:layout_marginBottom="10dp"-->
+<!--                android:background="@color/grayLight"/>-->
 
             <ImageView
                 android:id="@+id/imgSearchType"
                 android:layout_width="?android:attr/actionBarSize"
                 android:layout_height="match_parent"
-                android:padding="14dp"
+                android:padding="10dp"
+                android:layout_margin="5dp"
+                android:background="@drawable/bg_button_gray_edge"
                 android:src="@drawable/ic_call" />
 
         </LinearLayout>

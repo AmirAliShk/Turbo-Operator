@@ -35,9 +35,9 @@ import ir.taxi1880.operatormanagement.app.EndPoints;
 import ir.taxi1880.operatormanagement.app.MyApplication;
 import ir.taxi1880.operatormanagement.dataBase.DataBase;
 import ir.taxi1880.operatormanagement.dialog.GeneralDialog;
-import ir.taxi1880.operatormanagement.fragment.SignatureFragment;
 import ir.taxi1880.operatormanagement.fragment.ContractFragment;
 import ir.taxi1880.operatormanagement.fragment.LoginFragment;
+import ir.taxi1880.operatormanagement.fragment.SignatureFragment;
 import ir.taxi1880.operatormanagement.helper.AppVersionHelper;
 import ir.taxi1880.operatormanagement.helper.FragmentHelper;
 import ir.taxi1880.operatormanagement.helper.ServiceHelper;
@@ -122,7 +122,6 @@ public class SplashActivity extends AppCompatActivity {
       getAppInfo();
     }
   }
-
 
   private void continueProcessing() {
     if (MyApplication.prefManager.getLoggedIn()) {
@@ -226,6 +225,10 @@ public class SplashActivity extends AppCompatActivity {
           String pushToken = object.getString("pushToken");
           int activeInQueue = object.getInt("activeInQueue");
           isFinishContract = object.getInt("isFinishContract");
+          //TODO correct here
+//          int customerSupport=object.getInt("customerSupport");
+          boolean customerSupport = true;
+          MyApplication.prefManager.setCustomerSupport(customerSupport);
 
           //insert all city into dataBase
           JSONArray cityArr = new JSONArray(city);

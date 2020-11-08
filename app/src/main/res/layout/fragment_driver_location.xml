@@ -1,17 +1,70 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
+<RelativeLayout
     tools:context=".fragment.DriverLocationFragment"
     xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical"
     android:clickable="true"
     android:background="@color/colorPrimaryLighter"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:tools="http://schemas.android.com/tools">
 
+    <RelativeLayout
+        android:id="@+id/rlActionBar"
+        android:layout_width="match_parent"
+        android:layout_height="?android:attr/actionBarSize"
+        android:background="#792ca9"
+        android:layoutDirection="ltr">
+
+        <ImageView
+            android:id="@+id/imgBack"
+            android:layout_width="?android:attr/actionBarSize"
+            android:layout_height="match_parent"
+            android:padding="15dp"
+            android:src="@drawable/ic_back" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:text="@string/driverLocation"
+            android:textColor="@color/colorWhite"
+            android:textSize="@dimen/text_header" />
+
+        <ImageView
+            android:id="@+id/imgRefresh"
+            android:layout_width="?android:attr/actionBarSize"
+            android:layout_height="match_parent"
+            android:padding="15dp"
+            android:layout_alignParentRight="true"
+            android:src="@drawable/ic_refresh" />
+
+    </RelativeLayout>
+
+    <LinearLayout
+        android:layout_below="@id/rlActionBar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:elevation="5dp"
+        android:background="@drawable/bg_blue_border_edge"
+        android:gravity="center"
+        android:orientation="horizontal"
+        android:padding="10dp">
+
+        <TextView
+            android:id="@+id/txtStatus"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:text="آخرین موقعیت راننده در 17:45"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:textColor="@color/colorBlue"/>
+
+    </LinearLayout>
+
     <com.google.android.gms.maps.MapView
+        android:layout_below="@id/rlActionBar"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:id="@+id/map" />
 
-</LinearLayout>
+</RelativeLayout>

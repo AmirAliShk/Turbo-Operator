@@ -8,6 +8,10 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 import android.widget.ViewFlipper;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import androidx.fragment.app.Fragment;
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -22,6 +26,7 @@ import ir.taxi1880.operatormanagement.dialog.ErrorRegistrationDialog;
 import ir.taxi1880.operatormanagement.dialog.GeneralDialog;
 import ir.taxi1880.operatormanagement.dialog.LostDialog;
 import ir.taxi1880.operatormanagement.helper.FragmentHelper;
+import ir.taxi1880.operatormanagement.helper.StringHelper;
 import ir.taxi1880.operatormanagement.helper.TypefaceUtil;
 import ir.taxi1880.operatormanagement.okHttp.RequestHelper;
 
@@ -35,6 +40,58 @@ public class TripDetailsFragment extends Fragment {
 
   @BindView(R.id.txtStatus)
   TextView txtStatus;
+
+  @BindView(R.id.txtCustomerName)
+  TextView txtCustomerName;
+
+  @BindView(R.id.txtDate)
+  TextView txtDate;
+
+  @BindView(R.id.txtTime)
+  TextView txtTime;
+
+  @BindView(R.id.txtTripType)
+  TextView txtTripType;
+  @BindView(R.id.txtCity)
+  TextView txtCity;
+  @BindView(R.id.txtCustomerAddress)
+  TextView txtCustomerAddress;
+
+  @BindView(R.id.txtCustomerTell)
+  TextView txtCustomerTell;
+  @BindView(R.id.txtCustomerMobile)
+  TextView txtCustomerMobile;
+  @BindView(R.id.txtPercent)
+  TextView txtPercent;
+  @BindView(R.id.txtMaxPercent)
+  TextView txtMaxPercent;
+
+  @BindView(R.id.txtSendDate)
+  TextView txtSendDate;
+
+  @BindView(R.id.txtSendTime)
+  TextView txtSendTime;
+
+  @BindView(R.id.txtDriverCode)
+  TextView txtDriverCode;
+
+  @BindView(R.id.txtDriverName)
+  TextView txtDriverName;
+
+  @BindView(R.id.txtDriverMob)
+  TextView txtDriverMob;
+
+  @BindView(R.id.txtCarType)
+  TextView txtCarType;
+
+  @BindView(R.id.txtPrice)
+  TextView txtPrice;
+
+  @BindView(R.id.txtEndTime)
+  TextView txtEndTime;
+
+  @BindView(R.id.txtPlaque)
+  TextView txtPlaque;
 
   @BindView(R.id.vfTripDetails)
   ViewFlipper vfTripDetails;
@@ -53,7 +110,7 @@ public class TripDetailsFragment extends Fragment {
   @OnClick(R.id.btnDriverLocation)
   void onLocation() {
     //open map page
-    FragmentHelper.toFragment(MyApplication.currentActivity,new DriverLocationFragment()).replace();
+    FragmentHelper.toFragment(MyApplication.currentActivity, new DriverLocationFragment()).replace();
   }
 
   @OnClick(R.id.btnReFollow)
@@ -91,18 +148,72 @@ public class TripDetailsFragment extends Fragment {
   public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
     View view = inflater.inflate(R.layout.fragment_trip_details, container, false);
     unbinder = ButterKnife.bind(this, view);
-    TypefaceUtil.overrideFonts(view);
+    TypefaceUtil.overrideFonts(view,MyApplication.IraSanSMedume);
+
+    getDetails();
 
     return view;
   }
 
+  String tripList = "{\"success\":true,\"message\":\"\",\"data\":" +
+          "[{\"date\":\"1399/08/18\",\"time\":\"16:00\",\"city\":\"کاشمر\",\"serviceType\":\"سرویس\",\"customerName\":\"فائزه نوری\",\"customerTell\":\"09015693855\",\"customerMob\":\"33710834\",\"address\":\"مشهدمشهدمشهدمشهدمشهدمشهدمشهدمشهدمشهدمشهدمشهدمشهدمشهدمشهدمشهدمشهدمشهدمشهدمشهدمشهدمشهدمشهدمشهد، فداییان اسلا\",\"carType\":\"تشریفات\",\"driverMobile\":\"09015693855\"" +
+          ",\"driverCode\":\"123\",\"driverName\":\"نوری\",\"price\":\"18000\",\"endTime\":\"15:48\",\"plaque\":\"14ث1587\"}]}";
+
+  private void getDetails() {
+    try {
+      JSONObject tripObject = new JSONObject(tripList);
+      Boolean success = tripObject.getBoolean("success");
+      String message = tripObject.getString("message");
+      JSONArray data = tripObject.getJSONArray("data");
+      JSONObject dataObj = data.getJSONObject(0);
+      String date=dataObj.getString("date");
+      String time=dataObj.getString("time");
+      String city=dataObj.getString("city");
+      String serviceType=dataObj.getString("serviceType");
+      String customerName=dataObj.getString("customerName");
+      String customerTell=dataObj.getString("customerTell");
+      String customerMob=dataObj.getString("customerMob");
+      String address=dataObj.getString("address");
+      String carType=dataObj.getString("carType");
+      String driverMobile=dataObj.getString("driverMobile");
+      String driverCode=dataObj.getString("driverCode");
+      String driverName=dataObj.getString("driverName");
+      String price=dataObj.getString("price");
+      String endTime=dataObj.getString("endTime");
+      String plaque=dataObj.getString("plaque");
+
+      txtCarType.setText(carType);
+      txtCity.setText(city);
+      txtCustomerAddress.setText(StringHelper.toPersianDigits(address));
+      txtCustomerMobile.setText(StringHelper.toPersianDigits(customerMob));
+      txtCustomerTell.setText(StringHelper.toPersianDigits(customerTell));
+      txtCustomerName.setText(StringHelper.toPersianDigits(customerName));
+      txtDate.setText(StringHelper.toPersianDigits(date));
+      txtDriverCode.setText(StringHelper.toPersianDigits(driverCode));
+      txtDriverMob.setText(StringHelper.toPersianDigits(driverMobile));
+      txtDriverName.setText(StringHelper.toPersianDigits(driverName));
+      txtEndTime.setText(StringHelper.toPersianDigits(endTime));
+      txtMaxPercent.setText(StringHelper.toPersianDigits("fvgffd"));
+      txtPercent.setText(StringHelper.toPersianDigits("sgfsdfg"));
+      txtPlaque.setText(StringHelper.toPersianDigits(plaque));
+      txtPrice.setText(StringHelper.toPersianDigits(price));
+      txtSendDate.setText(StringHelper.toPersianDigits(date));
+      txtSendTime.setText(StringHelper.toPersianDigits(time));
+      txtStatus.setText("اعزام نشده");
+      txtTime.setText(StringHelper.toPersianDigits(time));
+      txtTripType.setText(StringHelper.toPersianDigits(serviceType));
+    } catch (JSONException e) {
+      e.printStackTrace();
+    }
+  }
+
   private void serviceDetails() {
-    if (vfTripDetails!=null){
+    if (vfTripDetails != null) {
       vfTripDetails.setDisplayedChild(0);
     }
 
     RequestHelper.builder(EndPoints.SERVICE_DETAIL)
-            .addParam("serviceId",1)
+            .addParam("serviceId", 1)
             .listener(onGetTripDetails)
             .post();
   }
@@ -114,7 +225,7 @@ public class TripDetailsFragment extends Fragment {
         @Override
         public void run() {
           try {
-            Log.i("TripDetailsFragment", "run: "+args[0].toString());
+            Log.i("TripDetailsFragment", "run: " + args[0].toString());
 
           } catch (Exception e) {
             e.printStackTrace();
@@ -126,7 +237,7 @@ public class TripDetailsFragment extends Fragment {
     @Override
     public void onFailure(Runnable reCall, Exception e) {
       MyApplication.handler.post(() -> {
-        if (vfTripDetails!=null){
+        if (vfTripDetails != null) {
           vfTripDetails.setDisplayedChild(2);
         }
       });
@@ -136,10 +247,10 @@ public class TripDetailsFragment extends Fragment {
   private void setLostObject() {
 
     RequestHelper.builder(EndPoints.INSERT_LOST_OBJECT)
-            .addParam("serviceId",1)
-            .addParam("address",1)
-            .addParam("objectType",1)
-            .addParam("description",1)
+            .addParam("serviceId", 1)
+            .addParam("address", 1)
+            .addParam("objectType", 1)
+            .addParam("description", 1)
             .listener(onSetLostObject)
             .post();
   }
@@ -151,7 +262,7 @@ public class TripDetailsFragment extends Fragment {
         @Override
         public void run() {
           try {
-            Log.i("TripDetailsFragment", "run: "+args[0].toString());
+            Log.i("TripDetailsFragment", "run: " + args[0].toString());
 
           } catch (Exception e) {
             e.printStackTrace();
@@ -171,8 +282,8 @@ public class TripDetailsFragment extends Fragment {
   private void setMistake() {
 
     RequestHelper.builder(EndPoints.INSERT_MISTAKE)
-            .addParam("serviceId",1)
-            .addParam("description",1)
+            .addParam("serviceId", 1)
+            .addParam("description", 1)
             .listener(onSetMistake)
             .post();
   }
@@ -184,7 +295,7 @@ public class TripDetailsFragment extends Fragment {
         @Override
         public void run() {
           try {
-            Log.i("TripDetailsFragment", "run: "+args[0].toString());
+            Log.i("TripDetailsFragment", "run: " + args[0].toString());
 
           } catch (Exception e) {
             e.printStackTrace();
@@ -204,10 +315,10 @@ public class TripDetailsFragment extends Fragment {
   private void setComplaint() {
 
     RequestHelper.builder(EndPoints.INSERT_COMPLAINT)
-            .addParam("serviceId",1)
-            .addParam("userId",1)
-            .addParam("complaintType",1)
-            .addParam("description",1)
+            .addParam("serviceId", 1)
+            .addParam("userId", 1)
+            .addParam("complaintType", 1)
+            .addParam("description", 1)
             .listener(onSetComplaint)
             .post();
   }
@@ -219,7 +330,7 @@ public class TripDetailsFragment extends Fragment {
         @Override
         public void run() {
           try {
-            Log.i("TripDetailsFragment", "run: "+args[0].toString());
+            Log.i("TripDetailsFragment", "run: " + args[0].toString());
 
           } catch (Exception e) {
             e.printStackTrace();
