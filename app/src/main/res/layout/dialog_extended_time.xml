@@ -4,7 +4,7 @@
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:layout_gravity="top|right"
-    android:layout_marginTop="70dp"
+    android:layout_marginTop="50dp"
     android:layout_marginRight="20dp"
     android:background="@drawable/bg_blue_border_edge"
     android:clickable="true"
@@ -14,7 +14,7 @@
     android:padding="10dp">
 
     <LinearLayout
-        android:id="@+id/llTell"
+        android:id="@+id/llToday"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@drawable/bg_ripple"
@@ -25,19 +25,19 @@
         <ImageView
             android:layout_width="25dp"
             android:layout_height="25dp"
-            android:src="@drawable/ic_call" />
+            android:src="@drawable/ic_today" />
 
         <TextView
             style="@style/tripItemValue"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginRight="10dp"
-            android:text="@string/customerTell" />
+            android:text="@string/today" />
 
     </LinearLayout>
 
     <LinearLayout
-        android:id="@+id/llName"
+        android:id="@+id/llYesterday"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@drawable/bg_ripple"
@@ -48,83 +48,37 @@
         <ImageView
             android:layout_width="25dp"
             android:layout_height="25dp"
-            android:src="@drawable/ic_user" />
+            android:src="@drawable/ic_yesterday" />
 
         <TextView
             style="@style/tripItemValue"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginRight="10dp"
-            android:text="@string/name" />
+            android:text="@string/Yesterday" />
 
     </LinearLayout>
 
     <LinearLayout
-        android:id="@+id/llAddress"
+        android:id="@+id/llTwoDayAgo"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@drawable/bg_ripple"
-        android:orientation="horizontal"
         android:gravity="center_vertical"
+        android:orientation="horizontal"
         android:padding="10dp">
 
         <ImageView
             android:layout_width="25dp"
             android:layout_height="25dp"
-            android:src="@drawable/ic_gps" />
+            android:src="@drawable/ic_twodayago" />
 
         <TextView
             style="@style/tripItemValue"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginRight="10dp"
-            android:text="@string/customerAddress" />
-
-    </LinearLayout>
-
-    <LinearLayout
-        android:id="@+id/llTaxiCode"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@drawable/bg_ripple"
-        android:orientation="horizontal"
-        android:gravity="center_vertical"
-        android:padding="10dp">
-
-        <ImageView
-            android:layout_width="25dp"
-            android:layout_height="25dp"
-            android:src="@drawable/ic_taxi" />
-
-        <TextView
-            style="@style/tripItemValue"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginRight="10dp"
-            android:text="@string/taxiCode" />
-
-    </LinearLayout>
-
-    <LinearLayout
-        android:id="@+id/llStationCode"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@drawable/bg_ripple"
-        android:orientation="horizontal"
-        android:gravity="center_vertical"
-        android:padding="10dp">
-
-        <ImageView
-            android:layout_width="25dp"
-            android:layout_height="25dp"
-            android:src="@drawable/ic_code" />
-
-        <TextView
-            style="@style/tripItemValue"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginRight="10dp"
-            android:text="@string/stationCode" />
+            android:text="@string/twodayago" />
 
     </LinearLayout>
 

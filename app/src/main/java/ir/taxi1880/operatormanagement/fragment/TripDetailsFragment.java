@@ -207,7 +207,7 @@ public class TripDetailsFragment extends Fragment {
     }
   }
 
-  private void serviceDetails() {
+  private void tripDetails() {
     if (vfTripDetails != null) {
       vfTripDetails.setDisplayedChild(0);
     }
@@ -219,6 +219,85 @@ public class TripDetailsFragment extends Fragment {
   }
 
   RequestHelper.Callback onGetTripDetails = new RequestHelper.Callback() {
+    @Override
+    public void onResponse(Runnable reCall, Object... args) {
+      MyApplication.handler.post(new Runnable() {
+        @Override
+        public void run() {
+          try {
+            Log.i("TripDetailsFragment", "run: " + args[0].toString());
+
+          } catch (Exception e) {
+            e.printStackTrace();
+          }
+        }
+      });
+    }
+
+    @Override
+    public void onFailure(Runnable reCall, Exception e) {
+      MyApplication.handler.post(() -> {
+        if (vfTripDetails != null) {
+          vfTripDetails.setDisplayedChild(2);
+        }
+      });
+    }
+  };
+
+  private void lockTaxi() {
+    if (vfTripDetails != null) {
+      vfTripDetails.setDisplayedChild(0);
+    }
+
+    RequestHelper.builder(EndPoints.SERVICE_DETAIL)
+            .addParam("serviceId", 1)
+            .addParam("userId", 1)
+            .addParam("todate", 1)
+            .addParam("totime", 1)
+            .addParam("reasonId", 1)
+            .listener(onGetTripDetails)
+            .post();
+  }
+
+  RequestHelper.Callback onLockTaxi = new RequestHelper.Callback() {
+    @Override
+    public void onResponse(Runnable reCall, Object... args) {
+      MyApplication.handler.post(new Runnable() {
+        @Override
+        public void run() {
+          try {
+            Log.i("TripDetailsFragment", "run: " + args[0].toString());
+
+          } catch (Exception e) {
+            e.printStackTrace();
+          }
+        }
+      });
+    }
+
+    @Override
+    public void onFailure(Runnable reCall, Exception e) {
+      MyApplication.handler.post(() -> {
+        if (vfTripDetails != null) {
+          vfTripDetails.setDisplayedChild(2);
+        }
+      });
+    }
+  };
+
+  private void cancelService() {
+    if (vfTripDetails != null) {
+      vfTripDetails.setDisplayedChild(0);
+    }
+
+    RequestHelper.builder(EndPoints.SERVICE_DETAIL)
+            .addParam("serviceId", 1)
+            .addParam("userId", 1)
+            .listener(inCancelService)
+            .post();
+  }
+
+  RequestHelper.Callback inCancelService = new RequestHelper.Callback() {
     @Override
     public void onResponse(Runnable reCall, Object... args) {
       MyApplication.handler.post(new Runnable() {
@@ -283,6 +362,11 @@ public class TripDetailsFragment extends Fragment {
 
     RequestHelper.builder(EndPoints.INSERT_MISTAKE)
             .addParam("serviceId", 1)
+            .addParam("userId", 1)
+            .addParam("tel", 1)
+            .addParam("adrs", 1)
+            .addParam("customerName", 1)
+            .addParam("voipId", 1)
             .addParam("description", 1)
             .listener(onSetMistake)
             .post();
@@ -317,8 +401,26 @@ public class TripDetailsFragment extends Fragment {
     RequestHelper.builder(EndPoints.INSERT_COMPLAINT)
             .addParam("serviceId", 1)
             .addParam("userId", 1)
+            .addParam("taxiCode", 1)
+            .addParam("taxiPlak", 1)
             .addParam("complaintType", 1)
+            .addParam("driverName", 1)
+            .addParam("driverMobile", 1)
             .addParam("description", 1)
+            .addParam("customerId", 1)
+            .addParam("customerName", 1)
+            .addParam("customerTel", 1)
+            .addParam("carType", 1)
+            .addParam("adrs", 1)
+            .addParam("destination", 1)
+            .addParam("price", 1)
+            .addParam("cityCode", 1)
+            .addParam("voipId", 1)
+            .addParam("voipIdService", 1)
+            .addParam("customerMobile", 1)
+            .addParam("insertUser", 1)
+            .addParam("khodroCode", 1)
+            .addParam("smartCode", 1)
             .listener(onSetComplaint)
             .post();
   }

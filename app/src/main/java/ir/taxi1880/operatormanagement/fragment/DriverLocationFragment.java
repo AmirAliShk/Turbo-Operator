@@ -78,15 +78,15 @@ public class DriverLocationFragment extends Fragment implements OnMapReadyCallba
 
   }
 
-  private void getLastLocation(String searchText) {
+  private void getLastLocation() {
 
     RequestHelper.builder(EndPoints.LAST_DRIVER_POSITION)
             .addParam("taxiCode", 1)
-            .listener(onGetTripList)
+            .listener(onGetLastLocation)
             .post();
   }
 
-  RequestHelper.Callback onGetTripList = new RequestHelper.Callback() {
+  RequestHelper.Callback onGetLastLocation = new RequestHelper.Callback() {
     @Override
     public void onResponse(Runnable reCall, Object... args) {
       MyApplication.handler.post(new Runnable() {

@@ -64,7 +64,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_margin="5dp"
-                    android:background="@drawable/bg_edit_text"
+                    android:background="@drawable/bg_status"
                     android:elevation="5dp"
                     android:gravity="center"
                     android:orientation="horizontal"

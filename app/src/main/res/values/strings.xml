@@ -98,6 +98,8 @@
     <string name="stationCode">کد ایستگاه</string>
     <string name="taxiCode">کد تاکسی</string>
     <string name="driverLocation">موقعیت راننده</string>
+    <string name="Yesterday">دیروز</string>
+    <string name="twodayago">دوروز قبل</string>
 
 
 </resources>

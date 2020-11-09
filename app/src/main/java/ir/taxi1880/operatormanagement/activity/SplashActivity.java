@@ -10,6 +10,7 @@ import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
+import android.provider.Settings;
 import android.util.Log;
 import android.view.View;
 import android.view.Window;
@@ -40,6 +41,7 @@ import ir.taxi1880.operatormanagement.fragment.LoginFragment;
 import ir.taxi1880.operatormanagement.fragment.SignatureFragment;
 import ir.taxi1880.operatormanagement.helper.AppVersionHelper;
 import ir.taxi1880.operatormanagement.helper.FragmentHelper;
+import ir.taxi1880.operatormanagement.helper.ScreenHelper;
 import ir.taxi1880.operatormanagement.helper.ServiceHelper;
 import ir.taxi1880.operatormanagement.helper.StringHelper;
 import ir.taxi1880.operatormanagement.helper.TypefaceUtil;
@@ -181,13 +183,33 @@ public class SplashActivity extends AppCompatActivity {
   }
 
   private void getAppInfo() {
-    RequestHelper.builder(EndPoints.GET_APP_INFO)
-            .addParam("versionCode", new AppVersionHelper(context).getVerionCode())
-            .addParam("operatorId", MyApplication.prefManager.getUserCode())
-            .addParam("userName", MyApplication.prefManager.getUserName())
-            .addParam("password", MyApplication.prefManager.getPassword())
-            .listener(onAppInfo)
-            .post();
+    JSONObject deviceInfo = new JSONObject();
+    try {
+      @SuppressLint("HardwareIds") String android_id = Settings.Secure.getString(getContentResolver(), Settings.Secure.ANDROID_ID);
+      deviceInfo.put("MODEL", Build.MODEL);
+      deviceInfo.put("HARDWARE", Build.HARDWARE);
+      deviceInfo.put("BRAND", Build.BRAND);
+      deviceInfo.put("DISPLAY", Build.DISPLAY);
+      deviceInfo.put("BOARD", Build.BOARD);
+      deviceInfo.put("SDK_INT", Build.VERSION.SDK_INT);
+      deviceInfo.put("BOOTLOADER", Build.BOOTLOADER);
+      deviceInfo.put("DEVICE", Build.DEVICE);
+      deviceInfo.put("DISPLAY_HEIGHT", ScreenHelper.getRealDeviceSizeInPixels(this).getHeight());
+      deviceInfo.put("DISPLAY_WIDTH", ScreenHelper.getRealDeviceSizeInPixels(this).getWidth());
+      deviceInfo.put("DISPLAY_SIZE", ScreenHelper.getScreenSize(this));
+      deviceInfo.put("ANDROID_ID", android_id);
+
+      RequestHelper.builder(EndPoints.GET_APP_INFO)
+              .addParam("versionCode", new AppVersionHelper(context).getVerionCode())
+              .addParam("operatorId", MyApplication.prefManager.getUserCode())
+              .addParam("userName", MyApplication.prefManager.getUserName())
+              .addParam("password", MyApplication.prefManager.getPassword())
+              .addParam("deviceInfo",deviceInfo)
+              .listener(onAppInfo)
+              .post();
+    } catch (JSONException e) {
+      e.printStackTrace();
+    }
   }
 
   @Override

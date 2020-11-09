@@ -535,6 +535,7 @@ public class DeterminationPageFragment extends Fragment {
             .addParam("adrs", StringHelper.toEnglishDigits(dataBase.getTopAddress().getOriginText()))
             .addParam("customerName", StringHelper.toEnglishDigits(dataBase.getTopAddress().getCustomerName()))
             .addParam("voipId", StringHelper.toEnglishDigits(dataBase.getTopAddress().getVoipId()))
+            .addParam("tripId", StringHelper.toEnglishDigits(dataBase.getTopAddress().getId()+""))
 //            .addParam("tell", StringHelper.toEnglishDigits("9015693808"))
 //            .addParam("adrs", StringHelper.toEnglishDigits("station 199 تست اندروید"))
 //            .addParam("customerName", StringHelper.toEnglishDigits("fatemeh noori"))

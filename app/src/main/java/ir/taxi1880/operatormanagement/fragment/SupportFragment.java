@@ -5,9 +5,9 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.ViewFlipper;
 
 import org.json.JSONArray;
@@ -26,6 +26,7 @@ import ir.taxi1880.operatormanagement.R;
 import ir.taxi1880.operatormanagement.adapter.TripAdapter;
 import ir.taxi1880.operatormanagement.app.EndPoints;
 import ir.taxi1880.operatormanagement.app.MyApplication;
+import ir.taxi1880.operatormanagement.dialog.ExtendedTimeDialog;
 import ir.taxi1880.operatormanagement.dialog.SearchFilterDialog;
 import ir.taxi1880.operatormanagement.helper.TypefaceUtil;
 import ir.taxi1880.operatormanagement.model.TripModel;
@@ -36,6 +37,7 @@ public class SupportFragment extends Fragment {
   ArrayList<TripModel> tripModels;
   TripAdapter tripAdapter;
   int searchCase = 2;
+  int extendedTime = 1;
 
   @OnClick(R.id.imgBack)
   void onBackPress() {
@@ -47,6 +49,12 @@ public class SupportFragment extends Fragment {
 
   @BindView(R.id.imgSearchType)
   ImageView imgSearchType;
+
+  @BindView(R.id.imgExtendedTime)
+  ImageView imgExtendedTime;
+
+  @BindView(R.id.txtExtendTime)
+  TextView txtExtendTime;
 
   @OnClick(R.id.imgSearch)
   void onSearchPress() {
@@ -88,11 +96,12 @@ public class SupportFragment extends Fragment {
 
   @OnClick(R.id.llExtendedTime)
   void onExtendedTimePress() {
-    chbExtendedTime.setChecked(!chbExtendedTime.isChecked());
+    new ExtendedTimeDialog().show((type, title,icon) -> {
+      extendedTime = type;
+      txtExtendTime.setText(title);
+      imgExtendedTime.setImageResource(icon);
+    });
   }
-
-  @BindView(R.id.chbExtendedTime)
-  CheckBox chbExtendedTime;
 
   @BindView(R.id.edtSearchTrip)
   EditText edtSearchTrip;
@@ -105,9 +114,10 @@ public class SupportFragment extends Fragment {
     View view = inflater.inflate(R.layout.fragment_support, container, false);
     unbinder = ButterKnife.bind(this, view);
     TypefaceUtil.overrideFonts(view);
+
     String tellNumber;
     Bundle bundle = getArguments();
-    if (bundle != null){
+    if (bundle != null) {
       tellNumber = bundle.getString("tellNumber");
       edtSearchTrip.setText(tellNumber);
     }
@@ -160,12 +170,15 @@ public class SupportFragment extends Fragment {
       vfTrip.setDisplayedChild(0);
     }
 
-    int extendedTime = chbExtendedTime.isChecked() ? 1 : 0;
+//    int extendedTime = chbExtendedTime.isChecked() ? 1 : 0;
 
     RequestHelper.builder(EndPoints.SEARCH_SERVICE)
-            .addParam("searchCase", searchCase)
-            .addParam("searchText", searchText)
-            .addParam("allServices", extendedTime)
+//            .addParam("phonenumber", phonenumber)
+//            .addParam("name", name)
+//            .addParam("address", address)
+//            .addParam("taxiCode", taxiCode)
+//            .addParam("stationCode", stationCode)
+            .addParam("searchInterval", extendedTime)
             .listener(onGetTripList)
             .post();
   }
