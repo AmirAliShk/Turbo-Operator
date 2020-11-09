@@ -37,6 +37,7 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:gravity="center_vertical"
             android:orientation="horizontal">
 
             <TextView
@@ -47,7 +48,6 @@
                 android:textAppearance="?android:attr/textAppearanceMedium"
                 android:textColor="@color/grayMedium" />
 
-
             <EditText
                 android:id="@+id/edtHour"
                 android:layout_width="match_parent"
@@ -55,9 +55,10 @@
                 android:layout_margin="5dp"
                 android:background="@drawable/bg_strock_corner"
                 android:elevation="3dp"
-                android:gravity="top|right"
-                android:minHeight="150dp"
-                android:padding="10dp" />
+                android:inputType="number"
+                android:paddingRight="10dp"
+                android:gravity="right|center_vertical"
+                android:minHeight="150dp" />
 
         </LinearLayout>
 
