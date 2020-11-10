@@ -1,10 +1,13 @@
 package ir.taxi1880.operatormanagement.fragment;
 
+import android.graphics.Bitmap;
+import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -41,6 +44,9 @@ public class DriverLocationFragment extends Fragment implements OnMapReadyCallba
   @BindView(R.id.map)
   MapView map;
 
+  @BindView(R.id.txtLastTime)
+  TextView txtLastTime;
+
   GoogleMap myGoogleMap;
   Marker myLocationMarker;
 
@@ -69,11 +75,15 @@ public class DriverLocationFragment extends Fragment implements OnMapReadyCallba
 
     myGoogleMap.moveCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
 
+    BitmapDrawable bitmapdraw = (BitmapDrawable)getResources().getDrawable(R.mipmap.pin);
+    Bitmap b = bitmapdraw.getBitmap();
+    Bitmap smallMarker = Bitmap.createScaledBitmap(b, 60, 100, false);
+
     if (myGoogleMap != null)
       myLocationMarker = myGoogleMap.addMarker(
               new MarkerOptions()
-//                      .icon(BitmapDescriptorFactory.fromResource(R.mipmap.turbo))
-                      .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_ROSE))
+                      .icon(BitmapDescriptorFactory.fromBitmap(smallMarker))
+//                      .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_YELLOW))
                       .position(myLocation));
 
   }

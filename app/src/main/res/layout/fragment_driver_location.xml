@@ -45,19 +45,37 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:elevation="5dp"
-        android:background="@drawable/bg_blue_border_edge"
+        android:background="@drawable/bg_yellow_strok"
+        android:layout_margin="10dp"
         android:gravity="center"
         android:orientation="horizontal"
-        android:padding="10dp">
+        android:padding="5dp">
 
         <TextView
-            android:id="@+id/txtStatus"
+            android:id="@+id/txtLastTime"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:gravity="center"
-            android:text="آخرین موقعیت راننده در 17:45"
+            android:text="17:45"
+            android:layout_marginLeft="10dp"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:textColor="@color/colorBlack"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="right"
+            android:text="زمان آخرین موقعیت راننده:"
             android:textAppearance="?android:attr/textAppearanceMedium"
-            android:textColor="@color/colorBlue"/>
+            android:textColor="@color/colorBlack"/>
+
+        <ImageView
+            android:layout_width="25dp"
+            android:layout_height="25dp"
+            android:src="@drawable/ic_time"
+            android:tint="@color/colorBlack"
+            android:layout_marginLeft="10dp"/>
 
     </LinearLayout>
 
