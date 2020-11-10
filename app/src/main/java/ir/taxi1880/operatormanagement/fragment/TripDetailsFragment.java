@@ -93,6 +93,9 @@ public class TripDetailsFragment extends Fragment {
   @BindView(R.id.txtPlaque)
   TextView txtPlaque;
 
+  @BindView(R.id.txtTitle)
+  TextView txtTitle;
+
   @BindView(R.id.vfTripDetails)
   ViewFlipper vfTripDetails;
 
@@ -149,6 +152,7 @@ public class TripDetailsFragment extends Fragment {
     View view = inflater.inflate(R.layout.fragment_trip_details, container, false);
     unbinder = ButterKnife.bind(this, view);
     TypefaceUtil.overrideFonts(view,MyApplication.IraSanSMedume);
+    TypefaceUtil.overrideFonts(txtTitle);
 
     getDetails();
 

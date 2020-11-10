@@ -473,16 +473,16 @@ public class DeterminationPageFragment extends Fragment {
 
   private void setStationCode(int userId, int tripId, String stationCode, int cityCode) {
     //TODO comment zero numbers... and bellow log
-    Log.e(TAG, "setStation = " + dataBase.getTopAddress().getOriginText() + ", stationCode = " + stationCode + ", tripId = " + tripId + ", cityCode = " + cityCode);
+//    Log.e(TAG, "setStation = " + dataBase.getTopAddress().getOriginText() + ", stationCode = " + stationCode + ", tripId = " + tripId + ", cityCode = " + cityCode);
 
     RequestHelper.builder(EndPoints.UPDATE_TRIP_STATION)
             .addParam("userId", userId)
-//            .addParam("tripId", StringHelper.toEnglishDigits(tripId + ""))
-//            .addParam("stationCode", StringHelper.toEnglishDigits(stationCode + ""))
-//            .addParam("cityCode", StringHelper.toEnglishDigits(cityCode + ""))
-            .addParam("tripId", 0)
-            .addParam("stationCode", 0)
-            .addParam("cityCode", 0)
+            .addParam("tripId", StringHelper.toEnglishDigits(tripId + ""))
+            .addParam("stationCode", StringHelper.toEnglishDigits(stationCode + ""))
+            .addParam("cityCode", StringHelper.toEnglishDigits(cityCode + ""))
+//            .addParam("tripId", 0)
+//            .addParam("stationCode", 0)
+//            .addParam("cityCode", 0)
             .listener(setStationCode)
             .put();
 

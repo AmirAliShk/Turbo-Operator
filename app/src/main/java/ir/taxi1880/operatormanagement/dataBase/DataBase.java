@@ -151,7 +151,6 @@ public class DataBase extends SQLiteOpenHelper {
     return null;
   }
 
-
   public void updateNextRecord(int tripId) {
     SQLiteDatabase sqLiteDatabase = this.getWritableDatabase();
     ContentValues cv = new ContentValues();

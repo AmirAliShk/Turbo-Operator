@@ -6,33 +6,25 @@
     android:layoutDirection="rtl"
     android:orientation="vertical">
 
+    <TextView
+        android:id="@+id/txtTitle"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="right"
+        android:text="ثبت اشیا گمشده"
+        android:textColor="@color/colorWhite"
+        android:textSize="@dimen/text_header"
+        android:textStyle="bold" />
+
     <LinearLayout
         android:layout_width="350dp"
         android:layout_height="wrap_content"
         android:layout_gravity="top|center_horizontal"
         android:background="@drawable/bg_white_edge"
         android:gravity="top"
+        android:padding="10dp"
         android:minWidth="350dp"
         android:orientation="vertical">
-
-        <LinearLayout
-            android:id="@+id/llTitle"
-            android:layout_width="match_parent"
-            android:layout_height="50dp"
-            android:background="@drawable/bg_dialog_header"
-            android:gravity="center"
-            android:orientation="vertical">
-
-            <TextView
-                android:id="@+id/txtTitle"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:gravity="center"
-                android:text="ثبت اشیا گمشده"
-                android:textColor="@color/colorWhite"
-                android:textSize="@dimen/text_header"
-                android:textStyle="bold" />
-        </LinearLayout>
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -42,7 +34,7 @@
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:padding="10dp"
+                android:paddingRight="10dp"
                 android:text="نوع"
                 android:textAppearance="?android:attr/textAppearanceMedium"
                 android:textColor="@color/grayMedium" />
@@ -50,10 +42,9 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_margin="5dp"
+                android:layout_marginTop="10dp"
                 android:background="@drawable/bg_strock_corner"
-                android:elevation="3dp"
-                android:padding="5dp">
+                android:padding="10dp">
 
                 <Spinner
                     android:id="@+id/spType"
@@ -75,7 +66,8 @@
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:padding="10dp"
+                android:paddingRight="10dp"
+                android:layout_marginTop="10dp"
                 android:text="آدرس"
                 android:textAppearance="?android:attr/textAppearanceMedium"
                 android:textColor="@color/grayMedium" />
@@ -84,19 +76,19 @@
                 android:id="@+id/edtAddress"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_margin="5dp"
-                android:maxLines="2"
+                android:layout_marginTop="10dp"
                 android:background="@drawable/bg_strock_corner"
-                android:elevation="3dp"
                 android:gravity="top|right"
+                android:maxLines="2"
                 android:padding="10dp" />
 
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:padding="10dp"
-                android:text="توضیحات"
                 android:maxLines="2"
+                android:paddingRight="10dp"
+                android:layout_marginTop="10dp"
+                android:text="توضیحات"
                 android:textAppearance="?android:attr/textAppearanceMedium"
                 android:textColor="@color/grayMedium" />
 
@@ -104,20 +96,18 @@
                 android:id="@+id/edtComment"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_margin="5dp"
-                android:minHeight="100dp"
+                android:layout_marginTop="10dp"
                 android:background="@drawable/bg_strock_corner"
-                android:elevation="3dp"
                 android:gravity="top|right"
                 android:maxLines="2"
-                android:padding="10dp" />
+                android:minHeight="100dp"/>
 
         </LinearLayout>
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_margin="10dp"
+            android:layout_marginTop="10dp"
             android:layout_weight="1"
             android:gravity="center"
             android:orientation="vertical">
@@ -126,8 +116,6 @@
                 android:id="@+id/btnSubmit"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="40dp"
-                android:layout_marginRight="40dp"
                 android:background="@drawable/bg_light_pink_edge"
                 android:text="ثبت"
                 android:textAppearance="?android:attr/textAppearanceLarge"

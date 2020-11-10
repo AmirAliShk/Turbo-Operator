@@ -25,6 +25,7 @@
             android:src="@drawable/ic_back" />
 
         <TextView
+            android:id="@+id/txtTitle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
@@ -36,7 +37,6 @@
 
     <ViewFlipper
         android:id="@+id/vfTripDetails"
-        android:paddingTop="15dp"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
@@ -61,20 +61,22 @@
                 android:orientation="vertical">
 
                 <LinearLayout
-                    android:layout_width="wrap_content"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_margin="5dp"
+                    android:layout_marginRight="20dp"
+                    android:layout_marginLeft="20dp"
+                    android:layout_marginTop="20dp"
                     android:background="@drawable/bg_status"
                     android:elevation="5dp"
                     android:gravity="center"
                     android:orientation="horizontal"
-                    android:padding="10dp">
+                    android:padding="5dp">
 
-                    <ImageView
-                        android:id="@+id/imgStatus"
-                        android:layout_width="15dp"
-                        android:layout_height="15dp"
-                        android:background="@drawable/circle_blue" />
+<!--                    <ImageView-->
+<!--                        android:id="@+id/imgStatus"-->
+<!--                        android:layout_width="15dp"-->
+<!--                        android:layout_height="15dp"-->
+<!--                        android:background="@drawable/circle_blue" />-->
 
                     <TextView
                         android:id="@+id/txtStatus"
@@ -84,7 +86,7 @@
                         android:gravity="center"
                         android:text="اعزام نشده"
                         android:textAppearance="?android:attr/textAppearanceMedium"
-                        android:textColor="@color/colorBlue"/>
+                        android:textColor="@color/colorWhite"/>
 
                 </LinearLayout>
 
@@ -93,7 +95,7 @@
                     android:layout_height="wrap_content"
                     android:layout_margin="20dp"
                     android:background="@drawable/bg_blue_border_edge"
-                    android:elevation="5dp"
+                    android:elevation="3dp"
                     android:orientation="vertical"
                     android:padding="10dp">
 
@@ -115,8 +117,7 @@
                             android:id="@+id/txtCustomerName"
                             style="@style/tripItemValue"
                             android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="سارا بنی اسدی" />
+                            android:layout_height="wrap_content"/>
 
                     </LinearLayout>
 
@@ -138,8 +139,7 @@
                             android:id="@+id/txtDate"
                             style="@style/tripItemValue"
                             android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="1399/10/09" />
+                            android:layout_height="wrap_content" />
 
                         <View
                             android:layout_width="wrap_content"
@@ -157,8 +157,7 @@
                             android:id="@+id/txtTime"
                             style="@style/tripItemValue"
                             android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="20:15:10" />
+                            android:layout_height="wrap_content"/>
 
                         <View
                             android:layout_width="wrap_content"
@@ -185,8 +184,7 @@
                             android:id="@+id/txtTripType"
                             style="@style/tripItemValue"
                             android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="سرویس" />
+                            android:layout_height="wrap_content"/>
 
                     </LinearLayout>
 
@@ -208,8 +206,7 @@
                             android:id="@+id/txtCity"
                             style="@style/tripItemValue"
                             android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="@string/city" />
+                            android:layout_height="wrap_content"/>
 
                     </LinearLayout>
 
@@ -232,8 +229,7 @@
                             android:id="@+id/txtCustomerAddress"
                             style="@style/tripItemValue"
                             android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="@string/customerAddress" />
+                            android:layout_height="wrap_content"/>
 
                     </LinearLayout>
 
@@ -255,8 +251,7 @@
                             android:id="@+id/txtCustomerTell"
                             style="@style/tripItemValue"
                             android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="123456789" />
+                            android:layout_height="wrap_content"/>
 
                     </LinearLayout>
 
@@ -278,8 +273,7 @@
                             android:id="@+id/txtCustomerMobile"
                             style="@style/tripItemValue"
                             android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="@string/customerMobile" />
+                            android:layout_height="wrap_content" />
 
                     </LinearLayout>
 
@@ -301,8 +295,7 @@
                             android:id="@+id/txtPercent"
                             style="@style/tripItemValue"
                             android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="3000" />
+                            android:layout_height="wrap_content" />
 
                         <View
                             android:layout_width="wrap_content"
@@ -320,8 +313,7 @@
                             android:id="@+id/txtMaxPercent"
                             style="@style/tripItemValue"
                             android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="5000" />
+                            android:layout_height="wrap_content"/>
 
                         <View
                             android:layout_width="wrap_content"
@@ -367,7 +359,7 @@
                     android:layout_height="wrap_content"
                     android:layout_margin="20dp"
                     android:background="@drawable/bg_blue_border_edge"
-                    android:elevation="5dp"
+                    android:elevation="3dp"
                     android:orientation="vertical"
                     android:padding="10dp">
 
@@ -389,8 +381,7 @@
                             android:id="@+id/txtSendDate"
                             style="@style/tripItemValue"
                             android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="@string/sendDate" />
+                            android:layout_height="wrap_content"/>
 
                         <View
                             android:layout_width="wrap_content"
@@ -435,8 +426,7 @@
                             android:id="@+id/txtDriverCode"
                             style="@style/tripItemValue"
                             android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="3650" />
+                            android:layout_height="wrap_content"/>
 
                     </LinearLayout>
 
@@ -458,8 +448,7 @@
                             android:id="@+id/txtDriverName"
                             style="@style/tripItemValue"
                             android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="نوری خانوم" />
+                            android:layout_height="wrap_content"/>
 
                     </LinearLayout>
 
@@ -481,8 +470,7 @@
                             android:id="@+id/txtDriverMob"
                             style="@style/tripItemValue"
                             android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="@string/driverMob" />
+                            android:layout_height="wrap_content" />
 
                     </LinearLayout>
 
@@ -504,8 +492,7 @@
                             android:id="@+id/txtCarType"
                             style="@style/tripItemValue"
                             android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="@string/carType" />
+                            android:layout_height="wrap_content"/>
 
                     </LinearLayout>
 
@@ -527,8 +514,7 @@
                             android:id="@+id/txtPrice"
                             style="@style/tripItemValue"
                             android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="@string/price" />
+                            android:layout_height="wrap_content"/>
 
                     </LinearLayout>
 
@@ -550,8 +536,7 @@
                             android:id="@+id/txtEndTime"
                             style="@style/tripItemValue"
                             android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="@string/endTime" />
+                            android:layout_height="wrap_content"/>
 
                     </LinearLayout>
 
@@ -573,8 +558,7 @@
                             android:id="@+id/txtPlaque"
                             style="@style/tripItemValue"
                             android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="@string/plaque" />
+                            android:layout_height="wrap_content"/>
 
                     </LinearLayout>
 
