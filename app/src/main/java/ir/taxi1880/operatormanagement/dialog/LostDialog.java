@@ -5,17 +5,27 @@ import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.util.Log;
 import android.view.Gravity;
+import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
+import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Spinner;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.util.ArrayList;
+
 import ir.taxi1880.operatormanagement.R;
+import ir.taxi1880.operatormanagement.adapter.SpinnerAdapter;
 import ir.taxi1880.operatormanagement.app.MyApplication;
 import ir.taxi1880.operatormanagement.helper.KeyBoardHelper;
 import ir.taxi1880.operatormanagement.helper.TypefaceUtil;
+import ir.taxi1880.operatormanagement.model.TypeServiceModel;
 import ir.taxi1880.operatormanagement.push.AvaCrashReporter;
 
 public class LostDialog {
@@ -23,6 +33,7 @@ public class LostDialog {
   private static final String TAG = LostDialog.class.getSimpleName();
 
   private Spinner spType;
+  int type;
 
   static Dialog dialog;
 
@@ -46,6 +57,8 @@ public class LostDialog {
     EditText edtComment = dialog.findViewById(R.id.edtComment);
     spType = dialog.findViewById(R.id.spType);
 
+    initSpinner();
+
     imgClose.setOnClickListener(view -> dismiss());
 
     btnSubmit.setOnClickListener(view -> {
@@ -53,6 +66,41 @@ public class LostDialog {
     });
 
     dialog.show();
+  }
+
+  private void initSpinner() {
+    ArrayList<TypeServiceModel> typeServiceModels = new ArrayList<>();
+    ArrayList<String> serviceList = new ArrayList<String>();
+    try {
+      JSONArray serviceArr = new JSONArray(MyApplication.prefManager.getObjectsType());
+      for (int i = 0; i < serviceArr.length(); i++) {
+        JSONObject serviceObj = serviceArr.getJSONObject(i);
+        TypeServiceModel typeServiceModel = new TypeServiceModel();
+        typeServiceModel.setName(serviceObj.getString("KTypeSharh"));
+        typeServiceModel.setId(serviceObj.getInt("KTypeId"));
+        typeServiceModels.add(typeServiceModel);
+        serviceList.add(serviceObj.getString("KTypeSharh"));
+      }
+      if (spType == null)
+        return;
+
+      spType.setEnabled(true);
+
+      spType.setAdapter(new SpinnerAdapter(MyApplication.currentActivity, R.layout.item_spinner, serviceList));
+
+      spType.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+        @Override
+        public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+          type = typeServiceModels.get(position).getId();
+        }
+
+        @Override
+        public void onNothingSelected(AdapterView<?> parent) {
+        }
+      });
+    } catch (JSONException e) {
+      e.printStackTrace();
+    }
   }
 
   private static void dismiss() {

@@ -204,7 +204,7 @@ public class SplashActivity extends AppCompatActivity {
               .addParam("operatorId", MyApplication.prefManager.getUserCode())
               .addParam("userName", MyApplication.prefManager.getUserName())
               .addParam("password", MyApplication.prefManager.getPassword())
-              .addParam("deviceInfo",deviceInfo)
+              .addParam("deviceInfo", deviceInfo)
               .listener(onAppInfo)
               .post();
     } catch (JSONException e) {
@@ -245,12 +245,17 @@ public class SplashActivity extends AppCompatActivity {
           String city = object.getString("city");
           int pushId = object.getInt("pushId");
           String pushToken = object.getString("pushToken");
+          String complaintType = object.getString("ComplaintType");
+          String objectsType = object.getString("objectsType");
+          String ReasonsLock = object.getString("ReasonsLock");
           int activeInQueue = object.getInt("activeInQueue");
           isFinishContract = object.getInt("isFinishContract");
-          //TODO correct here
-//          int customerSupport=object.getInt("customerSupport");
-          boolean customerSupport = true;
+          int customerSupport=object.getInt("customerSupport");
           MyApplication.prefManager.setCustomerSupport(customerSupport);
+
+          MyApplication.prefManager.setComplaint(complaintType);
+          MyApplication.prefManager.setObjectsType(objectsType);
+          MyApplication.prefManager.setReasonsLock(ReasonsLock);
 
           //insert all city into dataBase
           JSONArray cityArr = new JSONArray(city);

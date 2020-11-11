@@ -53,7 +53,8 @@ public class OptionDialog {
     LinearLayout llReserve = dialog.findViewById(R.id.llReserve);
     ImageView imgClose = dialog.findViewById(R.id.imgClose);
 
-    if (MyApplication.prefManager.getCustomerSupport()) {
+    if (MyApplication.prefManager.getCustomerSupport() == 1) {
+      llSupport.setVisibility(View.VISIBLE);
       llSupport.setOnClickListener(view -> {
         FragmentHelper.toFragment(MyApplication.currentActivity, new SupportFragment()).replace();
         dismiss();

@@ -1,8 +1,11 @@
 package ir.taxi1880.operatormanagement.model;
 
 public class TripModel {
+  String serviceId;
   String callTime;
+  String callDate;
   String sendTime;
+  String sendDate;
   String customerName;
   String customerTell;
   String customerMob;
@@ -10,6 +13,57 @@ public class TripModel {
   String carType;
   String driverMobile;
   String city;
+  int finished;
+  int stationCode;
+  int status;
+
+  public int getFinished() {
+    return finished;
+  }
+
+  public void setFinished(int finished) {
+    this.finished = finished;
+  }
+
+  public String getCallDate() {
+    return callDate;
+  }
+
+  public void setCallDate(String callDate) {
+    this.callDate = callDate;
+  }
+
+  public String getSendDate() {
+    return sendDate;
+  }
+
+  public void setSendDate(String sendDate) {
+    this.sendDate = sendDate;
+  }
+
+  public int getStationCode() {
+    return stationCode;
+  }
+
+  public void setStationCode(int stationCode) {
+    this.stationCode = stationCode;
+  }
+
+  public int getStatus() {
+    return status;
+  }
+
+  public void setStatus(int status) {
+    this.status = status;
+  }
+
+  public String getServiceId() {
+    return serviceId;
+  }
+
+  public void setServiceId(String serviceId) {
+    this.serviceId = serviceId;
+  }
 
   public String getCity() {
     return city;

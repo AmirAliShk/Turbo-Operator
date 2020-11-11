@@ -59,6 +59,9 @@ public class PrefManager {
   private static final String LAST_CALL_NUMBER = "lastCallNumber";
   private static final String KEY_APP_STATUS = "AppStatus";
   private static final String CUSTOMER_SUPPORT = "customerSupport";
+  private static final String COMPLAINT_TYPE = "ComplaintType";
+  private static final String OBJECTS_TYPE = "objectsType";
+  private static final String REASONS_LOCK = "ReasonsLock";
 
   public PrefManager(Context context) {
     this._context = context;
@@ -73,6 +76,33 @@ public class PrefManager {
 
   public boolean isAppRun() {
     return pref.getBoolean(KEY_APP_STATUS, false);
+  }
+
+  public String getComplaint() {
+    return pref.getString(COMPLAINT_TYPE, "");
+  }
+
+  public void setComplaint(String complaint) {
+    editor.putString(COMPLAINT_TYPE, complaint);
+    editor.commit();
+  }
+
+  public String getObjectsType() {
+    return pref.getString(OBJECTS_TYPE, "");
+  }
+
+  public void setObjectsType(String objects) {
+    editor.putString(OBJECTS_TYPE, objects);
+    editor.commit();
+  }
+
+  public String getReasonsLock() {
+    return pref.getString(REASONS_LOCK, "");
+  }
+
+  public void setReasonsLock(String reasonLock) {
+    editor.putString(REASONS_LOCK, reasonLock);
+    editor.commit();
   }
 
   public String getVoipId() {
@@ -129,13 +159,13 @@ public class PrefManager {
     return pref.getBoolean(ACTIVATE_STATUS, false);
   }
 
-  public void setCustomerSupport(boolean customerSupport) {
-    editor.putBoolean(CUSTOMER_SUPPORT, customerSupport);
+  public void setCustomerSupport(int customerSupport) {
+    editor.putInt(CUSTOMER_SUPPORT, customerSupport);
     editor.commit();
   }
 
-  public boolean getCustomerSupport() {
-    return pref.getBoolean(CUSTOMER_SUPPORT, false);
+  public int getCustomerSupport() {
+    return pref.getInt(CUSTOMER_SUPPORT, 0);
   }
 
   public void setStartGettingAddress(boolean getAddress) {

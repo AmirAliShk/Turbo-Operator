@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:background="@color/colorPrimaryLighter"
     android:clickable="true"
     android:layoutDirection="rtl"
@@ -40,13 +40,13 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-<!--        //TODO uncomment this-->
-<!--        <com.wang.avi.AVLoadingIndicatorView-->
-<!--            android:layout_width="50dp"-->
-<!--            android:layout_height="50dp"-->
-<!--            app:indicatorName="BallSpinFadeLoaderIndicator"-->
-<!--            android:layout_gravity="center"-->
-<!--            app:indicatorColor="@color/colorPrimaryDark" />-->
+        <!--        //TODO uncomment this-->
+        <com.wang.avi.AVLoadingIndicatorView
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_gravity="center"
+            app:indicatorColor="@color/colorPrimaryDark"
+            app:indicatorName="BallSpinFadeLoaderIndicator" />
 
         <ScrollView
             android:layout_width="match_parent"
@@ -61,22 +61,23 @@
                 android:orientation="vertical">
 
                 <LinearLayout
+                    android:id="@+id/llHeaderStatus"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginRight="20dp"
                     android:layout_marginLeft="20dp"
                     android:layout_marginTop="20dp"
+                    android:layout_marginRight="20dp"
                     android:background="@drawable/bg_status"
                     android:elevation="5dp"
                     android:gravity="center"
                     android:orientation="horizontal"
                     android:padding="5dp">
 
-<!--                    <ImageView-->
-<!--                        android:id="@+id/imgStatus"-->
-<!--                        android:layout_width="15dp"-->
-<!--                        android:layout_height="15dp"-->
-<!--                        android:background="@drawable/circle_blue" />-->
+                    <!--                    <ImageView-->
+                    <!--                        android:id="@+id/imgStatus"-->
+                    <!--                        android:layout_width="15dp"-->
+                    <!--                        android:layout_height="15dp"-->
+                    <!--                        android:background="@drawable/circle_blue" />-->
 
                     <TextView
                         android:id="@+id/txtStatus"
@@ -86,7 +87,7 @@
                         android:gravity="center"
                         android:text="اعزام نشده"
                         android:textAppearance="?android:attr/textAppearanceMedium"
-                        android:textColor="@color/colorWhite"/>
+                        android:textColor="@color/colorWhite" />
 
                 </LinearLayout>
 
@@ -109,15 +110,15 @@
                         <TextView
                             style="@style/tripItemTitle"
                             android:layout_width="wrap_content"
-                            android:minWidth="70dp"
                             android:layout_height="wrap_content"
+                            android:minWidth="70dp"
                             android:text="@string/customerName" />
 
                         <TextView
                             android:id="@+id/txtCustomerName"
                             style="@style/tripItemValue"
                             android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"/>
+                            android:layout_height="wrap_content" />
 
                     </LinearLayout>
 
@@ -131,8 +132,8 @@
                         <TextView
                             style="@style/tripItemTitle"
                             android:layout_width="wrap_content"
-                            android:minWidth="70dp"
                             android:layout_height="wrap_content"
+                            android:minWidth="70dp"
                             android:text="@string/hint_date" />
 
                         <TextView
@@ -148,16 +149,16 @@
 
                         <TextView
                             style="@style/tripItemTitle"
-                            android:minWidth="70dp"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
+                            android:minWidth="70dp"
                             android:text="@string/callTime" />
 
                         <TextView
                             android:id="@+id/txtTime"
                             style="@style/tripItemValue"
                             android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"/>
+                            android:layout_height="wrap_content" />
 
                         <View
                             android:layout_width="wrap_content"
@@ -175,16 +176,16 @@
 
                         <TextView
                             style="@style/tripItemTitle"
-                            android:minWidth="70dp"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
+                            android:minWidth="70dp"
                             android:text="@string/tripType" />
 
                         <TextView
                             android:id="@+id/txtTripType"
                             style="@style/tripItemValue"
                             android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"/>
+                            android:layout_height="wrap_content" />
 
                     </LinearLayout>
 
@@ -197,16 +198,16 @@
 
                         <TextView
                             style="@style/tripItemTitle"
-                            android:minWidth="70dp"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
+                            android:minWidth="70dp"
                             android:text="@string/city" />
 
                         <TextView
                             android:id="@+id/txtCity"
                             style="@style/tripItemValue"
                             android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"/>
+                            android:layout_height="wrap_content" />
 
                     </LinearLayout>
 
@@ -219,17 +220,17 @@
 
                         <TextView
                             style="@style/tripItemTitle"
-                            android:minWidth="70dp"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_gravity="right"
+                            android:minWidth="70dp"
                             android:text="@string/customerAddress" />
 
                         <TextView
                             android:id="@+id/txtCustomerAddress"
                             style="@style/tripItemValue"
                             android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"/>
+                            android:layout_height="wrap_content" />
 
                     </LinearLayout>
 
@@ -242,16 +243,16 @@
 
                         <TextView
                             style="@style/tripItemTitle"
-                            android:minWidth="70dp"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
+                            android:minWidth="70dp"
                             android:text="@string/customerTell" />
 
                         <TextView
                             android:id="@+id/txtCustomerTell"
                             style="@style/tripItemValue"
                             android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"/>
+                            android:layout_height="wrap_content" />
 
                     </LinearLayout>
 
@@ -264,9 +265,9 @@
 
                         <TextView
                             style="@style/tripItemTitle"
-                            android:minWidth="70dp"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
+                            android:minWidth="70dp"
                             android:text="@string/customerMobile" />
 
                         <TextView
@@ -286,9 +287,9 @@
 
                         <TextView
                             style="@style/tripItemTitle"
-                            android:minWidth="70dp"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
+                            android:minWidth="70dp"
                             android:text="@string/percent" />
 
                         <TextView
@@ -304,16 +305,16 @@
 
                         <TextView
                             style="@style/tripItemTitle"
-                            android:minWidth="70dp"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
+                            android:minWidth="70dp"
                             android:text="@string/maxPercent" />
 
                         <TextView
                             android:id="@+id/txtMaxPercent"
                             style="@style/tripItemValue"
                             android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"/>
+                            android:layout_height="wrap_content" />
 
                         <View
                             android:layout_width="wrap_content"
@@ -339,12 +340,12 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:layout_marginBottom="5dp"
                         android:paddingLeft="10dp"
                         android:paddingRight="10dp"
                         android:text="اطلاعات راننده"
-                        android:textColor="@color/colorPrimaryDark"
-                       android:layout_marginBottom="5dp"
-                        android:textAppearance="?android:attr/textAppearanceMedium" />
+                        android:textAppearance="?android:attr/textAppearanceMedium"
+                        android:textColor="@color/colorPrimaryDark" />
 
                     <View
                         android:layout_width="wrap_content"
@@ -372,16 +373,16 @@
 
                         <TextView
                             style="@style/tripItemTitle"
-                            android:minWidth="70dp"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
+                            android:minWidth="70dp"
                             android:text="@string/sendDate" />
 
                         <TextView
                             android:id="@+id/txtSendDate"
                             style="@style/tripItemValue"
                             android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"/>
+                            android:layout_height="wrap_content" />
 
                         <View
                             android:layout_width="wrap_content"
@@ -390,9 +391,9 @@
 
                         <TextView
                             style="@style/tripItemTitle"
-                            android:minWidth="70dp"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
+                            android:minWidth="70dp"
                             android:text="@string/sendTime2" />
 
                         <TextView
@@ -417,16 +418,16 @@
 
                         <TextView
                             style="@style/tripItemTitle"
-                            android:minWidth="70dp"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
+                            android:minWidth="70dp"
                             android:text="@string/driverCode" />
 
                         <TextView
                             android:id="@+id/txtDriverCode"
                             style="@style/tripItemValue"
                             android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"/>
+                            android:layout_height="wrap_content" />
 
                     </LinearLayout>
 
@@ -439,16 +440,16 @@
 
                         <TextView
                             style="@style/tripItemTitle"
-                            android:minWidth="70dp"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
+                            android:minWidth="70dp"
                             android:text="@string/driverName" />
 
                         <TextView
                             android:id="@+id/txtDriverName"
                             style="@style/tripItemValue"
                             android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"/>
+                            android:layout_height="wrap_content" />
 
                     </LinearLayout>
 
@@ -461,9 +462,9 @@
 
                         <TextView
                             style="@style/tripItemTitle"
-                            android:minWidth="70dp"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
+                            android:minWidth="70dp"
                             android:text="@string/driverMob" />
 
                         <TextView
@@ -483,16 +484,16 @@
 
                         <TextView
                             style="@style/tripItemTitle"
-                            android:minWidth="70dp"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
+                            android:minWidth="70dp"
                             android:text="@string/carType" />
 
                         <TextView
                             android:id="@+id/txtCarType"
                             style="@style/tripItemValue"
                             android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"/>
+                            android:layout_height="wrap_content" />
 
                     </LinearLayout>
 
@@ -505,16 +506,16 @@
 
                         <TextView
                             style="@style/tripItemTitle"
-                            android:minWidth="70dp"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
+                            android:minWidth="70dp"
                             android:text="@string/price" />
 
                         <TextView
                             android:id="@+id/txtPrice"
                             style="@style/tripItemValue"
                             android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"/>
+                            android:layout_height="wrap_content" />
 
                     </LinearLayout>
 
@@ -527,16 +528,16 @@
 
                         <TextView
                             style="@style/tripItemTitle"
-                            android:minWidth="70dp"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
+                            android:minWidth="70dp"
                             android:text="@string/endTime" />
 
                         <TextView
                             android:id="@+id/txtEndTime"
                             style="@style/tripItemValue"
                             android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"/>
+                            android:layout_height="wrap_content" />
 
                     </LinearLayout>
 
@@ -549,16 +550,16 @@
 
                         <TextView
                             style="@style/tripItemTitle"
-                            android:minWidth="70dp"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
+                            android:minWidth="70dp"
                             android:text="@string/plaque" />
 
                         <TextView
                             android:id="@+id/txtPlaque"
                             style="@style/tripItemValue"
                             android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"/>
+                            android:layout_height="wrap_content" />
 
                     </LinearLayout>
 
@@ -617,40 +618,40 @@
 
                     <Button
                         android:id="@+id/btnComplaintRegistration"
+                        style="@style/button"
                         android:layout_width="0dp"
-                        android:layout_weight="1"
                         android:layout_height="wrap_content"
-                        android:text="@string/complaintRegistration"
-                        style="@style/button"/>
+                        android:layout_weight="1"
+                        android:text="@string/complaintRegistration" />
 
                     <Button
                         android:id="@+id/btnLost"
+                        style="@style/button"
                         android:layout_width="0dp"
-                        android:layout_weight="1"
                         android:layout_height="wrap_content"
-                        android:text="@string/lost"
-                        style="@style/button"/>
+                        android:layout_weight="1"
+                        android:text="@string/lost" />
 
                 </LinearLayout>
 
                 <Button
                     android:id="@+id/btnDriverLock"
+                    style="@style/button"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="@string/lockDriver"
-                    style="@style/button"/>
+                    android:text="@string/lockDriver" />
 
             </LinearLayout>
 
         </ScrollView>
 
         <TextView
-            android:gravity="center"
-            android:textSize="@dimen/text_title"
-            android:textColor="@color/colorBlack"
-            android:text="خطایی رخ داده! \n لطفا پس از چند لحظه مجدد تلاش کنید"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"/>
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:text="خطایی رخ داده! \n لطفا پس از چند لحظه مجدد تلاش کنید"
+            android:textColor="@color/colorBlack"
+            android:textSize="@dimen/text_title" />
 
     </ViewFlipper>
 

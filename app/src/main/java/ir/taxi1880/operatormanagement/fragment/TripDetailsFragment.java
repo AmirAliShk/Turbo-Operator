@@ -5,10 +5,10 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.ViewFlipper;
 
-import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -32,6 +32,7 @@ import ir.taxi1880.operatormanagement.okHttp.RequestHelper;
 
 public class TripDetailsFragment extends Fragment {
   Unbinder unbinder;
+  String serviceId;
 
   @OnClick(R.id.imgBack)
   void onBackPress() {
@@ -40,6 +41,9 @@ public class TripDetailsFragment extends Fragment {
 
   @BindView(R.id.txtStatus)
   TextView txtStatus;
+
+  @BindView(R.id.llHeaderStatus)
+  LinearLayout llHeaderStatus;
 
   @BindView(R.id.txtCustomerName)
   TextView txtCustomerName;
@@ -52,17 +56,22 @@ public class TripDetailsFragment extends Fragment {
 
   @BindView(R.id.txtTripType)
   TextView txtTripType;
+
   @BindView(R.id.txtCity)
   TextView txtCity;
+
   @BindView(R.id.txtCustomerAddress)
   TextView txtCustomerAddress;
 
   @BindView(R.id.txtCustomerTell)
   TextView txtCustomerTell;
+
   @BindView(R.id.txtCustomerMobile)
   TextView txtCustomerMobile;
+
   @BindView(R.id.txtPercent)
   TextView txtPercent;
+
   @BindView(R.id.txtMaxPercent)
   TextView txtMaxPercent;
 
@@ -151,64 +160,17 @@ public class TripDetailsFragment extends Fragment {
   public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
     View view = inflater.inflate(R.layout.fragment_trip_details, container, false);
     unbinder = ButterKnife.bind(this, view);
-    TypefaceUtil.overrideFonts(view,MyApplication.IraSanSMedume);
+    TypefaceUtil.overrideFonts(view, MyApplication.IraSanSMedume);
     TypefaceUtil.overrideFonts(txtTitle);
 
-    getDetails();
+    Bundle bundle = getArguments();
+    if (bundle != null) {
+      serviceId = bundle.getString("id");
+    }
+
+    tripDetails();
 
     return view;
-  }
-
-  String tripList = "{\"success\":true,\"message\":\"\",\"data\":" +
-          "[{\"date\":\"1399/08/18\",\"time\":\"16:00\",\"city\":\"کاشمر\",\"serviceType\":\"سرویس\",\"customerName\":\"فائزه نوری\",\"customerTell\":\"09015693855\",\"customerMob\":\"33710834\",\"address\":\"مشهدمشهدمشهدمشهدمشهدمشهدمشهدمشهدمشهدمشهدمشهدمشهدمشهدمشهدمشهدمشهدمشهدمشهدمشهدمشهدمشهدمشهدمشهد، فداییان اسلا\",\"carType\":\"تشریفات\",\"driverMobile\":\"09015693855\"" +
-          ",\"driverCode\":\"123\",\"driverName\":\"نوری\",\"price\":\"18000\",\"endTime\":\"15:48\",\"plaque\":\"14ث1587\"}]}";
-
-  private void getDetails() {
-    try {
-      JSONObject tripObject = new JSONObject(tripList);
-      Boolean success = tripObject.getBoolean("success");
-      String message = tripObject.getString("message");
-      JSONArray data = tripObject.getJSONArray("data");
-      JSONObject dataObj = data.getJSONObject(0);
-      String date=dataObj.getString("date");
-      String time=dataObj.getString("time");
-      String city=dataObj.getString("city");
-      String serviceType=dataObj.getString("serviceType");
-      String customerName=dataObj.getString("customerName");
-      String customerTell=dataObj.getString("customerTell");
-      String customerMob=dataObj.getString("customerMob");
-      String address=dataObj.getString("address");
-      String carType=dataObj.getString("carType");
-      String driverMobile=dataObj.getString("driverMobile");
-      String driverCode=dataObj.getString("driverCode");
-      String driverName=dataObj.getString("driverName");
-      String price=dataObj.getString("price");
-      String endTime=dataObj.getString("endTime");
-      String plaque=dataObj.getString("plaque");
-
-      txtCarType.setText(carType);
-      txtCity.setText(city);
-      txtCustomerAddress.setText(StringHelper.toPersianDigits(address));
-      txtCustomerMobile.setText(StringHelper.toPersianDigits(customerMob));
-      txtCustomerTell.setText(StringHelper.toPersianDigits(customerTell));
-      txtCustomerName.setText(StringHelper.toPersianDigits(customerName));
-      txtDate.setText(StringHelper.toPersianDigits(date));
-      txtDriverCode.setText(StringHelper.toPersianDigits(driverCode));
-      txtDriverMob.setText(StringHelper.toPersianDigits(driverMobile));
-      txtDriverName.setText(StringHelper.toPersianDigits(driverName));
-      txtEndTime.setText(StringHelper.toPersianDigits(endTime));
-      txtMaxPercent.setText(StringHelper.toPersianDigits("fvgffd"));
-      txtPercent.setText(StringHelper.toPersianDigits("sgfsdfg"));
-      txtPlaque.setText(StringHelper.toPersianDigits(plaque));
-      txtPrice.setText(StringHelper.toPersianDigits(price));
-      txtSendDate.setText(StringHelper.toPersianDigits(date));
-      txtSendTime.setText(StringHelper.toPersianDigits(time));
-      txtStatus.setText("اعزام نشده");
-      txtTime.setText(StringHelper.toPersianDigits(time));
-      txtTripType.setText(StringHelper.toPersianDigits(serviceType));
-    } catch (JSONException e) {
-      e.printStackTrace();
-    }
   }
 
   private void tripDetails() {
@@ -217,7 +179,7 @@ public class TripDetailsFragment extends Fragment {
     }
 
     RequestHelper.builder(EndPoints.SERVICE_DETAIL)
-            .addParam("serviceId", 1)
+            .addParam("serviceId", serviceId)
             .listener(onGetTripDetails)
             .post();
   }
@@ -229,9 +191,95 @@ public class TripDetailsFragment extends Fragment {
         @Override
         public void run() {
           try {
-            Log.i("TripDetailsFragment", "run: " + args[0].toString());
+            JSONObject tripObject = new JSONObject(args[0].toString());
+            Boolean success = tripObject.getBoolean("success");
+            String message = tripObject.getString("message");
+            JSONObject data = tripObject.getJSONObject("data");
+            String serviceId = data.getString("serviceId");
+            int status = data.getInt("Status");
+            String callDate = data.getString("callDate");
+            String callTime = data.getString("callTime");
+            String sendDate = data.getString("SendDate");
+            String sendTime = data.getString("SendTime");
+            int stationCode = data.getInt("stationCode");
+            String price = data.getString("Price");
+            String finishdate = data.getString("Finishdate");
+            String finishTime = data.getString("FinishTime");
+            String taxicode = data.getString("taxicode");
+            String driverId = data.getString("driverId");
+            int userId = data.getInt("UserId");
+            String perDiscount = data.getString("PerDiscount");
+            String rewardCode = data.getString("RewardCode");
+            String maxDiscount = data.getString("MaxDiscount");
+            String customerName = data.getString("customerName");
+            String customerTel = data.getString("customerTel");
+            String customerMobile = data.getString("customerMobile");
+            String customerAddress = data.getString("customerAddress");
+            String cityName = data.getString("cityName");
+            String carType = data.getString("CarType");
+            String plak = data.getString("plak");
+            String carMobile = data.getString("carMobile");
+            String deriverName = data.getString("deriverName");
+            String deriverFamily = data.getString("deriverFamily");
+            String driverMobile = data.getString("driverMobile");
+            String typeService = data.getString("typeService");
+            String lat = data.getString("lat");
+            String lon = data.getString("lon");
+            String lastPositionTime = data.getString("lastPositionTime");
+            String lastPositionDate = data.getString("lastPositionDate");
 
-          } catch (Exception e) {
+            txtCustomerName.setText(StringHelper.toPersianDigits(customerName));
+            txtDate.setText(StringHelper.toPersianDigits(callDate));
+            txtTime.setText(StringHelper.toPersianDigits(callTime));
+            txtTripType.setText(StringHelper.toPersianDigits(typeService));
+            txtCity.setText(cityName);
+            txtCustomerAddress.setText(StringHelper.toPersianDigits(customerAddress));
+            txtCustomerTell.setText(StringHelper.toPersianDigits(customerTel));
+            txtCustomerMobile.setText(StringHelper.toPersianDigits(customerMobile));
+            txtMaxPercent.setText(StringHelper.toPersianDigits(maxDiscount));
+            txtPercent.setText(StringHelper.toPersianDigits(rewardCode));
+            txtSendDate.setText(StringHelper.toPersianDigits(sendDate));
+            txtSendTime.setText(StringHelper.toPersianDigits(sendTime));
+            txtDriverCode.setText(StringHelper.toPersianDigits(taxicode));
+            txtDriverName.setText(StringHelper.toPersianDigits(deriverName + " " + deriverFamily));
+            txtDriverMob.setText(StringHelper.toPersianDigits(driverMobile));
+            txtCarType.setText(carType);
+            txtPrice.setText(StringHelper.toPersianDigits(price));
+            txtEndTime.setText(StringHelper.toPersianDigits(finishTime));
+            txtPlaque.setText(StringHelper.toPersianDigits(plak));
+
+            int headerColor = R.drawable.header_blue;
+            String statusTitle = "";
+
+            if (finishdate != null && finishTime != null) {
+              headerColor = R.drawable.header_green;
+              statusTitle = "اتمام یافته";
+            }
+
+            switch (status) {
+              case 0:
+                headerColor = R.drawable.header_blue;
+                statusTitle = "درحال انتظار";
+                break;
+
+              case 6:
+                headerColor = R.drawable.header_red;
+                statusTitle = "کنسل شده";
+                break;
+
+              case 1:
+                headerColor = R.drawable.header_yellow;
+                statusTitle = "اعزام شده";
+                break;
+            }
+            llHeaderStatus.setBackgroundResource(headerColor);
+
+            txtStatus.setText(statusTitle);
+
+            if (vfTripDetails != null)
+              vfTripDetails.setDisplayedChild(1);
+
+          } catch (JSONException e) {
             e.printStackTrace();
           }
         }
