@@ -130,15 +130,15 @@ public class AccountFragment extends Fragment {
             boolean success = obj.getBoolean("success");
             String message = obj.getString("message");
             JSONObject dataObj = obj.getJSONObject("data");
-            int accountBalance = dataObj.getInt("accountBalance");
-
+            String accountBalance = dataObj.getString("accountBalance");
+            String balance = StringHelper.setComma(accountBalance);
             if (txtOperatorCharge != null)
-              txtOperatorCharge.setText(StringHelper.toPersianDigits(accountBalance + " تومان "));
+              txtOperatorCharge.setText(StringHelper.toPersianDigits(balance + " تومان "));
             if (vfBalance != null)
               vfBalance.setDisplayedChild(1);
           } catch (Exception e) {
             e.printStackTrace();
-            AvaCrashReporter.send(e,"AccountFragment class, getBalance onResponse method");
+            AvaCrashReporter.send(e, "AccountFragment class, getBalance onResponse method");
           }
         }
       });
@@ -193,7 +193,7 @@ public class AccountFragment extends Fragment {
 
           } catch (JSONException e) {
             e.printStackTrace();
-            AvaCrashReporter.send(e,"AccountFragment class, updateProfile onResponse method");
+            AvaCrashReporter.send(e, "AccountFragment class, updateProfile onResponse method");
           }
         }
       });
@@ -243,7 +243,7 @@ public class AccountFragment extends Fragment {
 
           } catch (JSONException e) {
             e.printStackTrace();
-            AvaCrashReporter.send(e,"AccountFragment class, Payment onResponse method");
+            AvaCrashReporter.send(e, "AccountFragment class, Payment onResponse method");
           }
         }
       });

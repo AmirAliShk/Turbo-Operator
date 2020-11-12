@@ -188,10 +188,11 @@ public class MainActivity extends AppCompatActivity implements NotificationFragm
             boolean success = obj.getBoolean("success");
             String message = obj.getString("message");
             JSONObject dataObj = obj.getJSONObject("data");
-            int accountBalance = dataObj.getInt("accountBalance");
+            String accountBalance = dataObj.getString("accountBalance");
+            String balance=StringHelper.setComma(accountBalance);
 
             if (txtOperatorCharge != null)
-              txtOperatorCharge.setText(StringHelper.toPersianDigits(accountBalance + " تومان "));
+              txtOperatorCharge.setText(StringHelper.toPersianDigits(balance + " تومان "));
             if (vfBalance != null)
               vfBalance.setDisplayedChild(1);
 

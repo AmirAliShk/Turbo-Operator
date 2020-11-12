@@ -63,7 +63,6 @@ public class EndPoints {
 
   public static final String FIND_WAY = FIND_WAY_WEBSERVICE_PATH + "findway";
 
-  public static final String PASSENGER_INFO = TRIP_WEBSERVICE_PATH + "passengerInfo";
   public static final String PASSENGER_ADDRESS = TRIP_WEBSERVICE_PATH + "passengerAddress";
   public static final String CHECK_STATION = TRIP_WEBSERVICE_PATH + "checkStation";
   public static final String STATION_INFO = TRIP_WEBSERVICE_PATH + "stationInfo";
@@ -98,8 +97,10 @@ public class EndPoints {
 
   /******************************** Support Api *********************************/
 
+  public static final String PASSENGER_INFO = SUPPORT_WEBSERVICE_PATH + "passengerInfo";
   public static final String SEARCH_SERVICE = SUPPORT_WEBSERVICE_PATH + "searchService";
   public static final String SERVICE_DETAIL = SUPPORT_WEBSERVICE_PATH + "serviceDetail";
+  public static final String CANCEL_SERVICE = SUPPORT_WEBSERVICE_PATH + "cancelService";
   public static final String LAST_DRIVER_POSITION = SUPPORT_WEBSERVICE_PATH + "lastDriverPosition";
   public static final String INSERT_MISTAKE = SUPPORT_WEBSERVICE_PATH + "insertMistake";
   public static final String INSERT_COMPLAINT = SUPPORT_WEBSERVICE_PATH + "insertComplaint";

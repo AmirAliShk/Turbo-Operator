@@ -62,6 +62,7 @@ public class PrefManager {
   private static final String COMPLAINT_TYPE = "ComplaintType";
   private static final String OBJECTS_TYPE = "objectsType";
   private static final String REASONS_LOCK = "ReasonsLock";
+  private static final String TRIP_DETAILS = "tripDetails";
 
   public PrefManager(Context context) {
     this._context = context;
@@ -76,6 +77,15 @@ public class PrefManager {
 
   public boolean isAppRun() {
     return pref.getBoolean(KEY_APP_STATUS, false);
+  }
+
+  public String getTripDetails() {
+    return pref.getString(TRIP_DETAILS, "");
+  }
+
+  public void setTripDetails(String complaint) {
+    editor.putString(TRIP_DETAILS, complaint);
+    editor.commit();
   }
 
   public String getComplaint() {

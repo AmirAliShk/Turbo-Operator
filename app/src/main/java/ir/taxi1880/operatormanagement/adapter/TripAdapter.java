@@ -1,5 +1,6 @@
 package ir.taxi1880.operatormanagement.adapter;
 
+import android.graphics.Color;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -40,41 +41,18 @@ public class TripAdapter extends RecyclerView.Adapter<TripAdapter.TripViewHolder
   public void onBindViewHolder(@NonNull TripViewHolder holder, int position) {
     final TripModel tripModel = tripModels.get(position);
     holder.txtCallTime.setText(StringHelper.toPersianDigits(tripModel.getCallTime()));
-    holder.txtSendTime.setText(tripModel.getSendTime() == null ? "ثبت نشده" : StringHelper.toPersianDigits(tripModel.getSendTime()));
-    holder.txtCarType.setText(tripModel.getCarType() == null ? "ثبت نشده" : StringHelper.toPersianDigits(tripModel.getCarType()));
+    holder.txtSendTime.setText(tripModel.getSendTime().equals("null") ? "ثبت نشده" : StringHelper.toPersianDigits(tripModel.getSendTime()));
+    holder.txtCarType.setText(tripModel.getCarType().equals("null") ? "ثبت نشده" : StringHelper.toPersianDigits(tripModel.getCarType()));
     holder.txtCity.setText(StringHelper.toPersianDigits(tripModel.getCity()));
     holder.txtCustomerAddress.setText(StringHelper.toPersianDigits(tripModel.getAddress()));
     holder.txtCustomerMobile.setText(StringHelper.toPersianDigits(tripModel.getCustomerMob()));
     holder.txtCustomerName.setText(StringHelper.toPersianDigits(tripModel.getCustomerName()));
     holder.txtCustomerTell.setText(StringHelper.toPersianDigits(tripModel.getCustomerTell()));
-    holder.txtDriverMobile.setText(tripModel.getDriverMobile() == null ? "ثبت نشده" : StringHelper.toPersianDigits(tripModel.getDriverMobile()));
+    holder.txtDriverMobile.setText(tripModel.getDriverMobile().equals("null") ? "ثبت نشده" : StringHelper.toPersianDigits(tripModel.getDriverMobile()));
 
-    int headerColor = R.drawable.header_blue;
-    String statusTitle = "درحال انتظار";
-
-    if (tripModel.getFinished() == 1) {
-      headerColor = R.drawable.header_green;
-      statusTitle = "اتمام یافته";
-    }
-
-    switch (tripModel.getStatus()) {
-      case 0:
-        headerColor = R.drawable.header_blue;
-        statusTitle = "درحال انتظار";
-        break;
-
-      case 6:
-        headerColor = R.drawable.header_red;
-        statusTitle = "کنسل شده";
-        break;
-
-      case 1:
-        headerColor = R.drawable.header_yellow;
-        statusTitle = "اعزام شده";
-        break;
-    }
-    holder.llHeaderStatus.setBackgroundResource(headerColor);
-    holder.txtStatus.setText(statusTitle);
+//    holder.llHeaderStatus.setBackgroundColor(Color.parseColor(tripModel.getStatusColor()));
+    holder.llHeaderStatus.setBackgroundColor(Color.parseColor(tripModel.getStatusColor()));
+    holder.txtStatus.setText(tripModel.getStatusText());
 
     holder.itemView.setOnClickListener(view -> {
       Bundle bundle = new Bundle();

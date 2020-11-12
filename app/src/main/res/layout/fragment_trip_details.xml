@@ -67,7 +67,6 @@
                     android:layout_marginLeft="20dp"
                     android:layout_marginTop="20dp"
                     android:layout_marginRight="20dp"
-                    android:background="@drawable/bg_status"
                     android:elevation="5dp"
                     android:gravity="center"
                     android:orientation="horizontal"
@@ -85,7 +84,6 @@
                         android:layout_height="wrap_content"
                         android:layout_marginRight="10dp"
                         android:gravity="center"
-                        android:text="اعزام نشده"
                         android:textAppearance="?android:attr/textAppearanceMedium"
                         android:textColor="@color/colorWhite" />
 
@@ -245,6 +243,29 @@
                             style="@style/tripItemTitle"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
+                            android:layout_gravity="right"
+                            android:minWidth="70dp"
+                            android:text="@string/trafficPlane" />
+
+                        <TextView
+                            android:id="@+id/txtTrafficPlan"
+                            style="@style/tripItemValue"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content" />
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center_vertical"
+                        android:orientation="horizontal"
+                        android:padding="5dp">
+
+                        <TextView
+                            style="@style/tripItemTitle"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
                             android:minWidth="70dp"
                             android:text="@string/customerTell" />
 
@@ -272,6 +293,28 @@
 
                         <TextView
                             android:id="@+id/txtCustomerMobile"
+                            style="@style/tripItemValue"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content" />
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center_vertical"
+                        android:orientation="horizontal"
+                        android:padding="5dp">
+
+                        <TextView
+                            style="@style/tripItemTitle"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:minWidth="70dp"
+                            android:text="@string/serviceComment" />
+
+                        <TextView
+                            android:id="@+id/txtServiceComment"
                             style="@style/tripItemValue"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content" />

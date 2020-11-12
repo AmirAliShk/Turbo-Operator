@@ -1,6 +1,8 @@
 package ir.taxi1880.operatormanagement.fragment;
 
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -27,7 +29,9 @@ import ir.taxi1880.operatormanagement.adapter.TripAdapter;
 import ir.taxi1880.operatormanagement.app.EndPoints;
 import ir.taxi1880.operatormanagement.app.MyApplication;
 import ir.taxi1880.operatormanagement.dialog.ExtendedTimeDialog;
+import ir.taxi1880.operatormanagement.dialog.GeneralDialog;
 import ir.taxi1880.operatormanagement.dialog.SearchFilterDialog;
+import ir.taxi1880.operatormanagement.helper.PhoneNumberValidation;
 import ir.taxi1880.operatormanagement.helper.StringHelper;
 import ir.taxi1880.operatormanagement.helper.TypefaceUtil;
 import ir.taxi1880.operatormanagement.model.TripModel;
@@ -61,6 +65,10 @@ public class SupportFragment extends Fragment {
   @OnClick(R.id.imgSearch)
   void onSearchPress() {
     searchText = StringHelper.toEnglishDigits(edtSearchTrip.getText().toString());
+    if (searchText.isEmpty()){
+      edtSearchTrip.setError("موردی را برای جستو جو وارد کنید");
+      return;
+    }
     searchService(searchText,searchCase);
   }
 
@@ -124,16 +132,32 @@ public class SupportFragment extends Fragment {
       edtSearchTrip.setText(tellNumber);
     }
 
-    searchText = StringHelper.toEnglishDigits(edtSearchTrip.getText().toString());
+    edtSearchTrip.requestFocus();
 
-    searchService(searchText,0);
+    edtSearchTrip.addTextChangedListener(searchWatcher);
 
     return view;
   }
 
+  TextWatcher searchWatcher = new TextWatcher() {
+    @Override
+    public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+    }
+
+    @Override
+    public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+    }
+
+    @Override
+    public void afterTextChanged(Editable editable) {
+      if (PhoneNumberValidation.havePrefix(editable.toString()))
+        edtSearchTrip.setText(PhoneNumberValidation.removePrefix(editable.toString()));
+    }
+  };
+
   private void searchService(String searchText, int searchCase) {
     if (vfTrip != null) {
-      vfTrip.setDisplayedChild(0);
+      vfTrip.setDisplayedChild(1);
     }
 
     switch (searchCase) {
@@ -217,55 +241,60 @@ public class SupportFragment extends Fragment {
   RequestHelper.Callback onGetTripList = new RequestHelper.Callback() {
     @Override
     public void onResponse(Runnable reCall, Object... args) {
-      MyApplication.handler.post(new Runnable() {
-        @Override
-        public void run() {
-          try {
-            Log.i("TAG", "run: "+args[0].toString());
-            tripModels = new ArrayList<>();
-            JSONObject tripObject = new JSONObject(args[0].toString());
-            Boolean success = tripObject.getBoolean("success");
-            String message = tripObject.getString("message");
-            JSONArray data = tripObject.getJSONArray("data");
+      MyApplication.handler.post(() -> {
+        try {
+          Log.i("TAG", "run: "+args[0].toString());
+          tripModels = new ArrayList<>();
+          JSONObject tripObject = new JSONObject(args[0].toString());
+          Boolean success = tripObject.getBoolean("success");
+          String message = tripObject.getString("message");
+          JSONArray data = tripObject.getJSONArray("data");
 
-            if (success) {
-              for (int i = 0; i < data.length(); i++) {
-                JSONObject dataObj = data.getJSONObject(i);
-                TripModel tripModel = new TripModel();
-                tripModel.setServiceId(dataObj.getString("serviceId"));
-                tripModel.setStatus(dataObj.getInt("Status"));
-                tripModel.setCallDate(dataObj.getString("ContDate"));
-                tripModel.setCallTime(dataObj.getString("ContTime"));
-                tripModel.setSendTime(dataObj.getString("SendTime"));
-                tripModel.setSendDate(dataObj.getString("SendDate"));
-                tripModel.setStationCode(dataObj.getInt("stcode"));
-                tripModel.setCustomerName(dataObj.getString("MoshName"));
-                tripModel.setCustomerTell(dataObj.getString("MoshTel"));
-                tripModel.setCustomerMob(dataObj.getString("MoshZone"));
-                tripModel.setAddress(dataObj.getString("MoshAddr"));
-                tripModel.setCity(dataObj.getString("cityName"));
-                tripModel.setCarType(dataObj.getString("CarType2"));
-                tripModel.setDriverMobile(dataObj.getString("MobCar"));
-                tripModel.setFinished(dataObj.getInt("Finished"));
-                tripModels.add(tripModel);
-              }
-
-              tripAdapter = new TripAdapter(tripModels);
-              if (recycleTrip != null)
-                recycleTrip.setAdapter(tripAdapter);
-
-              if (tripModels.size() == 0) {
-                if (vfTrip != null)
-                  vfTrip.setDisplayedChild(2);
-              }else {
-                if (vfTrip != null)
-                  vfTrip.setDisplayedChild(1);
-              }
+          if (success) {
+            for (int i = 0; i < data.length(); i++) {
+              JSONObject dataObj = data.getJSONObject(i);
+              TripModel tripModel = new TripModel();
+              tripModel.setServiceId(dataObj.getString("serviceId"));
+              tripModel.setStatus(dataObj.getInt("Status"));
+              tripModel.setCallDate(dataObj.getString("ContDate"));
+              tripModel.setCallTime(dataObj.getString("ContTime"));
+              tripModel.setSendTime(dataObj.getString("SendTime"));
+              tripModel.setSendDate(dataObj.getString("SendDate"));
+              tripModel.setStationCode(dataObj.getInt("stcode"));
+              tripModel.setCustomerName(dataObj.getString("MoshName"));
+              tripModel.setCustomerTell(dataObj.getString("MoshTel"));
+              tripModel.setCustomerMob(dataObj.getString("MoshZone"));
+              tripModel.setAddress(dataObj.getString("MoshAddr"));
+              tripModel.setCity(dataObj.getString("cityName"));
+              tripModel.setCarType(dataObj.getString("CarType2"));
+              tripModel.setDriverMobile(dataObj.getString("MobCar"));
+              tripModel.setFinished(dataObj.getInt("Finished"));
+              tripModel.setStatusText(dataObj.getString("statusDes"));
+              tripModel.setStatusColor(dataObj.getString("statusColor"));
+              tripModels.add(tripModel);
             }
 
-          } catch (JSONException e) {
-            e.printStackTrace();
+            tripAdapter = new TripAdapter(tripModels);
+            if (recycleTrip != null)
+              recycleTrip.setAdapter(tripAdapter);
+
+            if (tripModels.size() == 0) {
+              if (vfTrip != null)
+                vfTrip.setDisplayedChild(0);
+            }else {
+              if (vfTrip != null)
+                vfTrip.setDisplayedChild(2);
+            }
+          }else {
+            new GeneralDialog()
+                    .title("هشدار")
+                    .message(message)
+                    .firstButton("باشه",null)
+                    .show();
           }
+
+        } catch (JSONException e) {
+          e.printStackTrace();
         }
       });
     }

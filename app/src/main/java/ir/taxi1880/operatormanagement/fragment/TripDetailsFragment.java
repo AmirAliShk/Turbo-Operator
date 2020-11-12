@@ -1,5 +1,6 @@
 package ir.taxi1880.operatormanagement.fragment;
 
+import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -33,6 +34,12 @@ import ir.taxi1880.operatormanagement.okHttp.RequestHelper;
 public class TripDetailsFragment extends Fragment {
   Unbinder unbinder;
   String serviceId;
+  String passengerPhone;
+  String passengerName;
+  String passengerAddress;
+  String carCode;
+  String description;
+  String voipId;
 
   @OnClick(R.id.imgBack)
   void onBackPress() {
@@ -105,6 +112,12 @@ public class TripDetailsFragment extends Fragment {
   @BindView(R.id.txtTitle)
   TextView txtTitle;
 
+  @BindView(R.id.txtTrafficPlan)
+  TextView txtTrafficPlan;
+
+  @BindView(R.id.txtServiceComment)
+  TextView txtServiceComment;
+
   @BindView(R.id.vfTripDetails)
   ViewFlipper vfTripDetails;
 
@@ -114,7 +127,7 @@ public class TripDetailsFragment extends Fragment {
             .title("لغو سفر")
             .message("آیا از کنسل کردن این سفر اطمینان دارید؟")
             .cancelable(false)
-            .firstButton("بله", null)
+            .firstButton("بله", () -> cancelService())
             .secondButton("خیر", null)
             .show();
   }
@@ -138,22 +151,22 @@ public class TripDetailsFragment extends Fragment {
 
   @OnClick(R.id.btnErrorRegistration)
   void onError() {
-    new ErrorRegistrationDialog().show();
+    new ErrorRegistrationDialog().show(serviceId,passengerPhone,passengerAddress,passengerName,voipId);
   }
 
   @OnClick(R.id.btnComplaintRegistration)
   void onComplaint() {
-    new ComplaintRegistrationDialog().show();
+    new ComplaintRegistrationDialog().show(serviceId,voipId);
   }
 
   @OnClick(R.id.btnLost)
   void onLost() {
-    new LostDialog().show();
+    new LostDialog().show(serviceId, passengerName, passengerPhone, carCode);
   }
 
   @OnClick(R.id.btnDriverLock)
   void onLock() {
-    new DriverLockDialog().show();
+    new DriverLockDialog().show(serviceId);
   }
 
   @Override
@@ -187,15 +200,16 @@ public class TripDetailsFragment extends Fragment {
   RequestHelper.Callback onGetTripDetails = new RequestHelper.Callback() {
     @Override
     public void onResponse(Runnable reCall, Object... args) {
-      MyApplication.handler.post(new Runnable() {
-        @Override
-        public void run() {
-          try {
-            JSONObject tripObject = new JSONObject(args[0].toString());
-            Boolean success = tripObject.getBoolean("success");
-            String message = tripObject.getString("message");
-            JSONObject data = tripObject.getJSONObject("data");
-            String serviceId = data.getString("serviceId");
+      MyApplication.handler.post(() -> {
+        try {
+          Log.i("TAG", "onResponse: "+args[0].toString());
+          JSONObject tripObject = new JSONObject(args[0].toString());
+          Boolean success = tripObject.getBoolean("success");
+          String message = tripObject.getString("message");
+          JSONObject data = tripObject.getJSONObject("data");
+
+          if (success) {
+            serviceId = data.getString("serviceId");
             int status = data.getInt("Status");
             String callDate = data.getString("callDate");
             String callTime = data.getString("callTime");
@@ -205,124 +219,74 @@ public class TripDetailsFragment extends Fragment {
             String price = data.getString("Price");
             String finishdate = data.getString("Finishdate");
             String finishTime = data.getString("FinishTime");
-            String taxicode = data.getString("taxicode");
+            carCode = data.getString("taxicode");
             String driverId = data.getString("driverId");
             int userId = data.getInt("UserId");
             String perDiscount = data.getString("PerDiscount");
             String rewardCode = data.getString("RewardCode");
             String maxDiscount = data.getString("MaxDiscount");
-            String customerName = data.getString("customerName");
-            String customerTel = data.getString("customerTel");
+            passengerName = data.getString("customerName");
+            passengerPhone = data.getString("customerTel");
             String customerMobile = data.getString("customerMobile");
-            String customerAddress = data.getString("customerAddress");
+            passengerAddress = data.getString("customerAddress");
             String cityName = data.getString("cityName");
             String carType = data.getString("CarType");
             String plak = data.getString("plak");
             String carMobile = data.getString("carMobile");
-            String deriverName = data.getString("deriverName");
-            String deriverFamily = data.getString("deriverFamily");
+            String deriverName = data.getString("driverName");
+            String deriverFamily = data.getString("driverFamily");
             String driverMobile = data.getString("driverMobile");
             String typeService = data.getString("typeService");
             String lat = data.getString("lat");
             String lon = data.getString("lon");
             String lastPositionTime = data.getString("lastPositionTime");
             String lastPositionDate = data.getString("lastPositionDate");
+            int Finished = data.getInt("Finished");
+            String statusColor = data.getString("statusColor");
+            String statusText = data.getString("statusDes");
+            int TrafficPlan = data.getInt("TrafficPlan");
+            String customerFixedDes = data.getString("customerFixedDes");
+            String serviceComment = data.getString("serviceComment");
+            voipId = data.getString("VoipId");
 
-            txtCustomerName.setText(StringHelper.toPersianDigits(customerName));
+            txtCustomerName.setText(StringHelper.toPersianDigits(passengerName));
             txtDate.setText(StringHelper.toPersianDigits(callDate));
             txtTime.setText(StringHelper.toPersianDigits(callTime));
             txtTripType.setText(StringHelper.toPersianDigits(typeService));
             txtCity.setText(cityName);
-            txtCustomerAddress.setText(StringHelper.toPersianDigits(customerAddress));
-            txtCustomerTell.setText(StringHelper.toPersianDigits(customerTel));
+            txtCustomerAddress.setText(StringHelper.toPersianDigits(passengerAddress));
+            txtCustomerTell.setText(StringHelper.toPersianDigits(passengerPhone));
             txtCustomerMobile.setText(StringHelper.toPersianDigits(customerMobile));
-            txtMaxPercent.setText(StringHelper.toPersianDigits(maxDiscount));
-            txtPercent.setText(StringHelper.toPersianDigits(rewardCode));
-            txtSendDate.setText(StringHelper.toPersianDigits(sendDate));
-            txtSendTime.setText(StringHelper.toPersianDigits(sendTime));
-            txtDriverCode.setText(StringHelper.toPersianDigits(taxicode));
-            txtDriverName.setText(StringHelper.toPersianDigits(deriverName + " " + deriverFamily));
-            txtDriverMob.setText(StringHelper.toPersianDigits(driverMobile));
-            txtCarType.setText(carType);
-            txtPrice.setText(StringHelper.toPersianDigits(price));
-            txtEndTime.setText(StringHelper.toPersianDigits(finishTime));
-            txtPlaque.setText(StringHelper.toPersianDigits(plak));
+            txtServiceComment.setText(serviceComment.equals("null") ? " " : StringHelper.toPersianDigits(serviceComment));
+            txtTrafficPlan.setText(TrafficPlan==0?"نیست":"هست");
+            txtMaxPercent.setText(maxDiscount.equals("null") ? " " : StringHelper.toPersianDigits(maxDiscount));
+            txtPercent.setText(rewardCode.equals("null") ? " " : StringHelper.toPersianDigits(rewardCode));
+            txtSendDate.setText(sendDate.equals("null") ? " " : StringHelper.toPersianDigits(sendDate));
+            txtSendTime.setText(sendTime.equals("null") ? " " : StringHelper.toPersianDigits(sendTime));
+            txtDriverCode.setText(carCode.equals("null") ? " " : StringHelper.toPersianDigits(carCode));
+            txtDriverName.setText(deriverName.equals("null") ? " " : StringHelper.toPersianDigits(deriverName + " " + deriverFamily));
+            txtDriverMob.setText(carMobile.equals("null") ? " " : StringHelper.toPersianDigits(carMobile));
+            txtCarType.setText(carType.equals("null") ? " " : carType);
+            txtPrice.setText(price.equals("null") ? " " : StringHelper.toPersianDigits(price));
+            txtEndTime.setText(finishTime.equals("null") ? " " : StringHelper.toPersianDigits(finishTime));
+            txtPlaque.setText(plak.equals("null") ? " " : StringHelper.toPersianDigits(plak));
 
-            int headerColor = R.drawable.header_blue;
-            String statusTitle = "";
+            llHeaderStatus.setBackgroundColor(Color.parseColor(statusColor));
 
-            if (finishdate != null && finishTime != null) {
-              headerColor = R.drawable.header_green;
-              statusTitle = "اتمام یافته";
-            }
-
-            switch (status) {
-              case 0:
-                headerColor = R.drawable.header_blue;
-                statusTitle = "درحال انتظار";
-                break;
-
-              case 6:
-                headerColor = R.drawable.header_red;
-                statusTitle = "کنسل شده";
-                break;
-
-              case 1:
-                headerColor = R.drawable.header_yellow;
-                statusTitle = "اعزام شده";
-                break;
-            }
-            llHeaderStatus.setBackgroundResource(headerColor);
-
-            txtStatus.setText(statusTitle);
+            txtStatus.setText(statusText);
 
             if (vfTripDetails != null)
               vfTripDetails.setDisplayedChild(1);
-
-          } catch (JSONException e) {
-            e.printStackTrace();
+          } else {
+            new GeneralDialog()
+                    .title("هشدار")
+                    .message(message)
+                    .firstButton("باشه", null)
+                    .show();
           }
-        }
-      });
-    }
 
-    @Override
-    public void onFailure(Runnable reCall, Exception e) {
-      MyApplication.handler.post(() -> {
-        if (vfTripDetails != null) {
-          vfTripDetails.setDisplayedChild(2);
-        }
-      });
-    }
-  };
-
-  private void lockTaxi() {
-    if (vfTripDetails != null) {
-      vfTripDetails.setDisplayedChild(0);
-    }
-
-    RequestHelper.builder(EndPoints.SERVICE_DETAIL)
-            .addParam("serviceId", 1)
-            .addParam("userId", 1)
-            .addParam("todate", 1)
-            .addParam("totime", 1)
-            .addParam("reasonId", 1)
-            .listener(onGetTripDetails)
-            .post();
-  }
-
-  RequestHelper.Callback onLockTaxi = new RequestHelper.Callback() {
-    @Override
-    public void onResponse(Runnable reCall, Object... args) {
-      MyApplication.handler.post(new Runnable() {
-        @Override
-        public void run() {
-          try {
-            Log.i("TripDetailsFragment", "run: " + args[0].toString());
-
-          } catch (Exception e) {
-            e.printStackTrace();
-          }
+        } catch (JSONException e) {
+          e.printStackTrace();
         }
       });
     }
@@ -338,18 +302,15 @@ public class TripDetailsFragment extends Fragment {
   };
 
   private void cancelService() {
-    if (vfTripDetails != null) {
-      vfTripDetails.setDisplayedChild(0);
-    }
 
-    RequestHelper.builder(EndPoints.SERVICE_DETAIL)
-            .addParam("serviceId", 1)
-            .addParam("userId", 1)
-            .listener(inCancelService)
+    RequestHelper.builder(EndPoints.CANCEL_SERVICE)
+            .addParam("serviceId", serviceId)
+            .addParam("userId", MyApplication.prefManager.getUserCode())
+            .listener(onCancelService)
             .post();
   }
 
-  RequestHelper.Callback inCancelService = new RequestHelper.Callback() {
+  RequestHelper.Callback onCancelService = new RequestHelper.Callback() {
     @Override
     public void onResponse(Runnable reCall, Object... args) {
       MyApplication.handler.post(new Runnable() {
@@ -357,6 +318,21 @@ public class TripDetailsFragment extends Fragment {
         public void run() {
           try {
             Log.i("TripDetailsFragment", "run: " + args[0].toString());
+//            {"success":true,"message":"","data":{"status":true}}
+            JSONObject object=new JSONObject(args[0].toString());
+            boolean success=object.getBoolean("success");
+            String message=object.getString("message");
+            JSONObject dataObj = object.getJSONObject("data");
+            boolean status=dataObj.getBoolean("status");
+
+            if (status){
+              new GeneralDialog()
+                      .title("تایید شد")
+                      .message("سرویس با موفقیت کنسل شد")
+                      .cancelable(false)
+                      .firstButton("باشه", () -> MyApplication.currentActivity.onBackPressed())
+                      .show();
+            }
 
           } catch (Exception e) {
             e.printStackTrace();
@@ -368,135 +344,6 @@ public class TripDetailsFragment extends Fragment {
     @Override
     public void onFailure(Runnable reCall, Exception e) {
       MyApplication.handler.post(() -> {
-        if (vfTripDetails != null) {
-          vfTripDetails.setDisplayedChild(2);
-        }
-      });
-    }
-  };
-
-  private void setLostObject() {
-
-    RequestHelper.builder(EndPoints.INSERT_LOST_OBJECT)
-            .addParam("serviceId", 1)
-            .addParam("address", 1)
-            .addParam("objectType", 1)
-            .addParam("description", 1)
-            .listener(onSetLostObject)
-            .post();
-  }
-
-  RequestHelper.Callback onSetLostObject = new RequestHelper.Callback() {
-    @Override
-    public void onResponse(Runnable reCall, Object... args) {
-      MyApplication.handler.post(new Runnable() {
-        @Override
-        public void run() {
-          try {
-            Log.i("TripDetailsFragment", "run: " + args[0].toString());
-
-          } catch (Exception e) {
-            e.printStackTrace();
-          }
-        }
-      });
-    }
-
-    @Override
-    public void onFailure(Runnable reCall, Exception e) {
-      MyApplication.handler.post(() -> {
-
-      });
-    }
-  };
-
-  private void setMistake() {
-
-    RequestHelper.builder(EndPoints.INSERT_MISTAKE)
-            .addParam("serviceId", 1)
-            .addParam("userId", 1)
-            .addParam("tel", 1)
-            .addParam("adrs", 1)
-            .addParam("customerName", 1)
-            .addParam("voipId", 1)
-            .addParam("description", 1)
-            .listener(onSetMistake)
-            .post();
-  }
-
-  RequestHelper.Callback onSetMistake = new RequestHelper.Callback() {
-    @Override
-    public void onResponse(Runnable reCall, Object... args) {
-      MyApplication.handler.post(new Runnable() {
-        @Override
-        public void run() {
-          try {
-            Log.i("TripDetailsFragment", "run: " + args[0].toString());
-
-          } catch (Exception e) {
-            e.printStackTrace();
-          }
-        }
-      });
-    }
-
-    @Override
-    public void onFailure(Runnable reCall, Exception e) {
-      MyApplication.handler.post(() -> {
-
-      });
-    }
-  };
-
-  private void setComplaint() {
-
-    RequestHelper.builder(EndPoints.INSERT_COMPLAINT)
-            .addParam("serviceId", 1)
-            .addParam("userId", 1)
-            .addParam("taxiCode", 1)
-            .addParam("taxiPlak", 1)
-            .addParam("complaintType", 1)
-            .addParam("driverName", 1)
-            .addParam("driverMobile", 1)
-            .addParam("description", 1)
-            .addParam("customerId", 1)
-            .addParam("customerName", 1)
-            .addParam("customerTel", 1)
-            .addParam("carType", 1)
-            .addParam("adrs", 1)
-            .addParam("destination", 1)
-            .addParam("price", 1)
-            .addParam("cityCode", 1)
-            .addParam("voipId", 1)
-            .addParam("voipIdService", 1)
-            .addParam("customerMobile", 1)
-            .addParam("insertUser", 1)
-            .addParam("khodroCode", 1)
-            .addParam("smartCode", 1)
-            .listener(onSetComplaint)
-            .post();
-  }
-
-  RequestHelper.Callback onSetComplaint = new RequestHelper.Callback() {
-    @Override
-    public void onResponse(Runnable reCall, Object... args) {
-      MyApplication.handler.post(new Runnable() {
-        @Override
-        public void run() {
-          try {
-            Log.i("TripDetailsFragment", "run: " + args[0].toString());
-
-          } catch (Exception e) {
-            e.printStackTrace();
-          }
-        }
-      });
-    }
-
-    @Override
-    public void onFailure(Runnable reCall, Exception e) {
-      MyApplication.handler.post(() -> {
-
       });
     }
   };

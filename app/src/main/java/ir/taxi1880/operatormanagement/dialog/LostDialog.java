@@ -13,6 +13,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Spinner;
+import android.widget.Toast;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -22,10 +23,12 @@ import java.util.ArrayList;
 
 import ir.taxi1880.operatormanagement.R;
 import ir.taxi1880.operatormanagement.adapter.SpinnerAdapter;
+import ir.taxi1880.operatormanagement.app.EndPoints;
 import ir.taxi1880.operatormanagement.app.MyApplication;
 import ir.taxi1880.operatormanagement.helper.KeyBoardHelper;
 import ir.taxi1880.operatormanagement.helper.TypefaceUtil;
 import ir.taxi1880.operatormanagement.model.TypeServiceModel;
+import ir.taxi1880.operatormanagement.okHttp.RequestHelper;
 import ir.taxi1880.operatormanagement.push.AvaCrashReporter;
 
 public class LostDialog {
@@ -37,7 +40,7 @@ public class LostDialog {
 
   static Dialog dialog;
 
-  public void show() {
+  public void show(String serviceId, String name, String phone, String carCode) {
     if (MyApplication.currentActivity == null || MyApplication.currentActivity.isFinishing())
       return;
     dialog = new Dialog(MyApplication.currentActivity);
@@ -55,6 +58,7 @@ public class LostDialog {
     ImageView imgClose = dialog.findViewById(R.id.imgClose);
     Button btnSubmit = dialog.findViewById(R.id.btnSubmit);
     EditText edtComment = dialog.findViewById(R.id.edtComment);
+    EditText edtAddress = dialog.findViewById(R.id.edtAddress);
     spType = dialog.findViewById(R.id.spType);
 
     initSpinner();
@@ -62,11 +66,72 @@ public class LostDialog {
     imgClose.setOnClickListener(view -> dismiss());
 
     btnSubmit.setOnClickListener(view -> {
-     //do sth
+      String address = edtAddress.getText().toString();
+      String comment = edtComment.getText().toString();
+
+      if (address.isEmpty()) {
+        MyApplication.Toast("لطفا آدرس را وارد کنید", Toast.LENGTH_SHORT);
+        return;
+      }
+
+      setLostObject(serviceId, carCode, phone, name, address, comment);
+
     });
 
     dialog.show();
   }
+
+  private void setLostObject(String serviceId, String carCode, String passengerPhone, String passengerName, String address, String description) {
+
+    RequestHelper.builder(EndPoints.INSERT_LOST_OBJECT)
+            .addParam("carCode", 1)
+            .addParam("serviceId", serviceId)
+            .addParam("objectType", type)
+            .addParam("passengerPhone", passengerPhone)
+            .addParam("passengerName", passengerName)
+            .addParam("adrs", address)
+            .addParam("description", description)
+            .addParam("userId", MyApplication.prefManager.getUserCode())
+            .listener(onSetLostObject)
+            .post();
+  }
+
+  RequestHelper.Callback onSetLostObject = new RequestHelper.Callback() {
+    @Override
+    public void onResponse(Runnable reCall, Object... args) {
+      MyApplication.handler.post(new Runnable() {
+        @Override
+        public void run() {
+          try {
+            Log.i("TripDetailsFragment", "run: " + args[0].toString());
+            JSONObject object=new JSONObject(args[0].toString());
+            boolean success=object.getBoolean("success");
+            String message=object.getString("message");
+            JSONObject dataObj = object.getJSONObject("data");
+            boolean status=dataObj.getBoolean("status");
+
+            if (status){
+              new GeneralDialog()
+                      .title("تایید شد")
+                      .message("عملیات با موفقیت انجام شده")
+                      .cancelable(false)
+                      .firstButton("باشه", () -> MyApplication.currentActivity.onBackPressed())
+                      .show();
+            }
+          } catch (Exception e) {
+            e.printStackTrace();
+          }
+        }
+      });
+    }
+
+    @Override
+    public void onFailure(Runnable reCall, Exception e) {
+      MyApplication.handler.post(() -> {
+
+      });
+    }
+  };
 
   private void initSpinner() {
     ArrayList<TypeServiceModel> typeServiceModels = new ArrayList<>();
@@ -111,7 +176,7 @@ public class LostDialog {
       }
     } catch (Exception e) {
       Log.e("TAG", "dismiss: " + e.getMessage());
-      AvaCrashReporter.send(e,"LostDialog class, dismiss method");
+      AvaCrashReporter.send(e, "LostDialog class, dismiss method");
     }
     dialog = null;
   }

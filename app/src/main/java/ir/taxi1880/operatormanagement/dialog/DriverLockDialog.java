@@ -22,10 +22,12 @@ import java.util.ArrayList;
 
 import ir.taxi1880.operatormanagement.R;
 import ir.taxi1880.operatormanagement.adapter.SpinnerAdapter;
+import ir.taxi1880.operatormanagement.app.EndPoints;
 import ir.taxi1880.operatormanagement.app.MyApplication;
 import ir.taxi1880.operatormanagement.helper.KeyBoardHelper;
 import ir.taxi1880.operatormanagement.helper.TypefaceUtil;
 import ir.taxi1880.operatormanagement.model.TypeServiceModel;
+import ir.taxi1880.operatormanagement.okHttp.RequestHelper;
 import ir.taxi1880.operatormanagement.push.AvaCrashReporter;
 
 public class DriverLockDialog {
@@ -36,7 +38,7 @@ public class DriverLockDialog {
   int reason;
   static Dialog dialog;
 
-  public void show() {
+  public void show(String serviceId) {
     if (MyApplication.currentActivity == null || MyApplication.currentActivity.isFinishing())
       return;
     dialog = new Dialog(MyApplication.currentActivity);
@@ -61,11 +63,47 @@ public class DriverLockDialog {
     imgClose.setOnClickListener(view -> dismiss());
 
     btnSubmit.setOnClickListener(view -> {
-   //do sth
+      lockTaxi(serviceId);
     });
 
     dialog.show();
   }
+
+  private void lockTaxi(String serviceId) {
+
+    RequestHelper.builder(EndPoints.SERVICE_DETAIL)
+            .addParam("serviceId", serviceId)
+            .addParam("userId", MyApplication.prefManager.getUserCode())
+            .addParam("todate", 1)
+            .addParam("totime", 1)
+            .addParam("reasonId", reason)
+            .listener(onLockTaxi)
+            .post();
+  }
+
+  RequestHelper.Callback onLockTaxi = new RequestHelper.Callback() {
+    @Override
+    public void onResponse(Runnable reCall, Object... args) {
+      MyApplication.handler.post(new Runnable() {
+        @Override
+        public void run() {
+          try {
+            Log.i("TripDetailsFragment", "run: " + args[0].toString());
+
+          } catch (Exception e) {
+            e.printStackTrace();
+          }
+        }
+      });
+    }
+
+    @Override
+    public void onFailure(Runnable reCall, Exception e) {
+      MyApplication.handler.post(() -> {
+
+      });
+    }
+  };
 
   private void initSpinner() {
     ArrayList<TypeServiceModel> typeServiceModels = new ArrayList<>();
@@ -110,7 +148,7 @@ public class DriverLockDialog {
       }
     } catch (Exception e) {
       Log.e("TAG", "dismiss: " + e.getMessage());
-      AvaCrashReporter.send(e,"HireDialog class, dismiss method");
+      AvaCrashReporter.send(e, "HireDialog class, dismiss method");
     }
     dialog = null;
   }

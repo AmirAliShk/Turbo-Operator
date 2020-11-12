@@ -100,6 +100,7 @@
                 android:background="@drawable/bg_strock_corner"
                 android:gravity="top|right"
                 android:maxLines="2"
+                android:padding="10dp"
                 android:minHeight="100dp"/>
 
         </LinearLayout>

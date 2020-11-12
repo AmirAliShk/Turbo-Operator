@@ -22,10 +22,12 @@ import java.util.ArrayList;
 
 import ir.taxi1880.operatormanagement.R;
 import ir.taxi1880.operatormanagement.adapter.SpinnerAdapter;
+import ir.taxi1880.operatormanagement.app.EndPoints;
 import ir.taxi1880.operatormanagement.app.MyApplication;
 import ir.taxi1880.operatormanagement.helper.KeyBoardHelper;
 import ir.taxi1880.operatormanagement.helper.TypefaceUtil;
 import ir.taxi1880.operatormanagement.model.TypeServiceModel;
+import ir.taxi1880.operatormanagement.okHttp.RequestHelper;
 import ir.taxi1880.operatormanagement.push.AvaCrashReporter;
 
 public class ComplaintRegistrationDialog {
@@ -37,7 +39,7 @@ public class ComplaintRegistrationDialog {
 
   static Dialog dialog;
 
-  public void show() {
+  public void show(String serviceId, String voipId) {
     if (MyApplication.currentActivity == null || MyApplication.currentActivity.isFinishing())
       return;
     dialog = new Dialog(MyApplication.currentActivity);
@@ -62,11 +64,54 @@ public class ComplaintRegistrationDialog {
     imgClose.setOnClickListener(view -> dismiss());
 
     btnSubmit.setOnClickListener(view -> {
-      //do sth
+      String description = edtComment.getText().toString();
+
+      if (description.isEmpty()) {
+        edtComment.setError("لطفا توضیحات را وارد کنید");
+        return;
+      }
+
+      setComplaint(serviceId, description, voipId);
     });
 
     dialog.show();
   }
+
+  private void setComplaint(String serviceId, String description, String voipId) {
+
+    RequestHelper.builder(EndPoints.INSERT_COMPLAINT)
+            .addParam("userId", MyApplication.prefManager.getUserCode())
+            .addParam("serviceId", 1)
+            .addParam("complaintType", complaintType)
+            .addParam("description", 1)
+            .addParam("voipId", 1)
+            .listener(onSetComplaint)
+            .post();
+  }
+
+  RequestHelper.Callback onSetComplaint = new RequestHelper.Callback() {
+    @Override
+    public void onResponse(Runnable reCall, Object... args) {
+      MyApplication.handler.post(new Runnable() {
+        @Override
+        public void run() {
+          try {
+            Log.i("TripDetailsFragment", "run: " + args[0].toString());
+
+          } catch (Exception e) {
+            e.printStackTrace();
+          }
+        }
+      });
+    }
+
+    @Override
+    public void onFailure(Runnable reCall, Exception e) {
+      MyApplication.handler.post(() -> {
+
+      });
+    }
+  };
 
   private void initSpinner() {
     ArrayList<TypeServiceModel> typeServiceModels = new ArrayList<>();

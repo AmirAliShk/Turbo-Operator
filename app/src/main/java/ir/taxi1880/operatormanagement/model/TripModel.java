@@ -16,6 +16,24 @@ public class TripModel {
   int finished;
   int stationCode;
   int status;
+  String statusColor;
+  String statusText;
+
+  public String getStatusColor() {
+    return statusColor;
+  }
+
+  public void setStatusColor(String statusColor) {
+    this.statusColor = statusColor;
+  }
+
+  public String getStatusText() {
+    return statusText;
+  }
+
+  public void setStatusText(String statusText) {
+    this.statusText = statusText;
+  }
 
   public int getFinished() {
     return finished;
