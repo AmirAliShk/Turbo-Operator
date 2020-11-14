@@ -64,6 +64,7 @@ public class ComplaintRegistrationDialog {
     imgClose.setOnClickListener(view -> dismiss());
 
     btnSubmit.setOnClickListener(view -> {
+      KeyBoardHelper.hideKeyboard();
       String description = edtComment.getText().toString();
 
       if (description.isEmpty()) {
@@ -72,6 +73,7 @@ public class ComplaintRegistrationDialog {
       }
 
       setComplaint(serviceId, description, voipId);
+      dismiss();
     });
 
     dialog.show();
@@ -81,10 +83,10 @@ public class ComplaintRegistrationDialog {
 
     RequestHelper.builder(EndPoints.INSERT_COMPLAINT)
             .addParam("userId", MyApplication.prefManager.getUserCode())
-            .addParam("serviceId", 1)
+            .addParam("serviceId", serviceId)
             .addParam("complaintType", complaintType)
-            .addParam("description", 1)
-            .addParam("voipId", 1)
+            .addParam("description", description)
+            .addParam("voipId", voipId)
             .listener(onSetComplaint)
             .post();
   }
@@ -97,7 +99,22 @@ public class ComplaintRegistrationDialog {
         public void run() {
           try {
             Log.i("TripDetailsFragment", "run: " + args[0].toString());
+            JSONObject object = new JSONObject(args[0].toString());
+            boolean success = object.getBoolean("success");
+            String message = object.getString("message");
+            JSONObject dataObj = object.getJSONObject("data");
+            boolean status = dataObj.getBoolean("status");
 
+            //TODO test after update server
+
+            if (status) {
+              new GeneralDialog()
+                      .title("تایید شد")
+                      .message("عملیات با موفقیت انجام شد")
+                      .cancelable(false)
+                      .firstButton("باشه", null)
+                      .show();
+            }
           } catch (Exception e) {
             e.printStackTrace();
           }

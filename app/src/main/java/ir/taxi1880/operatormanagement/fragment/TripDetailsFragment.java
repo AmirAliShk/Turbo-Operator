@@ -6,6 +6,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.ViewFlipper;
@@ -40,6 +41,12 @@ public class TripDetailsFragment extends Fragment {
   String carCode;
   String description;
   String voipId;
+  double lat = 0;
+  double lng = 0;
+  String lastPositionTime = "";
+  String lastPositionDate = "";
+  String carMobile;
+  String driverMobile;
 
   @OnClick(R.id.imgBack)
   void onBackPress() {
@@ -121,6 +128,27 @@ public class TripDetailsFragment extends Fragment {
   @BindView(R.id.vfTripDetails)
   ViewFlipper vfTripDetails;
 
+  @BindView(R.id.btnDriverLock)
+  Button btnDriverLock;
+
+  @BindView(R.id.btnComplaintRegistration)
+  Button btnComplaintRegistration;
+
+  @BindView(R.id.btnLost)
+  Button btnLost;
+
+  @BindView(R.id.btnReFollow)
+  Button btnReFollow;
+
+  @BindView(R.id.btnErrorRegistration)
+  Button btnErrorRegistration;
+
+  @BindView(R.id.btnCancelTrip)
+  Button btnCancelTrip;
+
+  @BindView(R.id.btnDriverLocation)
+  Button btnDriverLocation;
+
   @OnClick(R.id.btnCancelTrip)
   void onCancel() {
     new GeneralDialog()
@@ -134,8 +162,13 @@ public class TripDetailsFragment extends Fragment {
 
   @OnClick(R.id.btnDriverLocation)
   void onLocation() {
-    //open map page
-    FragmentHelper.toFragment(MyApplication.currentActivity, new DriverLocationFragment()).replace();
+    Bundle bundle = new Bundle();
+    bundle.putDouble("lat", lat);
+    bundle.putDouble("lng", lng);
+    bundle.putString("time", lastPositionTime);
+    bundle.putString("date", lastPositionDate);
+    bundle.putString("carCode", carCode);
+    FragmentHelper.toFragment(MyApplication.currentActivity, new DriverLocationFragment()).setArguments(bundle).replace();
   }
 
   @OnClick(R.id.btnReFollow)
@@ -144,19 +177,19 @@ public class TripDetailsFragment extends Fragment {
             .title("پیگیری مجدد")
             .message("آیا از پیگیری مجدد این سفر اطمینان دارید؟")
             .cancelable(false)
-            .firstButton("بله", null)
+            .firstButton("بله", () -> trackingAgain())
             .secondButton("خیر", null)
             .show();
   }
 
   @OnClick(R.id.btnErrorRegistration)
   void onError() {
-    new ErrorRegistrationDialog().show(serviceId,passengerPhone,passengerAddress,passengerName,voipId);
+    new ErrorRegistrationDialog().show(serviceId, passengerPhone, passengerAddress, passengerName, voipId);
   }
 
   @OnClick(R.id.btnComplaintRegistration)
   void onComplaint() {
-    new ComplaintRegistrationDialog().show(serviceId,voipId);
+    new ComplaintRegistrationDialog().show(serviceId, voipId);
   }
 
   @OnClick(R.id.btnLost)
@@ -166,7 +199,7 @@ public class TripDetailsFragment extends Fragment {
 
   @OnClick(R.id.btnDriverLock)
   void onLock() {
-    new DriverLockDialog().show(serviceId);
+    new DriverLockDialog().show(carCode,serviceId);
   }
 
   @Override
@@ -202,7 +235,7 @@ public class TripDetailsFragment extends Fragment {
     public void onResponse(Runnable reCall, Object... args) {
       MyApplication.handler.post(() -> {
         try {
-          Log.i("TAG", "onResponse: "+args[0].toString());
+          Log.i("TAG", "onResponse: " + args[0].toString());
           JSONObject tripObject = new JSONObject(args[0].toString());
           Boolean success = tripObject.getBoolean("success");
           String message = tripObject.getString("message");
@@ -232,15 +265,17 @@ public class TripDetailsFragment extends Fragment {
             String cityName = data.getString("cityName");
             String carType = data.getString("CarType");
             String plak = data.getString("plak");
-            String carMobile = data.getString("carMobile");
+            carMobile = data.getString("carMobile");
             String deriverName = data.getString("driverName");
             String deriverFamily = data.getString("driverFamily");
-            String driverMobile = data.getString("driverMobile");
+            driverMobile = data.getString("driverMobile");
             String typeService = data.getString("typeService");
-            String lat = data.getString("lat");
-            String lon = data.getString("lon");
-            String lastPositionTime = data.getString("lastPositionTime");
-            String lastPositionDate = data.getString("lastPositionDate");
+            if (!data.isNull("lat"))
+              lat = data.getDouble("lat");
+            if (!data.isNull("lon"))
+              lng = data.getDouble("lon");
+            lastPositionTime = data.getString("lastPositionTime");
+            lastPositionDate = data.getString("lastPositionDate");
             int Finished = data.getInt("Finished");
             String statusColor = data.getString("statusColor");
             String statusText = data.getString("statusDes");
@@ -248,6 +283,18 @@ public class TripDetailsFragment extends Fragment {
             String customerFixedDes = data.getString("customerFixedDes");
             String serviceComment = data.getString("serviceComment");
             voipId = data.getString("VoipId");
+
+            if (status == 0) {
+              disableControllerButton0();
+            }
+
+            if (status == 6) {
+              disableControllerButton6();
+            }
+
+            if (Finished == 1) {
+              disableControllerButton();
+            }
 
             txtCustomerName.setText(StringHelper.toPersianDigits(passengerName));
             txtDate.setText(StringHelper.toPersianDigits(callDate));
@@ -258,7 +305,7 @@ public class TripDetailsFragment extends Fragment {
             txtCustomerTell.setText(StringHelper.toPersianDigits(passengerPhone));
             txtCustomerMobile.setText(StringHelper.toPersianDigits(customerMobile));
             txtServiceComment.setText(serviceComment.equals("null") ? " " : StringHelper.toPersianDigits(serviceComment));
-            txtTrafficPlan.setText(TrafficPlan==0?"نیست":"هست");
+            txtTrafficPlan.setText(TrafficPlan == 0 ? "نیست" : "هست");
             txtMaxPercent.setText(maxDiscount.equals("null") ? " " : StringHelper.toPersianDigits(maxDiscount));
             txtPercent.setText(rewardCode.equals("null") ? " " : StringHelper.toPersianDigits(rewardCode));
             txtSendDate.setText(sendDate.equals("null") ? " " : StringHelper.toPersianDigits(sendDate));
@@ -267,7 +314,7 @@ public class TripDetailsFragment extends Fragment {
             txtDriverName.setText(deriverName.equals("null") ? " " : StringHelper.toPersianDigits(deriverName + " " + deriverFamily));
             txtDriverMob.setText(carMobile.equals("null") ? " " : StringHelper.toPersianDigits(carMobile));
             txtCarType.setText(carType.equals("null") ? " " : carType);
-            txtPrice.setText(price.equals("null") ? " " : StringHelper.toPersianDigits(price));
+            txtPrice.setText(price.equals("null") ? " " : StringHelper.toPersianDigits(StringHelper.setComma(price)));
             txtEndTime.setText(finishTime.equals("null") ? " " : StringHelper.toPersianDigits(finishTime));
             txtPlaque.setText(plak.equals("null") ? " " : StringHelper.toPersianDigits(plak));
 
@@ -301,7 +348,53 @@ public class TripDetailsFragment extends Fragment {
     }
   };
 
+  private void disableControllerButton0() {
+    btnDriverLocation.setEnabled(false);
+    btnDriverLocation.setBackgroundResource(R.drawable.bg_btn_disable);
+    btnReFollow.setEnabled(false);
+    btnReFollow.setBackgroundResource(R.drawable.bg_btn_disable);
+    btnComplaintRegistration.setEnabled(false);
+    btnComplaintRegistration.setBackgroundResource(R.drawable.bg_btn_disable);
+    btnLost.setEnabled(false);
+    btnLost.setBackgroundResource(R.drawable.bg_btn_disable);
+    btnDriverLock.setEnabled(false);
+    btnDriverLock.setBackgroundResource(R.drawable.bg_btn_disable);
+  }
+
+  private void disableControllerButton6() {
+    btnDriverLocation.setEnabled(false);
+    btnDriverLocation.setBackgroundResource(R.drawable.bg_btn_disable);
+    btnReFollow.setEnabled(false);
+    btnReFollow.setBackgroundResource(R.drawable.bg_btn_disable);
+    btnComplaintRegistration.setEnabled(false);
+    btnComplaintRegistration.setBackgroundResource(R.drawable.bg_btn_disable);
+    btnLost.setEnabled(false);
+    btnLost.setBackgroundResource(R.drawable.bg_btn_disable);
+    btnDriverLock.setEnabled(false);
+    btnDriverLock.setBackgroundResource(R.drawable.bg_btn_disable);
+    btnCancelTrip.setEnabled(false);
+    btnCancelTrip.setBackgroundResource(R.drawable.bg_btn_disable);
+  }
+
+  private void disableControllerButton() {
+    btnCancelTrip.setEnabled(false);
+    btnCancelTrip.setBackgroundResource(R.drawable.bg_btn_disable);
+    btnReFollow.setEnabled(false);
+    btnReFollow.setBackgroundResource(R.drawable.bg_btn_disable);
+  }
+
   private void cancelService() {
+    String message = "اپراتور گرامی، این تماس از سمت راننده میباشد و امکان لغو سرویس میسر نیست.\n" +
+            "اگر راننده خود را به عنوان مسافر معرفی کرده با همین موضوع ثبت خطا کنید.";
+    if (MyApplication.prefManager.getLastCallerId().equals(carMobile) || MyApplication.prefManager.getLastCallerId().equals(driverMobile)) {
+      new GeneralDialog()
+              .title("هشدار")
+              .message(message)
+              .cancelable(false)
+              .firstButton("باشه", null)
+              .show();
+      return;
+    }
 
     RequestHelper.builder(EndPoints.CANCEL_SERVICE)
             .addParam("serviceId", serviceId)
@@ -319,18 +412,64 @@ public class TripDetailsFragment extends Fragment {
           try {
             Log.i("TripDetailsFragment", "run: " + args[0].toString());
 //            {"success":true,"message":"","data":{"status":true}}
-            JSONObject object=new JSONObject(args[0].toString());
-            boolean success=object.getBoolean("success");
-            String message=object.getString("message");
+            JSONObject object = new JSONObject(args[0].toString());
+            boolean success = object.getBoolean("success");
+            String message = object.getString("message");
             JSONObject dataObj = object.getJSONObject("data");
-            boolean status=dataObj.getBoolean("status");
+            boolean status = dataObj.getBoolean("status");
 
-            if (status){
+            if (status) {
               new GeneralDialog()
                       .title("تایید شد")
                       .message("سرویس با موفقیت کنسل شد")
                       .cancelable(false)
                       .firstButton("باشه", () -> MyApplication.currentActivity.onBackPressed())
+                      .show();
+            }
+
+          } catch (Exception e) {
+            e.printStackTrace();
+          }
+        }
+      });
+    }
+
+    @Override
+    public void onFailure(Runnable reCall, Exception e) {
+      MyApplication.handler.post(() -> {
+      });
+    }
+  };
+
+  private void trackingAgain() {
+    RequestHelper.builder(EndPoints.AGAIN_TRACKING)
+            .addParam("serviceId", serviceId)
+            .addParam("userId", MyApplication.prefManager.getUserCode())
+            .listener(inTrackingAgain)
+            .post();
+  }
+
+  RequestHelper.Callback inTrackingAgain = new RequestHelper.Callback() {
+    @Override
+    public void onResponse(Runnable reCall, Object... args) {
+      MyApplication.handler.post(new Runnable() {
+        @Override
+        public void run() {
+          try {
+            Log.i("TripDetailsFragment", "run: " + args[0].toString());
+//            {"success":true,"message":"","data":{"status":true}}
+            JSONObject object = new JSONObject(args[0].toString());
+            boolean success = object.getBoolean("success");
+            String message = object.getString("message");
+            JSONObject dataObj = object.getJSONObject("data");
+            boolean status = dataObj.getBoolean("status");
+
+            if (status) {
+              new GeneralDialog()
+                      .title("تایید شد")
+                      .message("سرویس با موفقیت کنسل شد")
+                      .cancelable(false)
+                      .firstButton("باشه",null)
                       .show();
             }
 

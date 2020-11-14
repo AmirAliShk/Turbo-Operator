@@ -63,6 +63,7 @@ public class PrefManager {
   private static final String OBJECTS_TYPE = "objectsType";
   private static final String REASONS_LOCK = "ReasonsLock";
   private static final String TRIP_DETAILS = "tripDetails";
+  private static final String LAST_CALLER_ID = "lastCallerId";
 
   public PrefManager(Context context) {
     this._context = context;
@@ -413,6 +414,15 @@ public class PrefManager {
     return pref.getString(LAST_CALL_NUMBER, "null");
   }
 
+  public void setLastCallerId(String callNumber) {
+    editor.putString(LAST_CALLER_ID, callNumber);
+    editor.commit();
+  }
+
+  public String getLastCallerId() {
+    return pref.getString(LAST_CALLER_ID, "");
+  }
+
   public boolean getConnectedCall() {
     return pref.getBoolean(CONNECTEDCALL, false);
   }
@@ -421,6 +431,7 @@ public class PrefManager {
     editor.putBoolean(CONNECTEDCALL, connected);
     editor.commit();
   }
+
   public boolean isCallIncoming() {
     return pref.getBoolean(INCOMINGCALL, false);
   }

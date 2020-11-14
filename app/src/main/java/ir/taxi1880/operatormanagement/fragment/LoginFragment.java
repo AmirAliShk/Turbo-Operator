@@ -110,6 +110,8 @@ public class LoginFragment extends Fragment {
           int activeInQueue = object.getInt("activeInQueue");
           int isFinishContract = object.getInt("isFinishContract");
           int accessStationDeterminationPage = object.getInt("accessStationDeterminationPage");
+          int customerSupport=object.getInt("customerSupport");
+          MyApplication.prefManager.setCustomerSupport(customerSupport);
           String name = edtUserName.getText().toString();
           String pass = edtPassword.getText().toString();
           MyApplication.prefManager.setOperatorName(object.getString("name"));

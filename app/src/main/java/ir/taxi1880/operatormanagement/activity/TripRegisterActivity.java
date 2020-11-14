@@ -1,6 +1,8 @@
 package ir.taxi1880.operatormanagement.activity;
 
 import android.content.BroadcastReceiver;
+import android.content.ClipData;
+import android.content.ClipboardManager;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
@@ -63,6 +65,8 @@ import ir.taxi1880.operatormanagement.dialog.DescriptionDialog;
 import ir.taxi1880.operatormanagement.dialog.GeneralDialog;
 import ir.taxi1880.operatormanagement.dialog.LoadingDialog;
 import ir.taxi1880.operatormanagement.dialog.OptionDialog;
+import ir.taxi1880.operatormanagement.fragment.SupportFragment;
+import ir.taxi1880.operatormanagement.helper.FragmentHelper;
 import ir.taxi1880.operatormanagement.helper.KeyBoardHelper;
 import ir.taxi1880.operatormanagement.helper.PhoneNumberValidation;
 import ir.taxi1880.operatormanagement.helper.StringHelper;
@@ -879,7 +883,7 @@ public class TripRegisterActivity extends AppCompatActivity {
             }, 500);
           }
 
-          Log.i(TAG, "AMIRREZA ER: " + args[0].toString());
+          Log.i(TAG, "getPassengerInfo: " + args[0].toString());
           JSONObject obj = new JSONObject(args[0].toString());
           boolean success = obj.getBoolean("success");
           String message = obj.getString("message");
@@ -903,22 +907,27 @@ public class TripRegisterActivity extends AppCompatActivity {
           int carType = passengerInfoObj.getInt("carType");
           int cityCode = passengerInfoObj.getInt("cityCode");
 
+          ClipboardManager clipboard = (ClipboardManager) getSystemService(Context.CLIPBOARD_SERVICE);
+          ClipData clip = ClipData.newPlainText("passengerTell", getTellNumber());
+          clipboard.setPrimaryClip(clip);
+          MyApplication.prefManager.setLastCallerId(getTellNumber());
+
           if (success) {
 
-//            if (!tripState.isEmpty()) {
-//              String msg = "مسافر " + callTimeInterval + "دقیقه پیش سفری درخواست داده است " + "\n" + " وضعیت سفر : " + tripState;
-//              if (vfPassengerInfo != null)
-//                vfPassengerInfo.setDisplayedChild(0);
-//              new GeneralDialog()
-//                      .message(msg)
-//                      .firstButton("بستن", null)
-//                      .secondButton("پشتیبانی", () -> {
-//                        Bundle bundle = new Bundle();
-//                        bundle.putString("tellNumber", getTellNumber());
-//                        FragmentHelper.toFragment(MyApplication.currentActivity, new SupportFragment()).setArguments(bundle).replace();
-//                      })
-//                      .show();
-//            }
+            if (!tripState.isEmpty()) {
+              String msg = "مسافر " + callTimeInterval + "دقیقه پیش سفری درخواست داده است " + "\n" + " وضعیت سفر : " + tripState;
+              if (vfPassengerInfo != null)
+                vfPassengerInfo.setDisplayedChild(0);
+              new GeneralDialog()
+                      .message(msg)
+                      .firstButton("بستن", null)
+                      .secondButton("پشتیبانی", () -> {
+                        Bundle bundle = new Bundle();
+                        bundle.putString("tellNumber", getTellNumber());
+                        FragmentHelper.toFragment(MyApplication.currentActivity, new SupportFragment()).setArguments(bundle).replace();
+                      })
+                      .show();
+            }
 
             if (edtTell == null)
               return;
@@ -934,12 +943,9 @@ public class TripRegisterActivity extends AppCompatActivity {
 
             if (cityCode == 0) {
               KeyBoardHelper.hideKeyboard();
-              new CityDialog().show(new CityDialog.Listener() {
-                @Override
-                public void selectedCity(int position) {
-                  if (spCity != null)
-                    spCity.setSelection(position + 1);
-                }
+              new CityDialog().show(position -> {
+                if (spCity != null)
+                  spCity.setSelection(position + 1);
               });
             }
             if (callerCode == 0) {

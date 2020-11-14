@@ -13,6 +13,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Spinner;
+import android.widget.Toast;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -38,7 +39,7 @@ public class DriverLockDialog {
   int reason;
   static Dialog dialog;
 
-  public void show(String serviceId) {
+  public void show(String taxiCode,String serviceId) {
     if (MyApplication.currentActivity == null || MyApplication.currentActivity.isFinishing())
       return;
     dialog = new Dialog(MyApplication.currentActivity);
@@ -63,19 +64,29 @@ public class DriverLockDialog {
     imgClose.setOnClickListener(view -> dismiss());
 
     btnSubmit.setOnClickListener(view -> {
-      lockTaxi(serviceId);
+      KeyBoardHelper.hideKeyboard();
+
+      String hours = edtHour.getText().toString();
+
+      if (hours.isEmpty()){
+        MyApplication.Toast("تعداد ساعت های قفل راننده را وارد کنید.", Toast.LENGTH_SHORT);
+        return;
+      }
+
+      lockTaxi(taxiCode, hours,serviceId);
+      dismiss();
     });
 
     dialog.show();
   }
 
-  private void lockTaxi(String serviceId) {
+  private void lockTaxi(String taxiCode, String hours,String serviceId) {
 
-    RequestHelper.builder(EndPoints.SERVICE_DETAIL)
-            .addParam("serviceId", serviceId)
+    RequestHelper.builder(EndPoints.LOCK_TAXI)
+            .addParam("taxiCode",taxiCode)
+            .addParam("serviceId",serviceId)
             .addParam("userId", MyApplication.prefManager.getUserCode())
-            .addParam("todate", 1)
-            .addParam("totime", 1)
+            .addParam("hours", hours)
             .addParam("reasonId", reason)
             .listener(onLockTaxi)
             .post();
@@ -89,6 +100,22 @@ public class DriverLockDialog {
         public void run() {
           try {
             Log.i("TripDetailsFragment", "run: " + args[0].toString());
+            JSONObject object = new JSONObject(args[0].toString());
+            boolean success = object.getBoolean("success");
+            String message = object.getString("message");
+            JSONObject dataObj = object.getJSONObject("data");
+            boolean status = dataObj.getBoolean("status");
+
+            //TODO test after update server
+
+            if (status) {
+              new GeneralDialog()
+                      .title("تایید شد")
+                      .message("عملیات با موفقیت انجام شد")
+                      .cancelable(false)
+                      .firstButton("باشه", () -> MyApplication.currentActivity.onBackPressed())
+                      .show();
+            }
 
           } catch (Exception e) {
             e.printStackTrace();

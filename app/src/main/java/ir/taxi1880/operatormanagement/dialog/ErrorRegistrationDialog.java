@@ -49,6 +49,7 @@ public class ErrorRegistrationDialog {
     imgClose.setOnClickListener(view -> dismiss());
 
     btnSubmit.setOnClickListener(view -> {
+      KeyBoardHelper.hideKeyboard();
       String description = edtErrorText.getText().toString();
 
       if (description.isEmpty()) {
@@ -57,6 +58,7 @@ public class ErrorRegistrationDialog {
       }
 
       setMistake(ServiceId, phone, address, customerName, voipId, description);
+      dismiss();
     });
 
     dialog.show();
@@ -97,7 +99,7 @@ public class ErrorRegistrationDialog {
                       .title("تایید شد")
                       .message("عملیات با موفقیت انجام شد")
                       .cancelable(false)
-                      .firstButton("باشه", () -> MyApplication.currentActivity.onBackPressed())
+                      .firstButton("باشه", null)
                       .show();
             }
 

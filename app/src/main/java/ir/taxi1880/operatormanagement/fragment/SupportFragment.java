@@ -2,6 +2,7 @@ package ir.taxi1880.operatormanagement.fragment;
 
 import android.os.Bundle;
 import android.text.Editable;
+import android.text.InputType;
 import android.text.TextWatcher;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -31,6 +32,7 @@ import ir.taxi1880.operatormanagement.app.MyApplication;
 import ir.taxi1880.operatormanagement.dialog.ExtendedTimeDialog;
 import ir.taxi1880.operatormanagement.dialog.GeneralDialog;
 import ir.taxi1880.operatormanagement.dialog.SearchFilterDialog;
+import ir.taxi1880.operatormanagement.helper.KeyBoardHelper;
 import ir.taxi1880.operatormanagement.helper.PhoneNumberValidation;
 import ir.taxi1880.operatormanagement.helper.StringHelper;
 import ir.taxi1880.operatormanagement.helper.TypefaceUtil;
@@ -47,6 +49,7 @@ public class SupportFragment extends Fragment {
 
   @OnClick(R.id.imgBack)
   void onBackPress() {
+    KeyBoardHelper.hideKeyboard();
     MyApplication.currentActivity.onBackPressed();
   }
 
@@ -62,14 +65,26 @@ public class SupportFragment extends Fragment {
   @BindView(R.id.txtExtendTime)
   TextView txtExtendTime;
 
+  @BindView(R.id.txtCancel)
+  TextView txtCancel;
+
+  @OnClick(R.id.txtCancel)
+  void txtCancel() {
+    if (vfTrip != null) {
+      vfTrip.setDisplayedChild(3);
+    }
+    //TODO here The request must be canceled, but I do not know how?
+  }
+
   @OnClick(R.id.imgSearch)
   void onSearchPress() {
     searchText = StringHelper.toEnglishDigits(edtSearchTrip.getText().toString());
-    if (searchText.isEmpty()){
+    if (searchText.isEmpty()) {
       edtSearchTrip.setError("موردی را برای جستو جو وارد کنید");
       return;
     }
-    searchService(searchText,searchCase);
+    KeyBoardHelper.hideKeyboard();
+    searchService(searchText, searchCase);
   }
 
   @OnClick(R.id.imgClear)
@@ -84,18 +99,23 @@ public class SupportFragment extends Fragment {
       switch (searchCase) {
         case 1:
           imageType = R.drawable.ic_user;
+          edtSearchTrip.setInputType(InputType.TYPE_CLASS_TEXT);
           break;
         case 2:
           imageType = R.drawable.ic_call;
+          edtSearchTrip.setInputType(InputType.TYPE_CLASS_NUMBER);
           break;
         case 3:
           imageType = R.drawable.ic_gps;
+          edtSearchTrip.setInputType(InputType.TYPE_CLASS_TEXT);
           break;
         case 4:
           imageType = R.drawable.ic_taxi;
+          edtSearchTrip.setInputType(InputType.TYPE_CLASS_NUMBER);
           break;
         case 5:
           imageType = R.drawable.ic_code;
+          edtSearchTrip.setInputType(InputType.TYPE_CLASS_NUMBER);
           break;
       }
       imgSearchType.setImageResource(imageType);
@@ -123,7 +143,7 @@ public class SupportFragment extends Fragment {
     View view = inflater.inflate(R.layout.fragment_support, container, false);
     unbinder = ButterKnife.bind(this, view);
     TypefaceUtil.overrideFonts(view);
-    TypefaceUtil.overrideFonts(edtSearchTrip,MyApplication.IraSanSMedume);
+    TypefaceUtil.overrideFonts(edtSearchTrip, MyApplication.IraSanSMedume);
 
     String tellNumber;
     Bundle bundle = getArguments();
@@ -133,6 +153,7 @@ public class SupportFragment extends Fragment {
     }
 
     edtSearchTrip.requestFocus();
+    edtSearchTrip.setInputType(InputType.TYPE_CLASS_NUMBER);
 
     edtSearchTrip.addTextChangedListener(searchWatcher);
 
@@ -243,7 +264,7 @@ public class SupportFragment extends Fragment {
     public void onResponse(Runnable reCall, Object... args) {
       MyApplication.handler.post(() -> {
         try {
-          Log.i("TAG", "run: "+args[0].toString());
+          Log.i("TAG", "run: " + args[0].toString());
           tripModels = new ArrayList<>();
           JSONObject tripObject = new JSONObject(args[0].toString());
           Boolean success = tripObject.getBoolean("success");
@@ -281,15 +302,15 @@ public class SupportFragment extends Fragment {
             if (tripModels.size() == 0) {
               if (vfTrip != null)
                 vfTrip.setDisplayedChild(0);
-            }else {
+            } else {
               if (vfTrip != null)
                 vfTrip.setDisplayedChild(2);
             }
-          }else {
+          } else {
             new GeneralDialog()
                     .title("هشدار")
                     .message(message)
-                    .firstButton("باشه",null)
+                    .firstButton("باشه", null)
                     .show();
           }
 

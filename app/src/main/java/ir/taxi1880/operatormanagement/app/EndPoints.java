@@ -105,5 +105,7 @@ public class EndPoints {
   public static final String INSERT_MISTAKE = SUPPORT_WEBSERVICE_PATH + "insertMistake";
   public static final String INSERT_COMPLAINT = SUPPORT_WEBSERVICE_PATH + "insertComplaint";
   public static final String INSERT_LOST_OBJECT = SUPPORT_WEBSERVICE_PATH + "insertLostObject";
+  public static final String LOCK_TAXI = SUPPORT_WEBSERVICE_PATH + "lockTaxi";
+  public static final String AGAIN_TRACKING = SUPPORT_WEBSERVICE_PATH + "againTracking";
 
 }

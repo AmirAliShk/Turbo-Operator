@@ -66,6 +66,7 @@ public class LostDialog {
     imgClose.setOnClickListener(view -> dismiss());
 
     btnSubmit.setOnClickListener(view -> {
+      KeyBoardHelper.hideKeyboard();
       String address = edtAddress.getText().toString();
       String comment = edtComment.getText().toString();
 
@@ -75,6 +76,7 @@ public class LostDialog {
       }
 
       setLostObject(serviceId, carCode, phone, name, address, comment);
+      dismiss();
 
     });
 
@@ -104,18 +106,18 @@ public class LostDialog {
         public void run() {
           try {
             Log.i("TripDetailsFragment", "run: " + args[0].toString());
-            JSONObject object=new JSONObject(args[0].toString());
-            boolean success=object.getBoolean("success");
-            String message=object.getString("message");
+            JSONObject object = new JSONObject(args[0].toString());
+            boolean success = object.getBoolean("success");
+            String message = object.getString("message");
             JSONObject dataObj = object.getJSONObject("data");
-            boolean status=dataObj.getBoolean("status");
+            boolean status = dataObj.getBoolean("status");
 
-            if (status){
+            if (status) {
               new GeneralDialog()
                       .title("تایید شد")
                       .message("عملیات با موفقیت انجام شده")
                       .cancelable(false)
-                      .firstButton("باشه", () -> MyApplication.currentActivity.onBackPressed())
+                      .firstButton("باشه",null)
                       .show();
             }
           } catch (Exception e) {

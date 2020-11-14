@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:background="@color/colorPrimaryLighter"
     android:clickable="true"
     android:layoutDirection="rtl"
@@ -28,37 +28,37 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
-            android:textStyle="bold"
             android:text="@string/support"
             android:textColor="@color/colorWhite"
-            android:textSize="@dimen/text_header" />
+            android:textSize="@dimen/text_header"
+            android:textStyle="bold" />
 
         <LinearLayout
             android:id="@+id/llExtendedTime"
             android:layout_width="120dp"
             android:layout_height="match_parent"
-            android:gravity="right|center_vertical"
-            android:paddingRight="15dp"
             android:layout_alignParentEnd="true"
+            android:layout_alignParentRight="true"
+            android:gravity="right|center_vertical"
             android:orientation="horizontal"
-            android:layout_alignParentRight="true">
+            android:paddingRight="15dp">
 
             <TextView
                 android:id="@+id/txtExtendTime"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/today"
-                android:textColor="@color/colorWhite"
-                android:textStyle="bold"
                 android:layout_marginRight="10dp"
-                android:textAppearance="?android:attr/textAppearanceMedium" />
+                android:text="@string/today"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:textColor="@color/colorWhite"
+                android:textStyle="bold" />
 
             <ImageView
                 android:id="@+id/imgExtendedTime"
                 android:layout_width="20dp"
                 android:layout_height="20dp"
-                android:tint="@color/colorWhite"
-                android:src="@drawable/ic_today" />
+                android:src="@drawable/ic_today"
+                android:tint="@color/colorWhite" />
 
         </LinearLayout>
 
@@ -67,28 +67,28 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:paddingTop="20dp"
+        android:orientation="vertical"
         android:paddingLeft="20dp"
-        android:paddingRight="20dp"
-        android:orientation="vertical">
+        android:paddingTop="20dp"
+        android:paddingRight="20dp">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@drawable/bg_blue_border_edge"
-            android:layoutDirection="ltr"
             android:layout_margin="5dp"
-            android:gravity="center_vertical"
+            android:background="@drawable/bg_blue_border_edge"
             android:elevation="5dp"
-            android:padding="10dp"
-            android:orientation="horizontal">
+            android:gravity="center_vertical"
+            android:layoutDirection="ltr"
+            android:orientation="horizontal"
+            android:padding="10dp">
 
             <ImageView
                 android:id="@+id/imgSearch"
                 android:layout_width="50dp"
                 android:layout_height="50dp"
-                android:padding="10dp"
                 android:background="@drawable/bg_button_gray_edge"
+                android:padding="10dp"
                 android:src="@drawable/ic_search" />
 
             <ImageView
@@ -100,23 +100,23 @@
 
             <EditText
                 android:id="@+id/edtSearchTrip"
-                android:layout_width="wrap_content"
-                android:layout_weight="1"
-                android:hint="جست و جو"
-                android:maxLines="1"
-                android:singleLine="true"
-                android:gravity="right|center_vertical"
-                android:background="@color/transparent"
-                android:textColorHint="@color/grayMedium"
+                android:layout_width="0dp"
                 android:layout_height="match_parent"
-                android:padding="10dp" />
+                android:layout_weight="1"
+                android:background="@color/transparent"
+                android:gravity="right|center_vertical"
+                android:hint="@string/search"
+                android:nextFocusDown="@id/edtSearchTrip"
+                android:padding="10dp"
+                android:singleLine="true"
+                android:textColorHint="@color/grayMedium" />
 
             <ImageView
                 android:id="@+id/imgSearchType"
                 android:layout_width="50dp"
                 android:layout_height="50dp"
-                android:padding="10dp"
                 android:background="@drawable/bg_button_gray_edge"
+                android:padding="10dp"
                 android:src="@drawable/ic_call" />
 
         </LinearLayout>
@@ -127,34 +127,55 @@
             android:layout_height="match_parent">
 
             <TextView
-                android:gravity="center"
-                android:textSize="@dimen/text_title"
-                android:textColor="@color/colorBlack"
-                android:text="لیست خالی است!"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"/>
+                android:layout_height="match_parent"
+                android:gravity="center"
+                android:text="لیست خالی است!"
+                android:textColor="@color/colorBlack"
+                android:textSize="@dimen/text_title"/>
 
-            <com.wang.avi.AVLoadingIndicatorView
-                android:layout_width="50dp"
-                android:layout_height="50dp"
-                app:indicatorName="BallSpinFadeLoaderIndicator"
-                android:layout_gravity="center"
-                app:indicatorColor="@color/colorPrimaryDark" />
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical"
+                android:gravity="center">
+
+                <com.wang.avi.AVLoadingIndicatorView
+                    android:layout_width="50dp"
+                    android:layout_height="50dp"
+                    android:layout_gravity="center"
+                    app:indicatorColor="@color/colorPrimaryDark"
+                    app:indicatorName="BallSpinFadeLoaderIndicator" />
+
+                <Button
+                    android:id="@+id/txtCancel"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:paddingRight="20dp"
+                    android:paddingLeft="20dp"
+                    android:background="@drawable/bg_purple_gradient_edge"
+                    android:gravity="center"
+                    android:layout_marginTop="50dp"
+                    android:text="لغو جست و جو"
+                    android:textColor="@color/colorWhite"
+                    android:textSize="@dimen/text_title" />
+
+            </LinearLayout>
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/recycleTrip"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                tools:listitem="@layout/item_trip"
-                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"/>
+                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                tools:listitem="@layout/item_trip" />
 
             <TextView
-                android:gravity="center"
-                android:textSize="@dimen/text_title"
-                android:textColor="@color/colorBlack"
-                android:text="خطایی رخ داده! \n لطفا پس از چند لحظه مجدد تلاش کنید"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"/>
+                android:layout_height="match_parent"
+                android:gravity="center"
+                android:text="خطایی رخ داده! \n لطفا پس از چند لحظه مجدد تلاش کنید"
+                android:textColor="@color/colorBlack"
+                android:textSize="@dimen/text_title" />
 
         </ViewFlipper>
 
