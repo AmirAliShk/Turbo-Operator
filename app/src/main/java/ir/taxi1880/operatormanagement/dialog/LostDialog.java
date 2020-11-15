@@ -53,7 +53,7 @@ public class LostDialog {
     wlp.gravity = Gravity.CENTER;
     wlp.windowAnimations = R.style.ExpandAnimation;
     dialog.getWindow().setAttributes(wlp);
-    dialog.setCancelable(true);
+    dialog.setCancelable(false);
 
     ImageView imgClose = dialog.findViewById(R.id.imgClose);
     Button btnSubmit = dialog.findViewById(R.id.btnSubmit);
@@ -67,6 +67,7 @@ public class LostDialog {
 
     btnSubmit.setOnClickListener(view -> {
       KeyBoardHelper.hideKeyboard();
+
       String address = edtAddress.getText().toString();
       String comment = edtComment.getText().toString();
 
@@ -84,9 +85,9 @@ public class LostDialog {
   }
 
   private void setLostObject(String serviceId, String carCode, String passengerPhone, String passengerName, String address, String description) {
-
+    LoadingDialog.makeCancelableLoader();
     RequestHelper.builder(EndPoints.INSERT_LOST_OBJECT)
-            .addParam("carCode", 1)
+            .addParam("carCode", carCode)
             .addParam("serviceId", serviceId)
             .addParam("objectType", type)
             .addParam("passengerPhone", passengerPhone)
@@ -101,28 +102,26 @@ public class LostDialog {
   RequestHelper.Callback onSetLostObject = new RequestHelper.Callback() {
     @Override
     public void onResponse(Runnable reCall, Object... args) {
-      MyApplication.handler.post(new Runnable() {
-        @Override
-        public void run() {
-          try {
-            Log.i("TripDetailsFragment", "run: " + args[0].toString());
-            JSONObject object = new JSONObject(args[0].toString());
-            boolean success = object.getBoolean("success");
-            String message = object.getString("message");
-            JSONObject dataObj = object.getJSONObject("data");
-            boolean status = dataObj.getBoolean("status");
+      MyApplication.handler.post(() -> {
+        try {
+          LoadingDialog.dismissCancelableDialog();
+          Log.i("TripDetailsFragment", "run: " + args[0].toString());
+          JSONObject object = new JSONObject(args[0].toString());
+          boolean success = object.getBoolean("success");
+          String message = object.getString("message");
+          JSONObject dataObj = object.getJSONObject("data");
+          boolean status = dataObj.getBoolean("status");
 
-            if (status) {
-              new GeneralDialog()
-                      .title("تایید شد")
-                      .message("عملیات با موفقیت انجام شده")
-                      .cancelable(false)
-                      .firstButton("باشه",null)
-                      .show();
-            }
-          } catch (Exception e) {
-            e.printStackTrace();
+          if (status) {
+            new GeneralDialog()
+                    .title("تایید شد")
+                    .message("عملیات با موفقیت انجام شده")
+                    .cancelable(false)
+                    .firstButton("باشه",null)
+                    .show();
           }
+        } catch (Exception e) {
+          e.printStackTrace();
         }
       });
     }
@@ -130,7 +129,7 @@ public class LostDialog {
     @Override
     public void onFailure(Runnable reCall, Exception e) {
       MyApplication.handler.post(() -> {
-
+        LoadingDialog.dismissCancelableDialog();
       });
     }
   };

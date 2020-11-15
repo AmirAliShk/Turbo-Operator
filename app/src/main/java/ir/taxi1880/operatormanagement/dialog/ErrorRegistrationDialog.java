@@ -40,7 +40,7 @@ public class ErrorRegistrationDialog {
     wlp.gravity = Gravity.CENTER;
     wlp.windowAnimations = R.style.ExpandAnimation;
     dialog.getWindow().setAttributes(wlp);
-    dialog.setCancelable(true);
+    dialog.setCancelable(false);
 
     ImageView imgClose = dialog.findViewById(R.id.imgClose);
     Button btnSubmit = dialog.findViewById(R.id.btnSubmit);
@@ -65,7 +65,7 @@ public class ErrorRegistrationDialog {
   }
 
   private void setMistake(String ServiceId, String phone, String address, String customerName, String voipId, String desc) {
-
+    LoadingDialog.makeCancelableLoader();
     RequestHelper.builder(EndPoints.INSERT_MISTAKE)
             .addParam("serviceId", ServiceId)
             .addParam("userId", MyApplication.prefManager.getUserCode())
@@ -81,31 +81,28 @@ public class ErrorRegistrationDialog {
   RequestHelper.Callback onSetMistake = new RequestHelper.Callback() {
     @Override
     public void onResponse(Runnable reCall, Object... args) {
-      MyApplication.handler.post(new Runnable() {
-        @Override
-        public void run() {
-          try {
-            Log.i("TripDetailsFragment", "run: " + args[0].toString());
-            JSONObject object=new JSONObject(args[0].toString());
-            boolean success=object.getBoolean("success");
-            String message=object.getString("message");
-            JSONObject dataObj = object.getJSONObject("data");
-            boolean status=dataObj.getBoolean("status");
+      MyApplication.handler.post(() -> {
+        try {
+          LoadingDialog.dismissCancelableDialog();
+          Log.i("TripDetailsFragment", "run: " + args[0].toString());
+          JSONObject object = new JSONObject(args[0].toString());
+          boolean success = object.getBoolean("success");
+          String message = object.getString("message");
+          JSONObject dataObj = object.getJSONObject("data");
+          boolean status = dataObj.getBoolean("status");
 
-            //TODO test after update server
-
-            if (status){
-              new GeneralDialog()
-                      .title("تایید شد")
-                      .message("عملیات با موفقیت انجام شد")
-                      .cancelable(false)
-                      .firstButton("باشه", null)
-                      .show();
-            }
-
-          } catch (Exception e) {
-            e.printStackTrace();
+          if (status) {
+            new GeneralDialog()
+                    .title("تایید شد")
+                    .message("عملیات با موفقیت انجام شد")
+                    .cancelable(false)
+                    .firstButton("باشه", null)
+                    .show();
           }
+          //TODO else what?
+
+        } catch (Exception e) {
+          e.printStackTrace();
         }
       });
     }
@@ -113,7 +110,7 @@ public class ErrorRegistrationDialog {
     @Override
     public void onFailure(Runnable reCall, Exception e) {
       MyApplication.handler.post(() -> {
-
+        LoadingDialog.dismissCancelableDialog();
       });
     }
   };

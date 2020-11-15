@@ -910,7 +910,7 @@ public class TripRegisterActivity extends AppCompatActivity {
           ClipboardManager clipboard = (ClipboardManager) getSystemService(Context.CLIPBOARD_SERVICE);
           ClipData clip = ClipData.newPlainText("passengerTell", getTellNumber());
           clipboard.setPrimaryClip(clip);
-          MyApplication.prefManager.setLastCallerId(getTellNumber());
+          MyApplication.prefManager.setLastCallerId("0" + getTellNumber());
 
           if (success) {
 
@@ -1722,6 +1722,7 @@ public class TripRegisterActivity extends AppCompatActivity {
     super.onDestroy();
     unbinder.unbind();
     core.removeListener(mCoreListener);
+    MyApplication.prefManager.setLastCallerId("");// set empty, because I don't want save this permanently .
     core = null;
 
   }

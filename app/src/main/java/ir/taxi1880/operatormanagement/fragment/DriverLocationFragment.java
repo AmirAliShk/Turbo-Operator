@@ -118,12 +118,15 @@ public class DriverLocationFragment extends Fragment implements OnMapReadyCallba
     Bitmap b = bitmapdraw.getBitmap();
     Bitmap smallMarker = Bitmap.createScaledBitmap(b, 60, 100, false);
 
-    if (myGoogleMap != null)
+    if (myGoogleMap != null){
+      myGoogleMap.clear();
       myLocationMarker = myGoogleMap.addMarker(
               new MarkerOptions()
                       .icon(BitmapDescriptorFactory.fromBitmap(smallMarker))
 //                      .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_MAGENTA))
                       .position(latlng));
+    }
+
   }
 
   private void getLastLocation() {
@@ -152,10 +155,13 @@ public class DriverLocationFragment extends Fragment implements OnMapReadyCallba
 
             if (success) {
               lat = dataObj.getDouble("lat");
-              lng = dataObj.getDouble("lon");
+              lng = dataObj.getDouble("long");
               time = dataObj.getString("r_time");
+              if (txtLastTime != null) {
+                txtLastTime.setText(time);
+              }
               animateToLocation(lat, lng);
-            }else {
+            } else {
               new GeneralDialog()
                       .title("خطا")
                       .message(message)

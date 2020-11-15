@@ -119,6 +119,7 @@ public class SupportFragment extends Fragment {
           break;
       }
       imgSearchType.setImageResource(imageType);
+      edtSearchTrip.setText("");
       this.searchCase = searchCase;
     });
   }
@@ -194,7 +195,6 @@ public class SupportFragment extends Fragment {
                 .listener(onGetTripList)
                 .post();
         break;
-
 
       case 1:
         RequestHelper.builder(EndPoints.SEARCH_SERVICE)

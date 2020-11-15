@@ -57,7 +57,7 @@ public class TripAdapter extends RecyclerView.Adapter<TripAdapter.TripViewHolder
     holder.itemView.setOnClickListener(view -> {
       Bundle bundle = new Bundle();
       bundle.putString("id", tripModel.getServiceId());
-      FragmentHelper.toFragment(MyApplication.currentActivity, new TripDetailsFragment()).setArguments(bundle).add();
+      FragmentHelper.toFragment(MyApplication.currentActivity, new TripDetailsFragment()).setArguments(bundle).replace();
       KeyBoardHelper.hideKeyboard();
     });
   }

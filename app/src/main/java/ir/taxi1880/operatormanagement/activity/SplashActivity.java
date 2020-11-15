@@ -84,8 +84,6 @@ public class SplashActivity extends AppCompatActivity {
 
     dataBase = new DataBase(context);
 
-    //TODO test
-
     ACRA.getErrorReporter().putCustomData("projectId", PUSH_PROJECT_ID);
     ACRA.getErrorReporter().putCustomData("LineCode", MyApplication.prefManager.getUserCode() + "");
 

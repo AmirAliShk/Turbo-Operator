@@ -39,7 +39,7 @@ public class DriverLockDialog {
   int reason;
   static Dialog dialog;
 
-  public void show(String taxiCode,String serviceId) {
+  public void show(String taxiCode) {
     if (MyApplication.currentActivity == null || MyApplication.currentActivity.isFinishing())
       return;
     dialog = new Dialog(MyApplication.currentActivity);
@@ -52,7 +52,7 @@ public class DriverLockDialog {
     wlp.gravity = Gravity.CENTER;
     wlp.windowAnimations = R.style.ExpandAnimation;
     dialog.getWindow().setAttributes(wlp);
-    dialog.setCancelable(true);
+    dialog.setCancelable(false);
 
     ImageView imgClose = dialog.findViewById(R.id.imgClose);
     Button btnSubmit = dialog.findViewById(R.id.btnSubmit);
@@ -68,23 +68,28 @@ public class DriverLockDialog {
 
       String hours = edtHour.getText().toString();
 
-      if (hours.isEmpty()){
+      if (hours.isEmpty()) {
         MyApplication.Toast("تعداد ساعت های قفل راننده را وارد کنید.", Toast.LENGTH_SHORT);
         return;
       }
 
-      lockTaxi(taxiCode, hours,serviceId);
+      if (Integer.parseInt(hours) < 6) {
+        MyApplication.Toast("زمان قفل راننده نباید کمتر از 6 ساعت باشد.", Toast.LENGTH_SHORT);
+        edtHour.setText("");
+        return;
+      }
+
+      lockTaxi(taxiCode, hours);
       dismiss();
     });
 
     dialog.show();
   }
 
-  private void lockTaxi(String taxiCode, String hours,String serviceId) {
-
+  private void lockTaxi(String taxiCode, String hours) {
+    LoadingDialog.makeCancelableLoader();
     RequestHelper.builder(EndPoints.LOCK_TAXI)
-            .addParam("taxiCode",taxiCode)
-            .addParam("serviceId",serviceId)
+            .addParam("taxiCode", taxiCode)
             .addParam("userId", MyApplication.prefManager.getUserCode())
             .addParam("hours", hours)
             .addParam("reasonId", reason)
@@ -95,31 +100,27 @@ public class DriverLockDialog {
   RequestHelper.Callback onLockTaxi = new RequestHelper.Callback() {
     @Override
     public void onResponse(Runnable reCall, Object... args) {
-      MyApplication.handler.post(new Runnable() {
-        @Override
-        public void run() {
-          try {
-            Log.i("TripDetailsFragment", "run: " + args[0].toString());
-            JSONObject object = new JSONObject(args[0].toString());
-            boolean success = object.getBoolean("success");
-            String message = object.getString("message");
-            JSONObject dataObj = object.getJSONObject("data");
-            boolean status = dataObj.getBoolean("status");
+      MyApplication.handler.post(() -> {
+        try {
+          LoadingDialog.dismissCancelableDialog();
+          Log.i("TripDetailsFragment", "run: " + args[0].toString());
+          JSONObject object = new JSONObject(args[0].toString());
+          boolean success = object.getBoolean("success");
+          String message = object.getString("message");
+          JSONObject dataObj = object.getJSONObject("data");
+          boolean status = dataObj.getBoolean("status");
 
-            //TODO test after update server
-
-            if (status) {
-              new GeneralDialog()
-                      .title("تایید شد")
-                      .message("عملیات با موفقیت انجام شد")
-                      .cancelable(false)
-                      .firstButton("باشه", () -> MyApplication.currentActivity.onBackPressed())
-                      .show();
-            }
-
-          } catch (Exception e) {
-            e.printStackTrace();
+          if (status) {
+            new GeneralDialog()
+                    .title("تایید شد")
+                    .message("عملیات با موفقیت انجام شد")
+                    .cancelable(false)
+                    .firstButton("باشه", () -> MyApplication.currentActivity.onBackPressed())
+                    .show();
           }
+
+        } catch (Exception e) {
+          e.printStackTrace();
         }
       });
     }
@@ -127,7 +128,7 @@ public class DriverLockDialog {
     @Override
     public void onFailure(Runnable reCall, Exception e) {
       MyApplication.handler.post(() -> {
-
+        LoadingDialog.dismissCancelableDialog();
       });
     }
   };

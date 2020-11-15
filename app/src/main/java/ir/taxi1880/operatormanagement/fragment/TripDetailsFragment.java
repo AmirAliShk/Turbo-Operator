@@ -26,6 +26,7 @@ import ir.taxi1880.operatormanagement.dialog.ComplaintRegistrationDialog;
 import ir.taxi1880.operatormanagement.dialog.DriverLockDialog;
 import ir.taxi1880.operatormanagement.dialog.ErrorRegistrationDialog;
 import ir.taxi1880.operatormanagement.dialog.GeneralDialog;
+import ir.taxi1880.operatormanagement.dialog.LoadingDialog;
 import ir.taxi1880.operatormanagement.dialog.LostDialog;
 import ir.taxi1880.operatormanagement.helper.FragmentHelper;
 import ir.taxi1880.operatormanagement.helper.StringHelper;
@@ -125,6 +126,9 @@ public class TripDetailsFragment extends Fragment {
   @BindView(R.id.txtServiceComment)
   TextView txtServiceComment;
 
+  @BindView(R.id.txtServiceFixedComment)
+  TextView txtServiceFixedComment;
+
   @BindView(R.id.vfTripDetails)
   ViewFlipper vfTripDetails;
 
@@ -184,7 +188,8 @@ public class TripDetailsFragment extends Fragment {
 
   @OnClick(R.id.btnErrorRegistration)
   void onError() {
-    new ErrorRegistrationDialog().show(serviceId, passengerPhone, passengerAddress, passengerName, voipId);
+    new ErrorRegistrationDialog()
+            .show(serviceId, passengerPhone, passengerAddress, passengerName, voipId);
   }
 
   @OnClick(R.id.btnComplaintRegistration)
@@ -199,7 +204,7 @@ public class TripDetailsFragment extends Fragment {
 
   @OnClick(R.id.btnDriverLock)
   void onLock() {
-    new DriverLockDialog().show(carCode,serviceId);
+    new DriverLockDialog().show(carCode);
   }
 
   @Override
@@ -256,6 +261,7 @@ public class TripDetailsFragment extends Fragment {
             String driverId = data.getString("driverId");
             int userId = data.getInt("UserId");
             String perDiscount = data.getString("PerDiscount");
+            String discountAmount = data.getString("discountAmount");
             String rewardCode = data.getString("RewardCode");
             String maxDiscount = data.getString("MaxDiscount");
             passengerName = data.getString("customerName");
@@ -272,8 +278,8 @@ public class TripDetailsFragment extends Fragment {
             String typeService = data.getString("typeService");
             if (!data.isNull("lat"))
               lat = data.getDouble("lat");
-            if (!data.isNull("lon"))
-              lng = data.getDouble("lon");
+            if (!data.isNull("long"))
+              lng = data.getDouble("long");
             lastPositionTime = data.getString("lastPositionTime");
             lastPositionDate = data.getString("lastPositionDate");
             int Finished = data.getInt("Finished");
@@ -306,8 +312,8 @@ public class TripDetailsFragment extends Fragment {
             txtCustomerMobile.setText(StringHelper.toPersianDigits(customerMobile));
             txtServiceComment.setText(serviceComment.equals("null") ? " " : StringHelper.toPersianDigits(serviceComment));
             txtTrafficPlan.setText(TrafficPlan == 0 ? "نیست" : "هست");
-            txtMaxPercent.setText(maxDiscount.equals("null") ? " " : StringHelper.toPersianDigits(maxDiscount));
-            txtPercent.setText(rewardCode.equals("null") ? " " : StringHelper.toPersianDigits(rewardCode));
+            txtMaxPercent.setText(maxDiscount.equals("null") ? " " : StringHelper.toPersianDigits(StringHelper.setComma(maxDiscount)));
+            txtPercent.setText(discountAmount.equals("null") ? " " : StringHelper.toPersianDigits(StringHelper.setComma(discountAmount)));
             txtSendDate.setText(sendDate.equals("null") ? " " : StringHelper.toPersianDigits(sendDate));
             txtSendTime.setText(sendTime.equals("null") ? " " : StringHelper.toPersianDigits(sendTime));
             txtDriverCode.setText(carCode.equals("null") ? " " : StringHelper.toPersianDigits(carCode));
@@ -317,6 +323,7 @@ public class TripDetailsFragment extends Fragment {
             txtPrice.setText(price.equals("null") ? " " : StringHelper.toPersianDigits(StringHelper.setComma(price)));
             txtEndTime.setText(finishTime.equals("null") ? " " : StringHelper.toPersianDigits(finishTime));
             txtPlaque.setText(plak.equals("null") ? " " : StringHelper.toPersianDigits(plak));
+            txtServiceFixedComment.setText(customerFixedDes.equals("null") ? " " : StringHelper.toPersianDigits(customerFixedDes));
 
             llHeaderStatus.setBackgroundColor(Color.parseColor(statusColor));
 
@@ -368,15 +375,15 @@ public class TripDetailsFragment extends Fragment {
     btnReFollow.setBackgroundResource(R.drawable.bg_btn_disable);
     btnComplaintRegistration.setEnabled(false);
     btnComplaintRegistration.setBackgroundResource(R.drawable.bg_btn_disable);
-    btnLost.setEnabled(false);
-    btnLost.setBackgroundResource(R.drawable.bg_btn_disable);
     btnDriverLock.setEnabled(false);
     btnDriverLock.setBackgroundResource(R.drawable.bg_btn_disable);
     btnCancelTrip.setEnabled(false);
     btnCancelTrip.setBackgroundResource(R.drawable.bg_btn_disable);
+    MyApplication.prefManager.setLastCallerId("");// set empty, because I don't want save this permanently .
   }
 
   private void disableControllerButton() {
+    MyApplication.prefManager.setLastCallerId("");// set empty, because I don't want save this permanently .
     btnCancelTrip.setEnabled(false);
     btnCancelTrip.setBackgroundResource(R.drawable.bg_btn_disable);
     btnReFollow.setEnabled(false);
@@ -384,6 +391,7 @@ public class TripDetailsFragment extends Fragment {
   }
 
   private void cancelService() {
+
     String message = "اپراتور گرامی، این تماس از سمت راننده میباشد و امکان لغو سرویس میسر نیست.\n" +
             "اگر راننده خود را به عنوان مسافر معرفی کرده با همین موضوع ثبت خطا کنید.";
     if (MyApplication.prefManager.getLastCallerId().equals(carMobile) || MyApplication.prefManager.getLastCallerId().equals(driverMobile)) {
@@ -396,6 +404,7 @@ public class TripDetailsFragment extends Fragment {
       return;
     }
 
+    LoadingDialog.makeCancelableLoader();
     RequestHelper.builder(EndPoints.CANCEL_SERVICE)
             .addParam("serviceId", serviceId)
             .addParam("userId", MyApplication.prefManager.getUserCode())
@@ -410,6 +419,7 @@ public class TripDetailsFragment extends Fragment {
         @Override
         public void run() {
           try {
+            LoadingDialog.dismissCancelableDialog();
             Log.i("TripDetailsFragment", "run: " + args[0].toString());
 //            {"success":true,"message":"","data":{"status":true}}
             JSONObject object = new JSONObject(args[0].toString());
@@ -419,11 +429,19 @@ public class TripDetailsFragment extends Fragment {
             boolean status = dataObj.getBoolean("status");
 
             if (status) {
+              MyApplication.prefManager.setLastCallerId("");// set empty, because I don't want save this permanently .
               new GeneralDialog()
                       .title("تایید شد")
                       .message("سرویس با موفقیت کنسل شد")
                       .cancelable(false)
-                      .firstButton("باشه", () -> MyApplication.currentActivity.onBackPressed())
+                      .firstButton("باشه", () -> tripDetails())
+                      .show();
+            } else {
+              new GeneralDialog()
+                      .title("خطا")
+                      .message(message)
+                      .cancelable(false)
+                      .firstButton("باشه", null)
                       .show();
             }
 
@@ -437,11 +455,13 @@ public class TripDetailsFragment extends Fragment {
     @Override
     public void onFailure(Runnable reCall, Exception e) {
       MyApplication.handler.post(() -> {
+        LoadingDialog.dismissCancelableDialog();
       });
     }
   };
 
   private void trackingAgain() {
+    LoadingDialog.makeCancelableLoader();
     RequestHelper.builder(EndPoints.AGAIN_TRACKING)
             .addParam("serviceId", serviceId)
             .addParam("userId", MyApplication.prefManager.getUserCode())
@@ -456,6 +476,7 @@ public class TripDetailsFragment extends Fragment {
         @Override
         public void run() {
           try {
+            LoadingDialog.dismissCancelableDialog();
             Log.i("TripDetailsFragment", "run: " + args[0].toString());
 //            {"success":true,"message":"","data":{"status":true}}
             JSONObject object = new JSONObject(args[0].toString());
@@ -467,9 +488,9 @@ public class TripDetailsFragment extends Fragment {
             if (status) {
               new GeneralDialog()
                       .title("تایید شد")
-                      .message("سرویس با موفقیت کنسل شد")
+                      .message("درخواست شما با موفقیت ثبت شد")
                       .cancelable(false)
-                      .firstButton("باشه",null)
+                      .firstButton("باشه", null)
                       .show();
             }
 
@@ -483,6 +504,7 @@ public class TripDetailsFragment extends Fragment {
     @Override
     public void onFailure(Runnable reCall, Exception e) {
       MyApplication.handler.post(() -> {
+        LoadingDialog.dismissCancelableDialog();
       });
     }
   };

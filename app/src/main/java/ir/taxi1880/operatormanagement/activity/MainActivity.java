@@ -59,7 +59,6 @@ public class MainActivity extends AppCompatActivity implements NotificationFragm
               .firstButton("باشه", null)
               .show();
     } else {
-      //TODO correct fragment name
       FragmentHelper
               .toFragment(MyApplication.currentActivity, new DeterminationPageFragment())
               .replace();
