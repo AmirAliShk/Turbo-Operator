@@ -69,3 +69,13 @@ release on 10/08/99 - 30/10/2020
 - play call voice
 - report mistake of operator
 
+versionCode 20, versionName 2.6 :
+release on 26/08/99
+- add support
+-
+
+versionCode 21, versionName 2.6.1 :
+release on 26/08/99
+- fix crash = Fragment already added
+-
+

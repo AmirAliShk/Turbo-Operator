@@ -874,12 +874,9 @@ public class TripRegisterActivity extends AppCompatActivity {
       MyApplication.handler.post(() -> {
         try {
           if (queue.trim().equals("1817")) {
-            MyApplication.handler.postDelayed(new Runnable() {
-              @Override
-              public void run() {
-                if (spServiceType != null)
-                  spServiceType.setSelection(2, true);
-              }
+            MyApplication.handler.postDelayed(() -> {
+              if (spServiceType != null)
+                spServiceType.setSelection(2, true);
             }, 500);
           }
 
@@ -915,7 +912,7 @@ public class TripRegisterActivity extends AppCompatActivity {
           if (success) {
 
             if (!tripState.isEmpty()) {
-              String msg = "مسافر " + callTimeInterval + "دقیقه پیش سفری درخواست داده است " + "\n" + " وضعیت سفر : " + tripState;
+              String msg = " مسافر " + callTimeInterval + " دقیقه پیش سفری درخواست داده است " + "\n" + " وضعیت سفر : " + tripState;
               if (vfPassengerInfo != null)
                 vfPassengerInfo.setDisplayedChild(0);
               new GeneralDialog()
@@ -925,7 +922,6 @@ public class TripRegisterActivity extends AppCompatActivity {
                         Bundle bundle = new Bundle();
                         bundle.putString("tellNumber", getTellNumber());
                         FragmentHelper.toFragment(MyApplication.currentActivity, new SupportFragment()).setArguments(bundle).replace();
-                        clearData();
                       })
                       .show();
             }

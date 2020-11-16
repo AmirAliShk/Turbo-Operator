@@ -244,6 +244,30 @@
                             android:layout_height="wrap_content"
                             android:layout_gravity="right"
                             android:minWidth="70dp"
+                            android:text="@string/stationCode" />
+
+                        <TextView
+                            android:id="@+id/txtStationCode"
+                            style="@style/tripItemValue"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="5dp" />
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center_vertical"
+                        android:orientation="horizontal"
+                        android:padding="5dp">
+
+                        <TextView
+                            style="@style/tripItemTitle"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="right"
+                            android:minWidth="70dp"
                             android:text="@string/trafficPlane" />
 
                         <TextView
@@ -309,8 +333,8 @@
                             style="@style/tripItemTitle"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:minWidth="70dp"
                             android:layout_gravity="right"
+                            android:minWidth="70dp"
                             android:text="@string/serviceComment" />
 
                         <TextView

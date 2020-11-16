@@ -120,6 +120,9 @@ public class TripDetailsFragment extends Fragment {
   @BindView(R.id.txtTitle)
   TextView txtTitle;
 
+  @BindView(R.id.txtStationCode)
+  TextView txtStationCode;
+
   @BindView(R.id.txtTrafficPlan)
   TextView txtTrafficPlan;
 
@@ -307,6 +310,7 @@ public class TripDetailsFragment extends Fragment {
             txtTime.setText(StringHelper.toPersianDigits(callTime));
             txtTripType.setText(StringHelper.toPersianDigits(typeService));
             txtCity.setText(cityName);
+            txtStationCode.setText(StringHelper.toPersianDigits(stationCode + ""));
             txtCustomerAddress.setText(StringHelper.toPersianDigits(passengerAddress));
             txtCustomerTell.setText(StringHelper.toPersianDigits(passengerPhone));
             txtCustomerMobile.setText(StringHelper.toPersianDigits(customerMobile));
@@ -356,6 +360,7 @@ public class TripDetailsFragment extends Fragment {
   };
 
   private void disableControllerButton0() {
+    if (btnDriverLocation == null) return;
     btnDriverLocation.setEnabled(false);
     btnDriverLocation.setBackgroundResource(R.drawable.bg_btn_disable);
     btnReFollow.setEnabled(false);
@@ -369,6 +374,7 @@ public class TripDetailsFragment extends Fragment {
   }
 
   private void disableControllerButton6() {
+    if (btnDriverLocation == null) return;
     btnDriverLocation.setEnabled(false);
     btnDriverLocation.setBackgroundResource(R.drawable.bg_btn_disable);
     btnReFollow.setEnabled(false);
@@ -383,9 +389,8 @@ public class TripDetailsFragment extends Fragment {
   }
 
   private void disableControllerButton() {
+    if (btnCancelTrip == null) return;
     MyApplication.prefManager.setLastCallerId("");// set empty, because I don't want save this permanently .
-    btnCancelTrip.setEnabled(false);
-    btnCancelTrip.setBackgroundResource(R.drawable.bg_btn_disable);
     btnReFollow.setEnabled(false);
     btnReFollow.setBackgroundResource(R.drawable.bg_btn_disable);
   }
@@ -393,7 +398,7 @@ public class TripDetailsFragment extends Fragment {
   private void cancelService() {
 
     String message = "اپراتور گرامی، این تماس از سمت راننده میباشد و امکان لغو سرویس میسر نیست.\n" +
-            "اگر راننده خود را به عنوان مسافر معرفی کرده با همین موضوع ثبت خطا کنید.";
+            "اگر راننده خود را به عنوان مسافر معرفی کرده و درخواست لغو سفرش را دارد، با همین موضوع ثبت خطا کنید.";
     if (MyApplication.prefManager.getLastCallerId().equals(carMobile) || MyApplication.prefManager.getLastCallerId().equals(driverMobile)) {
       new GeneralDialog()
               .title("هشدار")

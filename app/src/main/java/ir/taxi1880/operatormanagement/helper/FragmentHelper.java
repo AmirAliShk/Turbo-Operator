@@ -158,6 +158,7 @@ public class FragmentHelper {
             if (isAddToBackStack()) {
               fragmentTransaction.addToBackStack(null);
             }
+            if(instance.fragment.isAdded()) { return; }
             fragmentTransaction.add(instance.frame, instance.fragment, instance.flag);
             fragmentTransaction.commitAllowingStateLoss();
           } else if (instance.fragmentV4 != null) {

@@ -150,6 +150,7 @@ public class SupportFragment extends Fragment {
     if (bundle != null) {
       tellNumber = bundle.getString("tellNumber");
       edtSearchTrip.setText(tellNumber);
+      onSearchPress();
     }
 
     edtSearchTrip.requestFocus();

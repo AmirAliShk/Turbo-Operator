@@ -50,6 +50,7 @@ public class TripAdapter extends RecyclerView.Adapter<TripAdapter.TripViewHolder
     holder.txtCustomerTell.setText(StringHelper.toPersianDigits(tripModel.getCustomerTell()));
     holder.txtDriverMobile.setText(tripModel.getDriverMobile().equals("null") ? " " : StringHelper.toPersianDigits(tripModel.getDriverMobile()));
     holder.txtCallDate.setText(tripModel.getCallDate().equals("null") ? " " : StringHelper.toPersianDigits(tripModel.getCallDate()));
+    holder.txtStationCode.setText(StringHelper.toPersianDigits(tripModel.getStationCode()+""));
 
 //    holder.llHeaderStatus.setBackgroundColor(Color.parseColor(tripModel.getStatusColor()));
     holder.llHeaderStatus.setBackgroundColor(Color.parseColor(tripModel.getStatusColor()));
@@ -80,6 +81,7 @@ public class TripAdapter extends RecyclerView.Adapter<TripAdapter.TripViewHolder
     TextView txtCarType;
     TextView txtDriverMobile;
     TextView txtCallDate;
+    TextView txtStationCode;
     LinearLayout llHeaderStatus;
 
     public TripViewHolder(@NonNull View itemView) {
@@ -95,6 +97,7 @@ public class TripAdapter extends RecyclerView.Adapter<TripAdapter.TripViewHolder
       txtCarType = itemView.findViewById(R.id.txtCarType);
       txtDriverMobile = itemView.findViewById(R.id.txtDriverMobile);
       txtCallDate = itemView.findViewById(R.id.txtCallDate);
+      txtStationCode = itemView.findViewById(R.id.txtStationCode);
       llHeaderStatus = itemView.findViewById(R.id.llHeaderStatus);
     }
   }
