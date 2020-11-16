@@ -73,7 +73,6 @@ public class SupportFragment extends Fragment {
     if (vfTrip != null) {
       vfTrip.setDisplayedChild(3);
     }
-    //TODO here The request must be canceled, but I do not know how?
   }
 
   @OnClick(R.id.imgSearch)
@@ -186,6 +185,7 @@ public class SupportFragment extends Fragment {
 
       case 0:
         RequestHelper.builder(EndPoints.SEARCH_SERVICE)
+                .ignore422Error(true)
                 .addParam("phonenumber", 0)
                 .addParam("name", 0)
                 .addParam("address", 0)
@@ -198,6 +198,7 @@ public class SupportFragment extends Fragment {
 
       case 1:
         RequestHelper.builder(EndPoints.SEARCH_SERVICE)
+                .ignore422Error(true)
                 .addParam("phonenumber", 0)
                 .addParam("name", searchText)
                 .addParam("address", 0)
@@ -210,6 +211,7 @@ public class SupportFragment extends Fragment {
 
       case 2:
         RequestHelper.builder(EndPoints.SEARCH_SERVICE)
+                .ignore422Error(true)
                 .addParam("phonenumber", searchText)
                 .addParam("name", 0)
                 .addParam("address", 0)
@@ -222,6 +224,7 @@ public class SupportFragment extends Fragment {
 
       case 3:
         RequestHelper.builder(EndPoints.SEARCH_SERVICE)
+                .ignore422Error(true)
                 .addParam("phonenumber", 0)
                 .addParam("name", 0)
                 .addParam("address", searchText)
@@ -234,6 +237,7 @@ public class SupportFragment extends Fragment {
 
       case 4:
         RequestHelper.builder(EndPoints.SEARCH_SERVICE)
+                .ignore422Error(true)
                 .addParam("phonenumber", 0)
                 .addParam("name", 0)
                 .addParam("address", 0)
@@ -246,6 +250,7 @@ public class SupportFragment extends Fragment {
 
       case 5:
         RequestHelper.builder(EndPoints.SEARCH_SERVICE)
+                .ignore422Error(true)
                 .addParam("phonenumber", 0)
                 .addParam("name", 0)
                 .addParam("address", 0)
@@ -260,6 +265,7 @@ public class SupportFragment extends Fragment {
   }
 
   RequestHelper.Callback onGetTripList = new RequestHelper.Callback() {
+
     @Override
     public void onResponse(Runnable reCall, Object... args) {
       MyApplication.handler.post(() -> {
@@ -323,6 +329,7 @@ public class SupportFragment extends Fragment {
     @Override
     public void onFailure(Runnable reCall, Exception e) {
       MyApplication.handler.post(() -> {
+//       e = {"message":"Unprocessable Entity","data":[{"field":"stationCode","message":"کد ایستگاه صحیح نیست"}],"success":false}
         if (vfTrip != null) {
           vfTrip.setDisplayedChild(3);
         }

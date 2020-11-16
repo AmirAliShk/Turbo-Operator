@@ -207,7 +207,8 @@ public class GeneralDialog {
   private static Dialog staticDialog = null;
 
   public void show() {
-    if (MyApplication.currentActivity==null|| MyApplication.currentActivity.isFinishing())return;
+    if (MyApplication.currentActivity == null || MyApplication.currentActivity.isFinishing())
+      return;
     Dialog tempDialog = null;
     if (singleInstance) {
       if (staticDialog != null) {
@@ -227,7 +228,7 @@ public class GeneralDialog {
     tempDialog.getWindow().setAttributes(wlp);
     tempDialog.setCancelable(cancelable);
     unbinder = ButterKnife.bind(this, tempDialog);
-    TypefaceUtil.overrideFonts( tempDialog.getWindow().getDecorView());
+    TypefaceUtil.overrideFonts(tempDialog.getWindow().getDecorView());
 
     txtMessage.setText(messageText);
     txtTitle.setText(titleText);
@@ -293,14 +294,13 @@ public class GeneralDialog {
           staticDialog = null;
         }
       } else {
-        if (dialog != null) {
-          dialog.dismiss();
-          dialog = null;
-        }
+        if (dialog != null)
+          if (dialog.isShowing())
+            dialog.dismiss();
       }
     } catch (Exception e) {
       e.printStackTrace();
-      AvaCrashReporter.send(e,"GeneralDialog class, dismiss method");
+      AvaCrashReporter.send(e, "GeneralDialog class, dismiss method");
     }
     dialog = null;
   }

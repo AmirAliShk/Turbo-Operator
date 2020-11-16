@@ -21,19 +21,27 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
-            android:padding="10dp"
-            android:background="@drawable/header_blue">
+            android:padding="10dp">
 
             <TextView
                 android:id="@+id/txtStatus"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_weight="1"
                 android:layout_marginRight="10dp"
-                android:gravity="center"
-                android:text="اعزام نشده"
+                android:gravity="right"
                 android:textAppearance="?android:attr/textAppearanceSmall"
                 android:textColor="@color/colorWhite"
                 android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/txtCity"
+                android:layout_marginLeft="10dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/colorWhite"
+                android:textAppearance="?android:attr/textAppearanceSmall"
+                android:textStyle="bold"/>
 
         </LinearLayout>
 
@@ -62,10 +70,10 @@
                     android:minWidth="70dp"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@string/sendCall" />
+                    android:text="@string/callDate" />
 
                 <TextView
-                    android:id="@+id/txtCallTime"
+                    android:id="@+id/txtCallDate"
                     style="@style/tripItemValue"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"/>
@@ -80,18 +88,40 @@
                     android:minWidth="70dp"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:text="@string/sendCall" />
+
+                <TextView
+                    android:id="@+id/txtCallTime"
+                    style="@style/tripItemValue"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"/>
+
+                <View
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center_vertical"
+                android:orientation="horizontal"
+                android:padding="5dp">
+
+                <TextView
+                    style="@style/tripItemTitle"
+                    android:minWidth="70dp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
                     android:text="@string/sendTime" />
 
                 <TextView
                     android:id="@+id/txtSendTime"
                     style="@style/tripItemValue"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content" />
-
-                <View
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:layout_weight="1" />
+                    android:layout_height="wrap_content"/>
 
             </LinearLayout>
 
@@ -161,37 +191,6 @@
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
                     android:layout_weight="1" />
-
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:gravity="center_vertical"
-                android:orientation="horizontal"
-                android:padding="5dp">
-
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:gravity="center_vertical"
-                android:orientation="horizontal"
-                android:padding="5dp">
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:minWidth="70dp"
-                    android:layout_height="wrap_content"
-                    android:text="@string/city"
-                    style="@style/tripItemTitle"/>
-
-                <TextView
-                    android:id="@+id/txtCity"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    style="@style/tripItemValue"/>
 
             </LinearLayout>
 

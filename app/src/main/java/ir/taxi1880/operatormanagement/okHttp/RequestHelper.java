@@ -26,6 +26,7 @@ import ir.taxi1880.operatormanagement.R;
 import ir.taxi1880.operatormanagement.app.EndPoints;
 import ir.taxi1880.operatormanagement.app.MyApplication;
 import ir.taxi1880.operatormanagement.dialog.ErrorDialog;
+import ir.taxi1880.operatormanagement.dialog.GeneralDialog;
 import ir.taxi1880.operatormanagement.helper.StringHelper;
 import ir.taxi1880.operatormanagement.helper.TypefaceUtil;
 import ir.taxi1880.operatormanagement.push.AvaCrashReporter;
@@ -61,6 +62,7 @@ public class RequestHelper implements okhttp3.Callback {
   private boolean hideNetworkError = false;
   private Request req;
   private Object[] object;
+  private boolean ignore422 = false;
 
   public static abstract class Callback {
     public void onReloadPress(boolean v) {
@@ -122,6 +124,11 @@ public class RequestHelper implements okhttp3.Callback {
       paths = new ArrayList<>();
     paths.add(value);
     Log.i(TAG, "addParam: " + value);
+    return this;
+  }
+
+  public RequestHelper ignore422Error(boolean ignore) {
+    this.ignore422 = ignore;
     return this;
   }
 
@@ -428,7 +435,11 @@ public class RequestHelper implements okhttp3.Callback {
         showError("خطای 404 : برای چنین درخواستی پاسخی وجود ندارد لطفا با پشتیبانی تماس حاصل نمایید.");
         break;
       case 422://error entity
-        showError("خطای 422 : متاسفانه اطلاعات ارسالی ناقص است لطفا با پشتیبانی تماس بگیرد");
+        if (ignore422) {
+          showMessage(e.getMessage());
+        } else {
+          showError("خطای 422 : متاسفانه اطلاعات ارسالی ناقص است لطفا با پشتیبانی تماس بگیرد");
+        }
         break;
       case 500:
         showError("خطای 500 : مشکلی در پردازش داده به وجود آمده است لطفا پس از چند لحظه مجدد تلاش نمایید در صورت عدم برطرف شدن، لطفا با پشتیبانی تماس حاصل نمایید.");
@@ -437,6 +448,35 @@ public class RequestHelper implements okhttp3.Callback {
         showError("خطای " + code + " : خطایی تعریف نشده در سیستم به وجود آمده لطفا با پشتیبانی تماس حاصل نمایید.");
         break;
     }
+  }
+
+  private void showMessage(String error) {
+    MyApplication.handler.post(() -> {
+      //TODO correct this in next version
+//    Unprocessable Entity{"message":"Unprocessable Entity","data":[{"field":"stationCode","message":"کد ایستگاه صحیح نیست"}],"success":false}
+//      try {
+//        JSONObject dataObj = new JSONObject(error);
+//        boolean success = dataObj.getBoolean("success");
+//        JSONArray dataArr = dataObj.getJSONArray("data");
+//        String message = "";
+//        if (!success) {
+//          for (int i = 0; i < dataArr.length(); i++) {
+//            JSONObject object = dataArr.getJSONObject(i);
+//            message = message + object.getString("message") + "\n";
+//          }
+
+          new GeneralDialog()
+                  .title("هشدار")
+                  .message("اطلاعات صحیح نمیباشد")
+                  .cancelable(false)
+                  .firstButton("باشه", null)
+                  .show();
+//        }
+
+//      } catch (JSONException e) {
+//        e.printStackTrace();
+//      }
+    });
   }
 
   private static ErrorDialog errorDialog;

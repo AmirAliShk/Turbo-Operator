@@ -67,7 +67,8 @@ public class ErrorDialog {
   }
 
   public void show() {
-    if (MyApplication.currentActivity==null|| MyApplication.currentActivity.isFinishing())return;
+    if (MyApplication.currentActivity == null || MyApplication.currentActivity.isFinishing())
+      return;
     dialog = new Dialog(MyApplication.currentActivity);
     dialog.getWindow().requestFeature(Window.FEATURE_NO_TITLE);
     dialog.getWindow().getAttributes().windowAnimations = R.style.ExpandAnimation;
@@ -131,10 +132,10 @@ public class ErrorDialog {
   public static void dismiss() {
     try {
       if (dialog != null)
-        dialog.dismiss();
+        if (dialog.isShowing())
+          dialog.dismiss();
     } catch (Exception e) {
-      Log.e("TAG", "dismiss: " + e.getMessage());
-      AvaCrashReporter.send(e,"ErrorDialog class, dismiss method");
+      AvaCrashReporter.send(e, "ErrorDialog class, dismiss method");
     }
     dialog = null;
   }

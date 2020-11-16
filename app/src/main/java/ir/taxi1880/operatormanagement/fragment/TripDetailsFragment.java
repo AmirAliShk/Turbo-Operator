@@ -172,7 +172,7 @@ public class TripDetailsFragment extends Fragment {
     bundle.putString("time", lastPositionTime);
     bundle.putString("date", lastPositionDate);
     bundle.putString("carCode", carCode);
-    FragmentHelper.toFragment(MyApplication.currentActivity, new DriverLocationFragment()).setArguments(bundle).replace();
+    FragmentHelper.toFragment(MyApplication.currentActivity, new DriverLocationFragment()).setArguments(bundle).add();
   }
 
   @OnClick(R.id.btnReFollow)

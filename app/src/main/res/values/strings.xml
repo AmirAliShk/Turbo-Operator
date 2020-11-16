@@ -104,6 +104,7 @@
     <string name="trafficPlane">طرح ترافیک</string>
     <string name="search">جست و جو</string>
     <string name="fixedComment">توضیحات دائمی</string>
+    <string name="callDate">تاریخ تماس</string>
 
 
 </resources>

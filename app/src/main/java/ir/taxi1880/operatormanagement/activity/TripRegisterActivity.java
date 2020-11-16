@@ -925,6 +925,7 @@ public class TripRegisterActivity extends AppCompatActivity {
                         Bundle bundle = new Bundle();
                         bundle.putString("tellNumber", getTellNumber());
                         FragmentHelper.toFragment(MyApplication.currentActivity, new SupportFragment()).setArguments(bundle).replace();
+                        clearData();
                       })
                       .show();
             }
@@ -1017,6 +1018,8 @@ public class TripRegisterActivity extends AppCompatActivity {
 
         } catch (JSONException e) {
           e.printStackTrace();
+          if (vfPassengerInfo != null)
+            vfPassengerInfo.setDisplayedChild(0);
           AvaCrashReporter.send(e, "TripRegisterActivity class, getPassengerInfo onResponse method");
         }
       });
@@ -1729,6 +1732,7 @@ public class TripRegisterActivity extends AppCompatActivity {
 
   @Override
   public void onBackPressed() {
+    try {
     if (getFragmentManager().getBackStackEntryCount() > 0 || getSupportFragmentManager().getBackStackEntryCount() > 0) {
       super.onBackPressed();
     } else {
@@ -1749,6 +1753,10 @@ public class TripRegisterActivity extends AppCompatActivity {
               })
               .secondButton("خیر", null)
               .show();
+    }
+    } catch (Exception e) {
+      e.printStackTrace();
+      AvaCrashReporter.send(e, "TripRegister class, onBackPressed method");
     }
   }
 

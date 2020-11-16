@@ -115,7 +115,7 @@ public class DriverLockDialog {
                     .title("تایید شد")
                     .message("عملیات با موفقیت انجام شد")
                     .cancelable(false)
-                    .firstButton("باشه", () -> MyApplication.currentActivity.onBackPressed())
+                    .firstButton("باشه", null)
                     .show();
           }
 

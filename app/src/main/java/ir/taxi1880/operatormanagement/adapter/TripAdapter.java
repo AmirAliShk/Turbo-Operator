@@ -49,6 +49,7 @@ public class TripAdapter extends RecyclerView.Adapter<TripAdapter.TripViewHolder
     holder.txtCustomerName.setText(StringHelper.toPersianDigits(tripModel.getCustomerName()));
     holder.txtCustomerTell.setText(StringHelper.toPersianDigits(tripModel.getCustomerTell()));
     holder.txtDriverMobile.setText(tripModel.getDriverMobile().equals("null") ? " " : StringHelper.toPersianDigits(tripModel.getDriverMobile()));
+    holder.txtCallDate.setText(tripModel.getCallDate().equals("null") ? " " : StringHelper.toPersianDigits(tripModel.getCallDate()));
 
 //    holder.llHeaderStatus.setBackgroundColor(Color.parseColor(tripModel.getStatusColor()));
     holder.llHeaderStatus.setBackgroundColor(Color.parseColor(tripModel.getStatusColor()));
@@ -57,7 +58,7 @@ public class TripAdapter extends RecyclerView.Adapter<TripAdapter.TripViewHolder
     holder.itemView.setOnClickListener(view -> {
       Bundle bundle = new Bundle();
       bundle.putString("id", tripModel.getServiceId());
-      FragmentHelper.toFragment(MyApplication.currentActivity, new TripDetailsFragment()).setArguments(bundle).replace();
+      FragmentHelper.toFragment(MyApplication.currentActivity, new TripDetailsFragment()).setArguments(bundle).add();
       KeyBoardHelper.hideKeyboard();
     });
   }
@@ -78,6 +79,7 @@ public class TripAdapter extends RecyclerView.Adapter<TripAdapter.TripViewHolder
     TextView txtCustomerAddress;
     TextView txtCarType;
     TextView txtDriverMobile;
+    TextView txtCallDate;
     LinearLayout llHeaderStatus;
 
     public TripViewHolder(@NonNull View itemView) {
@@ -92,6 +94,7 @@ public class TripAdapter extends RecyclerView.Adapter<TripAdapter.TripViewHolder
       txtCustomerAddress = itemView.findViewById(R.id.txtCustomerAddress);
       txtCarType = itemView.findViewById(R.id.txtCarType);
       txtDriverMobile = itemView.findViewById(R.id.txtDriverMobile);
+      txtCallDate = itemView.findViewById(R.id.txtCallDate);
       llHeaderStatus = itemView.findViewById(R.id.llHeaderStatus);
     }
   }

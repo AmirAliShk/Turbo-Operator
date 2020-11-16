@@ -263,7 +263,7 @@ public class DataBase extends SQLiteOpenHelper {
 //    where Trip.CityId = id
 
     if (res.getCount() == 0)
-      return " ";
+      return "";
 
     res.moveToFirst();
     return res.getString(res.getColumnIndex(COLUMN_CITY_NAME));
