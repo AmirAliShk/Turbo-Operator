@@ -72,10 +72,18 @@ release on 10/08/99 - 30/10/2020
 versionCode 20, versionName 2.6 :
 release on 26/08/99
 - add support
--
 
 versionCode 21, versionName 2.6.1 :
 release on 26/08/99
 - fix crash = Fragment already added
--
+
+versionCode 22, versionName 2.6.2 :
+release on 26/08/99
+- add station code to service list
+
+versionCode 23, versionName 2.6.3 :
+release on 26/08/99
+- search Automatic in search service
+- add station code to detail service
+
 

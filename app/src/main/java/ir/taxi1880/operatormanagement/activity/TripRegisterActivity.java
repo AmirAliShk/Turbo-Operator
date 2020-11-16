@@ -1721,7 +1721,7 @@ public class TripRegisterActivity extends AppCompatActivity {
     super.onDestroy();
     unbinder.unbind();
     core.removeListener(mCoreListener);
-    MyApplication.prefManager.setLastCallerId("");// set empty, because I don't want save this permanently .
+//    MyApplication.prefManager.setLastCallerId("");// set empty, because I don't want save this permanently .
     core = null;
 
   }

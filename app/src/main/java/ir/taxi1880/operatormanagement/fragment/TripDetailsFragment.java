@@ -385,12 +385,12 @@ public class TripDetailsFragment extends Fragment {
     btnDriverLock.setBackgroundResource(R.drawable.bg_btn_disable);
     btnCancelTrip.setEnabled(false);
     btnCancelTrip.setBackgroundResource(R.drawable.bg_btn_disable);
-    MyApplication.prefManager.setLastCallerId("");// set empty, because I don't want save this permanently .
+//    MyApplication.prefManager.setLastCallerId("");// set empty, because I don't want save this permanently .
   }
 
   private void disableControllerButton() {
     if (btnCancelTrip == null) return;
-    MyApplication.prefManager.setLastCallerId("");// set empty, because I don't want save this permanently .
+//    MyApplication.prefManager.setLastCallerId("");// set empty, because I don't want save this permanently .
     btnReFollow.setEnabled(false);
     btnReFollow.setBackgroundResource(R.drawable.bg_btn_disable);
   }
@@ -434,12 +434,12 @@ public class TripDetailsFragment extends Fragment {
             boolean status = dataObj.getBoolean("status");
 
             if (status) {
-              MyApplication.prefManager.setLastCallerId("");// set empty, because I don't want save this permanently .
+//              MyApplication.prefManager.setLastCallerId("");// set empty, because I don't want save this permanently .
               new GeneralDialog()
                       .title("تایید شد")
                       .message("سرویس با موفقیت کنسل شد")
                       .cancelable(false)
-                      .firstButton("باشه", () -> tripDetails())
+                      .firstButton("باشه", null)
                       .show();
             } else {
               new GeneralDialog()
