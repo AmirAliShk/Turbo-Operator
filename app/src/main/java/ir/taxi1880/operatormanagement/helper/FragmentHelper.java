@@ -167,6 +167,7 @@ public class FragmentHelper {
               fragmentTransaction.addToBackStack(null);
             }
             fragmentTransaction.setCustomAnimations(instance.enterAnim, instance.exitAnim, instance.popEnterAnim, instance.popExitAnim);
+            if(instance.fragmentV4.isAdded()) { return; }
             fragmentTransaction.add(instance.frame, instance.fragmentV4, instance.flag);
             fragmentTransaction.commitAllowingStateLoss();
           } else {

@@ -305,6 +305,8 @@ public class TripDetailsFragment extends Fragment {
               disableControllerButton();
             }
 
+            if (txtCustomerName == null) return;
+
             txtCustomerName.setText(StringHelper.toPersianDigits(passengerName));
             txtDate.setText(StringHelper.toPersianDigits(callDate));
             txtTime.setText(StringHelper.toPersianDigits(callTime));

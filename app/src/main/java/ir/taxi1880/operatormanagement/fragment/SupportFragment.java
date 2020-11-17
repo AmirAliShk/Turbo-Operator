@@ -11,6 +11,7 @@ import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 import android.widget.ViewFlipper;
 
 import org.json.JSONArray;
@@ -24,11 +25,13 @@ import androidx.recyclerview.widget.RecyclerView;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import butterknife.OnLongClick;
 import butterknife.Unbinder;
 import ir.taxi1880.operatormanagement.R;
 import ir.taxi1880.operatormanagement.adapter.TripAdapter;
 import ir.taxi1880.operatormanagement.app.EndPoints;
 import ir.taxi1880.operatormanagement.app.MyApplication;
+import ir.taxi1880.operatormanagement.dialog.CallDialog;
 import ir.taxi1880.operatormanagement.dialog.ExtendedTimeDialog;
 import ir.taxi1880.operatormanagement.dialog.GeneralDialog;
 import ir.taxi1880.operatormanagement.dialog.SearchFilterDialog;
@@ -75,21 +78,44 @@ public class SupportFragment extends Fragment {
     }
   }
 
+  @OnClick(R.id.imgEndCall)
+  void onPressEndCall() {
+    KeyBoardHelper.hideKeyboard();
+    new CallDialog().show(new CallDialog.CallBack() {
+      @Override
+      public void onDismiss() {
+      }
+
+      @Override
+      public void onCallReceived() {
+      }
+
+      @Override
+      public void onCallTransferred() {
+      }
+    });
+  }
+
   @OnClick(R.id.imgSearch)
   void onSearchPress() {
     searchText = StringHelper.toEnglishDigits(edtSearchTrip.getText().toString());
     if (searchText.isEmpty()) {
-      edtSearchTrip.setError("موردی را برای جستو جو وارد کنید");
+      MyApplication.Toast("موردی را برای جستو جو وارد کنید", Toast.LENGTH_SHORT);
       return;
     }
     KeyBoardHelper.hideKeyboard();
     searchService(searchText, searchCase);
   }
 
-  @OnClick(R.id.imgClear)
-  void onClearPress() {
+  @OnLongClick(R.id.imgClear)
+  boolean onLongPressClear() {
     edtSearchTrip.setText("");
+    return true;
   }
+
+//  @OnClick(R.id.imgClear)
+//  void onClearPress() {
+//  }
 
   @OnClick(R.id.imgSearchType)
   void onSearchTypePress() {

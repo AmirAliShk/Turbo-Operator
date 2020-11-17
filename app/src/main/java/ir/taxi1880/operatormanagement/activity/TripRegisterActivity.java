@@ -65,8 +65,7 @@ import ir.taxi1880.operatormanagement.dialog.DescriptionDialog;
 import ir.taxi1880.operatormanagement.dialog.GeneralDialog;
 import ir.taxi1880.operatormanagement.dialog.LoadingDialog;
 import ir.taxi1880.operatormanagement.dialog.OptionDialog;
-import ir.taxi1880.operatormanagement.fragment.SupportFragment;
-import ir.taxi1880.operatormanagement.helper.FragmentHelper;
+import ir.taxi1880.operatormanagement.dialog.SupportDialog;
 import ir.taxi1880.operatormanagement.helper.KeyBoardHelper;
 import ir.taxi1880.operatormanagement.helper.PhoneNumberValidation;
 import ir.taxi1880.operatormanagement.helper.StringHelper;
@@ -660,9 +659,8 @@ public class TripRegisterActivity extends AppCompatActivity {
 
     @Override
     public void afterTextChanged(Editable editable) {
-      if (editable.toString().length() == 1 && editable.toString().startsWith("0")) {
-        editable.clear();
-      }
+      if (PhoneNumberValidation.havePrefix(editable.toString()))
+        edtMobile.setText(PhoneNumberValidation.removePrefix(editable.toString()));
 
     }
   };
@@ -910,22 +908,11 @@ public class TripRegisterActivity extends AppCompatActivity {
           MyApplication.prefManager.setLastCallerId("0" + getTellNumber());
 
           if (success) {
-
-            if (!tripState.isEmpty()) {
-              String msg = " مسافر " + callTimeInterval + " دقیقه پیش سفری درخواست داده است " + "\n" + " وضعیت سفر : " + tripState;
+            if (status == 2) {
               if (vfPassengerInfo != null)
                 vfPassengerInfo.setDisplayedChild(0);
-              new GeneralDialog()
-                      .message(msg)
-                      .firstButton("بستن", null)
-                      .secondButton("پشتیبانی", () -> {
-                        Bundle bundle = new Bundle();
-                        bundle.putString("tellNumber", getTellNumber());
-                        FragmentHelper.toFragment(MyApplication.currentActivity, new SupportFragment()).setArguments(bundle).replace();
-                      })
-                      .show();
+              new SupportDialog().show(tripState, callTimeInterval, getTellNumber());
             }
-
             if (edtTell == null)
               return;
             edtTell.setNextFocusDownId(R.id.edtFamily);
@@ -1729,27 +1716,27 @@ public class TripRegisterActivity extends AppCompatActivity {
   @Override
   public void onBackPressed() {
     try {
-    if (getFragmentManager().getBackStackEntryCount() > 0 || getSupportFragmentManager().getBackStackEntryCount() > 0) {
-      super.onBackPressed();
-    } else {
-      new GeneralDialog()
-              .title("خروج")
-              .message("آیا از خروج خود اطمینان دارید؟")
-              .firstButton("بله", new Runnable() {
-                @Override
-                public void run() {
-                  try {
-                    startActivity(new Intent(MyApplication.context, MainActivity.class));
-                    finish();
-                  } catch (Exception e) {
-                    e.printStackTrace();
-                    AvaCrashReporter.send(e, "TripRegisterActivity class, onBackPressed method");
+      if (getFragmentManager().getBackStackEntryCount() > 0 || getSupportFragmentManager().getBackStackEntryCount() > 0) {
+        super.onBackPressed();
+      } else {
+        new GeneralDialog()
+                .title("خروج")
+                .message("آیا از خروج خود اطمینان دارید؟")
+                .firstButton("بله", new Runnable() {
+                  @Override
+                  public void run() {
+                    try {
+                      startActivity(new Intent(MyApplication.context, MainActivity.class));
+                      finish();
+                    } catch (Exception e) {
+                      e.printStackTrace();
+                      AvaCrashReporter.send(e, "TripRegisterActivity class, onBackPressed method");
+                    }
                   }
-                }
-              })
-              .secondButton("خیر", null)
-              .show();
-    }
+                })
+                .secondButton("خیر", null)
+                .show();
+      }
     } catch (Exception e) {
       e.printStackTrace();
       AvaCrashReporter.send(e, "TripRegister class, onBackPressed method");

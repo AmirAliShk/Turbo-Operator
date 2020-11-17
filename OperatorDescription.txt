@@ -86,4 +86,13 @@ release on 26/08/99
 - search Automatic in search service
 - add station code to detail service
 
+versionCode 24, versionName 2.6.4 :
+release on
+- fix crash = Fragment already added> for fragment V4
+- fix crash textView is null in response service detail
+- long press for remove search
+- add endCall in support fragment
+- fix bug of passenger info (status)
+- change design of support dialog
+
 

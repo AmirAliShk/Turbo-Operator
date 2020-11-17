@@ -105,6 +105,7 @@
     <string name="search">جست و جو</string>
     <string name="fixedComment">توضیحات دائمی</string>
     <string name="callDate">تاریخ تماس</string>
+    <string name="close">بستن</string>
 
 
 </resources>
