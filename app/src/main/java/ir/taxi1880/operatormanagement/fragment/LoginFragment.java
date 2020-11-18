@@ -27,6 +27,7 @@ import ir.taxi1880.operatormanagement.dialog.ErrorDialog;
 import ir.taxi1880.operatormanagement.dialog.GeneralDialog;
 import ir.taxi1880.operatormanagement.helper.FragmentHelper;
 import ir.taxi1880.operatormanagement.helper.KeyBoardHelper;
+import ir.taxi1880.operatormanagement.helper.StringHelper;
 import ir.taxi1880.operatormanagement.helper.TypefaceUtil;
 import ir.taxi1880.operatormanagement.okHttp.RequestHelper;
 import ir.taxi1880.operatormanagement.push.AvaCrashReporter;
@@ -112,8 +113,6 @@ public class LoginFragment extends Fragment {
           int accessStationDeterminationPage = object.getInt("accessStationDeterminationPage");
           int customerSupport=object.getInt("customerSupport");
           MyApplication.prefManager.setCustomerSupport(customerSupport);
-          String name = edtUserName.getText().toString();
-          String pass = edtPassword.getText().toString();
           MyApplication.prefManager.setOperatorName(object.getString("name"));
 
           if (status == 1) {
@@ -140,8 +139,8 @@ public class LoginFragment extends Fragment {
             MyApplication.prefManager.setCardNumber(cardNumber);
             MyApplication.prefManager.setAccountNumber(accountNumber);
             MyApplication.prefManager.setBalance(balance);
-            MyApplication.prefManager.setUserName(name);
-            MyApplication.prefManager.setPassword(pass);
+            MyApplication.prefManager.setUserName(StringHelper.toEnglishDigits(edtUserName.getText().toString()));
+            MyApplication.prefManager.setPassword(StringHelper.toEnglishDigits(edtPassword.getText().toString()));
             MyApplication.prefManager.isLoggedIn(true);
             if (isFinishContract == 1) {
               new GeneralDialog()

@@ -858,8 +858,8 @@ public class TripRegisterActivity extends AppCompatActivity {
 
     RequestHelper.builder(EndPoints.PASSENGER_INFO)
             .addPath(MyApplication.prefManager.getCustomerSupport() + "")
-            .addPath(phoneNumber)
-            .addPath(mobile)
+            .addPath(StringHelper.extractTheNumber(phoneNumber))
+            .addPath(StringHelper.extractTheNumber(mobile))
             .addPath(queue)
             .listener(getPassengerInfo)
             .get();

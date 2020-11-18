@@ -381,8 +381,6 @@ public class TripDetailsFragment extends Fragment {
     btnDriverLocation.setBackgroundResource(R.drawable.bg_btn_disable);
     btnReFollow.setEnabled(false);
     btnReFollow.setBackgroundResource(R.drawable.bg_btn_disable);
-    btnComplaintRegistration.setEnabled(false);
-    btnComplaintRegistration.setBackgroundResource(R.drawable.bg_btn_disable);
     btnDriverLock.setEnabled(false);
     btnDriverLock.setBackgroundResource(R.drawable.bg_btn_disable);
     btnCancelTrip.setEnabled(false);

@@ -120,13 +120,11 @@ public class StringHelper {
 
   public static String extractTheNumber(String v) {
     v = toEnglishDigits(v);
-    Log.i("LOG", "extractTheNumber: " + v);
     Matcher m = Pattern.compile("[0-9]").matcher(v);
     String str = "";
     while (m.find()) {
       str += m.group();
     }
-    Log.i("LOG", "extractTheNumber: " + str);
     return str;
   }
 
