@@ -24,6 +24,14 @@
             android:padding="15dp"
             android:src="@drawable/ic_back" />
 
+        <ImageView
+            android:id="@+id/imgEndCall"
+            android:layout_width="60dp"
+            android:layout_height="match_parent"
+            android:layout_toRightOf="@id/imgBack"
+            android:padding="17dp"
+            android:src="@drawable/ic_end_call"/>
+
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -37,10 +45,11 @@
             android:id="@+id/llExtendedTime"
             android:layout_width="120dp"
             android:layout_height="match_parent"
-            android:layout_toLeftOf="@id/imgEndCall"
+            android:layout_alignParentEnd="true"
             android:gravity="right|center_vertical"
             android:orientation="horizontal"
-            android:paddingRight="15dp">
+            android:paddingRight="15dp"
+            android:layout_alignParentRight="true">
 
             <TextView
                 android:id="@+id/txtExtendTime"
@@ -60,17 +69,6 @@
                 android:tint="@color/colorWhite" />
 
         </LinearLayout>
-
-        <ImageView
-            android:id="@+id/imgEndCall"
-            android:layout_width="60dp"
-            android:layout_height="50dp"
-            android:layout_centerInParent="true"
-            android:layout_weight="1"
-            android:layout_alignParentEnd="true"
-            android:padding="15dp"
-            android:src="@drawable/ic_end_call"
-            android:layout_alignParentRight="true" />
 
     </RelativeLayout>
 
