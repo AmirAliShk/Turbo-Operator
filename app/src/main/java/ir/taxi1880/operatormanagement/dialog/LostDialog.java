@@ -115,9 +115,16 @@ public class LostDialog {
           if (status) {
             new GeneralDialog()
                     .title("تایید شد")
-                    .message("عملیات با موفقیت انجام شده")
+                    .message(message)
                     .cancelable(false)
                     .firstButton("باشه",null)
+                    .show();
+          }else {
+            new GeneralDialog()
+                    .title("خطا")
+                    .message(message)
+                    .cancelable(false)
+                    .firstButton("باشه", null)
                     .show();
           }
         } catch (Exception e) {

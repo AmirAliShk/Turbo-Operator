@@ -94,12 +94,18 @@ public class ErrorRegistrationDialog {
           if (status) {
             new GeneralDialog()
                     .title("تایید شد")
-                    .message("عملیات با موفقیت انجام شد")
+                    .message(message)
+                    .cancelable(false)
+                    .firstButton("باشه", null)
+                    .show();
+          }else {
+            new GeneralDialog()
+                    .title("خطا")
+                    .message(message)
                     .cancelable(false)
                     .firstButton("باشه", null)
                     .show();
           }
-          //TODO else what?
 
         } catch (Exception e) {
           e.printStackTrace();

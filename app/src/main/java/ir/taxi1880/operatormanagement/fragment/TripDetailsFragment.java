@@ -437,7 +437,7 @@ public class TripDetailsFragment extends Fragment {
 //              MyApplication.prefManager.setLastCallerId("");// set empty, because I don't want save this permanently .
               new GeneralDialog()
                       .title("تایید شد")
-                      .message("سرویس با موفقیت کنسل شد")
+                      .message(message)
                       .cancelable(false)
                       .firstButton("باشه", null)
                       .show();
@@ -493,7 +493,7 @@ public class TripDetailsFragment extends Fragment {
             if (status) {
               new GeneralDialog()
                       .title("تایید شد")
-                      .message("درخواست شما با موفقیت ثبت شد")
+                      .message(message)
                       .cancelable(false)
                       .firstButton("باشه", null)
                       .show();
