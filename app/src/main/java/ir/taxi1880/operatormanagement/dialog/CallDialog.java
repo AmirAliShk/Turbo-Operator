@@ -42,6 +42,7 @@ public class CallDialog {
 
     void onCallTransferred();
 
+    void onCallEnded();
   }
 
   Unbinder unbinder;
@@ -111,9 +112,11 @@ public class CallDialog {
                 || state == Call.State.PausedByRemote
                 || state == Call.State.Pausing) {
           call.terminate();
+          callBack.onCallEnded();
         }
       } else if (call != null && call == currentCall) {
         call.terminate();
+        callBack.onCallEnded();
       }
     }
     dismiss();
@@ -122,17 +125,16 @@ public class CallDialog {
   @Optional
   @OnClick(R.id.llEndCall2)
   void onEndPress() {
-
     try {
       Call call = core.getCallByRemoteAddress2(callAddress);
-      if (call != null)
+      if (call != null) {
         call.terminate();
+        callBack.onCallEnded();
+      }
     } catch (Exception e) {
       e.printStackTrace();
       AvaCrashReporter.send(e, "CallDialog class, onEndPress method");
-
     }
-
     vfCall.setDisplayedChild(0);
     setCancelable(true);
   }
@@ -206,7 +208,7 @@ public class CallDialog {
   CallBack callBack;
   Address callAddress;
 
-  public void show(CallBack callBack) {
+  public void show(CallBack callBack, boolean isFromSupport) {
     if (MyApplication.currentActivity == null || MyApplication.currentActivity.isFinishing())
       return;
     dialog = new Dialog(MyApplication.currentActivity);
@@ -228,10 +230,14 @@ public class CallDialog {
     vfCall.setDisplayedChild((call == null) ? 0 : 1);
     core.addListener(coreListener);
 
-    if (MyApplication.prefManager.getCustomerSupport()==1){
+    if (MyApplication.prefManager.getCustomerSupport() == 1) {
       llTransferr.setVisibility(View.GONE);
       llCallSupport.setVisibility(View.GONE);
       view.setVisibility(View.GONE);
+    }
+
+    if (isFromSupport) {
+      vfCall.setDisplayedChild(1);
     }
 
     dialog.show();
@@ -250,6 +256,7 @@ public class CallDialog {
         dismiss();
       } else if (state == Call.State.Connected) {
       } else if (state == Call.State.End) {
+        callBack.onCallEnded();
         dismiss();
       }
     }

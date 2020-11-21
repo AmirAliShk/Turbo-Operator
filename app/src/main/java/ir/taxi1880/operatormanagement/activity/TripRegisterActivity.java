@@ -444,7 +444,13 @@ public class TripRegisterActivity extends AppCompatActivity {
           }
         }, 100);
       }
-    });
+
+      @Override
+      public void onCallEnded() {
+
+      }
+
+    },false);
 
 //    Call call = LinphoneService.getCore().getCurrentCall();
 //    call.terminate();

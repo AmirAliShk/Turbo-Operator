@@ -17,6 +17,9 @@ import android.widget.ViewFlipper;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+import org.linphone.core.Call;
+import org.linphone.core.Core;
+import org.linphone.core.CoreListenerStub;
 
 import java.util.ArrayList;
 
@@ -41,6 +44,7 @@ import ir.taxi1880.operatormanagement.helper.StringHelper;
 import ir.taxi1880.operatormanagement.helper.TypefaceUtil;
 import ir.taxi1880.operatormanagement.model.TripModel;
 import ir.taxi1880.operatormanagement.okHttp.RequestHelper;
+import ir.taxi1880.operatormanagement.services.LinphoneService;
 
 public class SupportFragment extends Fragment {
   Unbinder unbinder;
@@ -48,6 +52,7 @@ public class SupportFragment extends Fragment {
   TripAdapter tripAdapter;
   int searchCase = 2;
   int extendedTime = 1;
+  Core core;
   String searchText;
 
   @OnClick(R.id.imgBack)
@@ -61,6 +66,9 @@ public class SupportFragment extends Fragment {
 
   @BindView(R.id.imgSearchType)
   ImageView imgSearchType;
+
+  @BindView(R.id.imgEndCall)
+  ImageView imgEndCall;
 
   @BindView(R.id.imgExtendedTime)
   ImageView imgExtendedTime;
@@ -81,19 +89,29 @@ public class SupportFragment extends Fragment {
   @OnClick(R.id.imgEndCall)
   void onPressEndCall() {
     KeyBoardHelper.hideKeyboard();
-    new CallDialog().show(new CallDialog.CallBack() {
-      @Override
-      public void onDismiss() {
-      }
+    if (MyApplication.prefManager.getConnectedCall()) {
+      new CallDialog().show(new CallDialog.CallBack() {
+        @Override
+        public void onDismiss() {
+        }
 
-      @Override
-      public void onCallReceived() {
-      }
+        @Override
+        public void onCallReceived() {
+        }
 
-      @Override
-      public void onCallTransferred() {
-      }
-    });
+        @Override
+        public void onCallTransferred() {
+        }
+
+        @Override
+        public void onCallEnded() {
+          if (imgEndCall != null)
+            imgEndCall.setBackgroundResource(0);
+        }
+      }, true);
+    } else {
+      MyApplication.Toast("در حال حاضر تماسی برقرار نیست", Toast.LENGTH_SHORT);
+    }
   }
 
   @OnClick(R.id.imgSearch)
@@ -183,6 +201,12 @@ public class SupportFragment extends Fragment {
     edtSearchTrip.setInputType(InputType.TYPE_CLASS_NUMBER);
 
     edtSearchTrip.addTextChangedListener(searchWatcher);
+
+    if (MyApplication.prefManager.getConnectedCall()) {
+      imgEndCall.setBackgroundResource(R.drawable.bg_pink_edge);
+    } else {
+      imgEndCall.setBackgroundResource(0);
+    }
 
     return view;
   }
@@ -363,6 +387,29 @@ public class SupportFragment extends Fragment {
       });
     }
   };
+
+  CoreListenerStub mCoreListener = new CoreListenerStub() {
+    @Override
+    public void onCallStateChanged(Core core, final Call call, Call.State state, String message) {
+      if (state == Call.State.End) {
+        imgEndCall.setBackgroundResource(0);
+      }
+    }
+  };
+
+  @Override
+  public void onStart() {
+    super.onStart();
+    core = LinphoneService.getCore();
+    core.addListener(mCoreListener);
+  }
+
+  @Override
+  public void onDestroy() {
+    super.onDestroy();
+    core.removeListener(mCoreListener);
+    core = null;
+  }
 
   @Override
   public void onDestroyView() {
