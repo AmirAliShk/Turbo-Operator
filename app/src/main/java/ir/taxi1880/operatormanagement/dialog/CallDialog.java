@@ -9,6 +9,7 @@ import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.Toast;
 import android.widget.ViewFlipper;
 
@@ -47,6 +48,15 @@ public class CallDialog {
 
   @BindView(R.id.vfPause)
   ViewFlipper vfPause;
+
+  @BindView(R.id.llTransferr)
+  LinearLayout llTransferr;
+
+  @BindView(R.id.llCallSupport)
+  LinearLayout llCallSupport;
+
+  @BindView(R.id.view)
+  View view;
 
   @Optional
   @OnClick(R.id.llTransfer)
@@ -217,6 +227,12 @@ public class CallDialog {
     call = core.getCurrentCall();
     vfCall.setDisplayedChild((call == null) ? 0 : 1);
     core.addListener(coreListener);
+
+    if (MyApplication.prefManager.getCustomerSupport()==1){
+      llTransferr.setVisibility(View.GONE);
+      llCallSupport.setVisibility(View.GONE);
+      view.setVisibility(View.GONE);
+    }
 
     dialog.show();
   }
