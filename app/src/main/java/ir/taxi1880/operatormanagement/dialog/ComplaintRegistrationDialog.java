@@ -96,13 +96,12 @@ public class ComplaintRegistrationDialog {
     public void onResponse(Runnable reCall, Object... args) {
       MyApplication.handler.post(() -> {
         try {
-          LoadingDialog.dismissCancelableDialog();
           Log.i("TripDetailsFragment", "run: " + args[0].toString());
           JSONObject object = new JSONObject(args[0].toString());
           boolean success = object.getBoolean("success");
           String message = object.getString("message");
           JSONObject dataObj = object.getJSONObject("data");
-          boolean status = dataObj.getBoolean("status");
+          boolean status = dataObj.getBoolean("result");
 
           if (status) {
             new GeneralDialog()
@@ -119,6 +118,7 @@ public class ComplaintRegistrationDialog {
                     .firstButton("باشه", null)
                     .show();
           }
+          LoadingDialog.dismissCancelableDialog();
         } catch (Exception e) {
           e.printStackTrace();
         }

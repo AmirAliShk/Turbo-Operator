@@ -83,7 +83,6 @@ public class ErrorRegistrationDialog {
     public void onResponse(Runnable reCall, Object... args) {
       MyApplication.handler.post(() -> {
         try {
-          LoadingDialog.dismissCancelableDialog();
           Log.i("TripDetailsFragment", "run: " + args[0].toString());
           JSONObject object = new JSONObject(args[0].toString());
           boolean success = object.getBoolean("success");
@@ -107,6 +106,7 @@ public class ErrorRegistrationDialog {
                     .show();
           }
 
+          LoadingDialog.dismissCancelableDialog();
         } catch (Exception e) {
           e.printStackTrace();
         }

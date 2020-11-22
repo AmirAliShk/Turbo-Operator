@@ -381,8 +381,6 @@ public class TripDetailsFragment extends Fragment {
     btnDriverLocation.setBackgroundResource(R.drawable.bg_btn_disable);
     btnReFollow.setEnabled(false);
     btnReFollow.setBackgroundResource(R.drawable.bg_btn_disable);
-    btnDriverLock.setEnabled(false);
-    btnDriverLock.setBackgroundResource(R.drawable.bg_btn_disable);
     btnCancelTrip.setEnabled(false);
     btnCancelTrip.setBackgroundResource(R.drawable.bg_btn_disable);
 //    MyApplication.prefManager.setLastCallerId("");// set empty, because I don't want save this permanently .
@@ -424,7 +422,6 @@ public class TripDetailsFragment extends Fragment {
         @Override
         public void run() {
           try {
-            LoadingDialog.dismissCancelableDialog();
             Log.i("TripDetailsFragment", "run: " + args[0].toString());
 //            {"success":true,"message":"","data":{"status":true}}
             JSONObject object = new JSONObject(args[0].toString());
@@ -450,6 +447,7 @@ public class TripDetailsFragment extends Fragment {
                       .show();
             }
 
+            LoadingDialog.dismissCancelableDialog();
           } catch (Exception e) {
             e.printStackTrace();
           }
@@ -481,7 +479,6 @@ public class TripDetailsFragment extends Fragment {
         @Override
         public void run() {
           try {
-            LoadingDialog.dismissCancelableDialog();
             Log.i("TripDetailsFragment", "run: " + args[0].toString());
 //            {"success":true,"message":"","data":{"status":true}}
             JSONObject object = new JSONObject(args[0].toString());
@@ -499,6 +496,7 @@ public class TripDetailsFragment extends Fragment {
                       .show();
             }
 
+            LoadingDialog.dismissCancelableDialog();
           } catch (Exception e) {
             e.printStackTrace();
           }
