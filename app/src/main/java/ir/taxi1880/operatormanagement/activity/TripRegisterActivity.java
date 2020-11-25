@@ -85,10 +85,10 @@ public class TripRegisterActivity extends AppCompatActivity {
   Unbinder unbinder;
   private String cityName = "";
   private String cityLatinName = "";
-  private String normalDescription = "";
+  private String normalDescription = " ";
   private int cityCode;
   private int originStation = 0;
-  private String stationName = " ";
+  private String stationName = " ";// It must have a value otherwise it will get an error of 422
   private int serviceType;
   private int serviceCount;
   private boolean isEnableView = false;
@@ -1125,12 +1125,9 @@ public class TripRegisterActivity extends AppCompatActivity {
             .firstButton("بله", () ->
                     insertService(MyApplication.prefManager.getUserCode(), serviceCount, tell, mobile, cityCode,
                             name, address, fixedComment, stationName, serviceType, carClass, normalDescription, traffic, defaultClass))
-            .secondButton("خیر", new Runnable() {
-              @Override
-              public void run() {
-                if (vfSubmit != null)
-                  vfSubmit.setDisplayedChild(0);
-              }
+            .secondButton("خیر", () -> {
+              if (vfSubmit != null)
+                vfSubmit.setDisplayedChild(0);
             })
             .show();
   }
