@@ -359,8 +359,6 @@ public class TripRegisterActivity extends AppCompatActivity {
     if (vfSubmit != null)
       vfSubmit.setDisplayedChild(1);
 
-    //TODO change API depend on last modify
-//    getCheckOriginStation(cityCode, Integer.parseInt(StringHelper.toEnglishDigits(edtOrigin.getText().toString())));
     callInsertService();
 
   }
@@ -757,7 +755,6 @@ public class TripRegisterActivity extends AppCompatActivity {
 
       @Override
       public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-        //TODO is this correct??
         originStation = 0;
       }
 

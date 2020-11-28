@@ -92,7 +92,7 @@ public class LoadingDialog {
     } catch (Exception e) {
       e.printStackTrace();
       Log.e(TAG, "dismiss: " + e.getMessage());
-      AvaCrashReporter.send(e, "LoadingDialog class, dismiss method");
+      AvaCrashReporter.send(e, "LoadingDialog class, dismissCancelableDialog method");
     }
     cancelableLoaderDialog = null;
   }
