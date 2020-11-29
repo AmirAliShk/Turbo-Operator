@@ -548,8 +548,7 @@ public class TripRegisterActivity extends AppCompatActivity {
             if (callList.getState() == Call.State.Connected) {
               call = core.getCurrentCall();
               Address address = call.getRemoteAddress();
-              String participant = PhoneNumberValidation.removePrefix(address.getUsername());
-              edtTell.setText(participant);
+              edtTell.setText(PhoneNumberValidation.removePrefix(address.getUsername()));
             }
           }
         } catch (Exception e) {
@@ -1678,8 +1677,7 @@ public class TripRegisterActivity extends AppCompatActivity {
         if (call != null && call.getState() == Call.State.StreamsRunning) {
           if (voipId.equals("0")) {
             Address address = call.getRemoteAddress();
-            String participant = PhoneNumberValidation.removePrefix(address.getUsername());
-            edtTell.setText(participant);
+            edtTell.setText(PhoneNumberValidation.removePrefix(address.getUsername()));
             MyApplication.handler.postDelayed(() -> onPressDownload(), 600);
           }
         }
