@@ -4,6 +4,7 @@ import android.app.Dialog;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.Window;
 import android.view.WindowManager;
@@ -31,13 +32,15 @@ public class SupportDialog {
   void onSupport() {
     Bundle bundle = new Bundle();
     bundle.putString("tellNumber", tellNumber);
-    FragmentHelper.toFragment(MyApplication.currentActivity, new SupportFragment()).setArguments(bundle).replace();
     dismiss();
+    FragmentHelper.toFragment(MyApplication.currentActivity, new SupportFragment()).setArguments(bundle).replace();
+    Log.e("SupportDialog", "onSupport: SupportDialog dismiss");
   }
 
   @OnClick(R.id.btnClose)
   void onClose() {
     dismiss();
+    Log.e("SupportDialog", "onSupport: SupportDialog dismiss");
   }
 
   @BindView(R.id.txtTripStatus)

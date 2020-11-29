@@ -256,7 +256,7 @@ public class TripDetailsFragment extends Fragment {
             String callTime = data.getString("callTime");
             String sendDate = data.getString("SendDate");
             String sendTime = data.getString("SendTime");
-            int stationCode = data.getInt("stationCode");
+            String stationCode = data.getString("stationCode");
             String price = data.getString("Price");
             String finishdate = data.getString("Finishdate");
             String finishTime = data.getString("FinishTime");
