@@ -65,7 +65,8 @@ import ir.taxi1880.operatormanagement.dialog.DescriptionDialog;
 import ir.taxi1880.operatormanagement.dialog.GeneralDialog;
 import ir.taxi1880.operatormanagement.dialog.LoadingDialog;
 import ir.taxi1880.operatormanagement.dialog.OptionDialog;
-import ir.taxi1880.operatormanagement.dialog.SupportDialog;
+import ir.taxi1880.operatormanagement.fragment.SupportFragment;
+import ir.taxi1880.operatormanagement.helper.FragmentHelper;
 import ir.taxi1880.operatormanagement.helper.KeyBoardHelper;
 import ir.taxi1880.operatormanagement.helper.PhoneNumberValidation;
 import ir.taxi1880.operatormanagement.helper.StringHelper;
@@ -547,7 +548,8 @@ public class TripRegisterActivity extends AppCompatActivity {
             if (callList.getState() == Call.State.Connected) {
               call = core.getCurrentCall();
               Address address = call.getRemoteAddress();
-              edtTell.setText(address.getUsername());
+              String participant = PhoneNumberValidation.removePrefix(address.getUsername());
+              edtTell.setText(participant);
             }
           }
         } catch (Exception e) {
@@ -912,9 +914,18 @@ public class TripRegisterActivity extends AppCompatActivity {
 
           if (success) {
             if (status == 2) {
+              String msg = " مسافر " + callTimeInterval + " دقیقه پیش سفری درخواست داده است " + "\n" + " وضعیت سفر : " + tripState;
               if (vfPassengerInfo != null)
                 vfPassengerInfo.setDisplayedChild(0);
-              new SupportDialog().show(tripState, callTimeInterval, getTellNumber());
+              new GeneralDialog()
+                      .message(msg)
+                      .firstButton("بستن", null)
+                      .secondButton("پشتیبانی", () -> {
+                        Bundle bundle = new Bundle();
+                        bundle.putString("tellNumber", getTellNumber());
+                        FragmentHelper.toFragment(MyApplication.currentActivity, new SupportFragment()).setArguments(bundle).replace();
+                      })
+                      .show();
             }
             if (edtTell == null)
               return;
@@ -1619,8 +1630,10 @@ public class TripRegisterActivity extends AppCompatActivity {
         if (imgEndCall != null)
           imgEndCall.setColorFilter(ContextCompat.getColor(MyApplication.context, R.color.colorRed), android.graphics.PorterDuff.Mode.MULTIPLY);
         Address address = call.getRemoteAddress();
-        if (voipId.equals("0"))
-          edtTell.setText(address.getUsername());
+        if (voipId.equals("0")){
+          String participant = PhoneNumberValidation.removePrefix(address.getUsername());
+          edtTell.setText(participant);
+        }
         showTitleBar();
       } else if (state == Call.State.Error) {
         showTitleBar();
@@ -1665,9 +1678,9 @@ public class TripRegisterActivity extends AppCompatActivity {
         if (call != null && call.getState() == Call.State.StreamsRunning) {
           if (voipId.equals("0")) {
             Address address = call.getRemoteAddress();
-            edtTell.setText(address.getUsername());
+            String participant = PhoneNumberValidation.removePrefix(address.getUsername());
+            edtTell.setText(participant);
             MyApplication.handler.postDelayed(() -> onPressDownload(), 600);
-
           }
         }
       }

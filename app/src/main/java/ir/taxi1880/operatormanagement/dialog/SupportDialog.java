@@ -18,7 +18,6 @@ import ir.taxi1880.operatormanagement.R;
 import ir.taxi1880.operatormanagement.app.MyApplication;
 import ir.taxi1880.operatormanagement.fragment.SupportFragment;
 import ir.taxi1880.operatormanagement.helper.FragmentHelper;
-import ir.taxi1880.operatormanagement.helper.KeyBoardHelper;
 import ir.taxi1880.operatormanagement.helper.TypefaceUtil;
 import ir.taxi1880.operatormanagement.push.AvaCrashReporter;
 
@@ -76,9 +75,8 @@ public class SupportDialog {
   private static void dismiss() {
     try {
       if (dialog != null) {
-        if (dialog.isShowing())
+      //  if (dialog.isShowing())
           dialog.dismiss();
-        KeyBoardHelper.hideKeyboard();
       }
     } catch (Exception e) {
       AvaCrashReporter.send(e, "SupportDialog class, dismiss method");
