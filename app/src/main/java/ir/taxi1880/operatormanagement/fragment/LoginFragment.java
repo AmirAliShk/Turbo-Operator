@@ -111,7 +111,7 @@ public class LoginFragment extends Fragment {
           int activeInQueue = object.getInt("activeInQueue");
           int isFinishContract = object.getInt("isFinishContract");
           int accessStationDeterminationPage = object.getInt("accessStationDeterminationPage");
-          int customerSupport=object.getInt("customerSupport");
+          int customerSupport = object.getInt("customerSupport");
           MyApplication.prefManager.setCustomerSupport(customerSupport);
           MyApplication.prefManager.setOperatorName(object.getString("name"));
 
@@ -186,8 +186,7 @@ public class LoginFragment extends Fragment {
 //                            })
 //                            .show();
           e.printStackTrace();
-          AvaCrashReporter.send(e, "LoginFragment class, onLogIn onResponse method");
-
+          AvaCrashReporter.send(e, "LoginFragment class, onLogIn onResponse method, pushToken = " + MyApplication.prefManager.getPushToken() + ", pushId = " + MyApplication.prefManager.getPushId() + ", userId = " + MyApplication.prefManager.getUserCode());
         }
       });
     }

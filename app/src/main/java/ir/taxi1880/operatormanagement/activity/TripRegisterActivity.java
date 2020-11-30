@@ -909,7 +909,7 @@ public class TripRegisterActivity extends AppCompatActivity {
           ClipboardManager clipboard = (ClipboardManager) getSystemService(Context.CLIPBOARD_SERVICE);
           ClipData clip = ClipData.newPlainText("passengerTell", getTellNumber());
           clipboard.setPrimaryClip(clip);
-          MyApplication.prefManager.setLastCallerId("0" + getTellNumber());
+          MyApplication.prefManager.setLastCallerId(getTellNumber());
 
           if (success) {
             if (status == 2) {
@@ -918,6 +918,7 @@ public class TripRegisterActivity extends AppCompatActivity {
                 vfPassengerInfo.setDisplayedChild(0);
               new GeneralDialog()
                       .message(msg)
+                      .cancelable(false)
                       .firstButton("بستن", null)
                       .secondButton("پشتیبانی", () -> {
                         Bundle bundle = new Bundle();
@@ -1630,8 +1631,7 @@ public class TripRegisterActivity extends AppCompatActivity {
           imgEndCall.setColorFilter(ContextCompat.getColor(MyApplication.context, R.color.colorRed), android.graphics.PorterDuff.Mode.MULTIPLY);
         Address address = call.getRemoteAddress();
         if (voipId.equals("0")){
-          String participant = PhoneNumberValidation.removePrefix(address.getUsername());
-          edtTell.setText(participant);
+          edtTell.setText(PhoneNumberValidation.removePrefix(address.getUsername()));
         }
         showTitleBar();
       } else if (state == Call.State.Error) {

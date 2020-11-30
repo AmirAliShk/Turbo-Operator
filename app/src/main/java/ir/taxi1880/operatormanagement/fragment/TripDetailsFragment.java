@@ -37,6 +37,7 @@ public class TripDetailsFragment extends Fragment {
   Unbinder unbinder;
   String serviceId;
   String passengerPhone;
+  String customerMobile;
   String passengerName;
   String passengerAddress;
   String carCode;
@@ -269,7 +270,7 @@ public class TripDetailsFragment extends Fragment {
             String maxDiscount = data.getString("MaxDiscount");
             passengerName = data.getString("customerName");
             passengerPhone = data.getString("customerTel");
-            String customerMobile = data.getString("customerMobile");
+            customerMobile = data.getString("customerMobile");
             passengerAddress = data.getString("customerAddress");
             String cityName = data.getString("cityName");
             String carType = data.getString("CarType");
@@ -397,7 +398,7 @@ public class TripDetailsFragment extends Fragment {
 
     String message = "اپراتور گرامی، این تماس از سمت راننده میباشد و امکان لغو سرویس میسر نیست.\n" +
             "اگر راننده خود را به عنوان مسافر معرفی کرده و درخواست لغو سفرش را دارد، با همین موضوع ثبت خطا کنید.";
-    if (MyApplication.prefManager.getLastCallerId().equals(carMobile) || MyApplication.prefManager.getLastCallerId().equals(driverMobile)) {
+    if (!(MyApplication.prefManager.getLastCallerId().equals(customerMobile) || MyApplication.prefManager.getLastCallerId().equals(passengerPhone))) {
       new GeneralDialog()
               .title("هشدار")
               .message(message)
