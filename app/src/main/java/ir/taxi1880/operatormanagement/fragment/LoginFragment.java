@@ -166,10 +166,11 @@ public class LoginFragment extends Fragment {
             startActivity(new Intent(MyApplication.currentActivity, MainActivity.class));
             MyApplication.currentActivity.finish();
           } else {
+            //TODO improve this dialog
             ErrorDialog errorDialog = new ErrorDialog();
             errorDialog.titleText("خطایی رخ داده");
             errorDialog.messageText("نام کاربری یا رمز عبور اشتباه است");
-            errorDialog.tryAgainBtnRunnable("تلاش مجدد", () -> logIn(edtUserName.getText().toString(), edtPassword.getText().toString()));
+            errorDialog.tryAgainBtnRunnable("تلاش مجدد", null);
             errorDialog.closeBtnRunnable("بستن", null);
             errorDialog.cancelable(true);
             errorDialog.show();

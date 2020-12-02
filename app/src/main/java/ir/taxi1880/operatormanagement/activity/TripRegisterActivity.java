@@ -449,7 +449,7 @@ public class TripRegisterActivity extends AppCompatActivity {
 
       }
 
-    },false);
+    }, false);
 
 //    Call call = LinphoneService.getCore().getCurrentCall();
 //    call.terminate();
@@ -909,7 +909,7 @@ public class TripRegisterActivity extends AppCompatActivity {
           ClipboardManager clipboard = (ClipboardManager) getSystemService(Context.CLIPBOARD_SERVICE);
           ClipData clip = ClipData.newPlainText("passengerTell", getTellNumber());
           clipboard.setPrimaryClip(clip);
-          MyApplication.prefManager.setLastCallerId(getTellNumber());
+          MyApplication.prefManager.setLastCallerId(getTellNumber().startsWith("51") ? getTellNumber().substring(2) : getTellNumber());
 
           if (success) {
             if (status == 2) {
@@ -1630,7 +1630,7 @@ public class TripRegisterActivity extends AppCompatActivity {
         if (imgEndCall != null)
           imgEndCall.setColorFilter(ContextCompat.getColor(MyApplication.context, R.color.colorRed), android.graphics.PorterDuff.Mode.MULTIPLY);
         Address address = call.getRemoteAddress();
-        if (voipId.equals("0")){
+        if (voipId.equals("0")) {
           edtTell.setText(PhoneNumberValidation.removePrefix(address.getUsername()));
         }
         showTitleBar();

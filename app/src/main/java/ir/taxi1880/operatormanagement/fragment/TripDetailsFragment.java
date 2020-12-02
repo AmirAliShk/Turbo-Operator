@@ -270,7 +270,7 @@ public class TripDetailsFragment extends Fragment {
             String maxDiscount = data.getString("MaxDiscount");
             passengerName = data.getString("customerName");
             passengerPhone = data.getString("customerTel");
-            customerMobile = data.getString("customerMobile");
+            customerMobile = data.getString("customerMobile").trim();
             passengerAddress = data.getString("customerAddress");
             String cityName = data.getString("cityName");
             String carType = data.getString("CarType");
@@ -398,22 +398,23 @@ public class TripDetailsFragment extends Fragment {
 
     String message = "اپراتور گرامی، این تماس از سمت راننده میباشد و امکان لغو سرویس میسر نیست.\n" +
             "اگر راننده خود را به عنوان مسافر معرفی کرده و درخواست لغو سفرش را دارد، با همین موضوع ثبت خطا کنید.";
-    if (!(MyApplication.prefManager.getLastCallerId().equals(customerMobile) || MyApplication.prefManager.getLastCallerId().equals(passengerPhone))) {
+
+    if (MyApplication.prefManager.getLastCallerId().trim().equals(customerMobile.trim()) || MyApplication.prefManager.getLastCallerId().trim().equals(passengerPhone.trim())) {
+      LoadingDialog.makeCancelableLoader();
+      RequestHelper.builder(EndPoints.CANCEL_SERVICE)
+              .addParam("serviceId", serviceId)
+              .addParam("userId", MyApplication.prefManager.getUserCode())
+              .listener(onCancelService)
+              .post();
+    } else {
       new GeneralDialog()
               .title("هشدار")
               .message(message)
               .cancelable(false)
               .firstButton("باشه", null)
               .show();
-      return;
     }
 
-    LoadingDialog.makeCancelableLoader();
-    RequestHelper.builder(EndPoints.CANCEL_SERVICE)
-            .addParam("serviceId", serviceId)
-            .addParam("userId", MyApplication.prefManager.getUserCode())
-            .listener(onCancelService)
-            .post();
   }
 
   RequestHelper.Callback onCancelService = new RequestHelper.Callback() {
