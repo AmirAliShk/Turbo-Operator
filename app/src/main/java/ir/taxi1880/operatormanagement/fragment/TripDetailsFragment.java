@@ -40,7 +40,7 @@ public class TripDetailsFragment extends Fragment {
   String customerMobile;
   String passengerName;
   String passengerAddress;
-  String carCode;
+  String taxiCode;
   String description;
   String voipId;
   double lat = 0;
@@ -175,7 +175,7 @@ public class TripDetailsFragment extends Fragment {
     bundle.putDouble("lng", lng);
     bundle.putString("time", lastPositionTime);
     bundle.putString("date", lastPositionDate);
-    bundle.putString("carCode", carCode);
+    bundle.putString("taxiCode", taxiCode);
     FragmentHelper.toFragment(MyApplication.currentActivity, new DriverLocationFragment()).setArguments(bundle).add();
   }
 
@@ -203,12 +203,12 @@ public class TripDetailsFragment extends Fragment {
 
   @OnClick(R.id.btnLost)
   void onLost() {
-    new LostDialog().show(serviceId, passengerName, passengerPhone, carCode);
+    new LostDialog().show(serviceId, passengerName, passengerPhone, taxiCode);
   }
 
   @OnClick(R.id.btnDriverLock)
   void onLock() {
-    new DriverLockDialog().show(carCode);
+    new DriverLockDialog().show(taxiCode);
   }
 
   @Override
@@ -261,7 +261,7 @@ public class TripDetailsFragment extends Fragment {
             String price = data.getString("Price");
             String finishdate = data.getString("Finishdate");
             String finishTime = data.getString("FinishTime");
-            carCode = data.getString("taxicode");
+            taxiCode = data.getString("taxicode");
             String driverId = data.getString("driverId");
             int userId = data.getInt("UserId");
             String perDiscount = data.getString("PerDiscount");
@@ -294,15 +294,15 @@ public class TripDetailsFragment extends Fragment {
             String serviceComment = data.getString("serviceComment");
             voipId = data.getString("VoipId");
 
-            if (status == 0) {
+            if (status == 0) { // waiting
               disableControllerButton0();
             }
 
-            if (status == 6) {
+            if (status == 6) { // cancel
               disableControllerButton6();
             }
 
-            if (Finished == 1) {
+            if (Finished == 1) { // finished
               disableControllerButton();
             }
 
@@ -323,7 +323,7 @@ public class TripDetailsFragment extends Fragment {
             txtPercent.setText(discountAmount.equals("null") ? " " : StringHelper.toPersianDigits(StringHelper.setComma(discountAmount)));
             txtSendDate.setText(sendDate.equals("null") ? " " : StringHelper.toPersianDigits(sendDate));
             txtSendTime.setText(sendTime.equals("null") ? " " : StringHelper.toPersianDigits(sendTime));
-            txtDriverCode.setText(carCode.equals("null") ? " " : StringHelper.toPersianDigits(carCode));
+            txtDriverCode.setText(taxiCode.equals("null") ? " " : StringHelper.toPersianDigits(taxiCode));
             txtDriverName.setText(deriverName.equals("null") ? " " : StringHelper.toPersianDigits(deriverName + " " + deriverFamily));
             txtDriverMob.setText(carMobile.equals("null") ? " " : StringHelper.toPersianDigits(carMobile));
             txtCarType.setText(carType.equals("null") ? " " : carType);
@@ -398,11 +398,6 @@ public class TripDetailsFragment extends Fragment {
 
     String driverMessage = "اپراتور گرامی، این تماس از سمت راننده میباشد و امکان لغو سرویس میسر نیست.\n" +
             "اگر راننده خود را به عنوان مسافر معرفی کرده و درخواست لغو سفرش را دارد، با همین موضوع ثبت خطا کنید.";
-    String normalMessage = " امکان لغو وجود ندارد، سرویس فقط توسط تماس مهمان از شماره های ثبت شده در سفر کنسل می شود";
-
-    Log.i("TAG", "cancelService:driverMobile   "+driverMobile);
-    Log.i("TAG", "cancelService:getLastCallerId"+MyApplication.prefManager.getLastCallerId());
-    Log.i("TAG", "cancelService:carMobile      "+carMobile);
 
     if (MyApplication.prefManager.getLastCallerId().trim().equals(driverMobile.trim()) || MyApplication.prefManager.getLastCallerId().trim().equals(carMobile.trim())) {
       new GeneralDialog()
@@ -411,14 +406,7 @@ public class TripDetailsFragment extends Fragment {
               .cancelable(false)
               .firstButton("باشه", null)
               .show();
-    } else if (!(MyApplication.prefManager.getLastCallerId().trim().equals(customerMobile.trim()) || MyApplication.prefManager.getLastCallerId().trim().equals(passengerPhone.trim()))) {
-      new GeneralDialog()
-              .title("هشدار")
-              .message(normalMessage)
-              .cancelable(false)
-              .firstButton("باشه", null)
-              .show();
-    } else {
+    }else {
       LoadingDialog.makeCancelableLoader();
       RequestHelper.builder(EndPoints.CANCEL_SERVICE)
               .addParam("serviceId", serviceId)

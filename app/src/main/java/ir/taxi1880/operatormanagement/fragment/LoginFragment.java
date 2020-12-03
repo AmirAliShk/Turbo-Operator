@@ -39,6 +39,8 @@ public class LoginFragment extends Fragment {
 
   public static final String TAG = LoginFragment.class.getSimpleName();
   Unbinder unbinder;
+  String userName;
+  String password;
 
   @BindView(R.id.edtUserName)
   EditText edtUserName;
@@ -51,16 +53,19 @@ public class LoginFragment extends Fragment {
 
   @OnClick(R.id.btnLogin)
   void onLogin() {
-    if (edtUserName.getText().toString().isEmpty()) {
+    userName = edtUserName.getText().toString();
+    password = edtPassword.getText().toString();
+
+    if (userName.isEmpty()) {
       MyApplication.Toast("لطفا نام کاربری خود را وارد نمایید", Toast.LENGTH_SHORT);
       return;
     }
-    if (edtPassword.getText().toString().isEmpty()) {
+    if (password.isEmpty()) {
       MyApplication.Toast("لطفا رمز عبور خود را وارد نمایید", Toast.LENGTH_SHORT);
       return;
     }
 
-    logIn(edtUserName.getText().toString(), edtPassword.getText().toString());
+    logIn(userName, password);
 //        FragmentHelper
 //                .toFragment(MyApplication.currentActivity, new LoginFragment())
 //                .setAddToBackStack(false)
@@ -139,8 +144,8 @@ public class LoginFragment extends Fragment {
             MyApplication.prefManager.setCardNumber(cardNumber);
             MyApplication.prefManager.setAccountNumber(accountNumber);
             MyApplication.prefManager.setBalance(balance);
-            MyApplication.prefManager.setUserName(StringHelper.toEnglishDigits(edtUserName.getText().toString()));
-            MyApplication.prefManager.setPassword(StringHelper.toEnglishDigits(edtPassword.getText().toString()));
+            MyApplication.prefManager.setUserName(StringHelper.toEnglishDigits(userName));
+            MyApplication.prefManager.setPassword(StringHelper.toEnglishDigits(password));
             MyApplication.prefManager.isLoggedIn(true);
             if (isFinishContract == 1) {
               new GeneralDialog()

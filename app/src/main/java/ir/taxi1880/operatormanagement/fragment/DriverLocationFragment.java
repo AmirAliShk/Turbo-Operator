@@ -84,7 +84,7 @@ public class DriverLocationFragment extends Fragment implements OnMapReadyCallba
       lng = bundle.getDouble("lng");
       txtLastTime.setText(bundle.getString("time"));
       bundle.getString("date");
-      carCode = bundle.getString("carCode");
+      carCode = bundle.getString("taxiCode");
     }
 
     return view;

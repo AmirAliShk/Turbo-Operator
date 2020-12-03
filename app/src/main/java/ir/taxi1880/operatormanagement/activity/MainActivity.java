@@ -152,12 +152,12 @@ public class MainActivity extends AppCompatActivity implements NotificationFragm
       txtBadgeCount.setText(StringHelper.toPersianDigits(MyApplication.prefManager.getCountNotification() + ""));
     }
 
-    if (MyApplication.prefManager.getCountRequest() == 0) {
-      txtRequestCount.setVisibility(View.GONE);
-    } else {
-      txtRequestCount.setVisibility(View.VISIBLE);
-      txtRequestCount.setText(StringHelper.toPersianDigits(MyApplication.prefManager.getCountRequest() + ""));
-    }
+//    if (MyApplication.prefManager.getCountRequest() == 0) {
+//      txtRequestCount.setVisibility(View.GONE);
+//    } else {
+//      txtRequestCount.setVisibility(View.VISIBLE);
+//      txtRequestCount.setText(StringHelper.toPersianDigits(MyApplication.prefManager.getCountRequest() + ""));
+//    }
 
     txtOperatorName.setText(MyApplication.prefManager.getOperatorName());
 //    txtOperatorCharge.setText(StringHelper.toPersianDigits(MyApplication.prefManager.getBalance() + " تومان "));
