@@ -275,10 +275,10 @@ public class TripDetailsFragment extends Fragment {
             String cityName = data.getString("cityName");
             String carType = data.getString("CarType");
             String plak = data.getString("plak");
-            carMobile = data.getString("carMobile");
+            carMobile = data.getString("carMobile").startsWith("0")?data.getString("carMobile").substring(1):data.getString("carMobile");
             String deriverName = data.getString("driverName");
             String deriverFamily = data.getString("driverFamily");
-            driverMobile = data.getString("driverMobile");
+            driverMobile = data.getString("driverMobile").startsWith("0")?data.getString("driverMobile").substring(1):data.getString("driverMobile");
             String typeService = data.getString("typeService");
             if (!data.isNull("lat"))
               lat = data.getDouble("lat");
@@ -396,23 +396,35 @@ public class TripDetailsFragment extends Fragment {
 
   private void cancelService() {
 
-    String message = "اپراتور گرامی، این تماس از سمت راننده میباشد و امکان لغو سرویس میسر نیست.\n" +
+    String driverMessage = "اپراتور گرامی، این تماس از سمت راننده میباشد و امکان لغو سرویس میسر نیست.\n" +
             "اگر راننده خود را به عنوان مسافر معرفی کرده و درخواست لغو سفرش را دارد، با همین موضوع ثبت خطا کنید.";
+    String normalMessage = " امکان لغو وجود ندارد، سرویس فقط توسط تماس مهمان از شماره های ثبت شده در سفر کنسل می شود";
 
-    if (MyApplication.prefManager.getLastCallerId().trim().equals(customerMobile.trim()) || MyApplication.prefManager.getLastCallerId().trim().equals(passengerPhone.trim())) {
+    Log.i("TAG", "cancelService:driverMobile   "+driverMobile);
+    Log.i("TAG", "cancelService:getLastCallerId"+MyApplication.prefManager.getLastCallerId());
+    Log.i("TAG", "cancelService:carMobile      "+carMobile);
+
+    if (MyApplication.prefManager.getLastCallerId().trim().equals(driverMobile.trim()) || MyApplication.prefManager.getLastCallerId().trim().equals(carMobile.trim())) {
+      new GeneralDialog()
+              .title("هشدار")
+              .message(driverMessage)
+              .cancelable(false)
+              .firstButton("باشه", null)
+              .show();
+    } else if (!(MyApplication.prefManager.getLastCallerId().trim().equals(customerMobile.trim()) || MyApplication.prefManager.getLastCallerId().trim().equals(passengerPhone.trim()))) {
+      new GeneralDialog()
+              .title("هشدار")
+              .message(normalMessage)
+              .cancelable(false)
+              .firstButton("باشه", null)
+              .show();
+    } else {
       LoadingDialog.makeCancelableLoader();
       RequestHelper.builder(EndPoints.CANCEL_SERVICE)
               .addParam("serviceId", serviceId)
               .addParam("userId", MyApplication.prefManager.getUserCode())
               .listener(onCancelService)
               .post();
-    } else {
-      new GeneralDialog()
-              .title("هشدار")
-              .message(message)
-              .cancelable(false)
-              .firstButton("باشه", null)
-              .show();
     }
 
   }

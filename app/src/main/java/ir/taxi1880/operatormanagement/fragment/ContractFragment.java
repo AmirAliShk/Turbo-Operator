@@ -87,6 +87,7 @@ public class ContractFragment extends Fragment {
             }
 
           } else {
+            //TODO If an error occurred, set viewFlipper child to other view
             new GeneralDialog()
                     .title("خطا")
                     .message(message)
