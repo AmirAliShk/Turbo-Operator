@@ -259,6 +259,7 @@ public class TripRegisterActivity extends AppCompatActivity {
       MyApplication.Toast("ابتدا شماره تلفن را وارد کنید", Toast.LENGTH_SHORT);
       return;
     }
+    KeyBoardHelper.hideKeyboard();
     getPassengerAddress(StringHelper.toEnglishDigits(getTellNumber()));
   }
 
