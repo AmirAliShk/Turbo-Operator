@@ -19,12 +19,10 @@ import android.view.WindowManager;
 import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.CheckBox;
-import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RadioButton;
-import android.widget.RadioGroup;
 import android.widget.RelativeLayout;
 import android.widget.ScrollView;
 import android.widget.Spinner;
@@ -93,7 +91,7 @@ public class TripRegisterActivity extends AppCompatActivity {
   private int serviceType;
   private int serviceCount;
   private boolean isEnableView = false;
-  private boolean isTellValidable = false;
+  private boolean isTellValidable = false; // it means the entered number is a telephone number(5133710000) not mobile number
   RipplePulseLayout mRipplePulseLayout;
   ArrayList<CityModel> cityModels;
 
@@ -408,6 +406,7 @@ public class TripRegisterActivity extends AppCompatActivity {
       edtTell.requestFocus();
       return;
     }
+
     if (getMobileNumber().isEmpty() && !isTellValidable && edtMobile != null) {
       edtMobile.setError("شماره تلفن همراه را وارد نمایید");
       edtMobile.requestFocus();
@@ -594,8 +593,6 @@ public class TripRegisterActivity extends AppCompatActivity {
 
     disableViews();
 
-    Log.i(TAG, "AMIRREZA=> onCreate register: ");
-
     MyApplication.handler.postDelayed(() -> {
       initCitySpinner();
       initServiceTypeSpinner();
@@ -608,20 +605,11 @@ public class TripRegisterActivity extends AppCompatActivity {
 
     edtMobile.addTextChangedListener(edtMobileTW);
 
-    rgCarClass.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
-      @Override
-      public void onCheckedChanged(RadioGroup group, int i) {
-        CompoundButton cb = (CompoundButton) group.findViewById(i);
-        chbAlways.setChecked(false);
-      }
+    rgCarClass.setOnCheckedChangeListener((group, i) -> {
+      chbAlways.setChecked(false);
     });
 
-    MyApplication.handler.postDelayed(new Runnable() {
-      @Override
-      public void run() {
-        KeyBoardHelper.showKeyboard(MyApplication.context);
-      }
-    }, 300);
+    MyApplication.handler.postDelayed(() -> KeyBoardHelper.showKeyboard(MyApplication.context), 300);
 
     setCursorEnd(getWindow().getDecorView().getRootView());
 
@@ -637,12 +625,9 @@ public class TripRegisterActivity extends AppCompatActivity {
         }
       } else if (v instanceof EditText) {
         EditText e = (EditText) v;
-        e.setOnFocusChangeListener(new View.OnFocusChangeListener() {
-          @Override
-          public void onFocusChange(View view, boolean b) {
-            if (b)
-              MyApplication.handler.postDelayed(() -> e.setSelection(e.getText().length()), 200);
-          }
+        e.setOnFocusChangeListener((view, b) -> {
+          if (b)
+            MyApplication.handler.postDelayed(() -> e.setSelection(e.getText().length()), 200);
         });
       }
     } catch (Exception e) {
@@ -695,10 +680,10 @@ public class TripRegisterActivity extends AppCompatActivity {
       if (PhoneNumberValidation.havePrefix(editable.toString()))
         edtTell.setText(PhoneNumberValidation.removePrefix(editable.toString()));
 
-
       if (PhoneNumberValidation.isValid(editable.toString())) {
+        isTellValidable=false;
         edtMobile.setText(editable.toString());
-        edtMobile.setNextFocusDownId(R.id.edtMobile);
+        edtMobile.setNextFocusDownId(R.id.imgPassengerInfo);
       } else {
 //          clearData();
 //          edtMobile.setText("");
@@ -866,6 +851,9 @@ public class TripRegisterActivity extends AppCompatActivity {
             .addPath(StringHelper.extractTheNumber(phoneNumber))
             .addPath(StringHelper.extractTheNumber(mobile))
             .addPath(queue)
+            .connectionTimeout(10)
+            .readTimeout(10)
+            .writeTimeout(10)
             .listener(getPassengerInfo)
             .get();
 

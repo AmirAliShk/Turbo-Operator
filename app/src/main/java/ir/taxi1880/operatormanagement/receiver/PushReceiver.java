@@ -115,7 +115,8 @@ public class PushReceiver extends BroadcastReceiver {
       e.printStackTrace();
       if (res == null)
         res = "res is null !";
-      AvaCrashReporter.send(e, "PushReceiver class, onReceive method, info : " + res);
+      AvaCrashReporter.send(e, "PushReceiver class, onReceive method, info : " + res +
+              " , pushToken = " + MyApplication.prefManager.getPushToken() + ", pushId = " + MyApplication.prefManager.getPushId() + ", userId = " + MyApplication.prefManager.getUserCode());
     }
   }
 

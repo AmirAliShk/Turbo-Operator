@@ -14,7 +14,6 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
 
 import com.github.gcacace.signaturepad.views.SignaturePad;
 
@@ -101,7 +100,7 @@ public class SignatureFragment extends Fragment {
         try {
             file.createNewFile();
         } catch (IOException e) {
-            MyApplication.Toast("ela", Toast.LENGTH_SHORT);
+            e.printStackTrace();
         }
         if (file.exists()) file.delete();
         try {
