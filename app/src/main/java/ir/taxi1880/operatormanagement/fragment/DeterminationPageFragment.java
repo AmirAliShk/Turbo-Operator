@@ -309,6 +309,9 @@ public class DeterminationPageFragment extends Fragment {
                 if (txtRemainingAddress != null)
                   txtRemainingAddress.setText("تعداد آدرس های ثبت نشده : " + dataBase.getRemainingAddress());
 
+                // I can't put setAddress() function here! because I want set address just when the user is enable and is disable and press refresh.
+                // Do you think it never crossed my mind?! ;)
+
                 if (isEnable) {
                   setAddress();
                   isEnable = false;

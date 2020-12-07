@@ -407,11 +407,11 @@ public class TripRegisterActivity extends AppCompatActivity {
       return;
     }
 
-    if (getMobileNumber().isEmpty() && !isTellValidable && edtMobile != null) {
-      edtMobile.setError("شماره تلفن همراه را وارد نمایید");
-      edtMobile.requestFocus();
-      return;
-    }
+//    if (getMobileNumber().isEmpty() && !isTellValidable && edtMobile != null) {
+//      edtMobile.setError("شماره تلفن همراه را وارد نمایید");
+//      edtMobile.requestFocus();
+//      return;
+//    }
 
     String mobile = isTellValidable && getMobileNumber().isEmpty() ? "0" : getMobileNumber();
 
