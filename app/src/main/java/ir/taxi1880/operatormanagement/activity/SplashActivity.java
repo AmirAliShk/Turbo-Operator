@@ -27,6 +27,7 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
@@ -47,6 +48,7 @@ import ir.taxi1880.operatormanagement.helper.StringHelper;
 import ir.taxi1880.operatormanagement.helper.TypefaceUtil;
 import ir.taxi1880.operatormanagement.model.CityModel;
 import ir.taxi1880.operatormanagement.okHttp.RequestHelper;
+import ir.taxi1880.operatormanagement.publicAPI.SplashApi;
 import ir.taxi1880.operatormanagement.push.AvaCrashReporter;
 import ir.taxi1880.operatormanagement.services.LinphoneService;
 
@@ -58,7 +60,7 @@ public class SplashActivity extends AppCompatActivity {
     boolean doubleBackToExitPressedOnce = false;
     Unbinder unbinder;
     private final String PUSH_PROJECT_ID = "5";
-    int isFinishContract;
+    int isFinishContract = 0;
     DataBase dataBase;
 
     @BindView(R.id.txtVersion)
@@ -180,33 +182,50 @@ public class SplashActivity extends AppCompatActivity {
     }
 
     private void getAppInfo() {
-        JSONObject deviceInfo = new JSONObject();
-        try {
-            @SuppressLint("HardwareIds") String android_id = Settings.Secure.getString(getContentResolver(), Settings.Secure.ANDROID_ID);
-            deviceInfo.put("MODEL", Build.MODEL);
-            deviceInfo.put("HARDWARE", Build.HARDWARE);
-            deviceInfo.put("BRAND", Build.BRAND);
-            deviceInfo.put("DISPLAY", Build.DISPLAY);
-            deviceInfo.put("BOARD", Build.BOARD);
-            deviceInfo.put("SDK_INT", Build.VERSION.SDK_INT);
-            deviceInfo.put("BOOTLOADER", Build.BOOTLOADER);
-            deviceInfo.put("DEVICE", Build.DEVICE);
-            deviceInfo.put("DISPLAY_HEIGHT", ScreenHelper.getRealDeviceSizeInPixels(this).getHeight());
-            deviceInfo.put("DISPLAY_WIDTH", ScreenHelper.getRealDeviceSizeInPixels(this).getWidth());
-            deviceInfo.put("DISPLAY_SIZE", ScreenHelper.getScreenSize(this));
-            deviceInfo.put("ANDROID_ID", android_id);
+        new SplashApi().getAppInfo(new SplashApi.SplashInterface() {
+            @Override
+            public void isFinishContract(boolean finished) {
+                if (finished) {
+                    isFinishContract = 1;
+                    // TODO it is correct
+                }
+            }
 
-            RequestHelper.builder(EndPoints.GET_APP_INFO)
-                    .addParam("versionCode", new AppVersionHelper(context).getVerionCode())
-                    .addParam("operatorId", MyApplication.prefManager.getUserCode())
-                    .addParam("userName", MyApplication.prefManager.getUserName())
-                    .addParam("password", MyApplication.prefManager.getPassword())
-                    .addParam("deviceInfo", deviceInfo)
-                    .listener(onAppInfo)
-                    .post();
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
+            @Override
+            public void update(String updateUrl, int isForce, int updateAvailable) {
+                if (updateAvailable == 1) {
+                    updatePart(isForce, updateUrl);
+                }
+            }
+
+            @Override
+            public void isBlock(boolean isBlock) {
+                if (isBlock) {
+                    new GeneralDialog()
+                            .title("هشدار")
+                            .message("اکانت شما توسط سیستم مسدود شده است")
+                            .firstButton("خروج از برنامه", () -> MyApplication.currentActivity.finish())
+                            .show();
+                }
+            }
+
+            @Override
+            public void changePass(boolean isChangePass) {
+                if (isChangePass) {
+                    FragmentHelper
+                            .toFragment(MyApplication.currentActivity, new LoginFragment())
+                            .setAddToBackStack(false)
+                            .replace();
+                }
+            }
+
+            @Override
+            public void continueProcessing(boolean continueProcess) {
+                if (continueProcess){
+                    startVoipService();
+                }
+            }
+        });
     }
 
     @Override
@@ -214,128 +233,6 @@ public class SplashActivity extends AppCompatActivity {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
         checkPermission();
     }
-
-    RequestHelper.Callback onAppInfo = new RequestHelper.Callback() {
-        @Override
-        public void onResponse(Runnable reCall, Object... args) {
-            MyApplication.handler.post(() -> {
-                try {
-                    Log.i(TAG, "onResponse: " + args[0].toString());
-                    JSONObject object = new JSONObject(args[0].toString());
-                    int block = object.getInt("isBlock");
-                    int updateAvailable = object.getInt("updateAvailable");
-                    int forceUpdate = object.getInt("forceUpdate");
-                    String updateUrl = object.getString("updateUrl");
-                    int changePass = object.getInt("changePassword");
-                    int countRequest = object.getInt("countRequest");
-                    int sipNumber = object.getInt("sipNumber");
-                    String sipServer = object.getString("sipServer");
-                    String sipPassword = object.getString("sipPassword");
-                    String sheba = object.getString("sheba");
-                    String cardNumber = object.getString("cardNumber");
-                    String accountNumber = object.getString("accountNumber");
-                    int accessInsertService = object.getInt("accessInsertService");
-                    int accessStationDeterminationPage = object.getInt("accessStationDeterminationPage");
-                    int balance = object.getInt("balance");
-                    String typeService = object.getString("typeService");
-                    String queue = object.getString("queue");
-                    String city = object.getString("city");
-                    int pushId = object.getInt("pushId");
-                    String pushToken = object.getString("pushToken");
-                    String complaintType = object.getString("ComplaintType");
-                    String objectsType = object.getString("objectsType");
-                    String ReasonsLock = object.getString("ReasonsLock");
-                    int activeInQueue = object.getInt("activeInQueue");
-                    isFinishContract = object.getInt("isFinishContract");
-                    int customerSupport = object.getInt("customerSupport");
-                    MyApplication.prefManager.setCustomerSupport(customerSupport);
-
-                    MyApplication.prefManager.setComplaint(complaintType);
-                    MyApplication.prefManager.setObjectsType(objectsType);
-                    MyApplication.prefManager.setReasonsLock(ReasonsLock);
-
-                    //insert all city into dataBase
-                    JSONArray cityArr = new JSONArray(city);
-                    for (int c = 0; c < cityArr.length(); c++) {
-                        JSONObject cityObj = cityArr.getJSONObject(c);
-                        CityModel cityModel = new CityModel();
-                        cityModel.setId(cityObj.getInt("cityid"));
-                        cityModel.setCity(cityObj.getString("cityname"));
-                        cityModel.setCityLatin(cityObj.getString("latinName"));
-                        dataBase.insertCity(cityModel);
-                    }
-
-                    if (block == 1) {
-                        new GeneralDialog()
-                                .title("هشدار")
-                                .message("اکانت شما توسط سیستم مسدود شده است")
-                                .firstButton("خروج از برنامه", () -> MyApplication.currentActivity.finish())
-                                .show();
-                        return;
-                    }
-
-                    if (changePass == 1) {
-                        FragmentHelper
-                                .toFragment(MyApplication.currentActivity, new LoginFragment())
-                                .setAddToBackStack(false)
-                                .replace();
-                        return;
-                    }
-
-                    MyApplication.prefManager.setSipServer(sipServer);
-                    MyApplication.prefManager.setSipNumber(sipNumber);
-                    MyApplication.prefManager.setSipPassword(sipPassword);
-                    if (updateAvailable == 1) {
-                        updatePart(forceUpdate, updateUrl);
-                        return;
-                    }
-
-                    startVoipService();
-
-                    if (sipNumber != MyApplication.prefManager.getSipNumber() ||
-                            !sipPassword.equals(MyApplication.prefManager.getSipPassword()) ||
-                            !sipServer.equals(MyApplication.prefManager.getSipServer())) {
-                        if (sipNumber != 0) {
-                            MyApplication.configureAccount();
-                        }
-                    }
-
-                    MyApplication.prefManager.setActivateStatus(activeInQueue == 1);
-
-                    JSONArray shiftArr = object.getJSONArray("shifs");
-                    MyApplication.prefManager.setShiftList(shiftArr.toString());
-
-                    MyApplication.prefManager.setCountNotification(object.getInt("countNotification"));
-                    MyApplication.prefManager.setCountRequest(object.getInt("countRequest"));
-
-                    MyApplication.prefManager.setPushId(pushId);
-                    MyApplication.prefManager.setPushToken(pushToken);
-                    MyApplication.prefManager.setSheba(sheba);
-                    MyApplication.prefManager.setCardNumber(cardNumber);
-                    MyApplication.prefManager.setAccountNumber(accountNumber);
-                    MyApplication.prefManager.setBalance(balance);
-                    MyApplication.prefManager.setServiceType(typeService);
-                    MyApplication.prefManager.setQueueList(queue);
-                    MyApplication.prefManager.setCity(city);
-                    MyApplication.prefManager.setAccessInsertService(accessInsertService);
-                    MyApplication.prefManager.setAccessStationDeterminationPage(accessStationDeterminationPage);
-
-                    NotificationManager notificationManager = (NotificationManager) MyApplication.currentActivity.getSystemService(Context.NOTIFICATION_SERVICE);
-                    notificationManager.cancel(Constant.USER_STATUS_NOTIFICATION_ID);
-
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                    AvaCrashReporter.send(e, "SplashActivity class, onAppInfo onResponse method");
-                }
-
-            });
-        }
-
-        @Override
-        public void onFailure(Runnable reCall, Exception e) {
-
-        }
-    };
 
     private void updatePart(int isForce, final String url) {
         GeneralDialog generalDialog = new GeneralDialog();

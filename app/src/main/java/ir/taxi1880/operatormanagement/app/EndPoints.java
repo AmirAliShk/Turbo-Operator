@@ -12,8 +12,8 @@ public class EndPoints {
 //    http://172.16.2.210:1885/api/findway/citylatinname/address
 
   public static final String IP = (BuildConfig.DEBUG)
-          ? "http://172.16.2.203"
-//          ? "http://turbotaxi.ir"
+//          ? "http://172.16.2.203"
+          ? "http://turbotaxi.ir"
           : "http://turbotaxi.ir";
 //          : "http://172.16.2.203";
 
@@ -35,6 +35,7 @@ public class EndPoints {
   public static final String TRIP_APIPort = (BuildConfig.DEBUG) ? "1881" : "1881";
   public static final String FIND_WAY_APIPort = (BuildConfig.DEBUG) ? "1885" : "1885";
   public static final String CALL_VOICE_APIPort = (BuildConfig.DEBUG) ? "1884" : "1884";
+  public static final String HAWKEYE_APIPort = (BuildConfig.DEBUG) ? "1890" : "1890";
 
   public static final String WEBSERVICE_PATH = IP + ":" + APIPort + "/api/operator/";
   public static final String TRIP_WEBSERVICE_PATH = IP + ":" + TRIP_APIPort + "/api/operator/v2/trip/";
@@ -45,14 +46,16 @@ public class EndPoints {
   public static final String CALL_VOICE_PATH = IP + ":" + CALL_VOICE_APIPort + "/api/getCallvoice/caldX:23V32/";
 //  http://turbotaxi.ir:1884/api/getCallvoice/caldX:23V32/1604130536.10343290
 
+  public static final String HAWKEYE_PATH = IP + ":" + HAWKEYE_APIPort + "/api/operator/v1/user/";
+  public static final String BASIC_PATH = IP + ":" + APIPort + "/api/operator/";
+
   /******************************** Base Api *********************************/
-  public static final String GET_APP_INFO = WEBSERVICE_PATH + "getAppInfo";
+  public static final String GET_APP_INFO = BASIC_PATH + "getAppInfo";
   public static final String ANSWER_SHIFT_REPLACEMENT_REQUEST = WEBSERVICE_PATH + "answerShiftReplacementRequest";
   public static final String GET_MESSAGES = WEBSERVICE_PATH + "getMessages";
   public static final String GET_NEWS = WEBSERVICE_PATH + "getNews";
   public static final String GET_SHIFT_REPLACEMENT_REQUESTS = WEBSERVICE_PATH + "getShiftReplacementRequests";
   public static final String GET_SHIFTS = WEBSERVICE_PATH + "getShifts";
-  public static final String LOGIN = WEBSERVICE_PATH + "login";
   public static final String SEND_MESSAGES = WEBSERVICE_PATH + "sendMessages";
   public static final String SET_NEWS_SEEN = WEBSERVICE_PATH + "setNewsSeen";
   public static final String SHIFT_REPLACEMENT_REQUEST = WEBSERVICE_PATH + "shiftReplacementRequest";
@@ -62,7 +65,6 @@ public class EndPoints {
   /******************************** Trip Register Api *********************************/
 
   public static final String FIND_WAY = FIND_WAY_WEBSERVICE_PATH + "findway";
-
   public static final String PASSENGER_ADDRESS = TRIP_WEBSERVICE_PATH + "passengerAddress";
   public static final String CHECK_STATION = TRIP_WEBSERVICE_PATH + "checkStation";
   public static final String STATION_INFO = TRIP_WEBSERVICE_PATH + "stationInfo";
@@ -107,5 +109,10 @@ public class EndPoints {
   public static final String INSERT_LOST_OBJECT = SUPPORT_WEBSERVICE_PATH + "insertLostObject";
   public static final String LOCK_TAXI = SUPPORT_WEBSERVICE_PATH + "lockTaxi";
   public static final String AGAIN_TRACKING = SUPPORT_WEBSERVICE_PATH + "againTracking";
+
+  /******************************** refresh token Api *********************************/
+
+  public static final String REFRESH_TOKEN = HAWKEYE_PATH + "refreshToken";
+  public static final String LOGIN = HAWKEYE_PATH + "login";
 
 }

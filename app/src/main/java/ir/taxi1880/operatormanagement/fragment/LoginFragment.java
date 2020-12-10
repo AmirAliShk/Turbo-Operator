@@ -15,6 +15,7 @@ import android.widget.Toast;
 import org.json.JSONObject;
 
 import androidx.fragment.app.Fragment;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
@@ -37,176 +38,98 @@ import ir.taxi1880.operatormanagement.push.AvaCrashReporter;
  */
 public class LoginFragment extends Fragment {
 
-  public static final String TAG = LoginFragment.class.getSimpleName();
-  Unbinder unbinder;
-  String userName;
-  String password;
+    public static final String TAG = LoginFragment.class.getSimpleName();
+    Unbinder unbinder;
+    String userName;
+    String password;
 
-  @BindView(R.id.edtUserName)
-  EditText edtUserName;
+    @BindView(R.id.edtUserName)
+    EditText edtUserName;
 
-  @BindView(R.id.edtPassword)
-  EditText edtPassword;
+    @BindView(R.id.edtPassword)
+    EditText edtPassword;
 
-  @BindView(R.id.btnLogin)
-  Button btnLogin;
+    @BindView(R.id.btnLogin)
+    Button btnLogin;
 
-  @OnClick(R.id.btnLogin)
-  void onLogin() {
-    userName = edtUserName.getText().toString();
-    password = edtPassword.getText().toString();
+    @OnClick(R.id.btnLogin)
+    void onLogin() {
+        userName = edtUserName.getText().toString();
+        password = edtPassword.getText().toString();
 
-    if (userName.isEmpty()) {
-      MyApplication.Toast("لطفا نام کاربری خود را وارد نمایید", Toast.LENGTH_SHORT);
-      return;
-    }
-    if (password.isEmpty()) {
-      MyApplication.Toast("لطفا رمز عبور خود را وارد نمایید", Toast.LENGTH_SHORT);
-      return;
-    }
+        if (userName.isEmpty()) {
+            MyApplication.Toast("لطفا نام کاربری خود را وارد نمایید", Toast.LENGTH_SHORT);
+            return;
+        }
+        if (password.isEmpty()) {
+            MyApplication.Toast("لطفا رمز عبور خود را وارد نمایید", Toast.LENGTH_SHORT);
+            return;
+        }
 
-    logIn(userName, password);
+        logIn(userName, password);
 //        FragmentHelper
 //                .toFragment(MyApplication.currentActivity, new LoginFragment())
 //                .setAddToBackStack(false)
 //                .replace();
-    KeyBoardHelper.hideKeyboard();
-  }
+        KeyBoardHelper.hideKeyboard();
+    }
 
-  @SuppressLint("SetTextI18n")
-  @Override
-  public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-    View view = inflater.inflate(R.layout.fragment_login, container, false);
-    unbinder = ButterKnife.bind(this, view);
-    TypefaceUtil.overrideFonts(view);
-
-    return view;
-  }
-
-  private void logIn(String userName, String password) {
-
-    RequestHelper.builder(EndPoints.LOGIN)
-            .addParam("userName", userName)
-            .addParam("password", password)
-            .listener(onLogIn)
-            .post();
-
-  }
-
-  RequestHelper.Callback onLogIn = new RequestHelper.Callback() {
+    @SuppressLint("SetTextI18n")
     @Override
-    public void onResponse(Runnable reCall, Object... args) {
-      MyApplication.handler.post(() -> {
-        try {
-          Log.i(TAG, "onResponse: " + args[0].toString());
-          JSONObject object = new JSONObject(args[0].toString());
-          int status = object.getInt("status");
-          int userId = object.getInt("userId");
-          int block = object.getInt("isBlock");
-          int accessInsertService = object.getInt("accessInsertService");
-          int sipNumber = object.getInt("sipNumber");
-          int pushId = object.getInt("pushId");
-          String pushToken = object.getString("pushToken");
-          String sipServer = object.getString("sipServer");
-          String sipPassword = object.getString("sipPassword");
-          String sheba = object.getString("sheba");
-          String cardNumber = object.getString("cardNumber");
-          String accountNumber = object.getString("accountNumber");
-          int balance = object.getInt("balance");
-          int activeInQueue = object.getInt("activeInQueue");
-          int isFinishContract = object.getInt("isFinishContract");
-          int accessStationDeterminationPage = object.getInt("accessStationDeterminationPage");
-          int customerSupport = object.getInt("customerSupport");
-          MyApplication.prefManager.setCustomerSupport(customerSupport);
-          MyApplication.prefManager.setOperatorName(object.getString("name"));
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        View view = inflater.inflate(R.layout.fragment_login, container, false);
+        unbinder = ButterKnife.bind(this, view);
+        TypefaceUtil.overrideFonts(view);
 
-          if (status == 1) {
+        return view;
+    }
 
-            if (block == 1) {
-              new GeneralDialog()
-                      .title("هشدار")
-                      .message("اکانت شما توسط سیستم مسدود شده است")
-                      .firstButton("خروج از برنامه", () -> MyApplication.currentActivity.finish())
-                      .show();
-              return;
-            }
+    private void logIn(String username, String password) {
 
-            MyApplication.prefManager.setActivateStatus(activeInQueue == 1);
-            MyApplication.prefManager.setUserCode(userId);
-            MyApplication.prefManager.setAccessInsertService(accessInsertService);
-            MyApplication.prefManager.setAccessStationDeterminationPage(accessStationDeterminationPage);
-            MyApplication.prefManager.setSipServer(sipServer);
-            MyApplication.prefManager.setSipNumber(sipNumber);
-            MyApplication.prefManager.setSipPassword(sipPassword);
-            MyApplication.prefManager.setPushId(pushId);
-            MyApplication.prefManager.setPushToken(pushToken);
-            MyApplication.prefManager.setSheba(sheba);
-            MyApplication.prefManager.setCardNumber(cardNumber);
-            MyApplication.prefManager.setAccountNumber(accountNumber);
-            MyApplication.prefManager.setBalance(balance);
-            MyApplication.prefManager.setUserName(StringHelper.toEnglishDigits(userName));
-            MyApplication.prefManager.setPassword(StringHelper.toEnglishDigits(password));
-            MyApplication.prefManager.isLoggedIn(true);
-            if (isFinishContract == 1) {
-              new GeneralDialog()
-                      .title("اتمام قرار داد")
-                      .message("مدت قرار داد شما به اتمام رسیده است. لطفا برای تمدید آن اقدام کنید.")
-                      .cancelable(false)
-                      .firstButton("مشاهده قرارداد", () -> {
-                        FragmentHelper
-                                .toFragment(MyApplication.currentActivity, new ContractFragment())
-                                .setAddToBackStack(false)
-                                .replace();
-                      })
-                      .secondButton("امضا قرارداد", () -> {
-                        FragmentHelper
-                                .toFragment(MyApplication.currentActivity, new SignatureFragment())
-                                .setAddToBackStack(false)
-                                .replace();
-                      })
-                      .show();
-              return;
-            }
-            MyApplication.avaStart();
-            startActivity(new Intent(MyApplication.currentActivity, MainActivity.class));
-            MyApplication.currentActivity.finish();
-          } else {
-            //TODO improve this dialog
-            ErrorDialog errorDialog = new ErrorDialog();
-            errorDialog.titleText("خطایی رخ داده");
-            errorDialog.messageText("نام کاربری یا رمز عبور اشتباه است");
-            errorDialog.tryAgainBtnRunnable("تلاش مجدد", null);
-            errorDialog.closeBtnRunnable("بستن", null);
-            errorDialog.cancelable(true);
-            errorDialog.show();
-          }
+        RequestHelper.builder(EndPoints.LOGIN)
+                .addParam("username", username)
+                .addParam("password", password)
+                .listener(onLogIn)
+                .post();
 
-        } catch (Exception e) {
-//                    new ErrorDialog()
-//                            .messageText("پردازش داده های ورودی با مشکل مواجه شد")
-//                            .closeBtnRunnable("بستن", () -> {
-//
-//                            })
-//                            .tryAgainBtnRunnable("تلاش مجدد", () -> {
-//
-//                            })
-//                            .show();
-          e.printStackTrace();
-          AvaCrashReporter.send(e, "LoginFragment class, onLogIn onResponse method, pushToken = " + MyApplication.prefManager.getPushToken() + ", pushId = " + MyApplication.prefManager.getPushId() + ", userId = " + MyApplication.prefManager.getUserCode());
+    }
+
+    RequestHelper.Callback onLogIn = new RequestHelper.Callback() {
+        @Override
+        public void onResponse(Runnable reCall, Object... args) {
+            MyApplication.handler.post(() -> {
+                try {
+                    JSONObject object = new JSONObject(args[0].toString());
+                    boolean success = object.getBoolean("success");
+                    String message = object.getString("message");
+                    JSONObject data = object.getJSONObject("data");
+
+                    if (success) {
+                        MyApplication.prefManager.setIdToken(data.getString("id_token"));
+                        MyApplication.prefManager.setAuthorization(data.getString("access_token"));
+                        MyApplication.prefManager.setRefreshToken(data.getString("refresh_token"));
+                        //TODO here call splash again ?!?!?!?!?!?!?!?
+                    }else{
+                        //TODO what to do???
+                    }
+
+                } catch (Exception e) {
+                    e.printStackTrace();
+                    AvaCrashReporter.send(e, "LoginFragment class, onLogIn onResponse method, pushToken = " + MyApplication.prefManager.getPushToken() + ", pushId = " + MyApplication.prefManager.getPushId() + ", userId = " + MyApplication.prefManager.getUserCode());
+                }
+            });
         }
-      });
-    }
+
+        @Override
+        public void onFailure(Runnable reCall, Exception e) {
+
+        }
+    };
 
     @Override
-    public void onFailure(Runnable reCall, Exception e) {
-
+    public void onDestroyView() {
+        super.onDestroyView();
+        unbinder.unbind();
     }
-  };
-
-  @Override
-  public void onDestroyView() {
-    super.onDestroyView();
-    unbinder.unbind();
-  }
 
 }
