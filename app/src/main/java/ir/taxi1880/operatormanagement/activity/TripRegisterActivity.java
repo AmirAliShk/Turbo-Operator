@@ -45,6 +45,7 @@ import java.util.ArrayList;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
 import androidx.localbroadcastmanager.content.LocalBroadcastManager;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
@@ -1401,6 +1402,7 @@ public class TripRegisterActivity extends AppCompatActivity {
     };
 
     private void clearData() {
+        if (edtTell == null) return;
         originStation = 0;
         isEnableView = false;
         isTellValidable = false;
