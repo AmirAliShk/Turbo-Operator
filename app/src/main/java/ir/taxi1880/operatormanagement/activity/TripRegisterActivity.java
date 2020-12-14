@@ -444,12 +444,7 @@ public class TripRegisterActivity extends AppCompatActivity {
 
             @Override
             public void onCallTransferred() {
-                MyApplication.handler.postDelayed(new Runnable() {
-                    @Override
-                    public void run() {
-                        clearData();
-                    }
-                }, 100);
+                MyApplication.handler.postDelayed(() -> clearData(), 100);
             }
 
             @Override

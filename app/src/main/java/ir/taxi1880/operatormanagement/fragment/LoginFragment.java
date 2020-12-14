@@ -22,6 +22,8 @@ import butterknife.OnClick;
 import butterknife.Unbinder;
 import ir.taxi1880.operatormanagement.R;
 import ir.taxi1880.operatormanagement.activity.MainActivity;
+import ir.taxi1880.operatormanagement.activity.SplashActivity;
+import ir.taxi1880.operatormanagement.app.Constant;
 import ir.taxi1880.operatormanagement.app.EndPoints;
 import ir.taxi1880.operatormanagement.app.MyApplication;
 import ir.taxi1880.operatormanagement.dialog.ErrorDialog;
@@ -31,6 +33,7 @@ import ir.taxi1880.operatormanagement.helper.KeyBoardHelper;
 import ir.taxi1880.operatormanagement.helper.StringHelper;
 import ir.taxi1880.operatormanagement.helper.TypefaceUtil;
 import ir.taxi1880.operatormanagement.okHttp.RequestHelper;
+import ir.taxi1880.operatormanagement.publicAPI.SplashApi;
 import ir.taxi1880.operatormanagement.push.AvaCrashReporter;
 
 /**
@@ -89,6 +92,7 @@ public class LoginFragment extends Fragment {
         RequestHelper.builder(EndPoints.LOGIN)
                 .addParam("username", username)
                 .addParam("password", password)
+                .addParam("scope", Constant.SCOPE)
                 .listener(onLogIn)
                 .post();
 
@@ -102,14 +106,79 @@ public class LoginFragment extends Fragment {
                     JSONObject object = new JSONObject(args[0].toString());
                     boolean success = object.getBoolean("success");
                     String message = object.getString("message");
-                    JSONObject data = object.getJSONObject("data");
 
                     if (success) {
+                        JSONObject data = object.getJSONObject("data");
                         MyApplication.prefManager.setIdToken(data.getString("id_token"));
                         MyApplication.prefManager.setAuthorization(data.getString("access_token"));
                         MyApplication.prefManager.setRefreshToken(data.getString("refresh_token"));
                         //TODO here call splash again ?!?!?!?!?!?!?!?
-                    }else{
+                        new SplashApi().getAppInfo(new SplashApi.SplashInterface() {
+                            @Override
+                            public void isFinishContract(boolean finished) {
+                                new GeneralDialog()
+                                        .title("اتمام قرار داد")
+                                        .message("مدت قرار داد شما به اتمام رسیده است. لطفا برای تمدید آن اقدام کنید.")
+                                        .cancelable(false)
+                                        .firstButton("مشاهده قرارداد", () -> {
+                                            FragmentHelper
+                                                    .toFragment(MyApplication.currentActivity, new ContractFragment())
+                                                    .setAddToBackStack(false)
+                                                    .replace();
+                                        })
+                                        .secondButton("امضا قرارداد", () -> {
+                                            FragmentHelper
+                                                    .toFragment(MyApplication.currentActivity, new SignatureFragment())
+                                                    .setAddToBackStack(false)
+                                                    .replace();
+                                        })
+                                        .show();
+                            }
+
+                            @Override
+                            public void update(String updateUrl, int isForce, int updateAvailable) {
+                                if (updateAvailable == 1) {
+                                    new SplashActivity().updatePart(isForce, updateUrl);
+                                }
+                            }
+
+                            @Override
+                            public void isBlock(boolean isBlock) {
+                                if (isBlock) {
+                                    new GeneralDialog()
+                                            .title("هشدار")
+                                            .message("اکانت شما توسط سیستم مسدود شده است")
+                                            .firstButton("خروج از برنامه", () -> MyApplication.currentActivity.finish())
+                                            .show();
+                                }
+                            }
+
+                            @Override
+                            public void changePass(boolean isChangePass) {
+                                //TODO what to do here?
+                                if (edtUserName != null) {
+                                    edtUserName.requestFocus();
+                                    KeyBoardHelper.showKeyboard(MyApplication.context);
+                                }
+                            }
+
+                            @Override
+                            public void continueProcessing(boolean continueProcess) {
+                                new SplashActivity().startVoipService();
+                            }
+                        });
+                    } else {
+                        new ErrorDialog()
+                                .titleText("خطایی رخ داده")
+                                .messageText(message)
+                                .closeBtnRunnable("بستن", null)
+                                .tryAgainBtnRunnable("تلاش مجدد", () -> {
+                                    if (edtUserName != null) {
+                                        edtUserName.requestFocus();
+                                        KeyBoardHelper.showKeyboard(MyApplication.context);
+                                    }
+                                })
+                                .show();
                         //TODO what to do???
                     }
 

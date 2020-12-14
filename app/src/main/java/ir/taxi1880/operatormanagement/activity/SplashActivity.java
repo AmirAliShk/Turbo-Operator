@@ -234,7 +234,7 @@ public class SplashActivity extends AppCompatActivity {
         checkPermission();
     }
 
-    private void updatePart(int isForce, final String url) {
+    public void updatePart(int isForce, final String url) {
         GeneralDialog generalDialog = new GeneralDialog();
         if (isForce == 1) {
             generalDialog.title("به روز رسانی");
@@ -284,7 +284,7 @@ public class SplashActivity extends AppCompatActivity {
     }
 
     // This thread will periodically check if the Service is ready, and then call onServiceReady
-    private class ServiceWaitThread extends Thread {
+    public class ServiceWaitThread extends Thread {
         public void run() {
             while (!LinphoneService.isReady()) {
                 try {
@@ -305,7 +305,7 @@ public class SplashActivity extends AppCompatActivity {
         }
     }
 
-    private void startVoipService() {
+    public void startVoipService() {
         if (LinphoneService.isReady()) {
             continueProcessing();
         } else {

@@ -37,20 +37,20 @@ public class EndPoints {
   public static final String CALL_VOICE_APIPort = (BuildConfig.DEBUG) ? "1884" : "1884";
   public static final String HAWKEYE_APIPort = (BuildConfig.DEBUG) ? "1890" : "1890";
 
-  public static final String WEBSERVICE_PATH = IP + ":" + APIPort + "/api/operator/";
+  public static final String WEBSERVICE_PATH = IP + ":" + APIPort + "/api/operator/v3/";
   public static final String TRIP_WEBSERVICE_PATH = IP + ":" + TRIP_APIPort + "/api/operator/v2/trip/";
   public static final String FIND_WAY_WEBSERVICE_PATH = FIND_WAY_IP + ":" + FIND_WAY_APIPort + "/api/";
   public static final String ACCOUNT_WEBSERVICE_PATH = IP + ":" + TRIP_APIPort + "/api/operator/v2/";
-  public static final String SCORE_WEBSERVICE_PATH = IP + ":" + TRIP_APIPort + "/api/operator/v2/score/";
-  public static final String SUPPORT_WEBSERVICE_PATH = IP + ":" + TRIP_APIPort + "/api/operator/v2/support/";
+  public static final String SCORE_WEBSERVICE_PATH = IP + ":" + TRIP_APIPort + "/api/operator/v3/score/";
+  public static final String SUPPORT_WEBSERVICE_PATH = IP + ":" + TRIP_APIPort + "/api/operator/v3/support/";
   public static final String CALL_VOICE_PATH = IP + ":" + CALL_VOICE_APIPort + "/api/getCallvoice/caldX:23V32/";
 //  http://turbotaxi.ir:1884/api/getCallvoice/caldX:23V32/1604130536.10343290
 
-  public static final String HAWKEYE_PATH = IP + ":" + HAWKEYE_APIPort + "/api/operator/v1/user/";
-  public static final String BASIC_PATH = IP + ":" + APIPort + "/api/operator/";
+  public static final String HAWKEYE_PATH = IP + ":" + HAWKEYE_APIPort + "/api/user/v1/";
+  public static final String BASIC_PATH = IP + ":" + APIPort + "/api/operator/v3";
 
   /******************************** Base Api *********************************/
-  public static final String GET_APP_INFO = BASIC_PATH + "getAppInfo";
+  public static final String GET_APP_INFO = WEBSERVICE_PATH + "getAppInfo";
   public static final String ANSWER_SHIFT_REPLACEMENT_REQUEST = WEBSERVICE_PATH + "answerShiftReplacementRequest";
   public static final String GET_MESSAGES = WEBSERVICE_PATH + "getMessages";
   public static final String GET_NEWS = WEBSERVICE_PATH + "getNews";
@@ -112,7 +112,7 @@ public class EndPoints {
 
   /******************************** refresh token Api *********************************/
 
-  public static final String REFRESH_TOKEN = HAWKEYE_PATH + "refreshToken";
+  public static final String REFRESH_TOKEN = HAWKEYE_PATH + "token";
   public static final String LOGIN = HAWKEYE_PATH + "login";
 
 }

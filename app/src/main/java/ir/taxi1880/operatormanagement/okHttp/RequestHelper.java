@@ -259,7 +259,6 @@ public class RequestHelper implements okhttp3.Callback {
 
         try {
             log("request url : " + req.url().toString());
-            log("request params : " + params);
             log("paths : " + path);
             log("header Authorization : "+ headers.get("Authorization"));
             log("header id_token : "+ headers.get("id_token"));

@@ -1,6 +1,10 @@
 package ir.taxi1880.operatormanagement.publicAPI;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import ir.taxi1880.operatormanagement.app.EndPoints;
+import ir.taxi1880.operatormanagement.app.MyApplication;
 import ir.taxi1880.operatormanagement.okHttp.RequestHelper;
 
 public class RefreshToken {
@@ -14,18 +18,34 @@ public class RefreshToken {
     public void refreshToken(RefreshTokenInterface refreshToken) {
         this.refreshToken = refreshToken;
         RequestHelper.builder(EndPoints.REFRESH_TOKEN)
+                .addParam("token", MyApplication.prefManager.getRefreshToken())
                 .listener(getRefreshToken)
-                .get();
+                .post();
     }
 
     RequestHelper.Callback getRefreshToken = new RequestHelper.Callback() {
         @Override
         public void onResponse(Runnable reCall, Object... args) {
-            boolean success = true;
-            if (success) {
-                refreshToken.isRefreshed(true);
-                //save new value of token_id into prefManager
-                //save new value of token_access into prefManager
+            try {
+                JSONObject tokenObject = new JSONObject(args[0].toString());
+                boolean success=tokenObject.getBoolean("success");
+                String message = tokenObject.getString("message");
+
+                if (success){
+                    JSONObject objData = tokenObject.getJSONObject("data");
+                    String id_token=objData.getString("id_token");
+                    String access_token=objData.getString("access_token");
+
+                    MyApplication.prefManager.setAuthorization(access_token);
+                    MyApplication.prefManager.setIdToken(id_token);
+                    refreshToken.isRefreshed(true);
+                }else{
+                    //TODO what to do?
+                }
+
+
+            } catch (JSONException e) {
+                e.printStackTrace();
             }
         }
 
