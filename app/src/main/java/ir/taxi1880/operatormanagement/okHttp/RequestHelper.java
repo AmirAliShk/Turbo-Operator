@@ -74,6 +74,9 @@ public class RequestHelper implements okhttp3.Callback {
         public void onFailure(Runnable reCall, Exception e) {
         }
 
+        public void onRefreshTokenUpdated(Runnable reCall, boolean isRefreshTokenUpdated) {
+        }
+
         public abstract void onResponse(Runnable reCall, Object... args);
     }
 
@@ -259,9 +262,10 @@ public class RequestHelper implements okhttp3.Callback {
 
         try {
             log("request url : " + req.url().toString());
+            log("params : " + params);
             log("paths : " + path);
-            log("header Authorization : "+ headers.get("Authorization"));
-            log("header id_token : "+ headers.get("id_token"));
+            log("header Authorization : " + headers.get("Authorization"));
+            log("header id_token : " + headers.get("id_token"));
             OkHttpClient.Builder builder = new OkHttpClient
                     .Builder()
                     .proxy(Proxy.NO_PROXY);
@@ -314,9 +318,11 @@ public class RequestHelper implements okhttp3.Callback {
                         new RefreshToken().refreshToken(success -> {
                             if (success) {
                                 //TODO request() is true?? or I must save last request in an temp variable?
-                                request();
-                            }else{
+//                                request();
+                                listener.onRefreshTokenUpdated(runnable, true);
+                            } else {
                                 // TODO what to do?
+                                listener.onRefreshTokenUpdated(runnable, false);
                             }
                         });
                     } else {
