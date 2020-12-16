@@ -11,6 +11,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import ir.taxi1880.operatormanagement.R;
+import ir.taxi1880.operatormanagement.helper.StringHelper;
 import ir.taxi1880.operatormanagement.helper.TypefaceUtil;
 import ir.taxi1880.operatormanagement.model.MessageModel;
 
@@ -68,14 +69,14 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.MyViewHo
 
         if (messageModel.getMsgType()==1) {
             holder.llMsgOut.setVisibility(View.VISIBLE);
-            holder.txtMsgOut.setText(messageModel.getMsgText());
-//            holder.txtTimeMsgOut.setText(ChangeFormatTimeHelper.getTime(messageModel.getMsgDate()));
-//            holder.txtDateMsgOut.setText(Utilities.getCurrentShamsidate(ChangeFormatTimeHelper.getDate(messageModel.getMsgDate())));
+            holder.txtMsgOut.setText(StringHelper.toPersianDigits(messageModel.getMsgText()));
+            holder.txtTimeMsgOut.setText(StringHelper.toPersianDigits(messageModel.getMsgTime()));
+            holder.txtDateMsgOut.setText(StringHelper.toPersianDigits(messageModel.getMsgDate()));
         } else {
             holder.llMsgIn.setVisibility(View.VISIBLE);
-            holder.txtMsgIn.setText(messageModel.getMsgText());
-//            holder.txtTimeMsgIn.setText(ChangeFormatTimeHelper.getTime(messageModel.getDate()));
-//            holder.txtDateMsgIn.setText(Utilities.getCurrentShamsidate(ChangeFormatTimeHelper.getDate(messageModel.getDate())));
+            holder.txtMsgIn.setText(StringHelper.toPersianDigits(messageModel.getMsgText()));
+            holder.txtTimeMsgIn.setText(StringHelper.toPersianDigits(messageModel.getMsgTime()));
+            holder.txtDateMsgIn.setText(StringHelper.toPersianDigits(messageModel.getMsgDate()));
         }
     }
 

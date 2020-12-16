@@ -126,6 +126,8 @@ public class SendReplacementAdapter extends BaseAdapter {
   private void cancelRequest(int requestId) {
 
     RequestHelper.builder(EndPoints.CANCEL_REPLACEMENT_REQUEST)
+            .addHeader("Authorization", MyApplication.prefManager.getAuthorization())
+            .addHeader("id_token", MyApplication.prefManager.getIdToken())
             .addParam("requestId", requestId)
             .listener(onCancel)
             .post();
@@ -154,8 +156,12 @@ public class SendReplacementAdapter extends BaseAdapter {
 
 
     @Override
-    public void onFailure(Runnable reCall, Exception e) {
+    public void onFailure(Runnable reCall, Exception e) { }
 
+    @Override
+    public void onRefreshTokenUpdated(Runnable reCall, boolean isRefreshTokenUpdated) {
+      super.onRefreshTokenUpdated(reCall, isRefreshTokenUpdated);
+      reCall.run();
     }
   };
 }

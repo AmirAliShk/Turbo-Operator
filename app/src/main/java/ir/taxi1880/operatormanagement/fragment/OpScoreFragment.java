@@ -45,6 +45,8 @@ public class OpScoreFragment extends Fragment {
 
   private void getSingle() {
     RequestHelper.builder(EndPoints.SINGLE)
+            .addHeader("Authorization", MyApplication.prefManager.getAuthorization())
+            .addHeader("id_token", MyApplication.prefManager.getIdToken())
             .addPath(MyApplication.prefManager.getUserCode() + "")
             .listener(getSingle)
             .get();
@@ -86,8 +88,12 @@ public class OpScoreFragment extends Fragment {
     }
 
     @Override
-    public void onFailure(Runnable reCall, Exception e) {
+    public void onFailure(Runnable reCall, Exception e) { }
 
+    @Override
+    public void onRefreshTokenUpdated(Runnable reCall, boolean isRefreshTokenUpdated) {
+      super.onRefreshTokenUpdated(reCall, isRefreshTokenUpdated);
+      reCall.run();
     }
   };
 

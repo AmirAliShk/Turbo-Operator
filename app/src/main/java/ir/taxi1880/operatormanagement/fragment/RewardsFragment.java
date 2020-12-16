@@ -58,6 +58,8 @@ public class RewardsFragment extends Fragment {
     if (vfReward != null)
       vfReward.setDisplayedChild(0);
     RequestHelper.builder(EndPoints.REWARDS)
+            .addHeader("Authorization", MyApplication.prefManager.getAuthorization())
+            .addHeader("id_token", MyApplication.prefManager.getIdToken())
             .listener(onRewards)
             .get();
   }
@@ -109,6 +111,12 @@ public class RewardsFragment extends Fragment {
     @Override
     public void onFailure(Runnable reCall, Exception e) {
 
+    }
+
+    @Override
+    public void onRefreshTokenUpdated(Runnable reCall, boolean isRefreshTokenUpdated) {
+      super.onRefreshTokenUpdated(reCall, isRefreshTokenUpdated);
+      reCall.run();
     }
   };
 

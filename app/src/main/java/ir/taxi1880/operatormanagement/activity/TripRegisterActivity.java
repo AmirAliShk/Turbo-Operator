@@ -850,6 +850,8 @@ public class TripRegisterActivity extends AppCompatActivity {
             vfPassengerInfo.setDisplayedChild(1);
 
         RequestHelper.builder(EndPoints.PASSENGER_INFO)
+                .addHeader("Authorization", MyApplication.prefManager.getAuthorization())
+                .addHeader("id_token", MyApplication.prefManager.getIdToken())
                 .addPath(MyApplication.prefManager.getCustomerSupport() + "")
                 .addPath(StringHelper.extractTheNumber(phoneNumber))
                 .addPath(StringHelper.extractTheNumber(mobile))
@@ -1021,12 +1023,20 @@ public class TripRegisterActivity extends AppCompatActivity {
                     vfPassengerInfo.setDisplayedChild(0);
             });
         }
+
+        @Override
+        public void onRefreshTokenUpdated(Runnable reCall, boolean isRefreshTokenUpdated) {
+            super.onRefreshTokenUpdated(reCall, isRefreshTokenUpdated);
+            reCall.run();
+        }
     };
 
     private void getPassengerAddress(String phoneNumber) {
         if (vfPassengerAddress != null)
             vfPassengerAddress.setDisplayedChild(1);
         RequestHelper.builder(EndPoints.PASSENGER_ADDRESS)
+                .addHeader("Authorization", MyApplication.prefManager.getAuthorization())
+                .addHeader("id_token", MyApplication.prefManager.getIdToken())
                 .addPath(phoneNumber)
                 .listener(getPassengerAddress)
                 .get();
@@ -1079,7 +1089,12 @@ public class TripRegisterActivity extends AppCompatActivity {
         }
 
         @Override
-        public void onFailure(Runnable reCall, Exception e) {
+        public void onFailure(Runnable reCall, Exception e) { }
+
+        @Override
+        public void onRefreshTokenUpdated(Runnable reCall, boolean isRefreshTokenUpdated) {
+            super.onRefreshTokenUpdated(reCall, isRefreshTokenUpdated);
+            reCall.run();
         }
     };
 
@@ -1138,6 +1153,8 @@ public class TripRegisterActivity extends AppCompatActivity {
 
         LoadingDialog.makeCancelableLoader();
         RequestHelper.builder(EndPoints.ACTIVATE)
+                .addHeader("Authorization", MyApplication.prefManager.getAuthorization())
+                .addHeader("id_token", MyApplication.prefManager.getIdToken())
                 .addParam("userId", userId)
                 .addParam("sipNumber", sipNumber)
                 .listener(setActivate)
@@ -1196,6 +1213,12 @@ public class TripRegisterActivity extends AppCompatActivity {
         public void onFailure(Runnable reCall, Exception e) {
             MyApplication.handler.post(LoadingDialog::dismiss);
         }
+
+        @Override
+        public void onRefreshTokenUpdated(Runnable reCall, boolean isRefreshTokenUpdated) {
+            super.onRefreshTokenUpdated(reCall, isRefreshTokenUpdated);
+            reCall.run();
+        }
     };
 
     private void setDeActivate(int userId, int sipNumber) {
@@ -1209,6 +1232,8 @@ public class TripRegisterActivity extends AppCompatActivity {
 
             LoadingDialog.makeCancelableLoader();
             RequestHelper.builder(EndPoints.DEACTIVATE)
+                    .addHeader("Authorization", MyApplication.prefManager.getAuthorization())
+                    .addHeader("id_token", MyApplication.prefManager.getIdToken())
                     .addParam("userId", userId)
                     .addParam("sipNumber", sipNumber)
                     .listener(setDeActivate)
@@ -1271,6 +1296,12 @@ public class TripRegisterActivity extends AppCompatActivity {
             MyApplication.handler.post(LoadingDialog::dismiss);
 
         }
+
+        @Override
+        public void onRefreshTokenUpdated(Runnable reCall, boolean isRefreshTokenUpdated) {
+            super.onRefreshTokenUpdated(reCall, isRefreshTokenUpdated);
+            reCall.run();
+        }
     };
 
     private void insertService(int userId, int count, String phoneNumber, String mobile, int cityCode, String callerName,
@@ -1279,6 +1310,8 @@ public class TripRegisterActivity extends AppCompatActivity {
 
         LoadingDialog.makeCancelableLoader();
         RequestHelper.builder(EndPoints.INSERT_TRIP_SENDING_QUEUE)
+                .addHeader("Authorization", MyApplication.prefManager.getAuthorization())
+                .addHeader("id_token", MyApplication.prefManager.getIdToken())
                 .addParam("userId", userId)
                 .addParam("phoneNumber", phoneNumber)
                 .addParam("mobile", mobile)
@@ -1393,6 +1426,12 @@ public class TripRegisterActivity extends AppCompatActivity {
                 e.printStackTrace();
                 AvaCrashReporter.send(e, "TripRegisterActivity class, onReloadPress method");
             }
+        }
+
+        @Override
+        public void onRefreshTokenUpdated(Runnable reCall, boolean isRefreshTokenUpdated) {
+            super.onRefreshTokenUpdated(reCall, isRefreshTokenUpdated);
+            reCall.run();
         }
     };
 

@@ -89,6 +89,8 @@ public class DriverLockDialog {
   private void lockTaxi(String taxiCode, String hours) {
     LoadingDialog.makeCancelableLoader();
     RequestHelper.builder(EndPoints.LOCK_TAXI)
+            .addHeader("Authorization", MyApplication.prefManager.getAuthorization())
+            .addHeader("id_token", MyApplication.prefManager.getIdToken())
             .addParam("taxiCode", taxiCode)
             .addParam("userId", MyApplication.prefManager.getUserCode())
             .addParam("hours", hours)
@@ -137,6 +139,12 @@ public class DriverLockDialog {
       MyApplication.handler.post(() -> {
         LoadingDialog.dismissCancelableDialog();
       });
+    }
+
+    @Override
+    public void onRefreshTokenUpdated(Runnable reCall, boolean isRefreshTokenUpdated) {
+      super.onRefreshTokenUpdated(reCall, isRefreshTokenUpdated);
+      reCall.run();
     }
   };
 

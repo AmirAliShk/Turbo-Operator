@@ -82,8 +82,6 @@ public class SplashActivity extends AppCompatActivity {
         unbinder = ButterKnife.bind(this, view);
         TypefaceUtil.overrideFonts(view);
 
-        dataBase = new DataBase(context);
-
         ACRA.getErrorReporter().putCustomData("projectId", PUSH_PROJECT_ID);
         ACRA.getErrorReporter().putCustomData("LineCode", MyApplication.prefManager.getUserCode() + "");
 
@@ -124,35 +122,28 @@ public class SplashActivity extends AppCompatActivity {
     }
 
     private void continueProcessing() {
-        if (MyApplication.prefManager.getLoggedIn()) {
-            if (isFinishContract == 1) {
-                new GeneralDialog()
-                        .title("اتمام قرار داد")
-                        .message("مدت قرار داد شما به اتمام رسیده است. لطفا برای تمدید آن اقدام کنید.")
-                        .cancelable(false)
-                        .firstButton("مشاهده قرارداد", () -> {
-                            FragmentHelper
-                                    .toFragment(MyApplication.currentActivity, new ContractFragment())
-                                    .setAddToBackStack(false)
-                                    .replace();
-                        })
-                        .secondButton("امضا قرارداد", () -> {
-                            FragmentHelper
-                                    .toFragment(MyApplication.currentActivity, new SignatureFragment())
-                                    .setAddToBackStack(false)
-                                    .replace();
-                        })
-                        .show();
-                return;
-            }
-            startActivity(new Intent(MyApplication.currentActivity, MainActivity.class));
-            MyApplication.currentActivity.finish();
-        } else {
-            FragmentHelper
-                    .toFragment(MyApplication.currentActivity, new LoginFragment())
-                    .setAddToBackStack(false)
-                    .replace();
+        if (isFinishContract == 1) {
+            new GeneralDialog()
+                    .title("اتمام قرار داد")
+                    .message("مدت قرار داد شما به اتمام رسیده است. لطفا برای تمدید آن اقدام کنید.")
+                    .cancelable(false)
+                    .firstButton("مشاهده قرارداد", () -> {
+                        FragmentHelper
+                                .toFragment(MyApplication.currentActivity, new ContractFragment())
+                                .setAddToBackStack(false)
+                                .replace();
+                    })
+                    .secondButton("امضا قرارداد", () -> {
+                        FragmentHelper
+                                .toFragment(MyApplication.currentActivity, new SignatureFragment())
+                                .setAddToBackStack(false)
+                                .replace();
+                    })
+                    .show();
+            return;
         }
+        startActivity(new Intent(MyApplication.currentActivity, MainActivity.class));
+        MyApplication.currentActivity.finish();
     }
 
     @Override
@@ -166,12 +157,14 @@ public class SplashActivity extends AppCompatActivity {
     protected void onPause() {
         super.onPause();
         MyApplication.prefManager.setAppRun(false);
+        Log.i(TAG, "onPause: ");
     }
 
     @Override
     protected void onDestroy() {
         super.onDestroy();
         unbinder.unbind();
+        Log.i(TAG, "onDestroy: ");
     }
 
     @Override
@@ -192,7 +185,7 @@ public class SplashActivity extends AppCompatActivity {
                 FragmentHelper
                         .toFragment(MyApplication.currentActivity, new LoginFragment())
                         .setAddToBackStack(false)
-                        .replace();
+                        .add();
             } else {
                 JSONObject deviceInfo = new JSONObject();
                 @SuppressLint("HardwareIds") String android_id = Settings.Secure.getString(MyApplication.currentActivity.getContentResolver(), Settings.Secure.ANDROID_ID);
@@ -210,6 +203,8 @@ public class SplashActivity extends AppCompatActivity {
                 deviceInfo.put("ANDROID_ID", android_id);
 
                 RequestHelper.builder(EndPoints.GET_APP_INFO)
+                        .addHeader("Authorization", MyApplication.prefManager.getAuthorization())
+                        .addHeader("id_token", MyApplication.prefManager.getIdToken())
                         .addParam("versionCode", new AppVersionHelper(context).getVerionCode())
                         .addParam("operatorId", MyApplication.prefManager.getUserCode())
                         .addParam("userName", MyApplication.prefManager.getUserName())
@@ -264,6 +259,7 @@ public class SplashActivity extends AppCompatActivity {
 
                     //insert all city into dataBase
                     JSONArray cityArr = new JSONArray(city);
+                    dataBase = new DataBase(context);
                     for (int c = 0; c < cityArr.length(); c++) {
                         JSONObject cityObj = cityArr.getJSONObject(c);
                         CityModel cityModel = new CityModel();
@@ -340,14 +336,13 @@ public class SplashActivity extends AppCompatActivity {
         }
 
         @Override
-        public void onFailure(Runnable reCall, Exception e) {
-
-        }
+        public void onFailure(Runnable reCall, Exception e) { }
 
         @Override
         public void onRefreshTokenUpdated(Runnable reCall, boolean isRefreshTokenUpdated) {
             super.onRefreshTokenUpdated(reCall, isRefreshTokenUpdated);
-            //TODO you are here
+            Log.i(TAG, "onRefreshTokenUpdated: ");
+            reCall.run();
         }
     };
 

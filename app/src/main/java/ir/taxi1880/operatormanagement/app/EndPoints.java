@@ -12,8 +12,8 @@ public class EndPoints {
 //    http://172.16.2.210:1885/api/findway/citylatinname/address
 
   public static final String IP = (BuildConfig.DEBUG)
-//          ? "http://172.16.2.203"
-          ? "http://turbotaxi.ir"
+          ? "http://172.16.2.203"
+//          ? "http://turbotaxi.ir"
           : "http://turbotaxi.ir";
 //          : "http://172.16.2.203";
 
@@ -38,29 +38,28 @@ public class EndPoints {
   public static final String HAWKEYE_APIPort = (BuildConfig.DEBUG) ? "1890" : "1890";
 
   public static final String WEBSERVICE_PATH = IP + ":" + APIPort + "/api/operator/v3/";
-  public static final String TRIP_WEBSERVICE_PATH = IP + ":" + TRIP_APIPort + "/api/operator/v2/trip/";
-  public static final String FIND_WAY_WEBSERVICE_PATH = FIND_WAY_IP + ":" + FIND_WAY_APIPort + "/api/";
-  public static final String ACCOUNT_WEBSERVICE_PATH = IP + ":" + TRIP_APIPort + "/api/operator/v2/";
   public static final String SCORE_WEBSERVICE_PATH = IP + ":" + TRIP_APIPort + "/api/operator/v3/score/";
   public static final String SUPPORT_WEBSERVICE_PATH = IP + ":" + TRIP_APIPort + "/api/operator/v3/support/";
+  public static final String SHIFT_WEBSERVICE_PATH = IP + ":" + TRIP_APIPort + "/api/operator/v3/shift/";
+  public static final String TRIP_WEBSERVICE_PATH = IP + ":" + TRIP_APIPort + "/api/operator/v2/trip/";
+  public static final String FIND_WAY_WEBSERVICE_PATH = FIND_WAY_IP + ":" + FIND_WAY_APIPort + "/api/";
   public static final String CALL_VOICE_PATH = IP + ":" + CALL_VOICE_APIPort + "/api/getCallvoice/caldX:23V32/";
 //  http://turbotaxi.ir:1884/api/getCallvoice/caldX:23V32/1604130536.10343290
 
   public static final String HAWKEYE_PATH = IP + ":" + HAWKEYE_APIPort + "/api/user/v1/";
-  public static final String BASIC_PATH = IP + ":" + APIPort + "/api/operator/v3";
 
   /******************************** Base Api *********************************/
   public static final String GET_APP_INFO = WEBSERVICE_PATH + "getAppInfo";
-  public static final String ANSWER_SHIFT_REPLACEMENT_REQUEST = WEBSERVICE_PATH + "answerShiftReplacementRequest";
   public static final String GET_MESSAGES = WEBSERVICE_PATH + "getMessages";
   public static final String GET_NEWS = WEBSERVICE_PATH + "getNews";
-  public static final String GET_SHIFT_REPLACEMENT_REQUESTS = WEBSERVICE_PATH + "getShiftReplacementRequests";
-  public static final String GET_SHIFTS = WEBSERVICE_PATH + "getShifts";
   public static final String SEND_MESSAGES = WEBSERVICE_PATH + "sendMessages";
   public static final String SET_NEWS_SEEN = WEBSERVICE_PATH + "setNewsSeen";
-  public static final String SHIFT_REPLACEMENT_REQUEST = WEBSERVICE_PATH + "shiftReplacementRequest";
-  public static final String GET_SHIFT_OPERATOR = WEBSERVICE_PATH + "getShiftOperators";
-  public static final String CANCEL_REPLACEMENT_REQUEST = WEBSERVICE_PATH + "cancelReplacementRequest ";
+  public static final String GET_SHIFTS = WEBSERVICE_PATH + "getShifts";
+  public static final String GET_SHIFT_OPERATOR = SHIFT_WEBSERVICE_PATH + "operators";
+  public static final String GET_SHIFT_REPLACEMENT_REQUESTS = SHIFT_WEBSERVICE_PATH + "getReplacementRequests";
+  public static final String SHIFT_REPLACEMENT_REQUEST = SHIFT_WEBSERVICE_PATH + "replacementRequest";
+  public static final String CANCEL_REPLACEMENT_REQUEST = SHIFT_WEBSERVICE_PATH + "cancelReplacementRequest";
+  public static final String ANSWER_SHIFT_REPLACEMENT_REQUEST = SHIFT_WEBSERVICE_PATH + "answerReplacementRequest";
 
   /******************************** Trip Register Api *********************************/
 
@@ -81,13 +80,13 @@ public class EndPoints {
 
   /******************************** Account Api *********************************/
 
-  public static final String BALANCE = ACCOUNT_WEBSERVICE_PATH + "balance";
-  public static final String UPDATE_PROFILE = ACCOUNT_WEBSERVICE_PATH + "updateProfile";
-  public static final String PAYMENT = ACCOUNT_WEBSERVICE_PATH + "payment";
+  public static final String BALANCE = WEBSERVICE_PATH + "balance";
+  public static final String UPDATE_PROFILE = WEBSERVICE_PATH + "updateProfile";
+  public static final String PAYMENT = WEBSERVICE_PATH + "payment";
 
   /******************************** Score Api *********************************/
 
-  public static final String SCORE = ACCOUNT_WEBSERVICE_PATH + "score";
+  public static final String SCORE = WEBSERVICE_PATH + "score";
   public static final String BESTS = SCORE_WEBSERVICE_PATH + "bests";
   public static final String REWARDS = SCORE_WEBSERVICE_PATH + "rewards";
   public static final String SINGLE = SCORE_WEBSERVICE_PATH + "single";

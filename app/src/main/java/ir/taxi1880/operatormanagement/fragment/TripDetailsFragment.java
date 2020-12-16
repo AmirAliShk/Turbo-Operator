@@ -235,6 +235,8 @@ public class TripDetailsFragment extends Fragment {
         }
 
         RequestHelper.builder(EndPoints.SERVICE_DETAIL)
+                .addHeader("Authorization", MyApplication.prefManager.getAuthorization())
+                .addHeader("id_token", MyApplication.prefManager.getIdToken())
                 .addParam("serviceId", serviceId)
                 .listener(onGetTripDetails)
                 .post();
@@ -365,6 +367,12 @@ public class TripDetailsFragment extends Fragment {
                 }
             });
         }
+
+        @Override
+        public void onRefreshTokenUpdated(Runnable reCall, boolean isRefreshTokenUpdated) {
+            super.onRefreshTokenUpdated(reCall, isRefreshTokenUpdated);
+            reCall.run();
+        }
     };
 
     private void disableControllerButtonWaitingState() {
@@ -418,6 +426,8 @@ public class TripDetailsFragment extends Fragment {
         } else {
             LoadingDialog.makeCancelableLoader();
             RequestHelper.builder(EndPoints.CANCEL_SERVICE)
+                    .addHeader("Authorization", MyApplication.prefManager.getAuthorization())
+                    .addHeader("id_token", MyApplication.prefManager.getIdToken())
                     .addParam("serviceId", serviceId)
                     .addParam("userId", MyApplication.prefManager.getUserCode())
                     .listener(onCancelService)
@@ -472,11 +482,19 @@ public class TripDetailsFragment extends Fragment {
                 LoadingDialog.dismissCancelableDialog();
             });
         }
+
+        @Override
+        public void onRefreshTokenUpdated(Runnable reCall, boolean isRefreshTokenUpdated) {
+            super.onRefreshTokenUpdated(reCall, isRefreshTokenUpdated);
+            reCall.run();
+        }
     };
 
     private void trackingAgain() {
         LoadingDialog.makeCancelableLoader();
         RequestHelper.builder(EndPoints.AGAIN_TRACKING)
+                .addHeader("Authorization", MyApplication.prefManager.getAuthorization())
+                .addHeader("id_token", MyApplication.prefManager.getIdToken())
                 .addParam("serviceId", serviceId)
                 .addParam("userId", MyApplication.prefManager.getUserCode())
                 .listener(inTrackingAgain)
@@ -520,6 +538,12 @@ public class TripDetailsFragment extends Fragment {
             MyApplication.handler.post(() -> {
                 LoadingDialog.dismissCancelableDialog();
             });
+        }
+
+        @Override
+        public void onRefreshTokenUpdated(Runnable reCall, boolean isRefreshTokenUpdated) {
+            super.onRefreshTokenUpdated(reCall, isRefreshTokenUpdated);
+            reCall.run();
         }
     };
 

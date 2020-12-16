@@ -17,18 +17,21 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:orientation="vertical"
+            android:layout_marginRight="@dimen/_40ssp"
             android:background="@drawable/msg_in"
-            android:visibility="gone"
-            >
+            android:visibility="gone">
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="right"
                 android:gravity="right"
-                android:padding="10dp"
+                android:paddingRight="20dp"
+                android:paddingTop="10dp"
+                android:paddingBottom="10dp"
+                android:paddingLeft="20dp"
                 android:id="@+id/txtMsgIn"
-                android:textSize="15sp"
+                android:textSize="@dimen/_14ssp"
                 android:textColor="#fff"
                 android:minWidth="170dp" />
 
@@ -36,6 +39,10 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="5dp"
+                android:paddingRight="20dp"
+                android:paddingTop="10dp"
+                android:paddingBottom="10dp"
+                android:paddingLeft="20dp"
                 android:orientation="horizontal">
 
                 <TextView
@@ -43,26 +50,22 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="right"
                     android:gravity="right"
-                    android:padding="10dp"
                     android:id="@+id/txtTimeMsgIn"
                     android:layout_alignParentRight="true"
                     android:textColor="#fff"
                     android:textStyle="bold"
-                    android:textSize="11sp"
-                    />
+                    android:textSize="@dimen/_10ssp" />
 
                 <TextView
                     android:layout_width="130dp"
                     android:layout_height="wrap_content"
                     android:layout_gravity="right"
                     android:gravity="left"
-                    android:padding="10dp"
                     android:id="@+id/txtDateMsgIn"
                     android:layout_alignParentLeft="true"
                     android:textColor="#fff"
                     android:textStyle="bold"
-                    android:textSize="11sp"
-                    />
+                    android:textSize="@dimen/_10ssp" />
 
             </RelativeLayout>
 
@@ -75,63 +78,62 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:orientation="vertical"
+            android:layout_marginLeft="@dimen/_40ssp"
             android:background="@drawable/msg_out"
             android:layout_alignParentRight="true"
-            android:visibility="gone"
-            >
+            android:visibility="gone">
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="right"
                 android:gravity="right"
-                android:padding="10dp"
+                android:paddingRight="20dp"
+                android:paddingTop="10dp"
+                android:paddingBottom="10dp"
+                android:paddingLeft="20dp"
                 android:id="@+id/txtMsgOut"
                 android:textColor="#fff"
                 android:textStyle="bold"
-                android:textSize="15sp"
-                android:minWidth="170dp"
-                />
+                android:textSize="@dimen/_14ssp"
+                android:minWidth="170dp" />
 
             <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="5dp"
-                android:orientation="horizontal"
-                >
+                android:paddingRight="20dp"
+                android:paddingTop="10dp"
+                android:paddingBottom="10dp"
+                android:paddingLeft="20dp"
+                android:orientation="horizontal">
 
                 <TextView
                     android:layout_width="70dp"
                     android:layout_height="wrap_content"
                     android:layout_gravity="right"
                     android:gravity="right"
-                    android:padding="10dp"
                     android:id="@+id/txtTimeMsgOut"
                     android:layout_alignParentRight="true"
                     android:textColor="#fff"
                     android:textStyle="bold"
-                    android:textSize="11sp"
-                    />
+                    android:textSize="@dimen/_10ssp" />
 
                 <TextView
                     android:layout_width="130dp"
                     android:layout_height="wrap_content"
                     android:layout_gravity="right"
                     android:gravity="left"
-                    android:padding="10dp"
                     android:id="@+id/txtDateMsgOut"
                     android:layout_alignParentLeft="true"
                     android:textColor="#fff"
                     android:textStyle="bold"
-                    android:textSize="11sp"
-                    />
+                    android:textSize="@dimen/_10ssp"/>
 
             </RelativeLayout>
 
 
         </LinearLayout>
-
-
 
     </RelativeLayout>
 

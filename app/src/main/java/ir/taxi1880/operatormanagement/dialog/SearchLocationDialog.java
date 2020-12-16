@@ -154,6 +154,8 @@ public class SearchLocationDialog {
     vfLocation.setDisplayedChild(1);
 
     RequestHelper.builder(EndPoints.FIND_WAY)
+            .addHeader("Authorization", MyApplication.prefManager.getAuthorization())
+            .addHeader("id_token", MyApplication.prefManager.getIdToken())
             .addPath(cityLName)
             .addPath(address)
             .listener(onFindWay)
@@ -201,7 +203,6 @@ public class SearchLocationDialog {
       });
     }
 
-
     @Override
     public void onReloadPress(boolean v) {
 
@@ -217,6 +218,12 @@ public class SearchLocationDialog {
         e.printStackTrace();
         AvaCrashReporter.send(e,"SearchLocationDialog class, onReloadPress onResponse method");
       }
+    }
+
+    @Override
+    public void onRefreshTokenUpdated(Runnable reCall, boolean isRefreshTokenUpdated) {
+      super.onRefreshTokenUpdated(reCall, isRefreshTokenUpdated);
+      reCall.run();
     }
   };
 

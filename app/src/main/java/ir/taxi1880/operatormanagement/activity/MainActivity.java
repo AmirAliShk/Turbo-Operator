@@ -169,6 +169,8 @@ public class MainActivity extends AppCompatActivity implements NotificationFragm
       vfBalance.setDisplayedChild(0);
 
     RequestHelper.builder(EndPoints.BALANCE)
+            .addHeader("Authorization", MyApplication.prefManager.getAuthorization())
+            .addHeader("id_token", MyApplication.prefManager.getIdToken())
             .addPath(userId + "")
             .listener(getBalance)
             .get();
@@ -209,6 +211,13 @@ public class MainActivity extends AppCompatActivity implements NotificationFragm
         if (vfBalance != null)
           vfBalance.setDisplayedChild(1);
       });
+    }
+
+    @Override
+    public void onRefreshTokenUpdated(Runnable reCall, boolean isRefreshTokenUpdated) {
+      super.onRefreshTokenUpdated(reCall, isRefreshTokenUpdated);
+      Log.i(TAG, "onRefreshTokenUpdated: ");
+      reCall.run();
     }
   };
 

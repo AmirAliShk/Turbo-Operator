@@ -70,6 +70,8 @@ public class ShiftListFragment extends Fragment {
       vfShift.setDisplayedChild(0);
 
     RequestHelper.builder(EndPoints.GET_SHIFTS)
+            .addHeader("Authorization", MyApplication.prefManager.getAuthorization())
+            .addHeader("id_token", MyApplication.prefManager.getIdToken())
             .addParam("operatorId", operatorId)
             .listener(onGetShifts)
             .post();
@@ -115,6 +117,12 @@ public class ShiftListFragment extends Fragment {
     @Override
     public void onFailure(Runnable reCall, Exception e) {
 
+    }
+
+    @Override
+    public void onRefreshTokenUpdated(Runnable reCall, boolean isRefreshTokenUpdated) {
+      super.onRefreshTokenUpdated(reCall, isRefreshTokenUpdated);
+      reCall.run();
     }
   };
 

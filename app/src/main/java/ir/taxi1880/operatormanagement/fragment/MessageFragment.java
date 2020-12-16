@@ -111,6 +111,8 @@ public class MessageFragment extends Fragment {
       vfMessage.setDisplayedChild(0);
 
     RequestHelper.builder(EndPoints.GET_MESSAGES)
+            .addHeader("Authorization", MyApplication.prefManager.getAuthorization())
+            .addHeader("id_token", MyApplication.prefManager.getIdToken())
             .addParam("operatorId", operatorId)
             .listener(onGetMessages)
             .post();
@@ -138,7 +140,7 @@ public class MessageFragment extends Fragment {
           messageAdapter = new MessageAdapter(MyApplication.context, messageModels);
           if (listMessage != null){
             listMessage.setAdapter(messageAdapter);
-            MyApplication.handler.postDelayed(() -> listMessage.smoothScrollToPosition(messageModels.size()), 100);
+            MyApplication.handler.postDelayed(() -> listMessage.scrollToPosition(messageModels.size()), 200);
             messageAdapter.notifyDataSetChanged();
           }
 
@@ -153,8 +155,12 @@ public class MessageFragment extends Fragment {
     }
 
     @Override
-    public void onFailure(Runnable reCall, Exception e) {
+    public void onFailure(Runnable reCall, Exception e) { }
 
+    @Override
+    public void onRefreshTokenUpdated(Runnable reCall, boolean isRefreshTokenUpdated) {
+      super.onRefreshTokenUpdated(reCall, isRefreshTokenUpdated);
+      reCall.run();
     }
   };
 
@@ -162,6 +168,8 @@ public class MessageFragment extends Fragment {
 //        vfSend.setDisplayedChild(1);
 
     RequestHelper.builder(EndPoints.SEND_MESSAGES)
+            .addHeader("Authorization", MyApplication.prefManager.getAuthorization())
+            .addHeader("id_token", MyApplication.prefManager.getIdToken())
             .addParam("operatorId", operatorId)
             .addParam("message", message)
             .listener(onSendMessage)
@@ -191,8 +199,12 @@ public class MessageFragment extends Fragment {
     }
 
     @Override
-    public void onFailure(Runnable reCall, Exception e) {
+    public void onFailure(Runnable reCall, Exception e) { }
 
+    @Override
+    public void onRefreshTokenUpdated(Runnable reCall, boolean isRefreshTokenUpdated) {
+      super.onRefreshTokenUpdated(reCall, isRefreshTokenUpdated);
+      reCall.run();
     }
   };
 

@@ -62,6 +62,8 @@ public class ContractFragment extends Fragment {
     if (vfTxtOfContract != null)
       vfTxtOfContract.setDisplayedChild(0);
     RequestHelper.builder(EndPoints.CONTRACT)
+            .addHeader("Authorization", MyApplication.prefManager.getAuthorization())
+            .addHeader("id_token", MyApplication.prefManager.getIdToken())
             .listener(onContract)
             .get();
   }
@@ -103,8 +105,12 @@ public class ContractFragment extends Fragment {
     }
 
     @Override
-    public void onFailure(Runnable reCall, Exception e) {
+    public void onFailure(Runnable reCall, Exception e) { }
 
+    @Override
+    public void onRefreshTokenUpdated(Runnable reCall, boolean isRefreshTokenUpdated) {
+      super.onRefreshTokenUpdated(reCall, isRefreshTokenUpdated);
+      reCall.run();
     }
   };
 

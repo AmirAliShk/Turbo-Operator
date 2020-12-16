@@ -132,6 +132,8 @@ public class DriverLocationFragment extends Fragment implements OnMapReadyCallba
   private void getLastLocation() {
 
     RequestHelper.builder(EndPoints.LAST_DRIVER_POSITION)
+            .addHeader("Authorization", MyApplication.prefManager.getAuthorization())
+            .addHeader("id_token", MyApplication.prefManager.getIdToken())
             .addParam("taxiCode", carCode)
             .listener(onGetLastLocation)
             .post();
@@ -183,6 +185,12 @@ public class DriverLocationFragment extends Fragment implements OnMapReadyCallba
         if (imgRefresh != null)
           imgRefresh.clearAnimation();
       });
+    }
+
+    @Override
+    public void onRefreshTokenUpdated(Runnable reCall, boolean isRefreshTokenUpdated) {
+      super.onRefreshTokenUpdated(reCall, isRefreshTokenUpdated);
+      reCall.run();
     }
   };
 

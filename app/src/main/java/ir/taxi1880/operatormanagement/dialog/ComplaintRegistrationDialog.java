@@ -82,6 +82,8 @@ public class ComplaintRegistrationDialog {
   private void setComplaint(String serviceId, String description, String voipId) {
     LoadingDialog.makeCancelableLoader();
     RequestHelper.builder(EndPoints.INSERT_COMPLAINT)
+            .addHeader("Authorization", MyApplication.prefManager.getAuthorization())
+            .addHeader("id_token", MyApplication.prefManager.getIdToken())
             .addParam("userId", MyApplication.prefManager.getUserCode())
             .addParam("serviceId", serviceId)
             .addParam("complaintType", complaintType)
@@ -130,6 +132,12 @@ public class ComplaintRegistrationDialog {
       MyApplication.handler.post(() -> {
         LoadingDialog.dismissCancelableDialog();
       });
+    }
+
+    @Override
+    public void onRefreshTokenUpdated(Runnable reCall, boolean isRefreshTokenUpdated) {
+      super.onRefreshTokenUpdated(reCall, isRefreshTokenUpdated);
+      reCall.run();
     }
   };
 

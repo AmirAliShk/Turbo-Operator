@@ -242,6 +242,8 @@ public class DeterminationPageFragment extends Fragment {
 
   private void getAddressList() {
     RequestHelper.builder(EndPoints.GET_TRIP_WITH_ZERO_STATION)
+            .addHeader("Authorization", MyApplication.prefManager.getAuthorization())
+            .addHeader("id_token", MyApplication.prefManager.getIdToken())
             .listener(getAddressList)
             .hideNetworkError(true)
             .get();
@@ -358,6 +360,12 @@ public class DeterminationPageFragment extends Fragment {
         }
       });
     }
+
+    @Override
+    public void onRefreshTokenUpdated(Runnable reCall, boolean isRefreshTokenUpdated) {
+      super.onRefreshTokenUpdated(reCall, isRefreshTokenUpdated);
+      reCall.run();
+    }
   };
 
   private void changeStatus(boolean status) {
@@ -400,6 +408,8 @@ public class DeterminationPageFragment extends Fragment {
       vfStationInfo.setDisplayedChild(1);
     }
     RequestHelper.builder(EndPoints.STATION_INFO)
+            .addHeader("Authorization", MyApplication.prefManager.getAuthorization())
+            .addHeader("id_token", MyApplication.prefManager.getIdToken())
             .addPath(StringHelper.toEnglishDigits(stationCode) + "")
             .listener(getStationInfo)
             .get();
@@ -472,6 +482,12 @@ public class DeterminationPageFragment extends Fragment {
         }
       });
     }
+
+    @Override
+    public void onRefreshTokenUpdated(Runnable reCall, boolean isRefreshTokenUpdated) {
+      super.onRefreshTokenUpdated(reCall, isRefreshTokenUpdated);
+      reCall.run();
+    }
   };
 
   private void setStationCode(int userId, int tripId, String stationCode, int cityCode) {
@@ -479,6 +495,8 @@ public class DeterminationPageFragment extends Fragment {
 //    Log.e(TAG, "setStation = " + dataBase.getTopAddress().getOriginText() + ", stationCode = " + stationCode + ", tripId = " + tripId + ", cityCode = " + cityCode);
 
     RequestHelper.builder(EndPoints.UPDATE_TRIP_STATION)
+            .addHeader("Authorization", MyApplication.prefManager.getAuthorization())
+            .addHeader("id_token", MyApplication.prefManager.getIdToken())
             .addParam("userId", userId)
             .addParam("tripId", StringHelper.toEnglishDigits(tripId + ""))
             .addParam("stationCode", StringHelper.toEnglishDigits(stationCode + ""))
@@ -528,11 +546,19 @@ public class DeterminationPageFragment extends Fragment {
         }
       });
     }
+
+    @Override
+    public void onRefreshTokenUpdated(Runnable reCall, boolean isRefreshTokenUpdated) {
+      super.onRefreshTokenUpdated(reCall, isRefreshTokenUpdated);
+      reCall.run();
+    }
   };
 
   private void setMistake() {
     LoadingDialog.makeCancelableLoader();
     RequestHelper.builder(EndPoints.SET_MISTAKE)
+            .addHeader("Authorization", MyApplication.prefManager.getAuthorization())
+            .addHeader("id_token", MyApplication.prefManager.getIdToken())
             .addParam("userId", StringHelper.toEnglishDigits(dataBase.getTopAddress().getOperatorId() + ""))
             .addParam("tell", StringHelper.toEnglishDigits(dataBase.getTopAddress().getTell()))
             .addParam("adrs", StringHelper.toEnglishDigits(dataBase.getTopAddress().getOriginText()))
@@ -587,6 +613,12 @@ public class DeterminationPageFragment extends Fragment {
       MyApplication.handler.post(() -> {
         LoadingDialog.dismissCancelableDialog();
       });
+    }
+
+    @Override
+    public void onRefreshTokenUpdated(Runnable reCall, boolean isRefreshTokenUpdated) {
+      super.onRefreshTokenUpdated(reCall, isRefreshTokenUpdated);
+      reCall.run();
     }
   };
 

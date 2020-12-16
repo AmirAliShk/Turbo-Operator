@@ -109,6 +109,8 @@ public class ReplacementWaitingAdapter extends BaseAdapter {
 
     private void answerShiftReplacementRequest(int operatorId, int replacementRequestId, int answer) {
             RequestHelper.builder(EndPoints.ANSWER_SHIFT_REPLACEMENT_REQUEST)
+                    .addHeader("Authorization", MyApplication.prefManager.getAuthorization())
+                    .addHeader("id_token", MyApplication.prefManager.getIdToken())
                     .addParam("operatorId", operatorId)
                     .addParam("replacementRequestId", replacementRequestId)
                     .addParam("answer", answer)
@@ -145,8 +147,12 @@ public class ReplacementWaitingAdapter extends BaseAdapter {
         }
 
         @Override
-        public void onFailure(Runnable reCall, Exception e) {
+        public void onFailure(Runnable reCall, Exception e) { }
 
+        @Override
+        public void onRefreshTokenUpdated(Runnable reCall, boolean isRefreshTokenUpdated) {
+            super.onRefreshTokenUpdated(reCall, isRefreshTokenUpdated);
+            reCall.run();
         }
     };
 }

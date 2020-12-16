@@ -142,6 +142,8 @@ public class ReplacementFragment extends Fragment {
   private void shiftReplacementRequest(int operatorId, int intendedOperatorId, int shift, String date) {
     llLoader.setVisibility(View.VISIBLE);
     RequestHelper.builder(EndPoints.SHIFT_REPLACEMENT_REQUEST)
+            .addHeader("Authorization", MyApplication.prefManager.getAuthorization())
+            .addHeader("id_token", MyApplication.prefManager.getIdToken())
             .addParam("operatorId", operatorId)
             .addParam("intendedOperatorId", intendedOperatorId)
             .addParam("shift", shift)
@@ -190,8 +192,12 @@ public class ReplacementFragment extends Fragment {
     }
 
     @Override
-    public void onFailure(Runnable reCall, Exception e) {
+    public void onFailure(Runnable reCall, Exception e) { }
 
+    @Override
+    public void onRefreshTokenUpdated(Runnable reCall, boolean isRefreshTokenUpdated) {
+      super.onRefreshTokenUpdated(reCall, isRefreshTokenUpdated);
+      reCall.run();
     }
   };
 
@@ -199,6 +205,8 @@ public class ReplacementFragment extends Fragment {
     if (vfOperator != null)
       vfOperator.setDisplayedChild(1);
     RequestHelper.builder(EndPoints.GET_SHIFT_OPERATOR)
+            .addHeader("Authorization", MyApplication.prefManager.getAuthorization())
+            .addHeader("id_token", MyApplication.prefManager.getIdToken())
             .addParam("date", date)
             .addParam("shiftId", shiftId)
             .addParam("operatorId", operatorId)
@@ -230,8 +238,12 @@ public class ReplacementFragment extends Fragment {
     }
 
     @Override
-    public void onFailure(Runnable reCall, Exception e) {
+    public void onFailure(Runnable reCall, Exception e) { }
 
+    @Override
+    public void onRefreshTokenUpdated(Runnable reCall, boolean isRefreshTokenUpdated) {
+      super.onRefreshTokenUpdated(reCall, isRefreshTokenUpdated);
+      reCall.run();
     }
   };
 

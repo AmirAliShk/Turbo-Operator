@@ -107,6 +107,8 @@ public class NotificationAdapter extends BaseAdapter {
 
     private void setNewsSeen(int newsId) {
             RequestHelper.builder(EndPoints.SET_NEWS_SEEN)
+                    .addHeader("Authorization", MyApplication.prefManager.getAuthorization())
+                    .addHeader("id_token", MyApplication.prefManager.getIdToken())
                     .addParam("newsId", newsId)
                     .listener(onSetNewsSeen)
                     .post();
@@ -139,8 +141,12 @@ public class NotificationAdapter extends BaseAdapter {
         }
 
         @Override
-        public void onFailure(Runnable reCall, Exception e) {
+        public void onFailure(Runnable reCall, Exception e) { }
 
+        @Override
+        public void onRefreshTokenUpdated(Runnable reCall, boolean isRefreshTokenUpdated) {
+            super.onRefreshTokenUpdated(reCall, isRefreshTokenUpdated);
+            reCall.run();
         }
     };
 }

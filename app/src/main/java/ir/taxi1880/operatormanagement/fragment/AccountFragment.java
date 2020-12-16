@@ -111,6 +111,8 @@ public class AccountFragment extends Fragment {
       vfBalance.setDisplayedChild(0);
 
     RequestHelper.builder(EndPoints.BALANCE)
+            .addHeader("Authorization", MyApplication.prefManager.getAuthorization())
+            .addHeader("id_token", MyApplication.prefManager.getIdToken())
             .addPath(userId + "")
             .listener(getBalance)
             .get();
@@ -148,11 +150,19 @@ public class AccountFragment extends Fragment {
     public void onFailure(Runnable reCall, Exception e) {
 //      vfBalance.setDisplayedChild(1);
     }
+
+    @Override
+    public void onRefreshTokenUpdated(Runnable reCall, boolean isRefreshTokenUpdated) {
+      super.onRefreshTokenUpdated(reCall, isRefreshTokenUpdated);
+      reCall.run();
+    }
   };
 
   private void updateProfile(int userId, String accountNumber, String cardNumber, String sheba) {
 
     RequestHelper.builder(EndPoints.UPDATE_PROFILE)
+            .addHeader("Authorization", MyApplication.prefManager.getAuthorization())
+            .addHeader("id_token", MyApplication.prefManager.getIdToken())
             .addParam("userId", userId)
             .addParam("accountNumber", StringHelper.toEnglishDigits(accountNumber))
             .addParam("cardNumber", StringHelper.toEnglishDigits(cardNumber.replaceAll("-", "")))
@@ -200,13 +210,20 @@ public class AccountFragment extends Fragment {
     }
 
     @Override
-    public void onFailure(Runnable reCall, Exception e) {
+    public void onFailure(Runnable reCall, Exception e) { }
+
+    @Override
+    public void onRefreshTokenUpdated(Runnable reCall, boolean isRefreshTokenUpdated) {
+      super.onRefreshTokenUpdated(reCall, isRefreshTokenUpdated);
+      reCall.run();
     }
   };
 
   private void payment(int userId) {
 
     RequestHelper.builder(EndPoints.PAYMENT)
+            .addHeader("Authorization", MyApplication.prefManager.getAuthorization())
+            .addHeader("id_token", MyApplication.prefManager.getIdToken())
             .addParam("userId", userId)
             .listener(Payment)
             .post();
@@ -251,6 +268,12 @@ public class AccountFragment extends Fragment {
 
     @Override
     public void onFailure(Runnable reCall, Exception e) {
+    }
+
+    @Override
+    public void onRefreshTokenUpdated(Runnable reCall, boolean isRefreshTokenUpdated) {
+      super.onRefreshTokenUpdated(reCall, isRefreshTokenUpdated);
+      reCall.run();
     }
   };
 

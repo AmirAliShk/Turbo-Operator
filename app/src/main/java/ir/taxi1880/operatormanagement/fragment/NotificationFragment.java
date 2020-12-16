@@ -73,6 +73,8 @@ public class NotificationFragment extends Fragment {
     if (vfNoti != null)
       vfNoti.setDisplayedChild(0);
     RequestHelper.builder(EndPoints.GET_NEWS)
+            .addHeader("Authorization", MyApplication.prefManager.getAuthorization())
+            .addHeader("id_token", MyApplication.prefManager.getIdToken())
             .addParam("operatorId", operatorId)
             .listener(onGetNews)
             .post();
@@ -110,8 +112,12 @@ public class NotificationFragment extends Fragment {
     }
 
     @Override
-    public void onFailure(Runnable reCall, Exception e) {
+    public void onFailure(Runnable reCall, Exception e) { }
 
+    @Override
+    public void onRefreshTokenUpdated(Runnable reCall, boolean isRefreshTokenUpdated) {
+      super.onRefreshTokenUpdated(reCall, isRefreshTokenUpdated);
+      reCall.run();
     }
   };
 
