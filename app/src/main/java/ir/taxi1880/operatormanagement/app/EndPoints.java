@@ -17,16 +17,21 @@ public class EndPoints {
           : "http://turbotaxi.ir";
 //          : "http://172.16.2.203";
 
+  public static final String HAKWEYE_IP = (BuildConfig.DEBUG)
+          ? "http://172.16.2.201"
+//          ? "http://turbotaxi.ir"
+          : "http://turbotaxi.ir";
+//          : "http://172.16.2.203";
 
   public static final String FIND_WAY_IP = (BuildConfig.DEBUG)
-          ? "http://turbotaxi.ir"
-//          ? "http://172.16.2.210"
+//          ? "http://turbotaxi.ir"
+          ? "http://172.16.2.210"
           : "http://turbotaxi.ir";
 //          : "http://172.16.2.210";
 
   public static final String PUSH_ADDRESS =   (BuildConfig.DEBUG)
-          ? "http://turbotaxi.ir:6060"
-//          ? "http://172.16.2.212:6060"
+//          ? "http://turbotaxi.ir:6060"
+          ? "http://172.16.2.212:6060"
 //          : "http://172.16.2.212:6060";
           : "http://turbotaxi.ir:6060";
 
@@ -46,7 +51,7 @@ public class EndPoints {
   public static final String CALL_VOICE_PATH = IP + ":" + CALL_VOICE_APIPort + "/api/getCallvoice/caldX:23V32/";
 //  http://turbotaxi.ir:1884/api/getCallvoice/caldX:23V32/1604130536.10343290
 
-  public static final String HAWKEYE_PATH = IP + ":" + HAWKEYE_APIPort + "/api/user/v1/";
+  public static final String HAWKEYE_PATH = HAKWEYE_IP + ":" + HAWKEYE_APIPort + "/api/user/v1/";
 
   /******************************** Base Api *********************************/
   public static final String GET_APP_INFO = WEBSERVICE_PATH + "getAppInfo";

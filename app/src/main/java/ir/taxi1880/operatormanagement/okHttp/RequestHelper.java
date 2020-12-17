@@ -315,7 +315,7 @@ public class RequestHelper implements okhttp3.Callback {
                 if (!response.isSuccessful()) {
                     //TODO it's OK??
                     if (response.code() == 401 || response.code() == 402 || response.code() == 403) {
-                        new RefreshToken().refreshToken(success -> {
+                            new RefreshToken().refreshToken(success -> {
                             if (success) {
                                 //TODO request() is true?? or I must save last request in an temp variable?
 //                                request();

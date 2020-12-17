@@ -686,7 +686,6 @@ public class TripRegisterActivity extends AppCompatActivity {
             if (PhoneNumberValidation.isValid(editable.toString())) {
                 isTellValidable = false;
                 edtMobile.setText(editable.toString());
-                edtMobile.setNextFocusDownId(R.id.imgPassengerInfo);
             } else {
 //          clearData();
 //          edtMobile.setText("");
@@ -1089,7 +1088,8 @@ public class TripRegisterActivity extends AppCompatActivity {
         }
 
         @Override
-        public void onFailure(Runnable reCall, Exception e) { }
+        public void onFailure(Runnable reCall, Exception e) {
+        }
 
         @Override
         public void onRefreshTokenUpdated(Runnable reCall, boolean isRefreshTokenUpdated) {

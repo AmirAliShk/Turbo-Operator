@@ -48,6 +48,7 @@ import ir.taxi1880.operatormanagement.helper.StringHelper;
 import ir.taxi1880.operatormanagement.helper.TypefaceUtil;
 import ir.taxi1880.operatormanagement.model.CityModel;
 import ir.taxi1880.operatormanagement.okHttp.RequestHelper;
+import ir.taxi1880.operatormanagement.helper.ContinueProcessing;
 import ir.taxi1880.operatormanagement.push.AvaCrashReporter;
 import ir.taxi1880.operatormanagement.services.LinphoneService;
 
@@ -121,7 +122,7 @@ public class SplashActivity extends AppCompatActivity {
         }
     }
 
-    private void continueProcessing() {
+    public void continueProcessing() {
         if (isFinishContract == 1) {
             new GeneralDialog()
                     .title("اتمام قرار داد")
@@ -142,8 +143,7 @@ public class SplashActivity extends AppCompatActivity {
                     .show();
             return;
         }
-        startActivity(new Intent(MyApplication.currentActivity, MainActivity.class));
-        MyApplication.currentActivity.finish();
+        ContinueProcessing.runMainActivity();
     }
 
     @Override
@@ -251,6 +251,9 @@ public class SplashActivity extends AppCompatActivity {
                     int activeInQueue = object.getInt("activeInQueue");
                     isFinishContract = object.getInt("isFinishContract");
                     int customerSupport = object.getInt("customerSupport");
+                    String name = object.getString("name");
+                    String family = object.getString("family");
+                    MyApplication.prefManager.setOperatorName(name + " " + family);
                     MyApplication.prefManager.setCustomerSupport(customerSupport);
 
                     MyApplication.prefManager.setComplaint(complaintType);
@@ -336,7 +339,8 @@ public class SplashActivity extends AppCompatActivity {
         }
 
         @Override
-        public void onFailure(Runnable reCall, Exception e) { }
+        public void onFailure(Runnable reCall, Exception e) {
+        }
 
         @Override
         public void onRefreshTokenUpdated(Runnable reCall, boolean isRefreshTokenUpdated) {
@@ -396,7 +400,7 @@ public class SplashActivity extends AppCompatActivity {
     }
 
     // This thread will periodically check if the Service is ready, and then call onServiceReady
-    private class ServiceWaitThread extends Thread {
+    public class ServiceWaitThread extends Thread {
         public void run() {
             while (!LinphoneService.isReady()) {
                 try {
@@ -417,7 +421,7 @@ public class SplashActivity extends AppCompatActivity {
         }
     }
 
-    private void startVoipService() {
+    public void startVoipService() {
         if (LinphoneService.isReady()) {
             continueProcessing();
         } else {

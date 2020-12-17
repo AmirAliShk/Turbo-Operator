@@ -174,7 +174,6 @@ public class MainActivity extends AppCompatActivity implements NotificationFragm
             .addPath(userId + "")
             .listener(getBalance)
             .get();
-
   }
 
   RequestHelper.Callback getBalance = new RequestHelper.Callback() {

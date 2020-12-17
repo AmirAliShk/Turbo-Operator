@@ -86,7 +86,7 @@ public class ReplacementFragment extends Fragment {
         shiftId = 0;
         break;
     }
-    getOnlineOperator(shiftDate, shiftId, MyApplication.prefManager.getUserCode());
+    getOnlineOperator(shiftDate, shiftId);
   }
 
   @BindView(R.id.btnSubmit)
@@ -201,17 +201,17 @@ public class ReplacementFragment extends Fragment {
     }
   };
 
-  private void getOnlineOperator(String date, int shiftId, int operatorId) {
+  private void getOnlineOperator(String date, int shiftId) {
+    // TODO test it ...
     if (vfOperator != null)
       vfOperator.setDisplayedChild(1);
     RequestHelper.builder(EndPoints.GET_SHIFT_OPERATOR)
             .addHeader("Authorization", MyApplication.prefManager.getAuthorization())
             .addHeader("id_token", MyApplication.prefManager.getIdToken())
-            .addParam("date", date)
-            .addParam("shiftId", shiftId)
-            .addParam("operatorId", operatorId)
+            .addPath(date)
+            .addPath(shiftId+"")
             .listener(onGetOnlineOperator)
-            .post();
+            .get();
 
   }
 
