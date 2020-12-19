@@ -56,18 +56,18 @@ public class SendReplacementReqFragment extends Fragment {
     unbinder = ButterKnife.bind(this, view);
     TypefaceUtil.overrideFonts(view);
 
-    getShiftReplacementRequest(MyApplication.prefManager.getUserCode());
+    getShiftReplacementRequest();
 
     return view;
   }
 
-  private void getShiftReplacementRequest(int operatorId) {
+  private void getShiftReplacementRequest() {
     if (vfSendReq != null)
       vfSendReq.setDisplayedChild(0);
     RequestHelper.builder(EndPoints.GET_SHIFT_REPLACEMENT_REQUESTS)
             .addHeader("Authorization", MyApplication.prefManager.getAuthorization())
             .addHeader("id_token", MyApplication.prefManager.getIdToken())
-            .addParam("operatorId", operatorId)
+            .addParam("operatorId", MyApplication.prefManager.getUserCode())
             .listener(onGetShiftReplacementRequest)
             .post();
 
@@ -122,12 +122,6 @@ public class SendReplacementReqFragment extends Fragment {
 
     @Override
     public void onFailure(Runnable reCall, Exception e) { }
-
-    @Override
-    public void onRefreshTokenUpdated(Runnable reCall, boolean isRefreshTokenUpdated) {
-      super.onRefreshTokenUpdated(reCall, isRefreshTokenUpdated);
-      reCall.run();
-    }
   };
 
 

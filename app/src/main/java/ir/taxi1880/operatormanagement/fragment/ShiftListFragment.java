@@ -60,19 +60,19 @@ public class ShiftListFragment extends Fragment {
 
     shiftModels = new ArrayList<>();
 
-    getShifts(MyApplication.prefManager.getUserCode());
+    getShifts();
 
     return view;
   }
 
-  private void getShifts(int operatorId) {
+  private void getShifts() {
     if (vfShift != null)
       vfShift.setDisplayedChild(0);
 
     RequestHelper.builder(EndPoints.GET_SHIFTS)
             .addHeader("Authorization", MyApplication.prefManager.getAuthorization())
             .addHeader("id_token", MyApplication.prefManager.getIdToken())
-            .addParam("operatorId", operatorId)
+            .addParam("operatorId", MyApplication.prefManager.getUserCode())
             .listener(onGetShifts)
             .post();
 
@@ -117,12 +117,6 @@ public class ShiftListFragment extends Fragment {
     @Override
     public void onFailure(Runnable reCall, Exception e) {
 
-    }
-
-    @Override
-    public void onRefreshTokenUpdated(Runnable reCall, boolean isRefreshTokenUpdated) {
-      super.onRefreshTokenUpdated(reCall, isRefreshTokenUpdated);
-      reCall.run();
     }
   };
 

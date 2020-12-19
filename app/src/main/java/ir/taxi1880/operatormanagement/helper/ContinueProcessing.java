@@ -8,7 +8,10 @@ import ir.taxi1880.operatormanagement.app.MyApplication;
 public class ContinueProcessing {
 
     public static void runMainActivity() {
-        MyApplication.currentActivity.startActivity(new Intent(MyApplication.currentActivity, MainActivity.class));
-        MyApplication.currentActivity.finish();
+        MyApplication.handler.post(() -> {
+            MyApplication.currentActivity.startActivity(new Intent(MyApplication.currentActivity, MainActivity.class));
+            MyApplication.currentActivity.finish();
+        });
+
     }
 }

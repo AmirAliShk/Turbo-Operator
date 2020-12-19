@@ -1022,12 +1022,6 @@ public class TripRegisterActivity extends AppCompatActivity {
                     vfPassengerInfo.setDisplayedChild(0);
             });
         }
-
-        @Override
-        public void onRefreshTokenUpdated(Runnable reCall, boolean isRefreshTokenUpdated) {
-            super.onRefreshTokenUpdated(reCall, isRefreshTokenUpdated);
-            reCall.run();
-        }
     };
 
     private void getPassengerAddress(String phoneNumber) {
@@ -1089,12 +1083,6 @@ public class TripRegisterActivity extends AppCompatActivity {
 
         @Override
         public void onFailure(Runnable reCall, Exception e) {
-        }
-
-        @Override
-        public void onRefreshTokenUpdated(Runnable reCall, boolean isRefreshTokenUpdated) {
-            super.onRefreshTokenUpdated(reCall, isRefreshTokenUpdated);
-            reCall.run();
         }
     };
 
@@ -1214,11 +1202,6 @@ public class TripRegisterActivity extends AppCompatActivity {
             MyApplication.handler.post(LoadingDialog::dismiss);
         }
 
-        @Override
-        public void onRefreshTokenUpdated(Runnable reCall, boolean isRefreshTokenUpdated) {
-            super.onRefreshTokenUpdated(reCall, isRefreshTokenUpdated);
-            reCall.run();
-        }
     };
 
     private void setDeActivate(int userId, int sipNumber) {
@@ -1295,12 +1278,6 @@ public class TripRegisterActivity extends AppCompatActivity {
         public void onFailure(Runnable reCall, Exception e) {
             MyApplication.handler.post(LoadingDialog::dismiss);
 
-        }
-
-        @Override
-        public void onRefreshTokenUpdated(Runnable reCall, boolean isRefreshTokenUpdated) {
-            super.onRefreshTokenUpdated(reCall, isRefreshTokenUpdated);
-            reCall.run();
         }
     };
 
@@ -1426,12 +1403,6 @@ public class TripRegisterActivity extends AppCompatActivity {
                 e.printStackTrace();
                 AvaCrashReporter.send(e, "TripRegisterActivity class, onReloadPress method");
             }
-        }
-
-        @Override
-        public void onRefreshTokenUpdated(Runnable reCall, boolean isRefreshTokenUpdated) {
-            super.onRefreshTokenUpdated(reCall, isRefreshTokenUpdated);
-            reCall.run();
         }
     };
 

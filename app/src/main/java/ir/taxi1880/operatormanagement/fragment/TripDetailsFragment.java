@@ -368,11 +368,6 @@ public class TripDetailsFragment extends Fragment {
             });
         }
 
-        @Override
-        public void onRefreshTokenUpdated(Runnable reCall, boolean isRefreshTokenUpdated) {
-            super.onRefreshTokenUpdated(reCall, isRefreshTokenUpdated);
-            reCall.run();
-        }
     };
 
     private void disableControllerButtonWaitingState() {
@@ -483,11 +478,6 @@ public class TripDetailsFragment extends Fragment {
             });
         }
 
-        @Override
-        public void onRefreshTokenUpdated(Runnable reCall, boolean isRefreshTokenUpdated) {
-            super.onRefreshTokenUpdated(reCall, isRefreshTokenUpdated);
-            reCall.run();
-        }
     };
 
     private void trackingAgain() {
@@ -540,11 +530,6 @@ public class TripDetailsFragment extends Fragment {
             });
         }
 
-        @Override
-        public void onRefreshTokenUpdated(Runnable reCall, boolean isRefreshTokenUpdated) {
-            super.onRefreshTokenUpdated(reCall, isRefreshTokenUpdated);
-            reCall.run();
-        }
     };
 
     @Override

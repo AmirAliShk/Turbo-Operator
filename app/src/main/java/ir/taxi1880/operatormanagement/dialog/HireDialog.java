@@ -160,11 +160,6 @@ public class HireDialog {
     @Override
     public void onFailure(Runnable reCall, Exception e) { }
 
-    @Override
-    public void onRefreshTokenUpdated(Runnable reCall, boolean isRefreshTokenUpdated) {
-      super.onRefreshTokenUpdated(reCall, isRefreshTokenUpdated);
-      reCall.run();
-    }
   };
 
   private void getHireType() {
@@ -223,11 +218,6 @@ public class HireDialog {
     @Override
     public void onFailure(Runnable reCall, Exception e) { }
 
-    @Override
-    public void onRefreshTokenUpdated(Runnable reCall, boolean isRefreshTokenUpdated) {
-      super.onRefreshTokenUpdated(reCall, isRefreshTokenUpdated);
-      reCall.run();
-    }
   };
 
 }

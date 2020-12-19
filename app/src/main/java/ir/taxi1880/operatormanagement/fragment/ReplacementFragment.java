@@ -86,7 +86,7 @@ public class ReplacementFragment extends Fragment {
         shiftId = 0;
         break;
     }
-    getOnlineOperator(shiftDate, shiftId);
+    getOnlineOperator();
   }
 
   @BindView(R.id.btnSubmit)
@@ -106,7 +106,7 @@ public class ReplacementFragment extends Fragment {
             .title("ثبت درخواست")
             .message(" شما میخواهید خانم " + edtOperator.getText() + " در تاریخ " + shiftDate + " در شیفت " + shiftName + " به جای شما حضور یابد.")
             .firstButton("بله", () -> {
-              shiftReplacementRequest(MyApplication.prefManager.getUserCode(), opId, shiftId, shiftDate);
+              shiftReplacementRequest();
               edtOperator.setText("");
             })
             .secondButton("خیر", null)
@@ -139,15 +139,15 @@ public class ReplacementFragment extends Fragment {
     return view;
   }
 
-  private void shiftReplacementRequest(int operatorId, int intendedOperatorId, int shift, String date) {
+  private void shiftReplacementRequest() {
     llLoader.setVisibility(View.VISIBLE);
     RequestHelper.builder(EndPoints.SHIFT_REPLACEMENT_REQUEST)
             .addHeader("Authorization", MyApplication.prefManager.getAuthorization())
             .addHeader("id_token", MyApplication.prefManager.getIdToken())
-            .addParam("operatorId", operatorId)
-            .addParam("intendedOperatorId", intendedOperatorId)
-            .addParam("shift", shift)
-            .addParam("date", date)
+            .addParam("operatorId", MyApplication.prefManager.getUserCode())
+            .addParam("intendedOperatorId", opId)
+            .addParam("shift", shiftId)
+            .addParam("date", shiftDate)
             .listener(onShiftReplacementRequest)
             .post();
 
@@ -193,22 +193,16 @@ public class ReplacementFragment extends Fragment {
 
     @Override
     public void onFailure(Runnable reCall, Exception e) { }
-
-    @Override
-    public void onRefreshTokenUpdated(Runnable reCall, boolean isRefreshTokenUpdated) {
-      super.onRefreshTokenUpdated(reCall, isRefreshTokenUpdated);
-      reCall.run();
-    }
   };
 
-  private void getOnlineOperator(String date, int shiftId) {
+  private void getOnlineOperator() {
     // TODO test it ...
     if (vfOperator != null)
       vfOperator.setDisplayedChild(1);
     RequestHelper.builder(EndPoints.GET_SHIFT_OPERATOR)
             .addHeader("Authorization", MyApplication.prefManager.getAuthorization())
             .addHeader("id_token", MyApplication.prefManager.getIdToken())
-            .addPath(date)
+            .addPath(shiftDate)
             .addPath(shiftId+"")
             .listener(onGetOnlineOperator)
             .get();
@@ -239,12 +233,6 @@ public class ReplacementFragment extends Fragment {
 
     @Override
     public void onFailure(Runnable reCall, Exception e) { }
-
-    @Override
-    public void onRefreshTokenUpdated(Runnable reCall, boolean isRefreshTokenUpdated) {
-      super.onRefreshTokenUpdated(reCall, isRefreshTokenUpdated);
-      reCall.run();
-    }
   };
 
   @Override

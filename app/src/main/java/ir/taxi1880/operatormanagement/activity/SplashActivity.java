@@ -203,8 +203,6 @@ public class SplashActivity extends AppCompatActivity {
                 deviceInfo.put("ANDROID_ID", android_id);
 
                 RequestHelper.builder(EndPoints.GET_APP_INFO)
-                        .addHeader("Authorization", MyApplication.prefManager.getAuthorization())
-                        .addHeader("id_token", MyApplication.prefManager.getIdToken())
                         .addParam("versionCode", new AppVersionHelper(context).getVerionCode())
                         .addParam("operatorId", MyApplication.prefManager.getUserCode())
                         .addParam("userName", MyApplication.prefManager.getUserName())
@@ -340,13 +338,6 @@ public class SplashActivity extends AppCompatActivity {
 
         @Override
         public void onFailure(Runnable reCall, Exception e) {
-        }
-
-        @Override
-        public void onRefreshTokenUpdated(Runnable reCall, boolean isRefreshTokenUpdated) {
-            super.onRefreshTokenUpdated(reCall, isRefreshTokenUpdated);
-            Log.i(TAG, "onRefreshTokenUpdated: ");
-            reCall.run();
         }
     };
 

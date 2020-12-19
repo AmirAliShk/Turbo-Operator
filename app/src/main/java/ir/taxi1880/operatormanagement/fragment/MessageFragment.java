@@ -21,6 +21,7 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
@@ -40,172 +41,159 @@ import ir.taxi1880.operatormanagement.push.AvaCrashReporter;
  * A simple {@link Fragment} subclass.
  */
 public class MessageFragment extends Fragment {
-  public static final String TAG = MessageFragment.class.getSimpleName();
-  Unbinder unbinder;
-  private List<MessageModel> messageModels;
-  MessageAdapter messageAdapter;
+    public static final String TAG = MessageFragment.class.getSimpleName();
+    Unbinder unbinder;
+    private List<MessageModel> messageModels;
+    MessageAdapter messageAdapter;
+    String message;
 
-  @BindView(R.id.listMessage)
-  RecyclerView listMessage;
+    @BindView(R.id.listMessage)
+    RecyclerView listMessage;
 
-  @BindView(R.id.edtMessage)
-  EditText edtMessage;
+    @BindView(R.id.edtMessage)
+    EditText edtMessage;
 
-  @OnClick(R.id.imgBack)
-  void onBack() {
-    KeyBoardHelper.hideKeyboard();
-    MyApplication.currentActivity.onBackPressed();
-  }
-
-  @BindView(R.id.vfSend)
-  ViewFlipper vfSend;
-
-  @BindView(R.id.vfMessage)
-  ViewFlipper vfMessage;
-
-  @OnClick(R.id.llSend)
-  void onSend() {
-    String message = edtMessage.getText().toString();
-    if (message.isEmpty()) {
-      return;
+    @OnClick(R.id.imgBack)
+    void onBack() {
+        KeyBoardHelper.hideKeyboard();
+        MyApplication.currentActivity.onBackPressed();
     }
+
+    @BindView(R.id.vfSend)
+    ViewFlipper vfSend;
+
+    @BindView(R.id.vfMessage)
+    ViewFlipper vfMessage;
+
+    @OnClick(R.id.llSend)
+    void onSend() {
+        message = edtMessage.getText().toString();
+        if (message.isEmpty()) {
+            return;
+        }
 //        progressBar.setVisibility(View.VISIBLE);
 //        imgSend.setVisibility(View.GONE);
-    sendMessage(MyApplication.prefManager.getUserCode(), message);
-    messageAdapter.notifyDataSetChanged();
-  }
+        sendMessage();
+        messageAdapter.notifyDataSetChanged();
+    }
 
-  @BindView(R.id.tvName)
-  TextView tvName;
+    @BindView(R.id.tvName)
+    TextView tvName;
 
-  @Override
-  public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-    View view = inflater.inflate(R.layout.fragment_message, container, false);
-    unbinder = ButterKnife.bind(this, view);
-    TypefaceUtil.overrideFonts(view);
-
-    messageModels = new ArrayList<>();
-
-    NotificationManager notificationManager = (NotificationManager) MyApplication.currentActivity.getSystemService(Context.NOTIFICATION_SERVICE);
-    notificationManager.cancel(Constant.PUSH_NOTIFICATION_ID);
-
-    RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(MyApplication.context);
-    listMessage.setLayoutManager(layoutManager);
-    listMessage.setItemAnimator(new DefaultItemAnimator());
-
-    getMessages(MyApplication.prefManager.getUserCode());
-
-//        MyApplication.handler.postDelayed(() -> listMessage.smoothScrollToPosition(messageModels.size()), 100);
-
-    return view;
-  }
-
-  @Override
-  public void onDestroyView() {
-    super.onDestroyView();
-    unbinder.unbind();
-  }
-
-  private void getMessages(int operatorId) {
-    if (vfMessage != null)
-      vfMessage.setDisplayedChild(0);
-
-    RequestHelper.builder(EndPoints.GET_MESSAGES)
-            .addHeader("Authorization", MyApplication.prefManager.getAuthorization())
-            .addHeader("id_token", MyApplication.prefManager.getIdToken())
-            .addParam("operatorId", operatorId)
-            .listener(onGetMessages)
-            .post();
-  }
-
-  private RequestHelper.Callback onGetMessages = new RequestHelper.Callback() {
     @Override
-    public void onResponse(Runnable reCall, Object... args) {
-      MyApplication.handler.post(() -> {
-        try {
-          messageModels.clear();
-          JSONArray arr = new JSONArray(args[0].toString());
-          for (int i = 0; i < arr.length(); i++) {
-            JSONObject object = arr.getJSONObject(i);
-            MessageModel messageModel = new MessageModel();
-            messageModel.setMsgId(object.getInt("id"));
-            messageModel.setUserId(object.getInt("userId"));
-            messageModel.setMsgType(object.getInt("type"));
-            messageModel.setMsgDate(object.getString("saveDate"));
-            messageModel.setMsgTime(object.getString("saveTime"));
-            messageModel.setMsgText(object.getString("messageText"));
-            messageModels.add(messageModel);
-          }
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        View view = inflater.inflate(R.layout.fragment_message, container, false);
+        unbinder = ButterKnife.bind(this, view);
+        TypefaceUtil.overrideFonts(view);
 
-          messageAdapter = new MessageAdapter(MyApplication.context, messageModels);
-          if (listMessage != null){
-            listMessage.setAdapter(messageAdapter);
-            MyApplication.handler.postDelayed(() -> listMessage.smoothScrollToPosition(messageModels.size()), 200);
-            messageAdapter.notifyDataSetChanged();
-          }
+        messageModels = new ArrayList<>();
 
-          if (vfMessage != null)
-            vfMessage.setDisplayedChild(1);
+        NotificationManager notificationManager = (NotificationManager) MyApplication.currentActivity.getSystemService(Context.NOTIFICATION_SERVICE);
+        notificationManager.cancel(Constant.PUSH_NOTIFICATION_ID);
 
-        } catch (Exception e) {
-          e.printStackTrace();
-          AvaCrashReporter.send(e,"MessageFragment class, onGetMessages onResponse method");
+        RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(MyApplication.context);
+        listMessage.setLayoutManager(layoutManager);
+        listMessage.setItemAnimator(new DefaultItemAnimator());
+
+        getMessages();
+
+        return view;
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        unbinder.unbind();
+    }
+
+    private void getMessages() {
+        if (vfMessage != null)
+            vfMessage.setDisplayedChild(0);
+
+        RequestHelper.builder(EndPoints.GET_MESSAGES)
+                .addHeader("Authorization", MyApplication.prefManager.getAuthorization())
+                .addHeader("id_token", MyApplication.prefManager.getIdToken())
+                .addParam("operatorId", MyApplication.prefManager.getUserCode())
+                .listener(onGetMessages)
+                .post();
+    }
+
+    private RequestHelper.Callback onGetMessages = new RequestHelper.Callback() {
+        @Override
+        public void onResponse(Runnable reCall, Object... args) {
+            MyApplication.handler.post(() -> {
+                try {
+                    messageModels.clear();
+                    JSONArray arr = new JSONArray(args[0].toString());
+                    for (int i = 0; i < arr.length(); i++) {
+                        JSONObject object = arr.getJSONObject(i);
+                        MessageModel messageModel = new MessageModel();
+                        messageModel.setMsgId(object.getInt("id"));
+                        messageModel.setUserId(object.getInt("userId"));
+                        messageModel.setMsgType(object.getInt("type"));
+                        messageModel.setMsgDate(object.getString("saveDate"));
+                        messageModel.setMsgTime(object.getString("saveTime"));
+                        messageModel.setMsgText(object.getString("messageText"));
+                        messageModels.add(messageModel);
+                    }
+
+                    messageAdapter = new MessageAdapter(MyApplication.context, messageModels);
+                    if (listMessage != null) {
+                        listMessage.setAdapter(messageAdapter);
+                        MyApplication.handler.postDelayed(() -> listMessage.smoothScrollToPosition(messageModels.size()), 200);
+                        messageAdapter.notifyDataSetChanged();
+                    }
+
+                    if (vfMessage != null)
+                        vfMessage.setDisplayedChild(1);
+
+                } catch (Exception e) {
+                    e.printStackTrace();
+                    AvaCrashReporter.send(e, "MessageFragment class, onGetMessages onResponse method");
+                }
+            });
         }
-      });
-    }
 
-    @Override
-    public void onFailure(Runnable reCall, Exception e) { }
-
-    @Override
-    public void onRefreshTokenUpdated(Runnable reCall, boolean isRefreshTokenUpdated) {
-      super.onRefreshTokenUpdated(reCall, isRefreshTokenUpdated);
-      reCall.run();
-    }
-  };
-
-  private void sendMessage(int operatorId, String message) {
-//        vfSend.setDisplayedChild(1);
-
-    RequestHelper.builder(EndPoints.SEND_MESSAGES)
-            .addHeader("Authorization", MyApplication.prefManager.getAuthorization())
-            .addHeader("id_token", MyApplication.prefManager.getIdToken())
-            .addParam("operatorId", operatorId)
-            .addParam("message", message)
-            .listener(onSendMessage)
-            .post();
-
-    messageAdapter.notifyDataSetChanged();
-  }
-
-  private RequestHelper.Callback onSendMessage = new RequestHelper.Callback() {
-    @Override
-    public void onResponse(Runnable reCall, Object... args) {
-      MyApplication.handler.post(() -> {
-        try {
-          JSONObject object = new JSONObject(args[0].toString());
-          int status = object.getInt("status");
-          if (status == 1) {
-            if (edtMessage != null)
-              edtMessage.setText("");
-            messageAdapter.notifyDataSetChanged();
-            getMessages(MyApplication.prefManager.getUserCode());
-          }
-        } catch (Exception e) {
-          e.printStackTrace();
-          AvaCrashReporter.send(e,"MessageFragment class, onSendMessage onResponse method");
+        @Override
+        public void onFailure(Runnable reCall, Exception e) {
         }
-      });
+    };
+
+    private void sendMessage() {
+        RequestHelper.builder(EndPoints.SEND_MESSAGES)
+                .addHeader("Authorization", MyApplication.prefManager.getAuthorization())
+                .addHeader("id_token", MyApplication.prefManager.getIdToken())
+                .addParam("operatorId", MyApplication.prefManager.getUserCode())
+                .addParam("message", message)
+                .listener(onSendMessage)
+                .post();
+
+        messageAdapter.notifyDataSetChanged();
     }
 
-    @Override
-    public void onFailure(Runnable reCall, Exception e) { }
+    private RequestHelper.Callback onSendMessage = new RequestHelper.Callback() {
+        @Override
+        public void onResponse(Runnable reCall, Object... args) {
+            MyApplication.handler.post(() -> {
+                try {
+                    JSONObject object = new JSONObject(args[0].toString());
+                    int status = object.getInt("status");
+                    if (status == 1) {
+                        if (edtMessage != null)
+                            edtMessage.setText("");
+                        messageAdapter.notifyDataSetChanged();
+                        getMessages();
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
+                    AvaCrashReporter.send(e, "MessageFragment class, onSendMessage onResponse method");
+                }
+            });
+        }
 
-    @Override
-    public void onRefreshTokenUpdated(Runnable reCall, boolean isRefreshTokenUpdated) {
-      super.onRefreshTokenUpdated(reCall, isRefreshTokenUpdated);
-      reCall.run();
-    }
-  };
+        @Override
+        public void onFailure(Runnable reCall, Exception e) {
+        }
+    };
 
 }

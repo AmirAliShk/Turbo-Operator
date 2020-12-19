@@ -74,9 +74,6 @@ public class RequestHelper implements okhttp3.Callback {
         public void onFailure(Runnable reCall, Exception e) {
         }
 
-        public void onRefreshTokenUpdated(Runnable reCall, boolean isRefreshTokenUpdated) {
-        }
-
         public abstract void onResponse(Runnable reCall, Object... args);
     }
 
@@ -259,7 +256,6 @@ public class RequestHelper implements okhttp3.Callback {
     }
 
     private void request() {
-
         try {
             log("request url : " + req.url().toString());
             log("params : " + params);
@@ -315,14 +311,13 @@ public class RequestHelper implements okhttp3.Callback {
                 if (!response.isSuccessful()) {
                     //TODO it's OK??
                     if (response.code() == 401 || response.code() == 402 || response.code() == 403) {
-                            new RefreshToken().refreshToken(success -> {
+                        new RefreshToken().refreshToken(success -> {
                             if (success) {
-                                //TODO request() is true?? or I must save last request in an temp variable?
-//                                request();
-                                listener.onRefreshTokenUpdated(runnable, true);
+                                addHeader("Authorization",MyApplication.prefManager.getAuthorization());
+                                addHeader("id_token",MyApplication.prefManager.getIdToken());
+                                showError("عدم دسترسی به اینترنت لطفا پس از بررسی ارتباط دستگاه خود به اینترنت و اطمینان از ارتباط، مجدد تلاش نمایید.");
                             } else {
                                 // TODO what to do?
-                                listener.onRefreshTokenUpdated(runnable, false);
                             }
                         });
                     } else {
@@ -376,12 +371,7 @@ public class RequestHelper implements okhttp3.Callback {
     }
 
     Call call;
-    Runnable runnable = new Runnable() {
-        @Override
-        public void run() {
-            request();
-        }
-    };
+    Runnable runnable = () -> post();
 
     private void requestSuccess(Object res) {
         if (listener != null) {
@@ -429,7 +419,7 @@ public class RequestHelper implements okhttp3.Callback {
                 break;
             case 422://error entity
                 if (ignore422) {
-                    showMessage(e.getMessage());
+                    showMessage();
                 } else {
                     showError("خطای 422 : متاسفانه اطلاعات ارسالی ناقص است لطفا با پشتیبانی تماس بگیرد");
                 }
@@ -443,7 +433,7 @@ public class RequestHelper implements okhttp3.Callback {
         }
     }
 
-    private void showMessage(String error) {
+    private void showMessage() {
         MyApplication.handler.post(() -> {
             //TODO correct this in next version
 //    Unprocessable Entity{"message":"Unprocessable Entity","data":[{"field":"stationCode","message":"کد ایستگاه صحیح نیست"}],"success":false}

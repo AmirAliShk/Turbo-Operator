@@ -361,11 +361,6 @@ public class DeterminationPageFragment extends Fragment {
       });
     }
 
-    @Override
-    public void onRefreshTokenUpdated(Runnable reCall, boolean isRefreshTokenUpdated) {
-      super.onRefreshTokenUpdated(reCall, isRefreshTokenUpdated);
-      reCall.run();
-    }
   };
 
   private void changeStatus(boolean status) {
@@ -483,11 +478,6 @@ public class DeterminationPageFragment extends Fragment {
       });
     }
 
-    @Override
-    public void onRefreshTokenUpdated(Runnable reCall, boolean isRefreshTokenUpdated) {
-      super.onRefreshTokenUpdated(reCall, isRefreshTokenUpdated);
-      reCall.run();
-    }
   };
 
   private void setStationCode(int userId, int tripId, String stationCode, int cityCode) {
@@ -547,11 +537,6 @@ public class DeterminationPageFragment extends Fragment {
       });
     }
 
-    @Override
-    public void onRefreshTokenUpdated(Runnable reCall, boolean isRefreshTokenUpdated) {
-      super.onRefreshTokenUpdated(reCall, isRefreshTokenUpdated);
-      reCall.run();
-    }
   };
 
   private void setMistake() {
@@ -615,11 +600,6 @@ public class DeterminationPageFragment extends Fragment {
       });
     }
 
-    @Override
-    public void onRefreshTokenUpdated(Runnable reCall, boolean isRefreshTokenUpdated) {
-      super.onRefreshTokenUpdated(reCall, isRefreshTokenUpdated);
-      reCall.run();
-    }
   };
 
   @SuppressLint("SetTextI18n")

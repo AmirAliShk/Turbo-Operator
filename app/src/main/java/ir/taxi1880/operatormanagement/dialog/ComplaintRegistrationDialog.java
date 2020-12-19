@@ -134,11 +134,6 @@ public class ComplaintRegistrationDialog {
       });
     }
 
-    @Override
-    public void onRefreshTokenUpdated(Runnable reCall, boolean isRefreshTokenUpdated) {
-      super.onRefreshTokenUpdated(reCall, isRefreshTokenUpdated);
-      reCall.run();
-    }
   };
 
   private void initSpinner() {

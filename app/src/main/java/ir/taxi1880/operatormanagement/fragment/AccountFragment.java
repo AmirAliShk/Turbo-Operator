@@ -151,11 +151,6 @@ public class AccountFragment extends Fragment {
 //      vfBalance.setDisplayedChild(1);
     }
 
-    @Override
-    public void onRefreshTokenUpdated(Runnable reCall, boolean isRefreshTokenUpdated) {
-      super.onRefreshTokenUpdated(reCall, isRefreshTokenUpdated);
-      reCall.run();
-    }
   };
 
   private void updateProfile(int userId, String accountNumber, String cardNumber, String sheba) {
@@ -212,11 +207,6 @@ public class AccountFragment extends Fragment {
     @Override
     public void onFailure(Runnable reCall, Exception e) { }
 
-    @Override
-    public void onRefreshTokenUpdated(Runnable reCall, boolean isRefreshTokenUpdated) {
-      super.onRefreshTokenUpdated(reCall, isRefreshTokenUpdated);
-      reCall.run();
-    }
   };
 
   private void payment(int userId) {
@@ -270,11 +260,6 @@ public class AccountFragment extends Fragment {
     public void onFailure(Runnable reCall, Exception e) {
     }
 
-    @Override
-    public void onRefreshTokenUpdated(Runnable reCall, boolean isRefreshTokenUpdated) {
-      super.onRefreshTokenUpdated(reCall, isRefreshTokenUpdated);
-      reCall.run();
-    }
   };
 
   @Override

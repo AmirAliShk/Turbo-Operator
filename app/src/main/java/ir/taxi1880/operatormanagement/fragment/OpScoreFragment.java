@@ -90,11 +90,6 @@ public class OpScoreFragment extends Fragment {
     @Override
     public void onFailure(Runnable reCall, Exception e) { }
 
-    @Override
-    public void onRefreshTokenUpdated(Runnable reCall, boolean isRefreshTokenUpdated) {
-      super.onRefreshTokenUpdated(reCall, isRefreshTokenUpdated);
-      reCall.run();
-    }
   };
 
   @Override

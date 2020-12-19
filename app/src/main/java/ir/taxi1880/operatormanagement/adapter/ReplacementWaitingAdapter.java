@@ -25,9 +25,11 @@ import ir.taxi1880.operatormanagement.push.AvaCrashReporter;
 
 public class ReplacementWaitingAdapter extends BaseAdapter {
 
-    private ArrayList<ReplacementModel> replacementModels ;
+    private ArrayList<ReplacementModel> replacementModels;
     private LayoutInflater layoutInflater;
     int positionn;
+    int answer = -1;
+    int replaceId = 0;
 
     public interface Listener {
         void onRemoveItem(int position);
@@ -65,7 +67,7 @@ public class ReplacementWaitingAdapter extends BaseAdapter {
                 myView = layoutInflater.inflate(R.layout.item_wait_replacement, null);
                 TypefaceUtil.overrideFonts(myView);
             }
-            positionn=position;
+            positionn = position;
             TextView txtDate = myView.findViewById(R.id.txtDate);
             TextView txtShift = myView.findViewById(R.id.txtShift);
             TextView txtOperator = myView.findViewById(R.id.txtOperator);
@@ -78,7 +80,9 @@ public class ReplacementWaitingAdapter extends BaseAdapter {
                         .message("آیا از انجام عملیات فوق اطمینان دارید؟")
                         .cancelable(false)
                         .firstButton("بله", () -> {
-                            answerShiftReplacementRequest(MyApplication.prefManager.getUserCode(), replacementModel.getReplaceId(), 1);
+                            answer = 1;
+                            replaceId = replacementModel.getReplaceId();
+                            answerShiftReplacementRequest();
                             notifyDataSetChanged();
                         }).secondButton("خیر", null)
                         .show();
@@ -90,7 +94,9 @@ public class ReplacementWaitingAdapter extends BaseAdapter {
                         .message("آیا از انجام عملیات فوق اطمینان دارید؟")
                         .cancelable(false)
                         .firstButton("بله", () -> {
-                            answerShiftReplacementRequest(MyApplication.prefManager.getUserCode(), replacementModel.getReplaceId(), 0);
+                            answer = 0;
+                            replaceId = replacementModel.getReplaceId();
+                            answerShiftReplacementRequest();
                             notifyDataSetChanged();
                         }).secondButton("خیر", null)
                         .show();
@@ -102,20 +108,20 @@ public class ReplacementWaitingAdapter extends BaseAdapter {
 
         } catch (Exception e) {
             e.printStackTrace();
-            AvaCrashReporter.send(e,"ReplacementWaitingAdapter class, getView method");
+            AvaCrashReporter.send(e, "ReplacementWaitingAdapter class, getView method");
         }
         return myView;
     }
 
-    private void answerShiftReplacementRequest(int operatorId, int replacementRequestId, int answer) {
-            RequestHelper.builder(EndPoints.ANSWER_SHIFT_REPLACEMENT_REQUEST)
-                    .addHeader("Authorization", MyApplication.prefManager.getAuthorization())
-                    .addHeader("id_token", MyApplication.prefManager.getIdToken())
-                    .addParam("operatorId", operatorId)
-                    .addParam("replacementRequestId", replacementRequestId)
-                    .addParam("answer", answer)
-                    .listener(onAnswerShiftReplacementRequest)
-                    .post();
+    private void answerShiftReplacementRequest() {
+        RequestHelper.builder(EndPoints.ANSWER_SHIFT_REPLACEMENT_REQUEST)
+                .addHeader("Authorization", MyApplication.prefManager.getAuthorization())
+                .addHeader("id_token", MyApplication.prefManager.getIdToken())
+                .addParam("operatorId", MyApplication.prefManager.getUserCode())
+                .addParam("replacementRequestId", replaceId)
+                .addParam("answer", answer)
+                .listener(onAnswerShiftReplacementRequest)
+                .post();
     }
 
     RequestHelper.Callback onAnswerShiftReplacementRequest = new RequestHelper.Callback() {
@@ -141,18 +147,13 @@ public class ReplacementWaitingAdapter extends BaseAdapter {
                     }
                 } catch (Exception e) {
                     e.printStackTrace();
-                    AvaCrashReporter.send(e,"ReplacementWaitingAdapter class, onAnswerShiftReplacementRequest onResponse method");
+                    AvaCrashReporter.send(e, "ReplacementWaitingAdapter class, onAnswerShiftReplacementRequest onResponse method");
                 }
             });
         }
 
         @Override
-        public void onFailure(Runnable reCall, Exception e) { }
-
-        @Override
-        public void onRefreshTokenUpdated(Runnable reCall, boolean isRefreshTokenUpdated) {
-            super.onRefreshTokenUpdated(reCall, isRefreshTokenUpdated);
-            reCall.run();
+        public void onFailure(Runnable reCall, Exception e) {
         }
     };
 }

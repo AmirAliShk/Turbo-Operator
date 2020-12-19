@@ -5,6 +5,8 @@ import org.json.JSONObject;
 
 import ir.taxi1880.operatormanagement.app.EndPoints;
 import ir.taxi1880.operatormanagement.app.MyApplication;
+import ir.taxi1880.operatormanagement.fragment.LoginFragment;
+import ir.taxi1880.operatormanagement.helper.FragmentHelper;
 import ir.taxi1880.operatormanagement.okHttp.RequestHelper;
 
 public class RefreshToken {
@@ -26,27 +28,32 @@ public class RefreshToken {
     RequestHelper.Callback getRefreshToken = new RequestHelper.Callback() {
         @Override
         public void onResponse(Runnable reCall, Object... args) {
-            try {
-                JSONObject tokenObject = new JSONObject(args[0].toString());
-                boolean success=tokenObject.getBoolean("success");
-                String message = tokenObject.getString("message");
+            MyApplication.handler.post(() -> {
+                try {
+                    JSONObject tokenObject = new JSONObject(args[0].toString());
+                    boolean success = tokenObject.getBoolean("success");
+                    String message = tokenObject.getString("message");
 
-                if (success){
-                    JSONObject objData = tokenObject.getJSONObject("data");
-                    String id_token=objData.getString("id_token");
-                    String access_token=objData.getString("access_token");
+                    if (success) {
+                        JSONObject objData = tokenObject.getJSONObject("data");
+                        String id_token = objData.getString("id_token");
+                        String access_token = objData.getString("access_token");
+                        MyApplication.prefManager.setAuthorization(access_token);
+                        MyApplication.prefManager.setIdToken(id_token);
+                        refreshToken.isRefreshed(true);
+                    } else {
+                        refreshToken.isRefreshed(false);
+                        FragmentHelper
+                                .toFragment(MyApplication.currentActivity, new LoginFragment())
+                                .setAddToBackStack(false)
+                                .replace();
+                        //TODO what to do?
+                    }
 
-                    MyApplication.prefManager.setAuthorization(access_token);
-                    MyApplication.prefManager.setIdToken(id_token);
-                    refreshToken.isRefreshed(true);
-                }else{
-                    //TODO what to do?
+                } catch (JSONException e) {
+                    e.printStackTrace();
                 }
-
-
-            } catch (JSONException e) {
-                e.printStackTrace();
-            }
+            });
         }
 
         @Override

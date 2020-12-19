@@ -27,8 +27,9 @@ import ir.taxi1880.operatormanagement.push.AvaCrashReporter;
 
 public class NotificationAdapter extends BaseAdapter {
 
-    ArrayList<NotificationModel> notificationModels ;
+    ArrayList<NotificationModel> notificationModels;
     LayoutInflater layoutInflater;
+    int notifId;
 
     public NotificationAdapter(ArrayList<NotificationModel> notificationModels, Context context) {
         this.notificationModels = notificationModels;
@@ -54,11 +55,11 @@ public class NotificationAdapter extends BaseAdapter {
     public View getView(int position, View convertView, ViewGroup parent) {
         ViewHolder viewHolder;
         try {
-            NotificationModel notificationModel= notificationModels.get(position);
+            NotificationModel notificationModel = notificationModels.get(position);
             if (convertView == null) {
-                convertView = layoutInflater.inflate(R.layout.item_notification, parent,false);
+                convertView = layoutInflater.inflate(R.layout.item_notification, parent, false);
                 TypefaceUtil.overrideFonts(convertView);
-                viewHolder=new ViewHolder(convertView);
+                viewHolder = new ViewHolder(convertView);
                 convertView.setTag(viewHolder);
             } else {
                 viewHolder = (ViewHolder) convertView.getTag();
@@ -74,7 +75,8 @@ public class NotificationAdapter extends BaseAdapter {
             }
 
             viewHolder.btnSeenNotify.setOnClickListener(v -> {
-                setNewsSeen(notificationModel.getId());
+                notifId = notificationModel.getId();
+                setNewsSeen(notifId);
                 notificationModel.setSeen(1);
             });
 
@@ -83,7 +85,7 @@ public class NotificationAdapter extends BaseAdapter {
 
         } catch (Exception e) {
             e.printStackTrace();
-            AvaCrashReporter.send(e,"NotificationAdapter class, getView method");
+            AvaCrashReporter.send(e, "NotificationAdapter class, getView method");
         }
         return convertView;
     }
@@ -101,17 +103,17 @@ public class NotificationAdapter extends BaseAdapter {
             txtNotification = convertView.findViewById(R.id.txtNotification);
             imgNotify = convertView.findViewById(R.id.imgNotify);
             btnSeenNotify = convertView.findViewById(R.id.btnSeenNotify);
-            txtDate=convertView.findViewById(R.id.txtDate);
+            txtDate = convertView.findViewById(R.id.txtDate);
         }
     }
 
     private void setNewsSeen(int newsId) {
-            RequestHelper.builder(EndPoints.SET_NEWS_SEEN)
-                    .addHeader("Authorization", MyApplication.prefManager.getAuthorization())
-                    .addHeader("id_token", MyApplication.prefManager.getIdToken())
-                    .addParam("newsId", newsId)
-                    .listener(onSetNewsSeen)
-                    .post();
+        RequestHelper.builder(EndPoints.SET_NEWS_SEEN)
+                .addHeader("Authorization", MyApplication.prefManager.getAuthorization())
+                .addHeader("id_token", MyApplication.prefManager.getIdToken())
+                .addParam("newsId", newsId)
+                .listener(onSetNewsSeen)
+                .post();
     }
 
     private RequestHelper.Callback onSetNewsSeen = new RequestHelper.Callback() {
@@ -129,24 +131,19 @@ public class NotificationAdapter extends BaseAdapter {
                         new ErrorDialog()
                                 .titleText("خطایی رخ داده")
                                 .messageText("پردازش داده های ورودی با مشکل مواجه گردید")
-                                .tryAgainBtnRunnable("تلاش مجدد",null)
+                                .tryAgainBtnRunnable("تلاش مجدد", null)
                                 .closeBtnRunnable("بستن", () -> MyApplication.currentActivity.onBackPressed())
                                 .show();
                     }
                 } catch (Exception e) {
                     e.printStackTrace();
-                    AvaCrashReporter.send(e,"NotificationAdapter class, onSetNewsSeen onResponse method");
+                    AvaCrashReporter.send(e, "NotificationAdapter class, onSetNewsSeen onResponse method");
                 }
             });
         }
 
         @Override
-        public void onFailure(Runnable reCall, Exception e) { }
-
-        @Override
-        public void onRefreshTokenUpdated(Runnable reCall, boolean isRefreshTokenUpdated) {
-            super.onRefreshTokenUpdated(reCall, isRefreshTokenUpdated);
-            reCall.run();
+        public void onFailure(Runnable reCall, Exception e) {
         }
     };
 }
