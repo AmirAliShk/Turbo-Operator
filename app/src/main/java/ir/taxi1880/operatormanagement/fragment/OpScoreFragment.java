@@ -45,8 +45,6 @@ public class OpScoreFragment extends Fragment {
 
   private void getSingle() {
     RequestHelper.builder(EndPoints.SINGLE)
-            .addHeader("Authorization", MyApplication.prefManager.getAuthorization())
-            .addHeader("id_token", MyApplication.prefManager.getIdToken())
             .addPath(MyApplication.prefManager.getUserCode() + "")
             .listener(getSingle)
             .get();

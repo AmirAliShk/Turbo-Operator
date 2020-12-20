@@ -142,8 +142,6 @@ public class ReplacementFragment extends Fragment {
   private void shiftReplacementRequest() {
     llLoader.setVisibility(View.VISIBLE);
     RequestHelper.builder(EndPoints.SHIFT_REPLACEMENT_REQUEST)
-            .addHeader("Authorization", MyApplication.prefManager.getAuthorization())
-            .addHeader("id_token", MyApplication.prefManager.getIdToken())
             .addParam("operatorId", MyApplication.prefManager.getUserCode())
             .addParam("intendedOperatorId", opId)
             .addParam("shift", shiftId)
@@ -200,8 +198,6 @@ public class ReplacementFragment extends Fragment {
     if (vfOperator != null)
       vfOperator.setDisplayedChild(1);
     RequestHelper.builder(EndPoints.GET_SHIFT_OPERATOR)
-            .addHeader("Authorization", MyApplication.prefManager.getAuthorization())
-            .addHeader("id_token", MyApplication.prefManager.getIdToken())
             .addPath(shiftDate)
             .addPath(shiftId+"")
             .listener(onGetOnlineOperator)

@@ -70,8 +70,6 @@ public class ShiftListFragment extends Fragment {
       vfShift.setDisplayedChild(0);
 
     RequestHelper.builder(EndPoints.GET_SHIFTS)
-            .addHeader("Authorization", MyApplication.prefManager.getAuthorization())
-            .addHeader("id_token", MyApplication.prefManager.getIdToken())
             .addParam("operatorId", MyApplication.prefManager.getUserCode())
             .listener(onGetShifts)
             .post();

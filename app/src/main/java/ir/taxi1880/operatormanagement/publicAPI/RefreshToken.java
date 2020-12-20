@@ -21,6 +21,7 @@ public class RefreshToken {
         this.refreshToken = refreshToken;
         RequestHelper.builder(EndPoints.REFRESH_TOKEN)
                 .addParam("token", MyApplication.prefManager.getRefreshToken())
+                .doNotSendHeader(true)
                 .listener(getRefreshToken)
                 .post();
     }

@@ -115,8 +115,6 @@ public class ReplacementWaitingAdapter extends BaseAdapter {
 
     private void answerShiftReplacementRequest() {
         RequestHelper.builder(EndPoints.ANSWER_SHIFT_REPLACEMENT_REQUEST)
-                .addHeader("Authorization", MyApplication.prefManager.getAuthorization())
-                .addHeader("id_token", MyApplication.prefManager.getIdToken())
                 .addParam("operatorId", MyApplication.prefManager.getUserCode())
                 .addParam("replacementRequestId", replaceId)
                 .addParam("answer", answer)

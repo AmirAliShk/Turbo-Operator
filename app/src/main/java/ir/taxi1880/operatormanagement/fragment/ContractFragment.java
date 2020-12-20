@@ -62,8 +62,6 @@ public class ContractFragment extends Fragment {
     if (vfTxtOfContract != null)
       vfTxtOfContract.setDisplayedChild(0);
     RequestHelper.builder(EndPoints.CONTRACT)
-            .addHeader("Authorization", MyApplication.prefManager.getAuthorization())
-            .addHeader("id_token", MyApplication.prefManager.getIdToken())
             .listener(onContract)
             .get();
   }

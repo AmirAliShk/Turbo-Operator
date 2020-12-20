@@ -120,10 +120,13 @@ public class MainActivity extends AppCompatActivity implements NotificationFragm
 
     @OnClick(R.id.llProfile)
     void onPressProfile() {
+//TODO
+        MyApplication.prefManager.setIdToken("!!!!");
+        MyApplication.prefManager.setAuthorization("!!!!");
 
-        FragmentHelper
-                .toFragment(MyApplication.currentActivity, new AccountFragment())
-                .replace();
+//        FragmentHelper
+//                .toFragment(MyApplication.currentActivity, new AccountFragment())
+//                .replace();
 
     }
 
@@ -140,7 +143,6 @@ public class MainActivity extends AppCompatActivity implements NotificationFragm
             window.setStatusBarColor(getResources().getColor(R.color.colorPrimaryDark));
             window.addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
         }
-
         MyApplication.configureAccount();
 
         unbinder = ButterKnife.bind(this, view);
@@ -170,8 +172,6 @@ public class MainActivity extends AppCompatActivity implements NotificationFragm
             vfBalance.setDisplayedChild(0);
 
         RequestHelper.builder(EndPoints.BALANCE)
-                .addHeader("Authorization", MyApplication.prefManager.getAuthorization())
-                .addHeader("id_token", MyApplication.prefManager.getIdToken())
                 .addPath(MyApplication.prefManager.getUserCode() + "")
                 .listener(getBalance)
                 .get();

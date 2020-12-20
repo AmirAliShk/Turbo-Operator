@@ -67,8 +67,6 @@ public class ErrorRegistrationDialog {
   private void setMistake(String ServiceId, String phone, String address, String customerName, String voipId, String desc) {
     LoadingDialog.makeCancelableLoader();
     RequestHelper.builder(EndPoints.INSERT_MISTAKE)
-            .addHeader("Authorization", MyApplication.prefManager.getAuthorization())
-            .addHeader("id_token", MyApplication.prefManager.getIdToken())
             .addParam("serviceId", ServiceId)
             .addParam("userId", MyApplication.prefManager.getUserCode())
             .addParam("phone", phone)

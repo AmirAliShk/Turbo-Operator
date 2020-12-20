@@ -142,8 +142,6 @@ public class SearchLocationDialog {
         vfLocation.setDisplayedChild(1);
 
         RequestHelper.builder(EndPoints.FIND_WAY)
-                .addHeader("Authorization", MyApplication.prefManager.getAuthorization())
-                .addHeader("id_token", MyApplication.prefManager.getIdToken())
                 .addPath(cityLatin)
                 .addPath(StringHelper.toEnglishDigits(edtSearch.getText().toString()))
                 .listener(onFindWay)

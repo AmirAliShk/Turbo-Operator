@@ -128,8 +128,6 @@ public class SendReplacementAdapter extends BaseAdapter {
     private void cancelRequest() {
 
         RequestHelper.builder(EndPoints.CANCEL_REPLACEMENT_REQUEST)
-                .addHeader("Authorization", MyApplication.prefManager.getAuthorization())
-                .addHeader("id_token", MyApplication.prefManager.getIdToken())
                 .addParam("requestId", replaceId)
                 .listener(onCancel)
                 .post();

@@ -31,6 +31,7 @@ import ir.taxi1880.operatormanagement.dialog.GeneralDialog;
 import ir.taxi1880.operatormanagement.helper.StringHelper;
 import ir.taxi1880.operatormanagement.helper.TypefaceUtil;
 import ir.taxi1880.operatormanagement.push.AvaCrashReporter;
+import okhttp3.Authenticator;
 import okhttp3.Call;
 import okhttp3.Headers;
 import okhttp3.HttpUrl;
@@ -39,6 +40,7 @@ import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.RequestBody;
 import okhttp3.Response;
+import okhttp3.Route;
 
 /***
  * Created by Amirreza Erfanian on 2018/01/12.
@@ -62,9 +64,10 @@ public class RequestHelper implements okhttp3.Callback {
     private ArrayList<String> paths = null;
     private boolean errorHandling = true;
     private boolean hideNetworkError = false;
-    private Request req;
+    private Request req = null;
     private Object[] object;
     private boolean ignore422 = false;
+    private boolean doNotSendHeader = false;
     private Headers.Builder headers = new Headers.Builder();
 
     public static abstract class Callback {
@@ -136,6 +139,11 @@ public class RequestHelper implements okhttp3.Callback {
         return this;
     }
 
+    public RequestHelper doNotSendHeader(boolean doNotSendHeader) {
+        this.doNotSendHeader = doNotSendHeader;
+        return this;
+    }
+
     public RequestHelper listener(Callback listener) {
         this.listener = listener;
         return this;
@@ -204,10 +212,18 @@ public class RequestHelper implements okhttp3.Callback {
             }
         }
         String url = urlBuilder.build().toString();
+
+//        if (doNotSendHeader) {
+//        req = new Request.Builder()
+//                .url(url)
+//                .build();
+//        } else {
         req = new Request.Builder()
-                .headers(headers.build())
+                .addHeader("Authorization", MyApplication.prefManager.getAuthorization())
+                .addHeader("id_token", MyApplication.prefManager.getIdToken())
                 .url(url)
                 .build();
+//        }
 
         request();
 
@@ -218,11 +234,20 @@ public class RequestHelper implements okhttp3.Callback {
         if (url == null) return;
 
         RequestBody body = RequestBody.create(JSON, params.toString());
+
+//        if (doNotSendHeader) {
+//        req = new Request.Builder()
+//                .url(url)
+//                .post(body)
+//                .build();
+//        } else {
         req = new Request.Builder()
-                .headers(headers.build())
+                .addHeader("Authorization", MyApplication.prefManager.getAuthorization())
+                .addHeader("id_token", MyApplication.prefManager.getIdToken())
                 .url(url)
                 .post(body)
                 .build();
+//        }
 
         request();
 
@@ -233,11 +258,19 @@ public class RequestHelper implements okhttp3.Callback {
         if (url == null) return;
 
         RequestBody body = RequestBody.create(JSON, params.toString());
-        //TODO header are needed here?
+        //        if (doNotSendHeader) {
         req = new Request.Builder()
                 .url(url)
                 .put(body)
                 .build();
+        //        } else {
+//            req = new Request.Builder()
+//                    .addHeader("Authorization", MyApplication.prefManager.getAuthorization())
+//                    .addHeader("id_token", MyApplication.prefManager.getIdToken())
+//                    .url(url)
+//                    .put(body)
+//                    .build();
+//        }
         request();
 
     }
@@ -247,11 +280,19 @@ public class RequestHelper implements okhttp3.Callback {
         if (url == null) return;
 
         RequestBody body = RequestBody.create(JSON, params.toString());
-        //TODO header are needed here?
+        //        if (doNotSendHeader) {
         req = new Request.Builder()
                 .url(url)
                 .delete(body)
                 .build();
+        //        } else {
+//            req = new Request.Builder()
+//                    .addHeader("Authorization", MyApplication.prefManager.getAuthorization())
+//                    .addHeader("id_token", MyApplication.prefManager.getIdToken())
+//                    .url(url)
+//                    .delete(body)
+//                    .build();
+//        }
         request();
     }
 
@@ -260,14 +301,20 @@ public class RequestHelper implements okhttp3.Callback {
             log("request url : " + req.url().toString());
             log("params : " + params);
             log("paths : " + path);
-            log("header Authorization : " + headers.get("Authorization"));
-            log("header id_token : " + headers.get("id_token"));
+            log("header Authorization : " + req.headers().get("Authorization"));
+            log("header id_token : " + req.headers().get("id_token"));
             OkHttpClient.Builder builder = new OkHttpClient
                     .Builder()
                     .proxy(Proxy.NO_PROXY);
 
             OkHttpClient okHttpClient = builder.connectTimeout(connectionTimeout, TimeUnit.SECONDS)
                     .writeTimeout(writeTimeout, TimeUnit.SECONDS)
+                    .authenticator(new Authenticator() {
+                        @Override
+                        public Request authenticate(Route route, Response response) throws IOException {
+                            return null;
+                        }
+                    })
                     .readTimeout(readTimeout, TimeUnit.SECONDS)
                     .build();
 
@@ -313,8 +360,6 @@ public class RequestHelper implements okhttp3.Callback {
                     if (response.code() == 401 || response.code() == 402 || response.code() == 403) {
                         new RefreshToken().refreshToken(success -> {
                             if (success) {
-                                addHeader("Authorization",MyApplication.prefManager.getAuthorization());
-                                addHeader("id_token",MyApplication.prefManager.getIdToken());
                                 showError("عدم دسترسی به اینترنت لطفا پس از بررسی ارتباط دستگاه خود به اینترنت و اطمینان از ارتباط، مجدد تلاش نمایید.");
                             } else {
                                 // TODO what to do?
@@ -371,7 +416,7 @@ public class RequestHelper implements okhttp3.Callback {
     }
 
     Call call;
-    Runnable runnable = () -> post();
+    Runnable runnable = () -> request();
 
     private void requestSuccess(Object res) {
         if (listener != null) {

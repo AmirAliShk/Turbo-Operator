@@ -77,8 +77,6 @@ public class NotificationFragment extends Fragment {
         });
 
         RequestHelper.builder(EndPoints.GET_NEWS)
-                .addHeader("Authorization", MyApplication.prefManager.getAuthorization())
-                .addHeader("id_token", MyApplication.prefManager.getIdToken())
                 .addParam("operatorId", MyApplication.prefManager.getUserCode())
                 .listener(onGetNews)
                 .post();

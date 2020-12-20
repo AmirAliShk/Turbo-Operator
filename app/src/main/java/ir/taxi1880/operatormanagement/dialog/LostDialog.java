@@ -87,8 +87,6 @@ public class LostDialog {
   private void setLostObject(String serviceId, String carCode, String passengerPhone, String passengerName, String address, String description) {
     LoadingDialog.makeCancelableLoader();
     RequestHelper.builder(EndPoints.INSERT_LOST_OBJECT)
-            .addHeader("Authorization", MyApplication.prefManager.getAuthorization())
-            .addHeader("id_token", MyApplication.prefManager.getIdToken())
             .addParam("carCode", carCode)
             .addParam("serviceId", serviceId)
             .addParam("objectType", type)

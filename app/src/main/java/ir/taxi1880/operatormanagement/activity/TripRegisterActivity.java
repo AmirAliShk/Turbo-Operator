@@ -849,8 +849,6 @@ public class TripRegisterActivity extends AppCompatActivity {
             vfPassengerInfo.setDisplayedChild(1);
 
         RequestHelper.builder(EndPoints.PASSENGER_INFO)
-                .addHeader("Authorization", MyApplication.prefManager.getAuthorization())
-                .addHeader("id_token", MyApplication.prefManager.getIdToken())
                 .addPath(MyApplication.prefManager.getCustomerSupport() + "")
                 .addPath(StringHelper.extractTheNumber(phoneNumber))
                 .addPath(StringHelper.extractTheNumber(mobile))
@@ -1028,8 +1026,6 @@ public class TripRegisterActivity extends AppCompatActivity {
         if (vfPassengerAddress != null)
             vfPassengerAddress.setDisplayedChild(1);
         RequestHelper.builder(EndPoints.PASSENGER_ADDRESS)
-                .addHeader("Authorization", MyApplication.prefManager.getAuthorization())
-                .addHeader("id_token", MyApplication.prefManager.getIdToken())
                 .addPath(phoneNumber)
                 .listener(getPassengerAddress)
                 .get();
@@ -1141,8 +1137,6 @@ public class TripRegisterActivity extends AppCompatActivity {
 
         LoadingDialog.makeCancelableLoader();
         RequestHelper.builder(EndPoints.ACTIVATE)
-                .addHeader("Authorization", MyApplication.prefManager.getAuthorization())
-                .addHeader("id_token", MyApplication.prefManager.getIdToken())
                 .addParam("userId", userId)
                 .addParam("sipNumber", sipNumber)
                 .listener(setActivate)
@@ -1215,8 +1209,6 @@ public class TripRegisterActivity extends AppCompatActivity {
 
             LoadingDialog.makeCancelableLoader();
             RequestHelper.builder(EndPoints.DEACTIVATE)
-                    .addHeader("Authorization", MyApplication.prefManager.getAuthorization())
-                    .addHeader("id_token", MyApplication.prefManager.getIdToken())
                     .addParam("userId", userId)
                     .addParam("sipNumber", sipNumber)
                     .listener(setDeActivate)
@@ -1287,8 +1279,6 @@ public class TripRegisterActivity extends AppCompatActivity {
 
         LoadingDialog.makeCancelableLoader();
         RequestHelper.builder(EndPoints.INSERT_TRIP_SENDING_QUEUE)
-                .addHeader("Authorization", MyApplication.prefManager.getAuthorization())
-                .addHeader("id_token", MyApplication.prefManager.getIdToken())
                 .addParam("userId", userId)
                 .addParam("phoneNumber", phoneNumber)
                 .addParam("mobile", mobile)

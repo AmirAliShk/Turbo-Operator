@@ -85,6 +85,7 @@ public class LoginFragment extends Fragment {
                 .addParam("username", username)
                 .addParam("password", password)
                 .addParam("scope", Constant.SCOPE)
+                .doNotSendHeader(true)
                 .listener(onLogIn)
                 .post();
 

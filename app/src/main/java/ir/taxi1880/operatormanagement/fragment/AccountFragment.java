@@ -111,8 +111,6 @@ public class AccountFragment extends Fragment {
       vfBalance.setDisplayedChild(0);
 
     RequestHelper.builder(EndPoints.BALANCE)
-            .addHeader("Authorization", MyApplication.prefManager.getAuthorization())
-            .addHeader("id_token", MyApplication.prefManager.getIdToken())
             .addPath(userId + "")
             .listener(getBalance)
             .get();
@@ -156,8 +154,6 @@ public class AccountFragment extends Fragment {
   private void updateProfile(int userId, String accountNumber, String cardNumber, String sheba) {
 
     RequestHelper.builder(EndPoints.UPDATE_PROFILE)
-            .addHeader("Authorization", MyApplication.prefManager.getAuthorization())
-            .addHeader("id_token", MyApplication.prefManager.getIdToken())
             .addParam("userId", userId)
             .addParam("accountNumber", StringHelper.toEnglishDigits(accountNumber))
             .addParam("cardNumber", StringHelper.toEnglishDigits(cardNumber.replaceAll("-", "")))
@@ -212,8 +208,6 @@ public class AccountFragment extends Fragment {
   private void payment(int userId) {
 
     RequestHelper.builder(EndPoints.PAYMENT)
-            .addHeader("Authorization", MyApplication.prefManager.getAuthorization())
-            .addHeader("id_token", MyApplication.prefManager.getIdToken())
             .addParam("userId", userId)
             .listener(Payment)
             .post();

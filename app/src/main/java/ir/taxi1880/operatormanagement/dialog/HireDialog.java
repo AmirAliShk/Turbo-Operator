@@ -107,8 +107,6 @@ public class HireDialog {
   private void setHire(int userId, String name, String phoneNumber, String comment, int hireType, int cityCode) {
 
     RequestHelper.builder(EndPoints.HIRE)
-            .addHeader("Authorization", MyApplication.prefManager.getAuthorization())
-            .addHeader("id_token", MyApplication.prefManager.getIdToken())
             .addParam("userId", userId)
             .addParam("phoneNumber", phoneNumber)
             .addParam("cityCode", cityCode)
@@ -164,8 +162,6 @@ public class HireDialog {
 
   private void getHireType() {
     RequestHelper.builder(EndPoints.HIRETYPES)
-            .addHeader("Authorization", MyApplication.prefManager.getAuthorization())
-            .addHeader("id_token", MyApplication.prefManager.getIdToken())
             .listener(getHireType)
             .get();
   }

@@ -71,8 +71,6 @@ public class BestsFragment extends Fragment {
     if (vfBest != null)
       vfBest.setDisplayedChild(0);
     RequestHelper.builder(EndPoints.BESTS)
-            .addHeader("Authorization", MyApplication.prefManager.getAuthorization())
-            .addHeader("id_token", MyApplication.prefManager.getIdToken())
             .listener(getBest)
             .get();
   }

@@ -111,8 +111,6 @@ public class MessageFragment extends Fragment {
             vfMessage.setDisplayedChild(0);
 
         RequestHelper.builder(EndPoints.GET_MESSAGES)
-                .addHeader("Authorization", MyApplication.prefManager.getAuthorization())
-                .addHeader("id_token", MyApplication.prefManager.getIdToken())
                 .addParam("operatorId", MyApplication.prefManager.getUserCode())
                 .listener(onGetMessages)
                 .post();
@@ -161,8 +159,6 @@ public class MessageFragment extends Fragment {
 
     private void sendMessage() {
         RequestHelper.builder(EndPoints.SEND_MESSAGES)
-                .addHeader("Authorization", MyApplication.prefManager.getAuthorization())
-                .addHeader("id_token", MyApplication.prefManager.getIdToken())
                 .addParam("operatorId", MyApplication.prefManager.getUserCode())
                 .addParam("message", message)
                 .listener(onSendMessage)

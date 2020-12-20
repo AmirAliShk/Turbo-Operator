@@ -65,8 +65,6 @@ public class SendReplacementReqFragment extends Fragment {
     if (vfSendReq != null)
       vfSendReq.setDisplayedChild(0);
     RequestHelper.builder(EndPoints.GET_SHIFT_REPLACEMENT_REQUESTS)
-            .addHeader("Authorization", MyApplication.prefManager.getAuthorization())
-            .addHeader("id_token", MyApplication.prefManager.getIdToken())
             .addParam("operatorId", MyApplication.prefManager.getUserCode())
             .listener(onGetShiftReplacementRequest)
             .post();

@@ -109,8 +109,6 @@ public class NotificationAdapter extends BaseAdapter {
 
     private void setNewsSeen(int newsId) {
         RequestHelper.builder(EndPoints.SET_NEWS_SEEN)
-                .addHeader("Authorization", MyApplication.prefManager.getAuthorization())
-                .addHeader("id_token", MyApplication.prefManager.getIdToken())
                 .addParam("newsId", newsId)
                 .listener(onSetNewsSeen)
                 .post();

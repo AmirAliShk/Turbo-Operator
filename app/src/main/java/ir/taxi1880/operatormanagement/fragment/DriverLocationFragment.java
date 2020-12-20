@@ -132,8 +132,6 @@ public class DriverLocationFragment extends Fragment implements OnMapReadyCallba
   private void getLastLocation() {
 
     RequestHelper.builder(EndPoints.LAST_DRIVER_POSITION)
-            .addHeader("Authorization", MyApplication.prefManager.getAuthorization())
-            .addHeader("id_token", MyApplication.prefManager.getIdToken())
             .addParam("taxiCode", carCode)
             .listener(onGetLastLocation)
             .post();

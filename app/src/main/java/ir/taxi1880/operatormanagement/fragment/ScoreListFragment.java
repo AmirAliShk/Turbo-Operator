@@ -56,8 +56,6 @@ public class ScoreListFragment extends Fragment {
     if (vfScore != null)
       vfScore.setDisplayedChild(0);
     RequestHelper.builder(EndPoints.SCORE)
-            .addHeader("Authorization", MyApplication.prefManager.getAuthorization())
-            .addHeader("id_token", MyApplication.prefManager.getIdToken())
             .listener(onScore)
             .get();
   }
