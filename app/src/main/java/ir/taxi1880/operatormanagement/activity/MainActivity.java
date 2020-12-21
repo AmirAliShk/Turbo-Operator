@@ -220,6 +220,10 @@ public class MainActivity extends AppCompatActivity implements NotificationFragm
         super.onResume();
         MyApplication.currentActivity = this;
         MyApplication.prefManager.setAppRun(true);
+
+        Log.i(TAG, "onResume:TAG  "+MainActivity.TAG);
+        Log.i(TAG, "onResume:currentActivity  "+MyApplication.currentActivity.toString());
+
         if (DataHolder.getInstance().getPushType() != null) {
             if (DataHolder.getInstance().getPushType().equals(Constant.PUSH_NOTIFICATION_MESSAGE_TYPE)) {
                 FragmentHelper.toFragment(this, new MessageFragment())

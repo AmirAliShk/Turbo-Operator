@@ -19,11 +19,11 @@ public class RefreshToken {
 
     public void refreshToken(RefreshTokenInterface refreshToken) {
         this.refreshToken = refreshToken;
-        RequestHelper.builder(EndPoints.REFRESH_TOKEN)
+        RequestHelper.tokenBuilder(EndPoints.REFRESH_TOKEN)
                 .addParam("token", MyApplication.prefManager.getRefreshToken())
                 .doNotSendHeader(true)
                 .listener(getRefreshToken)
-                .post();
+                .postToken();
     }
 
     RequestHelper.Callback getRefreshToken = new RequestHelper.Callback() {
@@ -43,11 +43,11 @@ public class RefreshToken {
                         MyApplication.prefManager.setIdToken(id_token);
                         refreshToken.isRefreshed(true);
                     } else {
-                        refreshToken.isRefreshed(false);
-                        FragmentHelper
-                                .toFragment(MyApplication.currentActivity, new LoginFragment())
-                                .setAddToBackStack(false)
-                                .replace();
+//                        refreshToken.isRefreshed(false);
+//                        FragmentHelper
+//                                .toFragment(MyApplication.currentActivity, new LoginFragment())
+//                                .setAddToBackStack(false)
+//                                .replace();
                         //TODO what to do?
                     }
 
