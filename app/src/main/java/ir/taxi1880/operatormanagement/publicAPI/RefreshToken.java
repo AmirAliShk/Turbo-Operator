@@ -12,18 +12,18 @@ import ir.taxi1880.operatormanagement.okHttp.RequestHelper;
 public class RefreshToken {
 
     public interface RefreshTokenInterface {
-        void isRefreshed(boolean success);
+        void isRefreshed(boolean success, String idToken, String accessToken);
     }
 
     RefreshTokenInterface refreshToken;
 
     public void refreshToken(RefreshTokenInterface refreshToken) {
         this.refreshToken = refreshToken;
-        RequestHelper.tokenBuilder(EndPoints.REFRESH_TOKEN)
+        RequestHelper.builder(EndPoints.REFRESH_TOKEN)
                 .addParam("token", MyApplication.prefManager.getRefreshToken())
                 .doNotSendHeader(true)
                 .listener(getRefreshToken)
-                .postToken();
+                .post();
     }
 
     RequestHelper.Callback getRefreshToken = new RequestHelper.Callback() {
@@ -41,7 +41,7 @@ public class RefreshToken {
                         String access_token = objData.getString("access_token");
                         MyApplication.prefManager.setAuthorization(access_token);
                         MyApplication.prefManager.setIdToken(id_token);
-                        refreshToken.isRefreshed(true);
+                        refreshToken.isRefreshed(true, id_token,access_token);
                     } else {
 //                        refreshToken.isRefreshed(false);
 //                        FragmentHelper
