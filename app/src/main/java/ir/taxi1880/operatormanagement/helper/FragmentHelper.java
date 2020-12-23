@@ -15,6 +15,8 @@ import androidx.annotation.AnimRes;
 import androidx.annotation.ColorInt;
 import androidx.annotation.IdRes;
 import androidx.fragment.app.FragmentActivity;
+
+import ir.taxi1880.operatormanagement.app.MyApplication;
 import ir.taxi1880.operatormanagement.push.AvaCrashReporter;
 
 /***********************************************
@@ -190,28 +192,24 @@ public class FragmentHelper {
    */
   public void replace() {
     try {
-      Handler handler = new Handler();
-      handler.postDelayed(new Runnable() {
-        @Override
-        public void run() {
-          if (instance.fragment != null) {
-            FragmentTransaction fragmentTransaction = instance.fragmentManager.beginTransaction();
-            if (isAddToBackStack()) {
-              fragmentTransaction.addToBackStack(null);
-            }
-            fragmentTransaction.replace(instance.frame, instance.fragment, instance.flag);
-            fragmentTransaction.commitAllowingStateLoss();
-          } else if (instance.fragmentV4 != null) {
-            androidx.fragment.app.FragmentTransaction fragmentTransaction = instance.fragmentManagerV4.beginTransaction();
-            if (isAddToBackStack()) {
-              fragmentTransaction.addToBackStack(null);
-            }
-            fragmentTransaction.setCustomAnimations(instance.enterAnim, instance.exitAnim, instance.popEnterAnim, instance.popExitAnim);
-            fragmentTransaction.replace(instance.frame, instance.fragmentV4, instance.flag);
-            fragmentTransaction.commitAllowingStateLoss();
-          } else {
-            Log.e(TAG, "can't replace " + flag + " to " + frame);
+      MyApplication.handler.postDelayed(() -> {
+        if (instance.fragment != null) {
+          FragmentTransaction fragmentTransaction = instance.fragmentManager.beginTransaction();
+          if (isAddToBackStack()) {
+            fragmentTransaction.addToBackStack(null);
           }
+          fragmentTransaction.replace(instance.frame, instance.fragment, instance.flag);
+          fragmentTransaction.commitAllowingStateLoss();
+        } else if (instance.fragmentV4 != null) {
+          androidx.fragment.app.FragmentTransaction fragmentTransaction = instance.fragmentManagerV4.beginTransaction();
+          if (isAddToBackStack()) {
+            fragmentTransaction.addToBackStack(null);
+          }
+          fragmentTransaction.setCustomAnimations(instance.enterAnim, instance.exitAnim, instance.popEnterAnim, instance.popExitAnim);
+          fragmentTransaction.replace(instance.frame, instance.fragmentV4, instance.flag);
+          fragmentTransaction.commitAllowingStateLoss();
+        } else {
+          Log.e(TAG, "can't replace " + flag + " to " + frame);
         }
       }, 100);
       setWindowStyle();

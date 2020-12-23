@@ -25,6 +25,8 @@ import java.util.regex.Pattern;
 import ir.taxi1880.operatormanagement.R;
 import ir.taxi1880.operatormanagement.app.EndPoints;
 import ir.taxi1880.operatormanagement.app.MyApplication;
+import ir.taxi1880.operatormanagement.fragment.LoginFragment;
+import ir.taxi1880.operatormanagement.helper.FragmentHelper;
 import ir.taxi1880.operatormanagement.publicAPI.RefreshToken;
 import ir.taxi1880.operatormanagement.dialog.ErrorDialog;
 import ir.taxi1880.operatormanagement.dialog.GeneralDialog;
@@ -218,17 +220,9 @@ public class RequestHelper implements okhttp3.Callback {
         }
         String url = urlBuilder.build().toString();
 
-        if (doNotSendHeader) {
-            req = new Request.Builder()
-                    .url(url)
-                    .build();
-        } else {
-            req = new Request.Builder()
-                    .addHeader("Authorization", MyApplication.prefManager.getAuthorization())
-                    .addHeader("id_token", MyApplication.prefManager.getIdToken())
-                    .url(url)
-                    .build();
-        }
+        req = new Request.Builder()
+                .url(url)
+                .build();
 
         request();
 
@@ -240,21 +234,10 @@ public class RequestHelper implements okhttp3.Callback {
 
         RequestBody body = RequestBody.create(JSON, params.toString());
 
-        if (doNotSendHeader) {
-            req = new Request.Builder()
-                    .url(url)
-                    .post(body)
-                    .build();
-        } else {
-            req = new Request.Builder()
-                    .removeHeader("Authorization")
-                    .removeHeader("id_token")
-                    .addHeader("Authorization", MyApplication.prefManager.getAuthorization())
-                    .addHeader("id_token", MyApplication.prefManager.getIdToken())
-                    .url(url)
-                    .post(body)
-                    .build();
-        }
+        req = new Request.Builder()
+                .url(url)
+                .post(body)
+                .build();
 
         request();
 
@@ -265,19 +248,11 @@ public class RequestHelper implements okhttp3.Callback {
         if (url == null) return;
 
         RequestBody body = RequestBody.create(JSON, params.toString());
-        if (doNotSendHeader) {
-            req = new Request.Builder()
-                    .url(url)
-                    .put(body)
-                    .build();
-        } else {
-            req = new Request.Builder()
-                    .addHeader("Authorization", MyApplication.prefManager.getAuthorization())
-                    .addHeader("id_token", MyApplication.prefManager.getIdToken())
-                    .url(url)
-                    .put(body)
-                    .build();
-        }
+        req = new Request.Builder()
+                .url(url)
+                .put(body)
+                .build();
+
         request();
 
     }
@@ -287,19 +262,11 @@ public class RequestHelper implements okhttp3.Callback {
         if (url == null) return;
 
         RequestBody body = RequestBody.create(JSON, params.toString());
-        //        if (doNotSendHeader) {
         req = new Request.Builder()
                 .url(url)
                 .delete(body)
                 .build();
-        //        } else {
-//            req = new Request.Builder()
-//                    .addHeader("Authorization", MyApplication.prefManager.getAuthorization())
-//                    .addHeader("id_token", MyApplication.prefManager.getIdToken())
-//                    .url(url)
-//                    .delete(body)
-//                    .build();
-//        }
+
         request();
     }
 
@@ -360,20 +327,13 @@ public class RequestHelper implements okhttp3.Callback {
                 bodyStr = parseXML(response.body().string());
                 log("request result : " + bodyStr);
 
-                if (!response.isSuccessful()) {
-//                    if (response.code() == 401 || response.code() == 402 || response.code() == 403) {
-//                        new RefreshToken().refreshToken((success, idToken, accessToken) -> {
-//                            if (success) {
-//                                showError("terrrrr");
-//                            }
-//                        });
-//                    } else {
-                        requestFailed(response.code(), new Exception(response.message() + bodyStr));
-//                    }
-                } else {
+                if (response.isSuccessful()) {
                     if (object == null)
                         object = new Object[0];
                     requestSuccess(bodyStr);
+                }
+                else {
+                    requestFailed(response.code(), new Exception(response.message() + bodyStr));
                 }
             } catch (final IOException e) {
                 requestFailed(response.code(), e);
@@ -453,10 +413,10 @@ public class RequestHelper implements okhttp3.Callback {
             case 400:
                 showError("خطای 400 : مشکلی در ارسال داده به وجود آمده است لطفا پس از چند لحظه مجدد تلاش نمایید در صورت عدم برطرف شدن، لطفا با پشتیبانی تماس حاصل نمایید.");
                 break;
-            case 401:
-//        DBIO.setFail(MyApplication.context, url);
-                showError("خطای 401 : عدم دسترسی به شبکه لطفا با پشتیبانی تماس حاصل نمایید.");
-                break;
+//            case 401:
+////        DBIO.setFail(MyApplication.context, url);
+//                showError("خطای 401 : عدم دسترسی به شبکه لطفا با پشتیبانی تماس حاصل نمایید.");
+//                break;
             case 403:
                 showError("خطای 403 : عدم مجوز دسترسی به شبکه لطفا با پشتیبانی تماس حاصل نمایید.");
                 break;
@@ -617,6 +577,75 @@ public class RequestHelper implements okhttp3.Callback {
             AvaCrashReporter.send(e, "RequestHelper class, dismiss method ");
         }
         dialog = null;
+    }
+
+    private int refreshToken() {
+        OkHttpClient client = new OkHttpClient.Builder().build();
+
+        MediaType jsonType = MediaType.parse("application/json; charset=utf-8");
+        JSONObject json = new JSONObject();
+        try {
+            json.put("token", MyApplication.prefManager.getRefreshToken());
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        RequestBody body = RequestBody.create(jsonType, json.toString());
+        Request request = new Request.Builder()
+                .url(EndPoints.REFRESH_TOKEN)
+                .post(body)
+                .build();
+
+        Response response = null;
+        int code = 0;
+
+        try {
+            response = client.newCall(request).execute();
+
+            if (response != null) {
+                code = response.code();
+
+                switch (code) {
+                    case 200:
+                        try {
+                            JSONObject jsonBody = new JSONObject(response.body().string());
+                            boolean success = jsonBody.getBoolean("success");
+                            String message = jsonBody.getString("message");
+
+                            Log.i(TAG, "refreshToken : url " + request.url().toString());
+                            Log.i(TAG, "refreshToken : jsonBody " + jsonBody.toString());
+
+                            if (success) {
+                                JSONObject objData = jsonBody.getJSONObject("data");
+                                String id_token = objData.getString("id_token");
+                                String access_token = objData.getString("access_token");
+                                MyApplication.prefManager.setAuthorization(access_token);
+                                MyApplication.prefManager.setIdToken(id_token);
+                                showError("heyyyyy");
+                            } else {
+                                logout();
+                            }
+
+                        } catch (JSONException e) {
+                            e.getMessage();
+                        }
+
+                        break;
+                }
+                response.body().close(); //ToDo check this line
+            }
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return code;
+
+    }
+
+    private void logout() {
+        FragmentHelper
+                .toFragment(MyApplication.currentActivity, new LoginFragment())
+                .setAddToBackStack(false)
+                .replace();
     }
 
 }

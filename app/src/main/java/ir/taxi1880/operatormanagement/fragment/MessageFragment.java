@@ -154,6 +154,14 @@ public class MessageFragment extends Fragment {
 
         @Override
         public void onFailure(Runnable reCall, Exception e) {
+            MyApplication.handler.post(new Runnable() {
+                @Override
+                public void run() {
+                    if (vfMessage != null) {
+                        vfMessage.setDisplayedChild(2);
+                    }
+                }
+            });
         }
     };
 

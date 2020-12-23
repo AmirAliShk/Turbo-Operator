@@ -8,13 +8,11 @@ import org.json.JSONObject;
 
 import java.io.IOException;
 
-import ir.taxi1880.operatormanagement.activity.MainActivity;
 import ir.taxi1880.operatormanagement.app.EndPoints;
 import ir.taxi1880.operatormanagement.app.MyApplication;
 import ir.taxi1880.operatormanagement.dialog.ErrorDialog;
 import ir.taxi1880.operatormanagement.fragment.LoginFragment;
 import ir.taxi1880.operatormanagement.helper.FragmentHelper;
-import ir.taxi1880.operatormanagement.publicAPI.RefreshToken;
 import ir.taxi1880.operatormanagement.push.AvaCrashReporter;
 import okhttp3.Interceptor;
 import okhttp3.MediaType;
@@ -30,115 +28,82 @@ class AuthenticationInterceptor implements Interceptor {
     private static final int RESPONSE_HTTP_RANK_2XX = 2;
     private static final int RESPONSE_HTTP_CLIENT_ERROR = 4;
     private static final int RESPONSE_HTTP_SERVER_ERROR = 5;
-    //--- My backend params
-    private static final String BODY_PARAM_KEY_GRANT_TYPE = "grant_type";
-    private static final String BODY_PARAM_VALUE_GRANT_TYPE = "refresh_token";
-    private static final String BODY_PARAM_KEY_REFRESH_TOKEN = "refresh_token";
-
+    Request request;
+    Request.Builder builder;
 
     @Override
     public Response intercept(Chain chain) throws IOException {
 
-        Request request = chain.request();                  //<<< Original Request
+        request = chain.request();                                          //<<< Original Request
 
-        //Build new request-----------------------------
-        Request.Builder builder = request.newBuilder();
+        builder = request.newBuilder();                     //Build new request
 
-        String authorization = MyApplication.prefManager.getAuthorization();            //Save token of this request for future
+        String authorization = MyApplication.prefManager.getAuthorization();//Save token of this request for future
         String idToken = MyApplication.prefManager.getIdToken();            //Save token of this request for future
-        setAuthHeader(builder, authorization, idToken);                      //Add Current Authentication Token..
+        setAuthHeader(builder, authorization, idToken);                     //Add Current Authentication Token..
 
-        request = builder.build();                          //Overwrite the original request
+        request = builder.build();                                          //Overwrite the original request
 
-        Log.d(TAG_THIS,
-                ">>> Sending Request >>>\n"
-                        + "To: " + request.url() + "\n"
-                        + "Headers:" + request.headers() + "\n"
-                        + "Body: " + bodyToString(request));   //Shows the magic...
+        Response response = chain.proceed(request);                         // Sends the request (Original w/ Auth.)
 
-        //------------------------------------------------------------------------------------------
-        Response response = chain.proceed(request);         // Sends the request (Original w/ Auth.)
-        //------------------------------------------------------------------------------------------
+        switch (response.code()) { //TODO remove toast...
+            case -1:
+                MyApplication.Toast("-1 response", Toast.LENGTH_SHORT);
+                break;
+            case -3:
+                MyApplication.Toast("-3 response", Toast.LENGTH_SHORT);
+                break;
+            case 400:
+                MyApplication.Toast("400 response", Toast.LENGTH_SHORT);
+                break;
+            case 401:
+                Log.w(TAG_THIS, "Request responses code: " + response.code());
+                Log.w(TAG_THIS, "Request responses url: " + response.request().url());
+                synchronized (this) {                                       // Gets all 401 in sync blocks,
 
-        Log.d(TAG_THIS,
-                "<<< Receiving Request response <<<\n"
-                        + "To: " + response.request().url() + "\n"
-                        + "Headers: " + response.headers() + "\n"
-                        + "Code: " + response.code() + "\n"
-                        + "Body: " + bodyToString(response.request()));  //Shows the magic...
+                    int code = refreshToken() / 100;                        //Refactor resp. cod ranking
 
-
-        //------------------- 401 --- 401 --- UNAUTHORIZED --- 401 --- 401 -------------------------
-
-        if (response.code() == RESPONSE_UNAUTHORIZED_401) { //If unauthorized (Token expired)...
-            Log.w(TAG_THIS, "Request responses code: " + response.code());
-            Log.w(TAG_THIS, "Request responses url: " + response.request().url());
-
-            synchronized (this) {                           // Gets all 401 in sync blocks,
-                // to avoid multiply token updates...
-
-                String currentAuthorization = MyApplication.prefManager.getAuthorization();            //Save token of this request for future
-                String currentIdToken = MyApplication.prefManager.getIdToken();            //Save token of this request for future
-
-                //Compares current token with token that was stored before,
-                // if it was not updated - do update..
-
-                if (currentAuthorization != null && currentAuthorization.equals(authorization)) {
-
-                    // --- REFRESHING TOKEN --- --- REFRESHING TOKEN --- --- REFRESHING TOKEN ------
-
-                    int code = refreshToken() / 100;                    //Refactor resp. cod ranking
-
-                    if (code != RESPONSE_HTTP_RANK_2XX) {                // If refresh token failed
-
-                        if (code == RESPONSE_HTTP_CLIENT_ERROR           // If failed by error 4xx...
-                                ||
-                                code == RESPONSE_HTTP_SERVER_ERROR) {   // If failed by error 5xx...
-
-                            logout();                                   // ToDo GoTo login screen
-                            return response;                            // Todo Shows auth error to user
+                    if (code != RESPONSE_HTTP_RANK_2XX) {                   // If refresh token failed
+                        if (code == RESPONSE_HTTP_CLIENT_ERROR || code == RESPONSE_HTTP_SERVER_ERROR) {
+//                            logout();                                     // ToDo GoTo login screen or Shows auth error to user
+                            return response;
                         }
-                    }   // <<--------------------------------------------New Auth. Token acquired --
-                }   // <<-----------------------------------New Auth. Token acquired double check --
+                    }
 
+                    // --- --- RETRYING ORIGINAL REQUEST --- --- RETRYING ORIGINAL REQUEST --- --------|
+                    if (MyApplication.prefManager.getAuthorization() != null) {                  // Checks new Auth. Token
+                        setAuthHeader(builder, MyApplication.prefManager.getAuthorization(), MyApplication.prefManager.getIdToken());   // Add Current Auth. Token
+                        request = builder.build();                           // O/w the original request
 
-                // --- --- RETRYING ORIGINAL REQUEST --- --- RETRYING ORIGINAL REQUEST --- --------|
+                        //-----------------------------------------------------------------------------|
+                        Response responseRetry = chain.proceed(request);     // Sends request (w/ New Auth.)
+                        //-----------------------------------------------------------------------------|
 
-                if (MyApplication.prefManager.getAuthorization() != null) {                  // Checks new Auth. Token
-                    setAuthHeader(builder, MyApplication.prefManager.getAuthorization(), MyApplication.prefManager.getIdToken());   // Add Current Auth. Token
-                    request = builder.build();                          // O/w the original request
-
-                    Log.d(TAG_THIS,
-                            ">>> Retrying original Request >>>\n"
-                                    + "To: " + request.url() + "\n"
-                                    + "Headers:" + request.headers() + "\n"
-                                    + "Body: " + bodyToString(request));  //Shows the magic...
-
-
-                    //-----------------------------------------------------------------------------|
-                    Response responseRetry = chain.proceed(request);// Sends request (w/ New Auth.)
-                    //-----------------------------------------------------------------------------|
-
-
-                    Log.d(TAG_THIS,
-                            "<<< Receiving Retried Request response <<<\n"
-                                    + "To: " + responseRetry.request().url() + "\n"
-                                    + "Headers: " + responseRetry.headers() + "\n"
-                                    + "Code: " + responseRetry.code() + "\n"
-                                    + "Body: " + bodyToString(response.request()));  //Shows the magic.
-
-                    return responseRetry;
+                        return responseRetry;
+                    }
                 }
-            }
-        } else {
-            //------------------- 200 --- 200 --- AUTHORIZED --- 200 --- 200 -----------------------
-            Log.w(TAG_THIS, "Request responses code: " + response.code());
+                break;
+            case 403:
+                MyApplication.Toast("403 response", Toast.LENGTH_SHORT);
+                break;
+            case 404:
+                MyApplication.Toast("404 response", Toast.LENGTH_SHORT);
+                Log.i("TAG", "intercept: 4000000000000000000000000000004");
+                showError("4000000000000000004");
+                break;
+            case 422://error entity
+                MyApplication.Toast("422 response", Toast.LENGTH_SHORT);
+                break;
+            case 500:
+                MyApplication.Toast("500 response", Toast.LENGTH_SHORT);
+                break;
+            default:
+                MyApplication.Toast("other response", Toast.LENGTH_SHORT);
+                break;
         }
-
         return response;
 
     }
-
 
     // Sets/Adds the authentication header to current request builder.-----------------------------|
     private void setAuthHeader(Request.Builder builder, String authorization, String idToken) {
@@ -148,59 +113,33 @@ class AuthenticationInterceptor implements Interceptor {
 
     // Refresh/renew Synchronously Authentication Token & refresh token----------------------------|
     private int refreshToken() {
-        Log.w(TAG_THIS, "Refreshing tokens... ;o");
-
-        // Builds a client...
         OkHttpClient client = new OkHttpClient.Builder().build();
 
-        // Builds a Request Body...for renewing token...
         MediaType jsonType = MediaType.parse("application/json; charset=utf-8");
         JSONObject json = new JSONObject();
-        //---
         try {
             json.put("token", MyApplication.prefManager.getRefreshToken());
         } catch (JSONException e) {
             e.printStackTrace();
         }
-        //---
         RequestBody body = RequestBody.create(jsonType, json.toString());
-        // Builds a request with request body...
         Request request = new Request.Builder()
                 .url(EndPoints.REFRESH_TOKEN)
-                .post(body)                     //<<<--------------Adds body (Token renew by the way)
+                .post(body)
                 .build();
 
-
-        Response response = null;
+        Response response;
         int code = 0;
 
-
-        Log.d(TAG_THIS,
-                ">>> Sending Refresh Token Request >>>\n"
-                        + "To: " + request.url() + "\n"
-                        + "Headers:" + request.headers() + "\n"
-                        + "Body: " + bodyToString(request));  //Shows the magic...
         try {
-            //--------------------------------------------------------------------------------------
-            response = client.newCall(request).execute();       //Sends Refresh token request
-            //--------------------------------------------------------------------------------------
-
-            Log.d(TAG_THIS,
-                    "<<< Receiving Refresh Token Request Response <<<\n"
-                            + "To: " + response.request().url() + "\n"
-                            + "Headers:" + response.headers() + "\n"
-                            + "Code: " + response.code() + "\n"
-                            + "Body: " + bodyToString(response.request()));  //Shows the magic...
+            response = client.newCall(request).execute();
 
             if (response != null) {
                 code = response.code();
-                Log.i(TAG_THIS, "Token Refresh responses code: " + code);
 
                 switch (code) {
                     case 200:
-                        // READS NEW TOKENS AND SAVES THEM -----------------------------------------
                         try {
-                            //Log.i(TAG_ALIEN+TAG_THIS,"Decoding tokens start");
                             JSONObject jsonBody = new JSONObject(response.body().string());
                             boolean success = jsonBody.getBoolean("success");
                             String message = jsonBody.getString("message");
@@ -212,53 +151,69 @@ class AuthenticationInterceptor implements Interceptor {
                                 JSONObject objData = jsonBody.getJSONObject("data");
                                 String id_token = objData.getString("id_token");
                                 String access_token = objData.getString("access_token");
-                                MyApplication.prefManager.setAuthorization(access_token);
-                                MyApplication.prefManager.setIdToken(id_token);
+                                MyApplication.prefManager.setAuthorization(access_token+"dsgdfg");
+                                MyApplication.prefManager.setIdToken(id_token+"sdgdetrf");
                             } else {
                                 logout();
                             }
-
                         } catch (JSONException e) {
-                            Log.w(TAG_THIS, "Responses code " + code
-                                    + " but error getting response body.\n"
-                                    + e.getMessage());
+                            e.getMessage();
                         }
+                        break;
 
+                    case 401:
+                        MyApplication.Toast("401 refresh Token", Toast.LENGTH_SHORT);
+                        break;
+
+                    case 404:
+                        MyApplication.Toast("404 refresh Token", Toast.LENGTH_SHORT);
                         break;
                 }
-//                response.body().close(); //ToDo check this line
+                response.body().close(); //ToDo check this line
             }
 
         } catch (IOException e) {
-            Log.w(TAG_THIS, "Error while Sending Refresh Token Request\n" + e.getMessage());
             e.printStackTrace();
         }
-
-        //Log.w(TAG_ALIEN,"Refresh Token request responses code? = "+code);
         return code;
 
     }
 
     private void logout() {
-        FragmentHelper
-                .toFragment(MyApplication.currentActivity, new LoginFragment())
-                .setAddToBackStack(false)
-                .replace();
+        MyApplication.handler.post(() -> {
+            FragmentHelper
+                    .toFragment(MyApplication.currentActivity, new LoginFragment())
+                    .setAddToBackStack(false)
+                    .replace();
+        });
     }
 
-    //----------------------------------------------------------------------------------------------
-    @Deprecated
-    private static String bodyToString(final Request request) {
-        /*
+    private static ErrorDialog errorDialog;
+
+    public void showError(final String message) {
         try {
-            final Request copy = request.newBuilder().build();
-            final Buffer buffer = new Buffer();
-            copy.body().writeTo(buffer);
-            return buffer.readUtf8();
-        } catch (final IOException e) {
-            Log.w(TAG_ALIEN+TAG_THIS,"Error while trying to get body to string.");
-            return "Null";
-        }*/
-        return "Nullix";
+            MyApplication.handler.post(() -> {
+                if (errorDialog == null) {
+                    errorDialog = new ErrorDialog();
+                    errorDialog.titleText("خطایی رخ داده است");
+                    errorDialog.messageText(message);
+                    errorDialog.cancelable(false);
+                    errorDialog.closeBtnRunnable("بستن", () -> errorDialog.dismiss());
+                    errorDialog.tryAgainBtnRunnable("تلاش مجدد", new Runnable() {
+                        @Override
+                        public void run() {
+//                            runnable.run();
+
+                        }
+                    });
+                }
+                ErrorDialog.dismiss();
+                errorDialog.show();
+            });
+        } catch (Exception e) {
+            e.printStackTrace();
+            AvaCrashReporter.send(e, "RequestHelper class, showError method ");
+        }
     }
+
 }
