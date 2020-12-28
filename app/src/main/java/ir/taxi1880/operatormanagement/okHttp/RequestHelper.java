@@ -25,9 +25,6 @@ import java.util.regex.Pattern;
 import ir.taxi1880.operatormanagement.R;
 import ir.taxi1880.operatormanagement.app.EndPoints;
 import ir.taxi1880.operatormanagement.app.MyApplication;
-import ir.taxi1880.operatormanagement.fragment.LoginFragment;
-import ir.taxi1880.operatormanagement.helper.FragmentHelper;
-import ir.taxi1880.operatormanagement.publicAPI.RefreshToken;
 import ir.taxi1880.operatormanagement.dialog.ErrorDialog;
 import ir.taxi1880.operatormanagement.dialog.GeneralDialog;
 import ir.taxi1880.operatormanagement.helper.StringHelper;
@@ -331,10 +328,10 @@ public class RequestHelper implements okhttp3.Callback {
                     if (object == null)
                         object = new Object[0];
                     requestSuccess(bodyStr);
-                }
-                else {
+                } else {
                     requestFailed(response.code(), new Exception(response.message() + bodyStr));
                 }
+
             } catch (final IOException e) {
                 requestFailed(response.code(), e);
                 if (listener != null)
@@ -413,10 +410,10 @@ public class RequestHelper implements okhttp3.Callback {
             case 400:
                 showError("خطای 400 : مشکلی در ارسال داده به وجود آمده است لطفا پس از چند لحظه مجدد تلاش نمایید در صورت عدم برطرف شدن، لطفا با پشتیبانی تماس حاصل نمایید.");
                 break;
-//            case 401:
-////        DBIO.setFail(MyApplication.context, url);
-//                showError("خطای 401 : عدم دسترسی به شبکه لطفا با پشتیبانی تماس حاصل نمایید.");
-//                break;
+            case 401:  //TODO check this
+//        DBIO.setFail(MyApplication.context, url);
+                showError("خطای 401 : بازم خطا داریم.....");
+                break;
             case 403:
                 showError("خطای 403 : عدم مجوز دسترسی به شبکه لطفا با پشتیبانی تماس حاصل نمایید.");
                 break;
@@ -472,180 +469,28 @@ public class RequestHelper implements okhttp3.Callback {
     private static ErrorDialog errorDialog;
 
     public void showError(final String message) {
-        if (!errorHandling) return;
-        try {
-            MyApplication.handler.post(() -> {
-//                dismiss();
-//                show(message);
-                if (hideNetworkError)
-                    return;
-                if (errorDialog == null) {
-                    errorDialog = new ErrorDialog();
-                    errorDialog.titleText("خطایی رخ داده است");
-                    errorDialog.messageText(message);
-                    errorDialog.cancelable(false);
-                    errorDialog.closeBtnRunnable("بستن", () -> errorDialog.dismiss());
-                    errorDialog.tryAgainBtnRunnable("تلاش مجدد", new Runnable() {
-                        @Override
-                        public void run() {
-                            runnable.run();
-                        }
-                    });
-                }
-                ErrorDialog.dismiss();
-                errorDialog.show();
-            });
-        } catch (Exception e) {
-            e.printStackTrace();
-            AvaCrashReporter.send(e, "RequestHelper class, showError method ");
-        }
-        Log.d(TAG, "showError: " + message);
-    }
-
-    private Dialog dialog;
-
-    public void show(String message) {
-
-        if (MyApplication.currentActivity == null || MyApplication.currentActivity.isFinishing())
-            return;
-        dialog = new Dialog(MyApplication.currentActivity);
-        dialog.getWindow().requestFeature(Window.FEATURE_NO_TITLE);
-        dialog.getWindow().getAttributes().windowAnimations = R.style.ExpandAnimation;
-        dialog.setContentView(R.layout.dialog_error);
-
-        TypefaceUtil.overrideFonts(dialog.getWindow().getDecorView());
-        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
-        WindowManager.LayoutParams wlp = dialog.getWindow().getAttributes();
-        wlp.gravity = Gravity.BOTTOM;
-        wlp.width = LinearLayout.LayoutParams.MATCH_PARENT;
-        dialog.getWindow().setAttributes(wlp);
-
-        dialog.setCancelable(false);
-
-        TextView txtMessage = (TextView) dialog.findViewById(R.id.txtMessage);
-        txtMessage.setText(message);
-
-        TextView title = (TextView) dialog.findViewById(R.id.txtTitle);
-
-        title.setText("خطایی رخ داده");
-
-        Button btnClose = dialog.findViewById(R.id.btnClose);
-        Button btnTryAgain = dialog.findViewById(R.id.btnTryAgain);
-
-
-        btnClose.setOnClickListener(v -> {
-            if (dialog != null) {
-                dialog.dismiss();
-                reloadPress(false);
+        MyApplication.currentActivity.runOnUiThread(() -> {
+            if (!errorHandling) return;
+            try {
+                MyApplication.handler.post(() -> {
+                    if (hideNetworkError)
+                        return;
+                    if (errorDialog == null) {
+                        errorDialog = new ErrorDialog();
+                        errorDialog.titleText("خطایی رخ داده است");
+                        errorDialog.messageText(message);
+                        errorDialog.cancelable(false);
+                        errorDialog.closeBtnRunnable("بستن", () -> errorDialog.dismiss());
+                        errorDialog.tryAgainBtnRunnable("تلاش مجدد", () -> runnable.run());
+                    }
+                    ErrorDialog.dismiss();
+                    errorDialog.show();
+                });
+            } catch (Exception e) {
+                e.printStackTrace();
+                AvaCrashReporter.send(e, "RequestHelper class, showError method ");
             }
         });
-
-        btnTryAgain.setOnClickListener(v -> {
-//      if (runnable != null)
-//        vfRetry.setDisplayedChild(1);
-            dialog.dismiss();
-            runnable.run();
-            reloadPress(true);
-
-//      MyApplication.handler.postDelayed(new Runnable() {
-//        @Override
-//        public void run() {
-//
-//          runnable.run();
-//          if (dialog != null)
-//            dialog.dismiss();
-//          dialog = null;
-//        }
-//      }, 2000);
-        });
-
-
-        try {
-            dialog.show();
-        } catch (Exception e) {
-            e.printStackTrace();
-            AvaCrashReporter.send(e, "RequestHelper class, show method ");
-        }
-    }
-
-    private void dismiss() {
-        try {
-            if (dialog != null)
-                dialog.dismiss();
-        } catch (Exception e) {
-            Log.e(TAG, "dismiss: " + e.getMessage());
-            AvaCrashReporter.send(e, "RequestHelper class, dismiss method ");
-        }
-        dialog = null;
-    }
-
-    private int refreshToken() {
-        OkHttpClient client = new OkHttpClient.Builder().build();
-
-        MediaType jsonType = MediaType.parse("application/json; charset=utf-8");
-        JSONObject json = new JSONObject();
-        try {
-            json.put("token", MyApplication.prefManager.getRefreshToken());
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-        RequestBody body = RequestBody.create(jsonType, json.toString());
-        Request request = new Request.Builder()
-                .url(EndPoints.REFRESH_TOKEN)
-                .post(body)
-                .build();
-
-        Response response = null;
-        int code = 0;
-
-        try {
-            response = client.newCall(request).execute();
-
-            if (response != null) {
-                code = response.code();
-
-                switch (code) {
-                    case 200:
-                        try {
-                            JSONObject jsonBody = new JSONObject(response.body().string());
-                            boolean success = jsonBody.getBoolean("success");
-                            String message = jsonBody.getString("message");
-
-                            Log.i(TAG, "refreshToken : url " + request.url().toString());
-                            Log.i(TAG, "refreshToken : jsonBody " + jsonBody.toString());
-
-                            if (success) {
-                                JSONObject objData = jsonBody.getJSONObject("data");
-                                String id_token = objData.getString("id_token");
-                                String access_token = objData.getString("access_token");
-                                MyApplication.prefManager.setAuthorization(access_token);
-                                MyApplication.prefManager.setIdToken(id_token);
-                                showError("heyyyyy");
-                            } else {
-                                logout();
-                            }
-
-                        } catch (JSONException e) {
-                            e.getMessage();
-                        }
-
-                        break;
-                }
-                response.body().close(); //ToDo check this line
-            }
-
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        return code;
-
-    }
-
-    private void logout() {
-        FragmentHelper
-                .toFragment(MyApplication.currentActivity, new LoginFragment())
-                .setAddToBackStack(false)
-                .replace();
     }
 
 }

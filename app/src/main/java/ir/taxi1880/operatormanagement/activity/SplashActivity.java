@@ -124,7 +124,7 @@ public class SplashActivity extends AppCompatActivity {
 
     public void continueProcessing() {
         if (isFinishContract == 1) {
-            new GeneralDialog()
+            MyApplication.currentActivity.runOnUiThread(() -> new GeneralDialog()
                     .title("اتمام قرار داد")
                     .message("مدت قرار داد شما به اتمام رسیده است. لطفا برای تمدید آن اقدام کنید.")
                     .cancelable(false)
@@ -134,13 +134,14 @@ public class SplashActivity extends AppCompatActivity {
                                 .setAddToBackStack(false)
                                 .replace();
                     })
+
                     .secondButton("امضا قرارداد", () -> {
                         FragmentHelper
                                 .toFragment(MyApplication.currentActivity, new SignatureFragment())
                                 .setAddToBackStack(false)
                                 .replace();
                     })
-                    .show();
+                    .show());
             return;
         }
         ContinueProcessing.runMainActivity();

@@ -56,74 +56,74 @@ public class SearchLocationDialog {
     private Listener listener;
     private static Dialog dialog;
 
-    public void show(Listener listener, String title, String cityLatin) {
-        if (MyApplication.currentActivity == null || MyApplication.currentActivity.isFinishing())
-            return;
-        dialog = new Dialog(MyApplication.currentActivity);
-        dialog.getWindow().requestFeature(Window.FEATURE_NO_TITLE);
-        dialog.getWindow().getAttributes().windowAnimations = R.style.ExpandAnimation;
-        dialog.setContentView(R.layout.dialog_search_location);
-        TypefaceUtil.overrideFonts(dialog.getWindow().getDecorView());
-        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
-        WindowManager.LayoutParams wlp = dialog.getWindow().getAttributes();
-        wlp.gravity = Gravity.CENTER;
-        wlp.windowAnimations = R.style.ExpandAnimation;
-        dialog.getWindow().setAttributes(wlp);
-        dialog.setCancelable(true);
-        this.listener = listener;
-        this.cityLatin = cityLatin;
-
-        listPlace = dialog.findViewById(R.id.listPlace);
-        vfLocation = dialog.findViewById(R.id.vfLocation);
-
-        edtSearch = dialog.findViewById(R.id.edtSearch);
-        TextView txtTitle = dialog.findViewById(R.id.txtTitle);
-        ImageView imgSearch = dialog.findViewById(R.id.imgSearch);
-
-        edtSearch.requestFocus();
-
-        edtSearch.setHint(title);
-        txtTitle.setText(title);
-
-        listPlace.setOnItemClickListener((parent, view, position, id) -> {
-
-            listener.description(stationModels.get(position).getAddress(), stationModels.get(position).getCode());
-//        listener.selectedAddress(true);
-            dismiss();
-        });
-
-        imgSearch.setOnClickListener(view -> {
-            if (edtSearch.getText().toString().isEmpty()) {
-                MyApplication.Toast("لطفا نام منطقه را وارد نمایید", Toast.LENGTH_SHORT);
-                return;
-            }
-            findWay();
-        });
-
-        edtSearch.setOnEditorActionListener((textView, i, keyEvent) -> {
-            if (i == EditorInfo.IME_ACTION_NEXT) {
-                if (edtSearch.getText().toString().isEmpty()) {
-                    MyApplication.Toast("لطفا نام منطقه را وارد نمایید", Toast.LENGTH_SHORT);
-                    return false;
-                }
-                findWay();
-                return true;
-            } else if (i == EditorInfo.IME_ACTION_DONE) {
-                if (edtSearch.getText().toString().isEmpty()) {
-                    MyApplication.Toast("لطفا نام منطقه را وارد نمایید", Toast.LENGTH_SHORT);
-                    return false;
-                }
-                findWay();
-                return true;
-            }
-            return false;
-        });
-
-        MyApplication.handler.postDelayed(() -> KeyBoardHelper.showKeyboard(MyApplication.context), 200);
-
-        dialog.show();
-
-    }
+//    public void show(Listener listener, String title, String cityLatin) {
+//        if (MyApplication.currentActivity == null || MyApplication.currentActivity.isFinishing())
+//            return;
+//        dialog = new Dialog(MyApplication.currentActivity);
+//        dialog.getWindow().requestFeature(Window.FEATURE_NO_TITLE);
+//        dialog.getWindow().getAttributes().windowAnimations = R.style.ExpandAnimation;
+//        dialog.setContentView(R.layout.dialog_search_location);
+//        TypefaceUtil.overrideFonts(dialog.getWindow().getDecorView());
+//        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+//        WindowManager.LayoutParams wlp = dialog.getWindow().getAttributes();
+//        wlp.gravity = Gravity.CENTER;
+//        wlp.windowAnimations = R.style.ExpandAnimation;
+//        dialog.getWindow().setAttributes(wlp);
+//        dialog.setCancelable(true);
+//        this.listener = listener;
+//        this.cityLatin = cityLatin;
+//
+//        listPlace = dialog.findViewById(R.id.listPlace);
+//        vfLocation = dialog.findViewById(R.id.vfLocation);
+//
+//        edtSearch = dialog.findViewById(R.id.edtSearch);
+//        TextView txtTitle = dialog.findViewById(R.id.txtTitle);
+//        ImageView imgSearch = dialog.findViewById(R.id.imgSearch);
+//
+//        edtSearch.requestFocus();
+//
+//        edtSearch.setHint(title);
+//        txtTitle.setText(title);
+//
+//        listPlace.setOnItemClickListener((parent, view, position, id) -> {
+//
+//            listener.description(stationModels.get(position).getAddress(), stationModels.get(position).getCode());
+////        listener.selectedAddress(true);
+//            dismiss();
+//        });
+//
+//        imgSearch.setOnClickListener(view -> {
+//            if (edtSearch.getText().toString().isEmpty()) {
+//                MyApplication.Toast("لطفا نام منطقه را وارد نمایید", Toast.LENGTH_SHORT);
+//                return;
+//            }
+//            findWay();
+//        });
+//
+//        edtSearch.setOnEditorActionListener((textView, i, keyEvent) -> {
+//            if (i == EditorInfo.IME_ACTION_NEXT) {
+//                if (edtSearch.getText().toString().isEmpty()) {
+//                    MyApplication.Toast("لطفا نام منطقه را وارد نمایید", Toast.LENGTH_SHORT);
+//                    return false;
+//                }
+//                findWay();
+//                return true;
+//            } else if (i == EditorInfo.IME_ACTION_DONE) {
+//                if (edtSearch.getText().toString().isEmpty()) {
+//                    MyApplication.Toast("لطفا نام منطقه را وارد نمایید", Toast.LENGTH_SHORT);
+//                    return false;
+//                }
+//                findWay();
+//                return true;
+//            }
+//            return false;
+//        });
+//
+//        MyApplication.handler.postDelayed(() -> KeyBoardHelper.showKeyboard(MyApplication.context), 200);
+//
+//        dialog.show();
+//
+//    }
 
     private static void dismiss() {
         try {
@@ -141,11 +141,11 @@ public class SearchLocationDialog {
     private void findWay() {
         vfLocation.setDisplayedChild(1);
 
-        RequestHelper.builder(EndPoints.FIND_WAY)
-                .addPath(cityLatin)
-                .addPath(StringHelper.toEnglishDigits(edtSearch.getText().toString()))
-                .listener(onFindWay)
-                .get();
+//        RequestHelper.builder(EndPoints.FIND_WAY)
+//                .addPath(cityLatin)
+//                .addPath(StringHelper.toEnglishDigits(edtSearch.getText().toString()))
+//                .listener(onFindWay)
+//                .get();
 
     }
 

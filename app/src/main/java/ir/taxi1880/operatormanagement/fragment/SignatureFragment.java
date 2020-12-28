@@ -143,6 +143,8 @@ public class SignatureFragment extends Fragment {
             multipartUploadRequest = new MultipartUploadRequest(MyApplication.context, uploadNationalPathUrl);
             multipartUploadRequest.addFileToUpload(MyApplication.image_path_save + MyApplication.prefManager.getUserCode() + ".png", "image", MyApplication.prefManager.getUserCode() + ".png");
             multipartUploadRequest.addParameter("userId", MyApplication.prefManager.getUserCode() + "");
+            multipartUploadRequest.addHeader("Authorization", MyApplication.prefManager.getAuthorization());
+            multipartUploadRequest.addHeader("id_token", MyApplication.prefManager.getIdToken());
             multipartUploadRequest.setMaxRetries(2);
             multipartUploadRequest.setDelegate(new UploadStatusDelegate() {
                 @Override
