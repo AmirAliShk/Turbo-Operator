@@ -190,6 +190,16 @@
 
             </LinearLayout>
 
+            <TextView
+                android:id="@+id/enterWithAnotherWay"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="ورود با شماره موبایل"
+                android:background="@drawable/bg_ripple"
+                android:gravity="center"
+                android:padding="10dp"
+                android:textColor="@color/colorBlack"/>
+
         </LinearLayout>
 
     </RelativeLayout>
@@ -198,7 +208,5 @@
         android:id="@+id/frame_container"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
-
-
 
 </LinearLayout>

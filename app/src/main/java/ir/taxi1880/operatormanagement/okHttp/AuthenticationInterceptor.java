@@ -57,7 +57,6 @@ class AuthenticationInterceptor implements Interceptor {
                     if (code == RESPONSE_HTTP_CLIENT_ERROR || code == RESPONSE_HTTP_SERVER_ERROR) {
                         logout();
 //                        return response; //TODO return response is wrong,
-
                     }
                 }
 

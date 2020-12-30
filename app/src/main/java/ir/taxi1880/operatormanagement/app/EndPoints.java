@@ -51,6 +51,7 @@ public class EndPoints {
 //  http://turbotaxi.ir:1884/api/getCallvoice/caldX:23V32/1604130536.10343290
 
   public static final String HAWKEYE_PATH = HAKWEYE_IP + ":" + HAWKEYE_APIPort + "/api/user/v1/";
+  public static final String HAWKEYE_LOGIN_PATH = HAKWEYE_IP + ":" + HAWKEYE_APIPort + "/api/user/v1/login/phone/";
 
   /******************************** Base Api *********************************/
   public static final String GET_APP_INFO = WEBSERVICE_PATH + "getAppInfo";
@@ -114,5 +115,6 @@ public class EndPoints {
 
   public static final String REFRESH_TOKEN = HAWKEYE_PATH + "token";
   public static final String LOGIN = HAWKEYE_PATH + "login";
-
+  public static final String VERIFICATION =HAWKEYE_LOGIN_PATH + "verification";
+  public static final String CHECK = HAWKEYE_LOGIN_PATH + "check";
 }

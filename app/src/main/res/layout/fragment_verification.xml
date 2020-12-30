@@ -1,0 +1,148 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="@color/colorPrimaryLighter"
+    android:clickable="true"
+    android:gravity="center"
+    tools:context=".fragment.VerificationFragment">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <RelativeLayout
+            android:id="@+id/rlActionBar"
+            android:layout_width="match_parent"
+            android:layoutDirection="ltr"
+            android:layout_height="?android:attr/actionBarSize"
+            android:background="#792ca9">
+
+            <LinearLayout
+                android:clickable="true"
+                android:background="@drawable/bg_ripple"
+                android:id="@+id/llBack"
+                android:layout_width="match_parent"
+                android:gravity="center"
+                android:layout_height="match_parent">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:gravity="center"
+                    android:textStyle="bold"
+                    android:textSize="14sp"
+                    android:textColor="@color/colorWhite"
+                    android:text="چی بنویسم؟"/>
+
+            </LinearLayout>
+
+        </RelativeLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="0.5"/>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:orientation="vertical"
+            android:padding="30dp">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:gravity="center"
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="شماره همراه"
+                    android:textAppearance="?android:attr/textAppearanceMedium"
+                    android:textColor="@color/colorPrimary" />
+
+                <EditText
+                    android:id="@+id/edtMobileNumber"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="right|center_vertical"
+                    android:inputType="number"
+                    android:nextFocusDown="@id/edtPassword"
+                    android:singleLine="true"
+                    android:textAppearance="?android:attr/textAppearanceMedium"
+                    android:textColor="@color/colorPrimary"/>
+
+            </LinearLayout>
+
+<!--            TODO we need this? -->
+<!--            <TextView-->
+<!--                android:gravity="left|center_vertical"-->
+<!--                android:id="@+id/txtForgetPass"-->
+<!--                android:layout_width="match_parent"-->
+<!--                android:layout_height="40dp"-->
+<!--                android:textSize="10sp"-->
+<!--                android:text="رمز عبورم را فراموش کرده ام"-->
+<!--                android:textColor="@color/colorPrimary" />-->
+
+        </LinearLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="0.5"/>
+
+        <ViewFlipper
+            android:id="@+id/vfEnter"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginLeft="25dp"
+            android:layout_marginRight="25dp"
+            android:padding="5dp"
+            android:background="@drawable/bg_light_pink_edge">
+
+            <Button
+                android:id="@+id/btnEnter"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:layout_gravity="center"
+                android:background="@android:color/transparent"
+                android:text="ورود"
+                android:textAppearance="?android:attr/textAppearanceLarge"
+                android:textColor="@color/colorWhite" />
+
+            <com.wang.avi.AVLoadingIndicatorView
+                app:indicatorColor="@color/colorWhite"
+                android:layout_width="wrap_content"
+                android:padding="10dp"
+                android:layout_height="50dp"
+                android:layout_gravity="center" />
+
+        </ViewFlipper>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"/>
+
+        <TextView
+            android:id="@+id/txtAnotherWayToLogin"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:layout_gravity="bottom"
+            android:background="@drawable/bg_ripple"
+            android:gravity="center"
+            android:textSize="@dimen/_10ssp"
+            android:text="ورود از طریق نام کاربری و رمزعبور"
+            android:textColor="@color/colorPrimary" />
+
+    </LinearLayout>
+
+</LinearLayout>

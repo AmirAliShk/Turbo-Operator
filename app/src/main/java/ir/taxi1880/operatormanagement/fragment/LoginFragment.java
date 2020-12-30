@@ -27,6 +27,7 @@ import ir.taxi1880.operatormanagement.app.Constant;
 import ir.taxi1880.operatormanagement.app.EndPoints;
 import ir.taxi1880.operatormanagement.app.MyApplication;
 import ir.taxi1880.operatormanagement.dialog.ErrorDialog;
+import ir.taxi1880.operatormanagement.helper.FragmentHelper;
 import ir.taxi1880.operatormanagement.helper.KeyBoardHelper;
 import ir.taxi1880.operatormanagement.helper.TypefaceUtil;
 import ir.taxi1880.operatormanagement.okHttp.RequestHelper;
@@ -67,6 +68,11 @@ public class LoginFragment extends Fragment {
 
         logIn(userName, password);
         KeyBoardHelper.hideKeyboard();
+    }
+
+    @OnClick(R.id.enterWithAnotherWay)
+    void onEnterWithAnotherWay() {
+        FragmentHelper.toFragment(MyApplication.currentActivity, new VerificationFragment()).setAddToBackStack(false).replace();
     }
 
     @SuppressLint("SetTextI18n")

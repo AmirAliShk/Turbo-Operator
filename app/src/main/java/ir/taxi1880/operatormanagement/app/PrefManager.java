@@ -66,11 +66,22 @@ public class PrefManager {
     private static final String AUTHORIZATION = "Authorization";
     private static final String ID_TOKEN = "id_token";
     private static final String REFRESH_TOKEN = "refreshToken";
+    private static final String REPETITION_TIME = "repetitionTime";
+    private static final String KEY_ACTIVATION_REMAINING_TIME = "activationRemainingTime";
 
     public PrefManager(Context context) {
         this._context = context;
         pref = _context.getSharedPreferences(PREF_NAME, PRIVATE_MODE);
         editor = pref.edit();
+    }
+
+    public void setActivationRemainingTime(long v) {
+        editor.putLong(KEY_ACTIVATION_REMAINING_TIME, v);
+        editor.commit();
+    }
+
+    public long getActivationRemainingTime() {
+        return pref.getLong(KEY_ACTIVATION_REMAINING_TIME, getRepetitionTime());
     }
 
     public String getAuthorization() {
@@ -179,6 +190,15 @@ public class PrefManager {
 
     public int getUserCode() {
         return pref.getInt(KEY_USER_CODE, 0);
+    }
+
+    public void setRepetitionTime(int repetitionTime) {
+        editor.putInt(REPETITION_TIME, repetitionTime);
+        editor.commit();
+    }
+
+    public int getRepetitionTime() {
+        return pref.getInt(REPETITION_TIME, 0);
     }
 
     public void setActivateStatus(boolean activateStatus) {
