@@ -22,6 +22,7 @@ import ir.taxi1880.operatormanagement.R;
 import ir.taxi1880.operatormanagement.app.EndPoints;
 import ir.taxi1880.operatormanagement.app.MyApplication;
 import ir.taxi1880.operatormanagement.helper.FragmentHelper;
+import ir.taxi1880.operatormanagement.helper.PhoneNumberValidation;
 import ir.taxi1880.operatormanagement.helper.TypefaceUtil;
 import ir.taxi1880.operatormanagement.okHttp.RequestHelper;
 import ir.taxi1880.operatormanagement.push.AvaCrashReporter;
@@ -42,6 +43,11 @@ public class VerificationFragment extends Fragment {
 
         if (mobileNumber.isEmpty()) {
             MyApplication.Toast("شماره موبایل را وارد کنید", Toast.LENGTH_SHORT);
+            return;
+        }
+
+        if (!PhoneNumberValidation.isValid(mobileNumber)){
+            MyApplication.Toast("شماره موبایل نا معتبر میباشد", Toast.LENGTH_SHORT);
             return;
         }
 

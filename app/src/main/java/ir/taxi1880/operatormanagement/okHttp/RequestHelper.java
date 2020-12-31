@@ -10,6 +10,7 @@ import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -275,8 +276,6 @@ public class RequestHelper implements okhttp3.Callback {
             log("request url : " + req.url().toString());
             log("params : " + params);
             log("paths : " + path);
-            log("header req.Authorization : " + req.headers().get("Authorization"));
-            log("header req.id_token : " + req.headers().get("id_token"));
             builder = new OkHttpClient
                     .Builder()
                     .proxy(Proxy.NO_PROXY);
@@ -329,6 +328,16 @@ public class RequestHelper implements okhttp3.Callback {
                         object = new Object[0];
                     requestSuccess(bodyStr);
                 } else {
+                    try {
+                        JSONObject responseObject = new JSONObject(bodyStr);
+                        if (responseObject.getBoolean("refreshTokenError")){
+                            MyApplication.Toast("YOHOOOOOOOOOOO", Toast.LENGTH_SHORT);
+                            //TODO you are here BE HAPPY :)
+                            return;
+                        }
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
                     requestFailed(response.code(), new Exception(response.message() + bodyStr));
                 }
 

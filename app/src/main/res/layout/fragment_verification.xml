@@ -7,40 +7,42 @@
     android:background="@color/colorPrimaryLighter"
     android:clickable="true"
     android:gravity="center"
+    android:orientation="vertical"
     tools:context=".fragment.VerificationFragment">
+
+    <RelativeLayout
+        android:id="@+id/rlActionBar"
+        android:layout_width="match_parent"
+        android:layoutDirection="ltr"
+        android:layout_height="?android:attr/actionBarSize"
+        android:background="#792ca9">
+
+        <LinearLayout
+            android:clickable="true"
+            android:background="@drawable/bg_ripple"
+            android:id="@+id/llBack"
+            android:layout_width="match_parent"
+            android:gravity="center"
+            android:layout_height="match_parent">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:gravity="center"
+                android:textStyle="bold"
+                android:textSize="14sp"
+                android:textColor="@color/colorWhite"
+                android:text="چی بنویسم؟"/>
+
+        </LinearLayout>
+
+    </RelativeLayout>
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:padding="50dp"
         android:orientation="vertical">
-
-        <RelativeLayout
-            android:id="@+id/rlActionBar"
-            android:layout_width="match_parent"
-            android:layoutDirection="ltr"
-            android:layout_height="?android:attr/actionBarSize"
-            android:background="#792ca9">
-
-            <LinearLayout
-                android:clickable="true"
-                android:background="@drawable/bg_ripple"
-                android:id="@+id/llBack"
-                android:layout_width="match_parent"
-                android:gravity="center"
-                android:layout_height="match_parent">
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:gravity="center"
-                    android:textStyle="bold"
-                    android:textSize="14sp"
-                    android:textColor="@color/colorWhite"
-                    android:text="چی بنویسم؟"/>
-
-            </LinearLayout>
-
-        </RelativeLayout>
 
         <View
             android:layout_width="match_parent"
@@ -51,8 +53,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="center"
-            android:orientation="vertical"
-            android:padding="30dp">
+            android:orientation="vertical">
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -65,7 +66,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="شماره همراه"
-                    android:textAppearance="?android:attr/textAppearanceMedium"
+                    android:textSize="@dimen/_13ssp"
                     android:textColor="@color/colorPrimary" />
 
                 <EditText
@@ -103,8 +104,6 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
-            android:layout_marginLeft="25dp"
-            android:layout_marginRight="25dp"
             android:padding="5dp"
             android:background="@drawable/bg_light_pink_edge">
 
@@ -115,7 +114,7 @@
                 android:layout_gravity="center"
                 android:background="@android:color/transparent"
                 android:text="ورود"
-                android:textAppearance="?android:attr/textAppearanceLarge"
+                android:textSize="@dimen/_13ssp"
                 android:textColor="@color/colorWhite" />
 
             <com.wang.avi.AVLoadingIndicatorView
@@ -139,7 +138,7 @@
             android:layout_gravity="bottom"
             android:background="@drawable/bg_ripple"
             android:gravity="center"
-            android:textSize="@dimen/_10ssp"
+            android:textSize="@dimen/_12ssp"
             android:text="ورود از طریق نام کاربری و رمزعبور"
             android:textColor="@color/colorPrimary" />
 

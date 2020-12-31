@@ -20,9 +20,10 @@ import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.RequestBody;
 import okhttp3.Response;
+import okhttp3.ResponseBody;
 
 class AuthenticationInterceptor implements Interceptor {
-    private static final String TAG_THIS = AuthenticationInterceptor.class.getSimpleName();
+    private static final String TAG = AuthenticationInterceptor.class.getSimpleName();
     //--- HTTP Response codes relative constants
     private static final int RESPONSE_UNAUTHORIZED_401 = 401;
     private static final int RESPONSE_HTTP_RANK_2XX = 2;
@@ -34,44 +35,46 @@ class AuthenticationInterceptor implements Interceptor {
     @Override
     public Response intercept(Chain chain) throws IOException {
 
-        request = chain.request();                                          //<<< Original Request
+        request = chain.request();
 
-        builder = request.newBuilder();                                     //Build new request
+        builder = request.newBuilder();
 
-        String authorization = MyApplication.prefManager.getAuthorization();//Save token of this request for future
-        String idToken = MyApplication.prefManager.getIdToken();            //Save token of this request for future
-        setAuthHeader(builder, authorization, idToken);                     //Add Current Authentication Token..
+        String authorization = MyApplication.prefManager.getAuthorization();
+        String idToken = MyApplication.prefManager.getIdToken();
+        setAuthHeader(builder, authorization, idToken);
 
-        request = builder.build();                                          //Overwrite the original request
+        request = builder.build();
 
-        Response response = chain.proceed(request);                         // Sends the request (Original w/ Auth.)
+        Response response = chain.proceed(request);
 
         if (response.code() == 401) {
-            Log.w(TAG_THIS, "Request responses code: " + response.code());
-            Log.w(TAG_THIS, "Request responses url: " + response.request().url());
-            synchronized (this) {                                       // Gets all 401 in sync blocks,
-
-                int code = refreshToken() / 100;                        //Refactor resp. cod ranking
-
-                if (code != RESPONSE_HTTP_RANK_2XX) {                   // If refresh token failed
-                    if (code == RESPONSE_HTTP_CLIENT_ERROR || code == RESPONSE_HTTP_SERVER_ERROR) {
-                        logout();
-//                        return response; //TODO return response is wrong,
-                    }
-                }
-
-                // --- --- RETRYING ORIGINAL REQUEST --- --- RETRYING ORIGINAL REQUEST --- --------|
-                if (code == 2) {                  // Checks new Auth. Token
-                    setAuthHeader(builder, MyApplication.prefManager.getAuthorization(), MyApplication.prefManager.getIdToken());   // Add Current Auth. Token
+            Log.w(TAG, "Request responses code: " + response.code());
+            Log.w(TAG, "Request responses url: " + response.request().url());
+            synchronized (this) {
+                boolean statusCode = refreshToken();
+                if (statusCode) {
+                    setAuthHeader(builder, MyApplication.prefManager.getAuthorization(), MyApplication.prefManager.getIdToken());
                     request = builder.build();
-
-                    Response responseRetry = chain.proceed(request);     // Sends request (w/ New Auth.)
-                    Log.w(TAG_THIS, "Request responses new url: " + response.request().url());
-
+                    Response responseRetry = chain.proceed(request);
+                    Log.i(TAG, "Request responses new url: " + responseRetry.request().url());
                     return responseRetry;
+                } else {
+                    logout();
+                        JSONObject object = null;
+                    try { // append refreshTokenError to response
+                        object = new JSONObject(response.body().string());
+                        object.put("refreshTokenError",true);
+
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                    MediaType contentType = response.body().contentType();
+                    ResponseBody body = ResponseBody.create(contentType, object.toString());
+                    return response.newBuilder().body(body).build();
+//                    return response;
                 }
-            }
-        }
+            } // synchronized
+        } // response.code
 
         return response;
 
@@ -82,13 +85,14 @@ class AuthenticationInterceptor implements Interceptor {
         builder.header("id_token", idToken);
     }
 
-    private int refreshToken() {
+    private boolean refreshToken() {
+        boolean statusCode = false;
         OkHttpClient client = new OkHttpClient.Builder().build();
 
         MediaType jsonType = MediaType.parse("application/json; charset=utf-8");
         JSONObject json = new JSONObject();
         try {
-            json.put("token", MyApplication.prefManager.getRefreshToken());
+            json.put("token", MyApplication.prefManager.getRefreshToken()+"fdjldgfg");
         } catch (JSONException e) {
             e.printStackTrace();
         }
@@ -99,24 +103,22 @@ class AuthenticationInterceptor implements Interceptor {
                 .build();
 
         Response response;
-        int code = 0;
 
         try {
             response = client.newCall(request).execute();
 
-            Log.i(TAG_THIS, "refreshToken : input " + json.toString());
-            Log.i(TAG_THIS, "refreshToken : url " + request.url().toString());
+            Log.i(TAG, "refreshToken : input " + json.toString());
+            Log.i(TAG, "refreshToken : url " + request.url().toString());
 
             if (response != null) {
-                code = response.code();
 
-                if (code == 200) {
+                if (response.code() == 200) {
                     try {
                         JSONObject jsonBody = new JSONObject(response.body().string());
                         boolean success = jsonBody.getBoolean("success");
                         String message = jsonBody.getString("message");
 
-                        Log.i(TAG_THIS, "refreshToken : jsonBody " + jsonBody.toString());
+                        Log.i(TAG, "refreshToken : jsonBody " + jsonBody.toString());
 
                         if (success) {
                             JSONObject objData = jsonBody.getJSONObject("data");
@@ -124,11 +126,11 @@ class AuthenticationInterceptor implements Interceptor {
                             String access_token = objData.getString("access_token");
                             MyApplication.prefManager.setAuthorization(access_token);
                             MyApplication.prefManager.setIdToken(id_token);
+                            statusCode = true;
                         } else {
                             MyApplication.prefManager.setAuthorization(""); // TODO empty?
                             MyApplication.prefManager.setIdToken("");
-                            logout();
-//                            return 400; //TODO return 400?
+                            statusCode = false;
                         }
 
                     } catch (JSONException e) {
@@ -136,13 +138,14 @@ class AuthenticationInterceptor implements Interceptor {
                     }
                 }
 
-                response.body().close(); //ToDo check this line
+//                response.body().close(); //ToDo check this line
             }
 
         } catch (IOException e) {
             e.printStackTrace();
         }
-        return code;
+
+        return statusCode;
     }
 
     private void logout() {
@@ -154,3 +157,13 @@ class AuthenticationInterceptor implements Interceptor {
         });
     }
 }
+
+//{"message":"invalid signature","success":false} = getMessage, id_token is invalid
+
+//{"message":"Format is Authorization: Bearer [token]","success":false} = token, /api/user/v1/tokenssss
+
+//{"success":false,"message":".اطلاعات صحیح نمی باشد","data":{}} = token, refreshToken is wrong
+
+//{"message":"No authorization token was found","success":false} = getMessages, refreshToken is wrong
+
+//{"success":true,"message":"با موفقیت ایجاد شد","data":{"id_token":"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MTIzLCJ1c2VybmFtZSI6IjEyMzQiLCJpYXQiOjE2MDk0MTI1OTgsImV4cCI6MTYwOTQxMjg5OH0.kLo1w2p0V21P1i5Y1qHW7uNTJ3xjYoeDEJPLRgp1cbU","access_token":"Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJodHRwczovL3R1cmJvdGF4aS5pciIsImF1ZCI6IlVzZXJzIiwiZXhwIjoxNjA5NDEyODk4LCJzY29wZSI6Im9wZXJhdG9yIiwic3ViIjoidHVyYm90YXhpIiwianRpIjoiRUM3M0NFRDg3NUNFRTcyNSIsImFsZyI6IkhTMjU2IiwiaWF0IjoxNjA5NDEyNTk4fQ.QqBXrACgx2d3O8HS1fXfidq-J9ONvTlXcSwRt-ZjkLA"}}

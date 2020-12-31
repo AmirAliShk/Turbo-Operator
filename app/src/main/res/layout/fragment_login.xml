@@ -196,6 +196,7 @@
                 android:layout_height="wrap_content"
                 android:text="ورود با شماره موبایل"
                 android:background="@drawable/bg_ripple"
+                android:textSize="@dimen/_12ssp"
                 android:gravity="center"
                 android:padding="10dp"
                 android:textColor="@color/colorBlack"/>
