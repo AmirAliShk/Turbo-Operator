@@ -84,7 +84,6 @@ public class ScoresFragment extends Fragment {
         if (vfScores != null)
             vfScores.setDisplayedChild(0);
         RequestHelper.builder(EndPoints.SINGLE)
-                .addPath(MyApplication.prefManager.getUserCode() + "")
                 .listener(getSingleScore)
                 .get();
     }

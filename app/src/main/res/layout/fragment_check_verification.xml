@@ -111,6 +111,7 @@
                 android:digits="1234567890"
                 android:inputType="number"
                 android:maxLength="5"
+                android:nextFocusDown="@id/btnEnter"
                 android:maxLines="1"
                 android:textIsSelectable="false"
                 android:textSize="@dimen/_30ssp" />
@@ -171,34 +172,46 @@
 
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1"
                 android:gravity="center"
-                android:orientation="vertical">
+                android:orientation="horizontal">
+
+                <ImageView
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="0.25" />
 
                 <ViewFlipper
                     android:id="@+id/vfEnter"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
+                    android:layout_width="0dp"
+                    android:layout_weight="1.5"
+                    android:layout_height="50dp"
                     android:background="@drawable/bg_light_pink_edge">
 
                     <Button
                         android:id="@+id/btnEnter"
                         android:layout_width="match_parent"
-                        android:layout_height="55dp"
+                        android:layout_height="match_parent"
                         android:layout_gravity="center"
+                        android:gravity="center"
                         android:background="@android:color/transparent"
                         android:text="ورود"
-                        android:textAppearance="?android:attr/textAppearanceLarge"
+                        android:textSize="@dimen/_20ssp"
                         android:textColor="@color/colorWhite" />
 
                     <com.wang.avi.AVLoadingIndicatorView
                         app:indicatorColor="@color/colorWhite"
-                        android:layout_width="wrap_content"
-                        android:padding="10dp"
-                        android:layout_height="55dp"
+                        android:layout_width="30dp"
+                        android:layout_height="30dp"
                         android:layout_gravity="center" />
 
                 </ViewFlipper>
+
+                <ImageView
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="0.25" />
 
             </LinearLayout>
 

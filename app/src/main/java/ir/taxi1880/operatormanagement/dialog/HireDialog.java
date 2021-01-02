@@ -82,7 +82,7 @@ public class HireDialog {
                 .title("استخدامی")
                 .message("آیا از ثبت درخواست اطمینان دارید؟")
                 .firstButton("بله", () ->
-                        setHire(MyApplication.prefManager.getUserCode(), name, mobile, edtComment.getText().toString(), hireType, cityCode))
+                        setHire(name, mobile, edtComment.getText().toString(), hireType, cityCode))
                 .secondButton("خیر", null)
                 .show();
       }
@@ -104,10 +104,9 @@ public class HireDialog {
     dialog = null;
   }
 
-  private void setHire(int userId, String name, String phoneNumber, String comment, int hireType, int cityCode) {
+  private void setHire(String name, String phoneNumber, String comment, int hireType, int cityCode) {
 
     RequestHelper.builder(EndPoints.HIRE)
-            .addParam("userId", userId)
             .addParam("phoneNumber", phoneNumber)
             .addParam("cityCode", cityCode)
             .addParam("name", name)

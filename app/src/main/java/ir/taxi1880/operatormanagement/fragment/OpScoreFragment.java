@@ -45,7 +45,6 @@ public class OpScoreFragment extends Fragment {
 
   private void getSingle() {
     RequestHelper.builder(EndPoints.SINGLE)
-            .addPath(MyApplication.prefManager.getUserCode() + "")
             .listener(getSingle)
             .get();
   }

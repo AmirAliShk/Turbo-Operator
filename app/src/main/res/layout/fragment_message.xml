@@ -102,7 +102,7 @@
                     android:paddingTop="15dp"
                     android:paddingBottom="15dp"
                     android:src="@drawable/ic_back"
-                    android:tint="@color/colorWhite" />
+                    app:tint="@color/colorWhite" />
 
             </LinearLayout>
 
@@ -118,7 +118,7 @@
                 android:layout_height="match_parent"
                 android:alpha="0.08"
                 android:background="@drawable/bg_login"
-                android:tint="@color/colorPrimary" />
+                app:tint="@color/colorPrimary" />
 
             <ViewFlipper
                 android:id="@+id/vfMessage"
@@ -191,7 +191,7 @@
                         android:layout_width="30dp"
                         android:layout_height="30dp"
                         android:src="@drawable/ic_send"
-                        android:tint="@color/colorPrimary" />
+                        app:tint="@color/colorPrimary" />
 
                 </LinearLayout>
 

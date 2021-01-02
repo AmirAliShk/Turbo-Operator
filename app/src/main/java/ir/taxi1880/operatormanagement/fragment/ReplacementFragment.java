@@ -142,7 +142,6 @@ public class ReplacementFragment extends Fragment {
   private void shiftReplacementRequest() {
     llLoader.setVisibility(View.VISIBLE);
     RequestHelper.builder(EndPoints.SHIFT_REPLACEMENT_REQUEST)
-            .addParam("operatorId", MyApplication.prefManager.getUserCode())
             .addParam("intendedOperatorId", opId)
             .addParam("shift", shiftId)
             .addParam("date", shiftDate)

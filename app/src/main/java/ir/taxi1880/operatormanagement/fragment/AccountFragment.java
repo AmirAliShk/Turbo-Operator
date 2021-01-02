@@ -63,7 +63,7 @@ public class AccountFragment extends Fragment {
     new GeneralDialog()
             .title("هشدار")
             .message("آیا از درخواست تسویه حساب خود اطمینان دارید؟")
-            .firstButton("بله مطمئنم", () -> payment(MyApplication.prefManager.getUserCode()))
+            .firstButton("بله مطمئنم", () -> payment())
             .secondButton("پشیمون شدم", null)
             .show();
   }
@@ -75,7 +75,7 @@ public class AccountFragment extends Fragment {
             .title("به روز رسانی")
             .message("اطلاعات شما به روز شود؟")
             .firstButton("بله", () ->
-                    updateProfile(MyApplication.prefManager.getUserCode(), edtAccountNum.getText().toString(), cardNumber, edtIben.getText().toString()))
+                    updateProfile(edtAccountNum.getText().toString(), cardNumber, edtIben.getText().toString()))
             .secondButton("خیر", null)
             .show();
   }
@@ -92,7 +92,7 @@ public class AccountFragment extends Fragment {
     unbinder = ButterKnife.bind(this, view);
     TypefaceUtil.overrideFonts(view);
 
-    getBalance(MyApplication.prefManager.getUserCode());
+    getBalance();
 
     txtOperatorName.setText(MyApplication.prefManager.getOperatorName());
     edtAccountNum.setText(StringHelper.toPersianDigits(MyApplication.prefManager.getAccountNumber()));
@@ -106,12 +106,11 @@ public class AccountFragment extends Fragment {
     return view;
   }
 
-  private void getBalance(int userId) {
+  private void getBalance() {
     if (vfBalance != null)
       vfBalance.setDisplayedChild(0);
 
     RequestHelper.builder(EndPoints.BALANCE)
-            .addPath(userId + "")
             .listener(getBalance)
             .get();
 
@@ -151,10 +150,9 @@ public class AccountFragment extends Fragment {
 
   };
 
-  private void updateProfile(int userId, String accountNumber, String cardNumber, String sheba) {
+  private void updateProfile(String accountNumber, String cardNumber, String sheba) {
 
     RequestHelper.builder(EndPoints.UPDATE_PROFILE)
-            .addParam("userId", userId)
             .addParam("accountNumber", StringHelper.toEnglishDigits(accountNumber))
             .addParam("cardNumber", StringHelper.toEnglishDigits(cardNumber.replaceAll("-", "")))
             .addParam("sheba", StringHelper.toEnglishDigits(sheba))
@@ -205,10 +203,9 @@ public class AccountFragment extends Fragment {
 
   };
 
-  private void payment(int userId) {
+  private void payment() {
 
     RequestHelper.builder(EndPoints.PAYMENT)
-            .addParam("userId", userId)
             .listener(Payment)
             .post();
 
@@ -237,7 +234,7 @@ public class AccountFragment extends Fragment {
               new GeneralDialog()
                       .title("خطا")
                       .message(message)
-                      .firstButton("تلاش مجدد", () -> payment(MyApplication.prefManager.getUserCode()))
+                      .firstButton("تلاش مجدد", () -> payment())
                       .secondButton("بعدا امتحان میکنم", null)
                       .show();
             }

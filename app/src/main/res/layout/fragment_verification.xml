@@ -31,8 +31,7 @@
                 android:gravity="center"
                 android:textStyle="bold"
                 android:textSize="14sp"
-                android:textColor="@color/colorWhite"
-                android:text="چی بنویسم؟"/>
+                android:textColor="@color/colorWhite"/>
 
         </LinearLayout>
 
@@ -41,7 +40,6 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:padding="50dp"
         android:orientation="vertical">
 
         <View
@@ -53,6 +51,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="center"
+            android:padding="50dp"
             android:orientation="vertical">
 
             <LinearLayout
@@ -75,10 +74,9 @@
                     android:layout_height="wrap_content"
                     android:gravity="right|center_vertical"
                     android:inputType="number"
-                    android:nextFocusDown="@id/edtPassword"
                     android:singleLine="true"
                     android:textAppearance="?android:attr/textAppearanceMedium"
-                    android:textColor="@color/colorPrimary"/>
+                    android:textColor="@color/colorBlack"/>
 
             </LinearLayout>
 
@@ -99,32 +97,50 @@
             android:layout_height="0dp"
             android:layout_weight="0.5"/>
 
-        <ViewFlipper
-            android:id="@+id/vfEnter"
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_horizontal"
-            android:padding="5dp"
-            android:background="@drawable/bg_light_pink_edge">
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:gravity="bottom"
+            android:orientation="horizontal">
 
-            <Button
-                android:id="@+id/btnEnter"
-                android:layout_width="match_parent"
+            <ImageView
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="0.5" />
+
+            <ViewFlipper
+                android:id="@+id/vfEnter"
+                android:layout_width="0dp"
+                android:layout_weight="1.5"
                 android:layout_height="50dp"
-                android:layout_gravity="center"
-                android:background="@android:color/transparent"
-                android:text="ورود"
-                android:textSize="@dimen/_13ssp"
-                android:textColor="@color/colorWhite" />
+                android:background="@drawable/bg_light_pink_edge">
 
-            <com.wang.avi.AVLoadingIndicatorView
-                app:indicatorColor="@color/colorWhite"
-                android:layout_width="wrap_content"
-                android:padding="10dp"
-                android:layout_height="50dp"
-                android:layout_gravity="center" />
+                <Button
+                    android:id="@+id/btnEnter"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="center"
+                    android:gravity="center"
+                    android:background="@android:color/transparent"
+                    android:text="ورود"
+                    android:textSize="@dimen/_20ssp"
+                    android:textColor="@color/colorWhite" />
 
-        </ViewFlipper>
+                <com.wang.avi.AVLoadingIndicatorView
+                    app:indicatorColor="@color/colorWhite"
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:layout_gravity="center" />
+
+            </ViewFlipper>
+
+            <ImageView
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="0.5" />
+
+        </LinearLayout>
 
         <View
             android:layout_width="match_parent"
@@ -134,10 +150,11 @@
         <TextView
             android:id="@+id/txtAnotherWayToLogin"
             android:layout_width="match_parent"
-            android:layout_height="50dp"
+            android:layout_height="wrap_content"
             android:layout_gravity="bottom"
             android:background="@drawable/bg_ripple"
             android:gravity="center"
+            android:padding="30dp"
             android:textSize="@dimen/_12ssp"
             android:text="ورود از طریق نام کاربری و رمزعبور"
             android:textColor="@color/colorPrimary" />

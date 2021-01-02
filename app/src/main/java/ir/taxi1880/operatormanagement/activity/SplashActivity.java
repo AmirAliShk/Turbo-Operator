@@ -17,6 +17,7 @@ import android.view.Window;
 import android.view.WindowManager;
 import android.widget.TextView;
 import android.widget.Toast;
+import android.widget.ViewFlipper;
 
 import org.acra.ACRA;
 import org.json.JSONArray;
@@ -24,6 +25,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
@@ -62,6 +64,11 @@ public class SplashActivity extends AppCompatActivity {
     private final String PUSH_PROJECT_ID = "5";
     int isFinishContract;
     DataBase dataBase;
+    SplashActivityCallback splashActivityCallback;
+
+    public interface SplashActivityCallback {
+        void onSuccess(boolean b);
+    }
 
     @BindView(R.id.txtVersion)
     TextView txtVersion;
@@ -115,10 +122,10 @@ public class SplashActivity extends AppCompatActivity {
                         })
                         .show();
             } else {
-                getAppInfo();
+                getAppInfo(splashActivityCallback);
             }
         } else {
-            getAppInfo();
+            getAppInfo(splashActivityCallback);
         }
     }
 
@@ -180,7 +187,8 @@ public class SplashActivity extends AppCompatActivity {
         checkPermission();
     }
 
-    public void getAppInfo() {
+    public void getAppInfo(SplashActivityCallback splashActivityCallback) {
+        this.splashActivityCallback = splashActivityCallback;
         try {
             if (MyApplication.prefManager.getRefreshToken().equals("")) {
                 FragmentHelper
@@ -205,7 +213,6 @@ public class SplashActivity extends AppCompatActivity {
 
                 RequestHelper.builder(EndPoints.GET_APP_INFO)
                         .addParam("versionCode", new AppVersionHelper(context).getVerionCode())
-                        .addParam("operatorId", MyApplication.prefManager.getUserCode())
                         .addParam("userName", MyApplication.prefManager.getUserName())
                         .addParam("password", MyApplication.prefManager.getPassword())
                         .addParam("deviceInfo", deviceInfo)
@@ -325,11 +332,14 @@ public class SplashActivity extends AppCompatActivity {
                     MyApplication.prefManager.setCity(city);
                     MyApplication.prefManager.setAccessInsertService(accessInsertService);
                     MyApplication.prefManager.setAccessStationDeterminationPage(accessStationDeterminationPage);
-
+                    if (splashActivityCallback != null)
+                        splashActivityCallback.onSuccess(true);
                     NotificationManager notificationManager = (NotificationManager) MyApplication.currentActivity.getSystemService(Context.NOTIFICATION_SERVICE);
                     notificationManager.cancel(Constant.USER_STATUS_NOTIFICATION_ID);
 
                 } catch (JSONException e) {
+                    if (splashActivityCallback != null)
+                        splashActivityCallback.onSuccess(false);
                     e.printStackTrace();
                     AvaCrashReporter.send(e, "SplashActivity class, onAppInfo onResponse method");
                 }
@@ -339,6 +349,10 @@ public class SplashActivity extends AppCompatActivity {
 
         @Override
         public void onFailure(Runnable reCall, Exception e) {
+            MyApplication.handler.post(() -> {
+                if (splashActivityCallback != null)
+                    splashActivityCallback.onSuccess(false);
+            });
         }
     };
 

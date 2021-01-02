@@ -94,7 +94,6 @@ public class LostDialog {
             .addParam("passengerName", passengerName)
             .addParam("adrs", address)
             .addParam("description", description)
-            .addParam("userId", MyApplication.prefManager.getUserCode())
             .listener(onSetLostObject)
             .post();
   }

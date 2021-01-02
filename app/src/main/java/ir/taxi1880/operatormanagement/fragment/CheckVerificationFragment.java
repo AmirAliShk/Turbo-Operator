@@ -46,7 +46,8 @@ public class CheckVerificationFragment extends Fragment {
 
     @OnClick(R.id.llChangeNumber)
     void onPressChangeNumber() {
-        //TODO stop timer here
+        if (countDownTimer != null)
+            countDownTimer.cancel();
         FragmentHelper.toFragment(MyApplication.currentActivity, new VerificationFragment()).setAddToBackStack(false).replace();
     }
 
@@ -95,7 +96,7 @@ public class CheckVerificationFragment extends Fragment {
     }
 
     private void verification(String phoneNumber) {
-        if (vfTime != null){
+        if (vfTime != null) {
             vfTime.setDisplayedChild(2);
         }
 
@@ -112,22 +113,24 @@ public class CheckVerificationFragment extends Fragment {
             MyApplication.handler.post(() -> {
                 try {
 //                    {"success":true,"message":"با موفقیت ارسال شد","data":{"repetitionTime":120}}
-                    if (vfTime != null){
+                    if (vfTime != null) {
                         vfTime.setDisplayedChild(0);
                     }
                     JSONObject object = new JSONObject(args[0].toString());
                     boolean success = object.getBoolean("success");
+                    String message = object.getString("message");
                     if (success) {
                         JSONObject objData = object.getJSONObject("data");
                         int repetitionTime = objData.getInt("repetitionTime");
                         MyApplication.prefManager.setRepetitionTime(repetitionTime);
                         startWaitingTime();
-                    }else {
+                    } else {
+                        MyApplication.Toast(message, Toast.LENGTH_SHORT);
 //                        {"success":false,"message":"محدودیت زمانی","data":{}}
                         //TODO show dialog error
                     }
                 } catch (Exception e) {
-                    if (vfTime != null){
+                    if (vfTime != null) {
                         vfTime.setDisplayedChild(1);
                     }
                     e.printStackTrace();
@@ -139,7 +142,7 @@ public class CheckVerificationFragment extends Fragment {
         @Override
         public void onFailure(Runnable reCall, Exception e) {
             MyApplication.handler.post(() -> {
-                if (vfTime != null){
+                if (vfTime != null) {
                     vfTime.setDisplayedChild(1);
                 }
             });
@@ -147,7 +150,7 @@ public class CheckVerificationFragment extends Fragment {
     };
 
     private void checkVerification() {
-        if (vfEnter != null){
+        if (vfEnter != null) {
             vfEnter.setDisplayedChild(1);
         }
 
@@ -168,26 +171,29 @@ public class CheckVerificationFragment extends Fragment {
 //                  {"success":true,"message":"با موفقیت وارد شدید","data":{"id_token":"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MTIzLCJ1c2VybmFtZSI6IjEyMzQiLCJpYXQiOjE2MDkzMjg2NTYsImV4cCI6MTYwOTMyODk1Nn0.u_twFCxWzu73CMkPtb73Q0WdgzozgWKbgZYSmzlIgHg","access_token":"Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJodHRwczovL3R1cmJvdGF4aS5pciIsImF1ZCI6IlVzZXJzIiwiZXhwIjoxNjA5MzI4OTU2LCJzY29wZSI6Im9wZXJhdG9yIiwic3ViIjoidHVyYm90YXhpIiwianRpIjoiNkQ0OTc3ODI3NzFGN0ZEMSIsImFsZyI6IkhTMjU2IiwiaWF0IjoxNjA5MzI4NjU2fQ.8Ssz4-AhK10cy8ma1635iIgquj9gtHHB4S1ETyioRN4","refresh_token":"kTDDNxxc4tQVrN1qQhQFBXZE5qFu3mbelgEbExnsnUElmZv0fFUDpOilLVeOegN5nDCX92mlahXHxP7hWjN52AoOZnZbDG7nz7mcqjowrpxiAgjWsHw5DeOW0RBvadgnRXGEYYS9YByTrYwTL3C4VZEY0DzeTzVyfZsRG2D8LX1jeE87yDx7Afe8D0em4htKfM1KvMWlptdMQbrZrE6yZRuvofubZAFgHgazoi8EDfiWtanu5jNiW86KuPJgbC0r"}}
                     JSONObject object = new JSONObject(args[0].toString());
                     boolean success = object.getBoolean("success");
+                    String message = object.getString("message");
 
-                    if (success){
+                    if (success) {
                         JSONObject data = object.getJSONObject("data");
                         MyApplication.prefManager.setIdToken(data.getString("id_token"));
                         MyApplication.prefManager.setAuthorization(data.getString("access_token"));
                         MyApplication.prefManager.setRefreshToken(data.getString("refresh_token"));
-                        //TODO here call splash again ?!?!?!?!?!?!?!?
-                        new SplashActivity().getAppInfo();
-                    }else{
-
+                        new SplashActivity().getAppInfo(b -> {
+                            if (vfEnter != null) {
+                                vfEnter.setDisplayedChild(0);
+                            }
+                        });
+                    } else {
+                        if (vfEnter != null) {
+                            vfEnter.setDisplayedChild(0);
+                        }
+                        MyApplication.Toast(message, Toast.LENGTH_SHORT);
 //                        {"success":false,"message":".اطلاعات صحیح نمی باشد","data":{}}
                         //TODO show dialog error
                     }
 
-                    if (vfEnter != null){
-                        vfEnter.setDisplayedChild(0);
-                    }
-
                 } catch (Exception e) {
-                    if (vfEnter != null){
+                    if (vfEnter != null) {
                         vfEnter.setDisplayedChild(0);
                     }
                     e.printStackTrace();
@@ -199,7 +205,7 @@ public class CheckVerificationFragment extends Fragment {
         @Override
         public void onFailure(Runnable reCall, Exception e) {
             MyApplication.handler.post(() -> {
-                if (vfEnter != null){
+                if (vfEnter != null) {
                     vfEnter.setDisplayedChild(0);
                 }
             });

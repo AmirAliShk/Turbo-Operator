@@ -1122,7 +1122,7 @@ public class TripRegisterActivity extends AppCompatActivity {
                 .cancelable(false)
                 .message("آیا از ثبت اطلاعات اطمینان دارید؟")
                 .firstButton("بله", () ->
-                        insertService(MyApplication.prefManager.getUserCode(), serviceCount, tell, mobile, cityCode,
+                        insertService(serviceCount, tell, mobile, cityCode,
                                 name, address, fixedComment, stationName, serviceType, carClass, normalDescription, traffic, defaultClass))
                 .secondButton("خیر", () -> {
                     if (vfSubmit != null)
@@ -1137,7 +1137,6 @@ public class TripRegisterActivity extends AppCompatActivity {
 
         LoadingDialog.makeCancelableLoader();
         RequestHelper.builder(EndPoints.ACTIVATE)
-                .addParam("userId", userId)
                 .addParam("sipNumber", sipNumber)
                 .listener(setActivate)
                 .post();
@@ -1209,7 +1208,6 @@ public class TripRegisterActivity extends AppCompatActivity {
 
             LoadingDialog.makeCancelableLoader();
             RequestHelper.builder(EndPoints.DEACTIVATE)
-                    .addParam("userId", userId)
                     .addParam("sipNumber", sipNumber)
                     .listener(setDeActivate)
                     .post();
@@ -1273,13 +1271,12 @@ public class TripRegisterActivity extends AppCompatActivity {
         }
     };
 
-    private void insertService(int userId, int count, String phoneNumber, String mobile, int cityCode, String callerName,
+    private void insertService(int count, String phoneNumber, String mobile, int cityCode, String callerName,
                                String address, String fixedComment, String destination, int typeService,
                                int classType, String description, int TrafficPlan, int defaultClass) {
 
         LoadingDialog.makeCancelableLoader();
         RequestHelper.builder(EndPoints.INSERT_TRIP_SENDING_QUEUE)
-                .addParam("userId", userId)
                 .addParam("phoneNumber", phoneNumber)
                 .addParam("mobile", mobile)
                 .addParam("callerName", callerName)

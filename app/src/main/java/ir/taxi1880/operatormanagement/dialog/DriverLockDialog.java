@@ -90,7 +90,6 @@ public class DriverLockDialog {
     LoadingDialog.makeCancelableLoader();
     RequestHelper.builder(EndPoints.LOCK_TAXI)
             .addParam("taxiCode", taxiCode)
-            .addParam("userId", MyApplication.prefManager.getUserCode())
             .addParam("hours", hours)
             .addParam("reasonId", reason)
             .listener(onLockTaxi)

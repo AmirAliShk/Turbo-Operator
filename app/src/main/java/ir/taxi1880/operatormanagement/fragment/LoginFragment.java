@@ -11,6 +11,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
+import android.widget.ViewFlipper;
 
 import org.json.JSONObject;
 
@@ -52,6 +53,9 @@ public class LoginFragment extends Fragment {
     @BindView(R.id.btnLogin)
     Button btnLogin;
 
+    @BindView(R.id.vfEnter)
+    ViewFlipper vfEnter;
+
     @OnClick(R.id.btnLogin)
     void onLogin() {
         userName = edtUserName.getText().toString();
@@ -86,7 +90,9 @@ public class LoginFragment extends Fragment {
     }
 
     private void logIn(String username, String password) {
-
+        if (vfEnter != null){
+            vfEnter.setDisplayedChild(1);
+        }
         RequestHelper.builder(EndPoints.LOGIN)
                 .addParam("username", username)
                 .addParam("password", password)
@@ -113,9 +119,15 @@ public class LoginFragment extends Fragment {
                         MyApplication.prefManager.setIdToken(data.getString("id_token"));
                         MyApplication.prefManager.setAuthorization(data.getString("access_token"));
                         MyApplication.prefManager.setRefreshToken(data.getString("refresh_token"));
-                        //TODO here call splash again ?!?!?!?!?!?!?!?
-                        new SplashActivity().getAppInfo();
+                        new SplashActivity().getAppInfo(b -> {
+                            if (vfEnter != null){
+                                vfEnter.setDisplayedChild(0);
+                            }
+                        });
                     } else {
+                        if (vfEnter != null){
+                            vfEnter.setDisplayedChild(0);
+                        }
                         new ErrorDialog()
                                 .titleText("خطایی رخ داده")
                                 .messageText(message)
@@ -127,10 +139,12 @@ public class LoginFragment extends Fragment {
                                     }
                                 })
                                 .show();
-                        //TODO what to do???
                     }
 
                 } catch (Exception e) {
+                    if (vfEnter != null){
+                        vfEnter.setDisplayedChild(0);
+                    }
                     e.printStackTrace();
                     AvaCrashReporter.send(e, "LoginFragment class, onLogIn onResponse method, pushToken = " + MyApplication.prefManager.getPushToken() + ", pushId = " + MyApplication.prefManager.getPushId() + ", userId = " + MyApplication.prefManager.getUserCode());
                 }
@@ -139,7 +153,11 @@ public class LoginFragment extends Fragment {
 
         @Override
         public void onFailure(Runnable reCall, Exception e) {
-
+            MyApplication.handler.post(() -> {
+                if (vfEnter != null){
+                    vfEnter.setDisplayedChild(0);
+                }
+            });
         }
     };
 

@@ -100,7 +100,7 @@ public class DeterminationPageFragment extends Fragment {
     if (pressSubmit) {
       int cityCode = dataBase.getTopAddress().getCity();
       String code = StringHelper.toEnglishDigits(txtStation.getText().toString());
-      setStationCode(MyApplication.prefManager.getUserCode(), dataBase.getTopAddress().getId(), code, cityCode);
+      setStationCode(dataBase.getTopAddress().getId(), code, cityCode);
     } else {
       this.pressSubmit = true;
       MyApplication.handler.postDelayed(() -> pressSubmit = false, 300);
@@ -476,12 +476,11 @@ public class DeterminationPageFragment extends Fragment {
 
   };
 
-  private void setStationCode(int userId, int tripId, String stationCode, int cityCode) {
+  private void setStationCode(int tripId, String stationCode, int cityCode) {
     //TODO comment zero numbers... and bellow log
 //    Log.e(TAG, "setStation = " + dataBase.getTopAddress().getOriginText() + ", stationCode = " + stationCode + ", tripId = " + tripId + ", cityCode = " + cityCode);
 
     RequestHelper.builder(EndPoints.UPDATE_TRIP_STATION)
-            .addParam("userId", userId)
             .addParam("tripId", StringHelper.toEnglishDigits(tripId + ""))
             .addParam("stationCode", StringHelper.toEnglishDigits(stationCode + ""))
             .addParam("cityCode", StringHelper.toEnglishDigits(cityCode + ""))

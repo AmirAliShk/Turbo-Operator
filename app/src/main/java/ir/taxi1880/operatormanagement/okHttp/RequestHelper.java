@@ -28,6 +28,8 @@ import ir.taxi1880.operatormanagement.app.EndPoints;
 import ir.taxi1880.operatormanagement.app.MyApplication;
 import ir.taxi1880.operatormanagement.dialog.ErrorDialog;
 import ir.taxi1880.operatormanagement.dialog.GeneralDialog;
+import ir.taxi1880.operatormanagement.fragment.LoginFragment;
+import ir.taxi1880.operatormanagement.helper.FragmentHelper;
 import ir.taxi1880.operatormanagement.helper.StringHelper;
 import ir.taxi1880.operatormanagement.helper.TypefaceUtil;
 import ir.taxi1880.operatormanagement.push.AvaCrashReporter;
@@ -229,7 +231,7 @@ public class RequestHelper implements okhttp3.Callback {
     public void post() {
         url = getUrl();
         if (url == null) return;
-
+        if (instance.params == null) params = new JSONObject();
         RequestBody body = RequestBody.create(JSON, params.toString());
 
         req = new Request.Builder()
@@ -330,9 +332,8 @@ public class RequestHelper implements okhttp3.Callback {
                 } else {
                     try {
                         JSONObject responseObject = new JSONObject(bodyStr);
-                        if (responseObject.getBoolean("refreshTokenError")){
-                            MyApplication.Toast("YOHOOOOOOOOOOO", Toast.LENGTH_SHORT);
-                            //TODO you are here BE HAPPY :)
+                        if (responseObject.has("refreshTokenError") && responseObject.getBoolean("refreshTokenError")) {
+                            logout();
                             return;
                         }
                     } catch (JSONException e) {
@@ -419,9 +420,9 @@ public class RequestHelper implements okhttp3.Callback {
             case 400:
                 showError("خطای 400 : مشکلی در ارسال داده به وجود آمده است لطفا پس از چند لحظه مجدد تلاش نمایید در صورت عدم برطرف شدن، لطفا با پشتیبانی تماس حاصل نمایید.");
                 break;
-            case 401:  //TODO check this
+            case 401:
 //        DBIO.setFail(MyApplication.context, url);
-                showError("خطای 401 : بازم خطا داریم.....");
+                showError("خطای 401 : عدم دسترسی به اینترنت لطفا پس از بررسی ارتباط دستگاه خود به اینترنت و اطمینان از ارتباط، مجدد تلاش نمایید.");
                 break;
             case 403:
                 showError("خطای 403 : عدم مجوز دسترسی به شبکه لطفا با پشتیبانی تماس حاصل نمایید.");
@@ -502,4 +503,12 @@ public class RequestHelper implements okhttp3.Callback {
         });
     }
 
+    private void logout() {
+        MyApplication.handler.post(() -> {
+            FragmentHelper
+                    .toFragment(MyApplication.currentActivity, new LoginFragment())
+                    .setAddToBackStack(false)
+                    .replace();
+        });
+    }
 }

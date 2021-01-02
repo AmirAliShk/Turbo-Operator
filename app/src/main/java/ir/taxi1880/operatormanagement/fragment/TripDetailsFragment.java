@@ -420,7 +420,6 @@ public class TripDetailsFragment extends Fragment {
             LoadingDialog.makeCancelableLoader();
             RequestHelper.builder(EndPoints.CANCEL_SERVICE)
                     .addParam("serviceId", serviceId)
-                    .addParam("userId", MyApplication.prefManager.getUserCode())
                     .listener(onCancelService)
                     .post();
         }
@@ -480,7 +479,6 @@ public class TripDetailsFragment extends Fragment {
         LoadingDialog.makeCancelableLoader();
         RequestHelper.builder(EndPoints.AGAIN_TRACKING)
                 .addParam("serviceId", serviceId)
-                .addParam("userId", MyApplication.prefManager.getUserCode())
                 .listener(inTrackingAgain)
                 .post();
     }

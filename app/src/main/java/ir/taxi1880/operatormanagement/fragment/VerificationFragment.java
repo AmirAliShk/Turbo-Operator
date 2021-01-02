@@ -22,6 +22,7 @@ import ir.taxi1880.operatormanagement.R;
 import ir.taxi1880.operatormanagement.app.EndPoints;
 import ir.taxi1880.operatormanagement.app.MyApplication;
 import ir.taxi1880.operatormanagement.helper.FragmentHelper;
+import ir.taxi1880.operatormanagement.helper.KeyBoardHelper;
 import ir.taxi1880.operatormanagement.helper.PhoneNumberValidation;
 import ir.taxi1880.operatormanagement.helper.TypefaceUtil;
 import ir.taxi1880.operatormanagement.okHttp.RequestHelper;
@@ -46,18 +47,21 @@ public class VerificationFragment extends Fragment {
             return;
         }
 
-        if (!PhoneNumberValidation.isValid(mobileNumber)){
+        if (!PhoneNumberValidation.isValid(mobileNumber)) {
             MyApplication.Toast("شماره موبایل نا معتبر میباشد", Toast.LENGTH_SHORT);
             return;
         }
 
+        mobileNumber = mobileNumber.startsWith("0") ? mobileNumber : "0" + mobileNumber;
+
+        KeyBoardHelper.hideKeyboard();
         verification(mobileNumber);
     }
 
     @OnClick(R.id.txtAnotherWayToLogin)
     void onPressAnotherWayToLogin() {
         FragmentHelper
-                .toFragment(MyApplication.currentActivity,new LoginFragment())
+                .toFragment(MyApplication.currentActivity, new LoginFragment())
                 .setAddToBackStack(false)
                 .replace();
     }
@@ -72,7 +76,7 @@ public class VerificationFragment extends Fragment {
     }
 
     private void verification(String phoneNumber) {
-        if (vfEnter != null){
+        if (vfEnter != null) {
             vfEnter.setDisplayedChild(1);
         }
 
@@ -91,6 +95,7 @@ public class VerificationFragment extends Fragment {
 //                    {"success":true,"message":"با موفقیت ارسال شد","data":{"repetitionTime":120}}
                     JSONObject object = new JSONObject(args[0].toString());
                     boolean success = object.getBoolean("success");
+                    String message = object.getString("message");
                     if (success) {
                         JSONObject objData = object.getJSONObject("data");
                         int repetitionTime = objData.getInt("repetitionTime");
@@ -98,15 +103,15 @@ public class VerificationFragment extends Fragment {
                         Bundle bundle = new Bundle();
                         bundle.putString("mobileNumber", mobileNumber);
                         FragmentHelper.toFragment(MyApplication.currentActivity, new CheckVerificationFragment()).setArguments(bundle).setAddToBackStack(false).replace();
-                    }else {
+                    } else {
+                        MyApplication.Toast(message, Toast.LENGTH_SHORT);
 //                        {"success":false,"message":"محدودیت زمانی","data":{}}
-                        //TODO show dialog error
                     }
-                    if (vfEnter != null){
+                    if (vfEnter != null) {
                         vfEnter.setDisplayedChild(0);
                     }
                 } catch (Exception e) {
-                    if (vfEnter != null){
+                    if (vfEnter != null) {
                         vfEnter.setDisplayedChild(0);
                     }
                     e.printStackTrace();
@@ -118,7 +123,7 @@ public class VerificationFragment extends Fragment {
         @Override
         public void onFailure(Runnable reCall, Exception e) {
             MyApplication.handler.post(() -> {
-                if (vfEnter != null){
+                if (vfEnter != null) {
                     vfEnter.setDisplayedChild(0);
                 }
             });

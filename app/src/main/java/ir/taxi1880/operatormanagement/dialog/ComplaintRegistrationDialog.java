@@ -82,7 +82,6 @@ public class ComplaintRegistrationDialog {
   private void setComplaint(String serviceId, String description, String voipId) {
     LoadingDialog.makeCancelableLoader();
     RequestHelper.builder(EndPoints.INSERT_COMPLAINT)
-            .addParam("userId", MyApplication.prefManager.getUserCode())
             .addParam("serviceId", serviceId)
             .addParam("complaintType", complaintType)
             .addParam("description", description)

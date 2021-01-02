@@ -111,7 +111,6 @@ public class MessageFragment extends Fragment {
             vfMessage.setDisplayedChild(0);
 
         RequestHelper.builder(EndPoints.GET_MESSAGES)
-                .addParam("operatorId", MyApplication.prefManager.getUserCode())
                 .listener(onGetMessages)
                 .post();
     }
@@ -167,7 +166,6 @@ public class MessageFragment extends Fragment {
 
     private void sendMessage() {
         RequestHelper.builder(EndPoints.SEND_MESSAGES)
-                .addParam("operatorId", MyApplication.prefManager.getUserCode())
                 .addParam("message", message)
                 .listener(onSendMessage)
                 .post();

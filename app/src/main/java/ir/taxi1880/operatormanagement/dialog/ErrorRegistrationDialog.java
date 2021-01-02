@@ -68,7 +68,6 @@ public class ErrorRegistrationDialog {
     LoadingDialog.makeCancelableLoader();
     RequestHelper.builder(EndPoints.INSERT_MISTAKE)
             .addParam("serviceId", ServiceId)
-            .addParam("userId", MyApplication.prefManager.getUserCode())
             .addParam("phone", phone)
             .addParam("adrs", address)
             .addParam("customerName", customerName)

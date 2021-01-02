@@ -42,8 +42,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:gravity="center"
-            android:orientation="vertical"
-            android:padding="10dp">
+            android:orientation="vertical">
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -169,24 +168,38 @@
                 <ImageView
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
-                    android:layout_weight="0.25" />
+                    android:layout_weight="0.5" />
 
-                <Button
-                    android:id="@+id/btnLogin"
+                <ViewFlipper
+                    android:id="@+id/vfEnter"
                     android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:background="@drawable/bg_dark_pink_edge"
-                    android:text="@string/log_in"
-                    android:textColor="@color/colorWhite"
-                    android:textSize="@dimen/text_header"
-                    android:textStyle="bold" />
+                    android:layout_weight="1.5"
+                    android:layout_height="50dp"
+                    android:background="@drawable/bg_light_pink_edge">
 
+                    <Button
+                        android:id="@+id/btnLogin"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_gravity="center"
+                        android:gravity="center"
+                        android:background="@android:color/transparent"
+                        android:text="ورود"
+                        android:textSize="@dimen/_20ssp"
+                        android:textColor="@color/colorWhite" />
+
+                    <com.wang.avi.AVLoadingIndicatorView
+                        app:indicatorColor="@color/colorWhite"
+                        android:layout_width="30dp"
+                        android:layout_height="30dp"
+                        android:layout_gravity="center" />
+
+                </ViewFlipper>
 
                 <ImageView
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
-                    android:layout_weight="0.25" />
+                    android:layout_weight="0.5" />
 
             </LinearLayout>
 
@@ -198,8 +211,8 @@
                 android:background="@drawable/bg_ripple"
                 android:textSize="@dimen/_12ssp"
                 android:gravity="center"
-                android:padding="10dp"
-                android:textColor="@color/colorBlack"/>
+                android:padding="30dp"
+                android:textColor="@color/colorPrimary"/>
 
         </LinearLayout>
 

@@ -59,9 +59,8 @@ class AuthenticationInterceptor implements Interceptor {
                     Log.i(TAG, "Request responses new url: " + responseRetry.request().url());
                     return responseRetry;
                 } else {
-                    logout();
                         JSONObject object = null;
-                    try { // append refreshTokenError to response
+                    try {
                         object = new JSONObject(response.body().string());
                         object.put("refreshTokenError",true);
 
@@ -92,7 +91,7 @@ class AuthenticationInterceptor implements Interceptor {
         MediaType jsonType = MediaType.parse("application/json; charset=utf-8");
         JSONObject json = new JSONObject();
         try {
-            json.put("token", MyApplication.prefManager.getRefreshToken()+"fdjldgfg");
+            json.put("token", MyApplication.prefManager.getRefreshToken());
         } catch (JSONException e) {
             e.printStackTrace();
         }
@@ -124,11 +123,11 @@ class AuthenticationInterceptor implements Interceptor {
                             JSONObject objData = jsonBody.getJSONObject("data");
                             String id_token = objData.getString("id_token");
                             String access_token = objData.getString("access_token");
-                            MyApplication.prefManager.setAuthorization(access_token);
+                            MyApplication.prefManager.setAuthorization(access_token+"oioo");
                             MyApplication.prefManager.setIdToken(id_token);
                             statusCode = true;
                         } else {
-                            MyApplication.prefManager.setAuthorization(""); // TODO empty?
+                            MyApplication.prefManager.setAuthorization("");
                             MyApplication.prefManager.setIdToken("");
                             statusCode = false;
                         }
@@ -137,8 +136,6 @@ class AuthenticationInterceptor implements Interceptor {
                         e.getMessage();
                     }
                 }
-
-//                response.body().close(); //ToDo check this line
             }
 
         } catch (IOException e) {
@@ -146,17 +143,7 @@ class AuthenticationInterceptor implements Interceptor {
         }
 
         return statusCode;
-    }
-
-    private void logout() {
-        MyApplication.handler.post(() -> {
-            FragmentHelper
-                    .toFragment(MyApplication.currentActivity, new LoginFragment())
-                    .setAddToBackStack(false)
-                    .replace();
-        });
-    }
-}
+    }}
 
 //{"message":"invalid signature","success":false} = getMessage, id_token is invalid
 

@@ -77,7 +77,6 @@ public class NotificationFragment extends Fragment {
         });
 
         RequestHelper.builder(EndPoints.GET_NEWS)
-                .addParam("operatorId", MyApplication.prefManager.getUserCode())
                 .listener(onGetNews)
                 .post();
     }
@@ -115,6 +114,10 @@ public class NotificationFragment extends Fragment {
 
         @Override
         public void onFailure(Runnable reCall, Exception e) {
+            MyApplication.handler.post(() -> {
+                if (vfNoti != null)
+                    vfNoti.setDisplayedChild(3);
+            });
         }
 
     };
