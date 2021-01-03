@@ -9,6 +9,7 @@ import android.os.CountDownTimer;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
 import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.ViewFlipper;
@@ -37,7 +38,6 @@ public class CheckVerificationFragment extends Fragment {
     String code;
     String phoneNumber;
     static CountDownTimer countDownTimer;
-    static boolean activeSendSms;
 
     @OnClick(R.id.llResendCode)
     void onPressResendCode() {
@@ -81,6 +81,7 @@ public class CheckVerificationFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_check_verification, container, false);
+        getActivity().getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_NOTHING);
         unbinder = ButterKnife.bind(this, view);
         TypefaceUtil.overrideFonts(view);
 
@@ -236,7 +237,6 @@ public class CheckVerificationFragment extends Fragment {
                     if (vfTime != null)
                         vfTime.setDisplayedChild(1);
                 }
-                activeSendSms = true;
             }
         }.start();
     }

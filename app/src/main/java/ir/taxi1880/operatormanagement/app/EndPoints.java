@@ -2,7 +2,6 @@ package ir.taxi1880.operatormanagement.app;
 
 import ir.taxi1880.operatormanagement.BuildConfig;
 
-
 public class EndPoints {
 
 /*TODO : check apis and ports before release*/
@@ -12,22 +11,16 @@ public class EndPoints {
 //    http://172.16.2.210:1885/api/findway/citylatinname/address
 
   public static final String IP = (BuildConfig.DEBUG)
-//          ? "http://172.16.2.203"
-          ? "http://turbotaxi.ir"
+          ? "http://172.16.2.210"
+//          ? "http://turbotaxi.ir"
           : "http://turbotaxi.ir";
 //          : "http://172.16.2.203";
 
   public static final String HAKWEYE_IP = (BuildConfig.DEBUG)
-//          ? "http://172.16.2.208"
-          ? "http://turbotaxi.ir"
+          ? "http://172.16.2.201"
+//          ? "http://turbotaxi.ir"
           : "http://turbotaxi.ir";
 //          : "http://172.16.2.203";
-
-  public static final String FIND_WAY_IP = (BuildConfig.DEBUG)
-          ? "http://turbotaxi.ir"
-//          ? "http://172.16.2.210"
-          : "http://turbotaxi.ir";
-//          : "http://172.16.2.210";
 
   public static final String PUSH_ADDRESS =   (BuildConfig.DEBUG)
           ? "http://turbotaxi.ir:6060"
@@ -96,7 +89,7 @@ public class EndPoints {
   /******************************** Contract Api *********************************/
 
   public static final String CONTRACT = WEBSERVICE_PATH + "getContractText";
-  public static final String UPLOAD_NATIONAL_CARD = IP + ":" + PIC_APIPort + "/api/setContract";
+  public static final String UPLOAD_NATIONAL_CARD = IP + ":" + PIC_APIPort + "/api/v1/setContract";
 
   /******************************** Support Api *********************************/
 

@@ -37,128 +37,135 @@
 
     </RelativeLayout>
 
-    <LinearLayout
+    <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical">
-
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="0.5"/>
+        android:fillViewport="true">
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:gravity="center"
-            android:padding="50dp"
+            android:layout_height="match_parent"
             android:orientation="vertical">
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="0.5"/>
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="20dp"
                 android:gravity="center"
+                android:padding="50dp"
                 android:orientation="vertical">
 
-                <TextView
+                <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="شماره همراه"
-                    android:textSize="@dimen/_13ssp"
-                    android:textColor="@color/colorPrimary" />
+                    android:layout_marginTop="20dp"
+                    android:gravity="center"
+                    android:orientation="vertical">
 
-                <EditText
-                    android:id="@+id/edtMobileNumber"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:gravity="right|center_vertical"
-                    android:inputType="number"
-                    android:singleLine="true"
-                    android:textAppearance="?android:attr/textAppearanceMedium"
-                    android:textColor="@color/colorBlack"/>
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="شماره همراه"
+                        android:textSize="@dimen/_13ssp"
+                        android:textColor="@color/colorPrimary" />
+
+                    <EditText
+                        android:id="@+id/edtMobileNumber"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="right|center_vertical"
+                        android:inputType="number"
+                        android:singleLine="true"
+                        android:textAppearance="?android:attr/textAppearanceMedium"
+                        android:textColor="@color/colorBlack"/>
+
+                </LinearLayout>
+
+                <!--            TODO we need this? -->
+                <!--            <TextView-->
+                <!--                android:gravity="left|center_vertical"-->
+                <!--                android:id="@+id/txtForgetPass"-->
+                <!--                android:layout_width="match_parent"-->
+                <!--                android:layout_height="40dp"-->
+                <!--                android:textSize="10sp"-->
+                <!--                android:text="رمز عبورم را فراموش کرده ام"-->
+                <!--                android:textColor="@color/colorPrimary" />-->
 
             </LinearLayout>
 
-<!--            TODO we need this? -->
-<!--            <TextView-->
-<!--                android:gravity="left|center_vertical"-->
-<!--                android:id="@+id/txtForgetPass"-->
-<!--                android:layout_width="match_parent"-->
-<!--                android:layout_height="40dp"-->
-<!--                android:textSize="10sp"-->
-<!--                android:text="رمز عبورم را فراموش کرده ام"-->
-<!--                android:textColor="@color/colorPrimary" />-->
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="0.5"/>
 
-        </LinearLayout>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                android:gravity="bottom"
+                android:orientation="horizontal">
 
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="0.5"/>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="1"
-            android:gravity="bottom"
-            android:orientation="horizontal">
-
-            <ImageView
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_weight="0.5" />
-
-            <ViewFlipper
-                android:id="@+id/vfEnter"
-                android:layout_width="0dp"
-                android:layout_weight="1.5"
-                android:layout_height="50dp"
-                android:background="@drawable/bg_light_pink_edge">
-
-                <Button
-                    android:id="@+id/btnEnter"
-                    android:layout_width="match_parent"
+                <ImageView
+                    android:layout_width="0dp"
                     android:layout_height="match_parent"
-                    android:layout_gravity="center"
-                    android:gravity="center"
-                    android:background="@android:color/transparent"
-                    android:text="ورود"
-                    android:textSize="@dimen/_20ssp"
-                    android:textColor="@color/colorWhite" />
+                    android:layout_weight="0.5" />
 
-                <com.wang.avi.AVLoadingIndicatorView
-                    app:indicatorColor="@color/colorWhite"
-                    android:layout_width="30dp"
-                    android:layout_height="30dp"
-                    android:layout_gravity="center" />
+                <ViewFlipper
+                    android:id="@+id/vfEnter"
+                    android:layout_width="0dp"
+                    android:layout_weight="1.5"
+                    android:layout_height="50dp"
+                    android:background="@drawable/bg_light_pink_edge">
 
-            </ViewFlipper>
+                    <Button
+                        android:id="@+id/btnEnter"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_gravity="center"
+                        android:gravity="center"
+                        android:background="@android:color/transparent"
+                        android:text="ورود"
+                        android:textSize="@dimen/_20ssp"
+                        android:textColor="@color/colorWhite" />
 
-            <ImageView
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_weight="0.5" />
+                    <com.wang.avi.AVLoadingIndicatorView
+                        app:indicatorColor="@color/colorWhite"
+                        android:layout_width="30dp"
+                        android:layout_height="30dp"
+                        android:layout_gravity="center" />
+
+                </ViewFlipper>
+
+                <ImageView
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="0.5" />
+
+            </LinearLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1"/>
+
+            <TextView
+                android:id="@+id/txtAnotherWayToLogin"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="bottom"
+                android:background="@drawable/bg_ripple"
+                android:gravity="center"
+                android:padding="30dp"
+                android:textSize="@dimen/_12ssp"
+                android:text="ورود از طریق نام کاربری و رمزعبور"
+                android:textColor="@color/colorPrimary" />
 
         </LinearLayout>
 
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="1"/>
-
-        <TextView
-            android:id="@+id/txtAnotherWayToLogin"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_gravity="bottom"
-            android:background="@drawable/bg_ripple"
-            android:gravity="center"
-            android:padding="30dp"
-            android:textSize="@dimen/_12ssp"
-            android:text="ورود از طریق نام کاربری و رمزعبور"
-            android:textColor="@color/colorPrimary" />
-
-    </LinearLayout>
+    </ScrollView>
 
 </LinearLayout>

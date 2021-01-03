@@ -213,8 +213,6 @@ public class SplashActivity extends AppCompatActivity {
 
                 RequestHelper.builder(EndPoints.GET_APP_INFO)
                         .addParam("versionCode", new AppVersionHelper(context).getVerionCode())
-                        .addParam("userName", MyApplication.prefManager.getUserName())
-                        .addParam("password", MyApplication.prefManager.getPassword())
                         .addParam("deviceInfo", deviceInfo)
                         .listener(onAppInfo)
                         .post();

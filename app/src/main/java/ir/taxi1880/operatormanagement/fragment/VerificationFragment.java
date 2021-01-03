@@ -7,6 +7,7 @@ import androidx.fragment.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
@@ -69,6 +70,7 @@ public class VerificationFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_verification, container, false);
+        getActivity().getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_NOTHING);
         unbinder = ButterKnife.bind(this, view);
         TypefaceUtil.overrideFonts(view);
 
@@ -104,9 +106,10 @@ public class VerificationFragment extends Fragment {
                         bundle.putString("mobileNumber", mobileNumber);
                         FragmentHelper.toFragment(MyApplication.currentActivity, new CheckVerificationFragment()).setArguments(bundle).setAddToBackStack(false).replace();
                     } else {
-                        MyApplication.Toast(message, Toast.LENGTH_SHORT);
 //                        {"success":false,"message":"محدودیت زمانی","data":{}}
                     }
+                    MyApplication.Toast(message, Toast.LENGTH_SHORT);
+
                     if (vfEnter != null) {
                         vfEnter.setDisplayedChild(0);
                     }

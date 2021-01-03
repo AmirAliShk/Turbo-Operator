@@ -37,184 +37,193 @@
 
         </RelativeLayout>
 
-        <LinearLayout
-            android:layout_below="@id/imgHeader"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:gravity="center"
-            android:orientation="vertical">
+<!--        <ScrollView-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="match_parent"-->
+<!--            android:fillViewport="true"-->
+<!--            android:fitsSystemWindows="true"-->
+<!--            android:layout_below="@id/imgHeader">-->
 
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="0dp"
-                android:layout_weight="0.25"
-                android:gravity="bottom"
-                android:orientation="horizontal">
-
-                <ImageView
-                    android:layout_width="0dp"
-                    android:layout_height="match_parent"
-                    android:layout_weight="0.09" />
-
-                <LinearLayout
-                    android:layout_width="0dp"
-                    android:layout_weight="1"
-                    android:layout_height="wrap_content"
-                    android:background="@drawable/bg_edit_text"
-                    android:gravity="center"
-                    android:layoutDirection="rtl"
-                    android:orientation="horizontal">
-
-                    <ImageView
-                        android:layout_width="10dp"
-                        android:layout_height="match_parent" />
-
-                    <ImageView
-                        android:layout_width="30dp"
-                        android:layout_height="30dp"
-                        android:src="@drawable/ic_user" />
-
-                    <ImageView
-                        android:layout_width="8dp"
-                        android:layout_height="match_parent" />
-
-                    <EditText
-                        android:id="@+id/edtUserName"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:background="@android:color/transparent"
-                        android:hint="@string/username"
-                        android:inputType="number"
-                        android:maxLength="10"
-                        android:padding="@dimen/_10sdp"
-                        android:nextFocusDown="@id/edtPassword"
-                        android:singleLine="true"
-                        android:textColor="@color/colorBlack"
-                        android:textSize="@dimen/text_title" />
-
-                </LinearLayout>
-
-                <ImageView
-                    android:layout_width="0dp"
-                    android:layout_height="match_parent"
-                    android:layout_weight="0.09" />
-
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="0dp"
-                android:layout_weight="0.25"
-                android:gravity="bottom"
-                android:orientation="horizontal">
-
-                <ImageView
-                    android:layout_width="0dp"
-                    android:layout_height="match_parent"
-                    android:layout_weight="0.09" />
-
-                <LinearLayout
-                    android:layout_width="0dp"
-                    android:layout_weight="1"
-                    android:layout_height="wrap_content"
-                    android:background="@drawable/bg_edit_text"
-                    android:gravity="center"
-                    android:layoutDirection="rtl"
-                    android:orientation="horizontal">
-
-                    <ImageView
-                        android:layout_width="10dp"
-                        android:layout_height="match_parent" />
-
-                    <ImageView
-                        android:layout_width="30dp"
-                        android:layout_height="30dp"
-                        android:src="@drawable/ic_password" />
-
-                    <ImageView
-                        android:layout_width="8dp"
-                        android:layout_height="match_parent" />
-
-                    <EditText
-                        android:id="@+id/edtPassword"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:background="@android:color/transparent"
-                        android:hint="@string/password"
-                        android:inputType="number"
-                        android:maxLength="10"
-                        android:padding="@dimen/_10sdp"
-                        android:nextFocusDown="@id/btnLogin"
-                        android:singleLine="true"
-                        android:textColor="@color/colorBlack"
-                        android:textSize="@dimen/text_title" />
-
-                </LinearLayout>
-
-                <ImageView
-                    android:layout_width="0dp"
-                    android:layout_height="match_parent"
-                    android:layout_weight="0.09" />
-
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="0dp"
-                android:layout_weight="1"
+                android:layout_height="match_parent"
                 android:gravity="center"
-                android:orientation="horizontal">
+                android:layout_below="@id/imgHeader"
+                android:orientation="vertical">
 
-                <ImageView
-                    android:layout_width="0dp"
-                    android:layout_height="match_parent"
-                    android:layout_weight="0.5" />
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_weight="0.25"
+                    android:gravity="bottom"
+                    android:orientation="horizontal">
 
-                <ViewFlipper
-                    android:id="@+id/vfEnter"
-                    android:layout_width="0dp"
-                    android:layout_weight="1.5"
-                    android:layout_height="50dp"
-                    android:background="@drawable/bg_light_pink_edge">
-
-                    <Button
-                        android:id="@+id/btnLogin"
-                        android:layout_width="match_parent"
+                    <ImageView
+                        android:layout_width="0dp"
                         android:layout_height="match_parent"
-                        android:layout_gravity="center"
+                        android:layout_weight="0.09" />
+
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="50dp"
+                        android:layout_weight="1"
+                        android:background="@drawable/bg_edit_text"
                         android:gravity="center"
-                        android:background="@android:color/transparent"
-                        android:text="ورود"
-                        android:textSize="@dimen/_20ssp"
-                        android:textColor="@color/colorWhite" />
+                        android:layoutDirection="rtl"
+                        android:orientation="horizontal">
 
-                    <com.wang.avi.AVLoadingIndicatorView
-                        app:indicatorColor="@color/colorWhite"
-                        android:layout_width="30dp"
-                        android:layout_height="30dp"
-                        android:layout_gravity="center" />
+                        <ImageView
+                            android:layout_width="10dp"
+                            android:layout_height="match_parent" />
 
-                </ViewFlipper>
+                        <ImageView
+                            android:layout_width="30dp"
+                            android:layout_height="30dp"
+                            android:src="@drawable/ic_user" />
 
-                <ImageView
-                    android:layout_width="0dp"
-                    android:layout_height="match_parent"
-                    android:layout_weight="0.5" />
+                        <ImageView
+                            android:layout_width="8dp"
+                            android:layout_height="match_parent" />
+
+                        <EditText
+                            android:id="@+id/edtUserName"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:background="@android:color/transparent"
+                            android:hint="@string/username"
+                            android:inputType="number"
+                            android:maxLength="10"
+                            android:nextFocusDown="@id/edtPassword"
+                            android:padding="@dimen/_10sdp"
+                            android:singleLine="true"
+                            android:textColor="@color/colorBlack"
+                            android:textSize="@dimen/text_title" />
+
+                    </LinearLayout>
+
+                    <ImageView
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="0.09" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_weight="0.25"
+                    android:gravity="bottom"
+                    android:orientation="horizontal">
+
+                    <ImageView
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="0.09" />
+
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="50dp"
+                        android:layout_weight="1"
+                        android:background="@drawable/bg_edit_text"
+                        android:gravity="center"
+                        android:layoutDirection="rtl"
+                        android:orientation="horizontal">
+
+                        <ImageView
+                            android:layout_width="10dp"
+                            android:layout_height="match_parent" />
+
+                        <ImageView
+                            android:layout_width="30dp"
+                            android:layout_height="30dp"
+                            android:src="@drawable/ic_password" />
+
+                        <ImageView
+                            android:layout_width="8dp"
+                            android:layout_height="match_parent" />
+
+                        <EditText
+                            android:id="@+id/edtPassword"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:background="@android:color/transparent"
+                            android:hint="@string/password"
+                            android:inputType="number"
+                            android:maxLength="10"
+                            android:nextFocusDown="@id/btnLogin"
+                            android:padding="@dimen/_10sdp"
+                            android:singleLine="true"
+                            android:textColor="@color/colorBlack"
+                            android:textSize="@dimen/text_title" />
+
+                    </LinearLayout>
+
+                    <ImageView
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="0.09" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:orientation="horizontal">
+
+                    <ImageView
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="0.5" />
+
+                    <ViewFlipper
+                        android:id="@+id/vfEnter"
+                        android:layout_width="0dp"
+                        android:layout_height="50dp"
+                        android:layout_weight="1.5"
+                        android:background="@drawable/bg_light_pink_edge">
+
+                        <Button
+                            android:id="@+id/btnLogin"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:layout_gravity="center"
+                            android:background="@android:color/transparent"
+                            android:gravity="center"
+                            android:text="ورود"
+                            android:textColor="@color/colorWhite"
+                            android:textSize="@dimen/_20ssp" />
+
+                        <com.wang.avi.AVLoadingIndicatorView
+                            android:layout_width="30dp"
+                            android:layout_height="30dp"
+                            android:layout_gravity="center"
+                            app:indicatorColor="@color/colorWhite" />
+
+                    </ViewFlipper>
+
+                    <ImageView
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="0.5" />
+
+                </LinearLayout>
+
+                <TextView
+                    android:id="@+id/enterWithAnotherWay"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/bg_ripple"
+                    android:gravity="center"
+                    android:padding="30dp"
+                    android:text="ورود با شماره موبایل"
+                    android:textColor="@color/colorPrimary"
+                    android:textSize="@dimen/_12ssp" />
 
             </LinearLayout>
 
-            <TextView
-                android:id="@+id/enterWithAnotherWay"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="ورود با شماره موبایل"
-                android:background="@drawable/bg_ripple"
-                android:textSize="@dimen/_12ssp"
-                android:gravity="center"
-                android:padding="30dp"
-                android:textColor="@color/colorPrimary"/>
-
-        </LinearLayout>
+<!--        </ScrollView>-->
 
     </RelativeLayout>
 

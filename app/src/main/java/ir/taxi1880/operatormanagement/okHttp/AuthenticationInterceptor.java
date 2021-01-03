@@ -123,7 +123,7 @@ class AuthenticationInterceptor implements Interceptor {
                             JSONObject objData = jsonBody.getJSONObject("data");
                             String id_token = objData.getString("id_token");
                             String access_token = objData.getString("access_token");
-                            MyApplication.prefManager.setAuthorization(access_token+"oioo");
+                            MyApplication.prefManager.setAuthorization(access_token);
                             MyApplication.prefManager.setIdToken(id_token);
                             statusCode = true;
                         } else {

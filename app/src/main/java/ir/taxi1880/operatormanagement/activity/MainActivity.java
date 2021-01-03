@@ -172,7 +172,6 @@ public class MainActivity extends AppCompatActivity implements NotificationFragm
             vfBalance.setDisplayedChild(0);
 
         RequestHelper.builder(EndPoints.BALANCE)
-                .addPath(MyApplication.prefManager.getUserCode() + "")
                 .listener(getBalance)
                 .get();
     }
