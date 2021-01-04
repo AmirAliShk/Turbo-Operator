@@ -46,6 +46,13 @@ import okhttp3.Route;
 
 /***
  * Created by Amirreza Erfanian on 2018/01/12.
+ * currentVersion 1.1.0
+ ***************** version changes *******************
+ * v : 1.0.0 create project
+ * v : 1.0.1 fix bug run reCall with returnValue
+ * v : 1.1.0 added Interceptor for append header to all api
+ ****************** Readme *******************
+ * add to your BuildGradle
  * implementation 'com.squareup.okhttp3:okhttp:3.10.0'
  */
 public class RequestHelper implements okhttp3.Callback {

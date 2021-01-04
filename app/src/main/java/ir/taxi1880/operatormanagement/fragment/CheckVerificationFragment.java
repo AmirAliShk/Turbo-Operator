@@ -34,6 +34,8 @@ import ir.taxi1880.operatormanagement.okHttp.RequestHelper;
 import ir.taxi1880.operatormanagement.push.AvaCrashReporter;
 
 public class CheckVerificationFragment extends Fragment {
+
+    public static final String TAG = CheckVerificationFragment.class.getSimpleName();
     Unbinder unbinder;
     String code;
     String phoneNumber;
