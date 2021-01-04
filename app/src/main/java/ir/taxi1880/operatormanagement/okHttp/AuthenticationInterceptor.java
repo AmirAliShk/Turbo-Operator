@@ -22,22 +22,22 @@ import okhttp3.RequestBody;
 import okhttp3.Response;
 import okhttp3.ResponseBody;
 
+/***
+ * Created by Fatemeh Noori on 12/22/2020
+ * currentVersion 1.0.0
+ ****************** Readme *******************
+ * add to your RequestHelper, OkHttpClient builder = .addInterceptor(new AuthenticationInterceptor())
+ */
+
 public class AuthenticationInterceptor implements Interceptor {
     private static final String TAG = AuthenticationInterceptor.class.getSimpleName();
-    //--- HTTP Response codes relative constants
-    private static final int RESPONSE_UNAUTHORIZED_401 = 401;
-    private static final int RESPONSE_HTTP_RANK_2XX = 2;
-    private static final int RESPONSE_HTTP_CLIENT_ERROR = 4;
-    private static final int RESPONSE_HTTP_SERVER_ERROR = 5;
-    Request request;
-    Request.Builder builder;
 
     @Override
     public Response intercept(Chain chain) throws IOException {
 
-        request = chain.request();
+        Request request = chain.request();
 
-        builder = request.newBuilder();
+        Request.Builder builder = request.newBuilder();
 
         String authorization = MyApplication.prefManager.getAuthorization();
         String idToken = MyApplication.prefManager.getIdToken();
