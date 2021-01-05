@@ -118,7 +118,7 @@ public class ReplacementWaitingAdapter extends BaseAdapter {
                 .addParam("replacementRequestId", replaceId)
                 .addParam("answer", answer)
                 .listener(onAnswerShiftReplacementRequest)
-                .post();
+                .put();
     }
 
     RequestHelper.Callback onAnswerShiftReplacementRequest = new RequestHelper.Callback() {

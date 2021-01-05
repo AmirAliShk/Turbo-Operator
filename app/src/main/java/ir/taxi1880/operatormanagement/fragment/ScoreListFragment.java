@@ -92,6 +92,8 @@ public class ScoreListFragment extends Fragment {
               vfScore.setDisplayedChild(1);}
 
           } catch (Exception e) {
+            if (vfScore != null)
+              vfScore.setDisplayedChild(3);
             e.printStackTrace();
             AvaCrashReporter.send(e,"ScoreListFragment class, onScore onResponse method");
           }
@@ -102,7 +104,10 @@ public class ScoreListFragment extends Fragment {
 
     @Override
     public void onFailure(Runnable reCall, Exception e) {
-
+      MyApplication.handler.post(() -> {
+        if (vfScore != null)
+          vfScore.setDisplayedChild(3);
+      });
     }
 
   };

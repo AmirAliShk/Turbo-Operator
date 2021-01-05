@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:background="@color/colorPrimaryLighter"
     android:clickable="true"
     tools:context=".fragment.CheckVerificationFragment">
@@ -18,72 +18,73 @@
         <RelativeLayout
             android:id="@+id/rlActionBar"
             android:layout_width="match_parent"
-            android:layoutDirection="ltr"
             android:layout_height="?android:attr/actionBarSize"
-            android:background="#792ca9">
+            android:background="#792ca9"
+            android:layoutDirection="ltr">
 
             <LinearLayout
                 android:id="@+id/llChangeNumber"
-                android:clickable="true"
-                android:background="@drawable/bg_ripple"
                 android:layout_width="wrap_content"
-                android:layout_height="match_parent">
+                android:layout_height="match_parent"
+                android:background="@drawable/bg_ripple"
+                android:clickable="true">
 
                 <ImageView
                     android:layout_width="30dp"
                     android:layout_height="match_parent"
                     android:layout_marginLeft="10dp"
                     android:padding="5dp"
-                    android:src="@drawable/ic_back"/>
+                    android:src="@drawable/ic_back" />
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
                     android:gravity="center"
-                    android:textStyle="bold"
-                    android:textSize="14sp"
+                    android:text="تغییر شماره"
                     android:textColor="@color/colorWhite"
-                    android:text="تغییر شماره"/>
+                    android:textSize="14sp"
+                    android:textStyle="bold" />
 
             </LinearLayout>
 
         </RelativeLayout>
 
         <LinearLayout
-            android:id="@+id/llOperation"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_centerInParent="true"
-            android:layout_weight="1"
+            android:layout_height="0dp"
+            android:layout_weight="2"
             android:gravity="center"
-            android:orientation="vertical"
-            android:layout_marginTop="10dp"
-            android:padding="50dp">
+            android:orientation="vertical">
+
+            <ImageView
+                android:layout_width="@dimen/_100sdp"
+                android:layout_height="@dimen/_100sdp"
+                android:src="@drawable/ic_mobile_verification" />
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:gravity="center"
+                android:padding="5dp"
                 android:text="کد احراز هویت شما چیست؟"
-                android:padding="10dp"
-                android:textAppearance="?android:attr/textAppearanceLarge"
+                android:textSize="@dimen/_14ssp"
                 android:textColor="@color/colorBlack" />
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:gravity="center"
-                android:padding="10dp"
-                android:orientation="horizontal">
+                android:orientation="horizontal"
+                android:padding="10dp">
 
                 <TextView
                     android:id="@+id/txtPhoneNumber"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:gravity="center"
-                    android:textAppearance="?android:attr/textAppearanceMedium"
-                    android:textColor="@color/colorBlack"
-                    android:textStyle="bold" />
+                    android:text="09015693808"
+                    android:textSize="@dimen/_12ssp"
+                    android:textColor="@color/colorPrimary" />
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -92,16 +93,22 @@
                     android:layout_marginRight="5dp"
                     android:gravity="center"
                     android:text="ارسال شده به"
-                    android:textAppearance="?android:attr/textAppearanceMedium"
+                    android:textSize="@dimen/_12ssp"
                     android:textColor="@color/colorBlack" />
 
-                <ImageView
-                    android:layout_width="30dp"
-                    android:layout_height="match_parent"
-                    android:visibility="gone"
-                    android:src="@drawable/ic_call"/>
-
             </LinearLayout>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/llOperation"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="3"
+            android:gravity="center"
+            android:orientation="vertical"
+            android:paddingLeft="50dp"
+            android:paddingRight="50dp">
 
             <ir.taxi1880.operatormanagement.customView.PinEntryEditText
                 android:id="@+id/edtCode"
@@ -111,32 +118,48 @@
                 android:digits="1234567890"
                 android:inputType="number"
                 android:maxLength="5"
-                android:nextFocusDown="@id/btnEnter"
                 android:maxLines="1"
+                android:nextFocusDown="@id/btnEnter"
                 android:textIsSelectable="false"
                 android:textSize="@dimen/_30ssp" />
 
             <ViewFlipper
                 android:id="@+id/vfTime"
-                android:padding="10dp"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content"
+                android:padding="10dp">
 
-                <RelativeLayout
+                <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="50dp">
+                    android:layout_height="50dp"
+                    android:gravity="center"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:gravity="center"
+                        android:text=" ثانیه"
+                        android:textColor="@color/colorBlack"
+                        android:textSize="@dimen/_11ssp" />
 
                     <TextView
                         android:id="@+id/txtResendCode"
-                        android:layout_width="match_parent"
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_centerInParent="true"
                         android:gravity="center"
-                        android:text="تلاش مجدد برای ارسال کد پس از : 60 ثانیه"
-                        android:textSize="12sp"
-                        android:textColor="@color/colorBlack" />
+                        android:textColor="@color/colorPrimary"
+                        android:textSize="@dimen/_11ssp" />
 
-                </RelativeLayout>
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:gravity="center"
+                        android:text="تلاش مجدد برای ارسال کد پس از : "
+                        android:textColor="@color/colorBlack"
+                        android:textSize="@dimen/_11ssp" />
+
+                </LinearLayout>
 
                 <RelativeLayout
                     android:layout_width="match_parent"
@@ -162,11 +185,11 @@
                 </RelativeLayout>
 
                 <com.wang.avi.AVLoadingIndicatorView
-                    app:indicatorColor="@color/colorPrimaryDark"
                     android:layout_width="@dimen/_30sdp"
                     android:layout_height="@dimen/_30sdp"
+                    android:layout_gravity="center"
                     android:padding="10dp"
-                    android:layout_gravity="center" />
+                    app:indicatorColor="@color/colorPrimaryDark" />
 
             </ViewFlipper>
 
@@ -185,8 +208,8 @@
                 <ViewFlipper
                     android:id="@+id/vfEnter"
                     android:layout_width="0dp"
-                    android:layout_weight="1.5"
                     android:layout_height="50dp"
+                    android:layout_weight="1.5"
                     android:background="@drawable/bg_light_pink_edge">
 
                     <Button
@@ -194,17 +217,17 @@
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:layout_gravity="center"
-                        android:gravity="center"
                         android:background="@android:color/transparent"
+                        android:gravity="center"
                         android:text="ورود"
-                        android:textSize="@dimen/_20ssp"
-                        android:textColor="@color/colorWhite" />
+                        android:textColor="@color/colorWhite"
+                        android:textSize="@dimen/_20ssp" />
 
                     <com.wang.avi.AVLoadingIndicatorView
-                        app:indicatorColor="@color/colorWhite"
                         android:layout_width="30dp"
                         android:layout_height="30dp"
-                        android:layout_gravity="center" />
+                        android:layout_gravity="center"
+                        app:indicatorColor="@color/colorWhite" />
 
                 </ViewFlipper>
 

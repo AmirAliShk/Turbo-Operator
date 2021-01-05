@@ -67,7 +67,7 @@ public class ReplacementWaitingFragment extends Fragment {
       vfGetReq.setDisplayedChild(0);
     RequestHelper.builder(EndPoints.GET_SHIFT_REPLACEMENT_REQUESTS)
             .listener(onGetShiftReplacementRequest)
-            .post();
+            .get();
 
   }
 
@@ -99,6 +99,8 @@ public class ReplacementWaitingFragment extends Fragment {
           }
 
         } catch (Exception e) {
+          if (vfGetReq != null)
+            vfGetReq.setDisplayedChild(3);
           e.printStackTrace();
           AvaCrashReporter.send(e,"ReplacementWaitingFragment class, onGetShiftReplacementRequest onResponse method");
         }
@@ -118,7 +120,12 @@ public class ReplacementWaitingFragment extends Fragment {
     }
 
     @Override
-    public void onFailure(Runnable reCall, Exception e) { }
+    public void onFailure(Runnable reCall, Exception e) {
+      MyApplication.handler.post(() -> {
+        if (vfGetReq != null)
+          vfGetReq.setDisplayedChild(3);
+      });
+    }
   };
 
   @Override

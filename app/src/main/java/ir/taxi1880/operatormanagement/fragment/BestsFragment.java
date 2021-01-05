@@ -120,6 +120,8 @@ public class BestsFragment extends Fragment {
               vfBest.setDisplayedChild(1);
 
           } catch (Exception e) {
+            if (vfBest != null)
+              vfBest.setDisplayedChild(3);
             e.printStackTrace();
             AvaCrashReporter.send(e,"BestsFragment class, getBest onResponse method");
           }
@@ -129,7 +131,10 @@ public class BestsFragment extends Fragment {
 
     @Override
     public void onFailure(Runnable reCall, Exception e) {
-
+      MyApplication.handler.post(() -> {
+        if (vfBest != null)
+          vfBest.setDisplayedChild(3);
+      });
     }
 
   };

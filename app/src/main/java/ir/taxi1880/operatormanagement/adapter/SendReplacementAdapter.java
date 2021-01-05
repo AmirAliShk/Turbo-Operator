@@ -130,7 +130,7 @@ public class SendReplacementAdapter extends BaseAdapter {
         RequestHelper.builder(EndPoints.CANCEL_REPLACEMENT_REQUEST)
                 .addParam("requestId", replaceId)
                 .listener(onCancel)
-                .post();
+                .put();
 
     }
 

@@ -110,6 +110,8 @@ public class SendReplacementReqFragment extends Fragment {
           }
 
         } catch (Exception e) {
+          if (vfSendReq != null)
+            vfSendReq.setDisplayedChild(3);
           e.printStackTrace();
           AvaCrashReporter.send(e,"SendReplacementReqFragment class, onGetShiftReplacementRequest onResponse method");
 
@@ -118,7 +120,12 @@ public class SendReplacementReqFragment extends Fragment {
     }
 
     @Override
-    public void onFailure(Runnable reCall, Exception e) { }
+    public void onFailure(Runnable reCall, Exception e) {
+      MyApplication.handler.post(() -> {
+        if (vfSendReq != null)
+          vfSendReq.setDisplayedChild(3);
+      });
+    }
   };
 
 

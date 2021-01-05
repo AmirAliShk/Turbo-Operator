@@ -197,10 +197,10 @@ public class ReplacementFragment extends Fragment {
     if (vfOperator != null)
       vfOperator.setDisplayedChild(1);
     RequestHelper.builder(EndPoints.GET_SHIFT_OPERATOR)
-            .addPath(shiftDate)
-            .addPath(shiftId+"")
+            .addParam("shiftDate",shiftDate)
+            .addParam("shiftId",shiftId+"")
             .listener(onGetOnlineOperator)
-            .get();
+            .post();
 
   }
 

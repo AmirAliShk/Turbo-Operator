@@ -230,7 +230,7 @@ public class CheckVerificationFragment extends Fragment {
                 if (txtResendCode != null) {
                     if (vfTime != null)
                         vfTime.setDisplayedChild(0);
-                    txtResendCode.setText("تلاش مجدد برای ارسال کد پس از : " + millisUntilFinished / 1000 + " ثانیه");
+                    txtResendCode.setText( millisUntilFinished / 1000 +"");
                 }
             }
 

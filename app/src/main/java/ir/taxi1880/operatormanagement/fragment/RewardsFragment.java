@@ -98,6 +98,8 @@ public class RewardsFragment extends Fragment {
             }
 
           } catch (Exception e) {
+            if (vfReward != null)
+              vfReward.setDisplayedChild(3);
             e.printStackTrace();
             AvaCrashReporter.send(e,"RewardsFragment class, onRewards onResponse method");
           }
@@ -108,7 +110,10 @@ public class RewardsFragment extends Fragment {
 
     @Override
     public void onFailure(Runnable reCall, Exception e) {
-
+      MyApplication.handler.post(() -> {
+        if (vfReward != null)
+          vfReward.setDisplayedChild(3);
+      });
     }
 
   };

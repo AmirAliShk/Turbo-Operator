@@ -66,6 +66,16 @@
           android:layout_width="match_parent"
           android:layout_height="match_parent"/>
 
+      <TextView
+          android:layout_centerInParent="true"
+          android:gravity="center"
+          android:textSize="@dimen/text_title"
+          android:textColor="@color/colorBlack"
+          android:visibility="gone"
+          android:text="متاسفانه هنگام دریافت اطلاعات از سرور به مشکل خوردیم \n لطفا مجدد تلاش کنید!"
+          android:layout_width="match_parent"
+          android:layout_height="match_parent"/>
+
    </ViewFlipper>
 
 </RelativeLayout>
