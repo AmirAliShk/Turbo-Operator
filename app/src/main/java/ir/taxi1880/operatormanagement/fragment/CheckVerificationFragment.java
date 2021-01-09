@@ -98,6 +98,10 @@ public class CheckVerificationFragment extends Fragment {
         return view;
     }
 
+    /**
+     * request the verification code again, after the repetition time has elapsed.
+     * @input phone number
+     * */
     private void verification(String phoneNumber) {
         if (vfTime != null) {
             vfTime.setDisplayedChild(2);
@@ -128,9 +132,8 @@ public class CheckVerificationFragment extends Fragment {
                         MyApplication.prefManager.setRepetitionTime(repetitionTime);
                         startWaitingTime();
                     } else {
-                        MyApplication.Toast(message, Toast.LENGTH_SHORT);
 //                        {"success":false,"message":"محدودیت زمانی","data":{}}
-                        //TODO show dialog error
+                        MyApplication.Toast(message, Toast.LENGTH_SHORT);
                     }
                 } catch (Exception e) {
                     if (vfTime != null) {
@@ -190,9 +193,8 @@ public class CheckVerificationFragment extends Fragment {
                         if (vfEnter != null) {
                             vfEnter.setDisplayedChild(0);
                         }
-                        MyApplication.Toast(message, Toast.LENGTH_SHORT);
 //                        {"success":false,"message":".اطلاعات صحیح نمی باشد","data":{}}
-                        //TODO show dialog error
+                        MyApplication.Toast(message, Toast.LENGTH_SHORT);
                     }
 
                 } catch (Exception e) {

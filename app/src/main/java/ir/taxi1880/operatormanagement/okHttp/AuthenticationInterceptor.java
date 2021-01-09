@@ -1,7 +1,6 @@
 package ir.taxi1880.operatormanagement.okHttp;
 
 import android.util.Log;
-import android.widget.Toast;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -10,10 +9,6 @@ import java.io.IOException;
 
 import ir.taxi1880.operatormanagement.app.EndPoints;
 import ir.taxi1880.operatormanagement.app.MyApplication;
-import ir.taxi1880.operatormanagement.dialog.ErrorDialog;
-import ir.taxi1880.operatormanagement.fragment.LoginFragment;
-import ir.taxi1880.operatormanagement.helper.FragmentHelper;
-import ir.taxi1880.operatormanagement.push.AvaCrashReporter;
 import okhttp3.Interceptor;
 import okhttp3.MediaType;
 import okhttp3.OkHttpClient;
@@ -22,13 +17,17 @@ import okhttp3.RequestBody;
 import okhttp3.Response;
 import okhttp3.ResponseBody;
 
-/***
- * Created by Fatemeh Noori on 12/22/2020
- * currentVersion 1.0.0
- ****************** Readme *******************
- * add to your RequestHelper, OkHttpClient builder = .addInterceptor(new AuthenticationInterceptor())
+/**
+ * <p> add to your {@link RequestHelper} in OkHttpClient builder
+ * <code><pre>
+ * .addInterceptor(new AuthenticationInterceptor())
+ * </pre></code>
+ *
+ * @output response
+ * @auther Fatemeh Noori
+ * @since 12/22/2020
+ * @vertion 1.0.0
  */
-
 public class AuthenticationInterceptor implements Interceptor {
     private static final String TAG = AuthenticationInterceptor.class.getSimpleName();
 
@@ -36,17 +35,12 @@ public class AuthenticationInterceptor implements Interceptor {
     public Response intercept(Chain chain) throws IOException {
 
         Request request = chain.request();
-
         Request.Builder builder = request.newBuilder();
-
         String authorization = MyApplication.prefManager.getAuthorization();
         String idToken = MyApplication.prefManager.getIdToken();
         setAuthHeader(builder, authorization, idToken);
-
         request = builder.build();
-
         Response response = chain.proceed(request);
-
         if (response.code() == 401) {
             Log.w(TAG, "Request responses code: " + response.code());
             Log.w(TAG, "Request responses url: " + response.request().url());
@@ -63,20 +57,17 @@ public class AuthenticationInterceptor implements Interceptor {
                 try {
                     object = new JSONObject(response.body().string());
                     object.put("refreshTokenError", true);
-
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
                 MediaType contentType = response.body().contentType();
                 ResponseBody body = ResponseBody.create(contentType, object.toString());
                 return response.newBuilder().body(body).build();
-//                    return response;
             }
 //            } // synchronized
         } // response.code
 
         return response;
-
     }
 
     private void setAuthHeader(Request.Builder builder, String authorization, String idToken) {
@@ -86,10 +77,8 @@ public class AuthenticationInterceptor implements Interceptor {
 
     public boolean refreshToken() {
         synchronized (this) {
-
             boolean statusCode = false;
             OkHttpClient client = new OkHttpClient.Builder().build();
-
             MediaType jsonType = MediaType.parse("application/json; charset=utf-8");
             JSONObject json = new JSONObject();
             try {
@@ -112,7 +101,6 @@ public class AuthenticationInterceptor implements Interceptor {
                 Log.i(TAG, "refreshToken : url " + request.url().toString());
 
                 if (response != null) {
-
                     if (response.code() == 200) {
                         try {
                             JSONObject jsonBody = new JSONObject(response.body().string());
@@ -139,11 +127,9 @@ public class AuthenticationInterceptor implements Interceptor {
                         }
                     }
                 }
-
             } catch (IOException e) {
                 e.printStackTrace();
             }
-
             return statusCode;
         }
     }

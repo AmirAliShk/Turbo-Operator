@@ -72,7 +72,7 @@ public class ShiftListFragment extends Fragment {
 
         RequestHelper.builder(EndPoints.GET_SHIFTS)
                 .listener(onGetShifts)
-                .post();
+                .get();
 
     }
 

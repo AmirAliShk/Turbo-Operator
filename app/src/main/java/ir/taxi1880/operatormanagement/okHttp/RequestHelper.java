@@ -1,20 +1,8 @@
 package ir.taxi1880.operatormanagement.okHttp;
 
-import android.app.Dialog;
-import android.graphics.Color;
-import android.graphics.drawable.ColorDrawable;
 import android.util.Log;
-import android.view.Gravity;
-import android.view.Window;
-import android.view.WindowManager;
-import android.widget.Button;
-import android.widget.LinearLayout;
-import android.widget.TextView;
-import android.widget.Toast;
-
 import org.json.JSONException;
 import org.json.JSONObject;
-
 import java.io.IOException;
 import java.net.Proxy;
 import java.util.ArrayList;
@@ -22,8 +10,6 @@ import java.util.Iterator;
 import java.util.concurrent.TimeUnit;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-
-import ir.taxi1880.operatormanagement.R;
 import ir.taxi1880.operatormanagement.app.EndPoints;
 import ir.taxi1880.operatormanagement.app.MyApplication;
 import ir.taxi1880.operatormanagement.dialog.ErrorDialog;
@@ -31,9 +17,7 @@ import ir.taxi1880.operatormanagement.dialog.GeneralDialog;
 import ir.taxi1880.operatormanagement.fragment.LoginFragment;
 import ir.taxi1880.operatormanagement.helper.FragmentHelper;
 import ir.taxi1880.operatormanagement.helper.StringHelper;
-import ir.taxi1880.operatormanagement.helper.TypefaceUtil;
 import ir.taxi1880.operatormanagement.push.AvaCrashReporter;
-import okhttp3.Authenticator;
 import okhttp3.Call;
 import okhttp3.Headers;
 import okhttp3.HttpUrl;
@@ -42,29 +26,21 @@ import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.RequestBody;
 import okhttp3.Response;
-import okhttp3.Route;
 
-/***
- * Created by Amirreza Erfanian on 2018/01/12.
- * currentVersion 1.1.0
- ***************** version changes *******************
- * v : 1.0.0 create project
- * v : 1.0.1 fix bug run reCall with returnValue
- * v : 1.1.0 added Interceptor for append header to all api
- ****************** Readme *******************
+/**
  * add to your BuildGradle
  * implementation 'com.squareup.okhttp3:okhttp:3.10.0'
+ ***************** version changes *******************
+ * @version 1.1.0 : create project
+ * @version 1.0.1 : fix bug run reCall with returnValue
+ * @version 1.1.0 : added Interceptor for append header to all api
+ ****************** Readme *******************
+ * @auther Amirreza Erfanian on 2018/01/12.
+
  */
 public class RequestHelper implements okhttp3.Callback {
 
     public static final String TAG = RequestHelper.class.getSimpleName();
-    public static final String POST = "POST";
-    public static final String GET = "GET";
-    public static final String DELETE = "DELETE";
-    public static final String PUT = "PUT";
-    public static final String HEAD = "HEAD";
-    public static final String PATCH = "PATCH";
-
     private static RequestHelper instance;
     private String url = null;
     private String path = null;

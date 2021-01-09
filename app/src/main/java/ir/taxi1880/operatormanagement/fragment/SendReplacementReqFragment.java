@@ -66,7 +66,7 @@ public class SendReplacementReqFragment extends Fragment {
       vfSendReq.setDisplayedChild(0);
     RequestHelper.builder(EndPoints.GET_SHIFT_REPLACEMENT_REQUESTS)
             .listener(onGetShiftReplacementRequest)
-            .post();
+            .get();
 
   }
 

@@ -10,12 +10,12 @@
 <!--    <color name="grayDark">#424242</color>-->
 <!--    <color name="transparent">#00424242</color>-->
 
-    <color name="colorPrimary">#3827b4</color>
-    <color name="colorPrimaryDark">#792ca9</color>
+    <color name="colorPrimary">#ebeff0</color>
+    <color name="colorPrimaryDark">#381f60</color>
     <color name="colorPrimaryLight">#e08cc0</color>
     <color name="colorPrimaryLighter">#EEE9F1</color>
     <color name="colorLightPurple">#a192aa</color>
-    <color name="colorAccent">#e51ead</color>
+    <color name="colorAccent">#ff6461</color>
     <color name="colorWhite">#ffffff</color>
     <color name="colorBlack">#000000</color>
     <color name="grayLight">#a4a2ab</color>

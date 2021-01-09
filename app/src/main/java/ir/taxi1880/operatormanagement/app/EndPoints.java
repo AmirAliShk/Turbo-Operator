@@ -50,7 +50,7 @@ public class EndPoints {
   public static final String GET_NEWS = WEBSERVICE_PATH + "getNews";
   public static final String SEND_MESSAGES = WEBSERVICE_PATH + "sendMessages";
   public static final String SET_NEWS_SEEN = WEBSERVICE_PATH + "setNewsSeen";
-  public static final String GET_SHIFTS = WEBSERVICE_PATH + "getShifts";
+  public static final String GET_SHIFTS = WEBSERVICE_PATH + "shift";
   public static final String GET_SHIFT_OPERATOR = SHIFT_WEBSERVICE_PATH + "operators";
   public static final String GET_SHIFT_REPLACEMENT_REQUESTS = SHIFT_WEBSERVICE_PATH + "getReplacementRequests";
   public static final String SHIFT_REPLACEMENT_REQUEST = SHIFT_WEBSERVICE_PATH + "replacementRequest";
