@@ -1,6 +1,5 @@
 package ir.taxi1880.operatormanagement.activity;
 
-import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
@@ -8,211 +7,115 @@ import android.util.Log;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
-import android.widget.TextView;
 import android.widget.Toast;
-import android.widget.ViewFlipper;
-
-import org.json.JSONObject;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.viewpager2.widget.ViewPager2;
+
+import com.google.android.material.tabs.TabLayout;
+import com.google.android.material.tabs.TabLayoutMediator;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import butterknife.Unbinder;
 import ir.taxi1880.operatormanagement.R;
+import ir.taxi1880.operatormanagement.adapter.MainViewPagerAdapter;
 import ir.taxi1880.operatormanagement.app.Constant;
 import ir.taxi1880.operatormanagement.app.DataHolder;
-import ir.taxi1880.operatormanagement.app.EndPoints;
 import ir.taxi1880.operatormanagement.app.MyApplication;
-import ir.taxi1880.operatormanagement.dialog.GeneralDialog;
-import ir.taxi1880.operatormanagement.fragment.AccountFragment;
-import ir.taxi1880.operatormanagement.fragment.DeterminationPageFragment;
+import ir.taxi1880.operatormanagement.fragment.BestsFragment;
 import ir.taxi1880.operatormanagement.fragment.MessageFragment;
 import ir.taxi1880.operatormanagement.fragment.NotificationFragment;
-import ir.taxi1880.operatormanagement.fragment.ScoresFragment;
-import ir.taxi1880.operatormanagement.fragment.ShiftFragment;
 import ir.taxi1880.operatormanagement.helper.FragmentHelper;
-import ir.taxi1880.operatormanagement.helper.StringHelper;
 import ir.taxi1880.operatormanagement.helper.TypefaceUtil;
-import ir.taxi1880.operatormanagement.okHttp.RequestHelper;
 import ir.taxi1880.operatormanagement.push.AvaCrashReporter;
 
 public class MainActivity extends AppCompatActivity implements NotificationFragment.RefreshNotificationCount {
 
     public static final String TAG = MainActivity.class.getSimpleName();
     Unbinder unbinder;
+    MainViewPagerAdapter mainViewPagerAdapter;
     boolean doubleBackToExitPressedOnce = false;
 
-    @OnClick(R.id.llNotification)
+    @BindView(R.id.vpMain)
+    ViewPager2 vpMain;
+
+    @BindView(R.id.tabMain)
+    TabLayout tabLayout;
+
+    @OnClick(R.id.imgNotification)
     void onNotification() {
         FragmentHelper
                 .toFragment(MyApplication.currentActivity, new NotificationFragment())
                 .replace();
     }
 
-    @OnClick(R.id.llDeterminationPage)
-    void onRange() {
-        if (MyApplication.prefManager.getAccessStationDeterminationPage() == 0) {
-            new GeneralDialog()
-                    .title("هشدار")
-                    .message("شما اجازه دسترسی به این بخش از برنامه را ندارید")
-                    .firstButton("باشه", null)
-                    .show();
-        } else {
-            FragmentHelper
-                    .toFragment(MyApplication.currentActivity, new DeterminationPageFragment())
-                    .replace();
-        }
-    }
-
-    @OnClick(R.id.llShifts)
-    void onShifts() {
-        FragmentHelper
-                .toFragment(MyApplication.currentActivity, new ShiftFragment())
-                .setAddToBackStack(true)
-                .replace();
-    }
-
-    @OnClick(R.id.llTripRegister)
-    void onTripRegister() {
-
-        if (MyApplication.prefManager.getAccessInsertService() == 0) {
-            new GeneralDialog()
-                    .title("هشدار")
-                    .message("شما اجازه دسترسی به این بخش از برنامه را ندارید")
-                    .firstButton("باشه", null)
-                    .show();
-        } else {
-            startActivity(new Intent(MyApplication.context, TripRegisterActivity.class));
-            finish();
-        }
-    }
-
-    @OnClick(R.id.llScores)
-    void onScores() {
-        FragmentHelper
-                .toFragment(MyApplication.currentActivity, new ScoresFragment())
-                .replace();
-    }
-
-    @OnClick(R.id.llMessage)
+    @OnClick(R.id.imgMessage)
     void onMessage() {
         FragmentHelper
                 .toFragment(MyApplication.currentActivity, new MessageFragment())
                 .replace();
     }
 
-    @BindView(R.id.txtBadgeCount)
-    TextView txtBadgeCount;
-
-    @BindView(R.id.txtRequestCount)
-    TextView txtRequestCount;
-
-    @BindView(R.id.txtOperatorName)
-    TextView txtOperatorName;
-
-    @BindView(R.id.txtOperatorCharge)
-    TextView txtOperatorCharge;
-
-    @BindView(R.id.vfBalance)
-    ViewFlipper vfBalance;
-
-    @OnClick(R.id.llProfile)
-    void onPressProfile() {
-//TODO remove this two line
-        MyApplication.prefManager.setIdToken("!!!!");
-        MyApplication.prefManager.setAuthorization("!!!!");
-
-//        FragmentHelper
-//                .toFragment(MyApplication.currentActivity, new AccountFragment())
-//                .replace();
-
-    }
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.main);
         View view = getWindow().getDecorView();
-        getSupportActionBar().hide();
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             Window window = getWindow();
             window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
-            window.setNavigationBarColor(getResources().getColor(R.color.colorPrimaryLighter));
+            window.setNavigationBarColor(getResources().getColor(R.color.colorPrimary));
             window.setStatusBarColor(getResources().getColor(R.color.colorPrimaryDark));
             window.addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
         }
         MyApplication.configureAccount();
-
         unbinder = ButterKnife.bind(this, view);
         TypefaceUtil.overrideFonts(view);
 
-        if (MyApplication.prefManager.getCountNotification() == 0) {
-            txtBadgeCount.setVisibility(View.GONE);
-        } else {
-            txtBadgeCount.setVisibility(View.VISIBLE);
-            txtBadgeCount.setText(StringHelper.toPersianDigits(MyApplication.prefManager.getCountNotification() + ""));
-        }
+        mainViewPagerAdapter = new MainViewPagerAdapter(this);
+        vpMain.setAdapter(mainViewPagerAdapter);
 
-//    if (MyApplication.prefManager.getCountRequest() == 0) {
-//      txtRequestCount.setVisibility(View.GONE);
-//    } else {
-//      txtRequestCount.setVisibility(View.VISIBLE);
-//      txtRequestCount.setText(StringHelper.toPersianDigits(MyApplication.prefManager.getCountRequest() + ""));
-//    }
+        new TabLayoutMediator(tabLayout, vpMain, (tab, position) -> {
+            if (position == 0) {
+                tab.setIcon(R.drawable.ic_home_selected);
+            } else {
+                tab.setIcon(R.drawable.ic_menu_unselected);
+            }
+        }).attach();
 
-        txtOperatorName.setText(MyApplication.prefManager.getOperatorName());
-//    txtOperatorCharge.setText(StringHelper.toPersianDigits(MyApplication.prefManager.getBalance() + " تومان "));
-
-    }
-
-    private void getBalance() {
-        if (vfBalance != null)
-            vfBalance.setDisplayedChild(0);
-
-        RequestHelper.builder(EndPoints.BALANCE)
-                .listener(getBalance)
-                .get();
-    }
-
-    RequestHelper.Callback getBalance = new RequestHelper.Callback() {
-        @Override
-        public void onResponse(Runnable reCall, Object... args) {
-            MyApplication.handler.post(new Runnable() {
-                @Override
-                public void run() {
-                    try {
-                        Log.i(TAG, "run: " + args[0].toString());
-                        JSONObject obj = new JSONObject(args[0].toString());
-                        boolean success = obj.getBoolean("success");
-                        String message = obj.getString("message");
-                        JSONObject dataObj = obj.getJSONObject("data");
-                        String accountBalance = dataObj.getString("accountBalance");
-                        String balance = StringHelper.setComma(accountBalance);
-
-                        if (txtOperatorCharge != null)
-                            txtOperatorCharge.setText(StringHelper.toPersianDigits(balance + " تومان "));
-                        if (vfBalance != null)
-                            vfBalance.setDisplayedChild(1);
-
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                        AvaCrashReporter.send(e, "MainActivity class, getBalance onResponse method");
-                    }
+        tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
+            @Override
+            public void onTabSelected(TabLayout.Tab tab) {
+                switch (tab.getPosition()) {
+                    case 0:
+                        tab.setIcon(R.drawable.ic_home_selected);
+                        break;
+                    case 1:
+                        tab.setIcon(R.drawable.ic_menu_selected);
+                        break;
                 }
-            });
-        }
+            }
 
-        @Override
-        public void onFailure(Runnable reCall, Exception e) {
-            MyApplication.handler.post(() -> {
-                if (vfBalance != null)
-                    vfBalance.setDisplayedChild(1);
-            });
-        }
+            @Override
+            public void onTabUnselected(TabLayout.Tab tab) {
+                switch (tab.getPosition()) {
+                    case 0:
+                        tab.setIcon(R.drawable.ic_home_unselected);
+                        break;
+                    case 1:
+                        tab.setIcon(R.drawable.ic_menu_unselected);
+                        break;
+                }
+            }
 
-    };
+            @Override
+            public void onTabReselected(TabLayout.Tab tab) {
+
+            }
+        });
+    }
 
     @Override
     protected void onResume() {
@@ -252,8 +155,6 @@ public class MainActivity extends AppCompatActivity implements NotificationFragm
     protected void onStart() {
         super.onStart();
         MyApplication.currentActivity = this;
-
-        getBalance();
     }
 
     @Override
@@ -288,11 +189,5 @@ public class MainActivity extends AppCompatActivity implements NotificationFragm
 
     @Override
     public void refreshNotification() {
-        if (MyApplication.prefManager.getCountNotification() == 0) {
-            txtBadgeCount.setVisibility(View.GONE);
-        } else {
-            txtBadgeCount.setVisibility(View.VISIBLE);
-            txtBadgeCount.setText(StringHelper.toPersianDigits(MyApplication.prefManager.getCountNotification() + ""));
-        }
     }
 }

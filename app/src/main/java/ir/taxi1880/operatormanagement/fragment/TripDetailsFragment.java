@@ -390,7 +390,7 @@ public class TripDetailsFragment extends Fragment {
         btnReFollow.setBackgroundResource(R.drawable.bg_btn_disable);
         btnCancelTrip.setEnabled(false);
         btnCancelTrip.setBackgroundResource(R.drawable.bg_btn_disable);
-        if (!isBefore) {
+        if (isBefore) {
             btnComplaintRegistration.setEnabled(false);
             btnComplaintRegistration.setBackgroundResource(R.drawable.bg_btn_disable);
         }

@@ -2,9 +2,7 @@ package ir.taxi1880.operatormanagement.fragment;
 
 
 import android.annotation.SuppressLint;
-import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -23,7 +21,6 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import butterknife.Unbinder;
 import ir.taxi1880.operatormanagement.R;
-import ir.taxi1880.operatormanagement.activity.MainActivity;
 import ir.taxi1880.operatormanagement.activity.SplashActivity;
 import ir.taxi1880.operatormanagement.app.Constant;
 import ir.taxi1880.operatormanagement.app.EndPoints;
@@ -75,8 +72,8 @@ public class LoginFragment extends Fragment {
         KeyBoardHelper.hideKeyboard();
     }
 
-    @OnClick(R.id.enterWithAnotherWay)
-    void onEnterWithAnotherWay() {
+    @OnClick(R.id.llEnterWithMobile)
+    void onEnterWithMobile() {
         FragmentHelper.toFragment(MyApplication.currentActivity, new VerificationFragment()).setAddToBackStack(false).replace();
     }
 

@@ -43,7 +43,7 @@
             <item>
                 <shape>
 <!--                    <corners android:radius="8dp"/>-->
-                    <solid android:color="#792ca9"/>
+                    <solid android:color="#381f60"/>
                     <padding android:paddingBottom="6dp"/>
                 </shape>
             </item>

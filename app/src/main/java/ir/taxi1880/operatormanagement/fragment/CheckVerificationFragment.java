@@ -14,6 +14,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.ViewFlipper;
 
+import com.chaos.view.PinView;
+
 import org.json.JSONObject;
 
 import java.util.Calendar;
@@ -55,7 +57,7 @@ public class CheckVerificationFragment extends Fragment {
 
     @OnClick(R.id.btnEnter)
     void onPressEnter() {
-        code = edtCode.getText().toString();
+        code = pin.getText().toString();
 
         if (code.isEmpty()) {
             MyApplication.Toast("کد را وارد کنید", Toast.LENGTH_SHORT);
@@ -65,8 +67,8 @@ public class CheckVerificationFragment extends Fragment {
         checkVerification();
     }
 
-    @BindView(R.id.edtCode)
-    PinEntryEditText edtCode;
+    @BindView(R.id.pin)
+    PinView pin;
 
     @BindView(R.id.txtResendCode)
     TextView txtResendCode;

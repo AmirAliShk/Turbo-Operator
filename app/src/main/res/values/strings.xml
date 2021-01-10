@@ -107,6 +107,12 @@
     <string name="callDate">تاریخ تماس</string>
     <string name="close">بستن</string>
     <string name="charge">شارژ شما</string>
+    <string name="trip_register">ثبت سفر</string>
+    <string name="determination">تعیین محدوده</string>
+    <string name="trip">سفر</string>
+    <string name="wrong">اشتباه</string>
+    <string name="day">روز</string>
+    <string name="enter">ورود</string>
 
 
 </resources>

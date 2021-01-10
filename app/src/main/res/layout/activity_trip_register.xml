@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/colorPrimaryLighter"
+    android:background="@color/colorPrimary"
     android:layoutDirection="rtl"
     android:orientation="vertical"
     tools:context=".activity.TripRegisterActivity">
@@ -126,7 +126,7 @@
                 android:gravity="center"
                 android:text="فعال"
                 android:textAppearance="?android:attr/textAppearanceMedium"
-                android:textColor="@color/colorBlack" />
+                android:textColor="@color/colorWhite" />
 
             <Button
                 android:id="@+id/btnDeActivate"
@@ -138,7 +138,7 @@
                 android:gravity="center"
                 android:text="غیر فعال"
                 android:textAppearance="?android:attr/textAppearanceMedium"
-                android:textColor="@color/colorBlack" />
+                android:textColor="@color/colorWhite" />
 
         </LinearLayout>
 
@@ -221,11 +221,6 @@
         android:layout_height="match_parent"
         android:fillViewport="true">
 
-        <!--        <LinearLayout-->
-        <!--            android:layout_width="match_parent"-->
-        <!--            android:layout_height="wrap_content"-->
-        <!--            android:orientation="vertical">-->
-
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
@@ -271,19 +266,11 @@
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:background="@drawable/bg_edit_text"
                         android:gravity="center">
 
                         <RelativeLayout
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content">
-
-                            <EditText
-                                android:id="@+id/txtSpError"
-                                android:layout_width="20dp"
-                                android:layout_height="40dp"
-                                android:enabled="false"
-                                android:focusable="false" />
 
                             <Spinner
                                 android:id="@+id/spCity"
@@ -292,6 +279,8 @@
                                 android:background="@drawable/edit_text_style"
                                 android:dropDownWidth="match_parent"
                                 android:gravity="center"
+                                android:layout_margin="@dimen/_5sdp"
+                                android:elevation="@dimen/_4sdp"
                                 android:paddingTop="5dp"
                                 android:paddingBottom="5dp" />
 
@@ -334,6 +323,8 @@
                             android:gravity="left|center_vertical"
                             android:inputType="number"
                             android:maxLength="11"
+                            android:layout_margin="@dimen/_5sdp"
+                            android:elevation="@dimen/_4sdp"
                             android:nextFocusDown="@id/edtMobile"
                             android:padding="5dp"
                             android:singleLine="true"
@@ -365,6 +356,8 @@
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
                             android:background="@drawable/bg_strock_corner"
+                            android:layout_margin="@dimen/_5sdp"
+                            android:elevation="@dimen/_4sdp"
                             android:gravity="center">
 
                             <ImageView
@@ -498,8 +491,8 @@
                                 android:id="@+id/imgPassengerInfo"
                                 android:layout_width="match_parent"
                                 android:layout_height="match_parent"
-                                android:padding="5dp"
                                 android:gravity="left|center_vertical"
+                                android:padding="5dp"
                                 android:src="@drawable/ic_download" />
 
                             <com.wang.avi.AVLoadingIndicatorView
@@ -534,7 +527,7 @@
 
                 <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="40dp"
+                    android:layout_height="50dp"
                     android:clickable="true"
                     android:focusable="true"
                     android:gravity="center_vertical"
@@ -543,6 +536,8 @@
                     <LinearLayout
                         android:id="@+id/llSearchAddress"
                         android:layout_width="50dp"
+                        android:layout_margin="@dimen/_5sdp"
+                        android:elevation="@dimen/_4sdp"
                         android:layout_height="match_parent"
                         android:background="@drawable/edit_text_style">
 
@@ -559,7 +554,7 @@
                                 android:layout_gravity="center"
                                 android:gravity="center"
                                 android:text="بیشتر"
-                                android:textColor="@color/colorPrimaryDark"
+                                android:textColor="@color/colorAccent"
                                 android:textStyle="bold" />
 
                             <com.wang.avi.AVLoadingIndicatorView
@@ -587,6 +582,9 @@
                             android:layout_height="match_parent"
                             android:layout_weight="1"
                             android:background="@drawable/edit_text_style"
+                            android:enabled="false"
+                            android:layout_margin="@dimen/_5sdp"
+                            android:elevation="@dimen/_4sdp"
                             android:nextFocusDown="@id/edtFamily"
                             android:paddingLeft="35dp"
                             android:paddingRight="5dp"
@@ -603,7 +601,7 @@
                             android:gravity="left"
                             android:padding="5dp"
                             android:src="@drawable/ic_reject"
-                            android:tint="#000" />
+                            app:tint="#000" />
 
                     </RelativeLayout>
 
@@ -722,6 +720,7 @@
                         android:layout_height="40dp"
                         android:layout_weight="1"
                         android:background="@drawable/edit_text_style"
+                        android:enabled="false"
                         android:maxLength="40"
                         android:padding="5dp"
                         android:singleLine="true"
@@ -806,6 +805,7 @@
                             android:layout_height="match_parent"
                             android:layout_weight="1"
                             android:background="@drawable/edit_text_style"
+                            android:enabled="false"
                             android:maxLength="40"
                             android:nextFocusDown="@id/btnSubmit"
                             android:singleLine="true"
@@ -826,7 +826,7 @@
                                 android:layout_margin="5dp"
                                 android:gravity="left|center_vertical"
                                 android:text="جزئیات"
-                                android:textColor="@color/colorPrimaryDark"
+                                android:textColor="@color/colorAccent"
                                 android:textStyle="bold" />
 
                         </LinearLayout>
@@ -908,8 +908,7 @@
                         android:textAppearance="?android:attr/textAppearanceSmall"
                         android:textColor="@color/grayMedium" />
 
-                    <ir.taxi1880.operatormanagement.customView.MultiRowsRadioGroup
-                        xmlns:multi_line_radio_group="http://schemas.android.com/apk/res-auto"
+                    <ir.taxi1880.operatormanagement.customView.MultiRowsRadioGroup xmlns:multi_line_radio_group="http://schemas.android.com/apk/res-auto"
                         android:id="@+id/rgCarClass"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -929,7 +928,7 @@
                                 android:layout_width="0dp"
                                 android:layout_height="wrap_content"
                                 android:layout_weight="1"
-                                android:buttonTint="@color/colorPrimaryDark"
+                                android:buttonTint="@color/colorAccent"
                                 android:checked="true"
                                 android:text="@string/unKnow"
                                 android:textAppearance="?android:attr/textAppearanceSmall" />
@@ -1028,15 +1027,15 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="2"
                 android:gravity="bottom"
-                android:paddingBottom="10dp"
+                android:orientation="horizontal"
                 android:paddingTop="10dp"
-                android:orientation="horizontal">
+                android:paddingBottom="10dp">
 
                 <ViewFlipper
                     android:id="@+id/vfSubmit"
                     android:layout_width="0dp"
                     android:layout_height="?android:attr/actionBarSize"
-                    android:layout_weight="2.5"
+                    android:layout_weight="2.25"
                     android:background="@drawable/bg_light_pink_edge">
 
                     <Button
@@ -1065,17 +1064,15 @@
                     android:layout_width="0dp"
                     android:layout_height="?android:attr/actionBarSize"
                     android:layout_weight="1"
-                    android:background="@drawable/bg_strock_corner"
+                    android:background="@drawable/bg_activate_status"
                     android:text="گزینه ها"
-                    android:textColor="@color/colorBlack"
+                    android:textColor="@color/colorWhite"
                     android:textSize="@dimen/text_header"
                     android:textStyle="bold" />
 
             </LinearLayout>
 
         </LinearLayout>
-
-        <!--        </LinearLayout>-->
 
     </ScrollView>
 

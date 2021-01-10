@@ -24,6 +24,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="center"
+            android:layout_marginTop="@dimen/_10sdp"
             android:orientation="horizontal"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintLeft_toLeftOf="parent"
@@ -42,7 +43,7 @@
                 android:layout_height="60dp"
                 android:layout_margin="@dimen/_5sdp"
                 android:background="@drawable/bg_circle_accent"
-                android:elevation="3dp"
+                android:elevation="5dp"
                 android:padding="10dp"
                 android:src="@drawable/ic_notification" />
 
@@ -67,10 +68,10 @@
                 android:id="@+id/imgMessage"
                 android:layout_width="60dp"
                 android:layout_height="60dp"
-                android:layout_margin="@dimen/_5sdp"
+                android:layout_margin="@dimen/_10sdp"
                 android:background="@drawable/bg_circle_accent"
-                android:elevation="3dp"
                 android:padding="10dp"
+                android:elevation="@dimen/_5sdp"
                 android:src="@drawable/ic_message" />
 
             <View
@@ -90,16 +91,24 @@
         android:background="@color/colorPrimary"
         android:orientation="horizontal" />
 
-    <com.google.android.material.tabs.TabLayout
-        android:id="@+id/tabMain"
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_gravity="center"
-        android:layout_weight="0.5"
         android:background="@color/colorPrimary"
-        android:layoutDirection="rtl"
-        app:tabGravity="center"
-        app:tabMode="scrollable"
-        app:tabTextAppearance="@dimen/_12ssp" />
+        android:gravity="center"
+        android:layout_weight="0.75">
+
+        <com.google.android.material.tabs.TabLayout
+            android:id="@+id/tabMain"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_gravity="center"
+            android:layoutDirection="rtl"
+            app:tabIndicatorHeight="0dp"
+            app:tabIndicatorColor="@color/transparent"
+            app:tabGravity="center"
+            app:tabMode="scrollable" />
+
+    </LinearLayout>
 
 </LinearLayout>

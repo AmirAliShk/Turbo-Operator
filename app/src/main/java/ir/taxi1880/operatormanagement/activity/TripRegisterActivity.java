@@ -385,9 +385,6 @@ public class TripRegisterActivity extends AppCompatActivity {
     @BindView(R.id.vfPassengerAddress)
     ViewFlipper vfPassengerAddress;
 
-    @BindView(R.id.txtSpError)
-    TextView txtSpError;
-
     @BindView(R.id.vfPassengerInfo)
     ViewFlipper vfPassengerInfo;
 
@@ -572,11 +569,10 @@ public class TripRegisterActivity extends AppCompatActivity {
         View view;
         setContentView(R.layout.activity_trip_register);
         view = getWindow().getDecorView();
-        getSupportActionBar().hide();
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             Window window = getWindow();
             window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
-            window.setNavigationBarColor(getResources().getColor(R.color.colorPrimaryLighter));
+            window.setNavigationBarColor(getResources().getColor(R.color.colorPrimary));
             window.setStatusBarColor(getResources().getColor(R.color.colorPrimaryDark));
             window.addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
         }
@@ -587,7 +583,7 @@ public class TripRegisterActivity extends AppCompatActivity {
         if (MyApplication.prefManager.getActivateStatus()) {
             btnActivate.setBackgroundResource(R.drawable.bg_green_edge);
             btnDeActivate.setBackgroundColor(Color.parseColor("#00FFB2B2"));
-            btnDeActivate.setTextColor(Color.parseColor("#000000"));
+            btnDeActivate.setTextColor(Color.parseColor("#ffffff"));
         } else {
             btnDeActivate.setBackgroundResource(R.drawable.bg_pink_edge);
             btnActivate.setBackgroundColor(Color.parseColor("#00FFB2B2"));
@@ -1164,7 +1160,7 @@ public class TripRegisterActivity extends AppCompatActivity {
                             MyApplication.prefManager.setActivateStatus(true);
                             if (btnDeActivate != null) {
                                 btnDeActivate.setBackgroundColor(Color.parseColor("#00FFB2B2"));
-                                btnDeActivate.setTextColor(Color.parseColor("#000000"));
+                                btnDeActivate.setTextColor(Color.parseColor("#ffffff"));
                             }
                         } else {
                             new GeneralDialog()
@@ -1491,7 +1487,7 @@ public class TripRegisterActivity extends AppCompatActivity {
             } else {
                 btnActivate.setBackgroundResource(R.drawable.bg_green_edge);
                 btnDeActivate.setBackgroundColor(Color.parseColor("#00FFB2B2"));
-                btnDeActivate.setTextColor(Color.parseColor("#000000"));
+                btnDeActivate.setTextColor(Color.parseColor("#ffffff"));
                 MyApplication.prefManager.setActivateStatus(true);
             }
         }

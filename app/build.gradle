@@ -19,6 +19,10 @@ android {
         }
     }
 
+    dataBinding {
+        enabled = true
+    }
+
     buildTypes {
         release {
             ndk {
@@ -89,5 +93,7 @@ dependencies {
 
     implementation 'com.intuit.sdp:sdp-android:1.0.6'
     implementation 'com.intuit.ssp:ssp-android:1.0.6'
+
+    implementation 'com.chaos.view:pinview:1.4.4'
 
 }

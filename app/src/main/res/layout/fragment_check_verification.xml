@@ -4,8 +4,9 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/colorPrimaryLighter"
+    android:background="@color/colorPrimaryDark"
     android:clickable="true"
+    android:layoutDirection="rtl"
     tools:context=".fragment.CheckVerificationFragment">
 
     <LinearLayout
@@ -15,76 +16,63 @@
         android:gravity="center"
         android:orientation="vertical">
 
-        <RelativeLayout
-            android:id="@+id/rlActionBar"
-            android:layout_width="match_parent"
-            android:layout_height="?android:attr/actionBarSize"
-            android:background="#792ca9"
-            android:layoutDirection="ltr">
-
-            <LinearLayout
-                android:id="@+id/llChangeNumber"
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:background="@drawable/bg_ripple"
-                android:clickable="true">
-
-                <ImageView
-                    android:layout_width="30dp"
-                    android:layout_height="match_parent"
-                    android:layout_marginLeft="10dp"
-                    android:padding="5dp"
-                    android:src="@drawable/ic_back" />
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:gravity="center"
-                    android:text="تغییر شماره"
-                    android:textColor="@color/colorWhite"
-                    android:textSize="14sp"
-                    android:textStyle="bold" />
-
-            </LinearLayout>
-
-        </RelativeLayout>
-
-        <LinearLayout
+        <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:layout_weight="2"
-            android:gravity="center"
-            android:orientation="vertical">
+            android:layout_weight="1">
 
             <ImageView
-                android:layout_width="@dimen/_100sdp"
-                android:layout_height="@dimen/_100sdp"
-                android:src="@drawable/ic_mobile_verification" />
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:gravity="center"
-                android:padding="5dp"
-                android:text="کد احراز هویت شما چیست؟"
-                android:textSize="@dimen/_14ssp"
-                android:textColor="@color/colorBlack" />
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/_50sdp"
+                android:background="@drawable/header_main"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent" />
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:gravity="center"
                 android:orientation="horizontal"
-                android:padding="10dp">
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                tools:ignore="MissingConstraints">
 
-                <TextView
-                    android:id="@+id/txtPhoneNumber"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:gravity="center"
-                    android:text="09015693808"
-                    android:textSize="@dimen/_12ssp"
-                    android:textColor="@color/colorPrimary" />
+                <ImageView
+                    android:id="@+id/imgProfile"
+                    android:layout_width="100dp"
+                    android:layout_height="100dp"
+                    android:background="@drawable/bg_circle"
+                    android:src="@drawable/ic_operator_user" />
+
+            </LinearLayout>
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <LinearLayout
+            android:id="@+id/llOperation"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="5"
+            android:gravity="center"
+            android:background="@color/colorPrimary"
+            android:orientation="vertical"
+            android:paddingLeft="50dp"
+            android:paddingRight="50dp">
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1"/>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:orientation="horizontal"
+                android:padding="5dp">
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -92,36 +80,131 @@
                     android:layout_marginLeft="5dp"
                     android:layout_marginRight="5dp"
                     android:gravity="center"
-                    android:text="ارسال شده به"
-                    android:textSize="@dimen/_12ssp"
-                    android:textColor="@color/colorBlack" />
+                    android:text="کد ارسال شده به شماره "
+                    android:textSize="@dimen/_10ssp"
+                    android:textColor="@color/grayDark" />
+
+                <TextView
+                    android:id="@+id/txtPhoneNumber"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:text="09015693808"
+                    android:textSize="@dimen/_10ssp"
+                    android:textColor="@color/colorAccent" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="5dp"
+                    android:layout_marginRight="5dp"
+                    android:gravity="center"
+                    android:text="را وارد کنید."
+                    android:textSize="@dimen/_10ssp"
+                    android:textColor="@color/grayDark" />
 
             </LinearLayout>
 
-        </LinearLayout>
+            <com.chaos.view.PinView
+                android:id="@+id/pin"
+                style="@style/PinWidget.PinView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:cursorVisible="true"
+                android:layout_margin="@dimen/_10sdp"
+                android:elevation="@dimen/_5sdp"
+                android:gravity="center"
+                android:inputType="number"
+                android:itemBackground="@drawable/edit_text_style"
+                android:textColor="@color/colorBlack"
+                android:textSize="30sp"
+                android:textStyle="bold"
+                app:cursorColor="@color/colorAccent"
+                app:cursorWidth="2dp"
+                app:hideLineWhenFilled="false"
+                app:itemCount="5"
+                app:itemHeight="48dp"
+                app:itemRadius="8dp"
+                app:itemSpacing="12dp"
+                app:itemWidth="48dp"
+                app:lineWidth="0dp"
+                app:viewType="rectangle" />
 
-        <LinearLayout
-            android:id="@+id/llOperation"
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="3"
-            android:gravity="center"
-            android:orientation="vertical"
-            android:paddingLeft="50dp"
-            android:paddingRight="50dp">
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1"/>
 
-            <ir.taxi1880.operatormanagement.customView.PinEntryEditText
-                android:id="@+id/edtCode"
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:cursorVisible="false"
-                android:digits="1234567890"
-                android:inputType="number"
-                android:maxLength="5"
-                android:maxLines="1"
-                android:nextFocusDown="@id/btnEnter"
-                android:textIsSelectable="false"
-                android:textSize="@dimen/_30ssp" />
+                android:gravity="center"
+                android:orientation="horizontal">
+
+                <ImageView
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="0.25" />
+
+                <ViewFlipper
+                    android:id="@+id/vfEnter"
+                    android:layout_width="0dp"
+                    android:layout_height="50dp"
+                    android:layout_weight="0.75"
+                    android:background="@drawable/bg_light_pink_edge">
+
+                    <Button
+                        android:id="@+id/btnEnter"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_gravity="center"
+                        android:background="@android:color/transparent"
+                        android:gravity="center"
+                        android:text="ورود"
+                        android:textColor="@color/colorWhite"
+                        android:textSize="@dimen/_20ssp" />
+
+                    <com.wang.avi.AVLoadingIndicatorView
+                        android:layout_width="30dp"
+                        android:layout_height="30dp"
+                        android:layout_gravity="center"
+                        app:indicatorColor="@color/colorWhite" />
+
+                </ViewFlipper>
+
+                <ImageView
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="0.25" />
+
+            </LinearLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1"/>
+
+            <LinearLayout
+                android:id="@+id/llChangeNumber"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:orientation="horizontal">
+
+                <ImageView
+                    android:layout_width="@dimen/_30sdp"
+                    android:layout_height="@dimen/_30sdp"
+                    android:padding="@dimen/_8sdp"
+                    android:src="@drawable/ic_mobile"/>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="@dimen/_14ssp"
+                    android:textColor="@color/colorPrimaryDark"
+                    android:text="همراه جدید"/>
+
+            </LinearLayout>
 
             <ViewFlipper
                 android:id="@+id/vfTime"
@@ -139,8 +222,8 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:gravity="center"
-                        android:text=" ثانیه"
-                        android:textColor="@color/colorBlack"
+                        android:text="تلاش مجدد پس از : "
+                        android:textColor="@color/colorPrimaryDark"
                         android:textSize="@dimen/_11ssp" />
 
                     <TextView
@@ -148,15 +231,15 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:gravity="center"
-                        android:textColor="@color/colorPrimary"
+                        android:textColor="@color/colorAccent"
                         android:textSize="@dimen/_11ssp" />
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:gravity="center"
-                        android:text="تلاش مجدد برای ارسال کد پس از : "
-                        android:textColor="@color/colorBlack"
+                        android:text=" ثانیه"
+                        android:textColor="@color/colorPrimaryDark"
                         android:textSize="@dimen/_11ssp" />
 
                 </LinearLayout>
@@ -192,51 +275,6 @@
                     app:indicatorColor="@color/colorPrimaryDark" />
 
             </ViewFlipper>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="0dp"
-                android:layout_weight="1"
-                android:gravity="center"
-                android:orientation="horizontal">
-
-                <ImageView
-                    android:layout_width="0dp"
-                    android:layout_height="match_parent"
-                    android:layout_weight="0.25" />
-
-                <ViewFlipper
-                    android:id="@+id/vfEnter"
-                    android:layout_width="0dp"
-                    android:layout_height="50dp"
-                    android:layout_weight="1.5"
-                    android:background="@drawable/bg_light_pink_edge">
-
-                    <Button
-                        android:id="@+id/btnEnter"
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:layout_gravity="center"
-                        android:background="@android:color/transparent"
-                        android:gravity="center"
-                        android:text="ورود"
-                        android:textColor="@color/colorWhite"
-                        android:textSize="@dimen/_20ssp" />
-
-                    <com.wang.avi.AVLoadingIndicatorView
-                        android:layout_width="30dp"
-                        android:layout_height="30dp"
-                        android:layout_gravity="center"
-                        app:indicatorColor="@color/colorWhite" />
-
-                </ViewFlipper>
-
-                <ImageView
-                    android:layout_width="0dp"
-                    android:layout_height="match_parent"
-                    android:layout_weight="0.25" />
-
-            </LinearLayout>
 
         </LinearLayout>
 

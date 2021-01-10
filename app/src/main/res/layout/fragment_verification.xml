@@ -4,44 +4,58 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/colorPrimaryLighter"
+    android:background="@color/colorPrimaryDark"
     android:clickable="true"
     android:gravity="center"
     android:orientation="vertical"
     tools:context=".fragment.VerificationFragment">
 
-    <LinearLayout
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:gravity="center"
-        android:orientation="vertical"
         android:layout_weight="1">
 
         <ImageView
-            android:layout_width="@dimen/_100sdp"
-            android:layout_height="@dimen/_100sdp"
-            android:src="@drawable/ic_send" />
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/_50sdp"
+            android:background="@drawable/header_main"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent" />
 
-        <TextView
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="center"
-            android:textSize="@dimen/_13ssp"
-            android:textColor="@color/colorBlack"
-            android:text="ما یک کد فعالسازی به شماره زیر ارسال خواهیم کرد."/>
+            android:orientation="horizontal"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:ignore="MissingConstraints">
 
-    </LinearLayout>
+            <ImageView
+                android:id="@+id/imgProfile"
+                android:layout_width="100dp"
+                android:layout_height="100dp"
+                android:background="@drawable/bg_circle"
+                android:src="@drawable/ic_operator_user" />
+
+        </LinearLayout>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="3"
+        android:layout_weight="5"
+        android:background="@color/colorPrimary"
         android:fillViewport="true">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-              android:orientation="vertical">
+            android:orientation="vertical">
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -53,29 +67,34 @@
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="20dp"
+                    android:layout_margin="10dp"
+                    android:elevation="5dp"
                     android:gravity="center"
                     android:orientation="vertical">
 
                     <TextView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="شماره همراه"
-                        android:padding="@dimen/_3sdp"
-                        android:textColor="@color/colorPrimary"
-                        android:textSize="@dimen/_13ssp" />
+                        android:layout_marginRight="@dimen/_5sdp"
+                        android:gravity="right"
+                        android:padding="@dimen/_5sdp"
+                        android:text="@string/customerMobile"
+                        android:textColor="@color/grayMedium"
+                        android:textSize="@dimen/_15ssp" />
 
                     <EditText
                         android:id="@+id/edtMobileNumber"
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
+                        android:layout_height="40dp"
+                        android:layout_margin="@dimen/_5sdp"
+                        android:background="@drawable/edit_text_style"
+                        android:elevation="@dimen/_3sdp"
                         android:gravity="left|center_vertical"
-                        android:background="@drawable/bg_edit_text"
                         android:inputType="number"
-                        android:singleLine="true"
-                        android:padding="@dimen/_10sdp"
                         android:maxLength="11"
-                        android:textDirection="ltr"
+                        android:nextFocusDown="@id/edtMobile"
+                        android:padding="5dp"
+                        android:singleLine="true"
                         android:textAppearance="?android:attr/textAppearanceMedium"
                         android:textColor="@color/colorBlack" />
 
@@ -104,14 +123,13 @@
                     android:id="@+id/vfEnter"
                     android:layout_width="0dp"
                     android:layout_height="50dp"
-                    android:layout_weight="1.5"
+                    android:layout_weight="0.75"
                     android:background="@drawable/bg_light_pink_edge">
 
                     <Button
                         android:id="@+id/btnEnter"
                         android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:layout_gravity="center"
+                        android:layout_height="wrap_content"
                         android:background="@android:color/transparent"
                         android:gravity="center"
                         android:text="ورود"
