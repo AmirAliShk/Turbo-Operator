@@ -16,7 +16,7 @@
         android:layout_height="?android:attr/actionBarSize"
         android:orientation="horizontal"
         android:gravity="center_vertical"
-        android:background="#792ca9"
+        android:background="@color/colorPrimaryDark"
         android:layoutDirection="ltr">
 
         <ImageView
@@ -164,7 +164,7 @@
                     android:layout_height="wrap_content"
                     android:paddingRight="20dp"
                     android:paddingLeft="20dp"
-                    android:background="@drawable/bg_purple_gradient_edge"
+                    android:background="@drawable/bg_activate_status"
                     android:gravity="center"
                     android:layout_marginTop="50dp"
                     android:text="لغو جست و جو"

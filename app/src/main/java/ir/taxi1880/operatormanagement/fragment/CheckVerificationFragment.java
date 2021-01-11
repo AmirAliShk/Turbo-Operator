@@ -31,6 +31,7 @@ import ir.taxi1880.operatormanagement.app.EndPoints;
 import ir.taxi1880.operatormanagement.app.MyApplication;
 import ir.taxi1880.operatormanagement.customView.PinEntryEditText;
 import ir.taxi1880.operatormanagement.helper.FragmentHelper;
+import ir.taxi1880.operatormanagement.helper.KeyBoardHelper;
 import ir.taxi1880.operatormanagement.helper.TypefaceUtil;
 import ir.taxi1880.operatormanagement.okHttp.RequestHelper;
 import ir.taxi1880.operatormanagement.push.AvaCrashReporter;
@@ -81,6 +82,12 @@ public class CheckVerificationFragment extends Fragment {
 
     @BindView(R.id.vfEnter)
     ViewFlipper vfEnter;
+
+    @OnClick(R.id.llParent)
+    void onParent() {
+        KeyBoardHelper.hideKeyboard();
+    }
+
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {

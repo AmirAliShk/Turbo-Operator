@@ -72,6 +72,11 @@ public class LoginFragment extends Fragment {
         KeyBoardHelper.hideKeyboard();
     }
 
+    @OnClick(R.id.llParent)
+    void onParent() {
+        KeyBoardHelper.hideKeyboard();
+    }
+
     @OnClick(R.id.llEnterWithMobile)
     void onEnterWithMobile() {
         FragmentHelper.toFragment(MyApplication.currentActivity, new VerificationFragment()).setAddToBackStack(false).replace();
@@ -90,7 +95,7 @@ public class LoginFragment extends Fragment {
     }
 
     private void logIn(String username, String password) {
-        if (vfEnter != null){
+        if (vfEnter != null) {
             vfEnter.setDisplayedChild(1);
         }
         RequestHelper.builder(EndPoints.LOGIN)
@@ -120,12 +125,12 @@ public class LoginFragment extends Fragment {
                         MyApplication.prefManager.setAuthorization(data.getString("access_token"));
                         MyApplication.prefManager.setRefreshToken(data.getString("refresh_token"));
                         new SplashActivity().getAppInfo(b -> {
-                            if (vfEnter != null){
+                            if (vfEnter != null) {
                                 vfEnter.setDisplayedChild(0);
                             }
                         });
                     } else {
-                        if (vfEnter != null){
+                        if (vfEnter != null) {
                             vfEnter.setDisplayedChild(0);
                         }
                         new ErrorDialog()
@@ -142,7 +147,7 @@ public class LoginFragment extends Fragment {
                     }
 
                 } catch (Exception e) {
-                    if (vfEnter != null){
+                    if (vfEnter != null) {
                         vfEnter.setDisplayedChild(0);
                     }
                     e.printStackTrace();
@@ -154,7 +159,7 @@ public class LoginFragment extends Fragment {
         @Override
         public void onFailure(Runnable reCall, Exception e) {
             MyApplication.handler.post(() -> {
-                if (vfEnter != null){
+                if (vfEnter != null) {
                     vfEnter.setDisplayedChild(0);
                 }
             });

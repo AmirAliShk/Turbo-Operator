@@ -6,6 +6,7 @@
     android:layout_height="match_parent"
     android:background="@color/colorPrimaryDark"
     android:clickable="true"
+    android:id="@+id/llParent"
     android:layoutDirection="rtl"
     tools:context=".fragment.CheckVerificationFragment">
 
@@ -71,8 +72,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:gravity="center"
-                android:orientation="horizontal"
-                android:padding="5dp">
+                android:orientation="horizontal">
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -81,7 +81,7 @@
                     android:layout_marginRight="5dp"
                     android:gravity="center"
                     android:text="کد ارسال شده به شماره "
-                    android:textSize="@dimen/_10ssp"
+                    android:textSize="@dimen/_11ssp"
                     android:textColor="@color/grayDark" />
 
                 <TextView
@@ -90,7 +90,7 @@
                     android:layout_height="wrap_content"
                     android:gravity="center"
                     android:text="09015693808"
-                    android:textSize="@dimen/_10ssp"
+                    android:textSize="@dimen/_11ssp"
                     android:textColor="@color/colorAccent" />
 
                 <TextView
@@ -100,7 +100,7 @@
                     android:layout_marginRight="5dp"
                     android:gravity="center"
                     android:text="را وارد کنید."
-                    android:textSize="@dimen/_10ssp"
+                    android:textSize="@dimen/_11ssp"
                     android:textColor="@color/grayDark" />
 
             </LinearLayout>
@@ -115,13 +115,14 @@
                 android:elevation="@dimen/_5sdp"
                 android:gravity="center"
                 android:inputType="number"
-                android:itemBackground="@drawable/edit_text_style"
+                android:itemBackground="@drawable/bg_strock_corner"
                 android:textColor="@color/colorBlack"
                 android:textSize="30sp"
                 android:textStyle="bold"
                 app:cursorColor="@color/colorAccent"
                 app:cursorWidth="2dp"
-                app:hideLineWhenFilled="false"
+                app:lineColor="@color/grayLighter"
+                app:hideLineWhenFilled="true"
                 app:itemCount="5"
                 app:itemHeight="48dp"
                 app:itemRadius="8dp"
@@ -189,18 +190,24 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:gravity="center"
+                android:padding="@dimen/_10sdp"
+                android:background="@drawable/bg_ripple"
                 android:orientation="horizontal">
 
                 <ImageView
-                    android:layout_width="@dimen/_30sdp"
-                    android:layout_height="@dimen/_30sdp"
-                    android:padding="@dimen/_8sdp"
+                    android:layout_width="@dimen/_15sdp"
+                    android:layout_height="@dimen/_15sdp"
+                    android:layout_margin="@dimen/_5sdp"
+                    android:elevation="@dimen/_3sdp"
                     android:src="@drawable/ic_mobile"/>
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:textSize="@dimen/_14ssp"
+                    android:shadowDy="3"
+                    android:shadowRadius="3"
+                    android:shadowColor="@color/grayLighter"
                     android:textColor="@color/colorPrimaryDark"
                     android:text="همراه جدید"/>
 
@@ -223,24 +230,33 @@
                         android:layout_height="wrap_content"
                         android:gravity="center"
                         android:text="تلاش مجدد پس از : "
+                        android:shadowDy="3"
+                        android:shadowRadius="3"
+                        android:shadowColor="@color/grayLighter"
                         android:textColor="@color/colorPrimaryDark"
-                        android:textSize="@dimen/_11ssp" />
+                        android:textSize="@dimen/_14ssp" />
 
                     <TextView
                         android:id="@+id/txtResendCode"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:gravity="center"
+                        android:shadowDy="3"
+                        android:shadowRadius="5"
+                        android:shadowColor="@color/colorAccent"
                         android:textColor="@color/colorAccent"
-                        android:textSize="@dimen/_11ssp" />
+                        android:textSize="@dimen/_14ssp" />
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:gravity="center"
                         android:text=" ثانیه"
+                        android:shadowDy="3"
+                        android:shadowRadius="3"
+                        android:shadowColor="@color/grayLighter"
                         android:textColor="@color/colorPrimaryDark"
-                        android:textSize="@dimen/_11ssp" />
+                        android:textSize="@dimen/_14ssp" />
 
                 </LinearLayout>
 
@@ -260,8 +276,11 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="ارسال مجدد کد احراز هویت"
-                            android:textAppearance="?android:attr/textAppearanceSmall"
-                            android:textColor="#3F51B5" />
+                            android:textSize="@dimen/_14ssp"
+                            android:shadowDy="3"
+                            android:shadowRadius="3"
+                            android:shadowColor="@color/grayLighter"
+                            android:textColor="@color/colorPrimaryDark" />
 
                     </LinearLayout>
 

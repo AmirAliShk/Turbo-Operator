@@ -511,7 +511,7 @@ public class DateHelper {
   public static String strPersianTwo(Date date) {
     DateHelper util = new DateHelper();
     SolarCalendar sc = util.new SolarCalendar(date);
-    return String.format(new Locale("en_US"), "از %s %02d %s", sc.strWeekDay, sc.date, sc.strMonth);
+    return String.format(new Locale("en_US"), "%s %02d %s", sc.strWeekDay, sc.date, sc.strMonth);
   }
 
   /**
@@ -674,20 +674,15 @@ public class DateHelper {
    * jalali date input
    *
    * @param date intput type 1373/02/09
-   * @param time intput type 12:16:12
    * @return
    */
-  public static Date parseDate(String date, String time) {
+  public static Date parseDate(String date) {
     String[] date1 = date.split("/");
-    String[] time1 = time.split(":");
 
     Date d = DateHelper.jalaliToGregorian(new YearMonthDate(
             Integer.parseInt(date1[0])
             , Integer.parseInt(date1[1])
-            , Integer.parseInt(date1[2])
-            , Integer.parseInt(time1[0])
-            , Integer.parseInt(time1[1])
-            , Integer.parseInt(time1[2])));
+            , Integer.parseInt(date1[2])));
     return d;
   }
 }

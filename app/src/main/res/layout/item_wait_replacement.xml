@@ -19,7 +19,6 @@
             android:layout_height="wrap_content"
             android:layout_margin="5dp"
             android:background="@drawable/bg_edit_text"
-            android:elevation="3dp"
             android:layoutDirection="rtl"
             android:orientation="vertical"
             android:paddingTop="10dp"
@@ -74,7 +73,6 @@
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
                         android:gravity="center"
-                        android:text="1398/08/10"
                         android:textColor="#424242"
                         android:textSize="@dimen/text_title" />
 
@@ -98,7 +96,7 @@
                         <ImageView
                             android:layout_width="25dp"
                             android:layout_height="25dp"
-                            android:src="@drawable/ic_time" />
+                            android:src="@drawable/ic_timer" />
 
                         <ImageView
                             android:layout_width="10dp"
@@ -120,7 +118,6 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:gravity="center"
-                        android:text="صبح"
                         android:textColor="@color/grayDark"
                         android:textSize="@dimen/text_title" />
 
@@ -166,7 +163,6 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:gravity="center"
-                        android:text="فاطمه نوری"
                         android:textColor="@color/grayDark"
                         android:textSize="@dimen/text_title" />
 

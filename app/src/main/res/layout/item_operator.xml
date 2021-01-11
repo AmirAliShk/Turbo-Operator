@@ -19,7 +19,6 @@
             android:layout_width="0dp"
             android:layout_weight="1"
             android:layout_height="match_parent"
-            android:text="فاطمه نوری"
             android:gravity="right"
             android:textColor="@color/colorBlack"
             android:textSize="@dimen/text_title" />
@@ -29,7 +28,6 @@
             android:layout_width="0dp"
             android:layout_weight="1"
             android:layout_height="match_parent"
-            android:text="صبح"
             android:gravity="right"
             android:textColor="@color/colorBlack"
             android:textSize="@dimen/text_title" />

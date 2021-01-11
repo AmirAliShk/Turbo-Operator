@@ -7,6 +7,7 @@ import android.util.Log;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -28,6 +29,8 @@ import ir.taxi1880.operatormanagement.fragment.BestsFragment;
 import ir.taxi1880.operatormanagement.fragment.MessageFragment;
 import ir.taxi1880.operatormanagement.fragment.NotificationFragment;
 import ir.taxi1880.operatormanagement.helper.FragmentHelper;
+import ir.taxi1880.operatormanagement.helper.KeyBoardHelper;
+import ir.taxi1880.operatormanagement.helper.StringHelper;
 import ir.taxi1880.operatormanagement.helper.TypefaceUtil;
 import ir.taxi1880.operatormanagement.push.AvaCrashReporter;
 
@@ -43,6 +46,9 @@ public class MainActivity extends AppCompatActivity implements NotificationFragm
 
     @BindView(R.id.tabMain)
     TabLayout tabLayout;
+
+    @BindView(R.id.txtBadgeCount)
+    TextView txtBadgeCount;
 
     @OnClick(R.id.imgNotification)
     void onNotification() {
@@ -78,36 +84,18 @@ public class MainActivity extends AppCompatActivity implements NotificationFragm
         vpMain.setAdapter(mainViewPagerAdapter);
 
         new TabLayoutMediator(tabLayout, vpMain, (tab, position) -> {
-            if (position == 0) {
-                tab.setIcon(R.drawable.ic_home_selected);
-            } else {
-                tab.setIcon(R.drawable.ic_menu_unselected);
-            }
+            tab.setCustomView(mainViewPagerAdapter.getTabView(position));
         }).attach();
 
         tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
             @Override
             public void onTabSelected(TabLayout.Tab tab) {
-                switch (tab.getPosition()) {
-                    case 0:
-                        tab.setIcon(R.drawable.ic_home_selected);
-                        break;
-                    case 1:
-                        tab.setIcon(R.drawable.ic_menu_selected);
-                        break;
-                }
+               mainViewPagerAdapter.setSelectView(tabLayout,tab.getPosition(),"select");
             }
 
             @Override
             public void onTabUnselected(TabLayout.Tab tab) {
-                switch (tab.getPosition()) {
-                    case 0:
-                        tab.setIcon(R.drawable.ic_home_unselected);
-                        break;
-                    case 1:
-                        tab.setIcon(R.drawable.ic_menu_unselected);
-                        break;
-                }
+                mainViewPagerAdapter.setSelectView(tabLayout,tab.getPosition(),"unSelect");
             }
 
             @Override
@@ -115,6 +103,13 @@ public class MainActivity extends AppCompatActivity implements NotificationFragm
 
             }
         });
+
+        if (MyApplication.prefManager.getCountNotification() == 0) {
+            txtBadgeCount.setVisibility(View.GONE);
+        } else {
+            txtBadgeCount.setVisibility(View.VISIBLE);
+            txtBadgeCount.setText(StringHelper.toPersianDigits(MyApplication.prefManager.getCountNotification() + ""));
+        }
     }
 
     @Override
@@ -167,6 +162,7 @@ public class MainActivity extends AppCompatActivity implements NotificationFragm
     public void onBackPressed() {
 
         try {
+            KeyBoardHelper.hideKeyboard();
             if (getFragmentManager().getBackStackEntryCount() > 0 || getSupportFragmentManager().getBackStackEntryCount() > 0) {
                 super.onBackPressed();
             } else {
@@ -189,5 +185,11 @@ public class MainActivity extends AppCompatActivity implements NotificationFragm
 
     @Override
     public void refreshNotification() {
+        if (MyApplication.prefManager.getCountNotification() == 0) {
+            txtBadgeCount.setVisibility(View.GONE);
+        } else {
+            txtBadgeCount.setVisibility(View.VISIBLE);
+            txtBadgeCount.setText(StringHelper.toPersianDigits(MyApplication.prefManager.getCountNotification() + ""));
+        }
     }
 }

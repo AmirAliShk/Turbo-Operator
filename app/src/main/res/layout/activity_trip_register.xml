@@ -279,8 +279,6 @@
                                 android:background="@drawable/edit_text_style"
                                 android:dropDownWidth="match_parent"
                                 android:gravity="center"
-                                android:layout_margin="@dimen/_5sdp"
-                                android:elevation="@dimen/_4sdp"
                                 android:paddingTop="5dp"
                                 android:paddingBottom="5dp" />
 
@@ -323,8 +321,6 @@
                             android:gravity="left|center_vertical"
                             android:inputType="number"
                             android:maxLength="11"
-                            android:layout_margin="@dimen/_5sdp"
-                            android:elevation="@dimen/_4sdp"
                             android:nextFocusDown="@id/edtMobile"
                             android:padding="5dp"
                             android:singleLine="true"
@@ -356,8 +352,6 @@
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
                             android:background="@drawable/bg_strock_corner"
-                            android:layout_margin="@dimen/_5sdp"
-                            android:elevation="@dimen/_4sdp"
                             android:gravity="center">
 
                             <ImageView
@@ -527,7 +521,7 @@
 
                 <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="50dp"
+                    android:layout_height="40dp"
                     android:clickable="true"
                     android:focusable="true"
                     android:gravity="center_vertical"
@@ -536,8 +530,6 @@
                     <LinearLayout
                         android:id="@+id/llSearchAddress"
                         android:layout_width="50dp"
-                        android:layout_margin="@dimen/_5sdp"
-                        android:elevation="@dimen/_4sdp"
                         android:layout_height="match_parent"
                         android:background="@drawable/edit_text_style">
 
@@ -583,8 +575,6 @@
                             android:layout_weight="1"
                             android:background="@drawable/edit_text_style"
                             android:enabled="false"
-                            android:layout_margin="@dimen/_5sdp"
-                            android:elevation="@dimen/_4sdp"
                             android:nextFocusDown="@id/edtFamily"
                             android:paddingLeft="35dp"
                             android:paddingRight="5dp"
@@ -938,7 +928,7 @@
                                 android:layout_width="0dp"
                                 android:layout_height="wrap_content"
                                 android:layout_weight="1"
-                                android:buttonTint="@color/colorPrimaryDark"
+                                android:buttonTint="@color/colorAccent"
                                 android:text="@string/economically"
                                 android:textAppearance="?android:attr/textAppearanceSmall" />
 
@@ -947,7 +937,7 @@
                                 android:layout_width="0dp"
                                 android:layout_height="wrap_content"
                                 android:layout_weight="1"
-                                android:buttonTint="@color/colorPrimaryDark"
+                                android:buttonTint="@color/colorAccent"
                                 android:text="@string/privilege"
                                 android:textAppearance="?android:attr/textAppearanceSmall" />
 
@@ -963,7 +953,7 @@
                                 android:layout_width="0dp"
                                 android:layout_height="wrap_content"
                                 android:layout_weight="1"
-                                android:buttonTint="@color/colorPrimaryDark"
+                                android:buttonTint="@color/colorAccent"
                                 android:text="@string/taxi"
                                 android:textAppearance="?android:attr/textAppearanceSmall" />
 
@@ -972,7 +962,7 @@
                                 android:layout_width="0dp"
                                 android:layout_height="wrap_content"
                                 android:layout_weight="2"
-                                android:buttonTint="@color/colorPrimaryDark"
+                                android:buttonTint="@color/colorAccent"
                                 android:text="@string/formality"
                                 android:textAppearance="?android:attr/textAppearanceSmall" />
 
@@ -1064,11 +1054,10 @@
                     android:layout_width="0dp"
                     android:layout_height="?android:attr/actionBarSize"
                     android:layout_weight="1"
-                    android:background="@drawable/bg_activate_status"
+                    android:background="@drawable/bg_strock_corner"
                     android:text="گزینه ها"
-                    android:textColor="@color/colorWhite"
-                    android:textSize="@dimen/text_header"
-                    android:textStyle="bold" />
+                    android:textColor="@color/colorBlack"
+                    android:textSize="@dimen/text_header" />
 
             </LinearLayout>
 

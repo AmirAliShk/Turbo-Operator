@@ -113,6 +113,8 @@
     <string name="wrong">اشتباه</string>
     <string name="day">روز</string>
     <string name="enter">ورود</string>
+    <string name="mobile">شماره موبایل</string>
+    <string name="accountInfo">اطلاعات حساب</string>
 
 
 </resources>

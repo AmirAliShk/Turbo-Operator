@@ -373,7 +373,7 @@ public class DeterminationPageFragment extends Fragment {
         btnActivate.setBackgroundResource(R.drawable.bg_green_edge);
       if (btnDeActivate != null) {
         btnDeActivate.setBackgroundColor(Color.parseColor("#00FFB2B2"));
-        btnDeActivate.setTextColor(Color.parseColor("#000000"));
+        btnDeActivate.setTextColor(Color.parseColor("#ffffff"));
       }
     } else {
       dataBase.deleteAllData();

@@ -19,7 +19,6 @@
             android:layout_height="match_parent"
             android:background="@drawable/bg_edit_text"
             android:layout_margin="5dp"
-            android:elevation="3dp"
             android:orientation="vertical"
             android:padding="10dp">
 
@@ -87,7 +86,8 @@
                     android:layout_width="wrap_content"
                     android:layout_height="40dp"
                     android:layout_centerInParent="true"
-                    android:layout_margin="5dp"
+                    android:layout_margin="8dp"
+                    android:elevation="@dimen/_4sdp"
                     android:background="@drawable/bg_light_pink_edge"
                     android:paddingLeft="40dp"
                     android:paddingRight="40dp"

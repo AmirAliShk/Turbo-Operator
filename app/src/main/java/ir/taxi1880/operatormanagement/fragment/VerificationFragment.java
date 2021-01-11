@@ -36,11 +36,11 @@ public class VerificationFragment extends Fragment {
     @BindView(R.id.edtMobileNumber)
     EditText edtMobileNumber;
 
-    @BindView(R.id.vfEnter)
-    ViewFlipper vfEnter;
+    @BindView(R.id.vfSend)
+    ViewFlipper vfSend;
 
-    @OnClick(R.id.btnEnter)
-    void onPressEnter() {
+    @OnClick(R.id.btnSend)
+    void onSend() {
         mobileNumber = edtMobileNumber.getText().toString();
 
         if (mobileNumber.isEmpty()) {
@@ -59,13 +59,19 @@ public class VerificationFragment extends Fragment {
         verification(mobileNumber);
     }
 
-    @OnClick(R.id.txtAnotherWayToLogin)
-    void onPressAnotherWayToLogin() {
+    @OnClick(R.id.llEnterWithUserName)
+    void onEnterWithUserName() {
         FragmentHelper
                 .toFragment(MyApplication.currentActivity, new LoginFragment())
                 .setAddToBackStack(false)
                 .replace();
     }
+
+    @OnClick(R.id.llParent)
+    void onParent() {
+        KeyBoardHelper.hideKeyboard();
+    }
+
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -78,8 +84,8 @@ public class VerificationFragment extends Fragment {
     }
 
     private void verification(String phoneNumber) {
-        if (vfEnter != null) {
-            vfEnter.setDisplayedChild(1);
+        if (vfSend != null) {
+            vfSend.setDisplayedChild(1);
         }
 
         RequestHelper.builder(EndPoints.VERIFICATION)
@@ -110,12 +116,12 @@ public class VerificationFragment extends Fragment {
                     }
                     MyApplication.Toast(message, Toast.LENGTH_SHORT);
 
-                    if (vfEnter != null) {
-                        vfEnter.setDisplayedChild(0);
+                    if (vfSend != null) {
+                        vfSend.setDisplayedChild(0);
                     }
                 } catch (Exception e) {
-                    if (vfEnter != null) {
-                        vfEnter.setDisplayedChild(0);
+                    if (vfSend != null) {
+                        vfSend.setDisplayedChild(0);
                     }
                     e.printStackTrace();
                     AvaCrashReporter.send(e, "VerificationFragment class, onVerificationCallBack onResponse method");
@@ -126,8 +132,8 @@ public class VerificationFragment extends Fragment {
         @Override
         public void onFailure(Runnable reCall, Exception e) {
             MyApplication.handler.post(() -> {
-                if (vfEnter != null) {
-                    vfEnter.setDisplayedChild(0);
+                if (vfSend != null) {
+                    vfSend.setDisplayedChild(0);
                 }
             });
         }

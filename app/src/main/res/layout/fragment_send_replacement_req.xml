@@ -12,7 +12,7 @@
         android:id="@+id/rlActionBar"
         android:layout_width="match_parent"
         android:layout_height="?android:attr/actionBarSize"
-        android:background="#792ca9"
+        android:background="@color/colorPrimaryDark"
         android:layoutDirection="ltr">
 
         <ImageView

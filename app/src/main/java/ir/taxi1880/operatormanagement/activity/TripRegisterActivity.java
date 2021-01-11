@@ -101,10 +101,7 @@ public class TripRegisterActivity extends AppCompatActivity {
 
     @OnClick(R.id.imgBack)
     void onBack() {
-        KeyBoardHelper.hideKeyboard();
-
         MyApplication.currentActivity.onBackPressed();
-
     }
 
     @BindView(R.id.spCity)
@@ -1713,6 +1710,7 @@ public class TripRegisterActivity extends AppCompatActivity {
     @Override
     public void onBackPressed() {
         try {
+            KeyBoardHelper.hideKeyboard();
             if (getFragmentManager().getBackStackEntryCount() > 0 || getSupportFragmentManager().getBackStackEntryCount() > 0) {
                 super.onBackPressed();
             } else {

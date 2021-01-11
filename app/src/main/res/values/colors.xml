@@ -11,14 +11,16 @@
 <!--    <color name="transparent">#00424242</color>-->
 
     <color name="colorPrimary">#ebeff0</color>
+    <color name="shadow">#5CEBEFF0</color>
     <color name="colorPrimaryDark">#381f60</color>
     <color name="colorPrimaryLight">#868a99</color>
-    <color name="colorPrimaryLighter">#EEE9F1</color>
+    <color name="colorPrimaryLighter">#ebeff0</color>
     <color name="colorLightPurple">#a192aa</color>
     <color name="colorAccent">#ff6461</color>
     <color name="colorWhite">#ffffff</color>
     <color name="colorBlack">#000000</color>
     <color name="grayLight">#a4a2ab</color>
+    <color name="grayLighter">#C5C4CC</color>
     <color name="grayMedium">#777579</color>
     <color name="grayDark">#424242</color>
     <color name="transparent">#00424242</color>

@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:layoutDirection="rtl"
     android:background="@color/colorPrimaryDark"
     android:orientation="vertical">
 
@@ -21,6 +22,7 @@
             app:layout_constraintRight_toRightOf="parent" />
 
         <LinearLayout
+            android:id="@+id/llHeaderIcons"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="center"
@@ -38,14 +40,13 @@
                 android:layout_weight="1.5" />
 
             <ImageView
-                android:id="@+id/imgNotification"
-                android:layout_width="60dp"
-                android:layout_height="60dp"
+                android:id="@+id/imgMessage"
+                android:layout_width="80dp"
+                android:layout_height="80dp"
                 android:layout_margin="@dimen/_5sdp"
-                android:background="@drawable/bg_circle_accent"
-                android:elevation="5dp"
-                android:padding="10dp"
-                android:src="@drawable/ic_notification" />
+                android:background="@drawable/circle_shadow"
+                android:padding="18dp"
+                android:src="@drawable/ic_message" />
 
             <View
                 android:layout_width="0dp"
@@ -65,14 +66,13 @@
                 android:layout_weight="1" />
 
             <ImageView
-                android:id="@+id/imgMessage"
-                android:layout_width="60dp"
-                android:layout_height="60dp"
-                android:layout_margin="@dimen/_10sdp"
-                android:background="@drawable/bg_circle_accent"
-                android:padding="10dp"
-                android:elevation="@dimen/_5sdp"
-                android:src="@drawable/ic_message" />
+                android:id="@+id/imgNotification"
+                android:layout_width="80dp"
+                android:layout_height="80dp"
+                android:layout_margin="@dimen/_5sdp"
+                android:background="@drawable/circle_shadow"
+                android:padding="15dp"
+                android:src="@drawable/ic_notification" />
 
             <View
                 android:layout_width="0dp"
@@ -80,6 +80,22 @@
                 android:layout_weight="1.5" />
 
         </LinearLayout>
+
+        <TextView
+            android:id="@+id/txtBadgeCount"
+            android:layout_width="25dp"
+            android:layout_height="25dp"
+            android:background="@drawable/bg_badge"
+            android:gravity="center"
+            android:text="1"
+            app:layout_constraintTop_toTopOf="@id/llHeaderIcons"
+            app:layout_constraintLeft_toLeftOf="@id/llHeaderIcons"
+            app:layout_constraintBottom_toBottomOf="@id/llHeaderIcons"
+            android:layout_marginLeft="@dimen/_40sdp"
+            android:layout_marginBottom="@dimen/_40sdp"
+            android:elevation="@dimen/_5sdp"
+            android:textColor="@color/colorWhite"
+            android:visibility="gone" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -96,7 +112,7 @@
         android:layout_height="0dp"
         android:background="@color/colorPrimary"
         android:gravity="center"
-        android:layout_weight="0.75">
+        android:layout_weight="1">
 
         <com.google.android.material.tabs.TabLayout
             android:id="@+id/tabMain"
@@ -104,8 +120,8 @@
             android:layout_height="match_parent"
             android:layout_gravity="center"
             android:layoutDirection="rtl"
-            app:tabIndicatorHeight="0dp"
-            app:tabIndicatorColor="@color/transparent"
+            app:tabIndicatorHeight="0.5dp"
+            app:tabIndicatorColor="@color/colorAccent"
             app:tabGravity="center"
             app:tabMode="scrollable" />
 

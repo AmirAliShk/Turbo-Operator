@@ -7,6 +7,8 @@
     android:background="@color/colorPrimaryDark"
     android:clickable="true"
     android:gravity="center"
+    android:layoutDirection="rtl"
+    android:id="@+id/llParent"
     android:orientation="vertical"
     tools:context=".fragment.VerificationFragment">
 
@@ -45,62 +47,25 @@
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
-    <ScrollView
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="5"
         android:background="@color/colorPrimary"
-        android:fillViewport="true">
+        android:orientation="horizontal">
+
+        <View
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="0.5" />
 
         <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical">
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:gravity="center"
-                android:orientation="vertical"
-                android:padding="50dp">
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_margin="10dp"
-                    android:elevation="5dp"
-                    android:gravity="center"
-                    android:orientation="vertical">
-
-                    <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginRight="@dimen/_5sdp"
-                        android:gravity="right"
-                        android:padding="@dimen/_5sdp"
-                        android:text="@string/customerMobile"
-                        android:textColor="@color/grayMedium"
-                        android:textSize="@dimen/_15ssp" />
-
-                    <EditText
-                        android:id="@+id/edtMobileNumber"
-                        android:layout_width="match_parent"
-                        android:layout_height="40dp"
-                        android:layout_margin="@dimen/_5sdp"
-                        android:background="@drawable/edit_text_style"
-                        android:elevation="@dimen/_3sdp"
-                        android:gravity="left|center_vertical"
-                        android:inputType="number"
-                        android:maxLength="11"
-                        android:nextFocusDown="@id/edtMobile"
-                        android:padding="5dp"
-                        android:singleLine="true"
-                        android:textAppearance="?android:attr/textAppearanceMedium"
-                        android:textColor="@color/colorBlack" />
-
-                </LinearLayout>
-
-            </LinearLayout>
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="5"
+            android:gravity="center"
+            android:orientation="vertical"
+            android:padding="@dimen/_10sdp">
 
             <View
                 android:layout_width="match_parent"
@@ -109,45 +74,38 @@
 
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="0dp"
-                android:layout_weight="1"
-                android:gravity="bottom"
-                android:orientation="horizontal">
+                android:layout_height="wrap_content"
+                android:layout_margin="10dp"
+                android:elevation="5dp"
+                android:gravity="center"
+                android:orientation="vertical">
 
-                <ImageView
-                    android:layout_width="0dp"
-                    android:layout_height="match_parent"
-                    android:layout_weight="0.5" />
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginRight="@dimen/_5sdp"
+                    android:gravity="right"
+                    android:padding="@dimen/_5sdp"
+                    android:text="@string/mobile"
+                    android:textColor="@color/grayMedium"
+                    android:textSize="@dimen/_15ssp" />
 
-                <ViewFlipper
-                    android:id="@+id/vfEnter"
-                    android:layout_width="0dp"
+                <EditText
+                    android:id="@+id/edtMobileNumber"
+                    android:layout_width="match_parent"
                     android:layout_height="50dp"
-                    android:layout_weight="0.75"
-                    android:background="@drawable/bg_light_pink_edge">
-
-                    <Button
-                        android:id="@+id/btnEnter"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:background="@android:color/transparent"
-                        android:gravity="center"
-                        android:text="ورود"
-                        android:textColor="@color/colorWhite"
-                        android:textSize="@dimen/_20ssp" />
-
-                    <com.wang.avi.AVLoadingIndicatorView
-                        android:layout_width="30dp"
-                        android:layout_height="30dp"
-                        android:layout_gravity="center"
-                        app:indicatorColor="@color/colorWhite" />
-
-                </ViewFlipper>
-
-                <ImageView
-                    android:layout_width="0dp"
-                    android:layout_height="match_parent"
-                    android:layout_weight="0.5" />
+                    android:layout_margin="@dimen/_5sdp"
+                    android:background="@drawable/edit_text_style"
+                    android:elevation="@dimen/_3sdp"
+                    android:gravity="left|center_vertical"
+                    android:inputType="number"
+                    android:maxLength="11"
+                    android:textDirection="ltr"
+                    android:nextFocusDown="@id/edtMobile"
+                    android:padding="5dp"
+                    android:singleLine="true"
+                    android:textAppearance="?android:attr/textAppearanceMedium"
+                    android:textColor="@color/colorBlack" />
 
             </LinearLayout>
 
@@ -156,20 +114,72 @@
                 android:layout_height="0dp"
                 android:layout_weight="1" />
 
-            <TextView
-                android:id="@+id/txtAnotherWayToLogin"
+            <ViewFlipper
+                android:id="@+id/vfSend"
+                android:layout_width="wrap_content"
+                android:layout_height="50dp"
+                android:background="@drawable/bg_light_pink_edge">
+
+                <Button
+                    android:id="@+id/btnSend"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:paddingLeft="@dimen/_50sdp"
+                    android:paddingRight="@dimen/_50sdp"
+                    android:background="@color/transparent"
+                    android:text="ارسال کد"
+                    android:textColor="@color/colorWhite"
+                    android:textSize="@dimen/_20ssp"
+                    android:textStyle="bold" />
+
+                <com.wang.avi.AVLoadingIndicatorView
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:layout_gravity="center"
+                    app:indicatorColor="@color/colorWhite" />
+
+            </ViewFlipper>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1" />
+
+            <LinearLayout
+                android:id="@+id/llEnterWithUserName"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_gravity="bottom"
-                android:background="@drawable/bg_ripple"
                 android:gravity="center"
-                android:padding="30dp"
-                android:text="ورود از طریق نام کاربری و رمزعبور"
-                android:textColor="@color/colorPrimary"
-                android:textSize="@dimen/_12ssp" />
+                android:padding="@dimen/_10sdp"
+                android:background="@drawable/bg_ripple"
+                android:orientation="horizontal">
+
+                <ImageView
+                    android:layout_width="@dimen/_15sdp"
+                    android:layout_height="@dimen/_15sdp"
+                    android:layout_margin="@dimen/_5sdp"
+                    android:elevation="@dimen/_3sdp"
+                    android:src="@drawable/ic_mobile" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="ورود با نام کاربری و رمز عبور"
+                    android:textColor="@color/colorPrimaryDark"
+                    android:shadowDy="3"
+                    android:shadowRadius="3"
+                    android:shadowColor="@color/grayLighter"
+                    android:textSize="@dimen/_14ssp" />
+
+            </LinearLayout>
 
         </LinearLayout>
 
-    </ScrollView>
+        <View
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="0.5" />
+
+    </LinearLayout>
 
 </LinearLayout>

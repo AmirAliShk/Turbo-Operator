@@ -16,6 +16,7 @@ import java.util.ArrayList;
 import ir.taxi1880.operatormanagement.R;
 import ir.taxi1880.operatormanagement.app.MyApplication;
 import ir.taxi1880.operatormanagement.fragment.ReplacementFragment;
+import ir.taxi1880.operatormanagement.helper.DateHelper;
 import ir.taxi1880.operatormanagement.helper.FragmentHelper;
 import ir.taxi1880.operatormanagement.helper.TypefaceUtil;
 import ir.taxi1880.operatormanagement.model.ShiftModel;
@@ -71,7 +72,8 @@ public class ShiftAdapter extends BaseAdapter {
                         .replace();
             });
 
-            viewHolder.txtShiftDate.setText(shiftModel.getShiftDate());
+            String date = DateHelper.strPersianTwo(DateHelper.parseDate(shiftModels.get(position).getShiftDate()));
+            viewHolder.txtShiftDate.setText(date);
             viewHolder.txtShiftName.setText(shiftModel.getShiftName());
             viewHolder.txtShiftTime.setText(shiftModel.getShiftTime());
 

@@ -44,6 +44,7 @@ import ir.taxi1880.operatormanagement.fragment.LoginFragment;
 import ir.taxi1880.operatormanagement.fragment.SignatureFragment;
 import ir.taxi1880.operatormanagement.helper.AppVersionHelper;
 import ir.taxi1880.operatormanagement.helper.FragmentHelper;
+import ir.taxi1880.operatormanagement.helper.KeyBoardHelper;
 import ir.taxi1880.operatormanagement.helper.ScreenHelper;
 import ir.taxi1880.operatormanagement.helper.ServiceHelper;
 import ir.taxi1880.operatormanagement.helper.StringHelper;
@@ -386,6 +387,7 @@ public class SplashActivity extends AppCompatActivity {
     @Override
     public void onBackPressed() {
         try {
+            KeyBoardHelper.hideKeyboard();
             if (getSupportFragmentManager().getBackStackEntryCount() > 0 || getFragmentManager().getBackStackEntryCount() > 0) {
                 super.onBackPressed();
             } else {
