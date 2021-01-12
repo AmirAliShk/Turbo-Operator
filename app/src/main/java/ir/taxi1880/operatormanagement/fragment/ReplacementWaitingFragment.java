@@ -20,7 +20,7 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import butterknife.Unbinder;
 import ir.taxi1880.operatormanagement.R;
-import ir.taxi1880.operatormanagement.adapter.ReplacementWaitingAdapter;
+import ir.taxi1880.operatormanagement.adapter.GetReplacementAdapter;
 import ir.taxi1880.operatormanagement.app.EndPoints;
 import ir.taxi1880.operatormanagement.app.MyApplication;
 import ir.taxi1880.operatormanagement.helper.TypefaceUtil;
@@ -32,10 +32,10 @@ import ir.taxi1880.operatormanagement.push.AvaCrashReporter;
  * A simple {@link Fragment} subclass.
  */
 public class ReplacementWaitingFragment extends Fragment {
-  public static final String TAG = ReplacementWaitingAdapter.class.getSimpleName();
+  public static final String TAG = GetReplacementAdapter.class.getSimpleName();
   Unbinder unbinder;
   ArrayList<ReplacementModel> replacementModels;
-  ReplacementWaitingAdapter replacementWaitingAdapter;
+  GetReplacementAdapter getReplacementAdapter;
 
   @BindView(R.id.listReplacement)
   ListView listReplacement;
@@ -106,12 +106,12 @@ public class ReplacementWaitingFragment extends Fragment {
         }
         if (vfGetReq != null)
           vfGetReq.setDisplayedChild(1);
-        replacementWaitingAdapter = new ReplacementWaitingAdapter(replacementModels, MyApplication.context, position -> {
+        getReplacementAdapter = new GetReplacementAdapter(replacementModels, MyApplication.context, position -> {
           replacementModels.remove(position);
-          replacementWaitingAdapter.notifyDataSetChanged();
+          getReplacementAdapter.notifyDataSetChanged();
         });
         if (listReplacement != null)
-          listReplacement.setAdapter(replacementWaitingAdapter);
+          listReplacement.setAdapter(getReplacementAdapter);
         if (replacementModels.size() == 0) {
           if (vfGetReq != null)
             vfGetReq.setDisplayedChild(2);

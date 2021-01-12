@@ -19,7 +19,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:layout_margin="20dp"
-            android:background="@drawable/bg_edit_text"
+            android:background="@drawable/bg_dialog_body"
             android:gravity="top"
             android:minWidth="400dp"
             android:minHeight="500dp"

@@ -30,6 +30,7 @@
                 android:textColor="@color/colorWhite"
                 android:textSize="@dimen/text_header"
                 android:textStyle="bold" />
+
         </LinearLayout>
 
         <LinearLayout
@@ -39,7 +40,7 @@
             android:layout_below="@id/llTitle"
             android:gravity="center"
             android:orientation="vertical"
-            android:padding="5dp">
+            android:padding="10dp">
 
             <TextView
                 android:id="@+id/txtMessage"
@@ -74,16 +75,14 @@
             android:layout_below="@id/llMsg"
             android:layout_gravity="bottom"
             android:gravity="center"
+            android:paddingBottom="@dimen/_10sdp"
+            android:paddingLeft="@dimen/_10sdp"
+            android:paddingRight="@dimen/_10sdp"
             android:orientation="vertical">
-
-            <ImageView
-                android:layout_width="match_parent"
-                android:layout_height="1dip"
-                android:background="#d2d2d2" />
 
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="50dp"
+                android:layout_height="55dp"
                 android:layoutDirection="rtl"
                 android:orientation="horizontal">
 
@@ -92,39 +91,28 @@
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:layout_weight="1"
-                    android:background="@drawable/bg_ripple"
+                    android:background="@drawable/green_shadow"
                     android:gravity="center"
                     android:textAppearance="?android:attr/textAppearanceMedium"
-                    android:textColor="@color/colorBlack"
+                    android:textColor="@color/colorWhite"
                     android:textStyle="bold" />
-
-                <ImageView
-                    android:id="@+id/divider_fs"
-                    android:layout_width="1dip"
-                    android:layout_height="match_parent"
-                    android:background="#d2d2d2" />
 
                 <Button
                     android:id="@+id/btnSecond"
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:layout_weight="1"
-                    android:background="@drawable/bg_ripple"
+                    android:background="@drawable/red_shadow"
                     android:gravity="center"
                     android:paddingBottom="5dip"
                     android:textAppearance="?android:attr/textAppearanceMedium"
-                    android:textColor="@color/colorBlack"
+                    android:textColor="@color/colorWhite"
                     android:textStyle="bold" />
-
-                <ImageView
-                    android:id="@+id/divider_st"
-                    android:layout_width="1dip"
-                    android:layout_height="match_parent"
-                    android:background="#d2d2d2" />
 
                 <Button
                     android:id="@+id/btnThird"
                     android:layout_width="0dp"
+                    android:visibility="gone"
                     android:layout_height="match_parent"
                     android:layout_weight="1"
                     android:background="@drawable/bg_ripple"

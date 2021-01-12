@@ -24,14 +24,14 @@
     <color name="grayMedium">#777579</color>
     <color name="grayDark">#424242</color>
     <color name="transparent">#00424242</color>
-    <color name="colorOrange">#FF6600</color>
+    <color name="colorOrange">#ffab00</color>
     <color name="colorYellow">#f1c02b</color>
     <color name="colorBlue">#2c78e9</color>
     <color name="colorBlueLight">#8DC6F3</color>
-    <color name="colorGreen">#2AB123</color>
+    <color name="colorGreen">#4caf50</color>
     <color name="colorPurple">#673AB7</color>
     <color name="colorPurpleLight">#D8C9F3</color>
-    <color name="colorRed">#cd3232</color>
+    <color name="colorRed">#f44336</color>
     <color name="colorRedLight">#ECC1C1</color>
     <color name="colorTransparent">#00FFB2B2</color>
     <color name="colorGreenLight">#31ce5a</color>

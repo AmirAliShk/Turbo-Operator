@@ -12,7 +12,7 @@
         android:layout_height="match_parent"
         android:layout_margin="5dp"
         android:background="@drawable/bg_blue_border_edge"
-        android:elevation="5dp"
+        android:elevation="3dp"
         android:gravity="right|center_vertical"
         android:orientation="vertical">
 

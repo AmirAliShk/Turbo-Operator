@@ -67,6 +67,8 @@ public class PrefManager {
     private static final String ID_TOKEN = "id_token";
     private static final String REFRESH_TOKEN = "refreshToken";
     private static final String REPETITION_TIME = "repetitionTime";
+    private static final String DAILY_SCORE = "dailyScore";
+    private static final String MONTH_SCORE = "monthScore";
     private static final String KEY_ACTIVATION_REMAINING_TIME = "activationRemainingTime";
 
     public PrefManager(Context context) {
@@ -82,6 +84,24 @@ public class PrefManager {
 
     public long getActivationRemainingTime() {
         return pref.getLong(KEY_ACTIVATION_REMAINING_TIME, getRepetitionTime());
+    }
+
+    public String getDailyScore() {
+        return pref.getString(DAILY_SCORE, "");
+    }
+
+    public void setDailyScore(String dailyScore) {
+        editor.putString(DAILY_SCORE, dailyScore);
+        editor.commit();
+    }
+
+    public String getMonthScore() {
+        return pref.getString(MONTH_SCORE, "");
+    }
+
+    public void setMonthScore(String monthScore) {
+        editor.putString(MONTH_SCORE, monthScore);
+        editor.commit();
     }
 
     public String getAuthorization() {

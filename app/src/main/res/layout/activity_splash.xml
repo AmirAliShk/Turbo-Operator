@@ -45,24 +45,6 @@
 
         </LinearLayout>
 
-<!--        <ImageView-->
-<!--            android:layout_width="match_parent"-->
-<!--            android:layout_height="0dp"-->
-<!--            android:layout_weight="0.75"-->
-<!--            android:background="@mipmap/header_up" />-->
-
-        <com.scwang.wave.MultiWaveHeader
-            android:scaleY="-1"
-            app:mwhStartColor="@color/colorPrimaryDark"
-            app:mwhCloseColor="@color/colorPrimary"
-            app:mwhIsRunning="true"
-            app:mwhGradientAngle="90"
-            app:mwhVelocity="1"
-            app:mwhWaveHeight="60dp"
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="0.25"/>
-
     </LinearLayout>
 
     <LinearLayout

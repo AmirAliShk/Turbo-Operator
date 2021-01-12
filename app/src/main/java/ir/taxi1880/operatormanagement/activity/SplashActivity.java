@@ -241,6 +241,8 @@ public class SplashActivity extends AppCompatActivity {
                     String sheba = object.getString("sheba");
                     String cardNumber = object.getString("cardNumber");
                     String accountNumber = object.getString("accountNumber");
+                    String monthScore = object.getString("monthScore");
+                    String dayScore = object.getString("dayScore");
                     int accessInsertService = object.getInt("accessInsertService");
                     int accessStationDeterminationPage = object.getInt("accessStationDeterminationPage");
                     int balance = object.getInt("balance");
@@ -264,6 +266,8 @@ public class SplashActivity extends AppCompatActivity {
                     MyApplication.prefManager.setComplaint(complaintType);
                     MyApplication.prefManager.setObjectsType(objectsType);
                     MyApplication.prefManager.setReasonsLock(ReasonsLock);
+                    MyApplication.prefManager.setDailyScore(dayScore);
+                    MyApplication.prefManager.setMonthScore(monthScore);
 
                     //insert all city into dataBase
                     JSONArray cityArr = new JSONArray(city);

@@ -46,23 +46,8 @@ public class ReplacementFragment extends Fragment {
     MyApplication.currentActivity.onBackPressed();
   }
 
-  @BindView(R.id.llLoader)
-  LinearLayout llLoader;
-
-  @BindView(R.id.llDate)
-  LinearLayout llDate;
-
-  @BindView(R.id.llShift)
-  LinearLayout llShift;
-
-  @BindView(R.id.edtDate)
-  TextView edtDate;
-
-  @BindView(R.id.spinnerShift)
-  TextView spinnerShift;
-
-  @BindView(R.id.edtOperator)
-  TextView edtOperator;
+  @BindView(R.id.txtOperator)
+  TextView txtOperator;
 
   int opId = 0;
 
@@ -97,17 +82,17 @@ public class ReplacementFragment extends Fragment {
 
   @OnClick(R.id.btnSubmit)
   void onSubmit() {
-    if (edtOperator.getText().equals("")) {
+    if (txtOperator.getText().equals("")) {
       MyApplication.Toast("اپراتور مورد نظر را انتخاب کنید", Toast.LENGTH_SHORT);
       return;
     }
 
     new GeneralDialog()
             .title("ثبت درخواست")
-            .message(" شما میخواهید خانم " + edtOperator.getText() + " در تاریخ " + shiftDate + " در شیفت " + shiftName + " به جای شما حضور یابد.")
+            .message(" شما میخواهید خانم " + txtOperator.getText() + " در تاریخ " + shiftDate + " در شیفت " + shiftName + " به جای شما حضور یابد.")
             .firstButton("بله", () -> {
               shiftReplacementRequest();
-              edtOperator.setText("");
+              txtOperator.setText("");
             })
             .secondButton("خیر", null)
             .show();
@@ -140,7 +125,7 @@ public class ReplacementFragment extends Fragment {
   }
 
   private void shiftReplacementRequest() {
-    llLoader.setVisibility(View.VISIBLE);
+//    llLoader.setVisibility(View.VISIBLE);
     RequestHelper.builder(EndPoints.SHIFT_REPLACEMENT_REQUEST)
             .addParam("intendedOperatorId", opId)
             .addParam("shift", shiftId)
@@ -183,8 +168,8 @@ public class ReplacementFragment extends Fragment {
           AvaCrashReporter.send(e,"ReplacementFragment class, onShiftReplacementRequest onResponse method");
         }
 
-        if (llLoader != null)
-          llLoader.setVisibility(View.GONE);
+//        if (llLoader != null)
+//          llLoader.setVisibility(View.GONE);
       });
     }
 
@@ -219,8 +204,8 @@ public class ReplacementFragment extends Fragment {
         if (vfOperator != null)
           vfOperator.setDisplayedChild(0);
         new OperatorDialog().show((op) -> {
-          if (edtOperator != null)
-            edtOperator.setText(op.getOperatorName());
+          if (txtOperator != null)
+            txtOperator.setText(op.getOperatorName());
           opId = op.getOperatorId();
         });
       });

@@ -46,7 +46,7 @@ public class MainViewPagerAdapter extends FragmentStateAdapter {
         View v = LayoutInflater.from(MyApplication.context).inflate(R.layout.custom_tab, null);
         ImageView img = v.findViewById(R.id.imgCustomTab);
         if (position == 0) {
-            img.setImageResource(R.drawable.ic_home_selected);
+            img.setImageResource(R.mipmap.home_selected);
         } else {
             img.setImageResource(R.drawable.ic_menu_unselected);
         }
@@ -59,9 +59,9 @@ public class MainViewPagerAdapter extends FragmentStateAdapter {
         ImageView imgCustomTab = view.findViewById(R.id.imgCustomTab);
         if (type.equals("select")) {
             if (tab.getPosition() == 0) {
-                imgCustomTab.setImageResource(R.drawable.ic_home_selected);
+                imgCustomTab.setImageResource(R.mipmap.home_selected);
             } else {
-                imgCustomTab.setImageResource(R.drawable.ic_menu_selected);
+                imgCustomTab.setImageResource(R.mipmap.menu_selected);
             }
         } else if (type.equals("unSelect")) {
             if (tab.getPosition() == 0) {

@@ -23,7 +23,7 @@ import ir.taxi1880.operatormanagement.model.ReplacementModel;
 import ir.taxi1880.operatormanagement.okHttp.RequestHelper;
 import ir.taxi1880.operatormanagement.push.AvaCrashReporter;
 
-public class ReplacementWaitingAdapter extends BaseAdapter {
+public class GetReplacementAdapter extends BaseAdapter {
 
     private ArrayList<ReplacementModel> replacementModels;
     private LayoutInflater layoutInflater;
@@ -37,7 +37,7 @@ public class ReplacementWaitingAdapter extends BaseAdapter {
 
     Listener listener;
 
-    public ReplacementWaitingAdapter(ArrayList<ReplacementModel> replacementModels, Context context, Listener listener) {
+    public GetReplacementAdapter(ArrayList<ReplacementModel> replacementModels, Context context, Listener listener) {
         this.replacementModels = replacementModels;
         this.listener = listener;
         this.layoutInflater = LayoutInflater.from(context);
@@ -64,7 +64,7 @@ public class ReplacementWaitingAdapter extends BaseAdapter {
         try {
             final ReplacementModel replacementModel = replacementModels.get(position);
             if (myView == null) {
-                myView = layoutInflater.inflate(R.layout.item_wait_replacement, null);
+                myView = layoutInflater.inflate(R.layout.item_get_replacement, null);
                 TypefaceUtil.overrideFonts(myView);
             }
             positionn = position;
@@ -108,7 +108,7 @@ public class ReplacementWaitingAdapter extends BaseAdapter {
 
         } catch (Exception e) {
             e.printStackTrace();
-            AvaCrashReporter.send(e, "ReplacementWaitingAdapter class, getView method");
+            AvaCrashReporter.send(e, "GetReplacementAdapter class, getView method");
         }
         return myView;
     }

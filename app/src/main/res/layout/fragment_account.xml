@@ -41,9 +41,7 @@
             android:layout_height="@dimen/_50sdp"
             android:layout_below="@id/imgBack"
             android:background="@drawable/header_main"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintRight_toRightOf="parent" />
+            android:layout_marginTop="@dimen/_10sdp"/>
 
     </RelativeLayout>
 
@@ -61,7 +59,7 @@
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
             android:orientation="vertical">
 
             <LinearLayout
@@ -251,7 +249,7 @@
 
             </LinearLayout>
 
-            <!--    this is must be in a separate layout-->
+            <!--    this must be in a separate layout-->
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"

@@ -7,21 +7,22 @@
     android:orientation="vertical">
 
     <TextView
-        android:id="@+id/txtTitle"
-        android:layout_width="match_parent"
+        android:layout_width="350dp"
         android:layout_height="wrap_content"
-        android:gravity="right"
-        android:paddingRight="30dp"
-        android:text="ثبت شکایت"
-        android:textColor="@color/colorWhite"
-        android:textSize="@dimen/text_header"
-        android:textStyle="bold" />
+        android:background="@drawable/bg_dialog_header"
+        android:gravity="center"
+        android:minWidth="350dp"
+        android:padding="@dimen/_8sdp"
+        android:text="@string/complaintRegistration"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:textColor="@color/colorWhite" />
+
 
     <LinearLayout
         android:layout_width="350dp"
         android:layout_height="wrap_content"
         android:layout_gravity="top|center_horizontal"
-        android:background="@drawable/bg_white_edge"
+        android:background="@drawable/bg_dialog_body"
         android:gravity="top"
         android:minWidth="350dp"
         android:padding="10dp"
@@ -78,7 +79,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_marginTop="10dp"
-                android:background="@drawable/bg_strock_corner"
+                android:background="@drawable/edit_text_style"
                 android:gravity="top|right"
                 android:maxLines="3"
                 android:minHeight="100dp"
@@ -88,7 +89,7 @@
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="@dimen/_40sdp"
             android:layout_marginTop="10dp"
             android:layout_weight="1"
             android:gravity="center"
@@ -97,15 +98,16 @@
             <Button
                 android:id="@+id/btnSubmit"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:background="@drawable/bg_light_pink_edge"
+                android:layout_height="match_parent"
+                android:layout_marginLeft="40dp"
+                android:layout_marginRight="40dp"
+                android:background="@drawable/green_shadow"
                 android:text="ثبت"
                 android:textAppearance="?android:attr/textAppearanceLarge"
                 android:textColor="@color/colorWhite"
                 android:textStyle="bold" />
 
         </LinearLayout>
-
     </LinearLayout>
 
     <ImageView

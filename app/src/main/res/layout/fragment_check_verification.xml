@@ -125,7 +125,7 @@
                 app:hideLineWhenFilled="true"
                 app:itemCount="5"
                 app:itemHeight="48dp"
-                app:itemRadius="8dp"
+                app:itemRadius="12dp"
                 app:itemSpacing="12dp"
                 app:itemWidth="48dp"
                 app:lineWidth="0dp"

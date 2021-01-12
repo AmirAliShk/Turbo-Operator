@@ -6,7 +6,7 @@
     android:layout_gravity="top|right"
     android:layout_marginTop="50dp"
     android:layout_marginRight="20dp"
-    android:background="@drawable/bg_blue_border_edge"
+    android:background="@drawable/bg_gray_lite_edge"
     android:clickable="true"
     android:gravity="center_vertical|right"
     android:layoutDirection="rtl"

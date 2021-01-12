@@ -12,6 +12,7 @@ import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.Spinner;
 
 import org.json.JSONArray;
@@ -66,27 +67,18 @@ public class HireDialog {
     ImageView imgClose = dialog.findViewById(R.id.imgClose);
     Button btnSubmit = dialog.findViewById(R.id.btnSubmit);
     EditText edtComment = dialog.findViewById(R.id.edtComment);
+    LinearLayout llParent = dialog.findViewById(R.id.llParent);
     spHireType = dialog.findViewById(R.id.spHireType);
 
-    imgClose.setOnClickListener(new View.OnClickListener() {
-      @Override
-      public void onClick(View view) {
-        dismiss();
-      }
-    });
+    imgClose.setOnClickListener(view -> dismiss());
 
-    btnSubmit.setOnClickListener(new View.OnClickListener() {
-      @Override
-      public void onClick(View view) {
-        new GeneralDialog()
-                .title("استخدامی")
-                .message("آیا از ثبت درخواست اطمینان دارید؟")
-                .firstButton("بله", () ->
-                        setHire(name, mobile, edtComment.getText().toString(), hireType, cityCode))
-                .secondButton("خیر", null)
-                .show();
-      }
-    });
+    btnSubmit.setOnClickListener(view -> new GeneralDialog()
+            .title("استخدامی")
+            .message("آیا از ثبت درخواست اطمینان دارید؟")
+            .firstButton("بله", () ->
+                    setHire(name, mobile, edtComment.getText().toString(), hireType, cityCode))
+            .secondButton("خیر", null)
+            .show());
 
     dialog.show();
   }

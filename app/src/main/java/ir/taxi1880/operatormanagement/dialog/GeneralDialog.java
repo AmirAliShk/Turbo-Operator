@@ -197,12 +197,6 @@ public class GeneralDialog {
     }
   }
 
-  @BindView(R.id.divider_st)
-  ImageView divider_st;
-
-  @BindView(R.id.divider_fs)
-  ImageView divider_fs;
-
   private Dialog dialog;
   private static Dialog staticDialog = null;
 
@@ -258,12 +252,7 @@ public class GeneralDialog {
     } else {
       btnThird.setText(thirdBtn.getText());
     }
-    if (thirdBtn == null || secondBtn == null) {
-      divider_st.setVisibility(View.GONE);
-    }
-    if (firstBtn == null || secondBtn == null) {
-      divider_fs.setVisibility(View.GONE);
-    }
+
     if (firstBtn == null && secondBtn == null && thirdBtn == null) {
       llBtnView.setVisibility(View.GONE);
     }

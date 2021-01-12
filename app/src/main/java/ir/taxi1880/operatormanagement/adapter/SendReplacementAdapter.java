@@ -19,6 +19,7 @@ import ir.taxi1880.operatormanagement.R;
 import ir.taxi1880.operatormanagement.app.EndPoints;
 import ir.taxi1880.operatormanagement.app.MyApplication;
 import ir.taxi1880.operatormanagement.dialog.GeneralDialog;
+import ir.taxi1880.operatormanagement.helper.DateHelper;
 import ir.taxi1880.operatormanagement.helper.TypefaceUtil;
 import ir.taxi1880.operatormanagement.model.ReplacementModel;
 import ir.taxi1880.operatormanagement.okHttp.RequestHelper;
@@ -71,22 +72,28 @@ public class SendReplacementAdapter extends BaseAdapter {
             } else {
                 viewHolder = (ViewHolder) convertView.getTag();
             }
+            String date = DateHelper.strPersianTwo(DateHelper.parseDate(replacementModels.get(position).getReplaceDate()));
+            viewHolder.txtOperatorName.setText("درخواست ارسالی توسط خانم " + replacementModel.getReplaceOperatorNameChange());
+            viewHolder.txtStatus.setText(replacementModel.getStatusStr());
+            viewHolder.txtShiftDate.setText(date);
+            viewHolder.txtShiftName.setText(replacementModel.getReplaceShiftName());
 
-            viewHolder.txtStatus.setText("درخواست جابه جایی شما به تاریخ: " + replacementModel.getReplaceDate() + "، شیفت: " + replacementModel.getReplaceShiftName() + "، توسط اپراتور: " + replacementModel.getReplaceOperatorNameChange() + "، در وضعیت: " + replacementModel.getStatusStr() + " میباشد.");
-
-            int statusImage = R.drawable.ic_waiting_req;
+            int statusImage = R.drawable.ic_question;
             switch (replacementModel.getReplaceStatus()) {
                 case 0:
-                    statusImage = R.drawable.ic_waiting_req;
+                    statusImage = R.drawable.ic_question;
                     viewHolder.btnCancel.setVisibility(View.VISIBLE);
+                    viewHolder.txtStatus.setTextColor(MyApplication.currentActivity.getResources().getColor(R.color.colorYellow));
                     break;
                 case 1:
-                    statusImage = R.drawable.ic_done;
+                    statusImage = R.drawable.ic_tick;
                     viewHolder.btnCancel.setVisibility(View.GONE);
+                    viewHolder.txtStatus.setTextColor(MyApplication.currentActivity.getResources().getColor(R.color.colorGreen));
                     break;
                 case 2:
                     statusImage = R.drawable.ic_cancel;
                     viewHolder.btnCancel.setVisibility(View.GONE);
+                    viewHolder.txtStatus.setTextColor(MyApplication.currentActivity.getResources().getColor(R.color.colorRed));
                     break;
             }
             viewHolder.imgStatus.setImageResource(statusImage);
@@ -114,12 +121,18 @@ public class SendReplacementAdapter extends BaseAdapter {
         ImageView imgStatus;
         Button btnCancel;
         TextView txtStatus;
+        TextView txtOperatorName;
+        TextView txtShiftDate;
+        TextView txtShiftName;
 
         public ViewHolder() {
         }
 
         ViewHolder(View convertView) {
             txtStatus = convertView.findViewById(R.id.txtStatus);
+            txtShiftDate = convertView.findViewById(R.id.txtShiftDate);
+            txtShiftName = convertView.findViewById(R.id.txtShiftName);
+            txtOperatorName = convertView.findViewById(R.id.txtOperatorName);
             imgStatus = convertView.findViewById(R.id.imgStatus);
             btnCancel = convertView.findViewById(R.id.btnCancel);
         }
