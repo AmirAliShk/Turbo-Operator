@@ -91,7 +91,7 @@ public class SearchFilterDialog {
       dialog = null;
     } catch (Exception e) {
       Log.e("TAG", "dismiss: " + e.getMessage());
-      AvaCrashReporter.send(e, "CityDialog class, dismiss method");
+      AvaCrashReporter.send(e, "SearchFilterDialog class, dismiss method");
     }
   }
 

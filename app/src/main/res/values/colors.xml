@@ -1,14 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-<!--    <color name="colorPrimary">#4caf50</color>-->
-<!--    <color name="colorPrimaryDark">#2E7D32</color>-->
-<!--    <color name="colorPrimaryLight">#72CF76</color>-->
-<!--    <color name="colorAccent">#424242</color>-->
-<!--    <color name="colorWhite">#ffffff</color>-->
-<!--    <color name="colorBlack">#000000</color>-->
-<!--    <color name="grayLight">#757575</color>-->
-<!--    <color name="grayDark">#424242</color>-->
-<!--    <color name="transparent">#00424242</color>-->
 
     <color name="colorPrimary">#ebeff0</color>
     <color name="shadow">#5CEBEFF0</color>

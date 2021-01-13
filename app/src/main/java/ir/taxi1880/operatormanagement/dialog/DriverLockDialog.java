@@ -183,7 +183,7 @@ public class DriverLockDialog {
       }
     } catch (Exception e) {
       Log.e("TAG", "dismiss: " + e.getMessage());
-      AvaCrashReporter.send(e, "HireDialog class, dismiss method");
+      AvaCrashReporter.send(e, "DriverLockDialog class, dismiss method");
     }
     dialog = null;
   }

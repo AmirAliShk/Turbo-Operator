@@ -1,5 +1,6 @@
 package ir.taxi1880.operatormanagement.activity;
 
+import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
@@ -25,6 +26,7 @@ import ir.taxi1880.operatormanagement.adapter.MainViewPagerAdapter;
 import ir.taxi1880.operatormanagement.app.Constant;
 import ir.taxi1880.operatormanagement.app.DataHolder;
 import ir.taxi1880.operatormanagement.app.MyApplication;
+import ir.taxi1880.operatormanagement.dialog.GeneralDialog;
 import ir.taxi1880.operatormanagement.fragment.BestsFragment;
 import ir.taxi1880.operatormanagement.fragment.MessageFragment;
 import ir.taxi1880.operatormanagement.fragment.NotificationFragment;
@@ -90,12 +92,12 @@ public class MainActivity extends AppCompatActivity implements NotificationFragm
         tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
             @Override
             public void onTabSelected(TabLayout.Tab tab) {
-               mainViewPagerAdapter.setSelectView(tabLayout,tab.getPosition(),"select");
+                mainViewPagerAdapter.setSelectView(tabLayout, tab.getPosition(), "select");
             }
 
             @Override
             public void onTabUnselected(TabLayout.Tab tab) {
-                mainViewPagerAdapter.setSelectView(tabLayout,tab.getPosition(),"unSelect");
+                mainViewPagerAdapter.setSelectView(tabLayout, tab.getPosition(), "unSelect");
             }
 
             @Override
@@ -104,12 +106,6 @@ public class MainActivity extends AppCompatActivity implements NotificationFragm
             }
         });
 
-        if (MyApplication.prefManager.getCountNotification() == 0) {
-            txtBadgeCount.setVisibility(View.GONE);
-        } else {
-            txtBadgeCount.setVisibility(View.VISIBLE);
-            txtBadgeCount.setText(StringHelper.toPersianDigits(MyApplication.prefManager.getCountNotification() + ""));
-        }
     }
 
     @Override
@@ -118,8 +114,18 @@ public class MainActivity extends AppCompatActivity implements NotificationFragm
         MyApplication.currentActivity = this;
         MyApplication.prefManager.setAppRun(true);
 
-        Log.i(TAG, "onResume:TAG  " + MainActivity.TAG);
-        Log.i(TAG, "onResume:currentActivity  " + MyApplication.currentActivity.toString());
+        if (MyApplication.prefManager.getCountNotification() == 0) {
+            txtBadgeCount.setVisibility(View.GONE);
+        } else {
+            new GeneralDialog()
+                    .title("هشدار")
+                    .message("شما یک اطلاعیه جدید دارید")
+                    .firstButton("باشه", () -> FragmentHelper.toFragment(MyApplication.currentActivity,new NotificationFragment()).replace())
+                    .cancelable(false)
+                    .show();
+            txtBadgeCount.setVisibility(View.VISIBLE);
+            txtBadgeCount.setText(StringHelper.toPersianDigits(MyApplication.prefManager.getCountNotification() + ""));
+        }
 
         if (DataHolder.getInstance().getPushType() != null) {
             if (DataHolder.getInstance().getPushType().equals(Constant.PUSH_NOTIFICATION_MESSAGE_TYPE)) {
@@ -167,9 +173,7 @@ public class MainActivity extends AppCompatActivity implements NotificationFragm
                 super.onBackPressed();
             } else {
                 if (doubleBackToExitPressedOnce) {
-                    Log.i(TAG, "onBackPressed:exiiiiiiiiiiiiiiiiiiiiiiiiiiiiitte ");
                     MyApplication.prefManager.setStartGettingAddress(false);
-//          super.onBackPressed();
                     finish();
                 } else {
                     this.doubleBackToExitPressedOnce = true;

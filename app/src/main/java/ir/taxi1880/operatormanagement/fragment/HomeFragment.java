@@ -86,8 +86,8 @@ public class HomeFragment extends Fragment {
 
         txtDayScore.setText(StringHelper.toPersianDigits(MyApplication.prefManager.getDailyScore()));
         txtMonthScore.setText(StringHelper.toPersianDigits(MyApplication.prefManager.getMonthScore()));
-        txtDayForm.setText(StringHelper.toPersianDigits("54"));
-        txtMonthForm.setText(StringHelper.toPersianDigits("345"));
+        txtDayForm.setText(StringHelper.toPersianDigits(MyApplication.prefManager.getServiceCountToday()));
+        txtMonthForm.setText(StringHelper.toPersianDigits(MyApplication.prefManager.getServiceCountMonth()));
         txtDayWrong.setText(StringHelper.toPersianDigits("46"));
         txtMonthWrong.setText(StringHelper.toPersianDigits("466"));
 

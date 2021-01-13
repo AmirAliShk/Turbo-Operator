@@ -79,7 +79,7 @@ public class ExtendedTimeDialog {
       dialog = null;
     } catch (Exception e) {
       Log.e("TAG", "dismiss: " + e.getMessage());
-      AvaCrashReporter.send(e, "CityDialog class, dismiss method");
+      AvaCrashReporter.send(e, "ExtendedTimeDialog class, dismiss method");
     }
   }
 

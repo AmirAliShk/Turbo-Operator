@@ -1,10 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/colorPrimaryLighter"
     android:clickable="true"
+    android:layoutDirection="rtl"
     android:orientation="vertical"
     tools:context="ir.taxi1880.operatormanagement.fragment.ReplacementFragment">
 
@@ -19,6 +21,7 @@
             android:layout_width="?android:attr/actionBarSize"
             android:layout_height="match_parent"
             android:padding="15dp"
+            android:layout_alignParentLeft="true"
             android:src="@drawable/ic_back" />
 
         <TextView
@@ -41,13 +44,13 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="center"
-            android:padding="@dimen/_10sdp"
-            android:orientation="vertical">
+            android:orientation="vertical"
+            android:padding="@dimen/_10sdp">
 
             <View
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
-                android:layout_weight="0.25"/>
+                android:layout_weight="0.25" />
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -63,34 +66,52 @@
 
                 <LinearLayout
                     android:layout_width="0dp"
-                    android:layout_weight="1"
                     android:layout_height="wrap_content"
+                    android:layout_weight="1"
                     android:orientation="vertical">
 
                     <TextView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:gravity="center"
                         android:background="@drawable/bg_white_edge"
+                        android:gravity="center"
                         android:padding="@dimen/_10sdp"
                         android:text="اپراتور مورد نظر خود را انتخاب کنید : "
                         android:textColor="@color/colorBlack"
                         android:textSize="@dimen/_14ssp" />
 
-                    <TextView
+                    <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginRight="@dimen/_5sdp"
-                        android:gravity="right"
+                        android:gravity="bottom"
+                        android:layout_marginTop="@dimen/_20sdp"
                         android:padding="@dimen/_5sdp"
-                        android:text="اپراتور ها"
-                        android:textColor="@color/grayMedium"
-                        android:textSize="@dimen/_13ssp" />
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginRight="@dimen/_5sdp"
+                            android:layout_weight="1"
+                            android:gravity="right"
+                            android:text="اپراتور ها"
+                            android:textColor="@color/grayMedium"
+                            android:textSize="@dimen/_13ssp" />
+
+                        <com.wang.avi.AVLoadingIndicatorView
+                            android:id="@+id/loader"
+                            android:layout_width="20dp"
+                            android:layout_height="20dp"
+                            android:visibility="gone"
+                            android:layout_gravity="center"
+                            app:indicatorColor="@color/colorAccent" />
+
+                    </LinearLayout>
 
                     <LinearLayout
                         android:id="@+id/llOperator"
                         android:layout_width="match_parent"
-                        android:layout_height="@dimen/_40sdp"
+                        android:layout_height="@dimen/_35sdp"
                         android:layout_margin="4dp"
                         android:layout_weight="1"
                         android:background="@drawable/bg_strock_corner_focused"
@@ -100,27 +121,6 @@
                         android:orientation="horizontal"
                         android:padding="10dp">
 
-                        <ViewFlipper
-                            android:id="@+id/vfOperator"
-                            android:layout_width="34dp"
-                            android:layout_height="30dp"
-                            android:layout_margin="3dp">
-
-                            <ImageView
-                                android:layout_width="25dp"
-                                android:layout_height="25dp"
-                                android:src="@drawable/ic_operator" />
-
-                            <ProgressBar
-                                android:layout_width="match_parent"
-                                android:layout_height="match_parent" />
-
-                        </ViewFlipper>
-
-                        <ImageView
-                            android:layout_width="8dp"
-                            android:layout_height="match_parent" />
-
                         <TextView
                             android:id="@+id/txtOperator"
                             android:layout_width="match_parent"
@@ -128,6 +128,7 @@
                             android:background="@android:color/transparent"
                             android:gravity="center_vertical"
                             android:hint="انتخاب نشده"
+                            android:textColorHint="@color/grayLight"
                             android:nextFocusDown="@id/btnSubmit"
                             android:singleLine="true"
                             android:textColor="@color/colorBlack"
@@ -178,7 +179,7 @@
             <View
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
-                android:layout_weight="0.5"/>
+                android:layout_weight="0.5" />
 
         </LinearLayout>
 

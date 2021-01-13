@@ -254,6 +254,8 @@ public class SplashActivity extends AppCompatActivity {
                     String complaintType = object.getString("ComplaintType");
                     String objectsType = object.getString("objectsType");
                     String ReasonsLock = object.getString("ReasonsLock");
+                    String serviceCountToday = object.getString("serviceCountToday");
+                    String serviceCountMonth = object.getString("serviceCountMonth");
                     int activeInQueue = object.getInt("activeInQueue");
                     isFinishContract = object.getInt("isFinishContract");
 //                    isFinishContract = 1; //TODO
@@ -268,6 +270,8 @@ public class SplashActivity extends AppCompatActivity {
                     MyApplication.prefManager.setReasonsLock(ReasonsLock);
                     MyApplication.prefManager.setDailyScore(dayScore);
                     MyApplication.prefManager.setMonthScore(monthScore);
+                    MyApplication.prefManager.setServiceCountMonth(serviceCountMonth);
+                    MyApplication.prefManager.setServiceCountToday(serviceCountToday);
 
                     //insert all city into dataBase
                     JSONArray cityArr = new JSONArray(city);

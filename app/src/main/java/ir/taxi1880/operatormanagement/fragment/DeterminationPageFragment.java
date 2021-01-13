@@ -296,6 +296,7 @@ public class DeterminationPageFragment extends Fragment {
                   String content = dataObj.getString("Content");
                   JSONObject contentObj = new JSONObject(content);
                   DBTripModel.setOperatorId(contentObj.getInt("userId")); // ID of the person who registered the service
+                  //TODO if userId is null continue
                   DBTripModel.setCity(contentObj.getInt("cityCode"));
                   DBTripModel.setCustomerName(contentObj.getString("callerName"));
                   DBTripModel.setTell(contentObj.getString("phoneNumber"));

@@ -69,6 +69,8 @@ public class PrefManager {
     private static final String REPETITION_TIME = "repetitionTime";
     private static final String DAILY_SCORE = "dailyScore";
     private static final String MONTH_SCORE = "monthScore";
+    private static final String SERVICE_COUNT_MONTH = "serviceCountMonth";
+    private static final String SERVICE_COUNT_TODAY = "serviceCountToday";
     private static final String KEY_ACTIVATION_REMAINING_TIME = "activationRemainingTime";
 
     public PrefManager(Context context) {
@@ -84,6 +86,24 @@ public class PrefManager {
 
     public long getActivationRemainingTime() {
         return pref.getLong(KEY_ACTIVATION_REMAINING_TIME, getRepetitionTime());
+    }
+
+    public String getServiceCountMonth() {
+        return pref.getString(SERVICE_COUNT_MONTH, "");
+    }
+
+    public void setServiceCountMonth(String serviceCountMonth) {
+        editor.putString(SERVICE_COUNT_MONTH, serviceCountMonth);
+        editor.commit();
+    }
+
+    public String getServiceCountToday() {
+        return pref.getString(SERVICE_COUNT_TODAY, "");
+    }
+
+    public void setServiceCountToday(String serviceCountToday) {
+        editor.putString(SERVICE_COUNT_TODAY, serviceCountToday);
+        editor.commit();
     }
 
     public String getDailyScore() {
