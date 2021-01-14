@@ -85,8 +85,8 @@ public class TripRegisterActivity extends AppCompatActivity {
     Unbinder unbinder;
     private String cityName = "";
     private String cityLatinName = "";
-    private String normalDescription = " ";
     private int cityCode;
+    private String normalDescription = " ";
     private int originStation = 0;
     private String stationName = " ";// It must have a value otherwise it will get an error of 422
     private int serviceType;

@@ -119,6 +119,7 @@
             android:layout_gravity="center"
             android:layoutDirection="rtl"
             app:tabIndicatorHeight="0dp"
+            app:tabRippleColor="@color/transparent"
             app:tabGravity="center"
             app:tabMode="fixed" />
 

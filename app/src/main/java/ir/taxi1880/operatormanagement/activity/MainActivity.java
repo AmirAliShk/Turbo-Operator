@@ -117,10 +117,11 @@ public class MainActivity extends AppCompatActivity implements NotificationFragm
         if (MyApplication.prefManager.getCountNotification() == 0) {
             txtBadgeCount.setVisibility(View.GONE);
         } else {
+            String message = " شما " + MyApplication.prefManager.getCountNotification() + " اطلاعیه جدید دارید. ";
             new GeneralDialog()
                     .title("هشدار")
-                    .message("شما یک اطلاعیه جدید دارید")
-                    .firstButton("باشه", () -> FragmentHelper.toFragment(MyApplication.currentActivity,new NotificationFragment()).replace())
+                    .message(message)
+                    .firstButton("باشه", () -> FragmentHelper.toFragment(MyApplication.currentActivity, new NotificationFragment()).replace())
                     .cancelable(false)
                     .show();
             txtBadgeCount.setVisibility(View.VISIBLE);
