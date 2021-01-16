@@ -2,11 +2,11 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:orientation="vertical"
-    android:layout_marginTop="10dp"
     android:layout_marginLeft="5dp"
+    android:layout_marginTop="10dp"
     android:layout_marginRight="5dp"
-    android:layoutDirection="ltr">
+    android:layoutDirection="ltr"
+    android:orientation="vertical">
 
     <RelativeLayout
         android:layout_width="wrap_content"
@@ -16,58 +16,60 @@
             android:id="@+id/llMsgIn"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:background="@mipmap/icome"
             android:orientation="vertical"
-            android:layout_marginRight="@dimen/_40ssp"
-            android:background="@drawable/msg_in"
-            android:visibility="gone">
+            android:visibility="gone"
+            android:layout_alignParentStart="true">
 
             <TextView
+                android:id="@+id/txtMsgIn"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="right"
                 android:gravity="right"
-                android:paddingRight="20dp"
-                android:paddingTop="10dp"
-                android:paddingBottom="10dp"
-                android:paddingLeft="20dp"
-                android:id="@+id/txtMsgIn"
+                android:padding="@dimen/_10sdp"
+                android:textColor="@color/colorWhite"
                 android:textSize="@dimen/_14ssp"
-                android:textColor="#fff"
-                android:minWidth="170dp" />
+                android:textStyle="bold" />
 
-            <RelativeLayout
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="5dp"
-                android:paddingRight="20dp"
-                android:paddingTop="10dp"
-                android:paddingBottom="10dp"
+                android:orientation="horizontal"
                 android:paddingLeft="20dp"
-                android:orientation="horizontal">
+                android:paddingTop="10dp"
+                android:paddingRight="20dp"
+                android:paddingBottom="10dp">
 
                 <TextView
-                    android:layout_width="70dp"
+                    android:id="@+id/txtTimeMsgIn"
+                    android:layout_width="wrap_content"
+                    android:layout_weight="1"
                     android:layout_height="wrap_content"
                     android:layout_gravity="right"
                     android:gravity="right"
-                    android:id="@+id/txtTimeMsgIn"
-                    android:layout_alignParentRight="true"
-                    android:textColor="#fff"
-                    android:textStyle="bold"
-                    android:textSize="@dimen/_10ssp" />
+                    android:textColor="@color/colorWhite"
+                    android:textSize="@dimen/_10ssp"
+                    android:textStyle="bold" />
+
+                <View
+                    android:layout_width="@dimen/_10sdp"
+                    android:layout_height="match_parent"/>
 
                 <TextView
-                    android:layout_width="130dp"
+                    android:id="@+id/txtDateMsgIn"
+                    android:layout_weight="1"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="right"
                     android:gravity="left"
-                    android:id="@+id/txtDateMsgIn"
-                    android:layout_alignParentLeft="true"
-                    android:textColor="#fff"
-                    android:textStyle="bold"
-                    android:textSize="@dimen/_10ssp" />
+                    android:textColor="@color/colorWhite"
+                    android:textSize="@dimen/_10ssp"
+                    android:textStyle="bold"  />
 
-            </RelativeLayout>
+            </LinearLayout>
 
         </LinearLayout>
 
@@ -77,61 +79,56 @@
             android:id="@+id/llMsgOut"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:layout_marginLeft="@dimen/_40ssp"
-            android:background="@drawable/msg_out"
             android:layout_alignParentRight="true"
+            android:background="@mipmap/outging"
+            android:orientation="vertical"
             android:visibility="gone">
 
             <TextView
+                android:id="@+id/txtMsgOut"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="right"
                 android:gravity="right"
-                android:paddingRight="20dp"
-                android:paddingTop="10dp"
-                android:paddingBottom="10dp"
-                android:paddingLeft="20dp"
-                android:id="@+id/txtMsgOut"
-                android:textColor="#fff"
-                android:textStyle="bold"
+                android:padding="@dimen/_10sdp"
+                android:textColor="@color/colorWhite"
                 android:textSize="@dimen/_14ssp"
-                android:minWidth="170dp" />
+                android:textStyle="bold" />
 
-            <RelativeLayout
-                android:layout_width="match_parent"
+            <LinearLayout
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="5dp"
-                android:paddingRight="20dp"
-                android:paddingTop="10dp"
-                android:paddingBottom="10dp"
-                android:paddingLeft="20dp"
-                android:orientation="horizontal">
+                android:orientation="horizontal"
+                android:padding="@dimen/_10sdp">
 
                 <TextView
-                    android:layout_width="70dp"
+                    android:id="@+id/txtTimeMsgOut"
+                    android:layout_width="wrap_content"
+                    android:layout_weight="1"
                     android:layout_height="wrap_content"
                     android:layout_gravity="right"
                     android:gravity="right"
-                    android:id="@+id/txtTimeMsgOut"
-                    android:layout_alignParentRight="true"
-                    android:textColor="#fff"
-                    android:textStyle="bold"
-                    android:textSize="@dimen/_10ssp" />
+                    android:textColor="@color/colorWhite"
+                    android:textSize="@dimen/_10ssp"
+                    android:textStyle="bold" />
+
+                <View
+                    android:layout_width="@dimen/_10sdp"
+                    android:layout_height="match_parent"/>
 
                 <TextView
-                    android:layout_width="130dp"
+                    android:id="@+id/txtDateMsgOut"
+                    android:layout_weight="1"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="right"
                     android:gravity="left"
-                    android:id="@+id/txtDateMsgOut"
-                    android:layout_alignParentLeft="true"
-                    android:textColor="#fff"
-                    android:textStyle="bold"
-                    android:textSize="@dimen/_10ssp"/>
+                    android:textColor="@color/colorWhite"
+                    android:textSize="@dimen/_10ssp"
+                    android:textStyle="bold" />
 
-            </RelativeLayout>
-
+            </LinearLayout>
 
         </LinearLayout>
 

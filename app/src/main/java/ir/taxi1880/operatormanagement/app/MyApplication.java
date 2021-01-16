@@ -5,6 +5,7 @@ import android.app.Application;
 import android.content.Context;
 import android.content.res.Configuration;
 import android.graphics.Typeface;
+import android.os.Bundle;
 import android.os.Environment;
 import android.os.Handler;
 import android.util.Log;
@@ -24,6 +25,8 @@ import org.linphone.core.TransportType;
 
 import java.util.Locale;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.fragment.app.FragmentManager;
 
 import ir.taxi1880.operatormanagement.BuildConfig;
@@ -34,7 +37,7 @@ import ir.taxi1880.operatormanagement.push.AvaFactory;
 import ir.taxi1880.operatormanagement.services.LinphoneService;
 
 @AcraHttpSender(uri = "http://turbotaxi.ir:6061/api/crashReport", httpMethod = HttpSender.Method.POST)
-public class MyApplication extends Application {
+public class MyApplication extends Application{
 
     private static final String TAG = MyApplication.class.getSimpleName();
     public static Context context;
@@ -167,6 +170,5 @@ public class MyApplication extends Application {
 
 
     }
-
 
 }

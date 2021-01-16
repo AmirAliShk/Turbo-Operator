@@ -137,12 +137,13 @@ public class MessageFragment extends Fragment {
                     messageAdapter = new MessageAdapter(MyApplication.context, messageModels);
                     if (listMessage != null) {
                         listMessage.setAdapter(messageAdapter);
-                        MyApplication.handler.postDelayed(() -> listMessage.smoothScrollToPosition(messageModels.size()), 200);
-                        messageAdapter.notifyDataSetChanged();
+                        MyApplication.handler.postDelayed(() -> {
+                            listMessage.scrollToPosition(listMessage.getAdapter().getItemCount() - 1);
+                            messageAdapter.notifyDataSetChanged();
+                            if (vfMessage != null)
+                                vfMessage.setDisplayedChild(1);
+                        }, 200);
                     }
-
-                    if (vfMessage != null)
-                        vfMessage.setDisplayedChild(1);
 
                 } catch (Exception e) {
                     e.printStackTrace();

@@ -85,6 +85,8 @@ public class DeterminationPageFragment extends Fragment {
 
     @OnClick(R.id.imgDelete)
     void onDelete() {
+//        MyApplication.prefManager.setAuthorization("ERTETETT");
+//        MyApplication.prefManager.setIdToken("TETRetete");
         txtStation.setText("");
     }
 

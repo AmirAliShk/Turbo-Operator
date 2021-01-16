@@ -571,6 +571,7 @@ public class TripRegisterActivity extends AppCompatActivity {
             window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
             window.setNavigationBarColor(getResources().getColor(R.color.colorPrimary));
             window.setStatusBarColor(getResources().getColor(R.color.colorPrimaryDark));
+            window.getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LIGHT_NAVIGATION_BAR);
             window.addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
         }
         unbinder = ButterKnife.bind(this, view);
@@ -1353,6 +1354,7 @@ public class TripRegisterActivity extends AppCompatActivity {
                         LoadingDialog.dismissCancelableDialog();
 
                     } catch (JSONException e) {
+                        LoadingDialog.dismissCancelableDialog();
                         e.printStackTrace();
                         AvaCrashReporter.send(e, "TripRegisterActivity class, insertService onResponse method");
                     }
