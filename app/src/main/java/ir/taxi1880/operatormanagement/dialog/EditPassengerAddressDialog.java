@@ -12,6 +12,7 @@ import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.Toast;
 
@@ -38,7 +39,7 @@ public class EditPassengerAddressDialog {
     private static final String TAG = EditPassengerAddressDialog.class.getSimpleName();
 
     public interface EditationCallBack {
-        void onEdited(int tripId, String stationCode, int cityCode);
+        void onEdited(boolean success);
     }
 
     EditationCallBack editationCallBack;
@@ -71,6 +72,7 @@ public class EditPassengerAddressDialog {
         Button btnSubmit = dialog.findViewById(R.id.btnSubmit);
         EditText edtStation = dialog.findViewById(R.id.edtStation);
         EditText edtAddress = dialog.findViewById(R.id.edtAddress);
+        LinearLayout llParent = dialog.findViewById(R.id.llParent);
         spCity = dialog.findViewById(R.id.spCity);
 
         initSpinner(cityId);
@@ -79,15 +81,18 @@ public class EditPassengerAddressDialog {
 
         imgClose.setOnClickListener(view -> dismiss());
 
+        llParent.setOnClickListener(view -> KeyBoardHelper.hideKeyboard());
+
         btnSubmit.setOnClickListener(view -> {
             String stationCode = edtStation.getText().toString();
+            String addressText = edtAddress.getText().toString();
 
             if (cityCode == -1) {
                 MyApplication.Toast("لطفا شهر را انتخاب کنید.", Toast.LENGTH_SHORT);
                 return;
             }
 
-            if (edtAddress.getText().toString().isEmpty()) {
+            if (addressText.isEmpty()) {
                 MyApplication.Toast("لطفا آدرس را وارد کنید.", Toast.LENGTH_SHORT);
                 return;
             }
@@ -97,10 +102,20 @@ public class EditPassengerAddressDialog {
                 return;
             }
 
-            editationCallBack.onEdited(tripId, stationCode,cityCode);
-            MyApplication.Toast("الکی مثلا ثبت شد :/", Toast.LENGTH_SHORT);
+            new GeneralDialog()
+                    .title("هشدار")
+                    .message("ایا از انجام عملیات فوق اطمینان دارید؟")
+                    .firstButton("بله", () -> {
+                        Log.i(TAG, "onEdit:tripId " + tripId);
+                        Log.i(TAG, "onEdit:stationCode " + stationCode);
+                        Log.i(TAG, "onEdit:cityCode " + cityCode);
+                        Log.i(TAG, "onEdit:addressText " + addressText);
+                        editStation(cityCode, addressText, tripId + "", stationCode);
+                    })
+                    .secondButton("خیر", null)
+                    .cancelable(false)
+                    .show();
             KeyBoardHelper.hideKeyboard();
-            dismiss();
         });
 
         dialog.show();
@@ -148,6 +163,49 @@ public class EditPassengerAddressDialog {
             AvaCrashReporter.send(e, "EditPassengerAddressDialog class, initCitySpinner method");
         }
     }
+
+    private void editStation(int cityCode, String address, String serviceId, String stationCode) {
+        LoadingDialog.makeCancelableLoader();
+        RequestHelper.builder(EndPoints.EDIT_STATION)
+                .addParam("cityCode", cityCode)
+                .addParam("adrs", address)
+                .addParam("serviceId", serviceId)
+                .addParam("stationCode", stationCode)
+                .listener(onEditStation)
+                .put();
+    }
+
+    RequestHelper.Callback onEditStation = new RequestHelper.Callback() {
+        @Override
+        public void onResponse(Runnable reCall, Object... args) {
+            MyApplication.handler.post(() -> {
+                try {
+                    JSONObject obj = new JSONObject(args[0].toString());
+                    boolean success = obj.getBoolean("success");
+                    String message = obj.getString("message");
+                    if (success) {
+                        editationCallBack.onEdited(true);
+                        dismiss();
+                    }else{
+                        new GeneralDialog()
+                                .title("هشدار")
+                                .message(message)
+                                .secondButton("باشه", null)
+                                .cancelable(false)
+                                .show();
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            });
+        }
+
+        @Override
+        public void onFailure(Runnable reCall, Exception e) {
+            MyApplication.handler.post(() -> {
+            });
+        }
+    };
 
     private static void dismiss() {
         try {

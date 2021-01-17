@@ -1,6 +1,7 @@
 package ir.taxi1880.operatormanagement.adapter;
 
 import android.content.Context;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,15 +11,20 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import org.json.JSONObject;
+
 import java.util.ArrayList;
 
 import ir.taxi1880.operatormanagement.R;
+import ir.taxi1880.operatormanagement.app.EndPoints;
 import ir.taxi1880.operatormanagement.app.MyApplication;
 import ir.taxi1880.operatormanagement.dialog.GeneralDialog;
+import ir.taxi1880.operatormanagement.dialog.LoadingDialog;
 import ir.taxi1880.operatormanagement.fragment.NotificationFragment;
 import ir.taxi1880.operatormanagement.helper.FragmentHelper;
 import ir.taxi1880.operatormanagement.helper.TypefaceUtil;
 import ir.taxi1880.operatormanagement.model.PassengerAddressModel;
+import ir.taxi1880.operatormanagement.okHttp.RequestHelper;
 import ir.taxi1880.operatormanagement.push.AvaCrashReporter;
 
 public class LastAddressAdapter extends BaseAdapter {
@@ -92,4 +98,33 @@ public class LastAddressAdapter extends BaseAdapter {
 
         return myView;
     }
+
+    private void archiveAddress() {
+        LoadingDialog.makeCancelableLoader();
+        RequestHelper.builder(EndPoints.ARCHIVE_ADDRESS)
+                .addParam("phoneNumber",1)
+                .addParam("addressId",1)
+                .listener(onArchiveAddress)
+                .put();
+    }
+
+    RequestHelper.Callback onArchiveAddress = new RequestHelper.Callback() {
+        @Override
+        public void onResponse(Runnable reCall, Object... args) {
+            MyApplication.handler.post(() -> {
+                try {
+
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            });
+        }
+
+        @Override
+        public void onFailure(Runnable reCall, Exception e) {
+            MyApplication.handler.post(() -> {
+            });
+        }
+    };
+
 }

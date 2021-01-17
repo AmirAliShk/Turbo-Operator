@@ -557,6 +557,7 @@ public class TripRegisterActivity extends AppCompatActivity {
     }
 
     String permanentDesc = "";
+    int addressCounter = 0;
 
     private String[] countService = new String[6];
 
@@ -738,6 +739,11 @@ public class TripRegisterActivity extends AppCompatActivity {
 
             @Override
             public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+                addressCounter = addressCounter + i2;
+                Log.i(TAG, "onTextChanged: addressCounter: " + addressCounter);
+                Log.i(TAG, "onTextChanged: count: " + i2);
+                Log.i(TAG, "onTextChanged: " + charSequence.length());
+
                 originStation = 0;
             }
 

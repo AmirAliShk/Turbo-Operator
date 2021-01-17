@@ -69,6 +69,7 @@ public class EndPoints {
   public static final String GET_TRIP_WITH_ZERO_STATION = TRIP_WEBSERVICE_PATH + "getTripWithZeroStation";
   public static final String UPDATE_TRIP_STATION = TRIP_WEBSERVICE_PATH + "updateTripStation";
   public static final String SET_MISTAKE = TRIP_WEBSERVICE_PATH + "setMistake";
+  public static final String ARCHIVE_ADDRESS = TRIP_WEBSERVICE_PATH + "archiveAddress";
   public static final String CALL_VOICE = CALL_VOICE_PATH;
 
   /******************************** Account Api *********************************/
@@ -102,6 +103,7 @@ public class EndPoints {
   public static final String INSERT_LOST_OBJECT = SUPPORT_WEBSERVICE_PATH + "insertLostObject";
   public static final String LOCK_TAXI = SUPPORT_WEBSERVICE_PATH + "lockTaxi";
   public static final String AGAIN_TRACKING = SUPPORT_WEBSERVICE_PATH + "againTracking";
+  public static final String EDIT_STATION = SUPPORT_WEBSERVICE_PATH + "editStation";
 
   /******************************** refresh token Api *********************************/
 

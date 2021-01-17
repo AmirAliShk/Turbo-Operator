@@ -209,11 +209,12 @@ public class DeterminationPageFragment extends Fragment {
             txtStation.setText("");
             return;
         }
-        new EditPassengerAddressDialog().show(dataBase.getTopAddress().getCity(), dataBase.getTopAddress().getOriginText(), dataBase.getTopAddress().getId(), (tripId, stationCode, cityCode) -> {
-            Log.i(TAG, "onEdit:tripId " + tripId);
-            Log.i(TAG, "onEdit:stationCode " + stationCode);
-            Log.i(TAG, "onEdit:cityCode " + cityCode);
-            //TODO set new API for modify address
+        new EditPassengerAddressDialog().show(dataBase.getTopAddress().getCity(), dataBase.getTopAddress().getOriginText(), dataBase.getTopAddress().getId(), (success) -> {
+            if (success) {
+                if (dataBase.getRemainingAddress() > 0)
+                    dataBase.deleteRow(dataBase.getTopAddress().getId());
+//                TODO remove record from dataBase
+            }
         });
     }
 
