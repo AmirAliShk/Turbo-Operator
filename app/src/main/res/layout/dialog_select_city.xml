@@ -15,7 +15,7 @@
 
         <LinearLayout
             android:layout_width="300dp"
-            android:background="@drawable/bg_dialog_body"
+            android:background="@drawable/bg_gray_lite_edge"
             android:layout_height="wrap_content"
             android:minHeight="300dp"
             android:layout_gravity="center"

@@ -88,6 +88,7 @@ public class TripRegisterActivity extends AppCompatActivity {
     private int cityCode;
     private String normalDescription = " ";
     private int originStation = 0;
+    private int addressLength = 0;
     private String stationName = " ";// It must have a value otherwise it will get an error of 422
     private int serviceType;
     private int serviceCount;
@@ -333,36 +334,45 @@ public class TripRegisterActivity extends AppCompatActivity {
 
     @OnClick(R.id.btnSubmit)
     void onPressSubmit() {
-        if (cityCode == -1) {
-            MyApplication.Toast("شهر را وارد نمایید", Toast.LENGTH_SHORT);
-            spCity.performClick();
-            return;
-        }
-        if (getTellNumber().isEmpty()) {
-            edtTell.setError("شماره تلفن را وارد کنید");
-            edtTell.requestFocus();
-            return;
-        }
-        if (getMobileNumber().isEmpty() && !isTellValidable) {
-            edtMobile.setError("شماره همراه را وارد کنید");
-            edtMobile.requestFocus();
-            return;
-        }
-        if (edtFamily.getText().toString().isEmpty()) {
-            edtFamily.setError(" نام مسافر را مشخص کنید");
-            edtFamily.requestFocus();
-            return;
-        }
-        if (edtAddress.getText().toString().isEmpty()) {
-            edtAddress.setError("آدرس را مشخص کنید");
-            edtAddress.requestFocus();
-            return;
+
+        int addressPercent = addressLength * 40 / 100;
+        if (addressChangeCounter > addressPercent) {
+            Log.i(TAG, "onPressSubmit: address percent" + addressPercent);
+            Log.i(TAG, "onPressSubmit: address change counter" + addressChangeCounter);
+        }else{
+            Log.i(TAG, "onPressSubmit: not match" );
         }
 
-        if (vfSubmit != null)
-            vfSubmit.setDisplayedChild(1);
-
-        callInsertService();
+//        if (cityCode == -1) {
+//            MyApplication.Toast("شهر را وارد نمایید", Toast.LENGTH_SHORT);
+//            spCity.performClick();
+//            return;
+//        }
+//        if (getTellNumber().isEmpty()) {
+//            edtTell.setError("شماره تلفن را وارد کنید");
+//            edtTell.requestFocus();
+//            return;
+//        }
+//        if (getMobileNumber().isEmpty() && !isTellValidable) {
+//            edtMobile.setError("شماره همراه را وارد کنید");
+//            edtMobile.requestFocus();
+//            return;
+//        }
+//        if (edtFamily.getText().toString().isEmpty()) {
+//            edtFamily.setError(" نام مسافر را مشخص کنید");
+//            edtFamily.requestFocus();
+//            return;
+//        }
+//        if (edtAddress.getText().toString().isEmpty()) {
+//            edtAddress.setError("آدرس را مشخص کنید");
+//            edtAddress.requestFocus();
+//            return;
+//        }
+//
+//        if (vfSubmit != null)
+//            vfSubmit.setDisplayedChild(1);
+//
+//        callInsertService();
 
     }
 
@@ -508,6 +518,7 @@ public class TripRegisterActivity extends AppCompatActivity {
     void onCLearAddress() {
         edtAddress.getText().clear();
         originStation = 0;
+        addressChangeCounter = 0;
     }
 
     @OnClick(R.id.btnDeActivate)
@@ -557,8 +568,6 @@ public class TripRegisterActivity extends AppCompatActivity {
     }
 
     String permanentDesc = "";
-    int addressCounter = 0;
-
     private String[] countService = new String[6];
 
     @Override
@@ -602,6 +611,8 @@ public class TripRegisterActivity extends AppCompatActivity {
         edtTell.addTextChangedListener(edtTellTextWather);
 
         edtMobile.addTextChangedListener(edtMobileTW);
+
+        edtAddress.addTextChangedListener(addressTW);
 
         rgCarClass.setOnCheckedChangeListener((group, i) -> {
             chbAlways.setChecked(false);
@@ -686,6 +697,7 @@ public class TripRegisterActivity extends AppCompatActivity {
 //          edtMobile.setText("");
                 isTellValidable = true;
                 edtFamily.setText("");
+                addressChangeCounter = 0;
                 edtAddress.setText("");
                 txtDescription.setText("");
                 rgCarClass.clearCheck();
@@ -698,6 +710,30 @@ public class TripRegisterActivity extends AppCompatActivity {
             }
         }
     };
+
+    TextWatcher addressTW = new TextWatcher() {
+        @Override
+        public void beforeTextChanged(CharSequence charSequence, int start, int count, int after) {
+        }
+
+        @Override
+        public void onTextChanged(CharSequence charSequence, int start, int before, int count) {
+            addressChangeCounter = addressChangeCounter + 1;
+            Log.i(TAG, "onTextChanged: counter " + addressChangeCounter);
+
+            originStation = 0;
+        }
+
+        @Override
+        public void afterTextChanged(Editable editable) {
+            if (editable.toString().isEmpty()) {
+                originStation = 0;
+                edtAddress.getText().clear();
+            }
+        }
+    };
+
+    int addressChangeCounter = 0; // this variable count the last edition of edtAddress
 
     private void initServiceCountSpinner() {
         try {
@@ -731,30 +767,6 @@ public class TripRegisterActivity extends AppCompatActivity {
             e.printStackTrace();
             AvaCrashReporter.send(e, "TripRegisterActivity class, initServiceCountSpinner method");
         }
-
-        edtAddress.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-            }
-
-            @Override
-            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-                addressCounter = addressCounter + i2;
-                Log.i(TAG, "onTextChanged: addressCounter: " + addressCounter);
-                Log.i(TAG, "onTextChanged: count: " + i2);
-                Log.i(TAG, "onTextChanged: " + charSequence.length());
-
-                originStation = 0;
-            }
-
-            @Override
-            public void afterTextChanged(Editable editable) {
-                if (editable.toString().isEmpty()) {
-                    originStation = 0;
-                    edtAddress.getText().clear();
-                }
-            }
-        });
 
     }
 
@@ -961,8 +973,10 @@ public class TripRegisterActivity extends AppCompatActivity {
                             }
                             if (edtFamily != null)
                                 edtFamily.setText(name);
-                            if (edtAddress != null)
+                            if (edtAddress != null) {
                                 edtAddress.setText(address);
+                                addressLength = address.length();
+                            }
                             if (txtDescription != null)
                                 txtDescription.setText(permanentDesc + "");
                             if (rgCarClass != null)
@@ -1058,8 +1072,10 @@ public class TripRegisterActivity extends AppCompatActivity {
                             MyApplication.Toast("آدرسی موجود نیست", Toast.LENGTH_SHORT);
                         } else {
                             new AddressListDialog().show((address, stationCode) -> {
-                                if (edtAddress != null)
+                                if (edtAddress != null) {
                                     edtAddress.setText(address);
+                                    addressLength = address.length();
+                                }
                                 originStation = stationCode;
                                 Log.i(TAG, "run: " + originStation);
 
@@ -1407,6 +1423,7 @@ public class TripRegisterActivity extends AppCompatActivity {
         edtDiscount.setText("");
         edtFamily.setText("");
         edtAddress.setText("");
+        addressChangeCounter = 0;
         chbTraffic.setChecked(false);
         txtDescription.setText("");
         chbAlways.setChecked(false);
@@ -1638,6 +1655,22 @@ public class TripRegisterActivity extends AppCompatActivity {
             }
         }
     };
+
+    void convertToAscii() {
+        String defAddress = "امام رضا 24 چهارراه اول سمت راست";  //32  40% = 12.8
+        String editedAddress = "امام خمینی 47 پ 45"; //18  40% = 7.2
+        int editCount = 0;
+        for (int i = 0; i < defAddress.length(); i++) {
+            if (((int) defAddress.charAt(i)) != ((int) editedAddress.charAt(i))) {
+                Log.i(TAG, "convertToAscii: charAt(i) " + (int) defAddress.charAt(i));
+                editCount++;
+            }
+        }
+        int percent = defAddress.length() * 40 / 100;
+        if (percent > editCount) {
+            Log.i(TAG, "convertToAscii: charAt(i)= greate........");
+        }
+    }
 
     @Override
     protected void onStart() {
