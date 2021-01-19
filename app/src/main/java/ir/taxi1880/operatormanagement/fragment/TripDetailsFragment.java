@@ -9,6 +9,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 import android.widget.ViewFlipper;
 
 import org.json.JSONException;
@@ -25,6 +26,7 @@ import ir.taxi1880.operatormanagement.app.EndPoints;
 import ir.taxi1880.operatormanagement.app.MyApplication;
 import ir.taxi1880.operatormanagement.dialog.ComplaintRegistrationDialog;
 import ir.taxi1880.operatormanagement.dialog.DriverLockDialog;
+import ir.taxi1880.operatormanagement.dialog.ErrorAddressDialog;
 import ir.taxi1880.operatormanagement.dialog.ErrorRegistrationDialog;
 import ir.taxi1880.operatormanagement.dialog.GeneralDialog;
 import ir.taxi1880.operatormanagement.dialog.LoadingDialog;
@@ -40,7 +42,7 @@ public class TripDetailsFragment extends Fragment {
     String passengerPhone;
     String customerMobile;
     String passengerName;
-    String passengerAddress;
+    String passengerAddress = "";
     String taxiCode;
     String description;
     String voipId;
@@ -131,6 +133,9 @@ public class TripDetailsFragment extends Fragment {
     @BindView(R.id.txtServiceComment)
     TextView txtServiceComment;
 
+    @BindView(R.id.txtNull)
+    TextView txtNull;
+
     @BindView(R.id.txtServiceFixedComment)
     TextView txtServiceFixedComment;
 
@@ -167,6 +172,24 @@ public class TripDetailsFragment extends Fragment {
                 .firstButton("بله", () -> cancelService())
                 .secondButton("خیر", null)
                 .show();
+    }
+
+    @OnClick(R.id.btnArchiveAddress)
+    void onArchiveAddress() {
+        new GeneralDialog()
+                .title("بایگانی آدرس")
+                .message("آیا اطمینان دارید؟")
+                .cancelable(false)
+                .firstButton("بله", () -> {
+                    MyApplication.Toast("archive address", Toast.LENGTH_SHORT);
+                })
+                .secondButton("خیر", null)
+                .show();
+    }
+
+    @OnClick(R.id.btnEditAddress)
+    void onEditAddress() {
+        new ErrorAddressDialog().show(passengerAddress);
     }
 
     @OnClick(R.id.btnDriverLocation)
@@ -218,6 +241,7 @@ public class TripDetailsFragment extends Fragment {
         unbinder = ButterKnife.bind(this, view);
         TypefaceUtil.overrideFonts(view, MyApplication.IraSanSMedume);
         TypefaceUtil.overrideFonts(txtTitle);
+        TypefaceUtil.overrideFonts(txtNull);
 
         Bundle bundle = getArguments();
         if (bundle != null) {

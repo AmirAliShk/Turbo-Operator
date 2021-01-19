@@ -115,6 +115,8 @@
     <string name="enter">ورود</string>
     <string name="mobile">شماره موبایل</string>
     <string name="accountInfo">اطلاعات حساب</string>
+    <string name="archiveAddress">بایگانی آدرس</string>
+    <string name="editAddress">ویرایش آدرس</string>
 
 
 </resources>

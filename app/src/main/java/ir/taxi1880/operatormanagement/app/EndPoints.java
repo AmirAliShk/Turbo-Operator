@@ -104,6 +104,7 @@ public class EndPoints {
   public static final String LOCK_TAXI = SUPPORT_WEBSERVICE_PATH + "lockTaxi";
   public static final String AGAIN_TRACKING = SUPPORT_WEBSERVICE_PATH + "againTracking";
   public static final String EDIT_STATION = SUPPORT_WEBSERVICE_PATH + "editStation";
+  public static final String EDIT_ADDRESS = SUPPORT_WEBSERVICE_PATH + "editAddress";
 
   /******************************** refresh token Api *********************************/
 

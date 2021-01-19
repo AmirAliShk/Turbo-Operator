@@ -57,6 +57,7 @@ public class DeterminationPageFragment extends Fragment {
     boolean isFragmentOpen = false;
     boolean pressSubmit = false; // press twice for generate station Code
     ArrayList<StationInfoModel> stationInfoModels;
+    int id = 0;
     DataBase dataBase;
     Timer timer;
 
@@ -318,7 +319,7 @@ public class DeterminationPageFragment extends Fragment {
                                         String content = dataObj.getString("Content");
                                         JSONObject contentObj = new JSONObject(content);
                                         DBTripModel.setOperatorId(contentObj.getInt("userId")); // ID of the person who registered the service
-                                        //TODO if userId is null continue
+                                        id = contentObj.getInt("userId");
                                         DBTripModel.setCity(contentObj.getInt("cityCode"));
                                         DBTripModel.setCustomerName(contentObj.getString("callerName"));
                                         DBTripModel.setTell(contentObj.getString("phoneNumber"));
@@ -454,11 +455,7 @@ public class DeterminationPageFragment extends Fragment {
                         stationInfoModel.setEven(dataObj.getString("even"));
                         stationInfoModel.setStationName(dataObj.getString("stationName"));
                         stationInfoModel.setCountrySide(dataObj.getInt("countrySide"));
-                        if (dataObj.getInt("countrySide") == 1) {
-                            isCountrySide = true;
-                        } else {
-                            isCountrySide = false;
-                        }
+                        isCountrySide = dataObj.getInt("countrySide") == 1;
 
                         if (!dataObj.getString("stationName").equals("")) {
                             stationName = dataObj.getString("stationName");
@@ -509,6 +506,7 @@ public class DeterminationPageFragment extends Fragment {
                 .addParam("tripId", StringHelper.toEnglishDigits(tripId + ""))
                 .addParam("stationCode", StringHelper.toEnglishDigits(stationCode + ""))
                 .addParam("cityCode", StringHelper.toEnglishDigits(cityCode + ""))
+                .addParam("tripOperatorId", id)
 //            .addParam("tripId", 0)
 //            .addParam("stationCode", 0)
 //            .addParam("cityCode", 0)

@@ -96,9 +96,19 @@ public class TripRegisterActivity extends AppCompatActivity {
     private boolean isTellValidable = false; // it means the entered number is a telephone number(5133710000) not mobile number
     RipplePulseLayout mRipplePulseLayout;
     ArrayList<CityModel> cityModels;
-
+    Core core;
+    Call call;
+    byte carClass = 0;
+    public static boolean isRunning = false;
+    byte traffic = 0;
+    byte defaultClass = 0;
     String queue = "0";
     String voipId = "0";
+    String permanentDesc = "";
+    private String[] countService = new String[6];
+    private Runnable mCallQualityUpdater = null;
+    private int mDisplayedQuality = -1;
+    int addressChangeCounter = 0; // this variable count the last edition of edtAddress
 
     @OnClick(R.id.imgBack)
     void onBack() {
@@ -324,23 +334,19 @@ public class TripRegisterActivity extends AppCompatActivity {
     @BindView(R.id.txtCallerNum)
     TextView txtCallerNum;
 
-    Core core;
-    Call call;
-
-    byte carClass = 0;
-    public static boolean isRunning = false;
-    byte traffic = 0;
-    byte defaultClass = 0;
-
     @OnClick(R.id.btnSubmit)
     void onPressSubmit() {
 
-        int addressPercent = addressLength * 40 / 100;
+        int addressPercent = addressLength * 50 / 100;
         if (addressChangeCounter > addressPercent) {
-            Log.i(TAG, "onPressSubmit: address percent" + addressPercent);
-            Log.i(TAG, "onPressSubmit: address change counter" + addressChangeCounter);
-        }else{
-            Log.i(TAG, "onPressSubmit: not match" );
+            // set origin station = 0
+            Log.i(TAG, "onPressSubmit: address length " + addressLength);
+            Log.i(TAG, "onPressSubmit: address percent " + addressPercent);
+            Log.i(TAG, "onPressSubmit: address change counter " + addressChangeCounter);
+        } else {
+            Log.i(TAG, "onPressSubmit: not match address length " + addressLength);
+            Log.i(TAG, "onPressSubmit: not match address percent " + addressPercent);
+            Log.i(TAG, "onPressSubmit: not match address change counter " + addressChangeCounter);
         }
 
 //        if (cityCode == -1) {
@@ -567,8 +573,9 @@ public class TripRegisterActivity extends AppCompatActivity {
         }
     }
 
-    String permanentDesc = "";
-    private String[] countService = new String[6];
+    @BindView(R.id.imgEndCall)
+    ImageView imgEndCall;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -732,8 +739,6 @@ public class TripRegisterActivity extends AppCompatActivity {
             }
         }
     };
-
-    int addressChangeCounter = 0; // this variable count the last edition of edtAddress
 
     private void initServiceCountSpinner() {
         try {
@@ -976,6 +981,7 @@ public class TripRegisterActivity extends AppCompatActivity {
                             if (edtAddress != null) {
                                 edtAddress.setText(address);
                                 addressLength = address.length();
+                                addressChangeCounter = 0;
                             }
                             if (txtDescription != null)
                                 txtDescription.setText(permanentDesc + "");
@@ -1075,6 +1081,7 @@ public class TripRegisterActivity extends AppCompatActivity {
                                 if (edtAddress != null) {
                                     edtAddress.setText(address);
                                     addressLength = address.length();
+                                    addressChangeCounter = 0;
                                 }
                                 originStation = stationCode;
                                 Log.i(TAG, "run: " + originStation);
@@ -1567,9 +1574,6 @@ public class TripRegisterActivity extends AppCompatActivity {
         return null;
     }
 
-    private Runnable mCallQualityUpdater = null;
-    private int mDisplayedQuality = -1;
-
     private void startCallQuality() {
         if (mCallQualityUpdater == null)
             LinphoneService.dispatchOnUIThreadAfter(
@@ -1615,9 +1619,6 @@ public class TripRegisterActivity extends AppCompatActivity {
         mDisplayedQuality = iQuality;
     }
 
-    @BindView(R.id.imgEndCall)
-    ImageView imgEndCall;
-
     CoreListenerStub mCoreListener = new CoreListenerStub() {
         @Override
         public void onCallStateChanged(Core core, final Call call, Call.State state, String message) {
@@ -1655,22 +1656,6 @@ public class TripRegisterActivity extends AppCompatActivity {
             }
         }
     };
-
-    void convertToAscii() {
-        String defAddress = "امام رضا 24 چهارراه اول سمت راست";  //32  40% = 12.8
-        String editedAddress = "امام خمینی 47 پ 45"; //18  40% = 7.2
-        int editCount = 0;
-        for (int i = 0; i < defAddress.length(); i++) {
-            if (((int) defAddress.charAt(i)) != ((int) editedAddress.charAt(i))) {
-                Log.i(TAG, "convertToAscii: charAt(i) " + (int) defAddress.charAt(i));
-                editCount++;
-            }
-        }
-        int percent = defAddress.length() * 40 / 100;
-        if (percent > editCount) {
-            Log.i(TAG, "convertToAscii: charAt(i)= greate........");
-        }
-    }
 
     @Override
     protected void onStart() {

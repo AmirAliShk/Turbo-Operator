@@ -724,6 +724,29 @@
 
                 </LinearLayout>
 
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <Button
+                        android:id="@+id/btnArchiveAddress"
+                        style="@style/button"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="@string/archiveAddress" />
+
+                    <Button
+                        android:id="@+id/btnEditAddress"
+                        style="@style/button"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="@string/editAddress" />
+
+                </LinearLayout>
+
                 <Button
                     android:id="@+id/btnDriverLock"
                     style="@style/button"
@@ -736,12 +759,13 @@
         </ScrollView>
 
         <TextView
+            android:id="@+id/txtNull"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:gravity="center"
             android:text="خطایی رخ داده! \n لطفا پس از چند لحظه مجدد تلاش کنید"
             android:textColor="@color/colorBlack"
-            android:textSize="@dimen/text_title" />
+            android:textSize="@dimen/_12ssp" />
 
     </ViewFlipper>
 
