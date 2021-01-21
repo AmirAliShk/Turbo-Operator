@@ -168,8 +168,8 @@ public class EditPassengerAddressDialog {
         LoadingDialog.makeCancelableLoader();
         RequestHelper.builder(EndPoints.EDIT_STATION)
                 .addParam("cityCode", cityCode)
-                .addParam("adrs", address)
-                .addParam("serviceId", serviceId)
+                .addParam("address", address)
+                .addParam("tripId", serviceId)
                 .addParam("stationCode", stationCode)
                 .listener(onEditStation)
                 .put();

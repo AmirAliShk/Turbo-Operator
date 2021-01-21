@@ -10,6 +10,7 @@ import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.Toast;
 
 import org.json.JSONObject;
 
@@ -27,7 +28,7 @@ public class ErrorAddressDialog {
 
   static Dialog dialog;
 
-  public void show(String passengerAddress) {
+  public void show(String passengerAddress, String serviceId) {
     if (MyApplication.currentActivity == null || MyApplication.currentActivity.isFinishing())
       return;
     dialog = new Dialog(MyApplication.currentActivity);
@@ -59,19 +60,25 @@ public class ErrorAddressDialog {
         return;
       }
 
-      editAddress();
+      if (passengerAddress.trim().equals(address.trim())){
+        MyApplication.Toast("آدرس تغییری نکرد.", Toast.LENGTH_SHORT);
+        dismiss();
+        return;
+      }
+
+      editAddress(serviceId, address);
     });
 
     dialog.show();
   }
 
-  private void editAddress() {
+  private void editAddress(String serviceId, String address) {
     LoadingDialog.makeCancelableLoader();
     RequestHelper.builder(EndPoints.EDIT_ADDRESS)
-            .addParam("serviceId",0)
-            .addParam("adrs",0)
+            .addParam("serviceId",serviceId)
+            .addParam("adrs",address)
             .listener(onEditAddress)
-            .post();
+            .put();
   }
 
   RequestHelper.Callback onEditAddress = new RequestHelper.Callback() {

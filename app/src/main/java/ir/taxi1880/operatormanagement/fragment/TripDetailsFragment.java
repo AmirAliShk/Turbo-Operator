@@ -34,6 +34,7 @@ import ir.taxi1880.operatormanagement.dialog.LostDialog;
 import ir.taxi1880.operatormanagement.helper.FragmentHelper;
 import ir.taxi1880.operatormanagement.helper.StringHelper;
 import ir.taxi1880.operatormanagement.helper.TypefaceUtil;
+import ir.taxi1880.operatormanagement.model.PassengerAddressModel;
 import ir.taxi1880.operatormanagement.okHttp.RequestHelper;
 
 public class TripDetailsFragment extends Fragment {
@@ -180,16 +181,14 @@ public class TripDetailsFragment extends Fragment {
                 .title("بایگانی آدرس")
                 .message("آیا اطمینان دارید؟")
                 .cancelable(false)
-                .firstButton("بله", () -> {
-                    MyApplication.Toast("archive address", Toast.LENGTH_SHORT);
-                })
+                .firstButton("بله", this::archiveAddress)
                 .secondButton("خیر", null)
                 .show();
     }
 
     @OnClick(R.id.btnEditAddress)
     void onEditAddress() {
-        new ErrorAddressDialog().show(passengerAddress);
+        new ErrorAddressDialog().show(passengerAddress, serviceId);
     }
 
     @OnClick(R.id.btnDriverLocation)
@@ -546,6 +545,35 @@ public class TripDetailsFragment extends Fragment {
             });
         }
 
+    };
+
+    private void archiveAddress() {
+        LoadingDialog.makeCancelableLoader();
+        RequestHelper.builder(EndPoints.ARCHIVE_ADDRESS)
+                .addParam("phoneNumber",passengerPhone)
+                .addParam("adrs",passengerAddress)
+                .addParam("mobile",customerMobile)
+                .listener(onArchiveAddress)
+                .put();
+    }
+
+    RequestHelper.Callback onArchiveAddress = new RequestHelper.Callback() {
+        @Override
+        public void onResponse(Runnable reCall, Object... args) {
+            MyApplication.handler.post(() -> {
+                try {
+                    //TODO do someThing
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            });
+        }
+
+        @Override
+        public void onFailure(Runnable reCall, Exception e) {
+            MyApplication.handler.post(() -> {
+            });
+        }
     };
 
     @Override

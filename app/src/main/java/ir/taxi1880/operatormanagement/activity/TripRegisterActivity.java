@@ -1069,6 +1069,7 @@ public class TripRegisterActivity extends AppCompatActivity {
                             JSONObject dataObj = dataArr.getJSONObject(i);
                             PassengerAddressModel addressModel = new PassengerAddressModel();
                             addressModel.setPhoneNumber(dataObj.getString("phoneNumber"));
+                            addressModel.setMobile(dataObj.getString("mobile"));
                             addressModel.setAddress(dataObj.getString("address"));
                             addressModel.setStation(dataObj.getInt("station"));
                             addressModel.setStatus(dataObj.getInt("status"));

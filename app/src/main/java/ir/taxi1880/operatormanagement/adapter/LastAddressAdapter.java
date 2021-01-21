@@ -82,9 +82,7 @@ public class LastAddressAdapter extends BaseAdapter {
                         .title("هشدار")
                         .message("ایا از انجام عملیات فوق اطمینان دارید؟")
                         .firstButton("بله", () -> {
-                            MyApplication.Toast("archive", Toast.LENGTH_SHORT);
-                            addressModels.remove(position);
-                            notifyDataSetChanged();
+                            archiveAddress(addressModels.get(position));
                         })
                         .secondButton("خیر",null)
                         .cancelable(false)
@@ -99,11 +97,12 @@ public class LastAddressAdapter extends BaseAdapter {
         return myView;
     }
 
-    private void archiveAddress() {
+    private void archiveAddress(PassengerAddressModel passengerAddressModel) {
         LoadingDialog.makeCancelableLoader();
         RequestHelper.builder(EndPoints.ARCHIVE_ADDRESS)
-                .addParam("phoneNumber",1)
-                .addParam("addressId",1)
+                .addParam("phoneNumber",passengerAddressModel.getPhoneNumber())
+                .addParam("adrs",passengerAddressModel.getAddress())
+                .addParam("mobile",passengerAddressModel.getMobile())
                 .listener(onArchiveAddress)
                 .put();
     }
@@ -113,7 +112,9 @@ public class LastAddressAdapter extends BaseAdapter {
         public void onResponse(Runnable reCall, Object... args) {
             MyApplication.handler.post(() -> {
                 try {
-
+                    //TODO do someThing
+//                    addressModels.remove(position);
+//                    notifyDataSetChanged();
                 } catch (Exception e) {
                     e.printStackTrace();
                 }

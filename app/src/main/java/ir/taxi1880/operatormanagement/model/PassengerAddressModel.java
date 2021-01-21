@@ -2,9 +2,18 @@ package ir.taxi1880.operatormanagement.model;
 
 public class PassengerAddressModel {
   private String phoneNumber;
+  private String mobile;
   private String address;
   private int station;
   private int status;
+
+  public String getMobile() {
+    return mobile;
+  }
+
+  public void setMobile(String mobile) {
+    this.mobile = mobile;
+  }
 
   public String getPhoneNumber() {
     return phoneNumber;
