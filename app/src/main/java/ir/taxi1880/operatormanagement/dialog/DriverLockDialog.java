@@ -14,6 +14,7 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.Toast;
+import android.widget.ViewFlipper;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -37,6 +38,7 @@ public class DriverLockDialog {
 
   private Spinner spReason;
   int reason;
+  ViewFlipper vfLoader;
   static Dialog dialog;
 
   public void show(String taxiCode) {
@@ -58,6 +60,7 @@ public class DriverLockDialog {
     Button btnSubmit = dialog.findViewById(R.id.btnSubmit);
     EditText edtHour = dialog.findViewById(R.id.edtHour);
     spReason = dialog.findViewById(R.id.spReason);
+    vfLoader = dialog.findViewById(R.id.vfLoader);
 
     initSpinner();
 
@@ -87,6 +90,9 @@ public class DriverLockDialog {
   }
 
   private void lockTaxi(String taxiCode, String hours) {
+    if (vfLoader!=null){
+      vfLoader.setDisplayedChild(1);
+    }
     LoadingDialog.makeCancelableLoader();
     RequestHelper.builder(EndPoints.LOCK_TAXI)
             .addParam("taxiCode", taxiCode)
@@ -122,6 +128,10 @@ public class DriverLockDialog {
                     .cancelable(false)
                     .firstButton("باشه", null)
                     .show();
+          }
+
+          if (vfLoader!=null){
+            vfLoader.setDisplayedChild(0);
           }
 
           LoadingDialog.dismissCancelableDialog();

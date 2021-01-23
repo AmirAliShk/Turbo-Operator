@@ -578,14 +578,16 @@ public class DeterminationPageFragment extends Fragment {
         public void onResponse(Runnable reCall, Object... args) {
             MyApplication.handler.post(() -> {
                 try {
-//          {"success":true,"message":"عملیات با موفقیت انجام شد","data":{"listenId":42057}}
+//                    { success: true, message: "ثبت اشتباه، تکراری است", data: { status: false } }
                     LoadingDialog.dismissCancelableDialog();
                     Log.i(TAG, "onResponse: " + args[0].toString());
                     JSONObject obj = new JSONObject(args[0].toString());
                     boolean success = obj.getBoolean("success");
                     String message = obj.getString("message");
+                    JSONObject dataObj = obj.getJSONObject("data");
+                    boolean status = dataObj.getBoolean("status");
 
-                    if (success) {
+                    if (status) {
                         new GeneralDialog()
                                 .title("تایید")
                                 .message(message)

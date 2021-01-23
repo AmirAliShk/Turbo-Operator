@@ -15,6 +15,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.Toast;
+import android.widget.ViewFlipper;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -49,6 +50,7 @@ public class EditPassengerAddressDialog {
     private String cityLatinName = "";
     private int cityCode;
     int type;
+    ViewFlipper vfLoader;
 
     static Dialog dialog;
 
@@ -74,6 +76,7 @@ public class EditPassengerAddressDialog {
         EditText edtAddress = dialog.findViewById(R.id.edtAddress);
         LinearLayout llParent = dialog.findViewById(R.id.llParent);
         spCity = dialog.findViewById(R.id.spCity);
+        vfLoader = dialog.findViewById(R.id.vfLoader);
 
         initSpinner(cityId);
 
@@ -165,6 +168,11 @@ public class EditPassengerAddressDialog {
     }
 
     private void editStation(int cityCode, String address, String serviceId, String stationCode) {
+
+        if (vfLoader!=null){
+            vfLoader.setDisplayedChild(1);
+        }
+
         LoadingDialog.makeCancelableLoader();
         RequestHelper.builder(EndPoints.EDIT_STATION)
                 .addParam("cityCode", cityCode)
@@ -194,6 +202,11 @@ public class EditPassengerAddressDialog {
                                 .cancelable(false)
                                 .show();
                     }
+
+                    if (vfLoader!=null){
+                        vfLoader.setDisplayedChild(0);
+                    }
+
                 } catch (Exception e) {
                     e.printStackTrace();
                 }

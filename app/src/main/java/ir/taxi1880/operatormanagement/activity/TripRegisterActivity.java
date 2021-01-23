@@ -576,7 +576,6 @@ public class TripRegisterActivity extends AppCompatActivity {
     @BindView(R.id.imgEndCall)
     ImageView imgEndCall;
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

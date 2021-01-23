@@ -30,11 +30,6 @@ public class ContractFragment extends Fragment {
   public static final String TAG = ContractFragment.class.getSimpleName();
   private Unbinder unbinder;
 
-  @OnClick(R.id.imgBack)
-  void onBack() {
-    MyApplication.currentActivity.onBackPressed();
-  }
-
   @BindView(R.id.vfTxtOfContract)
   ViewFlipper vfTxtOfContract;
 

@@ -13,6 +13,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Spinner;
+import android.widget.ViewFlipper;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -36,6 +37,7 @@ public class ComplaintRegistrationDialog {
 
     private Spinner spComplaintType;
     private int complaintType;
+    ViewFlipper vfLoader;
 
     static Dialog dialog;
 
@@ -58,6 +60,7 @@ public class ComplaintRegistrationDialog {
         Button btnSubmit = dialog.findViewById(R.id.btnSubmit);
         EditText edtComment = dialog.findViewById(R.id.edtComment);
         spComplaintType = dialog.findViewById(R.id.spComplaintType);
+        vfLoader = dialog.findViewById(R.id.vfLoader);
 
         initSpinner();
 
@@ -83,6 +86,9 @@ public class ComplaintRegistrationDialog {
     }
 
     private void setComplaint(String serviceId, String description, String voipId) {
+        if (vfLoader!=null){
+            vfLoader.setDisplayedChild(1);
+        }
         LoadingDialog.makeCancelableLoader();
         RequestHelper.builder(EndPoints.INSERT_COMPLAINT)
                 .addParam("serviceId", serviceId)
@@ -120,6 +126,10 @@ public class ComplaintRegistrationDialog {
                                 .firstButton("باشه", null)
                                 .show();
                     }
+                    if (vfLoader!=null){
+                        vfLoader.setDisplayedChild(0);
+                    }
+
                     LoadingDialog.dismissCancelableDialog();
                 } catch (Exception e) {
                     e.printStackTrace();

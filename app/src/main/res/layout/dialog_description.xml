@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:gravity="center"
@@ -12,11 +13,11 @@
 
         <LinearLayout
             android:layout_width="300dp"
-            android:background="@drawable/bg_gray_lite_edge"
             android:layout_height="wrap_content"
             android:layout_gravity="top|center_horizontal"
-            android:gravity="top"
             android:layout_margin="40dp"
+            android:background="@drawable/bg_gray_lite_edge"
+            android:gravity="top"
             android:minWidth="300dp"
             android:orientation="vertical">
 
@@ -24,8 +25,8 @@
                 android:id="@+id/llColor"
                 android:layout_width="match_parent"
                 android:layout_height="50dp"
-                android:gravity="center"
                 android:background="@drawable/bg_dialog_header"
+                android:gravity="center"
                 android:orientation="vertical">
 
                 <TextView
@@ -41,16 +42,17 @@
             </LinearLayout>
 
             <ScrollView
-                android:fillViewport="true"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent">
+                android:layout_height="match_parent"
+                android:fillViewport="true">
 
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
                     android:gravity="center"
-                    android:orientation="vertical">
+                    android:orientation="vertical"
+                    android:padding="@dimen/_5sdp">
 
                     <LinearLayout
                         android:layout_width="match_parent"
@@ -102,13 +104,13 @@
                             android:id="@+id/edtAlwaysDescription"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:nextFocusDown="@id/btnSubmit"
-                            android:gravity="top"
-                            android:maxLines="3"
-                            android:minLines="3"
-                            android:maxLength="50"
-                            android:minHeight="100dp"
                             android:background="@drawable/edit_text_style"
+                            android:gravity="top"
+                            android:maxLength="50"
+                            android:maxLines="3"
+                            android:minHeight="100dp"
+                            android:minLines="3"
+                            android:nextFocusDown="@id/btnSubmit"
                             android:padding="5dp" />
 
                     </LinearLayout>
@@ -124,7 +126,7 @@
                         <Button
                             android:id="@+id/btnSubmit"
                             android:layout_width="match_parent"
-                            android:layout_height="match_parent"
+                            android:layout_height="wrap_content"
                             android:layout_marginLeft="40dp"
                             android:layout_marginRight="40dp"
                             android:background="@drawable/green_shadow"

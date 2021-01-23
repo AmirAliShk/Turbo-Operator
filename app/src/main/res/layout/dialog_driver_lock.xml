@@ -2,6 +2,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:gravity="center"
     android:layoutDirection="rtl"
     android:orientation="vertical">
@@ -96,17 +97,31 @@
             android:gravity="center"
             android:orientation="vertical">
 
-            <Button
-                android:id="@+id/btnSubmit"
-                android:layout_width="match_parent"
+            <ViewFlipper
+                android:id="@+id/vfLoader"
+                android:layout_width="wrap_content"
                 android:layout_height="match_parent"
-                android:layout_marginLeft="40dp"
-                android:layout_marginRight="40dp"
-                android:background="@drawable/green_shadow"
-                android:text="ثبت"
-                android:textAppearance="?android:attr/textAppearanceLarge"
-                android:textColor="@color/colorWhite"
-                android:textStyle="bold" />
+                android:background="@drawable/green_shadow">
+
+                <Button
+                    android:id="@+id/btnSubmit"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="40dp"
+                    android:layout_marginRight="40dp"
+                    android:background="@color/transparent"
+                    android:text="ثبت"
+                    android:textAppearance="?android:attr/textAppearanceLarge"
+                    android:textColor="@color/colorWhite"
+                    android:textStyle="bold" />
+
+                <com.wang.avi.AVLoadingIndicatorView
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:layout_gravity="center"
+                    app:indicatorColor="@color/colorWhite" />
+
+            </ViewFlipper>
 
         </LinearLayout>
 

@@ -39,7 +39,7 @@
                 android:elevation="5dp"
                 android:orientation="vertical"
                 android:gravity="center"
-                android:background="@drawable/bg_white_edge">
+                android:background="@drawable/bg_menu_item">
 
                 <ImageView
                     android:layout_width="@dimen/_20sdp"
@@ -70,7 +70,7 @@
                 android:elevation="5dp"
                 android:orientation="vertical"
                 android:gravity="center"
-                android:background="@drawable/bg_white_edge">
+                android:background="@drawable/bg_menu_item">
 
                 <ImageView
                     android:layout_width="@dimen/_20sdp"
@@ -105,7 +105,7 @@
                 android:elevation="5dp"
                 android:orientation="vertical"
                 android:gravity="center"
-                android:background="@drawable/bg_white_edge">
+                android:background="@drawable/bg_menu_item">
 
                 <ImageView
                     android:layout_width="@dimen/_20sdp"
@@ -136,7 +136,7 @@
                 android:elevation="5dp"
                 android:orientation="vertical"
                 android:gravity="center"
-                android:background="@drawable/bg_white_edge">
+                android:background="@drawable/bg_menu_item">
 
                 <ImageView
                     android:layout_width="@dimen/_20sdp"
@@ -172,7 +172,7 @@
                 android:padding="@dimen/_10sdp"
                 android:orientation="vertical"
                 android:gravity="center"
-                android:background="@drawable/bg_white_edge">
+                android:background="@drawable/bg_menu_item">
 
                 <ImageView
                     android:layout_width="@dimen/_20sdp"
@@ -204,7 +204,7 @@
                 android:elevation="5dp"
                 android:orientation="vertical"
                 android:gravity="center"
-                android:background="@drawable/bg_white_edge">
+                android:background="@drawable/bg_menu_item">
 
                 <ImageView
                     android:layout_width="@dimen/_20sdp"
@@ -238,7 +238,7 @@
                 android:elevation="5dp"
                 android:orientation="vertical"
                 android:gravity="center"
-                android:background="@drawable/bg_white_edge">
+                android:background="@drawable/bg_menu_item">
 
                 <ImageView
                     android:layout_width="@dimen/_20sdp"
@@ -268,7 +268,7 @@
                 android:elevation="5dp"
                 android:orientation="vertical"
                 android:gravity="center"
-                android:background="@drawable/bg_white_edge">
+                android:background="@drawable/bg_menu_item">
 
                 <ImageView
                     android:layout_width="@dimen/_20sdp"

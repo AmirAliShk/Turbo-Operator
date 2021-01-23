@@ -107,7 +107,7 @@
                 android:layout_height="60dp"
                 android:layout_margin="5dp"
                 android:visibility="visible"
-                android:background="@drawable/bg_white_edge"
+                android:background="@drawable/bg_menu_item"
                 android:elevation="5dp"
                 android:padding="10dp"
                 android:src="@drawable/ic_edit"
@@ -130,7 +130,7 @@
                 android:layout_height="60dp"
                 android:layout_margin="5dp"
                 android:layout_weight="0.5"
-                android:background="@drawable/bg_white_edge"
+                android:background="@drawable/bg_menu_item"
                 android:elevation="5dp"
                 android:padding="8dp"
                 android:src="@drawable/ic_reject"
@@ -178,15 +178,15 @@
                 android:layout_height="60dp"
                 android:layout_margin="5dp"
                 android:layout_weight="0.5"
-                android:background="@drawable/bg_white_edge"
-                android:elevation="5dp"
-                android:padding="3dp">
+                android:background="@drawable/bg_menu_item"
+                android:elevation="5dp">
 
                 <ImageView
                     android:id="@+id/imgHelp"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:padding="12dp"
+                    android:padding="15dp"
+                    android:background="@drawable/bg_menu_item"
                     android:src="@drawable/ic_info"
                     android:text="help" />
 
@@ -214,7 +214,7 @@
                 android:layout_width="65dp"
                 android:layout_height="60dp"
                 android:layout_margin="5dp"
-                android:background="@drawable/bg_white_edge"
+                android:background="@drawable/bg_menu_item"
                 android:elevation="5dp"
                 android:padding="14dp"
                 android:src="@drawable/ic_mistake" />
@@ -248,7 +248,7 @@
                 android:layout_height="60dp"
                 android:layout_margin="5dp"
                 android:visibility="visible"
-                android:background="@drawable/bg_white_edge"
+                android:background="@drawable/bg_menu_item"
                 android:elevation="5dp"
                 android:padding="8dp"
                 android:src="@drawable/ic_play"

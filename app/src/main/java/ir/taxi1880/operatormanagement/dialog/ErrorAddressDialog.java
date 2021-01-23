@@ -11,6 +11,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Toast;
+import android.widget.ViewFlipper;
 
 import org.json.JSONObject;
 
@@ -27,6 +28,7 @@ public class ErrorAddressDialog {
   private static final String TAG = ErrorAddressDialog.class.getSimpleName();
 
   static Dialog dialog;
+  ViewFlipper vfLoader;
 
   public void show(String passengerAddress, String serviceId) {
     if (MyApplication.currentActivity == null || MyApplication.currentActivity.isFinishing())
@@ -46,6 +48,7 @@ public class ErrorAddressDialog {
     ImageView imgClose = dialog.findViewById(R.id.imgClose);
     Button btnSubmit = dialog.findViewById(R.id.btnSubmit);
     EditText edtAddress = dialog.findViewById(R.id.edtAddress);
+    vfLoader = dialog.findViewById(R.id.vfLoader);
 
     edtAddress.setText(passengerAddress);
 
@@ -73,6 +76,9 @@ public class ErrorAddressDialog {
   }
 
   private void editAddress(String serviceId, String address) {
+    if (vfLoader!=null){
+      vfLoader.setDisplayedChild(1);
+    }
     LoadingDialog.makeCancelableLoader();
     RequestHelper.builder(EndPoints.EDIT_ADDRESS)
             .addParam("serviceId",serviceId)
@@ -107,6 +113,10 @@ public class ErrorAddressDialog {
                     .cancelable(false)
                     .firstButton("باشه", null)
                     .show();
+          }
+
+          if (vfLoader!=null){
+            vfLoader.setDisplayedChild(0);
           }
 
           LoadingDialog.dismissCancelableDialog();

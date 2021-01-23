@@ -40,6 +40,7 @@ import ir.taxi1880.operatormanagement.app.EndPoints;
 import ir.taxi1880.operatormanagement.app.MyApplication;
 import ir.taxi1880.operatormanagement.dialog.GeneralDialog;
 import ir.taxi1880.operatormanagement.dialog.LoadingDialog;
+import ir.taxi1880.operatormanagement.helper.FragmentHelper;
 import ir.taxi1880.operatormanagement.helper.TypefaceUtil;
 import ir.taxi1880.operatormanagement.push.AvaCrashReporter;
 
@@ -51,9 +52,12 @@ public class SignatureFragment extends Fragment {
     @BindView(R.id.paintView)
     SignaturePad paintView;
 
-    @OnClick(R.id.imgBack)
+    @OnClick(R.id.txtContract)
     void onBack() {
-        MyApplication.currentActivity.onBackPressed();
+        FragmentHelper
+                .toFragment(MyApplication.currentActivity, new ContractFragment())
+                .setAddToBackStack(false)
+                .replace();
     }
 
     @OnClick(R.id.btnClearSignature)

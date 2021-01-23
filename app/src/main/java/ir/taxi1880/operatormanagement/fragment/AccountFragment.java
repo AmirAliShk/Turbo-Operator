@@ -98,16 +98,13 @@ public class AccountFragment extends Fragment {
         TypefaceUtil.overrideFonts(view);
         TypefaceUtil.overrideFonts(txtCharge, MyApplication.IraSanSBold);
 
-
         getBalance();
 
+        StringHelper.setCharAfterOnTime(edtCardNumber, " - ", 4);
         edtAccountNum.setText(StringHelper.toPersianDigits(MyApplication.prefManager.getAccountNumber()));
         edtCardNumber.setText(StringHelper.toPersianDigits(MyApplication.prefManager.getCardNumber()));
         edtIben.setText(StringHelper.toPersianDigits(MyApplication.prefManager.getSheba()));
 
-        StringHelper.setCharAfterOnTime(edtCardNumber, " - ", 4);
-        StringHelper.setCharAfterOnTime(edtAccountNum, "", 0);
-        StringHelper.setCharAfterOnTime(edtIben, "", 0);
 
         return view;
     }

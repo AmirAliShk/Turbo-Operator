@@ -10,6 +10,7 @@ import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.ViewFlipper;
 
 import org.json.JSONObject;
 
@@ -23,114 +24,123 @@ import ir.taxi1880.operatormanagement.push.AvaCrashReporter;
 
 public class ErrorRegistrationDialog {
 
-  private static final String TAG = ErrorRegistrationDialog.class.getSimpleName();
+    private static final String TAG = ErrorRegistrationDialog.class.getSimpleName();
 
-  static Dialog dialog;
+    static Dialog dialog;
+    ViewFlipper vfLoader;
 
-  public void show(String ServiceId, String phone, String address, String customerName, String voipId) {
-    if (MyApplication.currentActivity == null || MyApplication.currentActivity.isFinishing())
-      return;
-    dialog = new Dialog(MyApplication.currentActivity);
-    dialog.getWindow().requestFeature(Window.FEATURE_NO_TITLE);
-    dialog.getWindow().getAttributes().windowAnimations = R.style.ExpandAnimation;
-    dialog.setContentView(R.layout.dialog_error_registration);
-    TypefaceUtil.overrideFonts(dialog.getWindow().getDecorView());
-    dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
-    WindowManager.LayoutParams wlp = dialog.getWindow().getAttributes();
-    wlp.gravity = Gravity.CENTER;
-    wlp.windowAnimations = R.style.ExpandAnimation;
-    dialog.getWindow().setAttributes(wlp);
-    dialog.setCancelable(false);
+    public void show(String ServiceId, String phone, String address, String customerName, String voipId) {
+        if (MyApplication.currentActivity == null || MyApplication.currentActivity.isFinishing())
+            return;
+        dialog = new Dialog(MyApplication.currentActivity);
+        dialog.getWindow().requestFeature(Window.FEATURE_NO_TITLE);
+        dialog.getWindow().getAttributes().windowAnimations = R.style.ExpandAnimation;
+        dialog.setContentView(R.layout.dialog_error_registration);
+        TypefaceUtil.overrideFonts(dialog.getWindow().getDecorView());
+        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        WindowManager.LayoutParams wlp = dialog.getWindow().getAttributes();
+        wlp.gravity = Gravity.CENTER;
+        wlp.windowAnimations = R.style.ExpandAnimation;
+        dialog.getWindow().setAttributes(wlp);
+        dialog.setCancelable(false);
 
-    ImageView imgClose = dialog.findViewById(R.id.imgClose);
-    Button btnSubmit = dialog.findViewById(R.id.btnSubmit);
-    EditText edtErrorText = dialog.findViewById(R.id.edtErrorText);
+        ImageView imgClose = dialog.findViewById(R.id.imgClose);
+        Button btnSubmit = dialog.findViewById(R.id.btnSubmit);
+        EditText edtErrorText = dialog.findViewById(R.id.edtErrorText);
+        vfLoader = dialog.findViewById(R.id.vfLoader);
 
-    imgClose.setOnClickListener(view -> dismiss());
+        imgClose.setOnClickListener(view -> dismiss());
 
-    btnSubmit.setOnClickListener(view -> {
-      KeyBoardHelper.hideKeyboard();
-      String description = edtErrorText.getText().toString();
+        btnSubmit.setOnClickListener(view -> {
+            KeyBoardHelper.hideKeyboard();
+            String description = edtErrorText.getText().toString();
 
-      if (description.isEmpty()) {
-        edtErrorText.setError("متن خطا را وارد کنید");
-        return;
-      }
+            if (description.isEmpty()) {
+                edtErrorText.setError("متن خطا را وارد کنید");
+                return;
+            }
 
-      setMistake(ServiceId, phone, address, customerName, voipId, description);
-      dismiss();
-    });
+            setMistake(ServiceId, phone, address, customerName, voipId, description);
+            dismiss();
+        });
 
-    dialog.show();
-  }
+        dialog.show();
+    }
 
-  private void setMistake(String ServiceId, String phone, String address, String customerName, String voipId, String desc) {
-    LoadingDialog.makeCancelableLoader();
-    RequestHelper.builder(EndPoints.INSERT_MISTAKE)
-            .addParam("serviceId", ServiceId)
-            .addParam("phone", phone)
-            .addParam("adrs", address)
-            .addParam("customerName", customerName)
-            .addParam("voipId", voipId)
-            .addParam("description", desc)
-            .listener(onSetMistake)
-            .post();
-  }
-
-  RequestHelper.Callback onSetMistake = new RequestHelper.Callback() {
-    @Override
-    public void onResponse(Runnable reCall, Object... args) {
-      MyApplication.handler.post(() -> {
-        try {
-          Log.i("TripDetailsFragment", "run: " + args[0].toString());
-          JSONObject object = new JSONObject(args[0].toString());
-          boolean success = object.getBoolean("success");
-          String message = object.getString("message");
-          JSONObject dataObj = object.getJSONObject("data");
-          boolean status = dataObj.getBoolean("status");
-
-          if (status) {
-            new GeneralDialog()
-                    .title("تایید شد")
-                    .message(message)
-                    .cancelable(false)
-                    .firstButton("باشه", null)
-                    .show();
-          }else {
-            new GeneralDialog()
-                    .title("خطا")
-                    .message(message)
-                    .cancelable(false)
-                    .firstButton("باشه", null)
-                    .show();
-          }
-
-          LoadingDialog.dismissCancelableDialog();
-        } catch (Exception e) {
-          e.printStackTrace();
+    private void setMistake(String ServiceId, String phone, String address, String customerName, String voipId, String desc) {
+        if (vfLoader!=null){
+            vfLoader.setDisplayedChild(1);
         }
-      });
+        LoadingDialog.makeCancelableLoader();
+        RequestHelper.builder(EndPoints.INSERT_MISTAKE)
+                .addParam("serviceId", ServiceId)
+                .addParam("phone", phone)
+                .addParam("adrs", address)
+                .addParam("customerName", customerName)
+                .addParam("voipId", voipId)
+                .addParam("description", desc)
+                .listener(onSetMistake)
+                .post();
     }
 
-    @Override
-    public void onFailure(Runnable reCall, Exception e) {
-      MyApplication.handler.post(() -> {
-        LoadingDialog.dismissCancelableDialog();
-      });
-    }
+    RequestHelper.Callback onSetMistake = new RequestHelper.Callback() {
+        @Override
+        public void onResponse(Runnable reCall, Object... args) {
+            MyApplication.handler.post(() -> {
+                try {
+                    Log.i("TripDetailsFragment", "run: " + args[0].toString());
+                    JSONObject object = new JSONObject(args[0].toString());
+                    boolean success = object.getBoolean("success");
+                    String message = object.getString("message");
+                    JSONObject dataObj = object.getJSONObject("data");
+                    boolean status = dataObj.getBoolean("status");
 
-  };
+                    if (status) {
+                        new GeneralDialog()
+                                .title("تایید شد")
+                                .message(message)
+                                .cancelable(false)
+                                .firstButton("باشه", null)
+                                .show();
+                    } else {
+                        new GeneralDialog()
+                                .title("خطا")
+                                .message(message)
+                                .cancelable(false)
+                                .firstButton("باشه", null)
+                                .show();
+                    }
 
-  private static void dismiss() {
-    try {
-      if (dialog != null) {
-        dialog.dismiss();
-        KeyBoardHelper.hideKeyboard();
-      }
-    } catch (Exception e) {
-      AvaCrashReporter.send(e, "ErrorRegistrationDialog class, dismiss method");
+                    if (vfLoader!=null){
+                        vfLoader.setDisplayedChild(0);
+                    }
+
+                    LoadingDialog.dismissCancelableDialog();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            });
+        }
+
+        @Override
+        public void onFailure(Runnable reCall, Exception e) {
+            MyApplication.handler.post(() -> {
+                LoadingDialog.dismissCancelableDialog();
+            });
+        }
+
+    };
+
+    private static void dismiss() {
+        try {
+            if (dialog != null) {
+                dialog.dismiss();
+                KeyBoardHelper.hideKeyboard();
+            }
+        } catch (Exception e) {
+            AvaCrashReporter.send(e, "ErrorRegistrationDialog class, dismiss method");
+        }
+        dialog = null;
     }
-    dialog = null;
-  }
 
 }

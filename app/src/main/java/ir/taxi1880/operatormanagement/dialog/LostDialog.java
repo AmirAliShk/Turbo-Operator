@@ -14,6 +14,7 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.Toast;
+import android.widget.ViewFlipper;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -37,6 +38,7 @@ public class LostDialog {
 
   private Spinner spType;
   int type;
+  ViewFlipper vfLoader;
 
   static Dialog dialog;
 
@@ -60,6 +62,7 @@ public class LostDialog {
     EditText edtComment = dialog.findViewById(R.id.edtComment);
     EditText edtAddress = dialog.findViewById(R.id.edtAddress);
     spType = dialog.findViewById(R.id.spType);
+    vfLoader = dialog.findViewById(R.id.vfLoader);
 
     initSpinner();
 
@@ -85,6 +88,9 @@ public class LostDialog {
   }
 
   private void setLostObject(String serviceId, String carCode, String passengerPhone, String passengerName, String address, String description) {
+    if (vfLoader!=null){
+      vfLoader.setDisplayedChild(1);
+    }
     LoadingDialog.makeCancelableLoader();
     RequestHelper.builder(EndPoints.INSERT_LOST_OBJECT)
             .addParam("carCode", carCode)
@@ -125,6 +131,11 @@ public class LostDialog {
                     .firstButton("باشه", null)
                     .show();
           }
+
+          if (vfLoader!=null){
+            vfLoader.setDisplayedChild(0);
+          }
+
           LoadingDialog.dismissCancelableDialog();
         } catch (Exception e) {
           e.printStackTrace();

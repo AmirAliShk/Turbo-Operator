@@ -22,12 +22,17 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
-        <ImageView
-            android:id="@+id/imgBack"
-            android:layout_width="?android:attr/actionBarSize"
+
+        <TextView
+            android:id="@+id/txtContract"
+            android:layout_width="wrap_content"
             android:layout_height="match_parent"
-            android:padding="15dp"
-            android:src="@drawable/ic_back" />
+            android:text="متن قرار داد"
+            android:gravity="center"
+            android:padding="@dimen/_5sdp"
+            android:textColor="@color/colorWhite"
+            android:textSize="@dimen/_12ssp" />
+
 
         <TextView
             android:id="@+id/txtAssignmentTitle"
