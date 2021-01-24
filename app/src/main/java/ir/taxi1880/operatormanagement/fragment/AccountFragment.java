@@ -25,6 +25,7 @@ import ir.taxi1880.operatormanagement.R;
 import ir.taxi1880.operatormanagement.app.EndPoints;
 import ir.taxi1880.operatormanagement.app.MyApplication;
 import ir.taxi1880.operatormanagement.dialog.GeneralDialog;
+import ir.taxi1880.operatormanagement.dialog.LoadingDialog;
 import ir.taxi1880.operatormanagement.helper.KeyBoardHelper;
 import ir.taxi1880.operatormanagement.helper.StringHelper;
 import ir.taxi1880.operatormanagement.helper.TypefaceUtil;
@@ -126,18 +127,27 @@ public class AccountFragment extends Fragment {
                 @Override
                 public void run() {
                     try {
-                        Log.i(TAG, "run: " + args[0].toString());
-
+//                        {"success":true,"message":"","data":{"accountBalance":230037}}
                         JSONObject obj = new JSONObject(args[0].toString());
                         boolean success = obj.getBoolean("success");
                         String message = obj.getString("message");
-                        JSONObject dataObj = obj.getJSONObject("data");
-                        String accountBalance = dataObj.getString("accountBalance");
-                        String balance = StringHelper.setComma(accountBalance);
-                        if (txtCharge != null)
-                            txtCharge.setText(StringHelper.toPersianDigits(balance+""));
-                        if (vfBalance != null)
-                            vfBalance.setDisplayedChild(1);
+
+                        if (success) {
+                            JSONObject dataObj = obj.getJSONObject("data");
+                            String accountBalance = dataObj.getString("accountBalance");
+                            String balance = StringHelper.setComma(accountBalance);
+                            if (txtCharge != null)
+                                txtCharge.setText(StringHelper.toPersianDigits(balance + ""));
+                            if (vfBalance != null)
+                                vfBalance.setDisplayedChild(1);
+                        } else {
+                            new GeneralDialog()
+                                    .title("هشدار")
+                                    .message(message)
+                                    .secondButton("باشه", null)
+                                    .cancelable(false)
+                                    .show();
+                        }
                     } catch (Exception e) {
                         e.printStackTrace();
                         AvaCrashReporter.send(e, "AccountFragment class, getBalance onResponse method");
@@ -154,7 +164,7 @@ public class AccountFragment extends Fragment {
     };
 
     private void updateProfile(String accountNumber, String cardNumber, String sheba) {
-
+        LoadingDialog.makeCancelableLoader();
         RequestHelper.builder(EndPoints.UPDATE_PROFILE)
                 .addParam("accountNumber", StringHelper.toEnglishDigits(accountNumber))
                 .addParam("cardNumber", StringHelper.toEnglishDigits(cardNumber.replaceAll("-", "")))
@@ -167,19 +177,16 @@ public class AccountFragment extends Fragment {
     RequestHelper.Callback updateProfile = new RequestHelper.Callback() {
         @Override
         public void onResponse(Runnable reCall, Object... args) {
-            MyApplication.handler.post(new Runnable() {
-                @Override
-                public void run() {
-                    try {
-                        JSONObject obj = new JSONObject(args[0].toString());
-                        boolean success = obj.getBoolean("success");
-                        String message = obj.getString("message");
+            MyApplication.handler.post(() -> {
+                try {
+                    JSONObject obj = new JSONObject(args[0].toString());
+                    boolean success = obj.getBoolean("success");
+                    String message = obj.getString("message");
 
+                    if (success) {
                         JSONObject data = obj.getJSONObject("data");
-
                         boolean status = data.getBoolean("status");
-
-                        if (success) {
+                        if (status) {
                             new GeneralDialog()
                                     .title("به روزرسانی")
                                     .message("اطلاعات شما با موفقـیت به روز رسانی شد")
@@ -191,24 +198,33 @@ public class AccountFragment extends Fragment {
                                 MyApplication.prefManager.setSheba(edtIben.getText().toString());
                             if (edtCardNumber != null)
                                 MyApplication.prefManager.setCardNumber(edtCardNumber.getText().toString());
+                        } else {
+                            new GeneralDialog()
+                                    .title("هشدار")
+                                    .message(message)
+                                    .secondButton("باشه", null)
+                                    .cancelable(false)
+                                    .show();
                         }
-
-                    } catch (JSONException e) {
-                        e.printStackTrace();
-                        AvaCrashReporter.send(e, "AccountFragment class, updateProfile onResponse method");
                     }
+                    LoadingDialog.dismissCancelableDialog();
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                    LoadingDialog.dismissCancelableDialog();
+                    AvaCrashReporter.send(e, "AccountFragment class, updateProfile onResponse method");
                 }
             });
         }
 
         @Override
         public void onFailure(Runnable reCall, Exception e) {
+            MyApplication.handler.post(() -> LoadingDialog.dismissCancelableDialog());
         }
 
     };
 
     private void payment() {
-
+        LoadingDialog.makeCancelableLoader();
         RequestHelper.builder(EndPoints.PAYMENT)
                 .listener(Payment)
                 .post();
@@ -218,17 +234,16 @@ public class AccountFragment extends Fragment {
     RequestHelper.Callback Payment = new RequestHelper.Callback() {
         @Override
         public void onResponse(Runnable reCall, Object... args) {
-            MyApplication.handler.post(new Runnable() {
-                @Override
-                public void run() {
-                    try {
-                        JSONObject obj = new JSONObject(args[0].toString());
-                        boolean success = obj.getBoolean("success");
-                        String message = obj.getString("message");
+            MyApplication.handler.post(() -> {
+                try {
+                    JSONObject obj = new JSONObject(args[0].toString());
+                    boolean success = obj.getBoolean("success");
+                    String message = obj.getString("message");
+
+                    if (success) {
                         JSONObject dataObj = obj.getJSONObject("data");
                         boolean status = dataObj.getBoolean("status");
-
-                        if (success) {
+                        if (status) {
                             new GeneralDialog()
                                     .title("ارسال شد")
                                     .message("درخواست شما با موفقیت ارسال شد")
@@ -236,23 +251,33 @@ public class AccountFragment extends Fragment {
                                     .show();
                         } else {
                             new GeneralDialog()
-                                    .title("خطا")
+                                    .title("هشدار")
                                     .message(message)
-                                    .firstButton("تلاش مجدد", () -> payment())
-                                    .secondButton("بعدا امتحان میکنم", null)
+                                    .secondButton("باشه", null)
+                                    .cancelable(false)
                                     .show();
                         }
-
-                    } catch (JSONException e) {
-                        e.printStackTrace();
-                        AvaCrashReporter.send(e, "AccountFragment class, Payment onResponse method");
+                    } else {
+                        new GeneralDialog()
+                                .title("هشدار")
+                                .message(message)
+                                .secondButton("باشه", null)
+                                .cancelable(false)
+                                .show();
                     }
+
+                    LoadingDialog.dismissCancelableDialog();
+                } catch (JSONException e) {
+                    LoadingDialog.dismissCancelableDialog();
+                    e.printStackTrace();
+                    AvaCrashReporter.send(e, "AccountFragment class, Payment onResponse method");
                 }
             });
         }
 
         @Override
         public void onFailure(Runnable reCall, Exception e) {
+            MyApplication.handler.post(() -> LoadingDialog.dismissCancelableDialog());
         }
 
     };

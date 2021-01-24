@@ -336,18 +336,21 @@ public class TripRegisterActivity extends AppCompatActivity {
 
     @OnClick(R.id.btnSubmit)
     void onPressSubmit() {
-
         int addressPercent = addressLength * 50 / 100;
-        if (addressChangeCounter > addressPercent) {
-            // set origin station = 0
+        if (addressChangeCounter == addressPercent) {
+            originStation = 0;
             Log.i(TAG, "onPressSubmit: address length " + addressLength);
             Log.i(TAG, "onPressSubmit: address percent " + addressPercent);
             Log.i(TAG, "onPressSubmit: address change counter " + addressChangeCounter);
+            Log.i(TAG, "onPressSubmit: originStation " + originStation);
         } else {
-            Log.i(TAG, "onPressSubmit: not match address length " + addressLength);
-            Log.i(TAG, "onPressSubmit: not match address percent " + addressPercent);
-            Log.i(TAG, "onPressSubmit: not match address change counter " + addressChangeCounter);
+            Log.i(TAG, "onPressSubmit: not changed address length " + addressLength);
+            Log.i(TAG, "onPressSubmit: not changed address percent " + addressPercent);
+            Log.i(TAG, "onPressSubmit: not changed address change counter " + addressChangeCounter);
+            Log.i(TAG, "onPressSubmit: originStation " + originStation);
         }
+
+//        TODO remove from comment
 
 //        if (cityCode == -1) {
 //            MyApplication.Toast("شهر را وارد نمایید", Toast.LENGTH_SHORT);
@@ -726,8 +729,6 @@ public class TripRegisterActivity extends AppCompatActivity {
         public void onTextChanged(CharSequence charSequence, int start, int before, int count) {
             addressChangeCounter = addressChangeCounter + 1;
             Log.i(TAG, "onTextChanged: counter " + addressChangeCounter);
-
-            originStation = 0;
         }
 
         @Override
@@ -889,13 +890,10 @@ public class TripRegisterActivity extends AppCompatActivity {
                         }, 500);
                     }
 
-                    Log.i(TAG, "getPassengerInfo: " + args[0].toString());
                     JSONObject obj = new JSONObject(args[0].toString());
                     boolean success = obj.getBoolean("success");
                     String message = obj.getString("message");
-
                     JSONObject dataObj = obj.getJSONObject("data");
-
                     JSONObject statusObj = dataObj.getJSONObject("status");
                     int status = statusObj.getInt("status");
                     String descriptionStatus = statusObj.getString("descriptionStatus");
@@ -1063,36 +1061,52 @@ public class TripRegisterActivity extends AppCompatActivity {
                         JSONObject obj = new JSONObject(args[0].toString());
                         boolean success = obj.getBoolean("success");
                         String message = obj.getString("message");
-                        JSONArray dataArr = obj.getJSONArray("data");
-                        for (int i = 0; i < dataArr.length(); i++) {
-                            JSONObject dataObj = dataArr.getJSONObject(i);
-                            PassengerAddressModel addressModel = new PassengerAddressModel();
-                            addressModel.setPhoneNumber(dataObj.getString("phoneNumber"));
-                            addressModel.setMobile(dataObj.getString("mobile"));
-                            addressModel.setAddress(dataObj.getString("address"));
-                            addressModel.setStation(dataObj.getInt("station"));
-                            addressModel.setStatus(dataObj.getInt("status"));
-                            passengerAddressModels.add(addressModel);
-                        }
-                        if (passengerAddressModels.size() == 0) {
-                            MyApplication.Toast("آدرسی موجود نیست", Toast.LENGTH_SHORT);
-                        } else {
-                            new AddressListDialog().show((address, stationCode) -> {
-                                if (edtAddress != null) {
-                                    edtAddress.setText(address);
-                                    addressLength = address.length();
-                                    addressChangeCounter = 0;
-                                }
-                                originStation = stationCode;
-                                Log.i(TAG, "run: " + originStation);
 
-                            }, passengerAddressModels);
+                        if (success) {
+                            JSONArray dataArr = obj.getJSONArray("data");
+                            for (int i = 0; i < dataArr.length(); i++) {
+                                JSONObject dataObj = dataArr.getJSONObject(i);
+                                PassengerAddressModel addressModel = new PassengerAddressModel();
+                                addressModel.setPhoneNumber(dataObj.getString("phoneNumber"));
+                                addressModel.setMobile(dataObj.getString("mobile"));
+                                addressModel.setAddress(dataObj.getString("address"));
+                                addressModel.setStation(dataObj.getInt("station"));
+                                addressModel.setStatus(dataObj.getInt("status"));
+                                passengerAddressModels.add(addressModel);
+                            }
+                            if (passengerAddressModels.size() == 0) {
+                                MyApplication.Toast("آدرسی موجود نیست", Toast.LENGTH_SHORT);
+                            } else {
+                                new AddressListDialog().show((address, stationCode) -> {
+                                    if (edtAddress != null) {
+                                        edtAddress.setText(address);
+                                        addressLength = address.length();
+                                        addressChangeCounter = 0;
+                                    }
+                                    originStation = stationCode;
+                                    Log.i(TAG, "run: " + originStation);
+
+                                }, passengerAddressModels);
+                            }
+                        } else {
+                            new GeneralDialog()
+                                    .title("هشدار")
+                                    .message(message)
+                                    .secondButton("باشه", null)
+                                    .cancelable(false)
+                                    .show();
                         }
+
                         MyApplication.handler.postDelayed(() -> {
                             if (vfPassengerAddress != null)
                                 vfPassengerAddress.setDisplayedChild(0);
                         }, 500);
+
                     } catch (JSONException e) {
+                        MyApplication.handler.postDelayed(() -> {
+                            if (vfPassengerAddress != null)
+                                vfPassengerAddress.setDisplayedChild(0);
+                        }, 500);
                         e.printStackTrace();
                         AvaCrashReporter.send(e, "TripRegisterActivity class, getPassengerAddress onResponse method");
                     }
@@ -1102,6 +1116,15 @@ public class TripRegisterActivity extends AppCompatActivity {
 
         @Override
         public void onFailure(Runnable reCall, Exception e) {
+            MyApplication.handler.post(new Runnable() {
+                @Override
+                public void run() {
+                    MyApplication.handler.postDelayed(() -> {
+                        if (vfPassengerAddress != null)
+                            vfPassengerAddress.setDisplayedChild(0);
+                    }, 500);
+                }
+            });
         }
     };
 
@@ -1169,47 +1192,38 @@ public class TripRegisterActivity extends AppCompatActivity {
     RequestHelper.Callback setActivate = new RequestHelper.Callback() {
         @Override
         public void onResponse(Runnable reCall, Object... args) {
-            MyApplication.handler.post(new Runnable() {
-                @Override
-                public void run() {
-                    try {
-                        LoadingDialog.dismissCancelableDialog();
-                        Log.i(TAG, "onResponse: " + args[0].toString());
-                        JSONObject obj = new JSONObject(args[0].toString());
-                        boolean success = obj.getBoolean("success");
-                        String message = obj.getString("message");
-                        JSONObject dataObj = obj.getJSONObject("data");
+            MyApplication.handler.post(() -> {
+                try {
+                    LoadingDialog.dismissCancelableDialog();
+                    Log.i(TAG, "onResponse: " + args[0].toString());
+                    JSONObject obj = new JSONObject(args[0].toString());
+                    boolean success = obj.getBoolean("success");
+                    String message = obj.getString("message");
 
-                        if (success) {
-                            MyApplication.Toast("شما باموفقیت وارد صف شدید", Toast.LENGTH_SHORT);
-                            if (btnActivate != null)
-                                btnActivate.setBackgroundResource(R.drawable.bg_green_edge);
-                            MyApplication.prefManager.setActivateStatus(true);
-                            if (btnDeActivate != null) {
-                                btnDeActivate.setBackgroundColor(Color.parseColor("#00FFB2B2"));
-                                btnDeActivate.setTextColor(Color.parseColor("#ffffff"));
-                            }
-                        } else {
-                            new GeneralDialog()
-                                    .title("هشدار")
-                                    .message(message)
-                                    .firstButton("تلاش مجدد", new Runnable() {
-                                        @Override
-                                        public void run() {
-                                            setActivate(MyApplication.prefManager.getUserCode(), MyApplication.prefManager.getSipNumber());
-                                        }
-                                    })
-                                    .secondButton("بعدا امتحان میکنم", null)
-                                    .show();
+                    if (success) {
+                        MyApplication.Toast("شما باموفقیت وارد صف شدید", Toast.LENGTH_SHORT);
+                        if (btnActivate != null)
+                            btnActivate.setBackgroundResource(R.drawable.bg_green_edge);
+                        MyApplication.prefManager.setActivateStatus(true);
+                        if (btnDeActivate != null) {
+                            btnDeActivate.setBackgroundColor(Color.parseColor("#00FFB2B2"));
+                            btnDeActivate.setTextColor(Color.parseColor("#ffffff"));
                         }
-
-                    } catch (JSONException e) {
-                        e.printStackTrace();
-                        AvaCrashReporter.send(e, "TripRegisterActivity class, setActivate onResponse method");
+                    } else {
+                        new GeneralDialog()
+                                .title("هشدار")
+                                .message(message)
+                                .firstButton("تلاش مجدد", () -> setActivate(MyApplication.prefManager.getUserCode(), MyApplication.prefManager.getSipNumber()))
+                                .secondButton("بعدا امتحان میکنم", null)
+                                .show();
                     }
                     LoadingDialog.dismiss();
-
+                } catch (JSONException e) {
+                    LoadingDialog.dismiss();
+                    e.printStackTrace();
+                    AvaCrashReporter.send(e, "TripRegisterActivity class, setActivate onResponse method");
                 }
+
             });
         }
 
@@ -1244,45 +1258,36 @@ public class TripRegisterActivity extends AppCompatActivity {
     RequestHelper.Callback setDeActivate = new RequestHelper.Callback() {
         @Override
         public void onResponse(Runnable reCall, Object... args) {
-            MyApplication.handler.post(new Runnable() {
-                @Override
-                public void run() {
-                    try {
-                        LoadingDialog.dismissCancelableDialog();
-                        Log.i(TAG, "onResponse: " + args[0].toString());
-                        JSONObject obj = new JSONObject(args[0].toString());
-                        boolean success = obj.getBoolean("success");
-                        String message = obj.getString("message");
-                        JSONObject dataObj = obj.getJSONObject("data");
+            MyApplication.handler.post(() -> {
+                try {
+                    LoadingDialog.dismissCancelableDialog();
+                    Log.i(TAG, "onResponse: " + args[0].toString());
+                    JSONObject obj = new JSONObject(args[0].toString());
+                    boolean success = obj.getBoolean("success");
+                    String message = obj.getString("message");
 
-                        if (success) {
-                            MyApplication.Toast("شما باموفقیت از صف خارج شدید", Toast.LENGTH_SHORT);
-                            MyApplication.prefManager.setActivateStatus(false);
-                            if (btnActivate != null)
-                                btnActivate.setBackgroundColor(Color.parseColor("#00FFB2B2"));
-                            if (btnDeActivate != null) {
-                                btnDeActivate.setBackgroundResource(R.drawable.bg_pink_edge);
-                                btnDeActivate.setTextColor(Color.parseColor("#ffffff"));
-                            }
-                        } else {
-                            new GeneralDialog()
-                                    .title("هشدار")
-                                    .message(message)
-                                    .firstButton("تلاش مجدد", new Runnable() {
-                                        @Override
-                                        public void run() {
-                                            setDeActivate(MyApplication.prefManager.getUserCode(), MyApplication.prefManager.getSipNumber());
-                                        }
-                                    })
-                                    .secondButton("بعدا امتحان میکنم", null)
-                                    .show();
+                    if (success) {
+                        MyApplication.Toast("شما باموفقیت از صف خارج شدید", Toast.LENGTH_SHORT);
+                        MyApplication.prefManager.setActivateStatus(false);
+                        if (btnActivate != null)
+                            btnActivate.setBackgroundColor(Color.parseColor("#00FFB2B2"));
+                        if (btnDeActivate != null) {
+                            btnDeActivate.setBackgroundResource(R.drawable.bg_pink_edge);
+                            btnDeActivate.setTextColor(Color.parseColor("#ffffff"));
                         }
-
-                    } catch (JSONException e) {
-                        e.printStackTrace();
-                        AvaCrashReporter.send(e, "TripRegisterActivity class, setDeActivate onResponse method");
+                    } else {
+                        new GeneralDialog()
+                                .title("هشدار")
+                                .message(message)
+                                .firstButton("تلاش مجدد", () -> setDeActivate(MyApplication.prefManager.getUserCode(), MyApplication.prefManager.getSipNumber()))
+                                .secondButton("بعدا امتحان میکنم", null)
+                                .show();
                     }
                     LoadingDialog.dismiss();
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                    LoadingDialog.dismiss();
+                    AvaCrashReporter.send(e, "TripRegisterActivity class, setDeActivate onResponse method");
                 }
             });
         }
@@ -1363,20 +1368,6 @@ public class TripRegisterActivity extends AppCompatActivity {
                             new GeneralDialog()
                                     .title("خطا")
                                     .message(message)
-                                    .firstButton("تلاش مجدد", null)
-//
-//                        String tell = edtTell.getText().toString();
-//                        String mobile = edtMobile.getText().toString();
-//                        String name = edtFamily.getText().toString();
-//                        String address = edtAddress.getText().toString();
-//                        String fixedComment = txtDescription.getText().toString();
-//                        int stationCode = Integer.parseInt(edtOrigin.getText().toString());
-//                        int destinationStation = Integer.parseInt(edtDestination.getText().toString());
-//
-//                        insertService(MyApplication.prefManager.getUserCode(), serviceCount, tell, mobile, cityCode, stationCode,
-//                                name, address, fixedComment, destinationStation,
-//                                stationName, serviceType, carClass, normalDescription, traffic, 1, defaultClass);
-
                                     .secondButton("بستن", null)
                                     .show();
                         }

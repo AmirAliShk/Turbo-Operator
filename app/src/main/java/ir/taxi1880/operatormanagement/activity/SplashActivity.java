@@ -259,7 +259,7 @@ public class SplashActivity extends AppCompatActivity {
                     String serviceCountMonth = object.getString("serviceCountMonth");
                     int activeInQueue = object.getInt("activeInQueue");
 //                    isFinishContract = object.getInt("isFinishContract");
-                    isFinishContract = 0; //TODO
+                    isFinishContract = 0; //TODO remove zero
                     int customerSupport = object.getInt("customerSupport");
                     String name = object.getString("name");
                     String family = object.getString("family");

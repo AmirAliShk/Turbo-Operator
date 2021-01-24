@@ -31,6 +31,7 @@ public class LastAddressAdapter extends BaseAdapter {
 
     private ArrayList<PassengerAddressModel> addressModels;
     private LayoutInflater layoutInflater;
+    int currentPosition;
 
     public LastAddressAdapter(ArrayList<PassengerAddressModel> addressModels, Context context) {
         this.addressModels = addressModels;
@@ -78,13 +79,14 @@ public class LastAddressAdapter extends BaseAdapter {
             }
 
             imgArchive.setOnClickListener(view -> {
+                currentPosition = position;
                 new GeneralDialog()
                         .title("هشدار")
                         .message("ایا از انجام عملیات فوق اطمینان دارید؟")
                         .firstButton("بله", () -> {
                             archiveAddress(addressModels.get(position));
                         })
-                        .secondButton("خیر",null)
+                        .secondButton("خیر", null)
                         .cancelable(false)
                         .show();
             });
@@ -100,9 +102,9 @@ public class LastAddressAdapter extends BaseAdapter {
     private void archiveAddress(PassengerAddressModel passengerAddressModel) {
         LoadingDialog.makeCancelableLoader();
         RequestHelper.builder(EndPoints.ARCHIVE_ADDRESS)
-                .addParam("phoneNumber",passengerAddressModel.getPhoneNumber())
-                .addParam("adrs",passengerAddressModel.getAddress())
-                .addParam("mobile",passengerAddressModel.getMobile())
+                .addParam("phoneNumber", passengerAddressModel.getPhoneNumber())
+                .addParam("adrs", passengerAddressModel.getAddress())
+                .addParam("mobile", passengerAddressModel.getMobile())
                 .listener(onArchiveAddress)
                 .put();
     }
@@ -112,11 +114,46 @@ public class LastAddressAdapter extends BaseAdapter {
         public void onResponse(Runnable reCall, Object... args) {
             MyApplication.handler.post(() -> {
                 try {
-                    //TODO do someThing
-//                    addressModels.remove(position);
-//                    notifyDataSetChanged();
+                    //{"success":true,"message":"عملیات با موفقیت انجام شد","data":{"status":true}}
+                    JSONObject object = new JSONObject(args[0].toString());
+                    boolean success = object.getBoolean("success");
+                    String message = object.getString("message");
+
+                    if (success) {
+                        JSONObject dataObj = object.getJSONObject("data");
+                        boolean status = dataObj.getBoolean("status");
+                        if (status) {
+                            new GeneralDialog()
+                                    .title("تایید شد")
+                                    .message(message)
+                                    .cancelable(false)
+                                    .firstButton("باشه", () -> {
+                                        addressModels.remove(currentPosition);
+                                        notifyDataSetChanged();
+                                    })
+                                    .show();
+                        } else {
+                            new GeneralDialog()
+                                    .title("خطا")
+                                    .message(message)
+                                    .cancelable(false)
+                                    .firstButton("باشه", null)
+                                    .show();
+                        }
+                    } else {
+                        new GeneralDialog()
+                                .title("خطا")
+                                .message(message)
+                                .cancelable(false)
+                                .firstButton("باشه", null)
+                                .show();
+                    }
+
+
+                    LoadingDialog.dismissCancelableDialog();
                 } catch (Exception e) {
                     e.printStackTrace();
+                    LoadingDialog.dismissCancelableDialog();
                 }
             });
         }
@@ -124,6 +161,7 @@ public class LastAddressAdapter extends BaseAdapter {
         @Override
         public void onFailure(Runnable reCall, Exception e) {
             MyApplication.handler.post(() -> {
+                LoadingDialog.dismissCancelableDialog();
             });
         }
     };

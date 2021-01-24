@@ -19,6 +19,7 @@ import butterknife.Unbinder;
 import ir.taxi1880.operatormanagement.R;
 import ir.taxi1880.operatormanagement.app.EndPoints;
 import ir.taxi1880.operatormanagement.app.MyApplication;
+import ir.taxi1880.operatormanagement.dialog.GeneralDialog;
 import ir.taxi1880.operatormanagement.helper.FragmentHelper;
 import ir.taxi1880.operatormanagement.helper.StringHelper;
 import ir.taxi1880.operatormanagement.helper.TypefaceUtil;
@@ -106,31 +107,32 @@ public class HomeFragment extends Fragment {
     RequestHelper.Callback getBalance = new RequestHelper.Callback() {
         @Override
         public void onResponse(Runnable reCall, Object... args) {
-            MyApplication.handler.post(new Runnable() {
-                @Override
-                public void run() {
-                    try {
-                        Log.i(TAG, "run: " + args[0].toString());
-                        JSONObject obj = new JSONObject(args[0].toString());
-                        boolean success = obj.getBoolean("success");
-                        String message = obj.getString("message");
+            MyApplication.handler.post(() -> {
+                try {
+                    JSONObject obj = new JSONObject(args[0].toString());
+                    boolean success = obj.getBoolean("success");
+                    String message = obj.getString("message");
+
+                    if (success) {
                         JSONObject dataObj = obj.getJSONObject("data");
                         String accountBalance = dataObj.getString("accountBalance");
                         String balance = StringHelper.setComma(accountBalance);
-
-                        if (success) {
-                            if (txtCharge != null)
-                                txtCharge.setText(StringHelper.toPersianDigits(balance + " تومان "));
-                            if (vfBalance != null)
-                                vfBalance.setDisplayedChild(1);
-                        } else {
-
-                        }
-
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                        AvaCrashReporter.send(e, "HomeFragment class, getBalance onResponse method");
+                        if (txtCharge != null)
+                            txtCharge.setText(StringHelper.toPersianDigits(balance + " تومان "));
+                        if (vfBalance != null)
+                            vfBalance.setDisplayedChild(1);
+                    } else {
+                        new GeneralDialog()
+                                .title("هشدار")
+                                .message(message)
+                                .secondButton("باشه", null)
+                                .cancelable(false)
+                                .show();
                     }
+
+                } catch (Exception e) {
+                    e.printStackTrace();
+                    AvaCrashReporter.send(e, "HomeFragment class, getBalance onResponse method");
                 }
             });
         }

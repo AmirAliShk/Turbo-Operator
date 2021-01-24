@@ -111,8 +111,6 @@ public class VerificationFragment extends Fragment {
                         Bundle bundle = new Bundle();
                         bundle.putString("mobileNumber", mobileNumber);
                         FragmentHelper.toFragment(MyApplication.currentActivity, new CheckVerificationFragment()).setArguments(bundle).setAddToBackStack(false).replace();
-                    } else {
-//                        {"success":false,"message":"محدودیت زمانی","data":{}}
                     }
                     MyApplication.Toast(message, Toast.LENGTH_SHORT);
 

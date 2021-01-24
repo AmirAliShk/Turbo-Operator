@@ -23,6 +23,7 @@ import ir.taxi1880.operatormanagement.R;
 import ir.taxi1880.operatormanagement.adapter.RewardAdapter;
 import ir.taxi1880.operatormanagement.app.EndPoints;
 import ir.taxi1880.operatormanagement.app.MyApplication;
+import ir.taxi1880.operatormanagement.dialog.GeneralDialog;
 import ir.taxi1880.operatormanagement.helper.TypefaceUtil;
 import ir.taxi1880.operatormanagement.model.RewardsModel;
 import ir.taxi1880.operatormanagement.okHttp.RequestHelper;
@@ -73,21 +74,31 @@ public class RewardsFragment extends Fragment {
             JSONObject bestObj = new JSONObject(args[0].toString());
             boolean success = bestObj.getBoolean("success");
             String messsage = bestObj.getString("messsage");
-            JSONArray rewardsArr = bestObj.getJSONArray("data");
-            for (int i = 0; i < rewardsArr.length(); i++) {
-              JSONObject obj = rewardsArr.getJSONObject(i);
-              RewardsModel rewardsModel = new RewardsModel();
-              rewardsModel.setScore(obj.getInt("score"));
-              rewardsModel.setComment(obj.getString("comment"));
-              rewardsModel.setExpireDate(obj.getString("expireDate"));
-              rewardsModel.setexpireTime(obj.getString("expireTime"));
-              rewardsModel.setSubject(obj.getString("subject"));
-              rewardsModels.add(rewardsModel);
-            }
 
-            rewardAdapter = new RewardAdapter(rewardsModels);
-            if (recycleRewards != null)
-              recycleRewards.setAdapter(rewardAdapter);
+            if (success) {
+              JSONArray rewardsArr = bestObj.getJSONArray("data");
+              for (int i = 0; i < rewardsArr.length(); i++) {
+                JSONObject obj = rewardsArr.getJSONObject(i);
+                RewardsModel rewardsModel = new RewardsModel();
+                rewardsModel.setScore(obj.getInt("score"));
+                rewardsModel.setComment(obj.getString("comment"));
+                rewardsModel.setExpireDate(obj.getString("expireDate"));
+                rewardsModel.setexpireTime(obj.getString("expireTime"));
+                rewardsModel.setSubject(obj.getString("subject"));
+                rewardsModels.add(rewardsModel);
+              }
+              rewardAdapter = new RewardAdapter(rewardsModels);
+              if (recycleRewards != null)
+                recycleRewards.setAdapter(rewardAdapter);
+
+            }else {
+              new GeneralDialog()
+                      .title("هشدار")
+                      .message(messsage)
+                      .secondButton("باشه", null)
+                      .cancelable(false)
+                      .show();
+            }
 
             if (rewardsModels.size() == 0) {
               if (vfReward != null)

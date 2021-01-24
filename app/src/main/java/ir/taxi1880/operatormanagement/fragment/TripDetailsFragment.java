@@ -268,7 +268,6 @@ public class TripDetailsFragment extends Fragment {
         public void onResponse(Runnable reCall, Object... args) {
             MyApplication.handler.post(() -> {
                 try {
-                    Log.i("TAG", "onResponse: " + args[0].toString());
                     JSONObject tripObject = new JSONObject(args[0].toString());
                     Boolean success = tripObject.getBoolean("success");
                     String message = tripObject.getString("message");
@@ -416,6 +415,8 @@ public class TripDetailsFragment extends Fragment {
         if (isBefore) {
             btnComplaintRegistration.setEnabled(false);
             btnComplaintRegistration.setBackgroundResource(R.drawable.bg_btn_disable);
+            btnDriverLock.setEnabled(false);
+            btnDriverLock.setBackgroundResource(R.drawable.bg_btn_disable);
         }
 //    MyApplication.prefManager.setLastCallerId("");// set empty, because I don't want save this permanently .
     }
@@ -456,22 +457,30 @@ public class TripDetailsFragment extends Fragment {
                 @Override
                 public void run() {
                     try {
-                        Log.i("TripDetailsFragment", "run: " + args[0].toString());
 //            {"success":true,"message":"","data":{"status":true}}
                         JSONObject object = new JSONObject(args[0].toString());
                         boolean success = object.getBoolean("success");
                         String message = object.getString("message");
-                        JSONObject dataObj = object.getJSONObject("data");
-                        boolean status = dataObj.getBoolean("status");
 
-                        if (status) {
+                        if (success) {
+                            JSONObject dataObj = object.getJSONObject("data");
+                            boolean status = dataObj.getBoolean("status");
+                            if (status) {
 //              MyApplication.prefManager.setLastCallerId("");// set empty, because I don't want save this permanently .
-                            new GeneralDialog()
-                                    .title("تایید شد")
-                                    .message(message)
-                                    .cancelable(false)
-                                    .firstButton("باشه", null)
-                                    .show();
+                                new GeneralDialog()
+                                        .title("تایید شد")
+                                        .message(message)
+                                        .cancelable(false)
+                                        .firstButton("باشه", null)
+                                        .show();
+                            } else {
+                                new GeneralDialog()
+                                        .title("خطا")
+                                        .message(message)
+                                        .cancelable(false)
+                                        .firstButton("باشه", null)
+                                        .show();
+                            }
                         } else {
                             new GeneralDialog()
                                     .title("خطا")
@@ -480,7 +489,6 @@ public class TripDetailsFragment extends Fragment {
                                     .firstButton("باشه", null)
                                     .show();
                         }
-
                         LoadingDialog.dismissCancelableDialog();
                     } catch (Exception e) {
                         e.printStackTrace();
@@ -509,18 +517,16 @@ public class TripDetailsFragment extends Fragment {
     RequestHelper.Callback inTrackingAgain = new RequestHelper.Callback() {
         @Override
         public void onResponse(Runnable reCall, Object... args) {
-            MyApplication.handler.post(new Runnable() {
-                @Override
-                public void run() {
-                    try {
-                        Log.i("TripDetailsFragment", "run: " + args[0].toString());
+            MyApplication.handler.post(() -> {
+                try {
 //            {"success":true,"message":"","data":{"status":true}}
-                        JSONObject object = new JSONObject(args[0].toString());
-                        boolean success = object.getBoolean("success");
-                        String message = object.getString("message");
+                    JSONObject object = new JSONObject(args[0].toString());
+                    boolean success = object.getBoolean("success");
+                    String message = object.getString("message");
+
+                    if (success) {
                         JSONObject dataObj = object.getJSONObject("data");
                         boolean status = dataObj.getBoolean("status");
-
                         if (status) {
                             new GeneralDialog()
                                     .title("تایید شد")
@@ -528,12 +534,28 @@ public class TripDetailsFragment extends Fragment {
                                     .cancelable(false)
                                     .firstButton("باشه", null)
                                     .show();
+                        } else {
+                            new GeneralDialog()
+                                    .title("خطا")
+                                    .message(message)
+                                    .cancelable(false)
+                                    .firstButton("باشه", null)
+                                    .show();
                         }
-
-                        LoadingDialog.dismissCancelableDialog();
-                    } catch (Exception e) {
-                        e.printStackTrace();
+                    } else {
+                        new GeneralDialog()
+                                .title("خطا")
+                                .message(message)
+                                .cancelable(false)
+                                .firstButton("باشه", null)
+                                .show();
                     }
+
+
+                    LoadingDialog.dismissCancelableDialog();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                    LoadingDialog.dismissCancelableDialog();
                 }
             });
         }
@@ -550,9 +572,9 @@ public class TripDetailsFragment extends Fragment {
     private void archiveAddress() {
         LoadingDialog.makeCancelableLoader();
         RequestHelper.builder(EndPoints.ARCHIVE_ADDRESS)
-                .addParam("phoneNumber",passengerPhone)
-                .addParam("adrs",passengerAddress)
-                .addParam("mobile",customerMobile)
+                .addParam("phoneNumber", passengerPhone)
+                .addParam("adrs", passengerAddress)
+                .addParam("mobile", customerMobile)
                 .listener(onArchiveAddress)
                 .put();
     }
@@ -562,9 +584,32 @@ public class TripDetailsFragment extends Fragment {
         public void onResponse(Runnable reCall, Object... args) {
             MyApplication.handler.post(() -> {
                 try {
-                    //TODO do someThing
+//                    {"success":true,"message":"عملیات با موفقیت انجام شد","data":{"status":true}}
+                    JSONObject object = new JSONObject(args[0].toString());
+                    boolean success = object.getBoolean("success");
+                    String message = object.getString("message");
+                    JSONObject dataObj = object.getJSONObject("data");
+                    boolean status = dataObj.getBoolean("status");
+
+                    if (status) {
+                        new GeneralDialog()
+                                .title("تایید شد")
+                                .message(message)
+                                .cancelable(false)
+                                .firstButton("باشه", null)
+                                .show();
+                    } else {
+                        new GeneralDialog()
+                                .title("خطا")
+                                .message(message)
+                                .cancelable(false)
+                                .firstButton("باشه", null)
+                                .show();
+                    }
+                    LoadingDialog.dismissCancelableDialog();
                 } catch (Exception e) {
                     e.printStackTrace();
+                    LoadingDialog.dismissCancelableDialog();
                 }
             });
         }
@@ -572,6 +617,7 @@ public class TripDetailsFragment extends Fragment {
         @Override
         public void onFailure(Runnable reCall, Exception e) {
             MyApplication.handler.post(() -> {
+                LoadingDialog.dismissCancelableDialog();
             });
         }
     };

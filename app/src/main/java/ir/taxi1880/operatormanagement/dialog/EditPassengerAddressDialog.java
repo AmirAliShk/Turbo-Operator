@@ -169,14 +169,14 @@ public class EditPassengerAddressDialog {
 
     private void editStation(int cityCode, String address, String serviceId, String stationCode) {
 
-        if (vfLoader!=null){
+        if (vfLoader != null) {
             vfLoader.setDisplayedChild(1);
         }
 
         LoadingDialog.makeCancelableLoader();
         RequestHelper.builder(EndPoints.EDIT_STATION)
                 .addParam("cityCode", cityCode)
-                .addParam("address", address)
+                .addParam("adrs", address)
                 .addParam("tripId", serviceId)
                 .addParam("stationCode", stationCode)
                 .listener(onEditStation)
@@ -191,10 +191,11 @@ public class EditPassengerAddressDialog {
                     JSONObject obj = new JSONObject(args[0].toString());
                     boolean success = obj.getBoolean("success");
                     String message = obj.getString("message");
+
                     if (success) {
                         editationCallBack.onEdited(true);
                         dismiss();
-                    }else{
+                    } else {
                         new GeneralDialog()
                                 .title("هشدار")
                                 .message(message)
@@ -203,12 +204,14 @@ public class EditPassengerAddressDialog {
                                 .show();
                     }
 
-                    if (vfLoader!=null){
+                    if (vfLoader != null) {
                         vfLoader.setDisplayedChild(0);
                     }
 
+                    LoadingDialog.dismissCancelableDialog();
                 } catch (Exception e) {
                     e.printStackTrace();
+                    LoadingDialog.dismissCancelableDialog();
                 }
             });
         }
@@ -216,6 +219,7 @@ public class EditPassengerAddressDialog {
         @Override
         public void onFailure(Runnable reCall, Exception e) {
             MyApplication.handler.post(() -> {
+                LoadingDialog.dismissCancelableDialog();
             });
         }
     };

@@ -86,7 +86,7 @@ public class ComplaintRegistrationDialog {
     }
 
     private void setComplaint(String serviceId, String description, String voipId) {
-        if (vfLoader!=null){
+        if (vfLoader != null) {
             vfLoader.setDisplayedChild(1);
         }
         LoadingDialog.makeCancelableLoader();
@@ -104,20 +104,28 @@ public class ComplaintRegistrationDialog {
         public void onResponse(Runnable reCall, Object... args) {
             MyApplication.handler.post(() -> {
                 try {
-                    Log.i("TripDetailsFragment", "run: " + args[0].toString());
                     JSONObject object = new JSONObject(args[0].toString());
                     boolean success = object.getBoolean("success");
                     String message = object.getString("message");
-                    JSONObject dataObj = object.getJSONObject("data");
-                    boolean status = dataObj.getBoolean("result");
 
-                    if (status) {
-                        new GeneralDialog()
-                                .title("تایید شد")
-                                .message(message)
-                                .cancelable(false)
-                                .firstButton("باشه", null)
-                                .show();
+                    if (success) {
+                        JSONObject dataObj = object.getJSONObject("data");
+                        boolean status = dataObj.getBoolean("result");
+                        if (status) {
+                            new GeneralDialog()
+                                    .title("تایید شد")
+                                    .message(message)
+                                    .cancelable(false)
+                                    .firstButton("باشه", null)
+                                    .show();
+                        } else {
+                            new GeneralDialog()
+                                    .title("خطا")
+                                    .message(message)
+                                    .cancelable(false)
+                                    .firstButton("باشه", null)
+                                    .show();
+                        }
                     } else {
                         new GeneralDialog()
                                 .title("خطا")
@@ -126,12 +134,14 @@ public class ComplaintRegistrationDialog {
                                 .firstButton("باشه", null)
                                 .show();
                     }
-                    if (vfLoader!=null){
+
+                    if (vfLoader != null) {
                         vfLoader.setDisplayedChild(0);
                     }
 
                     LoadingDialog.dismissCancelableDialog();
                 } catch (Exception e) {
+                    LoadingDialog.dismissCancelableDialog();
                     e.printStackTrace();
                 }
             });

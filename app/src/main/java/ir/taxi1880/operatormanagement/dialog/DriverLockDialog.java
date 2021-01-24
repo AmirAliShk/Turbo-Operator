@@ -34,168 +34,178 @@ import ir.taxi1880.operatormanagement.push.AvaCrashReporter;
 
 public class DriverLockDialog {
 
-  private static final String TAG = DriverLockDialog.class.getSimpleName();
+    private static final String TAG = DriverLockDialog.class.getSimpleName();
 
-  private Spinner spReason;
-  int reason;
-  ViewFlipper vfLoader;
-  static Dialog dialog;
+    private Spinner spReason;
+    int reason;
+    ViewFlipper vfLoader;
+    static Dialog dialog;
 
-  public void show(String taxiCode) {
-    if (MyApplication.currentActivity == null || MyApplication.currentActivity.isFinishing())
-      return;
-    dialog = new Dialog(MyApplication.currentActivity);
-    dialog.getWindow().requestFeature(Window.FEATURE_NO_TITLE);
-    dialog.getWindow().getAttributes().windowAnimations = R.style.ExpandAnimation;
-    dialog.setContentView(R.layout.dialog_driver_lock);
-    TypefaceUtil.overrideFonts(dialog.getWindow().getDecorView());
-    dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
-    WindowManager.LayoutParams wlp = dialog.getWindow().getAttributes();
-    wlp.gravity = Gravity.CENTER;
-    wlp.windowAnimations = R.style.ExpandAnimation;
-    dialog.getWindow().setAttributes(wlp);
-    dialog.setCancelable(false);
+    public void show(String taxiCode) {
+        if (MyApplication.currentActivity == null || MyApplication.currentActivity.isFinishing())
+            return;
+        dialog = new Dialog(MyApplication.currentActivity);
+        dialog.getWindow().requestFeature(Window.FEATURE_NO_TITLE);
+        dialog.getWindow().getAttributes().windowAnimations = R.style.ExpandAnimation;
+        dialog.setContentView(R.layout.dialog_driver_lock);
+        TypefaceUtil.overrideFonts(dialog.getWindow().getDecorView());
+        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        WindowManager.LayoutParams wlp = dialog.getWindow().getAttributes();
+        wlp.gravity = Gravity.CENTER;
+        wlp.windowAnimations = R.style.ExpandAnimation;
+        dialog.getWindow().setAttributes(wlp);
+        dialog.setCancelable(false);
 
-    ImageView imgClose = dialog.findViewById(R.id.imgClose);
-    Button btnSubmit = dialog.findViewById(R.id.btnSubmit);
-    EditText edtHour = dialog.findViewById(R.id.edtHour);
-    spReason = dialog.findViewById(R.id.spReason);
-    vfLoader = dialog.findViewById(R.id.vfLoader);
+        ImageView imgClose = dialog.findViewById(R.id.imgClose);
+        Button btnSubmit = dialog.findViewById(R.id.btnSubmit);
+        EditText edtHour = dialog.findViewById(R.id.edtHour);
+        spReason = dialog.findViewById(R.id.spReason);
+        vfLoader = dialog.findViewById(R.id.vfLoader);
 
-    initSpinner();
+        initSpinner();
 
-    imgClose.setOnClickListener(view -> dismiss());
+        imgClose.setOnClickListener(view -> dismiss());
 
-    btnSubmit.setOnClickListener(view -> {
-      KeyBoardHelper.hideKeyboard();
+        btnSubmit.setOnClickListener(view -> {
+            KeyBoardHelper.hideKeyboard();
 
-      String hours = edtHour.getText().toString();
+            String hours = edtHour.getText().toString();
 
-      if (hours.isEmpty()) {
-        MyApplication.Toast("تعداد ساعت های قفل راننده را وارد کنید.", Toast.LENGTH_SHORT);
-        return;
-      }
+            if (hours.isEmpty()) {
+                MyApplication.Toast("تعداد ساعت های قفل راننده را وارد کنید.", Toast.LENGTH_SHORT);
+                return;
+            }
 
-      if (Integer.parseInt(hours) < 6) {
-        MyApplication.Toast("زمان قفل راننده نباید کمتر از 6 ساعت باشد.", Toast.LENGTH_SHORT);
-        edtHour.setText("");
-        return;
-      }
+            if (Integer.parseInt(hours) < 6) {
+                MyApplication.Toast("زمان قفل راننده نباید کمتر از 6 ساعت باشد.", Toast.LENGTH_SHORT);
+                edtHour.setText("");
+                return;
+            }
 
-      lockTaxi(taxiCode, hours);
-      dismiss();
-    });
+            lockTaxi(taxiCode, hours);
+            dismiss();
+        });
 
-    dialog.show();
-  }
-
-  private void lockTaxi(String taxiCode, String hours) {
-    if (vfLoader!=null){
-      vfLoader.setDisplayedChild(1);
+        dialog.show();
     }
-    LoadingDialog.makeCancelableLoader();
-    RequestHelper.builder(EndPoints.LOCK_TAXI)
-            .addParam("taxiCode", taxiCode)
-            .addParam("hours", hours)
-            .addParam("reasonId", reason)
-            .listener(onLockTaxi)
-            .post();
-  }
 
-  RequestHelper.Callback onLockTaxi = new RequestHelper.Callback() {
-    @Override
-    public void onResponse(Runnable reCall, Object... args) {
-      MyApplication.handler.post(() -> {
+    private void lockTaxi(String taxiCode, String hours) {
+        if (vfLoader != null) {
+            vfLoader.setDisplayedChild(1);
+        }
+        LoadingDialog.makeCancelableLoader();
+        RequestHelper.builder(EndPoints.LOCK_TAXI)
+                .addParam("taxiCode", taxiCode)
+                .addParam("hours", hours)
+                .addParam("reasonId", reason)
+                .listener(onLockTaxi)
+                .post();
+    }
+
+    RequestHelper.Callback onLockTaxi = new RequestHelper.Callback() {
+        @Override
+        public void onResponse(Runnable reCall, Object... args) {
+            MyApplication.handler.post(() -> {
+                try {
+                    JSONObject object = new JSONObject(args[0].toString());
+                    boolean success = object.getBoolean("success");
+                    String message = object.getString("message");
+
+                    if (success) {
+                        JSONObject dataObj = object.getJSONObject("data");
+                        boolean status = dataObj.getBoolean("status");
+
+                        if (status) {
+                            new GeneralDialog()
+                                    .title("تایید شد")
+                                    .message(message)
+                                    .cancelable(false)
+                                    .firstButton("باشه", null)
+                                    .show();
+                        } else {
+                            new GeneralDialog()
+                                    .title("خطا")
+                                    .message(message)
+                                    .cancelable(false)
+                                    .firstButton("باشه", null)
+                                    .show();
+                        }
+                    } else {
+                        new GeneralDialog()
+                                .title("خطا")
+                                .message(message)
+                                .cancelable(false)
+                                .firstButton("باشه", null)
+                                .show();
+                    }
+
+                    if (vfLoader != null) {
+                        vfLoader.setDisplayedChild(0);
+                    }
+
+                    LoadingDialog.dismissCancelableDialog();
+                } catch (Exception e) {
+                    LoadingDialog.dismissCancelableDialog();
+                    e.printStackTrace();
+                }
+            });
+        }
+
+        @Override
+        public void onFailure(Runnable reCall, Exception e) {
+            MyApplication.handler.post(() -> {
+                LoadingDialog.dismissCancelableDialog();
+            });
+        }
+
+    };
+
+    private void initSpinner() {
+        ArrayList<TypeServiceModel> typeServiceModels = new ArrayList<>();
+        ArrayList<String> serviceList = new ArrayList<String>();
         try {
-          Log.i("TripDetailsFragment", "run: " + args[0].toString());
-          JSONObject object = new JSONObject(args[0].toString());
-          boolean success = object.getBoolean("success");
-          String message = object.getString("message");
-          JSONObject dataObj = object.getJSONObject("data");
-          boolean status = dataObj.getBoolean("status");
+            JSONArray serviceArr = new JSONArray(MyApplication.prefManager.getReasonsLock());
+            for (int i = 0; i < serviceArr.length(); i++) {
+                JSONObject serviceObj = serviceArr.getJSONObject(i);
+                TypeServiceModel typeServiceModel = new TypeServiceModel();
+                typeServiceModel.setName(serviceObj.getString("Subject"));
+                typeServiceModel.setId(serviceObj.getInt("Id"));
+                typeServiceModels.add(typeServiceModel);
+                serviceList.add(serviceObj.getString("Subject"));
+            }
+            if (spReason == null)
+                return;
 
-          if (status) {
-            new GeneralDialog()
-                    .title("تایید شد")
-                    .message(message)
-                    .cancelable(false)
-                    .firstButton("باشه", null)
-                    .show();
-          }else {
-            new GeneralDialog()
-                    .title("خطا")
-                    .message(message)
-                    .cancelable(false)
-                    .firstButton("باشه", null)
-                    .show();
-          }
+            spReason.setEnabled(true);
 
-          if (vfLoader!=null){
-            vfLoader.setDisplayedChild(0);
-          }
+            spReason.setAdapter(new SpinnerAdapter(MyApplication.currentActivity, R.layout.item_spinner, serviceList));
 
-          LoadingDialog.dismissCancelableDialog();
+            spReason.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                @Override
+                public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                    reason = typeServiceModels.get(position).getId();
+                }
+
+                @Override
+                public void onNothingSelected(AdapterView<?> parent) {
+                }
+            });
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private static void dismiss() {
+        try {
+            if (dialog != null) {
+                dialog.dismiss();
+                KeyBoardHelper.hideKeyboard();
+            }
         } catch (Exception e) {
-          e.printStackTrace();
+            Log.e("TAG", "dismiss: " + e.getMessage());
+            AvaCrashReporter.send(e, "DriverLockDialog class, dismiss method");
         }
-      });
+        dialog = null;
     }
-
-    @Override
-    public void onFailure(Runnable reCall, Exception e) {
-      MyApplication.handler.post(() -> {
-        LoadingDialog.dismissCancelableDialog();
-      });
-    }
-
-  };
-
-  private void initSpinner() {
-    ArrayList<TypeServiceModel> typeServiceModels = new ArrayList<>();
-    ArrayList<String> serviceList = new ArrayList<String>();
-    try {
-      JSONArray serviceArr = new JSONArray(MyApplication.prefManager.getReasonsLock());
-      for (int i = 0; i < serviceArr.length(); i++) {
-        JSONObject serviceObj = serviceArr.getJSONObject(i);
-        TypeServiceModel typeServiceModel = new TypeServiceModel();
-        typeServiceModel.setName(serviceObj.getString("Subject"));
-        typeServiceModel.setId(serviceObj.getInt("Id"));
-        typeServiceModels.add(typeServiceModel);
-        serviceList.add(serviceObj.getString("Subject"));
-      }
-      if (spReason == null)
-        return;
-
-      spReason.setEnabled(true);
-
-      spReason.setAdapter(new SpinnerAdapter(MyApplication.currentActivity, R.layout.item_spinner, serviceList));
-
-      spReason.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-        @Override
-        public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-          reason = typeServiceModels.get(position).getId();
-        }
-
-        @Override
-        public void onNothingSelected(AdapterView<?> parent) {
-        }
-      });
-    } catch (JSONException e) {
-      e.printStackTrace();
-    }
-  }
-
-  private static void dismiss() {
-    try {
-      if (dialog != null) {
-        dialog.dismiss();
-        KeyBoardHelper.hideKeyboard();
-      }
-    } catch (Exception e) {
-      Log.e("TAG", "dismiss: " + e.getMessage());
-      AvaCrashReporter.send(e, "DriverLockDialog class, dismiss method");
-    }
-    dialog = null;
-  }
 
 }

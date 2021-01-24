@@ -445,33 +445,44 @@ public class DeterminationPageFragment extends Fragment {
                     JSONObject obj = new JSONObject(args[0].toString());
                     boolean success = obj.getBoolean("success");
                     String message = obj.getString("message");
-                    JSONArray dataArr = obj.getJSONArray("data");
-                    for (int i = 0; i < dataArr.length(); i++) {
-                        JSONObject dataObj = dataArr.getJSONObject(i);
-                        StationInfoModel stationInfoModel = new StationInfoModel();
-                        stationInfoModel.setStcode(dataObj.getInt("stcode"));
-                        stationInfoModel.setStreet(dataObj.getString("street"));
-                        stationInfoModel.setOdd(dataObj.getString("odd"));
-                        stationInfoModel.setEven(dataObj.getString("even"));
-                        stationInfoModel.setStationName(dataObj.getString("stationName"));
-                        stationInfoModel.setCountrySide(dataObj.getInt("countrySide"));
-                        isCountrySide = dataObj.getInt("countrySide") == 1;
 
-                        if (!dataObj.getString("stationName").equals("")) {
-                            stationName = dataObj.getString("stationName");
+                    if (success) {
+                        JSONArray dataArr = obj.getJSONArray("data");
+                        for (int i = 0; i < dataArr.length(); i++) {
+                            JSONObject dataObj = dataArr.getJSONObject(i);
+                            StationInfoModel stationInfoModel = new StationInfoModel();
+                            stationInfoModel.setStcode(dataObj.getInt("stcode"));
+                            stationInfoModel.setStreet(dataObj.getString("street"));
+                            stationInfoModel.setOdd(dataObj.getString("odd"));
+                            stationInfoModel.setEven(dataObj.getString("even"));
+                            stationInfoModel.setStationName(dataObj.getString("stationName"));
+                            stationInfoModel.setCountrySide(dataObj.getInt("countrySide"));
+                            isCountrySide = dataObj.getInt("countrySide") == 1;
+
+                            if (!dataObj.getString("stationName").equals("")) {
+                                stationName = dataObj.getString("stationName");
+                            }
+                            if (stationInfoModel.getStreet().isEmpty()) continue;
+                            stationInfoModels.add(stationInfoModel);
                         }
-                        if (stationInfoModel.getStreet().isEmpty()) continue;
-                        stationInfoModels.add(stationInfoModel);
-                    }
-                    if (stationInfoModels.size() == 0) {
-                        MyApplication.Toast("اطلاعاتی موجود نیست", Toast.LENGTH_SHORT);
-                    } else {
-                        if (txtStation == null) return;
-                        if (stationName.equals("")) {
-                            new StationInfoDialog().show(stationInfoModels, "کد ایستگاه : " + txtStation.getText().toString(), isCountrySide);
+                        if (stationInfoModels.size() == 0) {
+                            MyApplication.Toast("اطلاعاتی موجود نیست", Toast.LENGTH_SHORT);
                         } else {
-                            new StationInfoDialog().show(stationInfoModels, stationName + " \n " + "کد ایستگاه : " + txtStation.getText().toString(), isCountrySide);
+                            if (txtStation == null) return;
+                            if (stationName.equals("")) {
+                                new StationInfoDialog().show(stationInfoModels, "کد ایستگاه : " + txtStation.getText().toString(), isCountrySide);
+                            } else {
+                                new StationInfoDialog().show(stationInfoModels, stationName + " \n " + "کد ایستگاه : " + txtStation.getText().toString(), isCountrySide);
+                            }
                         }
+
+                    } else {
+                        new GeneralDialog()
+                                .title("هشدار")
+                                .message(message)
+                                .secondButton("باشه", null)
+                                .cancelable(false)
+                                .show();
                     }
 
                     if (vfStationInfo != null) {
@@ -480,6 +491,9 @@ public class DeterminationPageFragment extends Fragment {
 
                 } catch (JSONException e) {
                     e.printStackTrace();
+                    if (vfStationInfo != null) {
+                        vfStationInfo.setDisplayedChild(0);
+                    }
                 }
             });
         }
@@ -525,34 +539,35 @@ public class DeterminationPageFragment extends Fragment {
                     JSONObject obj = new JSONObject(args[0].toString());
                     boolean success = obj.getBoolean("success");
                     String message = obj.getString("message");
-                    JSONObject dataArr = obj.getJSONObject("data");
-                    boolean status = dataArr.getBoolean("status");
 
-                    if (status) {
-                        if (dataBase.getRemainingAddress() > 0)
-                            dataBase.deleteRow(dataBase.getTopAddress().getId());
-                    } else {
-                        dataBase.insertSendDate(dataBase.getTopAddress().getId(), DateHelper.getCurrentGregorianDate().toString());
+                    if (success) {
+                        JSONObject dataArr = obj.getJSONObject("data");
+                        boolean status = dataArr.getBoolean("status");
+                        if (status) {
+                            if (dataBase.getRemainingAddress() > 0)
+                                dataBase.deleteRow(dataBase.getTopAddress().getId());
+                        } else {
+                            dataBase.insertSendDate(dataBase.getTopAddress().getId(), DateHelper.getCurrentGregorianDate().toString());
+                        }
                     }
+
                     setAddress();
                     if (txtStation != null)
                         txtStation.setText("");
 
                 } catch (JSONException e) {
                     e.printStackTrace();
+
                 }
             });
         }
 
         @Override
         public void onFailure(Runnable reCall, Exception e) {
-            MyApplication.handler.post(new Runnable() {
-                @Override
-                public void run() {
-                }
+            MyApplication.handler.post(() -> {
+
             });
         }
-
     };
 
     private void setMistake() {
@@ -580,31 +595,33 @@ public class DeterminationPageFragment extends Fragment {
                 try {
 //                    { success: true, message: "ثبت اشتباه، تکراری است", data: { status: false } }
                     LoadingDialog.dismissCancelableDialog();
-                    Log.i(TAG, "onResponse: " + args[0].toString());
                     JSONObject obj = new JSONObject(args[0].toString());
                     boolean success = obj.getBoolean("success");
                     String message = obj.getString("message");
-                    JSONObject dataObj = obj.getJSONObject("data");
-                    boolean status = dataObj.getBoolean("status");
 
-                    if (status) {
-                        new GeneralDialog()
-                                .title("تایید")
-                                .message(message)
-                                .cancelable(false)
-                                .firstButton("باشه", null)
-                                .show();
-                    } else {
-                        new GeneralDialog()
-                                .title("خطا")
-                                .message(message)
-                                .cancelable(false)
-                                .firstButton("باشه", null)
-                                .show();
+                    if (success) {
+                        JSONObject dataObj = obj.getJSONObject("data");
+                        boolean status = dataObj.getBoolean("status");
+                        if (status) {
+                            new GeneralDialog()
+                                    .title("تایید")
+                                    .message(message)
+                                    .cancelable(false)
+                                    .firstButton("باشه", null)
+                                    .show();
+                        } else {
+                            new GeneralDialog()
+                                    .title("خطا")
+                                    .message(message)
+                                    .cancelable(false)
+                                    .firstButton("باشه", null)
+                                    .show();
+                        }
                     }
 
                 } catch (JSONException e) {
                     e.printStackTrace();
+                    LoadingDialog.dismissCancelableDialog();
                 }
             });
         }
