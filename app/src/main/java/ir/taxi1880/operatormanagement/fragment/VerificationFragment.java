@@ -63,6 +63,7 @@ public class VerificationFragment extends Fragment {
     void onEnterWithUserName() {
         FragmentHelper
                 .toFragment(MyApplication.currentActivity, new LoginFragment())
+                .setStatusBarColor(MyApplication.currentActivity.getResources().getColor(R.color.colorPrimaryDark))
                 .setAddToBackStack(false)
                 .replace();
     }
@@ -110,7 +111,12 @@ public class VerificationFragment extends Fragment {
                         MyApplication.prefManager.setRepetitionTime(repetitionTime);
                         Bundle bundle = new Bundle();
                         bundle.putString("mobileNumber", mobileNumber);
-                        FragmentHelper.toFragment(MyApplication.currentActivity, new CheckVerificationFragment()).setArguments(bundle).setAddToBackStack(false).replace();
+                        FragmentHelper
+                                .toFragment(MyApplication.currentActivity, new CheckVerificationFragment())
+                                .setStatusBarColor(MyApplication.currentActivity.getResources().getColor(R.color.colorPrimaryDark))
+                                .setArguments(bundle)
+                                .setAddToBackStack(false)
+                                .replace();
                     }
                     MyApplication.Toast(message, Toast.LENGTH_SHORT);
 

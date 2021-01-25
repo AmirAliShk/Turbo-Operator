@@ -53,7 +53,11 @@ public class CheckVerificationFragment extends Fragment {
     void onPressChangeNumber() {
         if (countDownTimer != null)
             countDownTimer.cancel();
-        FragmentHelper.toFragment(MyApplication.currentActivity, new VerificationFragment()).setAddToBackStack(false).replace();
+        FragmentHelper
+                .toFragment(MyApplication.currentActivity, new VerificationFragment())
+                .setStatusBarColor(MyApplication.currentActivity.getResources().getColor(R.color.colorPrimaryDark))
+                .setAddToBackStack(false)
+                .replace();
     }
 
     @OnClick(R.id.btnEnter)

@@ -417,6 +417,8 @@ public class TripDetailsFragment extends Fragment {
             btnComplaintRegistration.setBackgroundResource(R.drawable.bg_btn_disable);
             btnDriverLock.setEnabled(false);
             btnDriverLock.setBackgroundResource(R.drawable.bg_btn_disable);
+            btnLost.setEnabled(false);
+            btnLost.setBackgroundResource(R.drawable.bg_btn_disable);
         }
 //    MyApplication.prefManager.setLastCallerId("");// set empty, because I don't want save this permanently .
     }

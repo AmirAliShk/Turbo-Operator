@@ -26,6 +26,7 @@ import org.json.JSONObject;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
@@ -74,6 +75,7 @@ public class SplashActivity extends AppCompatActivity {
     @BindView(R.id.txtVersion)
     TextView txtVersion;
 
+    @RequiresApi(api = Build.VERSION_CODES.M)
     @SuppressLint("SetTextI18n")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -84,8 +86,9 @@ public class SplashActivity extends AppCompatActivity {
             Window window = getWindow();
             window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
             window.setNavigationBarColor(getResources().getColor(R.color.colorPrimary));
-            window.setStatusBarColor(getResources().getColor(R.color.colorPrimaryDark));
-            window.getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LIGHT_NAVIGATION_BAR);
+            window.setStatusBarColor(getResources().getColor(R.color.colorPrimary));
+//            window.getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LIGHT_NAVIGATION_BAR);
+//            window.getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);
             window.addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
         }
         unbinder = ButterKnife.bind(this, view);
@@ -139,6 +142,7 @@ public class SplashActivity extends AppCompatActivity {
                     .firstButton("مشاهده قرارداد", () -> {
                         FragmentHelper
                                 .toFragment(MyApplication.currentActivity, new ContractFragment())
+                                .setStatusBarColor(MyApplication.currentActivity.getResources().getColor(R.color.colorPrimaryDark))
                                 .setAddToBackStack(false)
                                 .replace();
                     })
@@ -146,6 +150,7 @@ public class SplashActivity extends AppCompatActivity {
                     .secondButton("امضا قرارداد", () -> {
                         FragmentHelper
                                 .toFragment(MyApplication.currentActivity, new SignatureFragment())
+                                .setStatusBarColor(MyApplication.currentActivity.getResources().getColor(R.color.colorPrimaryDark))
                                 .setAddToBackStack(false)
                                 .replace();
                     })
@@ -194,6 +199,7 @@ public class SplashActivity extends AppCompatActivity {
             if (MyApplication.prefManager.getRefreshToken().equals("")) {
                 FragmentHelper
                         .toFragment(MyApplication.currentActivity, new LoginFragment())
+                        .setStatusBarColor(MyApplication.currentActivity.getResources().getColor(R.color.colorPrimaryDark))
                         .setAddToBackStack(false)
                         .add();
             } else {
@@ -298,6 +304,7 @@ public class SplashActivity extends AppCompatActivity {
                     if (changePass == 1) {
                         FragmentHelper
                                 .toFragment(MyApplication.currentActivity, new LoginFragment())
+                                .setStatusBarColor(MyApplication.currentActivity.getResources().getColor(R.color.colorPrimaryDark))
                                 .setAddToBackStack(false)
                                 .replace();
                         return;

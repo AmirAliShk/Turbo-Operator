@@ -214,7 +214,9 @@ public class DeterminationPageFragment extends Fragment {
             if (success) {
                 if (dataBase.getRemainingAddress() > 0)
                     dataBase.deleteRow(dataBase.getTopAddress().getId());
-//                TODO remove record from dataBase
+                setAddress();
+                if (txtStation != null)
+                    txtStation.setText("");
             }
         });
     }
@@ -513,17 +515,12 @@ public class DeterminationPageFragment extends Fragment {
     };
 
     private void setStationCode(int tripId, String stationCode, int cityCode) {
-        //TODO comment zero numbers... and bellow log
-//    Log.e(TAG, "setStation = " + dataBase.getTopAddress().getOriginText() + ", stationCode = " + stationCode + ", tripId = " + tripId + ", cityCode = " + cityCode);
 
         RequestHelper.builder(EndPoints.UPDATE_TRIP_STATION)
                 .addParam("tripId", StringHelper.toEnglishDigits(tripId + ""))
                 .addParam("stationCode", StringHelper.toEnglishDigits(stationCode + ""))
                 .addParam("cityCode", StringHelper.toEnglishDigits(cityCode + ""))
                 .addParam("tripOperatorId", id)
-//            .addParam("tripId", 0)
-//            .addParam("stationCode", 0)
-//            .addParam("cityCode", 0)
                 .listener(setStationCode)
                 .put();
 
@@ -534,7 +531,9 @@ public class DeterminationPageFragment extends Fragment {
         public void onResponse(Runnable reCall, Object... args) {
             MyApplication.handler.post(() -> {
                 try {
-//          {"success":true,"message":"عملیات با موفقیت انجام شد","data":{"status":true}}
+//                    {"success":true,"message":"عملیات با موفقیت انجام شد","data":{"status":true}}
+//                    {"success":true,"message":"کد ایستگاه در این شهر وجود ندارد","data":{"status":false}}
+
                     Log.i(TAG, "onResponse: " + args[0].toString());
                     JSONObject obj = new JSONObject(args[0].toString());
                     boolean success = obj.getBoolean("success");
@@ -543,12 +542,17 @@ public class DeterminationPageFragment extends Fragment {
                     if (success) {
                         JSONObject dataArr = obj.getJSONObject("data");
                         boolean status = dataArr.getBoolean("status");
-                        if (status) {
-                            if (dataBase.getRemainingAddress() > 0)
-                                dataBase.deleteRow(dataBase.getTopAddress().getId());
-                        } else {
+                        if (!status) {
+                            new GeneralDialog()
+                                    .title("هشدار")
+                                    .message(message)
+                                    .secondButton("باشه", null)
+                                    .cancelable(false)
+                                    .show();
                             dataBase.insertSendDate(dataBase.getTopAddress().getId(), DateHelper.getCurrentGregorianDate().toString());
                         }
+                        if (dataBase.getRemainingAddress() > 0)
+                            dataBase.deleteRow(dataBase.getTopAddress().getId());
                     }
 
                     setAddress();
@@ -640,7 +644,6 @@ public class DeterminationPageFragment extends Fragment {
         if (txtAddress == null) return;
         if (txtRemainingAddress == null) return;
         if (dataBase.getRemainingAddress() > 0) {
-            //TODO fix crash
             String cityName = dataBase.getCityName2(dataBase.getTopAddress().getCity());
             txtAddress.setText(cityName + " , " + dataBase.getTopAddress().getOriginText());
             txtRemainingAddress.setText("تعداد آدرس های ثبت نشده : " + dataBase.getRemainingAddress());

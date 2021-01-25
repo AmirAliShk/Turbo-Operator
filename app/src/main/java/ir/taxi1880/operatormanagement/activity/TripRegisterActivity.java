@@ -336,52 +336,53 @@ public class TripRegisterActivity extends AppCompatActivity {
 
     @OnClick(R.id.btnSubmit)
     void onPressSubmit() {
-        int addressPercent = addressLength * 50 / 100;
-        if (addressChangeCounter == addressPercent) {
-            originStation = 0;
-            Log.i(TAG, "onPressSubmit: address length " + addressLength);
-            Log.i(TAG, "onPressSubmit: address percent " + addressPercent);
-            Log.i(TAG, "onPressSubmit: address change counter " + addressChangeCounter);
-            Log.i(TAG, "onPressSubmit: originStation " + originStation);
-        } else {
-            Log.i(TAG, "onPressSubmit: not changed address length " + addressLength);
-            Log.i(TAG, "onPressSubmit: not changed address percent " + addressPercent);
-            Log.i(TAG, "onPressSubmit: not changed address change counter " + addressChangeCounter);
-            Log.i(TAG, "onPressSubmit: originStation " + originStation);
-        }
+
+//        int addressPercent = addressLength * 50 / 100;
+//        if (addressChangeCounter == addressPercent) {
+//            originStation = 0;
+//            Log.i(TAG, "onPressSubmit: address length " + addressLength);
+//            Log.i(TAG, "onPressSubmit: address percent " + addressPercent);
+//            Log.i(TAG, "onPressSubmit: address change counter " + addressChangeCounter);
+//            Log.i(TAG, "onPressSubmit: originStation " + originStation);
+//        } else {
+//            Log.i(TAG, "onPressSubmit: not changed address length " + addressLength);
+//            Log.i(TAG, "onPressSubmit: not changed address percent " + addressPercent);
+//            Log.i(TAG, "onPressSubmit: not changed address change counter " + addressChangeCounter);
+//            Log.i(TAG, "onPressSubmit: originStation " + originStation);
+//        }
 
 //        TODO remove from comment
 
-//        if (cityCode == -1) {
-//            MyApplication.Toast("شهر را وارد نمایید", Toast.LENGTH_SHORT);
-//            spCity.performClick();
-//            return;
-//        }
-//        if (getTellNumber().isEmpty()) {
-//            edtTell.setError("شماره تلفن را وارد کنید");
-//            edtTell.requestFocus();
-//            return;
-//        }
-//        if (getMobileNumber().isEmpty() && !isTellValidable) {
-//            edtMobile.setError("شماره همراه را وارد کنید");
-//            edtMobile.requestFocus();
-//            return;
-//        }
-//        if (edtFamily.getText().toString().isEmpty()) {
-//            edtFamily.setError(" نام مسافر را مشخص کنید");
-//            edtFamily.requestFocus();
-//            return;
-//        }
-//        if (edtAddress.getText().toString().isEmpty()) {
-//            edtAddress.setError("آدرس را مشخص کنید");
-//            edtAddress.requestFocus();
-//            return;
-//        }
-//
-//        if (vfSubmit != null)
-//            vfSubmit.setDisplayedChild(1);
-//
-//        callInsertService();
+        if (cityCode == -1) {
+            MyApplication.Toast("شهر را وارد نمایید", Toast.LENGTH_SHORT);
+            spCity.performClick();
+            return;
+        }
+        if (getTellNumber().isEmpty()) {
+            edtTell.setError("شماره تلفن را وارد کنید");
+            edtTell.requestFocus();
+            return;
+        }
+        if (getMobileNumber().isEmpty() && !isTellValidable) {
+            edtMobile.setError("شماره همراه را وارد کنید");
+            edtMobile.requestFocus();
+            return;
+        }
+        if (edtFamily.getText().toString().isEmpty()) {
+            edtFamily.setError(" نام مسافر را مشخص کنید");
+            edtFamily.requestFocus();
+            return;
+        }
+        if (edtAddress.getText().toString().isEmpty()) {
+            edtAddress.setError("آدرس را مشخص کنید");
+            edtAddress.requestFocus();
+            return;
+        }
+
+        if (vfSubmit != null)
+            vfSubmit.setDisplayedChild(1);
+
+        callInsertService();
 
     }
 

@@ -56,6 +56,7 @@ public class SignatureFragment extends Fragment {
     void onBack() {
         FragmentHelper
                 .toFragment(MyApplication.currentActivity, new ContractFragment())
+                .setStatusBarColor(MyApplication.currentActivity.getResources().getColor(R.color.colorPrimaryDark))
                 .setAddToBackStack(false)
                 .replace();
     }

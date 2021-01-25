@@ -79,7 +79,11 @@ public class LoginFragment extends Fragment {
 
     @OnClick(R.id.llEnterWithMobile)
     void onEnterWithMobile() {
-        FragmentHelper.toFragment(MyApplication.currentActivity, new VerificationFragment()).setAddToBackStack(false).replace();
+        FragmentHelper
+                .toFragment(MyApplication.currentActivity, new VerificationFragment())
+                .setStatusBarColor(MyApplication.currentActivity.getResources().getColor(R.color.colorPrimaryDark))
+                .setAddToBackStack(false)
+                .replace();
     }
 
     @SuppressLint("SetTextI18n")

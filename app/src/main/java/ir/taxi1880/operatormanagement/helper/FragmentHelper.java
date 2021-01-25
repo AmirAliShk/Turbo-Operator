@@ -9,6 +9,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.util.Log;
+import android.view.View;
 import android.view.Window;
 
 import androidx.annotation.AnimRes;
@@ -33,6 +34,7 @@ public class FragmentHelper {
     private String flag = null;
     private static Activity activity = null;
     private boolean addToBackStack = true;
+    private boolean darkMode = true;
     private FragmentManager fragmentManager = null;
     private Bundle bundle = null;
     private int enterAnim = 0;
@@ -88,6 +90,11 @@ public class FragmentHelper {
 
     private boolean isAddToBackStack() {
         return instance.addToBackStack;
+    }
+
+    public FragmentHelper setDarkMode(boolean darkMode) {
+        instance.darkMode = darkMode;
+        return instance;
     }
 
     /**
@@ -286,9 +293,9 @@ public class FragmentHelper {
         try {
             Window window = activity.getWindow();
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-//        if (darkMode)
-//          if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M)
-//            window.getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);
+//                if (darkMode)
+//                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M)
+//                        window.getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);
                 if (statusBarColor != -1) {
                     window.setStatusBarColor(statusBarColor);
                 }

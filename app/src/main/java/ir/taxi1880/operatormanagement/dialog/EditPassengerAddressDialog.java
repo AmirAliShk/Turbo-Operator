@@ -188,14 +188,27 @@ public class EditPassengerAddressDialog {
         public void onResponse(Runnable reCall, Object... args) {
             MyApplication.handler.post(() -> {
                 try {
+//                    {"success":true,"message":"کد ایستگاه در این شهر وجود ندارد","data":{"status":false}}
                     JSONObject obj = new JSONObject(args[0].toString());
                     boolean success = obj.getBoolean("success");
                     String message = obj.getString("message");
+                    JSONObject dataArr = obj.getJSONObject("data");
+                    boolean status = dataArr.getBoolean("status");
 
                     if (success) {
                         editationCallBack.onEdited(true);
-                        dismiss();
+                        if (status) {
+                            dismiss();
+                        } else {
+                            new GeneralDialog()
+                                    .title("هشدار")
+                                    .message(message)
+                                    .secondButton("باشه", () -> dismiss())
+                                    .cancelable(false)
+                                    .show();
+                        }
                     } else {
+                        editationCallBack.onEdited(false);
                         new GeneralDialog()
                                 .title("هشدار")
                                 .message(message)

@@ -10,6 +10,8 @@ import java.util.Iterator;
 import java.util.concurrent.TimeUnit;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+
+import ir.taxi1880.operatormanagement.R;
 import ir.taxi1880.operatormanagement.app.EndPoints;
 import ir.taxi1880.operatormanagement.app.MyApplication;
 import ir.taxi1880.operatormanagement.dialog.ErrorDialog;
@@ -490,6 +492,7 @@ public class RequestHelper implements okhttp3.Callback {
         MyApplication.handler.post(() -> {
             FragmentHelper
                     .toFragment(MyApplication.currentActivity, new LoginFragment())
+                    .setStatusBarColor(MyApplication.currentActivity.getResources().getColor(R.color.colorPrimaryDark))
                     .setAddToBackStack(false)
                     .replace();
         });
