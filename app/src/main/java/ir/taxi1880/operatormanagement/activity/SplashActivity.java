@@ -234,7 +234,6 @@ public class SplashActivity extends AppCompatActivity {
         public void onResponse(Runnable reCall, Object... args) {
             MyApplication.handler.post(() -> {
                 try {
-                    Log.i(TAG, "onResponse: " + args[0].toString());
                     JSONObject object = new JSONObject(args[0].toString());
                     int block = object.getInt("isBlock");
                     int updateAvailable = object.getInt("updateAvailable");
@@ -264,8 +263,7 @@ public class SplashActivity extends AppCompatActivity {
                     String serviceCountToday = object.getString("serviceCountToday");
                     String serviceCountMonth = object.getString("serviceCountMonth");
                     int activeInQueue = object.getInt("activeInQueue");
-//                    isFinishContract = object.getInt("isFinishContract");
-                    isFinishContract = 0; //TODO remove zero
+                    isFinishContract = object.getInt("isFinishContract");
                     int customerSupport = object.getInt("customerSupport");
                     String name = object.getString("name");
                     String family = object.getString("family");

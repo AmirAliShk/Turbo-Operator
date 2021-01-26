@@ -337,21 +337,15 @@ public class TripRegisterActivity extends AppCompatActivity {
     @OnClick(R.id.btnSubmit)
     void onPressSubmit() {
 
-//        int addressPercent = addressLength * 50 / 100;
-//        if (addressChangeCounter == addressPercent) {
-//            originStation = 0;
-//            Log.i(TAG, "onPressSubmit: address length " + addressLength);
-//            Log.i(TAG, "onPressSubmit: address percent " + addressPercent);
-//            Log.i(TAG, "onPressSubmit: address change counter " + addressChangeCounter);
-//            Log.i(TAG, "onPressSubmit: originStation " + originStation);
-//        } else {
-//            Log.i(TAG, "onPressSubmit: not changed address length " + addressLength);
-//            Log.i(TAG, "onPressSubmit: not changed address percent " + addressPercent);
-//            Log.i(TAG, "onPressSubmit: not changed address change counter " + addressChangeCounter);
-//            Log.i(TAG, "onPressSubmit: originStation " + originStation);
-//        }
+        int addressPercent = addressLength * 50 / 100;
+        if (addressChangeCounter >= addressPercent) {
+            originStation = 0;
+        }
 
-//        TODO remove from comment
+        Log.i(TAG, "onPressSubmit: address length " + addressLength);
+        Log.i(TAG, "onPressSubmit: address percent " + addressPercent);
+        Log.i(TAG, "onPressSubmit: address change counter " + addressChangeCounter);
+        Log.i(TAG, "onPressSubmit: originStation " + originStation);
 
         if (cityCode == -1) {
             MyApplication.Toast("شهر را وارد نمایید", Toast.LENGTH_SHORT);
@@ -528,6 +522,7 @@ public class TripRegisterActivity extends AppCompatActivity {
     void onCLearAddress() {
         edtAddress.getText().clear();
         originStation = 0;
+        addressLength = 0;
         addressChangeCounter = 0;
     }
 
@@ -736,6 +731,7 @@ public class TripRegisterActivity extends AppCompatActivity {
         public void afterTextChanged(Editable editable) {
             if (editable.toString().isEmpty()) {
                 originStation = 0;
+                addressLength = 0;
                 edtAddress.getText().clear();
             }
         }
@@ -1412,6 +1408,7 @@ public class TripRegisterActivity extends AppCompatActivity {
     private void clearData() {
         if (edtTell == null) return;
         originStation = 0;
+        addressLength = 0;
         isEnableView = false;
         isTellValidable = false;
         edtTell.requestFocus();

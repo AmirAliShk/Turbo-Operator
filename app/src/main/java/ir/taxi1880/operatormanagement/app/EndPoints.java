@@ -39,7 +39,7 @@ public class EndPoints {
   public static final String SUPPORT_WEBSERVICE_PATH = IP + ":" + TRIP_APIPort + "/api/operator/v3/support/";
   public static final String SHIFT_WEBSERVICE_PATH = IP + ":" + TRIP_APIPort + "/api/operator/v3/shift/";
   public static final String TRIP_WEBSERVICE_PATH = IP + ":" + TRIP_APIPort + "/api/operator/v3/trip/";
-  public static final String CALL_VOICE_PATH = IP + ":" + CALL_VOICE_APIPort + "/api/v1/getCallvoice/"; //  http://turbotaxi.ir:1884/api/getCallvoice/caldX:23V32/1604130536.10343290
+  public static final String CALL_VOICE_PATH = IP + ":" + CALL_VOICE_APIPort + "/api/v1/getCallvoice/"; //  http://turbotaxi.ir:1884/api/getCallvoice1604130536.10343290
 
   public static final String HAWKEYE_PATH = HAKWEYE_IP + ":" + HAWKEYE_APIPort + "/api/user/v1/";
   public static final String HAWKEYE_LOGIN_PATH = HAKWEYE_IP + ":" + HAWKEYE_APIPort + "/api/user/v1/login/phone/";
@@ -88,8 +88,9 @@ public class EndPoints {
   /******************************** Contract Api *********************************/
 
   public static final String CONTRACT = WEBSERVICE_PATH + "getContractText";
-  public static final String UPLOAD_NATIONAL_CARD = IP + ":" + PIC_APIPort + "/api/setContract";
-//  public static final String UPLOAD_NATIONAL_CARD = IP + ":" + PIC_APIPort + "/api/v1/setContract";
+//  public static final String UPLOAD_NATIONAL_CARD = IP + ":" + PIC_APIPort + "/api/setContract";
+//  public static final String UPLOAD_NATIONAL_CARD = "http://172.16.2.83" + ":" + PIC_APIPort + "/api/v1/setContract";
+  public static final String UPLOAD_NATIONAL_CARD = IP + ":" + PIC_APIPort + "/api/v1/setContract";
 
   /******************************** Support Api *********************************/
 

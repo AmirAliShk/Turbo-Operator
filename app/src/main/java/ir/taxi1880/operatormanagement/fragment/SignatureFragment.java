@@ -30,6 +30,7 @@ import androidx.annotation.NonNull;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
@@ -71,11 +72,11 @@ public class SignatureFragment extends Fragment {
     void btnSubmitSignature() {
         if (paintView != null) {
 
-            if (paintView.isEmpty()){
+            if (paintView.isEmpty()) {
                 new GeneralDialog()
                         .title("هشدار")
                         .message("لطفا امضای خود را کامل کنید")
-                        .secondButton("باشه",null)
+                        .secondButton("باشه", null)
                         .show();
                 return;
             }
@@ -90,7 +91,7 @@ public class SignatureFragment extends Fragment {
                 LoadingDialog.makeLoader();
                 checkPermission();
             });
-            generalDialog.secondButton("خیر",()->{
+            generalDialog.secondButton("خیر", () -> {
                 generalDialog.dismiss();
                 paintView.setEnabled(true);
             });
@@ -144,10 +145,12 @@ public class SignatureFragment extends Fragment {
         try {
             String uploadNationalPathUrl = EndPoints.UPLOAD_NATIONAL_CARD;
 
+            String[] id_token = MyApplication.prefManager.getIdToken().split("\\.");
+            String imageName = id_token[0];
+
             MultipartUploadRequest multipartUploadRequest = null;
             multipartUploadRequest = new MultipartUploadRequest(MyApplication.context, uploadNationalPathUrl);
-            multipartUploadRequest.addFileToUpload(MyApplication.image_path_save + MyApplication.prefManager.getUserCode() + ".png", "image", MyApplication.prefManager.getUserCode() + ".png");
-            multipartUploadRequest.addParameter("userId", MyApplication.prefManager.getUserCode() + "");
+            multipartUploadRequest.addFileToUpload(MyApplication.image_path_save + MyApplication.prefManager.getUserCode() + ".png", "image", imageName + ".png");
             multipartUploadRequest.addHeader("Authorization", MyApplication.prefManager.getAuthorization());
             multipartUploadRequest.addHeader("id_token", MyApplication.prefManager.getIdToken());
             multipartUploadRequest.setMaxRetries(2);
@@ -164,7 +167,7 @@ public class SignatureFragment extends Fragment {
                             .title("هشدار")
                             .message("ارسال تصویر با خطا روبه رو شد، میخوای دوباره تلاش کنی؟")
                             .firstButton("تلاش مجدد", () -> uploadImage())
-                            .secondButton("بستن", ()->paintView.setEnabled(true))
+                            .secondButton("بستن", () -> paintView.setEnabled(true))
                             .cancelable(false)
                             .show();
                     LoadingDialog.dismiss();
@@ -179,7 +182,7 @@ public class SignatureFragment extends Fragment {
                             .title("ارسال شد")
                             .message("تصویر با موفقیت ارسال شد")
                             .cancelable(false)
-                            .firstButton("باشه", ()->{
+                            .firstButton("باشه", () -> {
                                 MyApplication.avaStart();
                                 startActivity(new Intent(MyApplication.currentActivity, MainActivity.class));
                                 MyApplication.currentActivity.finish();
@@ -198,7 +201,7 @@ public class SignatureFragment extends Fragment {
                             .title("هشدار")
                             .message("ارسال تصویر با خطا روبه رو شد، میخوای دوباره تلاش کنی؟")
                             .firstButton("تلاش مجدد", () -> uploadImage())
-                            .secondButton("بستن", ()->paintView.setEnabled(true))
+                            .secondButton("بستن", () -> paintView.setEnabled(true))
                             .cancelable(false)
                             .show();
                 }
