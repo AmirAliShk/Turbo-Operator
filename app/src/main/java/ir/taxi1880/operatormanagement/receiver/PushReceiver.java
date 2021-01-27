@@ -137,7 +137,7 @@ public class PushReceiver extends BroadcastReceiver {
     PendingIntent pendingIntent = PendingIntent.getActivity(context, Constant.PUSH_NOTIFICATION_REQUEST_CODE, intent, PendingIntent.FLAG_UPDATE_CURRENT);
 
     collapsedView.setOnClickPendingIntent(R.id.linearNotif, pendingIntent);
-
+//    {"type":"userStatus","status":false,"message":"افتادی بیرون :))"}
     NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(context.getApplicationContext(), "push")
             .setSmallIcon(R.drawable.ic_baseline_message_24)
             .setContent(collapsedView)
