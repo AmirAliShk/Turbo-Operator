@@ -16,14 +16,21 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import org.acra.ACRA;
+import org.acra.ReportField;
+import org.acra.annotation.AcraCore;
 import org.acra.annotation.AcraHttpSender;
+import org.acra.config.CoreConfigurationBuilder;
+import org.acra.config.HttpSenderConfigurationBuilder;
+import org.acra.data.StringFormat;
 import org.acra.sender.HttpSender;
 import org.linphone.core.AccountCreator;
 import org.linphone.core.Core;
 import org.linphone.core.ProxyConfig;
 import org.linphone.core.TransportType;
 
+import java.util.HashMap;
 import java.util.Locale;
+import java.util.Map;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -36,9 +43,7 @@ import ir.taxi1880.operatormanagement.push.AvaCrashReporter;
 import ir.taxi1880.operatormanagement.push.AvaFactory;
 import ir.taxi1880.operatormanagement.services.LinphoneService;
 
-@AcraHttpSender(uri = "http://turbotaxi.ir:6061/api/crashReport", httpMethod = HttpSender.Method.POST)
-public class MyApplication extends Application{
-
+public class MyApplication extends Application {
     private static final String TAG = MyApplication.class.getSimpleName();
     public static Context context;
     public static Activity currentActivity;
@@ -56,7 +61,6 @@ public class MyApplication extends Application{
     public static String DIR_DOWNLOAD;
     public static String DIR_ROOT;
     public static final String VOICE_FOLDER_NAME = "voice";
-    public static FragmentManager fragmentManagerV4;
     public static final String SOUND = "android.resource://ir.taxi1880.operatormanagement/";
     public static final String image_path_save = DIR_SDCARD + "/operatormanagement/Image/";
 
@@ -77,11 +81,30 @@ public class MyApplication extends Application{
         config.locale = locale;
         context.getResources().updateConfiguration(config, context.getResources().getDisplayMetrics());
 
-        if (MyApplication.prefManager.getUserCode() != 0)
-            avaStart();
+        initACRA();
 
-        if (!BuildConfig.DEBUG)
-            ACRA.init(this);
+        if (MyApplication.prefManager.getUserCode() != 0) {
+            avaStart();
+        }
+
+    }
+
+    private void initACRA() {
+        CoreConfigurationBuilder builder = new CoreConfigurationBuilder(this)
+                .setBuildConfigClass(BuildConfig.class)
+                .setReportFormat(StringFormat.JSON);
+
+        Map<String, String> authHeaderMap = new HashMap<>();
+        authHeaderMap.put("Authorization", MyApplication.prefManager.getAuthorization());
+        authHeaderMap.put("id_token", MyApplication.prefManager.getIdToken());
+
+        builder.getPluginConfigurationBuilder(HttpSenderConfigurationBuilder.class)
+                .setUri("http://172.16.2.101:6061/api/v1/crashReport")
+                .setHttpMethod(HttpSender.Method.POST)
+                .setHttpHeaders(authHeaderMap)
+                .setEnabled(true);
+//        if (!BuildConfig.DEBUG)
+        ACRA.init(this, builder);
 
     }
 

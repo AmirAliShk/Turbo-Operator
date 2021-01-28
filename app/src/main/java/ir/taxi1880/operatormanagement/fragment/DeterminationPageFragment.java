@@ -210,13 +210,20 @@ public class DeterminationPageFragment extends Fragment {
             txtStation.setText("");
             return;
         }
-        new EditPassengerAddressDialog().show(dataBase.getTopAddress().getCity(), dataBase.getTopAddress().getOriginText(), dataBase.getTopAddress().getId(), (success) -> {
+        new EditPassengerAddressDialog().show(dataBase.getTopAddress().getCity(), dataBase.getTopAddress().getOriginText(), dataBase.getTopAddress().getId(), (success, message) -> {
             if (success) {
                 if (dataBase.getRemainingAddress() > 0)
                     dataBase.deleteRow(dataBase.getTopAddress().getId());
                 setAddress();
                 if (txtStation != null)
                     txtStation.setText("");
+            } else {
+                new GeneralDialog()
+                        .title("هشدار")
+                        .message(message)
+                        .secondButton("باشه", null)
+                        .cancelable(false)
+                        .show();
             }
         });
     }
@@ -542,17 +549,12 @@ public class DeterminationPageFragment extends Fragment {
                     if (success) {
                         JSONObject dataArr = obj.getJSONObject("data");
                         boolean status = dataArr.getBoolean("status");
-                        if (!status) {
-                            new GeneralDialog()
-                                    .title("هشدار")
-                                    .message(message)
-                                    .secondButton("باشه", null)
-                                    .cancelable(false)
-                                    .show();
+                        if (status) {
+                            if (dataBase.getRemainingAddress() > 0)
+                                dataBase.deleteRow(dataBase.getTopAddress().getId());
+                        } else {
                             dataBase.insertSendDate(dataBase.getTopAddress().getId(), DateHelper.getCurrentGregorianDate().toString());
                         }
-                        if (dataBase.getRemainingAddress() > 0)
-                            dataBase.deleteRow(dataBase.getTopAddress().getId());
                     }
 
                     setAddress();

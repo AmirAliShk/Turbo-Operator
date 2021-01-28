@@ -40,7 +40,7 @@ public class EditPassengerAddressDialog {
     private static final String TAG = EditPassengerAddressDialog.class.getSimpleName();
 
     public interface EditationCallBack {
-        void onEdited(boolean success);
+        void onEdited(boolean success,String message);
     }
 
     EditationCallBack editationCallBack;
@@ -189,6 +189,7 @@ public class EditPassengerAddressDialog {
             MyApplication.handler.post(() -> {
                 try {
 //                    {"success":true,"message":"کد ایستگاه در این شهر وجود ندارد","data":{"status":false}}
+//                    {"success":true,"message":"با موفقیت انجام شد","data":{"status":true}}
                     JSONObject obj = new JSONObject(args[0].toString());
                     boolean success = obj.getBoolean("success");
                     String message = obj.getString("message");
@@ -196,25 +197,12 @@ public class EditPassengerAddressDialog {
                     boolean status = dataArr.getBoolean("status");
 
                     if (success) {
-                        editationCallBack.onEdited(true);
-                        if (status) {
-                            dismiss();
-                        } else {
-                            new GeneralDialog()
-                                    .title("هشدار")
-                                    .message(message)
-                                    .secondButton("باشه", () -> dismiss())
-                                    .cancelable(false)
-                                    .show();
-                        }
+                        editationCallBack.onEdited(true,"");
+//                        if (status) {
+                        dismiss();
+//                        }
                     } else {
-                        editationCallBack.onEdited(false);
-                        new GeneralDialog()
-                                .title("هشدار")
-                                .message(message)
-                                .secondButton("باشه", null)
-                                .cancelable(false)
-                                .show();
+                        editationCallBack.onEdited(false,message);
                     }
 
                     if (vfLoader != null) {
