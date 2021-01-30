@@ -509,7 +509,7 @@ public class TripRegisterActivity extends AppCompatActivity {
                 .firstButton("مطمئنم", new Runnable() {
                     @Override
                     public void run() {
-                        setActivate(MyApplication.prefManager.getUserCode(), MyApplication.prefManager.getSipNumber());
+                        setActivate(MyApplication.prefManager.getSipNumber());
 //                MyApplication.Toast("activated",Toast.LENGTH_SHORT);
                     }
                 })
@@ -539,7 +539,7 @@ public class TripRegisterActivity extends AppCompatActivity {
                         if (MyApplication.prefManager.isCallIncoming()) {
                             MyApplication.Toast(getString(R.string.exit), Toast.LENGTH_SHORT);
                         } else {
-                            setDeActivate(MyApplication.prefManager.getUserCode(), MyApplication.prefManager.getSipNumber());
+                            setDeActivate( MyApplication.prefManager.getSipNumber());
                         }
                     }
                 })
@@ -1176,7 +1176,7 @@ public class TripRegisterActivity extends AppCompatActivity {
 
     ArrayList<StationInfoModel> stationInfoModels;
 
-    private void setActivate(int userId, int sipNumber) {
+    private void setActivate(int sipNumber) {
 
         LoadingDialog.makeCancelableLoader();
         RequestHelper.builder(EndPoints.ACTIVATE)
@@ -1210,7 +1210,7 @@ public class TripRegisterActivity extends AppCompatActivity {
                         new GeneralDialog()
                                 .title("هشدار")
                                 .message(message)
-                                .firstButton("تلاش مجدد", () -> setActivate(MyApplication.prefManager.getUserCode(), MyApplication.prefManager.getSipNumber()))
+                                .firstButton("تلاش مجدد", () -> setActivate(MyApplication.prefManager.getSipNumber()))
                                 .secondButton("بعدا امتحان میکنم", null)
                                 .show();
                     }
@@ -1231,11 +1231,10 @@ public class TripRegisterActivity extends AppCompatActivity {
 
     };
 
-    private void setDeActivate(int userId, int sipNumber) {
+    private void setDeActivate(int sipNumber) {
 
         JSONObject params = new JSONObject();
         try {
-            params.put("userId", userId);
             params.put("sipNumber", sipNumber);
 
             Log.i(TAG, "setDeActivate: " + params);
@@ -1276,7 +1275,7 @@ public class TripRegisterActivity extends AppCompatActivity {
                         new GeneralDialog()
                                 .title("هشدار")
                                 .message(message)
-                                .firstButton("تلاش مجدد", () -> setDeActivate(MyApplication.prefManager.getUserCode(), MyApplication.prefManager.getSipNumber()))
+                                .firstButton("تلاش مجدد", () -> setDeActivate(MyApplication.prefManager.getSipNumber()))
                                 .secondButton("بعدا امتحان میکنم", null)
                                 .show();
                     }
@@ -1736,7 +1735,9 @@ public class TripRegisterActivity extends AppCompatActivity {
                             @Override
                             public void run() {
                                 try {
-                                    startActivity(new Intent(MyApplication.context, MainActivity.class));
+                                    Intent intent=new Intent(MyApplication.context, MainActivity.class);
+                                    intent.putExtra("backFromTripRegister",true);
+                                    startActivity(intent);
                                     finish();
                                 } catch (Exception e) {
                                     e.printStackTrace();

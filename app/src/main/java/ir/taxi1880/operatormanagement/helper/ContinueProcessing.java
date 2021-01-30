@@ -7,6 +7,8 @@ import ir.taxi1880.operatormanagement.app.MyApplication;
 import ir.taxi1880.operatormanagement.fragment.CheckVerificationFragment;
 import ir.taxi1880.operatormanagement.fragment.LoginFragment;
 
+import static ir.taxi1880.operatormanagement.app.MyApplication.avaStart;
+
 public class ContinueProcessing {
 
     public static void runMainActivity() {
@@ -21,6 +23,11 @@ public class ContinueProcessing {
                         .remove();
                 return;
             }
+
+        if (MyApplication.prefManager.getUserCode() != 0) {
+            avaStart();
+        }
+
         MyApplication.handler.post(() -> {
             MyApplication.currentActivity.startActivity(new Intent(MyApplication.currentActivity, MainActivity.class));
             MyApplication.currentActivity.finish();

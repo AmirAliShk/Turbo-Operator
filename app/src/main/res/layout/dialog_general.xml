@@ -3,6 +3,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:gravity="center"
+    android:layoutDirection="rtl"
     android:orientation="vertical">
 
     <RelativeLayout
@@ -96,6 +97,10 @@
                     android:textAppearance="?android:attr/textAppearanceMedium"
                     android:textColor="@color/colorWhite"
                     android:textStyle="bold" />
+
+                <View
+                    android:layout_width="@dimen/_10sdp"
+                    android:layout_height="match_parent"/>
 
                 <Button
                     android:id="@+id/btnSecond"

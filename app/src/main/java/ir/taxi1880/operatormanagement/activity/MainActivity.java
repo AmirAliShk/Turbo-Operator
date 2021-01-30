@@ -104,6 +104,13 @@ public class MainActivity extends AppCompatActivity implements NotificationFragm
             }
         });
 
+        Bundle extras = getIntent().getExtras();
+        if (extras != null) {
+            if (extras.getBoolean("backFromTripRegister")) {
+                vpMain.setCurrentItem(1,true);
+            }
+        }
+
     }
 
     @Override

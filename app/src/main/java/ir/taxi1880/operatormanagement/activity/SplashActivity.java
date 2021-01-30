@@ -118,12 +118,7 @@ public class SplashActivity extends AppCompatActivity {
                         .title("دسترسی")
                         .message("برای ورود به برنامه ضروری است تا دسترسی های لازم را برای عملکرد بهتر به برنامه داده شود لطفا جهت بهبود عملکرد دسترسی های لازم را اعمال نمایید")
                         .cancelable(false)
-                        .firstButton("باشه", new Runnable() {
-                            @Override
-                            public void run() {
-                                ActivityCompat.requestPermissions(MyApplication.currentActivity, permissionsRequired, PERMISSION_CALLBACK_CONSTANT);
-                            }
-                        })
+                        .firstButton("باشه", () -> ActivityCompat.requestPermissions(MyApplication.currentActivity, permissionsRequired, PERMISSION_CALLBACK_CONSTANT))
                         .show();
             } else {
                 getAppInfo(splashActivityCallback);
@@ -245,6 +240,7 @@ public class SplashActivity extends AppCompatActivity {
                     String sipServer = object.getString("sipServer");
                     String sipPassword = object.getString("sipPassword");
                     String sheba = object.getString("sheba");
+                    int userId = object.getInt("userId");
                     String cardNumber = object.getString("cardNumber");
                     String accountNumber = object.getString("accountNumber");
                     String monthScore = object.getString("monthScore");
@@ -271,6 +267,7 @@ public class SplashActivity extends AppCompatActivity {
                     MyApplication.prefManager.setOperatorName(name + " " + family);
                     MyApplication.prefManager.setCustomerSupport(customerSupport);
 
+                    MyApplication.prefManager.setUserCode(userId);
                     MyApplication.prefManager.setComplaint(complaintType);
                     MyApplication.prefManager.setObjectsType(objectsType);
                     MyApplication.prefManager.setReasonsLock(ReasonsLock);

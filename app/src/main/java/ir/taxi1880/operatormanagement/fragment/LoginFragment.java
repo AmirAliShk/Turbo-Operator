@@ -155,7 +155,6 @@ public class LoginFragment extends Fragment {
                         vfEnter.setDisplayedChild(0);
                     }
                     e.printStackTrace();
-                    AvaCrashReporter.send(e, "LoginFragment class, onLogIn onResponse method, pushToken = " + MyApplication.prefManager.getPushToken() + ", pushId = " + MyApplication.prefManager.getPushId() + ", userId = " + MyApplication.prefManager.getUserCode());
                 }
             });
         }

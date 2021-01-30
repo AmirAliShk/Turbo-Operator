@@ -100,8 +100,8 @@ public class CallIncomingActivity extends AppCompatActivity {
     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
       Window window = getWindow();
       window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
-      window.setNavigationBarColor(getResources().getColor(R.color.colorPrimaryLighter));
-      window.setStatusBarColor(getResources().getColor(R.color.colorPrimaryDark));
+      window.setNavigationBarColor(getResources().getColor(R.color.colorPrimary));
+      window.setStatusBarColor(getResources().getColor(R.color.colorPrimary));
       window.getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LIGHT_NAVIGATION_BAR);
       window.addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
     }

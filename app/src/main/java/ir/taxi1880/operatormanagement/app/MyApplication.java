@@ -99,10 +99,11 @@ public class MyApplication extends Application {
         authHeaderMap.put("id_token", MyApplication.prefManager.getIdToken());
 
         builder.getPluginConfigurationBuilder(HttpSenderConfigurationBuilder.class)
-                .setUri("http://172.16.2.101:6061/api/v1/crashReport")
+                .setUri(EndPoints.ACRA_PATH)
                 .setHttpMethod(HttpSender.Method.POST)
                 .setHttpHeaders(authHeaderMap)
                 .setEnabled(true);
+
 //        if (!BuildConfig.DEBUG)
         ACRA.init(this, builder);
 
