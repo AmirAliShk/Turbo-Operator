@@ -395,33 +395,6 @@ public class PrefManager {
         return pref.getString(CITY, "");
     }
 
-    public void setPassword(String pass) {
-        editor.putString(KEY_PASSWORD, pass);
-        editor.commit();
-    }
-
-    public String getPassword() {
-        return pref.getString(KEY_PASSWORD, "0");
-    }
-
-    public void setUserName(String userName) {
-        editor.putString(KEY_USER_NAME, userName);
-        editor.commit();
-    }
-
-    public String getUserName() {
-        return pref.getString(KEY_USER_NAME, "0");
-    }
-
-    public void isLoggedIn(boolean login) {
-        editor.putBoolean(KEY_IS_LOGGED_IN, login);
-        editor.commit();
-    }
-
-    public boolean getLoggedIn() {
-        return pref.getBoolean(KEY_IS_LOGGED_IN, false);
-    }
-
     public void setCountNotification(int count) {
         editor.putInt(KEY_COUNT_NOTIFICATION, count);
         editor.commit();

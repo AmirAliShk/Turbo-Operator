@@ -230,9 +230,6 @@
                         android:layout_height="wrap_content"
                         android:gravity="center"
                         android:text="تلاش مجدد پس از : "
-                        android:shadowDy="3"
-                        android:shadowRadius="3"
-                        android:shadowColor="@color/grayLighter"
                         android:textColor="@color/colorPrimaryDark"
                         android:textSize="@dimen/_14ssp" />
 
@@ -241,9 +238,6 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:gravity="center"
-                        android:shadowDy="3"
-                        android:shadowRadius="5"
-                        android:shadowColor="@color/colorAccent"
                         android:textColor="@color/colorAccent"
                         android:textSize="@dimen/_14ssp" />
 
@@ -252,9 +246,6 @@
                         android:layout_height="wrap_content"
                         android:gravity="center"
                         android:text=" ثانیه"
-                        android:shadowDy="3"
-                        android:shadowRadius="3"
-                        android:shadowColor="@color/grayLighter"
                         android:textColor="@color/colorPrimaryDark"
                         android:textSize="@dimen/_14ssp" />
 

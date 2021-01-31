@@ -123,8 +123,6 @@ public class LoginFragment extends Fragment {
 
                     if (success) {
                         JSONObject data = object.getJSONObject("data");
-                        MyApplication.prefManager.setUserName(userName);
-                        MyApplication.prefManager.setPassword(password);
                         MyApplication.prefManager.setIdToken(data.getString("id_token"));
                         MyApplication.prefManager.setAuthorization(data.getString("access_token"));
                         MyApplication.prefManager.setRefreshToken(data.getString("refresh_token"));

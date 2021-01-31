@@ -98,8 +98,7 @@
                 android:layout_margin="3dp"
                 android:padding="10dp"
                 android:textColor="@color/colorBlack"
-                android:textSize="@dimen/text_22"
-                android:textStyle="bold" />
+                android:textSize="@dimen/_16ssp" />
 
             <ImageView
                 android:id="@+id/imgEdit"

@@ -166,14 +166,12 @@ public class SplashActivity extends AppCompatActivity {
     protected void onPause() {
         super.onPause();
         MyApplication.prefManager.setAppRun(false);
-        Log.i(TAG, "onPause: ");
     }
 
     @Override
     protected void onDestroy() {
         super.onDestroy();
         unbinder.unbind();
-        Log.i(TAG, "onDestroy: ");
     }
 
     @Override
@@ -264,6 +262,7 @@ public class SplashActivity extends AppCompatActivity {
                     int customerSupport = object.getInt("customerSupport");
                     String name = object.getString("name");
                     String family = object.getString("family");
+
                     MyApplication.prefManager.setOperatorName(name + " " + family);
                     MyApplication.prefManager.setCustomerSupport(customerSupport);
 
