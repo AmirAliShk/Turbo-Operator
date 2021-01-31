@@ -3,6 +3,7 @@ package ir.taxi1880.operatormanagement.dialog;
 import android.app.Dialog;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
+import android.media.Image;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
@@ -149,6 +150,9 @@ public class GeneralDialog {
   @BindView(R.id.txtMessage)
   TextView txtMessage;
 
+  @BindView(R.id.imgSpace)
+  View imgSpace;
+
   @BindView(R.id.llBtnView)
   LinearLayout llBtnView;
 
@@ -244,8 +248,10 @@ public class GeneralDialog {
     }
     if (secondBtn == null) {
       btnSecond.setVisibility(View.GONE);
+      imgSpace.setVisibility(View.GONE);
     } else {
       btnSecond.setText(secondBtn.getText());
+      imgSpace.setVisibility(View.VISIBLE);
     }
     if (thirdBtn == null) {
       btnThird.setVisibility(View.GONE);

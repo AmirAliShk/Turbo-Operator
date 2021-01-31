@@ -99,6 +99,7 @@
                     android:textStyle="bold" />
 
                 <View
+                    android:id="@+id/imgSpace"
                     android:layout_width="@dimen/_10sdp"
                     android:layout_height="match_parent"/>
 

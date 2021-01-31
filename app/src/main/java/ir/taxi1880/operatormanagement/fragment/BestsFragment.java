@@ -90,12 +90,10 @@ public class BestsFragment extends Fragment {
     }
 
     private RequestHelper.Callback getBest = new RequestHelper.Callback() {
-        @RequiresApi(api = Build.VERSION_CODES.O)
         @Override
         public void onResponse(Runnable reCall, Object... args) {
             MyApplication.handler.post(() -> {
                 try {
-                    Log.i(TAG, "run: " + args[0].toString());
                     bestModels = new ArrayList<>();
                     JSONObject bestObj = new JSONObject(args[0].toString());
                     boolean success = bestObj.getBoolean("success");
@@ -107,15 +105,12 @@ public class BestsFragment extends Fragment {
                         JSONObject obj1 = bestArr.getJSONObject(1);
                         JSONObject obj2 = bestArr.getJSONObject(2);
                         if (txtGolden != null) {
-                            imgGolden.setTooltipText("امتیاز : " + (obj0.getString("score")));
                             txtGolden.setText((obj0.getInt("rowNumber") + "." + obj0.getString("name") + " " + obj0.getString("lastName")));
                         }
                         if (txtSilver != null) {
-                            imgSilver.setTooltipText("امتیاز : " + (obj1.getString("score")));
                             txtSilver.setText((obj1.getInt("rowNumber") + "." + obj1.getString("name") + " " + obj1.getString("lastName")));
                         }
                         if (txtBronze != null) {
-                            imgBronze.setTooltipText("امتیاز : " + (obj2.getString("score")));
                             txtBronze.setText((obj2.getInt("rowNumber") + "." + obj2.getString("name") + " " + obj2.getString("lastName")));
                         }
                         for (int i = 3; i < bestArr.length(); i++) {
