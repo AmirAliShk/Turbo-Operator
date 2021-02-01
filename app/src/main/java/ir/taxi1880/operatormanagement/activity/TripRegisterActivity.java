@@ -1736,7 +1736,6 @@ public class TripRegisterActivity extends AppCompatActivity {
                             public void run() {
                                 try {
                                     Intent intent=new Intent(MyApplication.context, MainActivity.class);
-                                    intent.putExtra("backFromTripRegister",true);
                                     startActivity(intent);
                                     finish();
                                 } catch (Exception e) {

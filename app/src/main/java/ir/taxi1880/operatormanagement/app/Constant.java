@@ -11,5 +11,6 @@ public class Constant {
   static final public String PUSH_NOTIFICATION_MESSAGE_TYPE = "message";
   static final public String PUSH_NOTIFICATION_ANNOUNCEMENT_TYPE = "announcement";
   static final public String SCOPE = "operator";
+  static final public String PUSH_PROJECT_ID = "5";
 
 }

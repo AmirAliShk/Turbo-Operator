@@ -63,7 +63,6 @@ public class SplashActivity extends AppCompatActivity {
     public static final String TAG = SplashActivity.class.getSimpleName();
     boolean doubleBackToExitPressedOnce = false;
     Unbinder unbinder;
-    private final String PUSH_PROJECT_ID = "5";
     int isFinishContract;
     DataBase dataBase;
     SplashActivityCallback splashActivityCallback;
@@ -94,7 +93,7 @@ public class SplashActivity extends AppCompatActivity {
         unbinder = ButterKnife.bind(this, view);
         TypefaceUtil.overrideFonts(view);
 
-        ACRA.getErrorReporter().putCustomData("projectId", PUSH_PROJECT_ID);
+        ACRA.getErrorReporter().putCustomData("projectId", Constant.PUSH_PROJECT_ID);
         ACRA.getErrorReporter().putCustomData("LineCode", MyApplication.prefManager.getUserCode() + "");
 
         txtVersion.setText(StringHelper.toPersianDigits("نسخه " + new AppVersionHelper(context).getVerionName() + ""));

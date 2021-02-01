@@ -50,6 +50,20 @@
 
         </LinearLayout>
 
+        <TextView
+            android:id="@+id/txtRemainingAddress"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:padding="10dp"
+            android:textColor="@color/colorWhite"
+            android:textSize="@dimen/_16ssp"
+            android:textStyle="bold"
+            android:layout_toRightOf="@id/imgBack"
+            android:layout_toLeftOf="@id/llStatus"
+            android:layout_toEndOf="@id/llStatus"
+            android:layout_toStartOf="@id/imgBack"/>
+
         <ImageView
             android:id="@+id/imgBack"
             android:layout_width="?android:attr/actionBarSize"
@@ -84,8 +98,8 @@
             android:layout_width="match_parent"
             android:layout_height="0sp"
             android:layout_weight="1"
-            android:paddingLeft="10dp"
-            android:paddingRight="10dp"
+            android:paddingLeft="5dp"
+            android:paddingRight="5dp"
             android:gravity="center"
             android:orientation="horizontal">
 
@@ -94,23 +108,11 @@
                 android:layout_width="wrap_content"
                 android:layout_weight="1"
                 android:layout_height="wrap_content"
-                android:gravity="right"
+                android:gravity="center"
                 android:layout_margin="3dp"
                 android:padding="10dp"
                 android:textColor="@color/colorBlack"
                 android:textSize="@dimen/_16ssp" />
-
-            <ImageView
-                android:id="@+id/imgEdit"
-                android:layout_width="65dp"
-                android:layout_height="60dp"
-                android:layout_margin="5dp"
-                android:visibility="visible"
-                android:background="@drawable/bg_menu_item"
-                android:elevation="5dp"
-                android:padding="10dp"
-                android:src="@drawable/ic_edit"
-                app:tint="@color/colorPrimaryDark" />
 
         </LinearLayout>
 
@@ -120,8 +122,8 @@
             android:layout_weight="1"
             android:gravity="center"
             android:orientation="horizontal"
-            android:paddingLeft="10dp"
-            android:paddingRight="10dp">
+            android:paddingLeft="20dp"
+            android:paddingRight="20dp">
 
             <ImageView
                 android:id="@+id/imgDelete"
@@ -205,8 +207,8 @@
             android:layout_weight="1"
             android:gravity="center"
             android:orientation="horizontal"
-            android:paddingLeft="10dp"
-            android:paddingRight="10dp">
+            android:paddingLeft="20dp"
+            android:paddingRight="20dp">
 
             <ImageView
                 android:id="@+id/imgSetMistake"
@@ -217,6 +219,23 @@
                 android:elevation="5dp"
                 android:padding="14dp"
                 android:src="@drawable/ic_mistake" />
+
+            <View
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"/>
+
+            <ImageView
+                android:id="@+id/imgEdit"
+                android:layout_width="65dp"
+                android:layout_height="60dp"
+                android:layout_margin="5dp"
+                android:visibility="visible"
+                android:background="@drawable/bg_menu_item"
+                android:elevation="5dp"
+                android:padding="10dp"
+                android:src="@drawable/ic_edit"
+                app:tint="@color/colorPrimaryDark" />
 
             <ImageView
                 android:id="@+id/imgNextAddress"
@@ -230,16 +249,10 @@
                 android:src="@drawable/ic_baseline_navigate_next_24"
                 android:text="del" />
 
-            <TextView
-                android:id="@+id/txtRemainingAddress"
-                android:layout_width="match_parent"
+            <View
+                android:layout_width="0dp"
                 android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:gravity="center"
-                android:padding="10dp"
-                android:textColor="@color/colorBlack"
-                android:textSize="@dimen/text_title"
-                android:textStyle="bold" />
+                android:layout_weight="1"/>
 
             <ImageView
                 android:id="@+id/imgPlayVoice"
@@ -262,7 +275,9 @@
             android:layout_gravity="bottom"
             android:layout_weight="5"
             android:layoutDirection="ltr"
-            android:padding="20dp"
+            android:paddingLeft="@dimen/_20sdp"
+            android:paddingRight="@dimen/_20sdp"
+            android:paddingBottom="@dimen/_10sdp"
             app:columnCount="3"
             app:orientation="horizontal"
             app:rowCount="4">

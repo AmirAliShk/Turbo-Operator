@@ -86,8 +86,6 @@ public class DeterminationPageFragment extends Fragment {
 
     @OnClick(R.id.imgDelete)
     void onDelete() {
-//        MyApplication.prefManager.setAuthorization("ERTETETT");
-//        MyApplication.prefManager.setIdToken("TETRetete");
         txtStation.setText("");
     }
 
@@ -342,7 +340,7 @@ public class DeterminationPageFragment extends Fragment {
                                 }
 
                                 if (txtRemainingAddress != null)
-                                    txtRemainingAddress.setText("تعداد آدرس های ثبت نشده : " + dataBase.getRemainingAddress());
+                                    txtRemainingAddress.setText("" + dataBase.getRemainingAddress());
 
                                 // I can't put setAddress() function here! because I want set address just when the user is enable and is disable and press refresh.
                                 // Do you think it never crossed my mind?! ;)
@@ -644,7 +642,7 @@ public class DeterminationPageFragment extends Fragment {
         if (dataBase.getRemainingAddress() > 0) {
             String cityName = dataBase.getCityName2(dataBase.getTopAddress().getCity());
             txtAddress.setText(cityName + " , " + dataBase.getTopAddress().getOriginText());
-            txtRemainingAddress.setText("تعداد آدرس های ثبت نشده : " + dataBase.getRemainingAddress());
+            txtRemainingAddress.setText("" + dataBase.getRemainingAddress());
         } else {
             if (!MyApplication.prefManager.isStartGettingAddress()) {
                 txtAddress.setText("برای مشاهده آدرس ها فعال شوید");
