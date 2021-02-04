@@ -25,8 +25,8 @@ import okhttp3.ResponseBody;
  *
  * @output response
  * @auther Fatemeh Noori
- * @since 12/22/2020
  * @vertion 1.0.0
+ * @since 12/22/2020
  */
 public class AuthenticationInterceptor implements Interceptor {
     private static final String TAG = AuthenticationInterceptor.class.getSimpleName();
@@ -41,7 +41,7 @@ public class AuthenticationInterceptor implements Interceptor {
         setAuthHeader(builder, authorization, idToken);
         request = builder.build();
         Response response = chain.proceed(request);
-        if (response.code() == 401) {
+        if (response.code() == 401 || response.code() == 403 || response.code() == 402) {
             Log.w(TAG, "Request responses code: " + response.code());
             Log.w(TAG, "Request responses url: " + response.request().url());
 //            synchronized (this) {

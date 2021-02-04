@@ -2,11 +2,11 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/llParent"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/colorPrimaryDark"
     android:clickable="true"
-    android:id="@+id/llParent"
     android:layoutDirection="rtl"
     tools:context=".fragment.CheckVerificationFragment">
 
@@ -57,8 +57,8 @@
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_weight="5"
-            android:gravity="center"
             android:background="@color/colorPrimary"
+            android:gravity="center"
             android:orientation="vertical"
             android:paddingLeft="50dp"
             android:paddingRight="50dp">
@@ -66,7 +66,7 @@
             <View
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
-                android:layout_weight="1"/>
+                android:layout_weight="1" />
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -81,8 +81,8 @@
                     android:layout_marginRight="5dp"
                     android:gravity="center"
                     android:text="کد ارسال شده به شماره "
-                    android:textSize="@dimen/_11ssp"
-                    android:textColor="@color/grayDark" />
+                    android:textColor="@color/grayDark"
+                    android:textSize="@dimen/_11ssp" />
 
                 <TextView
                     android:id="@+id/txtPhoneNumber"
@@ -90,8 +90,8 @@
                     android:layout_height="wrap_content"
                     android:gravity="center"
                     android:text="09015693808"
-                    android:textSize="@dimen/_11ssp"
-                    android:textColor="@color/colorAccent" />
+                    android:textColor="@color/colorAccent"
+                    android:textSize="@dimen/_11ssp" />
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -100,8 +100,8 @@
                     android:layout_marginRight="5dp"
                     android:gravity="center"
                     android:text="را وارد کنید."
-                    android:textSize="@dimen/_11ssp"
-                    android:textColor="@color/grayDark" />
+                    android:textColor="@color/grayDark"
+                    android:textSize="@dimen/_11ssp" />
 
             </LinearLayout>
 
@@ -110,8 +110,8 @@
                 style="@style/PinWidget.PinView"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:cursorVisible="true"
                 android:layout_margin="@dimen/_10sdp"
+                android:cursorVisible="true"
                 android:elevation="@dimen/_5sdp"
                 android:gravity="center"
                 android:inputType="number"
@@ -121,20 +121,20 @@
                 android:textStyle="bold"
                 app:cursorColor="@color/colorAccent"
                 app:cursorWidth="2dp"
-                app:lineColor="@color/grayLighter"
                 app:hideLineWhenFilled="true"
                 app:itemCount="5"
                 app:itemHeight="48dp"
                 app:itemRadius="12dp"
                 app:itemSpacing="12dp"
                 app:itemWidth="48dp"
+                app:lineColor="@color/grayLighter"
                 app:lineWidth="0dp"
                 app:viewType="rectangle" />
 
             <View
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
-                android:layout_weight="1"/>
+                android:layout_weight="1" />
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -183,33 +183,33 @@
             <View
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
-                android:layout_weight="1"/>
+                android:layout_weight="1" />
 
             <LinearLayout
                 android:id="@+id/llChangeNumber"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:gravity="center"
-                android:padding="@dimen/_10sdp"
                 android:background="@drawable/bg_ripple"
-                android:orientation="horizontal">
+                android:gravity="center"
+                android:orientation="horizontal"
+                android:padding="@dimen/_10sdp">
 
                 <ImageView
                     android:layout_width="@dimen/_15sdp"
                     android:layout_height="@dimen/_15sdp"
                     android:layout_margin="@dimen/_5sdp"
                     android:elevation="@dimen/_3sdp"
-                    android:src="@drawable/ic_mobile"/>
+                    android:src="@drawable/ic_mobile" />
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:textSize="@dimen/_14ssp"
+                    android:shadowColor="@color/grayLighter"
                     android:shadowDy="3"
                     android:shadowRadius="3"
-                    android:shadowColor="@color/grayLighter"
+                    android:text="همراه جدید"
                     android:textColor="@color/colorPrimaryDark"
-                    android:text="همراه جدید"/>
+                    android:textSize="@dimen/_14ssp" />
 
             </LinearLayout>
 
@@ -251,31 +251,24 @@
 
                 </LinearLayout>
 
-                <RelativeLayout
+                <LinearLayout
+                    android:id="@+id/llResendCode"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal">
+                    android:layout_height="50dp"
+                    android:layout_alignParentTop="true"
+                    android:gravity="center">
 
-                    <LinearLayout
-                        android:id="@+id/llResendCode"
-                        android:layout_width="match_parent"
-                        android:layout_height="50dp"
-                        android:layout_alignParentTop="true"
-                        android:gravity="center">
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:shadowColor="@color/grayLighter"
+                        android:shadowDy="3"
+                        android:shadowRadius="3"
+                        android:text="ارسال مجدد کد احراز هویت"
+                        android:textColor="@color/colorPrimaryDark"
+                        android:textSize="@dimen/_14ssp" />
 
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="ارسال مجدد کد احراز هویت"
-                            android:textSize="@dimen/_14ssp"
-                            android:shadowDy="3"
-                            android:shadowRadius="3"
-                            android:shadowColor="@color/grayLighter"
-                            android:textColor="@color/colorPrimaryDark" />
-
-                    </LinearLayout>
-
-                </RelativeLayout>
+                </LinearLayout>
 
                 <com.wang.avi.AVLoadingIndicatorView
                     android:layout_width="@dimen/_30sdp"

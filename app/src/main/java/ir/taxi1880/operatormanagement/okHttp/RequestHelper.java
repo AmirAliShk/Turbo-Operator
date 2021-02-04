@@ -464,6 +464,8 @@ public class RequestHelper implements okhttp3.Callback {
     private static ErrorDialog errorDialog;
 
     public void showError(final String message) {
+        if (MyApplication.currentActivity == null || MyApplication.currentActivity.isFinishing())
+            return;
         MyApplication.currentActivity.runOnUiThread(() -> {
             if (!errorHandling) return;
             try {

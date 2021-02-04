@@ -17,6 +17,8 @@ import org.json.JSONObject;
 
 import androidx.fragment.app.Fragment;
 
+import com.wang.avi.AVLoadingIndicatorView;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
@@ -51,7 +53,7 @@ public class ReplacementFragment extends Fragment {
     TextView txtOperator;
 
     @BindView(R.id.loader)
-    TextView loader;
+    AVLoadingIndicatorView loader;
 
     int opId = 0;
 
