@@ -162,7 +162,7 @@ public class SignatureFragment extends Fragment {
 
                 @Override
                 public void onError(Context context, UploadInfo uploadInfo, ServerResponse serverResponse, Exception e) {
-                    Log.i(TAG, "uploaderrrrrr => onError: Exception: " + e.getMessage() + " ,uploadInfo: " + uploadInfo);
+//                    Log.i(TAG, "uploaderrrrrr => onError: Exception: " + e.getMessage() + " ,uploadInfo: " + uploadInfo);
                     new GeneralDialog()
                             .title("هشدار")
                             .message("ارسال تصویر با خطا روبه رو شد، میخوای دوباره تلاش کنی؟")
