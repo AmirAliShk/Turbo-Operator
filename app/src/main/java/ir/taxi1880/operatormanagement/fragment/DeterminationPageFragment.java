@@ -57,7 +57,6 @@ public class DeterminationPageFragment extends Fragment {
     boolean isFragmentOpen = false;
     boolean pressSubmit = false; // press twice for generate station Code
     ArrayList<StationInfoModel> stationInfoModels;
-    int id = 0;
     DataBase dataBase;
     Timer timer;
 
@@ -326,7 +325,6 @@ public class DeterminationPageFragment extends Fragment {
                                         String content = dataObj.getString("Content");
                                         JSONObject contentObj = new JSONObject(content);
                                         DBTripModel.setOperatorId(contentObj.getInt("userId")); // ID of the person who registered the service
-                                        id = contentObj.getInt("userId");
                                         DBTripModel.setCity(contentObj.getInt("cityCode"));
                                         DBTripModel.setCustomerName(contentObj.getString("callerName"));
                                         DBTripModel.setTell(contentObj.getString("phoneNumber"));
@@ -525,7 +523,7 @@ public class DeterminationPageFragment extends Fragment {
                 .addParam("tripId", StringHelper.toEnglishDigits(tripId + ""))
                 .addParam("stationCode", StringHelper.toEnglishDigits(stationCode + ""))
                 .addParam("cityCode", StringHelper.toEnglishDigits(cityCode + ""))
-                .addParam("tripOperatorId", id)
+                .addParam("tripOperatorId", StringHelper.toEnglishDigits(dataBase.getTopAddress().getId() + ""))
                 .listener(setStationCode)
                 .put();
 

@@ -23,6 +23,7 @@ allprojects {
         maven { url "https://maven.google.com" }
         mavenCentral()
         maven { url "https://linphone.org/maven_repository/" }
+        maven { url "https://linphone.org/maven_repository/" }
     }
 }
 
