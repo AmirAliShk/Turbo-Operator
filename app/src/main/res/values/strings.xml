@@ -7,8 +7,9 @@
     <string name="notification">اطلاعیه ها</string>
     <string name="shifts">شیفت ها</string>
     <string name="replacement">جا به جایی</string>
-    <string name="get_request">درخواست های دریافتی</string>
-    <string name="send_request">درخواست های ارسالی</string>
+    <string name="get_request">دریافتی</string>
+    <string name="send_request">ارسالی</string>
+    <string name="request">درخواست ها</string>
     <string name="text_of_contract">متن قرارداد</string>
     <string name="assignment_of_contract">امضا قرارداد</string>
     <string name="message">پیام ها</string>

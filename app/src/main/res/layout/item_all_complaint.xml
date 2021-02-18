@@ -40,7 +40,7 @@
                     android:src="@drawable/ic_date" />
 
                 <TextView
-                    android:id="@+id/txtShiftDate"
+                    android:id="@+id/txtComplaintDate"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:gravity="center"
@@ -65,7 +65,7 @@
                     android:src="@drawable/ic_timer" />
 
                 <TextView
-                    android:id="@+id/txtShift"
+                    android:id="@+id/txtComplaintTime"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:gravity="center"

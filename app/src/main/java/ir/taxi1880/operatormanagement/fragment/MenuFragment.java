@@ -13,9 +13,9 @@ import butterknife.OnClick;
 import butterknife.Unbinder;
 import ir.taxi1880.operatormanagement.R;
 import ir.taxi1880.operatormanagement.activity.TripRegisterActivity;
-import ir.taxi1880.operatormanagement.adapter.BestAdapter;
 import ir.taxi1880.operatormanagement.app.MyApplication;
 import ir.taxi1880.operatormanagement.dialog.GeneralDialog;
+import ir.taxi1880.operatormanagement.dialog.RequestDialog;
 import ir.taxi1880.operatormanagement.helper.FragmentHelper;
 import ir.taxi1880.operatormanagement.helper.TypefaceUtil;
 
@@ -55,6 +55,13 @@ public class MenuFragment extends Fragment {
     }
   }
 
+  @OnClick(R.id.llSupport)
+  void onSupport(){
+    FragmentHelper
+            .toFragment(MyApplication.currentActivity, new SupportFragment())
+            .replace();
+  }
+
   @OnClick(R.id.llShift)
   void onShift() {
     FragmentHelper
@@ -69,18 +76,10 @@ public class MenuFragment extends Fragment {
             .replace();
   }
 
-  @OnClick(R.id.llSendRequest)
-  void onSendRequest() {
-    FragmentHelper
-            .toFragment(MyApplication.currentActivity, new SendReplacementReqFragment())
-            .replace();
-  }
-
-  @OnClick(R.id.llGetRequest)
-  void onGetRequest() {
-    FragmentHelper
-            .toFragment(MyApplication.currentActivity, new ReplacementWaitingFragment())
-            .replace();
+  @OnClick(R.id.llRequest)
+  void onRequest() {
+    new RequestDialog()
+            .show();
   }
 
   @OnClick(R.id.llRewards)

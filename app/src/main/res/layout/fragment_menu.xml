@@ -97,6 +97,37 @@
             android:orientation="horizontal">
 
             <LinearLayout
+                android:id="@+id/llSupport"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:layout_margin="10dp"
+                android:elevation="5dp"
+                android:orientation="vertical"
+                android:gravity="center"
+                android:background="@drawable/bg_menu_item">
+
+                <ImageView
+                    android:layout_width="@dimen/_20sdp"
+                    android:layout_height="@dimen/_20sdp"
+                    android:src="@drawable/ic_support" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:text="@string/support"
+                    android:textColor="@color/colorBlack"
+                    android:textSize="@dimen/_15ssp" />
+
+            </LinearLayout>
+
+            <View
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="0.10" />
+
+            <LinearLayout
                 android:id="@+id/llShift"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
@@ -122,37 +153,6 @@
 
             </LinearLayout>
 
-            <View
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_weight="0.10" />
-
-            <LinearLayout
-                android:id="@+id/llBest"
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:layout_margin="10dp"
-                android:elevation="5dp"
-                android:orientation="vertical"
-                android:gravity="center"
-                android:background="@drawable/bg_menu_item">
-
-                <ImageView
-                    android:layout_width="@dimen/_20sdp"
-                    android:layout_height="@dimen/_20sdp"
-                    android:src="@drawable/ic_best"/>
-
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="@string/best"
-                    android:gravity="center"
-                    android:textSize="@dimen/_15ssp"
-                    android:textColor="@color/colorBlack"/>
-
-            </LinearLayout>
-
         </LinearLayout>
 
         <LinearLayout
@@ -163,29 +163,29 @@
             android:orientation="horizontal">
 
             <LinearLayout
-                android:id="@+id/llSendRequest"
+                android:id="@+id/llRequest"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
-                android:layout_weight="1"
                 android:layout_margin="10dp"
+                android:layout_weight="1"
+                android:background="@drawable/bg_menu_item"
                 android:elevation="5dp"
-                android:padding="@dimen/_10sdp"
-                android:orientation="vertical"
                 android:gravity="center"
-                android:background="@drawable/bg_menu_item">
+                android:orientation="vertical"
+                android:padding="@dimen/_10sdp">
 
                 <ImageView
                     android:layout_width="@dimen/_20sdp"
                     android:layout_height="@dimen/_20sdp"
-                    android:src="@drawable/ic_send_request"/>
+                    android:src="@drawable/ic_request" />
 
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="@string/send_request"
                     android:gravity="center"
-                    android:textSize="@dimen/_13ssp"
-                    android:textColor="@color/colorBlack"/>
+                    android:text="@string/request"
+                    android:textColor="@color/colorBlack"
+                    android:textSize="@dimen/_13ssp" />
 
             </LinearLayout>
 
@@ -195,29 +195,28 @@
                 android:layout_weight="0.10" />
 
             <LinearLayout
-                android:id="@+id/llGetRequest"
+                android:id="@+id/llBest"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
-                android:layout_weight="1"
                 android:layout_margin="10dp"
-                android:padding="@dimen/_10sdp"
+                android:layout_weight="1"
+                android:background="@drawable/bg_menu_item"
                 android:elevation="5dp"
-                android:orientation="vertical"
                 android:gravity="center"
-                android:background="@drawable/bg_menu_item">
+                android:orientation="vertical">
 
                 <ImageView
                     android:layout_width="@dimen/_20sdp"
                     android:layout_height="@dimen/_20sdp"
-                    android:src="@drawable/ic_get_request"/>
+                    android:src="@drawable/ic_best" />
 
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="@string/get_request"
                     android:gravity="center"
-                    android:textSize="@dimen/_13ssp"
-                    android:textColor="@color/colorBlack"/>
+                    android:text="@string/best"
+                    android:textColor="@color/colorBlack"
+                    android:textSize="@dimen/_15ssp" />
 
             </LinearLayout>
 

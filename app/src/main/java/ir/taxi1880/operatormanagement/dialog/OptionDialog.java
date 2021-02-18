@@ -14,7 +14,7 @@ import android.widget.Toast;
 
 import ir.taxi1880.operatormanagement.R;
 import ir.taxi1880.operatormanagement.app.MyApplication;
-import ir.taxi1880.operatormanagement.fragment.SupportFragment;
+import ir.taxi1880.operatormanagement.fragment.TripSupportFragment;
 import ir.taxi1880.operatormanagement.helper.FragmentHelper;
 import ir.taxi1880.operatormanagement.helper.KeyBoardHelper;
 import ir.taxi1880.operatormanagement.helper.TypefaceUtil;
@@ -56,7 +56,7 @@ public class OptionDialog {
     if (MyApplication.prefManager.getCustomerSupport() == 1) {
       llSupport.setVisibility(View.VISIBLE);
       llSupport.setOnClickListener(view -> {
-        FragmentHelper.toFragment(MyApplication.currentActivity, new SupportFragment()).replace();
+        FragmentHelper.toFragment(MyApplication.currentActivity, new TripSupportFragment()).replace();
         dismiss();
       });
     } else {
@@ -79,15 +79,9 @@ public class OptionDialog {
         dismiss();
         return;
       }
-      new HireDialog().show(new HireDialog.Listener() {
-        @Override
-        public void onClose(boolean b) {
-//            if (b) {
-
-          listener.onClose(b);
-//            }
-        }
-      }, mobile, name, cityCode);
+      //            if (b) {
+      //            }
+      new HireDialog().show(listener::onClose, mobile, name, cityCode);
       dismiss();
     });
 
