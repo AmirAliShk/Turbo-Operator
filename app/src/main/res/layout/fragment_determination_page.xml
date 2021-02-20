@@ -323,7 +323,7 @@
                 android:layout_height="0dp"
                 android:layout_margin="1dp"
                 android:background="@drawable/selector_normal_btn"
-                android:text="@string/foure"
+                android:text="@string/four"
                 android:textAppearance="?android:attr/textAppearanceLarge"
                 android:textColor="@color/colorBlack"
                 android:textStyle="bold"

@@ -70,56 +70,40 @@ public class ReserveDialog {
     txtDate.setText(StringHelper.toPersianDigits(DateHelper.strPersianSeven(selectedDate)));
     txtTime.setText(StringHelper.toPersianDigits(DateHelper.strPersianFour1(selectedDate)));
 
-    txtTime.setOnClickListener(new View.OnClickListener() {
-      @Override
-      public void onClick(View v) {
-        PersianCalendar persianCalendar = new PersianCalendar();
-        timePickerDialog = TimePickerDialog.newInstance(
-                (view, hourOfDay, minute) -> {
-                  String m_Time = String.format(new Locale("en_US"), "%02d:%02d", hourOfDay, minute);
-                  txtTime.setText(StringHelper.toPersianDigits(m_Time));
-                }, Calendar.HOUR_OF_DAY, Calendar.MINUTE, true);
-        timePickerDialog.show(MyApplication.currentActivity.getFragmentManager(), TIMEPICKER);
+    txtTime.setOnClickListener(v -> {
+      PersianCalendar persianCalendar = new PersianCalendar();
+      timePickerDialog = TimePickerDialog.newInstance(
+              (view, hourOfDay, minute) -> {
+                String m_Time = String.format(new Locale("en_US"), "%02d:%02d", hourOfDay, minute);
+                txtTime.setText(StringHelper.toPersianDigits(m_Time));
+              }, Calendar.HOUR_OF_DAY, Calendar.MINUTE, true);
+      timePickerDialog.show(MyApplication.currentActivity.getFragmentManager(), TIMEPICKER);
 
-      }
     });
 
-    txtDate.setOnClickListener(new View.OnClickListener() {
-      @Override
-      public void onClick(View v) {
-        PersianCalendar persianCalendar = new PersianCalendar();
-        datePickerDialog = DatePickerDialog.newInstance((view, year, monthOfYear, dayOfMonth) -> {
-                  DateHelper.YearMonthDate jalaliDate = new DateHelper.YearMonthDate(year, monthOfYear + 1, dayOfMonth, 23, 59, 0);
-                  selectedDate = DateHelper.jalaliToGregorian(jalaliDate);
-                  Date currentDate = DateHelper.getCurrentGregorianDate();
-                  if (selectedDate.getTime() <= currentDate.getTime()) {
-                    MyApplication.Toast("نباید از تاریخ امروز کمتر انتخاب کنی", Toast.LENGTH_SHORT);
-                    txtDate.setText(StringHelper.toPersianDigits(DateHelper.strPersianSeven(currentDate)));
-                  } else {
-                    txtDate.setText(StringHelper.toPersianDigits(DateHelper.strPersianSeven(selectedDate)));
-                  }
-                },
-                persianCalendar.getPersianYear(),
-                persianCalendar.getPersianMonth(),
-                persianCalendar.getPersianDay()
-        );
-        datePickerDialog.show(MyApplication.currentActivity.getFragmentManager(), DATEPICKER);
-      }
+    txtDate.setOnClickListener(v -> {
+      PersianCalendar persianCalendar = new PersianCalendar();
+      datePickerDialog = DatePickerDialog.newInstance((view, year, monthOfYear, dayOfMonth) -> {
+                DateHelper.YearMonthDate jalaliDate = new DateHelper.YearMonthDate(year, monthOfYear + 1, dayOfMonth, 23, 59, 0);
+                selectedDate = DateHelper.jalaliToGregorian(jalaliDate);
+                Date currentDate = DateHelper.getCurrentGregorianDate();
+                if (selectedDate.getTime() <= currentDate.getTime()) {
+                  MyApplication.Toast("نباید از تاریخ امروز کمتر انتخاب کنی", Toast.LENGTH_SHORT);
+                  txtDate.setText(StringHelper.toPersianDigits(DateHelper.strPersianSeven(currentDate)));
+                } else {
+                  txtDate.setText(StringHelper.toPersianDigits(DateHelper.strPersianSeven(selectedDate)));
+                }
+              },
+              persianCalendar.getPersianYear(),
+              persianCalendar.getPersianMonth(),
+              persianCalendar.getPersianDay()
+      );
+      datePickerDialog.show(MyApplication.currentActivity.getFragmentManager(), DATEPICKER);
     });
 
-    btnSubmit.setOnClickListener(new View.OnClickListener() {
-      @Override
-      public void onClick(View view) {
-        dismiss();
-      }
-    });
+    btnSubmit.setOnClickListener(view -> dismiss());
 
-    imgClose.setOnClickListener(new View.OnClickListener() {
-      @Override
-      public void onClick(View view) {
-        dismiss();
-      }
-    });
+    imgClose.setOnClickListener(view -> dismiss());
 
     dialog.show();
   }
