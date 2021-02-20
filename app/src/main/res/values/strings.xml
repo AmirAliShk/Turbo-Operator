@@ -66,7 +66,7 @@
     <string name="one">1</string>
     <string name="two">2</string>
     <string name="three">3</string>
-    <string name="foure">4</string>
+    <string name="four">4</string>
     <string name="five">5</string>
     <string name="six">6</string>
     <string name="seven">7</string>
@@ -100,7 +100,7 @@
     <string name="taxiCode">کد تاکسی</string>
     <string name="driverLocation">موقعیت راننده</string>
     <string name="Yesterday">دیروز</string>
-    <string name="twodayago">دوروز قبل</string>
+    <string name="twoDaysAgo">دوروز قبل</string>
     <string name="serviceComment">توضیحات سرویس</string>
     <string name="trafficPlane">طرح ترافیک</string>
     <string name="search">جست و جو</string>
@@ -118,6 +118,5 @@
     <string name="accountInfo">اطلاعات حساب</string>
     <string name="archiveAddress">بایگانی آدرس</string>
     <string name="editAddress">ویرایش آدرس</string>
-
 
 </resources>
