@@ -1,14 +1,16 @@
 package ir.taxi1880.operatormanagement.fragment;
 
+import android.graphics.Color;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentActivity;
 import androidx.viewpager2.widget.ViewPager2;
 
 import com.google.android.material.tabs.TabLayout;
@@ -21,6 +23,8 @@ import butterknife.Unbinder;
 import ir.taxi1880.operatormanagement.R;
 import ir.taxi1880.operatormanagement.adapter.SupportViewPagerAdapter;
 import ir.taxi1880.operatormanagement.app.MyApplication;
+import ir.taxi1880.operatormanagement.dialog.GeneralDialog;
+import ir.taxi1880.operatormanagement.helper.KeyBoardHelper;
 import ir.taxi1880.operatormanagement.helper.TypefaceUtil;
 
 public class SupportFragment extends Fragment implements TabLayout.OnTabSelectedListener {
@@ -34,8 +38,48 @@ public class SupportFragment extends Fragment implements TabLayout.OnTabSelected
     TabLayout tbLayout;
 
     @OnClick(R.id.imgBack)
-    void onBack(){
+    void onBack() {
         MyApplication.currentActivity.onBackPressed();
+    }
+
+    @BindView(R.id.btnActivate)
+    Button btnActivate;
+
+    @BindView(R.id.btnDeActivate)
+    Button btnDeActivate;
+
+    @OnClick(R.id.btnActivate)
+    void onActivePress() {
+        KeyBoardHelper.hideKeyboard();
+        new GeneralDialog()
+                .title("هشدار")
+                .cancelable(false)
+                .message("مطمئنی میخوای وارد صف بشی؟")
+                .firstButton("مطمئنم", () -> {
+                    setActivate();
+//                MyApplication.Toast("activated",Toast.LENGTH_SHORT);
+                })
+                .secondButton("نیستم", null)
+                .show();
+
+    }
+
+    @OnClick(R.id.btnDeActivate)
+    void onDeActivePress() {
+        KeyBoardHelper.hideKeyboard();
+        new GeneralDialog()
+                .title("هشدار")
+                .cancelable(false)
+                .message("مطمئنی میخوای خارج بشی؟")
+                .firstButton("مطمئنم", () -> {
+                    if (MyApplication.prefManager.isCallIncoming()) {
+                        MyApplication.Toast(getString(R.string.exit), Toast.LENGTH_SHORT);
+                    } else {
+                        setDeActivate();
+                    }
+                })
+                .secondButton("نیستم", null)
+                .show();
     }
 
     @Nullable
@@ -57,6 +101,16 @@ public class SupportFragment extends Fragment implements TabLayout.OnTabSelected
                 tab.setText("در حال بررسی");
             }
         }).attach();
+
+        if (MyApplication.prefManager.getActivateStatus()) {
+            btnActivate.setBackgroundResource(R.drawable.bg_green_edge);
+            btnDeActivate.setBackgroundColor(Color.parseColor("#00FFB2B2"));
+            btnDeActivate.setTextColor(Color.parseColor("#ffffff"));
+        } else {
+            btnDeActivate.setBackgroundResource(R.drawable.bg_pink_edge);
+            btnActivate.setBackgroundColor(Color.parseColor("#00FFB2B2"));
+            btnDeActivate.setTextColor(Color.parseColor("#ffffff"));
+        }
 
         return view;
     }
@@ -80,5 +134,25 @@ public class SupportFragment extends Fragment implements TabLayout.OnTabSelected
     @Override
     public void onTabReselected(TabLayout.Tab tab) {
 
+    }
+
+    public void setActivate() {
+        if (btnActivate != null)
+            btnActivate.setBackgroundResource(R.drawable.bg_green_edge);
+        MyApplication.prefManager.setActivateStatus(true);
+        if (btnDeActivate != null) {
+            btnDeActivate.setBackgroundColor(Color.parseColor("#00FFB2B2"));
+            btnDeActivate.setTextColor(Color.parseColor("#ffffff"));
+        }
+    }
+
+    public void setDeActivate() {
+        MyApplication.prefManager.setActivateStatus(false);
+        if (btnActivate != null)
+            btnActivate.setBackgroundColor(Color.parseColor("#00FFB2B2"));
+        if (btnDeActivate != null) {
+            btnDeActivate.setBackgroundResource(R.drawable.bg_pink_edge);
+            btnDeActivate.setTextColor(Color.parseColor("#ffffff"));
+        }
     }
 }
