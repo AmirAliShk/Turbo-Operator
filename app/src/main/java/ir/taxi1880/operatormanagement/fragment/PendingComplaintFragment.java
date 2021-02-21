@@ -13,13 +13,15 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import butterknife.Unbinder;
 import ir.taxi1880.operatormanagement.R;
+import ir.taxi1880.operatormanagement.dialog.SaveResultDialog;
 
 public class PendingComplaintFragment extends Fragment {
     Unbinder unbinder;
 
     @OnClick(R.id.btnSaveResult)
     void onSaveResult(){
-
+       new SaveResultDialog()
+                .show();
     }
 
     @Nullable
