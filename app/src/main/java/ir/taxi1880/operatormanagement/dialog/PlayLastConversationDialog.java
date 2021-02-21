@@ -109,12 +109,7 @@ public class PlayLastConversationDialog {
                 vfDownload.setDisplayedChild(0);
         }
 
-        dialog.setOnDismissListener(new DialogInterface.OnDismissListener() {
-            @Override
-            public void onDismiss(DialogInterface dialogInterface) {
-                onDestroy();
-            }
-        });
+        dialog.setOnDismissListener(dialogInterface -> onDestroy());
 
         skbTimer.setOnSeekChangeListener(new OnSeekChangeListener() {
             @Override
@@ -173,9 +168,12 @@ public class PlayLastConversationDialog {
                     .setHeader("Authorization", MyApplication.prefManager.getAuthorization())
                     .setHeader("id_token", MyApplication.prefManager.getIdToken())
                     .build()
-                    .setOnStartOrResumeListener(() -> { })
-                    .setOnPauseListener(() -> { })
-                    .setOnCancelListener(() -> { })
+                    .setOnStartOrResumeListener(() -> {
+                    })
+                    .setOnPauseListener(() -> {
+                    })
+                    .setOnCancelListener(() -> {
+                    })
                     .setOnProgressListener(progress -> {
                         int percent = (int) ((progress.currentBytes / (double) progress.totalBytes) * 100);
                         Log.i("PlayConversationDialog", "onProgress: " + percent);
@@ -196,12 +194,9 @@ public class PlayLastConversationDialog {
                             vfDownload.setDisplayedChild(1);
                             File file = new File(dirPath + fileName);
 
-                            MyApplication.handler.postDelayed(new Runnable() {
-                                @Override
-                                public void run() {
-                                    initVoice(Uri.fromFile(file));
-                                    playVoice();
-                                }
+                            MyApplication.handler.postDelayed(() -> {
+                                initVoice(Uri.fromFile(file));
+                                playVoice();
                             }, 500);
                         }
 
@@ -217,7 +212,6 @@ public class PlayLastConversationDialog {
                     });
 
 //        StartDownload.execute(downloadId, url.toString(), dirPathTemp + fileName);
-//      }
         } catch (MalformedURLException e) {
             e.printStackTrace();
         } catch (Exception e) {
@@ -317,15 +311,12 @@ public class PlayLastConversationDialog {
         public void run() {
             if (mediaPlayer != null) {
                 try {
-                    MyApplication.handler.post(new Runnable() {
-                        @Override
-                        public void run() {
-                            Log.i("PlayConversationDialog", "onStopTrackingTouch run: " + mediaPlayer.getCurrentPosition());
-                            skbTimer.setProgress(mediaPlayer.getCurrentPosition());
-                            int timeRemaining = mediaPlayer.getCurrentPosition() / 1000;
-                            String strTimeRemaining = String.format(new Locale("en_US"), "%02d:%02d", timeRemaining / 60, timeRemaining % 60);
-                            txtTimeRemaining.setText(strTimeRemaining);
-                        }
+                    MyApplication.handler.post(() -> {
+                        Log.i("PlayConversationDialog", "onStopTrackingTouch run: " + mediaPlayer.getCurrentPosition());
+                        skbTimer.setProgress(mediaPlayer.getCurrentPosition());
+                        int timeRemaining = mediaPlayer.getCurrentPosition() / 1000;
+                        String strTimeRemaining = String.format(new Locale("en_US"), "%02d:%02d", timeRemaining / 60, timeRemaining % 60);
+                        txtTimeRemaining.setText(strTimeRemaining);
                     });
                 } catch (Exception e) {
                     e.printStackTrace();

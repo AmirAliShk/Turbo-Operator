@@ -29,7 +29,6 @@ public class AllComplaintFragment extends Fragment {
     AllComplaintAdapter mAdapter;
     ArrayList<AllComplaintModel> allComplaintModels;
 
-
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {

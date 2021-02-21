@@ -1,0 +1,189 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layoutDirection="ltr"
+    android:orientation="vertical">
+
+    <ViewFlipper
+        android:id="@+id/vfDownload"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <!--downloading-->
+<!--                <LinearLayout-->
+<!--                    android:layout_width="match_parent"-->
+<!--                    android:layout_height="wrap_content"-->
+<!--                    android:layout_gravity="center"-->
+<!--                    android:gravity="center"-->
+<!--                    android:orientation="vertical">-->
+
+<!--                    <com.wang.avi.AVLoadingIndicatorView-->
+<!--                        android:id="@+id/avl"-->
+<!--                        android:layout_width="30dp"-->
+<!--                        android:layout_height="30dp"-->
+<!--                        android:layout_gravity="center"-->
+<!--                        app:indicatorColor="@color/colorPrimaryDark"-->
+<!--                        app:indicatorName="BallBeatIndicator" />-->
+
+<!--                    <ProgressBar-->
+<!--                        android:id="@+id/progressDownload"-->
+<!--                        style="?android:attr/progressBarStyleHorizontal"-->
+<!--                        android:layout_width="match_parent"-->
+<!--                        android:layout_height="wrap_content"-->
+<!--                        android:layout_marginLeft="15dp"-->
+<!--                        android:layout_marginRight="15dp"-->
+<!--                        android:indeterminate="false"-->
+<!--                        android:progress="20"-->
+<!--                        android:visibility="gone" />-->
+
+<!--                    <TextView-->
+<!--                        android:id="@+id/textProgress"-->
+<!--                        android:layout_width="wrap_content"-->
+<!--                        android:layout_height="wrap_content"-->
+<!--                        android:layout_centerInParent="true"-->
+<!--                        android:text="0%"-->
+<!--                        android:textAppearance="?android:attr/textAppearanceSmall"-->
+<!--                        android:textColor="@color/colorAccent"-->
+<!--                        android:textStyle="bold"-->
+<!--                        android:visibility="gone" />-->
+
+<!--                </LinearLayout>-->
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_gravity="center"
+            android:minWidth="330dp"
+            android:orientation="vertical"
+            android:padding="20dp">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layoutDirection="rtl">
+
+                <TextView
+
+                    style="@style/tripItemValue"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="تاریخ:" />
+
+                <TextView
+                    android:id="@+id/txtDate"
+                    style="@style/tripItemValue"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="99/12/5" />
+
+                <TextView
+                    style="@style/tripItemValue"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="ساعت:" />
+
+                <TextView
+                    android:id="@+id/txtTime"
+                    style="@style/tripItemValue"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="08:12" />
+            </LinearLayout>
+
+            <com.warkiz.widget.IndicatorSeekBar
+                android:id="@+id/skbTimer"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                app:isb_seek_smoothly="true"
+                app:isb_show_indicator="none"
+                app:isb_thumb_color="@color/colorPrimaryDark"
+                app:isb_thumb_size="25dp"
+                app:isb_track_background_color="@color/grayLight"
+                app:isb_track_background_size="5dp"
+                app:isb_track_progress_color="@color/colorPrimaryDark"
+                app:isb_track_progress_size="5dp" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_above="@id/skbTimer"
+                android:layout_marginLeft="20dp"
+                android:layout_marginRight="20dp"
+                android:gravity="center"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="00:00"
+                    android:textColor="@color/colorBlack"
+                    android:visibility="invisible" />
+
+                <View
+                    android:layout_width="0dp"
+                    android:layout_height="1dp"
+                    android:layout_weight="1" />
+
+                <ViewFlipper
+                    android:id="@+id/vfPlayPause"
+                    android:layout_width="50dp"
+                    android:layout_height="50dp"
+                    android:layout_below="@id/skbTimer"
+                    android:layout_centerHorizontal="true"
+                    android:layout_gravity="center"
+                    android:layout_margin="5dp"
+                    android:background="@drawable/bg_circle_purple"
+                    android:elevation="3dp"
+                    android:padding="7dp">
+
+                    <ImageView
+                        android:id="@+id/imgPlay"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_gravity="center"
+                        android:src="@drawable/ic_play" />
+
+                    <ImageView
+                        android:id="@+id/imgPause"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_gravity="center"
+                        android:src="@drawable/ic_pause" />
+
+                </ViewFlipper>
+
+                <View
+                    android:layout_width="0dp"
+                    android:layout_height="1dp"
+                    android:layout_weight="1" />
+
+                <TextView
+                    android:id="@+id/txtTimeRemaining"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="00:00"
+                    android:textColor="@color/colorBlack" />
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:text="متاسفیم خطایی در هنگام دانلود رخ داد لطفا پس از چند دقیقه مجدد تلاش فرمایید"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:textColor="@color/colorBlack"
+            android:textStyle="bold" />
+
+    </ViewFlipper>
+</LinearLayout>
