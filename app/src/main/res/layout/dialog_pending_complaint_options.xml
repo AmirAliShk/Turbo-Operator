@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:gravity="center"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/bg_dialog_body"
+        android:gravity="center"
+        android:orientation="vertical">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/bg_dialog_header"
+            android:gravity="center"
+            android:padding="@dimen/_8sdp"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:textColor="@color/colorWhite" />
+
+        <TextView
+            android:id="@+id/txtPassengerCalls"
+            style="@style/tripItemValue"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="تماس های مهمان"
+            android:textSize="18sp" />
+
+        <TextView
+            android:id="@+id/txtTripSearch"
+            style="@style/tripItemValue"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="جستجوی سفر"
+            android:textSize="18sp" />
+
+        <TextView
+            android:id="@+id/txtNextComplaint"
+            style="@style/tripItemValue"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="پیگیری بعدی"
+            android:textSize="18sp" />
+    </LinearLayout>
+
+
+    <ImageView
+        android:id="@+id/imgClose"
+        android:layout_width="80dp"
+        android:layout_height="80dp"
+        android:padding="20dp"
+        android:src="@drawable/ic_close_black_24dp" />
+
+</LinearLayout>

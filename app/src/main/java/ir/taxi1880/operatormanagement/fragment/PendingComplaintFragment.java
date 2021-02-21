@@ -13,21 +13,28 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import butterknife.Unbinder;
 import ir.taxi1880.operatormanagement.R;
+import ir.taxi1880.operatormanagement.dialog.PendingComplaintOptionsDialog;
 import ir.taxi1880.operatormanagement.dialog.SaveResultDialog;
 
 public class PendingComplaintFragment extends Fragment {
     Unbinder unbinder;
 
     @OnClick(R.id.btnSaveResult)
-    void onSaveResult(){
-       new SaveResultDialog()
+    void onSaveResult() {
+        new SaveResultDialog()
+                .show();
+    }
+
+    @OnClick(R.id.btnOptions)
+    void onOptions() {
+        new PendingComplaintOptionsDialog()
                 .show();
     }
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-       View view = inflater.inflate(R.layout.fragment_pending_complaint, container, false);
+        View view = inflater.inflate(R.layout.fragment_pending_complaint, container, false);
         unbinder = ButterKnife.bind(this, view);
 
         return view;

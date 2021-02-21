@@ -20,9 +20,9 @@ import ir.taxi1880.operatormanagement.helper.KeyBoardHelper;
 import ir.taxi1880.operatormanagement.helper.TypefaceUtil;
 import ir.taxi1880.operatormanagement.push.AvaCrashReporter;
 
-public class OptionDialog {
+public class TripOptionDialog {
 
-  private static final String TAG = OptionDialog.class.getSimpleName();
+  private static final String TAG = TripOptionDialog.class.getSimpleName();
 
   public interface Listener {
     void onClose(boolean b);
@@ -38,7 +38,7 @@ public class OptionDialog {
     dialog = new Dialog(MyApplication.currentActivity);
     dialog.getWindow().requestFeature(Window.FEATURE_NO_TITLE);
     dialog.getWindow().getAttributes().windowAnimations = R.style.ExpandAnimation;
-    dialog.setContentView(R.layout.dialog_option);
+    dialog.setContentView(R.layout.dialog_trip_option);
     TypefaceUtil.overrideFonts(dialog.getWindow().getDecorView());
     dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
     WindowManager.LayoutParams wlp = dialog.getWindow().getAttributes();

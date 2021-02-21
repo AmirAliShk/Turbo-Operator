@@ -63,7 +63,7 @@ import ir.taxi1880.operatormanagement.dialog.CityDialog;
 import ir.taxi1880.operatormanagement.dialog.DescriptionDialog;
 import ir.taxi1880.operatormanagement.dialog.GeneralDialog;
 import ir.taxi1880.operatormanagement.dialog.LoadingDialog;
-import ir.taxi1880.operatormanagement.dialog.OptionDialog;
+import ir.taxi1880.operatormanagement.dialog.TripOptionDialog;
 import ir.taxi1880.operatormanagement.fragment.TripSupportFragment;
 import ir.taxi1880.operatormanagement.helper.FragmentHelper;
 import ir.taxi1880.operatormanagement.helper.KeyBoardHelper;
@@ -383,7 +383,7 @@ public class TripRegisterActivity extends AppCompatActivity {
     @OnClick(R.id.btnOptions)
     void onPressOptions() {
         KeyBoardHelper.hideKeyboard();
-        new OptionDialog().show(new OptionDialog.Listener() {
+        new TripOptionDialog().show(new TripOptionDialog.Listener() {
             @Override
             public void onClose(boolean b) {
                 if (b) {
