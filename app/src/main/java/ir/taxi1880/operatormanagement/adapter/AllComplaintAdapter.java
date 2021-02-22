@@ -5,13 +5,18 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.Button;
+import android.widget.LinearLayout;
 import android.widget.RatingBar;
 import android.widget.TextView;
 
 import java.util.ArrayList;
 
 import ir.taxi1880.operatormanagement.R;
+import ir.taxi1880.operatormanagement.dataBase.DataBase;
 import ir.taxi1880.operatormanagement.model.AllComplaintModel;
+
+import static ir.taxi1880.operatormanagement.app.MyApplication.context;
 
 public class AllComplaintAdapter extends BaseAdapter {
     private Context mContext;
@@ -45,12 +50,16 @@ public class AllComplaintAdapter extends BaseAdapter {
         }
 
         AllComplaintModel currentAllComplaintModel = (AllComplaintModel) getItem(i);
-
+        DataBase dataBase = new DataBase(context);
         TextView txtComplaintDate = view.findViewById(R.id.txtComplaintDate);
         TextView txtComplaintTime = view.findViewById(R.id.txtComplaintTime);
 
         txtComplaintDate.setText(currentAllComplaintModel.getDate());
         txtComplaintTime.setText(currentAllComplaintModel.getTime());
+
+        view.findViewById(R.id.llAccept).setOnClickListener(view1 -> {
+            dataBase.insertComplaint(currentAllComplaintModel);
+        });
 
         return view;
     }

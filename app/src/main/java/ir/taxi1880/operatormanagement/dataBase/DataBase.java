@@ -8,8 +8,10 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
 
+import java.security.PublicKey;
 import java.util.ArrayList;
 
+import ir.taxi1880.operatormanagement.model.AllComplaintModel;
 import ir.taxi1880.operatormanagement.model.CityModel;
 
 public class DataBase extends SQLiteOpenHelper {
@@ -19,6 +21,7 @@ public class DataBase extends SQLiteOpenHelper {
   private static String DB_NAME = "operators";
   private static String TRIP_TABLE = "Trip";
   private static String CITY_TABLE = "City";
+  private static String COMPLAINT_TABLE = "complaint";
 
   //**************************** Trip Column ****************************
   private static String COLUMN_TRIP_ID = "tripId";
@@ -37,7 +40,18 @@ public class DataBase extends SQLiteOpenHelper {
   private static String COLUMN_CITY_ID = "cityId";
   private static String COLUMN_CITY_NAME = "cityName";
   private static String COLUMN_CITY_L_NAME = "cityLName";
-  //**********************************************************************
+
+  //************************** Complaint Column *********************************
+
+  private static String COLUMN_COMPLAINT_DATE  = "complaintDate";
+  private static String COLUMN_COMPLAINT_TIME  = "complaintTime";
+  private static String COLUMN_COMPLAINT_DESCRIPTION  = "complaintDescription";
+  private static String COLUMN_COMPLAINT_CITY  = "complaintCity";
+  private static String COLUMN_COMPLAINT_ADDRESS  = "complaintAddress";
+  private static String COLUMN_COMPLAINT_STATION  = "complaintStation";
+  private static String COLUMN_COMPLAINT_PASSENGER_VOICE  = "complaintPassengerVoice";
+
+  //******************************************************************************************
 
   public DataBase(Context context) {
     super(context, DB_NAME, null, VERSION);
@@ -47,6 +61,7 @@ public class DataBase extends SQLiteOpenHelper {
   public void onCreate(SQLiteDatabase sqLiteDatabase) {
     createTripTable(sqLiteDatabase);
     createCityTable(sqLiteDatabase);
+    createComplaintTable(sqLiteDatabase);
   }
 
   @Override
@@ -268,5 +283,17 @@ public class DataBase extends SQLiteOpenHelper {
     res.moveToFirst();
     return res.getString(res.getColumnIndex(COLUMN_CITY_NAME));
   }
+
+  //******************************************************** Complaint Table *******************************************
+
+  public void createComplaintTable(SQLiteDatabase database){
+    database.execSQL("CREATE TABLE " + COMPLAINT_TABLE +
+            "(" + COLUMN_COMPLAINT_DATE );
+  }
+
+  public void insertComplaint(AllComplaintModel complaintModel) {
+
+  }
+
 
 }
