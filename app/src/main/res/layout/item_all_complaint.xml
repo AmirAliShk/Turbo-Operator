@@ -2,47 +2,57 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
     android:layoutDirection="rtl"
-    >
+    android:orientation="vertical">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="15dp"
+        android:layout_gravity="center"
+        android:layout_marginStart="20dp"
+        android:layout_marginLeft="20dp"
         android:layout_marginTop="5dp"
-        android:layout_marginRight="15dp"
+        android:layout_marginEnd="20dp"
+        android:layout_marginRight="20dp"
         android:layout_marginBottom="5dp"
-        android:orientation="vertical">
+        android:gravity="center"
+        android:orientation="vertical"
+        android:background="@drawable/bg_white_edge">
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_margin="5dp"
-            android:background="@drawable/bg_white_edge"
+            android:layout_height="0dp"
+            android:layout_marginStart="10dp"
+
+            android:layout_marginLeft="10dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginEnd="10dp"
+            android:layout_marginRight="10dp"
+            android:layout_weight="0.5"
             android:layoutDirection="rtl"
-            android:orientation="vertical"
             android:paddingTop="10dp"
             android:paddingBottom="10dp">
 
             <LinearLayout
-                android:padding="@dimen/_8sdp"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:gravity="right"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="0.25"
+                android:gravity="center_vertical"
                 android:layoutDirection="rtl"
                 android:orientation="horizontal">
 
                 <ImageView
                     android:layout_width="30dp"
-                    android:padding="@dimen/_3sdp"
                     android:layout_height="match_parent"
+                    android:padding="@dimen/_3sdp"
                     android:src="@drawable/ic_date" />
 
                 <TextView
                     android:id="@+id/txtComplaintDate"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_marginEnd="10dp"
+                    android:layout_marginRight="10dp"
                     android:gravity="center"
                     android:textColor="@color/colorBlack"
                     android:textSize="@dimen/text_title"
@@ -50,24 +60,30 @@
 
             </LinearLayout>
 
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="0.2" />
+
             <LinearLayout
-                android:padding="@dimen/_8sdp"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:gravity="right"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="0.25"
                 android:layoutDirection="rtl"
-                android:orientation="horizontal">
+                android:orientation="horizontal"
+                android:padding="@dimen/_8sdp">
 
                 <ImageView
                     android:layout_width="30dp"
                     android:layout_height="match_parent"
-                    android:padding="@dimen/_3sdp"
                     android:src="@drawable/ic_timer" />
 
                 <TextView
                     android:id="@+id/txtComplaintTime"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_marginEnd="10dp"
+                    android:layout_marginRight="10dp"
                     android:gravity="center"
                     android:textColor="@color/colorBlack"
                     android:textSize="@dimen/text_title"
@@ -76,30 +92,34 @@
             </LinearLayout>
 
 
-            </LinearLayout>
+        </LinearLayout>
 
-            <LinearLayout
-                android:id="@+id/llAccept"
+        <LinearLayout
+            android:id="@+id/llAccept"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_marginStart="15dp"
+            android:layout_marginLeft="15dp"
+            android:layout_marginTop="7dp"
+            android:layout_marginEnd="15dp"
+            android:layout_marginRight="15dp"
+            android:layout_marginBottom="10dp"
+            android:layout_weight="0.35"
+            android:background="@drawable/bg_circle_green"
+            android:gravity="center"
+            android:orientation="horizontal"
+            android:padding="@dimen/_8sdp">
+
+            <TextView
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_weight="0.3"
                 android:gravity="center"
-                android:layout_margin="5dp"
-                android:padding="@dimen/_5sdp"
-                android:layout_marginTop="10dp"
-                android:orientation="horizontal"
-                android:background="@drawable/bg_circle_green">
-
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:gravity="center"
-                    android:text="قبول میکنم"
-                    android:textColor="@color/colorWhite"
-                    android:textSize="@dimen/text_title" />
-
-            </LinearLayout>
+                android:text="قبول میکنم"
+                android:textColor="@color/colorWhite"
+                android:textSize="@dimen/text_title" />
 
         </LinearLayout>
 
     </LinearLayout>
+
+</LinearLayout>
