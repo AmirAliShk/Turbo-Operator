@@ -15,6 +15,7 @@ import butterknife.Unbinder;
 import ir.taxi1880.operatormanagement.R;
 import ir.taxi1880.operatormanagement.dialog.PendingComplaintOptionsDialog;
 import ir.taxi1880.operatormanagement.dialog.SaveResultDialog;
+import ir.taxi1880.operatormanagement.helper.TypefaceUtil;
 
 public class PendingComplaintFragment extends Fragment {
     Unbinder unbinder;
@@ -36,6 +37,7 @@ public class PendingComplaintFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_pending_complaint, container, false);
         unbinder = ButterKnife.bind(this, view);
+        TypefaceUtil.overrideFonts(view);
 
         return view;
     }

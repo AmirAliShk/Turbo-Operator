@@ -13,155 +13,162 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_weight="1"
-        android:orientation="horizontal">
+        android:layout_gravity="right|center_vertical"
+        android:background="@drawable/bg_blue_border_edge"
+        android:gravity="right"
+        android:orientation="vertical"
+        android:padding="15dp">
 
-        <TextView
-            style="@style/tripItemTitle"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="0.13"
-            android:text="@string/date"
-            android:textSize="18sp" />
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
 
-        <TextView
-            android:id="@+id/txtTripDate"
-            style="@style/tripItemValue"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="0.25"
-            android:text="99/12/5"
-            android:textSize="18sp" />
+            <TextView
+                style="@style/tripItemTitle"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:text="@string/date"
+                android:textSize="18sp" />
 
-        <TextView
-            style="@style/tripItemTitle"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="0.13"
-            android:text="ساعت:"
-            android:textSize="18sp" />
+            <TextView
+                android:id="@+id/txtTripDate"
+                style="@style/tripItemValue"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="0.25"
+                android:text="99/12/5"
+                android:textSize="18sp" />
 
-        <TextView
-            style="@style/tripItemValue"
-            android:layout_width="0dp"
+            <TextView
+                style="@style/tripItemTitle"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:text="ساعت:"
+                android:textSize="18sp" />
+
+            <TextView
+                style="@style/tripItemValue"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="0.25"
+                android:text="12:55"
+                android:textSize="18sp" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_weight="0.25"
-            android:text="12:55"
-            android:textSize="18sp" />
+            android:orientation="horizontal">
+
+            <TextView
+                style="@style/tripItemTitle"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:text="توضیحات"
+                android:textSize="18sp" />
+
+            <TextView
+                android:id="@+id/txtDescription"
+                style="@style/tripItemValue"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="آدرس اشتباه است."
+                android:textSize="18sp" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <TextView
+                style="@style/tripItemTitle"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:text="@string/city"
+                android:textSize="18sp" />
+
+            <TextView
+                android:id="@+id/txtCity"
+                style="@style/tripItemValue"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="مشهد"
+                android:textSize="18sp" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="horizontal">
+
+            <TextView
+
+                style="@style/tripItemTitle"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:text="@string/customerAddress"
+                android:textSize="18sp" />
+
+            <TextView
+                android:id="@+id/txtAddress"
+                style="@style/tripItemValue"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="بلوار ملک آباد خیابان فرهاد بین فرهاد 3 و 5 پلاک 11"
+                android:textSize="18sp" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="horizontal">
+
+            <TextView
+
+                style="@style/tripItemTitle"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:text="ایستگاه"
+                android:textSize="18sp" />
+
+            <TextView
+                android:id="@+id/txtStationCode"
+                style="@style/tripItemValue"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="15"
+                android:textSize="18sp" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <TextView
+
+                style="@style/tripItemTitle"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:text="صدای مسافر:"
+                android:textSize="18sp" />
+
+            <ImageView
+                android:id="@+id/imageView"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:src="@drawable/ic_play" />
+
+        </LinearLayout>
+
     </LinearLayout>
-
-    <TextView
-        style="@style/tripItemTitle"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_weight="1"
-        android:text="شرح"
-        android:textSize="18sp" />
-
-    <TextView
-        android:id="@+id/txtDescription"
-        style="@style/tripItemValue"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_weight="1"
-        android:text="آدرس اشتباه است."
-        android:textSize="18sp" />
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_weight="1"
-        android:orientation="horizontal">
-
-        <TextView
-            style="@style/tripItemTitle"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="@string/city"
-            android:textSize="18sp" />
-
-        <TextView
-            android:id="@+id/txtCity"
-            style="@style/tripItemValue"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="مشهد"
-            android:textSize="18sp" />
-    </LinearLayout>
-
-    <TextView
-
-        style="@style/tripItemTitle"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_weight="1"
-        android:text="@string/customerAddress"
-        android:textSize="18sp" />
-
-    <TextView
-        android:id="@+id/txtAddress"
-        style="@style/tripItemValue"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_weight="1"
-        android:text="بلوار ملک آباد خیابان فرهاد بین فرهاد 3 و 5 پلاک 11"
-        android:textSize="18sp" />
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_weight="1"
-        android:orientation="horizontal">
-
-        <TextView
-
-            style="@style/tripItemTitle"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="@string/stationCode"
-            android:textSize="18sp" />
-
-        <TextView
-            android:id="@+id/txtStationCode"
-            style="@style/tripItemValue"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="15"
-            android:textSize="18sp" />
-    </LinearLayout>
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_weight="1"
-        android:orientation="horizontal">
-
-        <TextView
-
-            style="@style/tripItemTitle"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="صدای مسافر:"
-            android:textSize="18sp" />
-
-        <ImageView
-            android:id="@+id/imageView"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:src="@drawable/ic_play" />
-
-    </LinearLayout>
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="2"
         android:gravity="bottom"
         android:orientation="horizontal"
         android:paddingTop="10dp"
@@ -190,4 +197,6 @@
             android:textColor="@color/colorBlack"
             android:textSize="@dimen/text_header" />
     </LinearLayout>
+
+
 </LinearLayout>
