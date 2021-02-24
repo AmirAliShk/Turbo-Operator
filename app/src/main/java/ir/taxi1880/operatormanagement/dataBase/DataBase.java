@@ -8,12 +8,10 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
 
-import java.security.PublicKey;
 import java.util.ArrayList;
 
 import ir.taxi1880.operatormanagement.model.AllComplaintModel;
 import ir.taxi1880.operatormanagement.model.CityModel;
-import ir.taxi1880.operatormanagement.model.PendingComplaintModel;
 
 public class DataBase extends SQLiteOpenHelper {
     // TODO when you change the entitys structure, please increase the version of dataBase.
@@ -356,8 +354,8 @@ public class DataBase extends SQLiteOpenHelper {
         }
     }
 
-    public PendingComplaintModel getComplaintRow(int id) {
-        PendingComplaintModel pendingComplaintModel = new PendingComplaintModel();
+    public AllComplaintModel getComplaintRow(int id) {
+        AllComplaintModel pendingComplaintModel = new AllComplaintModel();
         SQLiteDatabase sqLiteDatabase = this.getReadableDatabase();
         @SuppressLint("Recycle") Cursor res = sqLiteDatabase.rawQuery("select * from " + COMPLAINT_TABLE + " where " + COLUMN_COMPLAINT_ID + " = " + id, null);
         if (res.getCount() == 0) return null;
@@ -370,20 +368,20 @@ public class DataBase extends SQLiteOpenHelper {
         pendingComplaintModel.setDescription(res.getString(res.getColumnIndex(COLUMN_COMPLAINT_DESCRIPTION)));
 //        pendingComplaintModel.setCity(res.getString(res.getColumnIndex(COLUMN_COMPLAINT_CITY)));
         pendingComplaintModel.setAddress(res.getString(res.getColumnIndex(COLUMN_COMPLAINT_ADDRESS)));
-        pendingComplaintModel.setAddress(res.getString(res.getColumnIndex(COLUMN_COMPLAINT_SERVICE_CODE)));
-        pendingComplaintModel.setAddress(res.getString(res.getColumnIndex(COLUMN_COMPLAINT_USER_CODE)));
-        pendingComplaintModel.setAddress(res.getString(res.getColumnIndex(COLUMN_COMPLAINT_IS_CHECK)));
-        pendingComplaintModel.setAddress(res.getString(res.getColumnIndex(COLUMN_COMPLAINT_TELL)));
-        pendingComplaintModel.setAddress(res.getString(res.getColumnIndex(COLUMN_COMPLAINT_RESULT)));
-        pendingComplaintModel.setAddress(res.getString(res.getColumnIndex(COLUMN_COMPLAINT_USER_CODE_CONTACT)));
-        pendingComplaintModel.setAddress(res.getString(res.getColumnIndex(COLUMN_COMPLAINT_TYPE_RESULT)));
-        pendingComplaintModel.setAddress(res.getString(res.getColumnIndex(COLUMN_COMPLAINT_CUSTOMER_NAME)));
-        pendingComplaintModel.setAddress(res.getString(res.getColumnIndex(COLUMN_COMPLAINT_CON_DATE)));
-        pendingComplaintModel.setAddress(res.getString(res.getColumnIndex(COLUMN_COMPLAINT_CON_TIME)));
-        pendingComplaintModel.setAddress(res.getString(res.getColumnIndex(COLUMN_COMPLAINT_SEND_TIME)));
-        pendingComplaintModel.setAddress(res.getString(res.getColumnIndex(COLUMN_COMPLAINT_INSPECTOR_USER)));
+        pendingComplaintModel.setServiceCode(res.getInt(res.getColumnIndex(COLUMN_COMPLAINT_SERVICE_CODE)));
+        pendingComplaintModel.setUserCode(res.getInt(res.getColumnIndex(COLUMN_COMPLAINT_USER_CODE)));
+        pendingComplaintModel.setIscheck(res.isNull(res.getColumnIndex(COLUMN_COMPLAINT_IS_CHECK)));
+        pendingComplaintModel.setTell(res.getString(res.getColumnIndex(COLUMN_COMPLAINT_TELL)));
+        pendingComplaintModel.setResult(res.getString(res.getColumnIndex(COLUMN_COMPLAINT_RESULT)));
+        pendingComplaintModel.setUserCodeContact(res.getInt(res.getColumnIndex(COLUMN_COMPLAINT_USER_CODE_CONTACT)));
+        pendingComplaintModel.setTypeResult(res.getInt(res.getColumnIndex(COLUMN_COMPLAINT_TYPE_RESULT)));
+        pendingComplaintModel.setCustomerName(res.getString(res.getColumnIndex(COLUMN_COMPLAINT_CUSTOMER_NAME)));
+        pendingComplaintModel.setConDate(res.getString(res.getColumnIndex(COLUMN_COMPLAINT_CON_DATE)));
+        pendingComplaintModel.setConTime(res.getString(res.getColumnIndex(COLUMN_COMPLAINT_CON_TIME)));
+        pendingComplaintModel.setSendTime(res.getString(res.getColumnIndex(COLUMN_COMPLAINT_SEND_TIME)));
+        pendingComplaintModel.setInspectorUser(res.getInt(res.getColumnIndex(COLUMN_COMPLAINT_INSPECTOR_USER)));
 //        pendingComplaintModel.setStationCode(res.getInt(res.getColumnIndex(COLUMN_COMPLAINT_STATION_CODE)));
-        pendingComplaintModel.setPassengerVoice(res.getString(res.getColumnIndex(COLUMN_COMPLAINT_PASSENGER_VOICE)));
+        pendingComplaintModel.setVoipId(res.getString(res.getColumnIndex(COLUMN_COMPLAINT_PASSENGER_VOICE)));
 
         return pendingComplaintModel;
     }
