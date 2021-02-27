@@ -39,6 +39,7 @@ public class EndPoints {
   public static final String WEBSERVICE_PATH = IP + ":" + APIPort + "/api/operator/v3/";
   public static final String SCORE_WEBSERVICE_PATH = IP + ":" + TRIP_APIPort + "/api/operator/v3/score/";
   public static final String SUPPORT_WEBSERVICE_PATH = IP + ":" + TRIP_APIPort + "/api/operator/v3/support/";
+  public static final String LISTEN_WEBSERVICE_PATH = IP + ":" + TRIP_APIPort + "/api/operator/v3/support/listen";
   public static final String SHIFT_WEBSERVICE_PATH = IP + ":" + TRIP_APIPort + "/api/operator/v3/shift/";
   public static final String TRIP_WEBSERVICE_PATH = IP + ":" + TRIP_APIPort + "/api/operator/v3/trip/";
   public static final String CALL_VOICE_PATH = IP + ":" + CALL_VOICE_APIPort + "/api/v1/getCallvoice/"; //  http://turbotaxi.ir:1884/api/getCallvoice1604130536.10343290
@@ -107,6 +108,7 @@ public class EndPoints {
   public static final String EDIT_ADDRESS = SUPPORT_WEBSERVICE_PATH + "editAddress";
   public static final String ARCHIVE_ADDRESS = SUPPORT_WEBSERVICE_PATH + "archiveAddress";
   public static final String LISTEN = SUPPORT_WEBSERVICE_PATH + "listen";
+  public static final String ACCEPT_LISTEN = LISTEN_WEBSERVICE_PATH + "accept";
 
   /******************************** refresh token Api *********************************/
 

@@ -1327,53 +1327,50 @@ public class TripRegisterActivity extends AppCompatActivity {
     RequestHelper.Callback insertService = new RequestHelper.Callback() {
         @Override
         public void onResponse(Runnable reCall, Object... args) {
-            MyApplication.handler.post(new Runnable() {
-                @Override
-                public void run() {
-                    try {
-                        if (vfSubmit != null)
-                            vfSubmit.setDisplayedChild(0);
-                        LoadingDialog.dismissCancelableDialog();
-                        Log.i(TAG, "run: " + args[0].toString());
-                        JSONObject obj = new JSONObject(args[0].toString());
-                        boolean success = obj.getBoolean("success");
-                        String message = obj.getString("message");
+            MyApplication.handler.post(() -> {
+                try {
+                    if (vfSubmit != null)
+                        vfSubmit.setDisplayedChild(0);
+                    LoadingDialog.dismissCancelableDialog();
+                    Log.i(TAG, "run: " + args[0].toString());
+                    JSONObject obj = new JSONObject(args[0].toString());
+                    boolean success = obj.getBoolean("success");
+                    String message = obj.getString("message");
 
-                        if (success) {
+                    if (success) {
 
-                            new GeneralDialog()
-                                    .title("ثبت شد")
-                                    .message(message)
-                                    .cancelable(false)
-                                    .firstButton("باشه", () -> {
-                                        String tempVoipId = voipId;
-                                        clearData();
-                                        CallModel callModel = parseNotification(MyApplication.prefManager.getLastNotification());
-                                        if (callModel != null)
-                                            if (!callModel.getVoipId().equals(tempVoipId)) {
-                                                MyApplication.prefManager.setLastNotification(null);
-                                                handleCallerInfo(callModel);
-                                            }
+                        new GeneralDialog()
+                                .title("ثبت شد")
+                                .message(message)
+                                .cancelable(false)
+                                .firstButton("باشه", () -> {
+                                    String tempVoipId = voipId;
+                                    clearData();
+                                    CallModel callModel = parseNotification(MyApplication.prefManager.getLastNotification());
+                                    if (callModel != null)
+                                        if (!callModel.getVoipId().equals(tempVoipId)) {
+                                            MyApplication.prefManager.setLastNotification(null);
+                                            handleCallerInfo(callModel);
+                                        }
 
-                                    })
+                                })
 
-                                    .show();
-                            if (svTripRegister != null)
-                                svTripRegister.scrollTo(0, 0);
-                        } else {
-                            new GeneralDialog()
-                                    .title("خطا")
-                                    .message(message)
-                                    .secondButton("بستن", null)
-                                    .show();
-                        }
-                        LoadingDialog.dismissCancelableDialog();
-
-                    } catch (JSONException e) {
-                        LoadingDialog.dismissCancelableDialog();
-                        e.printStackTrace();
-                        AvaCrashReporter.send(e, "TripRegisterActivity class, insertService onResponse method");
+                                .show();
+                        if (svTripRegister != null)
+                            svTripRegister.scrollTo(0, 0);
+                    } else {
+                        new GeneralDialog()
+                                .title("خطا")
+                                .message(message)
+                                .secondButton("بستن", null)
+                                .show();
                     }
+                    LoadingDialog.dismissCancelableDialog();
+
+                } catch (JSONException e) {
+                    LoadingDialog.dismissCancelableDialog();
+                    e.printStackTrace();
+                    AvaCrashReporter.send(e, "TripRegisterActivity class, insertService onResponse method");
                 }
             });
         }
