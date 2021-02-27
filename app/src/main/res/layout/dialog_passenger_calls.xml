@@ -73,11 +73,60 @@
 
             </LinearLayout>
 
-            <ListView
-                android:id="@+id/listPassengerCalls"
+            <ViewFlipper
+                android:id="@+id/vfDownload"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:divider="@null" />
+                android:background="@drawable/bg_blue_border_edge">
+
+                <!--downloading-->
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:gravity="center"
+                    android:orientation="vertical">
+
+                    <com.wang.avi.AVLoadingIndicatorView
+                        android:id="@+id/avl"
+                        android:layout_width="30dp"
+                        android:layout_height="30dp"
+                        android:layout_gravity="center"
+                        app:indicatorColor="@color/colorPrimaryDark"
+                        app:indicatorName="BallBeatIndicator" />
+
+                    <ProgressBar
+                        android:id="@+id/progressDownload"
+                        style="?android:attr/progressBarStyleHorizontal"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="15dp"
+                        android:layout_marginRight="15dp"
+                        android:indeterminate="false"
+                        android:progress="20"
+                        android:visibility="gone" />
+
+                    <TextView
+                        android:id="@+id/textProgress"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerInParent="true"
+                        android:text="0%"
+                        android:textAppearance="?android:attr/textAppearanceSmall"
+                        android:textColor="@color/colorAccent"
+                        android:textStyle="bold"
+                        android:visibility="gone" />
+
+                </LinearLayout>
+
+                <ListView
+                    android:id="@+id/listPassengerCalls"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:divider="@null" />
+
+            </ViewFlipper>
+
 
         </LinearLayout>
 
