@@ -218,9 +218,9 @@ public class SupportActivity extends AppCompatActivity {
         new TabLayoutMediator(tbLayout, vpSupport, (tab, position) -> {
             vpSupport.setCurrentItem(tab.getPosition(), true);
             if (position == 0) {
-                tab.setText("جدید");
-            } else {
                 tab.setText("در حال بررسی");
+            } else {
+                tab.setText("جدید");
             }
         }).attach();
 
