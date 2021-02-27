@@ -19,10 +19,10 @@ public class SupportViewPagerAdapter extends FragmentStateAdapter {
         Fragment fragment = new AllComplaintFragment();
         switch (position) {
             case 0:
-                fragment = new PendingComplaintFragment();
+                fragment = new AllComplaintFragment();
                 break;
             case 1:
-                fragment = new AllComplaintFragment();
+                fragment = new PendingComplaintFragment();
                 break;
         }
         return fragment;

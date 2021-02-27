@@ -218,9 +218,9 @@ public class SupportActivity extends AppCompatActivity {
         new TabLayoutMediator(tbLayout, vpSupport, (tab, position) -> {
             vpSupport.setCurrentItem(tab.getPosition(), true);
             if (position == 0) {
-                tab.setText("در حال بررسی");
-            } else {
                 tab.setText("جدید");
+            } else {
+                tab.setText("در حال بررسی");
             }
         }).attach();
 
@@ -258,6 +258,7 @@ public class SupportActivity extends AppCompatActivity {
                     String message = obj.getString("message");
 
                     if (success) {
+                        MyApplication.prefManager.setActivityStatus(2);
                         MyApplication.Toast("شما باموفقیت وارد صف شدید", Toast.LENGTH_SHORT);
                         if (btnActivate != null)
                             btnActivate.setBackgroundResource(R.drawable.bg_green_edge);
@@ -323,6 +324,7 @@ public class SupportActivity extends AppCompatActivity {
                     String message = obj.getString("message");
 
                     if (success) {
+                        MyApplication.prefManager.setActivityStatus(0);
                         MyApplication.Toast("شما باموفقیت از صف خارج شدید", Toast.LENGTH_SHORT);
                         MyApplication.prefManager.setActivateStatus(false);
                         if (btnActivate != null)

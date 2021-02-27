@@ -5,13 +5,13 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:layoutDirection="rtl"
     tools:context=".activity.SupportActivity">
 
     <RelativeLayout
         android:id="@+id/rlNewInComingCall"
         android:layout_width="match_parent"
         android:layout_height="80dp"
+        android:layoutDirection="rtl"
         android:background="@drawable/bg_action_bar_purple">
 
         <LinearLayout

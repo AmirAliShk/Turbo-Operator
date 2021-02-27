@@ -1198,6 +1198,7 @@ public class TripRegisterActivity extends AppCompatActivity {
                     String message = obj.getString("message");
 
                     if (success) {
+                        MyApplication.prefManager.setActivityStatus(1);
                         MyApplication.Toast("شما باموفقیت وارد صف شدید", Toast.LENGTH_SHORT);
                         if (btnActivate != null)
                             btnActivate.setBackgroundResource(R.drawable.bg_green_edge);
@@ -1263,6 +1264,7 @@ public class TripRegisterActivity extends AppCompatActivity {
                     String message = obj.getString("message");
 
                     if (success) {
+                        MyApplication.prefManager.setActivityStatus(0);
                         MyApplication.Toast("شما باموفقیت از صف خارج شدید", Toast.LENGTH_SHORT);
                         MyApplication.prefManager.setActivateStatus(false);
                         if (btnActivate != null)

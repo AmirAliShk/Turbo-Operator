@@ -72,6 +72,7 @@ public class PrefManager {
     private static final String SERVICE_COUNT_MONTH = "serviceCountMonth";
     private static final String SERVICE_COUNT_TODAY = "serviceCountToday";
     private static final String KEY_ACTIVATION_REMAINING_TIME = "activationRemainingTime";
+    private static final String ACTIVITY_STATUS = "activityStatus";
 
     public PrefManager(Context context) {
         this._context = context;
@@ -86,6 +87,25 @@ public class PrefManager {
 
     public long getActivationRemainingTime() {
         return pref.getLong(KEY_ACTIVATION_REMAINING_TIME, getRepetitionTime());
+    }
+
+    /**
+     * 1 = register trip ,
+     * 2 = support driver
+     * @return
+     */
+    public int getActivityStatus() {
+        return pref.getInt(ACTIVITY_STATUS, 0);
+    }
+
+    /**
+     * 1 = register trip ,
+     * 2 = support driver
+     * @param status
+     */
+    public void setActivityStatus(int status) {
+        editor.putInt(ACTIVITY_STATUS, status);
+        editor.commit();
     }
 
     public String getServiceCountMonth() {
