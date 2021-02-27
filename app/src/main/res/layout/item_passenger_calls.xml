@@ -9,47 +9,48 @@
     <ViewFlipper
         android:id="@+id/vfDownload"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:background="@drawable/bg_blue_border_edge">
 
         <!--downloading-->
-<!--                <LinearLayout-->
-<!--                    android:layout_width="match_parent"-->
-<!--                    android:layout_height="wrap_content"-->
-<!--                    android:layout_gravity="center"-->
-<!--                    android:gravity="center"-->
-<!--                    android:orientation="vertical">-->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:orientation="vertical">
 
-<!--                    <com.wang.avi.AVLoadingIndicatorView-->
-<!--                        android:id="@+id/avl"-->
-<!--                        android:layout_width="30dp"-->
-<!--                        android:layout_height="30dp"-->
-<!--                        android:layout_gravity="center"-->
-<!--                        app:indicatorColor="@color/colorPrimaryDark"-->
-<!--                        app:indicatorName="BallBeatIndicator" />-->
+            <com.wang.avi.AVLoadingIndicatorView
+                android:id="@+id/avl"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:layout_gravity="center"
+                app:indicatorColor="@color/colorPrimaryDark"
+                app:indicatorName="BallBeatIndicator" />
 
-<!--                    <ProgressBar-->
-<!--                        android:id="@+id/progressDownload"-->
-<!--                        style="?android:attr/progressBarStyleHorizontal"-->
-<!--                        android:layout_width="match_parent"-->
-<!--                        android:layout_height="wrap_content"-->
-<!--                        android:layout_marginLeft="15dp"-->
-<!--                        android:layout_marginRight="15dp"-->
-<!--                        android:indeterminate="false"-->
-<!--                        android:progress="20"-->
-<!--                        android:visibility="gone" />-->
+            <ProgressBar
+                android:id="@+id/progressDownload"
+                style="?android:attr/progressBarStyleHorizontal"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="15dp"
+                android:layout_marginRight="15dp"
+                android:indeterminate="false"
+                android:progress="20"
+                android:visibility="gone" />
 
-<!--                    <TextView-->
-<!--                        android:id="@+id/textProgress"-->
-<!--                        android:layout_width="wrap_content"-->
-<!--                        android:layout_height="wrap_content"-->
-<!--                        android:layout_centerInParent="true"-->
-<!--                        android:text="0%"-->
-<!--                        android:textAppearance="?android:attr/textAppearanceSmall"-->
-<!--                        android:textColor="@color/colorAccent"-->
-<!--                        android:textStyle="bold"-->
-<!--                        android:visibility="gone" />-->
+            <TextView
+                android:id="@+id/textProgress"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:text="0%"
+                android:textAppearance="?android:attr/textAppearanceSmall"
+                android:textColor="@color/colorAccent"
+                android:textStyle="bold"
+                android:visibility="gone" />
 
-<!--                </LinearLayout>-->
+        </LinearLayout>
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -62,15 +63,14 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginBottom="15dp"
                 android:layoutDirection="rtl">
 
-                <TextView
-
-                    style="@style/tripItemValue"
+                <ImageView
+                    android:id="@+id/imageView3"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:text="تاریخ:" />
+                    android:layout_height="match_parent"
+                    android:src="@drawable/ic_date" />
 
                 <TextView
                     android:id="@+id/txtDate"
@@ -78,14 +78,14 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:text="99/12/5" />
+                    android:text="99/12/5"
+                    android:textSize="18sp" />
 
-                <TextView
-                    style="@style/tripItemValue"
+                <ImageView
+                    android:id="@+id/imageView4"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:text="ساعت:" />
+                    android:layout_height="match_parent"
+                    android:src="@drawable/ic_timer" />
 
                 <TextView
                     android:id="@+id/txtTime"
@@ -93,53 +93,24 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:text="08:12" />
+                    android:text="08:12"
+                    android:textSize="18sp" />
             </LinearLayout>
-
-            <com.warkiz.widget.IndicatorSeekBar
-                android:id="@+id/skbTimer"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_centerInParent="true"
-                app:isb_seek_smoothly="true"
-                app:isb_show_indicator="none"
-                app:isb_thumb_color="@color/colorPrimaryDark"
-                app:isb_thumb_size="25dp"
-                app:isb_track_background_color="@color/grayLight"
-                app:isb_track_background_size="5dp"
-                app:isb_track_progress_color="@color/colorPrimaryDark"
-                app:isb_track_progress_size="5dp" />
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_above="@id/skbTimer"
-                android:layout_marginLeft="20dp"
-                android:layout_marginRight="20dp"
                 android:gravity="center"
                 android:orientation="horizontal">
 
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="00:00"
-                    android:textColor="@color/colorBlack"
-                    android:visibility="invisible" />
-
-                <View
-                    android:layout_width="0dp"
-                    android:layout_height="1dp"
-                    android:layout_weight="1" />
-
                 <ViewFlipper
                     android:id="@+id/vfPlayPause"
-                    android:layout_width="50dp"
-                    android:layout_height="50dp"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
                     android:layout_below="@id/skbTimer"
                     android:layout_centerHorizontal="true"
                     android:layout_gravity="center"
                     android:layout_margin="5dp"
-                    android:background="@drawable/bg_circle_purple"
                     android:elevation="3dp"
                     android:padding="7dp">
 
@@ -159,10 +130,21 @@
 
                 </ViewFlipper>
 
-                <View
+                <com.warkiz.widget.IndicatorSeekBar
+                    android:id="@+id/skbTimer"
                     android:layout_width="0dp"
-                    android:layout_height="1dp"
-                    android:layout_weight="1" />
+                    android:layout_height="match_parent"
+                    android:layout_centerInParent="true"
+                    android:layout_gravity="center"
+                    android:layout_weight="1"
+                    app:isb_seek_smoothly="true"
+                    app:isb_show_indicator="none"
+                    app:isb_thumb_color="@color/colorPrimaryDark"
+                    app:isb_thumb_size="15dp"
+                    app:isb_track_background_color="@color/grayLight"
+                    app:isb_track_background_size="3dp"
+                    app:isb_track_progress_color="@color/colorPrimaryDark"
+                    app:isb_track_progress_size="5dp" />
 
                 <TextView
                     android:id="@+id/txtTimeRemaining"
@@ -170,7 +152,6 @@
                     android:layout_height="wrap_content"
                     android:text="00:00"
                     android:textColor="@color/colorBlack" />
-
             </LinearLayout>
 
         </LinearLayout>

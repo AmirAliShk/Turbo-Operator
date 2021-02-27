@@ -7,8 +7,7 @@
     android:clickable="true"
     android:layoutDirection="rtl"
     android:orientation="vertical"
-    android:paddingLeft="15dp"
-    android:paddingRight="15dp">
+    android:padding="20dp">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -17,18 +16,22 @@
         android:background="@drawable/bg_blue_border_edge"
         android:gravity="right"
         android:orientation="vertical"
-        android:padding="15dp">
+        android:padding="20dp">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:layout_marginBottom="20dp"
             android:orientation="horizontal">
 
             <TextView
                 style="@style/tripItemTitle"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
-                android:text="@string/date"
+                android:layout_marginEnd="55dp"
+                android:layout_marginRight="55dp"
+                android:text="تاریخ"
                 android:textSize="18sp" />
 
             <TextView
@@ -44,7 +47,9 @@
                 style="@style/tripItemTitle"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
-                android:text="ساعت:"
+                android:layout_marginEnd="15dp"
+                android:layout_marginRight="15dp"
+                android:text="ساعت"
                 android:textSize="18sp" />
 
             <TextView
@@ -58,13 +63,16 @@
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="20dp"
             android:orientation="horizontal">
 
             <TextView
                 style="@style/tripItemTitle"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
+                android:layout_marginEnd="25dp"
+                android:layout_marginRight="25dp"
                 android:text="توضیحات"
                 android:textSize="18sp" />
 
@@ -79,14 +87,17 @@
         </LinearLayout>
 
         <LinearLayout
-            android:layout_width="match_parent"
+            android:layout_width="325dp"
             android:layout_height="wrap_content"
+            android:layout_marginBottom="20dp"
             android:orientation="horizontal">
 
             <TextView
                 style="@style/tripItemTitle"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
+                android:layout_marginEnd="60dp"
+                android:layout_marginRight="60dp"
                 android:text="@string/city"
                 android:textSize="18sp" />
 
@@ -101,7 +112,8 @@
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="20dp"
             android:orientation="horizontal">
 
             <TextView
@@ -109,6 +121,8 @@
                 style="@style/tripItemTitle"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
+                android:layout_marginEnd="50dp"
+                android:layout_marginRight="50dp"
                 android:text="@string/customerAddress"
                 android:textSize="18sp" />
 
@@ -123,7 +137,8 @@
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="20dp"
             android:orientation="horizontal">
 
             <TextView
@@ -131,6 +146,8 @@
                 style="@style/tripItemTitle"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
+                android:layout_marginEnd="40dp"
+                android:layout_marginRight="40dp"
                 android:text="ایستگاه"
                 android:textSize="18sp" />
 
@@ -152,9 +169,27 @@
 
                 style="@style/tripItemTitle"
                 android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:text="صدای مسافر:"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="5dp"
+                android:layout_marginRight="5dp"
+                android:text="مکالمه سفر"
                 android:textSize="18sp" />
+
+            <com.warkiz.widget.IndicatorSeekBar
+                android:id="@+id/skbTimer"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:layout_gravity="center"
+                android:layout_weight="1"
+                app:isb_seek_smoothly="true"
+                app:isb_show_indicator="none"
+                app:isb_thumb_color="@color/colorPrimaryDark"
+                app:isb_thumb_size="15dp"
+                app:isb_track_background_color="@color/grayLight"
+                app:isb_track_background_size="3dp"
+                app:isb_track_progress_color="@color/colorPrimaryDark"
+                app:isb_track_progress_size="5dp" />
 
             <ImageView
                 android:id="@+id/imageView"
@@ -166,13 +201,20 @@
 
     </LinearLayout>
 
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="0.2" />
+
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="0dp"
+        android:layout_gravity="center"
+        android:layout_weight="0.1"
         android:gravity="bottom"
         android:orientation="horizontal"
-        android:paddingTop="10dp"
-        android:paddingBottom="10dp">
+        android:paddingBottom="10dp"
+        >
 
         <Button
             android:id="@+id/btnSaveResult"
@@ -180,7 +222,10 @@
             android:layout_width="0dp"
             android:layout_height="?android:attr/actionBarSize"
             android:layout_weight="2.25"
-            android:text="ثبت نتیجه " />
+            android:background="@drawable/bg_circle_green"
+            android:text="ثبت نتیجه "
+            android:textSize="18sp"
+            android:textStyle="bold" />
 
 
         <ImageView
@@ -195,7 +240,8 @@
             android:background="@drawable/bg_strock_corner"
             android:text="گزینه ها"
             android:textColor="@color/colorBlack"
-            android:textSize="@dimen/text_header" />
+            android:textSize="@dimen/text_header"
+            android:textStyle="bold" />
     </LinearLayout>
 
 
