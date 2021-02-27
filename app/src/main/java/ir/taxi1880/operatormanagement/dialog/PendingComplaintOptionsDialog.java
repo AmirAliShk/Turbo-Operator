@@ -7,6 +7,7 @@ import android.util.Log;
 import android.view.Gravity;
 import android.view.Window;
 import android.view.WindowManager;
+import android.widget.Toast;
 
 import butterknife.ButterKnife;
 import butterknife.OnClick;
@@ -25,10 +26,23 @@ public class PendingComplaintOptionsDialog {
         dismiss();
     }
 
-    @OnClick(R.id.txtPassengerCalls)
-    void onPassengerCalls() {
+    @OnClick(R.id.llGuestCalls)
+    void onPressGuestCalls() {
+        dismiss();
         new PassengerCallsDialog()
                 .show();
+    }
+
+    @OnClick(R.id.llSearchService)
+    void onPressSearchService() {
+        dismiss();
+        MyApplication.Toast("llSearchService", Toast.LENGTH_SHORT);
+    }
+
+    @OnClick(R.id.llNestFollowUp)
+    void onPressNestFollowUp() {
+        dismiss();
+        MyApplication.Toast("llNestFollowUp", Toast.LENGTH_SHORT);
     }
 
     public void show() {
