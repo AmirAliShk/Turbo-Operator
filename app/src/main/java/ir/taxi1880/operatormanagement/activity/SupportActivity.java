@@ -3,6 +3,7 @@ package ir.taxi1880.operatormanagement.activity;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.viewpager2.widget.ViewPager2;
 
+import android.content.Intent;
 import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
@@ -31,6 +32,7 @@ import ir.taxi1880.operatormanagement.helper.FragmentHelper;
 import ir.taxi1880.operatormanagement.helper.KeyBoardHelper;
 import ir.taxi1880.operatormanagement.helper.StringHelper;
 import ir.taxi1880.operatormanagement.helper.TypefaceUtil;
+import ir.taxi1880.operatormanagement.push.AvaCrashReporter;
 
 public class SupportActivity extends AppCompatActivity {
 
@@ -158,6 +160,38 @@ public class SupportActivity extends AppCompatActivity {
     protected void onDestroy() {
         super.onDestroy();
         unbinder.unbind();
+    }
+
+    @Override
+    public void onBackPressed() {
+        try {
+            KeyBoardHelper.hideKeyboard();
+            if (getFragmentManager().getBackStackEntryCount() > 0 || getSupportFragmentManager().getBackStackEntryCount() > 0) {
+                super.onBackPressed();
+            } else {
+                new GeneralDialog()
+                        .title("خروج")
+                        .message("آیا از خروج خود اطمینان دارید؟")
+                        .firstButton("بله", new Runnable() {
+                            @Override
+                            public void run() {
+                                try {
+                                    Intent intent=new Intent(MyApplication.context, MainActivity.class);
+                                    startActivity(intent);
+                                    finish();
+                                } catch (Exception e) {
+                                    e.printStackTrace();
+                                    AvaCrashReporter.send(e, "SupportActivity class, onBackPressed method");
+                                }
+                            }
+                        })
+                        .secondButton("خیر", null)
+                        .show();
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            AvaCrashReporter.send(e, "TripRegister class, onBackPressed method");
+        }
     }
 
     public void setActivate() {
