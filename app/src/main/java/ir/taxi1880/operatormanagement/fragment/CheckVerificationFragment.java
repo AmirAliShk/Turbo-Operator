@@ -35,6 +35,7 @@ import ir.taxi1880.operatormanagement.helper.KeyBoardHelper;
 import ir.taxi1880.operatormanagement.helper.TypefaceUtil;
 import ir.taxi1880.operatormanagement.okHttp.RequestHelper;
 import ir.taxi1880.operatormanagement.push.AvaCrashReporter;
+import ir.taxi1880.operatormanagement.webServices.GetAppInfo;
 
 public class CheckVerificationFragment extends Fragment {
 
@@ -197,11 +198,7 @@ public class CheckVerificationFragment extends Fragment {
                         MyApplication.prefManager.setIdToken(data.getString("id_token"));
                         MyApplication.prefManager.setAuthorization(data.getString("access_token"));
                         MyApplication.prefManager.setRefreshToken(data.getString("refresh_token"));
-                        new SplashActivity().getAppInfo(b -> {
-                            if (vfEnter != null) {
-                                vfEnter.setDisplayedChild(0);
-                            }
-                        });
+                       new GetAppInfo().callAppInfoAPI();
                     } else {
                         if (vfEnter != null) {
                             vfEnter.setDisplayedChild(0);
