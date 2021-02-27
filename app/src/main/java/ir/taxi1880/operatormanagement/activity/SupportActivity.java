@@ -22,6 +22,8 @@ import com.gauravbhola.ripplepulsebackground.RipplePulseLayout;
 import com.google.android.material.tabs.TabLayout;
 import com.google.android.material.tabs.TabLayoutMediator;
 
+import org.json.JSONException;
+import org.json.JSONObject;
 import org.linphone.core.Address;
 import org.linphone.core.Call;
 import org.linphone.core.Core;
@@ -35,8 +37,10 @@ import ir.taxi1880.operatormanagement.R;
 import ir.taxi1880.operatormanagement.adapter.SupportViewPagerAdapter;
 import ir.taxi1880.operatormanagement.app.Constant;
 import ir.taxi1880.operatormanagement.app.DataHolder;
+import ir.taxi1880.operatormanagement.app.EndPoints;
 import ir.taxi1880.operatormanagement.app.MyApplication;
 import ir.taxi1880.operatormanagement.dialog.GeneralDialog;
+import ir.taxi1880.operatormanagement.dialog.LoadingDialog;
 import ir.taxi1880.operatormanagement.fragment.MessageFragment;
 import ir.taxi1880.operatormanagement.fragment.NotificationFragment;
 import ir.taxi1880.operatormanagement.helper.FragmentHelper;
@@ -44,6 +48,7 @@ import ir.taxi1880.operatormanagement.helper.KeyBoardHelper;
 import ir.taxi1880.operatormanagement.helper.PhoneNumberValidation;
 import ir.taxi1880.operatormanagement.helper.StringHelper;
 import ir.taxi1880.operatormanagement.helper.TypefaceUtil;
+import ir.taxi1880.operatormanagement.okHttp.RequestHelper;
 import ir.taxi1880.operatormanagement.push.AvaCrashReporter;
 import ir.taxi1880.operatormanagement.services.LinphoneService;
 
@@ -83,9 +88,12 @@ public class SupportActivity extends AppCompatActivity {
                 .title("هشدار")
                 .cancelable(false)
                 .message("مطمئنی میخوای وارد صف بشی؟")
-                .firstButton("مطمئنم", () -> {
-                    setActivate();
+                .firstButton("مطمئنم", new Runnable() {
+                    @Override
+                    public void run() {
+                        setActivate(MyApplication.prefManager.getSipNumber());
 //                MyApplication.Toast("activated",Toast.LENGTH_SHORT);
+                    }
                 })
                 .secondButton("نیستم", null)
                 .show();
@@ -103,7 +111,7 @@ public class SupportActivity extends AppCompatActivity {
                     if (MyApplication.prefManager.isCallIncoming()) {
                         MyApplication.Toast(getString(R.string.exit), Toast.LENGTH_SHORT);
                     } else {
-                        setDeActivate();
+                        setDeActivate(MyApplication.prefManager.getSipNumber());
                     }
                 })
                 .secondButton("نیستم", null)
@@ -208,25 +216,124 @@ public class SupportActivity extends AppCompatActivity {
 
     }
 
-    public void setActivate() {
-        if (btnActivate != null)
-            btnActivate.setBackgroundResource(R.drawable.bg_green_edge);
-        MyApplication.prefManager.setActivateStatus(true);
-        if (btnDeActivate != null) {
-            btnDeActivate.setBackgroundColor(Color.parseColor("#00FFB2B2"));
-            btnDeActivate.setTextColor(Color.parseColor("#ffffff"));
+    private void setActivate(int sipNumber) {
+
+        LoadingDialog.makeCancelableLoader();
+        RequestHelper.builder(EndPoints.ACTIVATE)
+                .addParam("sipNumber", sipNumber)
+                .listener(setActivate)
+                .post();
+
+    }
+
+    RequestHelper.Callback setActivate = new RequestHelper.Callback() {
+        @Override
+        public void onResponse(Runnable reCall, Object... args) {
+            MyApplication.handler.post(() -> {
+                try {
+                    LoadingDialog.dismissCancelableDialog();
+                    Log.i(TAG, "onResponse: " + args[0].toString());
+                    JSONObject obj = new JSONObject(args[0].toString());
+                    boolean success = obj.getBoolean("success");
+                    String message = obj.getString("message");
+
+                    if (success) {
+                        MyApplication.Toast("شما باموفقیت وارد صف شدید", Toast.LENGTH_SHORT);
+                        if (btnActivate != null)
+                            btnActivate.setBackgroundResource(R.drawable.bg_green_edge);
+                        MyApplication.prefManager.setActivateStatus(true);
+                        if (btnDeActivate != null) {
+                            btnDeActivate.setBackgroundColor(Color.parseColor("#00FFB2B2"));
+                            btnDeActivate.setTextColor(Color.parseColor("#ffffff"));
+                        }
+                    } else {
+                        new GeneralDialog()
+                                .title("هشدار")
+                                .message(message)
+                                .firstButton("تلاش مجدد", () -> setActivate(MyApplication.prefManager.getSipNumber()))
+                                .secondButton("بعدا امتحان میکنم", null)
+                                .show();
+                    }
+                    LoadingDialog.dismiss();
+                } catch (JSONException e) {
+                    LoadingDialog.dismiss();
+                    e.printStackTrace();
+                    AvaCrashReporter.send(e, "TripRegisterActivity class, setActivate onResponse method");
+                }
+
+            });
+        }
+
+        @Override
+        public void onFailure(Runnable reCall, Exception e) {
+            MyApplication.handler.post(LoadingDialog::dismiss);
+        }
+
+    };
+
+    private void setDeActivate(int sipNumber) {
+
+        JSONObject params = new JSONObject();
+        try {
+            params.put("sipNumber", sipNumber);
+
+            Log.i(TAG, "setDeActivate: " + params);
+
+            LoadingDialog.makeCancelableLoader();
+            RequestHelper.builder(EndPoints.DEACTIVATE)
+                    .addParam("sipNumber", sipNumber)
+                    .listener(setDeActivate)
+                    .post();
+        } catch (JSONException e) {
+            e.printStackTrace();
+            AvaCrashReporter.send(e, "TripRegisterActivity class, setDeActivate method");
+
         }
     }
 
-    public void setDeActivate() {
-        MyApplication.prefManager.setActivateStatus(false);
-        if (btnActivate != null)
-            btnActivate.setBackgroundColor(Color.parseColor("#00FFB2B2"));
-        if (btnDeActivate != null) {
-            btnDeActivate.setBackgroundResource(R.drawable.bg_pink_edge);
-            btnDeActivate.setTextColor(Color.parseColor("#ffffff"));
+    RequestHelper.Callback setDeActivate = new RequestHelper.Callback() {
+        @Override
+        public void onResponse(Runnable reCall, Object... args) {
+            MyApplication.handler.post(() -> {
+                try {
+                    LoadingDialog.dismissCancelableDialog();
+                    Log.i(TAG, "onResponse: " + args[0].toString());
+                    JSONObject obj = new JSONObject(args[0].toString());
+                    boolean success = obj.getBoolean("success");
+                    String message = obj.getString("message");
+
+                    if (success) {
+                        MyApplication.Toast("شما باموفقیت از صف خارج شدید", Toast.LENGTH_SHORT);
+                        MyApplication.prefManager.setActivateStatus(false);
+                        if (btnActivate != null)
+                            btnActivate.setBackgroundColor(Color.parseColor("#00FFB2B2"));
+                        if (btnDeActivate != null) {
+                            btnDeActivate.setBackgroundResource(R.drawable.bg_pink_edge);
+                            btnDeActivate.setTextColor(Color.parseColor("#ffffff"));
+                        }
+                    } else {
+                        new GeneralDialog()
+                                .title("هشدار")
+                                .message(message)
+                                .firstButton("تلاش مجدد", () -> setDeActivate(MyApplication.prefManager.getSipNumber()))
+                                .secondButton("بعدا امتحان میکنم", null)
+                                .show();
+                    }
+                    LoadingDialog.dismiss();
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                    LoadingDialog.dismiss();
+                    AvaCrashReporter.send(e, "TripRegisterActivity class, setDeActivate onResponse method");
+                }
+            });
         }
-    }
+
+        @Override
+        public void onFailure(Runnable reCall, Exception e) {
+            MyApplication.handler.post(LoadingDialog::dismiss);
+
+        }
+    };
 
     private void showCallIncoming() {
         mRipplePulseLayout.startRippleAnimation();
