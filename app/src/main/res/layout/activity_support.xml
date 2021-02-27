@@ -150,8 +150,7 @@
             android:src="@drawable/ic_back" />
 
         <ImageView
-
-            android:id="@+id/imgCallQuality"
+            android:id="@+id/imgTestConnection"
             android:layout_width="35dp"
             android:layout_height="match_parent"
             android:layout_marginLeft="1dp"
@@ -160,13 +159,25 @@
             android:layout_marginBottom="15dp"
             android:layout_toRightOf="@+id/imgBack"
             android:background="@color/colorPrimaryDark"
+            android:src="@drawable/ic_status"
+            android:visibility="visible" />
+
+        <ImageView
+            android:id="@+id/imgCallQuality"
+            android:layout_width="30dp"
+            android:layout_height="match_parent"
+            android:layout_marginLeft="1dp"
+            android:layout_marginTop="15dp"
+            android:layout_marginRight="15dp"
+            android:layout_marginBottom="15dp"
+            android:layout_toLeftOf="@id/llEndCall"
+            android:background="@color/colorPrimaryDark"
             android:src="@drawable/ic_quality_0"
             android:visibility="invisible" />
 
-
         <LinearLayout
             android:id="@+id/llEndCall"
-            android:layout_width="80dp"
+            android:layout_width="60dp"
             android:layout_height="match_parent"
             android:gravity="right"
             android:orientation="vertical">
@@ -200,13 +211,13 @@
                     app:strokeWidth="1dp" />
 
                 <ImageView
-                    android:id="@+id/imgEndCall"
+                    android:id="@+id/imgOpenDriverSupport"
                     android:layout_width="60dp"
                     android:layout_height="50dp"
                     android:layout_centerInParent="true"
                     android:layout_weight="1"
-                    android:padding="15dp"
-                    android:src="@drawable/ic_end_call" />
+                    android:padding="5dp"
+                    android:src="@drawable/ic_driver" />
 
             </RelativeLayout>
 

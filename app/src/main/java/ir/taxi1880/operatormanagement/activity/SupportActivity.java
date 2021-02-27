@@ -26,6 +26,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 import org.linphone.core.Address;
 import org.linphone.core.Call;
+import org.linphone.core.CallParams;
 import org.linphone.core.Core;
 import org.linphone.core.CoreListenerStub;
 
@@ -128,16 +129,29 @@ public class SupportActivity extends AppCompatActivity {
     @BindView(R.id.txtCallerNum)
     TextView txtCallerNum;
 
-    @BindView(R.id.imgEndCall)
-    ImageView imgEndCall;
+    @BindView(R.id.imgOpenDriverSupport)
+    ImageView imgOpenDriverSupport;
 
-    @OnClick(R.id.imgEndCall)
-    void onPressEndCall() {
+    @OnClick(R.id.imgOpenDriverSupport)
+    void onPressOpenDriverSupport() {
         FragmentHelper.toFragment(MyApplication.currentActivity, new SupportDriverTripsFragment()).replace();
     }
 
     @BindView(R.id.imgCallQuality)
     ImageView imgCallQuality;
+
+    @BindView(R.id.imgTestConnection)
+    ImageView imgTestConnection;
+
+    @OnClick(R.id.imgTestConnection)
+    void onTestConnectionPress() {
+        Address addressToCall = core.interpretUrl("998");
+        CallParams params = core.createCallParams(null);
+        params.enableVideo(false);
+        if (addressToCall != null) {
+            core.inviteAddressWithParams(addressToCall, params);
+        }
+    }
 
     @OnClick(R.id.imgAccept)
     void onAcceptPress() {
@@ -364,8 +378,8 @@ public class SupportActivity extends AppCompatActivity {
             if (state == Call.State.IncomingReceived) {
                 showCallIncoming();
             } else if (state == Call.State.Released) {
-                if (imgEndCall != null)
-                    imgEndCall.setColorFilter(ContextCompat.getColor(MyApplication.context, R.color.colorWhite), android.graphics.PorterDuff.Mode.MULTIPLY);
+                if (imgTestConnection != null)
+                    imgTestConnection.setColorFilter(ContextCompat.getColor(MyApplication.context, R.color.colorWhite), android.graphics.PorterDuff.Mode.MULTIPLY);
                 showTitleBar();
                 if (mCallQualityUpdater != null) {
                     LinphoneService.removeFromUIThreadDispatcher(mCallQualityUpdater);
@@ -373,8 +387,8 @@ public class SupportActivity extends AppCompatActivity {
                 }
             } else if (state == Call.State.Connected) {
                 startCallQuality();
-                if (imgEndCall != null)
-                    imgEndCall.setColorFilter(ContextCompat.getColor(MyApplication.context, R.color.colorRed), android.graphics.PorterDuff.Mode.MULTIPLY);
+                if (imgTestConnection != null)
+                    imgTestConnection.setColorFilter(ContextCompat.getColor(MyApplication.context, R.color.colorRed), android.graphics.PorterDuff.Mode.MULTIPLY);
                 Address address = call.getRemoteAddress();
 //                if (voipId.equals("0")) {  //TODO
 //                    edtTell.setText(PhoneNumberValidation.removePrefix(address.getUsername()));
@@ -447,7 +461,7 @@ public class SupportActivity extends AppCompatActivity {
         showTitleBar();
         if (MyApplication.prefManager.getConnectedCall()) {
             startCallQuality();
-            imgEndCall.setColorFilter(ContextCompat.getColor(MyApplication.context, R.color.colorRed), android.graphics.PorterDuff.Mode.MULTIPLY);
+            imgTestConnection.setColorFilter(ContextCompat.getColor(MyApplication.context, R.color.colorRed), android.graphics.PorterDuff.Mode.MULTIPLY);
 
             Call[] calls = core.getCalls();
             for (Call call : calls) {
