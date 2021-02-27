@@ -11,8 +11,8 @@
         android:id="@+id/rlNewInComingCall"
         android:layout_width="match_parent"
         android:layout_height="80dp"
-        android:layoutDirection="rtl"
-        android:background="@drawable/bg_action_bar_purple">
+        android:background="@drawable/bg_action_bar_purple"
+        android:layoutDirection="rtl">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -99,20 +99,43 @@
 
     </RelativeLayout>
 
-    <RelativeLayout
-        android:id="@+id/rlActionBar"
+    <LinearLayout
+        android:id="@+id/llActionBar"
         android:layout_width="match_parent"
+        android:gravity="center"
         android:layout_height="?android:attr/actionBarSize"
         android:background="@drawable/bg_action_bar_purple"
         android:layoutDirection="rtl">
 
+        <ImageView
+            android:id="@+id/imgOpenDriverSupport"
+            android:layout_width="0dp"
+            android:layout_height="50dp"
+            android:layout_centerInParent="true"
+            android:layout_weight="0.5"
+            android:padding="5dp"
+            android:src="@drawable/ic_driver" />
+
+        <ImageView
+            android:id="@+id/imgCallQuality"
+            android:layout_width="0dp"
+            android:layout_weight="0.5"
+            android:padding="@dimen/_10sdp"
+            android:layout_height="match_parent"
+            android:layout_toLeftOf="@id/llEndCall"
+            android:background="@color/colorPrimaryDark"
+            android:src="@drawable/ic_quality_0"
+            android:visibility="invisible" />
+
         <LinearLayout
             android:id="@+id/llStatus"
-            android:layout_width="160dp"
+            android:layout_width="0dp"
+            android:layout_weight="2"
             android:layout_height="45dp"
             android:layout_centerInParent="true"
             android:background="@drawable/bg_activate_status"
             android:gravity="center"
+            android:layout_margin="@dimen/_10sdp"
             android:orientation="horizontal">
 
             <Button
@@ -142,88 +165,26 @@
         </LinearLayout>
 
         <ImageView
-            android:id="@+id/imgBack"
-            android:layout_width="?android:attr/actionBarSize"
-            android:layout_height="match_parent"
-            android:layout_alignParentLeft="true"
-            android:padding="15dp"
-            android:src="@drawable/ic_back" />
-
-        <ImageView
             android:id="@+id/imgTestConnection"
-            android:layout_width="35dp"
+            android:layout_width="0dp"
+            android:layout_weight="0.5"
             android:layout_height="match_parent"
-            android:layout_marginLeft="1dp"
-            android:layout_marginTop="15dp"
-            android:layout_marginRight="15dp"
-            android:layout_marginBottom="15dp"
             android:layout_toRightOf="@+id/imgBack"
             android:background="@color/colorPrimaryDark"
+            android:padding="@dimen/_10sdp"
             android:src="@drawable/ic_status"
             android:visibility="visible" />
 
         <ImageView
-            android:id="@+id/imgCallQuality"
-            android:layout_width="30dp"
+            android:id="@+id/imgBack"
+            android:layout_width="0dp"
+            android:layout_weight="0.5"
             android:layout_height="match_parent"
-            android:layout_marginLeft="1dp"
-            android:layout_marginTop="15dp"
-            android:layout_marginRight="15dp"
-            android:layout_marginBottom="15dp"
-            android:layout_toLeftOf="@id/llEndCall"
-            android:background="@color/colorPrimaryDark"
-            android:src="@drawable/ic_quality_0"
-            android:visibility="invisible" />
+            android:layout_alignParentLeft="true"
+            android:padding="12dp"
+            android:src="@drawable/ic_back" />
 
-        <LinearLayout
-            android:id="@+id/llEndCall"
-            android:layout_width="60dp"
-            android:layout_height="match_parent"
-            android:gravity="right"
-            android:orientation="vertical">
-
-            <TextView
-                android:layout_width="?android:attr/actionBarSize"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="5dp"
-                android:gravity="center|bottom"
-                android:text="00:58"
-                android:textAppearance="?android:attr/textAppearanceSmall"
-                android:textColor="@color/colorWhite"
-                android:visibility="gone" />
-
-            <RelativeLayout
-                android:layout_width="80dp"
-                android:layout_height="wrap_content"
-                android:gravity="center">
-
-                <com.gauravbhola.ripplepulsebackground.RipplePulseLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_centerInParent="true"
-                    android:clipChildren="false"
-                    android:gravity="center"
-                    app:duration="1500"
-                    app:endRadius="25dp"
-                    app:rippleColor="@color/colorWhite"
-                    app:rippleType="stroke"
-                    app:startRadius="13dp"
-                    app:strokeWidth="1dp" />
-
-                <ImageView
-                    android:id="@+id/imgOpenDriverSupport"
-                    android:layout_width="60dp"
-                    android:layout_height="50dp"
-                    android:layout_centerInParent="true"
-                    android:layout_weight="1"
-                    android:padding="5dp"
-                    android:src="@drawable/ic_driver" />
-
-            </RelativeLayout>
-
-        </LinearLayout>
-
-    </RelativeLayout>
+    </LinearLayout>
 
     <com.google.android.material.tabs.TabLayout
         android:id="@+id/tbLayout"
@@ -238,7 +199,7 @@
         <com.google.android.material.tabs.TabItem
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="جدید"/>
+            android:text="جدید" />
 
     </com.google.android.material.tabs.TabLayout>
 

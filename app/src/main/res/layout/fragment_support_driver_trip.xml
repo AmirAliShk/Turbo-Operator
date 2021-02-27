@@ -28,12 +28,12 @@
 
         <ImageView
             android:id="@+id/imgEndCall"
-            android:layout_width="40dp"
+            android:layout_width="50dp"
             android:layout_height="40dp"
             android:layout_centerVertical="true"
             android:layout_toRightOf="@id/imgBack"
-            android:layout_marginLeft="40dp"
-            android:padding="8dp"
+            android:layout_marginLeft="20dp"
+            android:padding="12dp"
             android:src="@drawable/ic_end_call"/>
 
         <TextView

@@ -5,8 +5,10 @@ import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.util.Log;
 import android.view.Gravity;
+import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
+import android.widget.LinearLayout;
 import android.widget.ViewFlipper;
 
 import butterknife.BindView;
@@ -30,8 +32,11 @@ public class SearchFilterDialog {
     void searchCase(int type);
   }
 
-  @BindView(R.id.vfFilter)
-  ViewFlipper vfFilter;
+  @BindView(R.id.llPassengerFilter)
+  LinearLayout llPassengerFilter;
+
+  @BindView(R.id.llDriverFilter)
+  LinearLayout llDriverFilter;
 
   @OnClick(R.id.llName)
   void onPressName() {
@@ -94,11 +99,11 @@ public class SearchFilterDialog {
     this.searchCaseListener = searchCaseListener;
 
     if (dialogType.equals("passenger")){
-      if (vfFilter!=null)
-        vfFilter.setDisplayedChild(0);
+      llPassengerFilter.setVisibility(View.VISIBLE);
+      llDriverFilter.setVisibility(View.GONE);
     }else {
-      if (vfFilter!=null)
-        vfFilter.setDisplayedChild(1);
+      llPassengerFilter.setVisibility(View.GONE);
+      llDriverFilter.setVisibility(View.VISIBLE);
     }
 
     dialog.show();

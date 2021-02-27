@@ -14,6 +14,7 @@ import android.view.Window;
 import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -40,6 +41,7 @@ import ir.taxi1880.operatormanagement.app.Constant;
 import ir.taxi1880.operatormanagement.app.DataHolder;
 import ir.taxi1880.operatormanagement.app.EndPoints;
 import ir.taxi1880.operatormanagement.app.MyApplication;
+import ir.taxi1880.operatormanagement.dialog.CallDialog;
 import ir.taxi1880.operatormanagement.dialog.GeneralDialog;
 import ir.taxi1880.operatormanagement.dialog.LoadingDialog;
 import ir.taxi1880.operatormanagement.fragment.MessageFragment;
@@ -123,8 +125,8 @@ public class SupportActivity extends AppCompatActivity {
     @BindView(R.id.rlNewInComingCall)
     RelativeLayout rlNewInComingCall;
 
-    @BindView(R.id.rlActionBar)
-    RelativeLayout rlActionBar;
+    @BindView(R.id.llActionBar)
+    LinearLayout llActionBar;
 
     @BindView(R.id.txtCallerNum)
     TextView txtCallerNum;
@@ -145,12 +147,25 @@ public class SupportActivity extends AppCompatActivity {
 
     @OnClick(R.id.imgTestConnection)
     void onTestConnectionPress() {
-        Address addressToCall = core.interpretUrl("998");
-        CallParams params = core.createCallParams(null);
-        params.enableVideo(false);
-        if (addressToCall != null) {
-            core.inviteAddressWithParams(addressToCall, params);
-        }
+        new CallDialog().show(new CallDialog.CallBack() {
+            @Override
+            public void onDismiss() {
+            }
+
+            @Override
+            public void onCallReceived() {
+            }
+
+            @Override
+            public void onCallTransferred() {
+            }
+
+            @Override
+            public void onCallEnded() {
+                if (imgTestConnection != null)
+                    imgTestConnection.setColorFilter(ContextCompat.getColor(MyApplication.context, R.color.colorRed), android.graphics.PorterDuff.Mode.MULTIPLY);
+            }
+        }, false);
     }
 
     @OnClick(R.id.imgAccept)
@@ -363,13 +378,13 @@ public class SupportActivity extends AppCompatActivity {
         Address address = call.getRemoteAddress();
         txtCallerNum.setText(address.getUsername());
         rlNewInComingCall.setVisibility(View.VISIBLE);
-        rlActionBar.setVisibility(View.GONE);
+        llActionBar.setVisibility(View.GONE);
     }
 
     private void showTitleBar() {
         mRipplePulseLayout.stopRippleAnimation();
         rlNewInComingCall.setVisibility(View.GONE);
-        rlActionBar.setVisibility(View.VISIBLE);
+        llActionBar.setVisibility(View.VISIBLE);
     }
 
     CoreListenerStub mCoreListener = new CoreListenerStub() {

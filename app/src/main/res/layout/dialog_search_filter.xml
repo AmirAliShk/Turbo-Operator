@@ -13,186 +13,181 @@
     android:orientation="vertical"
     android:padding="10dp">
 
-    <ViewFlipper
-        android:id="@+id/vfFilter"
+    <LinearLayout
+        android:id="@+id/llDriverFilter"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
 
         <LinearLayout
+            android:id="@+id/llDriverMobile"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical">
+            android:background="@drawable/bg_ripple"
+            android:gravity="center_vertical"
+            android:orientation="horizontal"
+            android:padding="10dp">
 
-            <LinearLayout
-                android:id="@+id/llTell"
-                android:layout_width="match_parent"
+            <ImageView
+                android:layout_width="25dp"
+                android:layout_height="25dp"
+                android:src="@drawable/ic_call" />
+
+            <TextView
+                style="@style/tripItemValue"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:background="@drawable/bg_ripple"
-                android:orientation="horizontal"
-                android:gravity="center_vertical"
-                android:padding="10dp">
-
-                <ImageView
-                    android:layout_width="25dp"
-                    android:layout_height="25dp"
-                    android:src="@drawable/ic_call" />
-
-                <TextView
-                    style="@style/tripItemValue"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginRight="10dp"
-                    android:text="@string/customerTell" />
-
-            </LinearLayout>
-
-            <LinearLayout
-                android:id="@+id/llName"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:background="@drawable/bg_ripple"
-                android:orientation="horizontal"
-                android:gravity="center_vertical"
-                android:padding="10dp">
-
-                <ImageView
-                    android:layout_width="25dp"
-                    android:layout_height="25dp"
-                    android:src="@drawable/ic_user" />
-
-                <TextView
-                    style="@style/tripItemValue"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginRight="10dp"
-                    android:text="@string/name" />
-
-            </LinearLayout>
-
-            <LinearLayout
-                android:id="@+id/llAddress"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:background="@drawable/bg_ripple"
-                android:orientation="horizontal"
-                android:gravity="center_vertical"
-                android:padding="10dp">
-
-                <ImageView
-                    android:layout_width="25dp"
-                    android:layout_height="25dp"
-                    android:src="@drawable/ic_gps" />
-
-                <TextView
-                    style="@style/tripItemValue"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginRight="10dp"
-                    android:text="@string/customerAddress" />
-
-            </LinearLayout>
-
-            <LinearLayout
-                android:id="@+id/llTaxiCode"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:background="@drawable/bg_ripple"
-                android:orientation="horizontal"
-                android:gravity="center_vertical"
-                android:padding="10dp">
-
-                <ImageView
-                    android:layout_width="25dp"
-                    android:layout_height="25dp"
-                    android:src="@drawable/ic_taxi" />
-
-                <TextView
-                    style="@style/tripItemValue"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginRight="10dp"
-                    android:text="@string/taxiCode" />
-
-            </LinearLayout>
-
-            <LinearLayout
-                android:id="@+id/llStationCode"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:background="@drawable/bg_ripple"
-                android:orientation="horizontal"
-                android:gravity="center_vertical"
-                android:padding="10dp">
-
-                <ImageView
-                    android:layout_width="25dp"
-                    android:layout_height="25dp"
-                    android:src="@drawable/ic_code" />
-
-                <TextView
-                    style="@style/tripItemValue"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginRight="10dp"
-                    android:text="@string/stationCode" />
-
-            </LinearLayout>
+                android:layout_marginRight="10dp"
+                android:text="@string/customerTell" />
 
         </LinearLayout>
 
         <LinearLayout
+            android:id="@+id/llDriverTaxiCode"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical">
+            android:background="@drawable/bg_ripple"
+            android:gravity="center_vertical"
+            android:orientation="horizontal"
+            android:padding="10dp">
 
-            <LinearLayout
-                android:id="@+id/llDriverMobile"
-                android:layout_width="match_parent"
+            <ImageView
+                android:layout_width="25dp"
+                android:layout_height="25dp"
+                android:src="@drawable/ic_taxi" />
+
+            <TextView
+                style="@style/tripItemValue"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:background="@drawable/bg_ripple"
-                android:orientation="horizontal"
-                android:gravity="center_vertical"
-                android:padding="10dp">
-
-                <ImageView
-                    android:layout_width="25dp"
-                    android:layout_height="25dp"
-                    android:src="@drawable/ic_call" />
-
-                <TextView
-                    style="@style/tripItemValue"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginRight="10dp"
-                    android:text="@string/customerTell" />
-
-            </LinearLayout>
-
-            <LinearLayout
-                android:id="@+id/llDriverTaxiCode"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:background="@drawable/bg_ripple"
-                android:orientation="horizontal"
-                android:gravity="center_vertical"
-                android:padding="10dp">
-
-                <ImageView
-                    android:layout_width="25dp"
-                    android:layout_height="25dp"
-                    android:src="@drawable/ic_taxi" />
-
-                <TextView
-                    style="@style/tripItemValue"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginRight="10dp"
-                    android:text="@string/taxiCode" />
-
-            </LinearLayout>
+                android:layout_marginRight="10dp"
+                android:text="@string/taxiCode" />
 
         </LinearLayout>
 
-    </ViewFlipper>
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/llPassengerFilter"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:id="@+id/llTell"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/bg_ripple"
+            android:gravity="center_vertical"
+            android:orientation="horizontal"
+            android:padding="10dp">
+
+            <ImageView
+                android:layout_width="25dp"
+                android:layout_height="25dp"
+                android:src="@drawable/ic_call" />
+
+            <TextView
+                style="@style/tripItemValue"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="10dp"
+                android:text="@string/customerTell" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/llName"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/bg_ripple"
+            android:gravity="center_vertical"
+            android:orientation="horizontal"
+            android:padding="10dp">
+
+            <ImageView
+                android:layout_width="25dp"
+                android:layout_height="25dp"
+                android:src="@drawable/ic_user" />
+
+            <TextView
+                style="@style/tripItemValue"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="10dp"
+                android:text="@string/name" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/llAddress"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/bg_ripple"
+            android:gravity="center_vertical"
+            android:orientation="horizontal"
+            android:padding="10dp">
+
+            <ImageView
+                android:layout_width="25dp"
+                android:layout_height="25dp"
+                android:src="@drawable/ic_gps" />
+
+            <TextView
+                style="@style/tripItemValue"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="10dp"
+                android:text="@string/customerAddress" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/llTaxiCode"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/bg_ripple"
+            android:gravity="center_vertical"
+            android:orientation="horizontal"
+            android:padding="10dp">
+
+            <ImageView
+                android:layout_width="25dp"
+                android:layout_height="25dp"
+                android:src="@drawable/ic_taxi" />
+
+            <TextView
+                style="@style/tripItemValue"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="10dp"
+                android:text="@string/taxiCode" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/llStationCode"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/bg_ripple"
+            android:gravity="center_vertical"
+            android:orientation="horizontal"
+            android:padding="10dp">
+
+            <ImageView
+                android:layout_width="25dp"
+                android:layout_height="25dp"
+                android:src="@drawable/ic_code" />
+
+            <TextView
+                style="@style/tripItemValue"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="10dp"
+                android:text="@string/stationCode" />
+
+        </LinearLayout>
+
+    </LinearLayout>
 
 </LinearLayout>
