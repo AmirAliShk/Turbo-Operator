@@ -24,29 +24,35 @@
             android:textAppearance="?android:attr/textAppearanceLarge"
             android:textColor="@color/colorWhite" />
 
-        <RadioButton
-            android:id="@+id/radioButton"
+        <RadioGroup
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="حذف آدرس" />
+            android:layout_height="match_parent"
+            android:layoutDirection="rtl">
 
-        <RadioButton
-            android:id="@+id/radioButton2"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="حذف ایستگاه" />
+            <RadioButton
+                android:id="@+id/radioButton"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="حذف آدرس" />
 
-        <RadioButton
-            android:id="@+id/radioButton3"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="حذف شهر" />
+            <RadioButton
+                android:id="@+id/radioButton2"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="حذف ایستگاه" />
 
-        <RadioButton
-            android:id="@+id/radioButton7"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="سایر موارد" />
+            <RadioButton
+                android:id="@+id/radioButton3"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="حذف شهر" />
+
+            <RadioButton
+                android:id="@+id/radioButton7"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="سایر موارد" />
+        </RadioGroup>
 
         <View
             android:id="@+id/view2"
@@ -56,27 +62,33 @@
             android:layout_marginRight="@dimen/_10sdp"
             android:background="@color/colorBlack" />
 
-        <RadioButton
-            android:id="@+id/radioButton4"
+        <RadioGroup
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="اپرانور ثبت شهر مقصر است." />
+            android:layout_height="match_parent"
+            android:layoutDirection="rtl">
 
-        <RadioButton
-            android:id="@+id/radioButton5"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="اپراتور ثبت ایستگاه مقصر است." />
+            <RadioButton
+                android:id="@+id/radioButton4"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="اپرانور ثبت شهر مقصر است." />
 
-        <RadioButton
-            android:id="@+id/radioButton6"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="نامشخص" />
+            <RadioButton
+                android:id="@+id/radioButton5"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="اپراتور ثبت ایستگاه مقصر است." />
+
+            <RadioButton
+                android:id="@+id/radioButton6"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="نامشخص" />
+        </RadioGroup>
 
         <ViewFlipper
             android:id="@+id/vfLoader"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:background="@drawable/green_shadow">
 
