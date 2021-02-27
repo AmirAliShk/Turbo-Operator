@@ -2,13 +2,14 @@ package ir.taxi1880.operatormanagement.adapter;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentActivity;
 import androidx.viewpager2.adapter.FragmentStateAdapter;
 import ir.taxi1880.operatormanagement.fragment.AllComplaintFragment;
 import ir.taxi1880.operatormanagement.fragment.PendingComplaintFragment;
 
 public class SupportViewPagerAdapter extends FragmentStateAdapter {
 
-    public SupportViewPagerAdapter(@NonNull Fragment fragment) {
+    public SupportViewPagerAdapter(@NonNull FragmentActivity fragment) {
         super(fragment);
     }
 

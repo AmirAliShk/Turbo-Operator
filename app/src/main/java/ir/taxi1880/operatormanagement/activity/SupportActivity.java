@@ -1,17 +1,16 @@
-package ir.taxi1880.operatormanagement.fragment;
+package ir.taxi1880.operatormanagement.activity;
+
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.viewpager2.widget.ViewPager2;
 
 import android.graphics.Color;
+import android.os.Build;
 import android.os.Bundle;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
+import android.view.Window;
+import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.Toast;
-
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.fragment.app.Fragment;
-import androidx.viewpager2.widget.ViewPager2;
 
 import com.google.android.material.tabs.TabLayout;
 import com.google.android.material.tabs.TabLayoutMediator;
@@ -22,12 +21,19 @@ import butterknife.OnClick;
 import butterknife.Unbinder;
 import ir.taxi1880.operatormanagement.R;
 import ir.taxi1880.operatormanagement.adapter.SupportViewPagerAdapter;
+import ir.taxi1880.operatormanagement.app.Constant;
+import ir.taxi1880.operatormanagement.app.DataHolder;
 import ir.taxi1880.operatormanagement.app.MyApplication;
 import ir.taxi1880.operatormanagement.dialog.GeneralDialog;
+import ir.taxi1880.operatormanagement.fragment.MessageFragment;
+import ir.taxi1880.operatormanagement.fragment.NotificationFragment;
+import ir.taxi1880.operatormanagement.helper.FragmentHelper;
 import ir.taxi1880.operatormanagement.helper.KeyBoardHelper;
+import ir.taxi1880.operatormanagement.helper.StringHelper;
 import ir.taxi1880.operatormanagement.helper.TypefaceUtil;
 
-public class SupportFragment extends Fragment implements TabLayout.OnTabSelectedListener {
+public class SupportActivity extends AppCompatActivity {
+
     Unbinder unbinder;
     SupportViewPagerAdapter supportViewPagerAdapter;
 
@@ -82,16 +88,25 @@ public class SupportFragment extends Fragment implements TabLayout.OnTabSelected
                 .show();
     }
 
-    @Nullable
     @Override
-    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_support, container, false);
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_support);
+        View view = getWindow().getDecorView();
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            Window window = getWindow();
+            window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
+            window.setNavigationBarColor(getResources().getColor(R.color.colorPrimary));
+            window.setStatusBarColor(getResources().getColor(R.color.colorPrimaryDark));
+            window.getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LIGHT_NAVIGATION_BAR);
+            window.addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
+        }
+        MyApplication.configureAccount();
         unbinder = ButterKnife.bind(this, view);
         TypefaceUtil.overrideFonts(view);
 
         supportViewPagerAdapter = new SupportViewPagerAdapter(this);
         vpSupport.setAdapter(supportViewPagerAdapter);
-        tbLayout.addOnTabSelectedListener(this);
 
         new TabLayoutMediator(tbLayout, vpSupport, (tab, position) -> {
             vpSupport.setCurrentItem(tab.getPosition(), true);
@@ -112,28 +127,37 @@ public class SupportFragment extends Fragment implements TabLayout.OnTabSelected
             btnDeActivate.setTextColor(Color.parseColor("#ffffff"));
         }
 
-        return view;
     }
 
     @Override
-    public void onDestroyView() {
-        super.onDestroyView();
+    protected void onResume() {
+        super.onResume();
+        MyApplication.currentActivity = this;
+        MyApplication.prefManager.setAppRun(true);
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        MyApplication.prefManager.setAppRun(false);
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        MyApplication.currentActivity = this;
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
         unbinder.unbind();
-    }
-
-    @Override
-    public void onTabSelected(TabLayout.Tab tab) {
-
-    }
-
-    @Override
-    public void onTabUnselected(TabLayout.Tab tab) {
-
-    }
-
-    @Override
-    public void onTabReselected(TabLayout.Tab tab) {
-
     }
 
     public void setActivate() {
@@ -155,4 +179,5 @@ public class SupportFragment extends Fragment implements TabLayout.OnTabSelected
             btnDeActivate.setTextColor(Color.parseColor("#ffffff"));
         }
     }
+
 }

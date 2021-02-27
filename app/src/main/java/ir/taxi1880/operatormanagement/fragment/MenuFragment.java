@@ -12,6 +12,7 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import butterknife.Unbinder;
 import ir.taxi1880.operatormanagement.R;
+import ir.taxi1880.operatormanagement.activity.SupportActivity;
 import ir.taxi1880.operatormanagement.activity.TripRegisterActivity;
 import ir.taxi1880.operatormanagement.app.MyApplication;
 import ir.taxi1880.operatormanagement.dialog.GeneralDialog;
@@ -57,9 +58,8 @@ public class MenuFragment extends Fragment {
 
   @OnClick(R.id.llSupport)
   void onSupport(){
-    FragmentHelper
-            .toFragment(MyApplication.currentActivity, new SupportFragment())
-            .replace();
+    startActivity(new Intent(MyApplication.currentActivity, SupportActivity.class));
+    MyApplication.currentActivity.finish();
   }
 
   @OnClick(R.id.llShift)
