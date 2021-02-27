@@ -64,13 +64,6 @@ public class SplashActivity extends AppCompatActivity {
     public static final String TAG = SplashActivity.class.getSimpleName();
     boolean doubleBackToExitPressedOnce = false;
     Unbinder unbinder;
-    int isFinishContract;
-    DataBase dataBase;
-    SplashActivityCallback splashActivityCallback;
-
-    public interface SplashActivityCallback {
-        void onSuccess(boolean b);
-    }
 
     @BindView(R.id.txtVersion)
     TextView txtVersion;
