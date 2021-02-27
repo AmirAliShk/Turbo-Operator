@@ -43,6 +43,7 @@ import ir.taxi1880.operatormanagement.dialog.GeneralDialog;
 import ir.taxi1880.operatormanagement.dialog.LoadingDialog;
 import ir.taxi1880.operatormanagement.fragment.MessageFragment;
 import ir.taxi1880.operatormanagement.fragment.NotificationFragment;
+import ir.taxi1880.operatormanagement.fragment.SupportDriverTripsFragment;
 import ir.taxi1880.operatormanagement.helper.FragmentHelper;
 import ir.taxi1880.operatormanagement.helper.KeyBoardHelper;
 import ir.taxi1880.operatormanagement.helper.PhoneNumberValidation;
@@ -129,6 +130,11 @@ public class SupportActivity extends AppCompatActivity {
 
     @BindView(R.id.imgEndCall)
     ImageView imgEndCall;
+
+    @OnClick(R.id.imgEndCall)
+    void onPressEndCall() {
+        FragmentHelper.toFragment(MyApplication.currentActivity, new SupportDriverTripsFragment()).replace();
+    }
 
     @BindView(R.id.imgCallQuality)
     ImageView imgCallQuality;

@@ -1,0 +1,195 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/colorPrimaryLighter"
+    android:clickable="true"
+    android:layoutDirection="rtl"
+    android:orientation="vertical"
+    tools:context=".fragment.TripSupportFragment">
+
+    <RelativeLayout
+        android:id="@+id/rlActionBar"
+        android:layout_width="match_parent"
+        android:layout_height="?android:attr/actionBarSize"
+        android:orientation="horizontal"
+        android:gravity="center_vertical"
+        android:background="@color/colorPrimaryDark"
+        android:layoutDirection="ltr">
+
+        <ImageView
+            android:id="@+id/imgBack"
+            android:layout_width="?android:attr/actionBarSize"
+            android:layout_height="match_parent"
+            android:padding="15dp"
+            android:src="@drawable/ic_back" />
+
+        <ImageView
+            android:id="@+id/imgEndCall"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_centerVertical="true"
+            android:layout_toRightOf="@id/imgBack"
+            android:layout_marginLeft="40dp"
+            android:padding="8dp"
+            android:src="@drawable/ic_end_call"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_centerInParent="true"
+            android:text="@string/driver_support"
+            android:textColor="@color/colorWhite"
+            android:gravity="center"
+            android:textSize="@dimen/text_header"
+            android:textStyle="bold" />
+
+        <LinearLayout
+            android:id="@+id/llExtendedTime"
+            android:layout_width="120dp"
+            android:layout_height="match_parent"
+            android:layout_alignParentEnd="true"
+            android:gravity="right|center_vertical"
+            android:orientation="horizontal"
+            android:paddingRight="15dp"
+            android:layout_alignParentRight="true">
+
+            <TextView
+                android:id="@+id/txtExtendTime"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="10dp"
+                android:text="@string/today"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:textColor="@color/colorWhite"
+                android:textStyle="bold" />
+
+            <ImageView
+                android:id="@+id/imgExtendedTime"
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:src="@drawable/ic_today"
+                app:tint="@color/colorWhite" />
+
+        </LinearLayout>
+
+    </RelativeLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:paddingLeft="20dp"
+        android:paddingTop="20dp"
+        android:paddingRight="20dp">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/bg_blue_border_edge"
+            android:gravity="center_vertical"
+            android:layoutDirection="ltr"
+            android:orientation="horizontal"
+            android:padding="10dp">
+
+            <ImageView
+                android:id="@+id/imgSearch"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:background="@drawable/bg_button_gray_edge"
+                android:padding="10dp"
+                android:src="@drawable/ic_search" />
+
+            <ImageView
+                android:id="@+id/imgClear"
+                android:layout_width="?android:attr/actionBarSize"
+                android:layout_height="match_parent"
+                android:padding="8dp"
+                android:src="@drawable/ic_reject" />
+
+            <EditText
+                android:id="@+id/edtSearchTrip"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:background="@color/transparent"
+                android:gravity="right|center_vertical"
+                android:hint="@string/search"
+                android:nextFocusDown="@id/edtSearchTrip"
+                android:padding="10dp"
+                android:singleLine="true"
+                android:textColorHint="@color/grayMedium" />
+
+            <ImageView
+                android:id="@+id/imgSearchType"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:background="@drawable/bg_button_gray_edge"
+                android:padding="10dp"
+                android:src="@drawable/ic_call" />
+
+        </LinearLayout>
+
+        <ViewFlipper
+            android:id="@+id/vfTrip"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:gravity="center"
+                android:text="موردی یافت نشد!"
+                android:textColor="@color/colorBlack"
+                android:textSize="@dimen/text_title"/>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical"
+                android:gravity="center">
+
+                <com.wang.avi.AVLoadingIndicatorView
+                    android:layout_width="50dp"
+                    android:layout_height="50dp"
+                    android:layout_gravity="center"
+                    app:indicatorColor="@color/colorPrimaryDark"
+                    app:indicatorName="BallSpinFadeLoaderIndicator" />
+
+                <Button
+                    android:id="@+id/txtCancel"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:paddingRight="20dp"
+                    android:paddingLeft="20dp"
+                    android:background="@drawable/bg_activate_status"
+                    android:gravity="center"
+                    android:layout_marginTop="50dp"
+                    android:text="لغو جست و جو"
+                    android:textColor="@color/colorWhite"
+                    android:textSize="@dimen/text_title" />
+
+            </LinearLayout>
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/recycleTrip"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                tools:listitem="@layout/item_trip" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:gravity="center"
+                android:text="خطایی رخ داده! \n لطفا پس از چند لحظه مجدد تلاش کنید"
+                android:textColor="@color/colorBlack"
+                android:textSize="@dimen/text_title" />
+
+        </ViewFlipper>
+
+    </LinearLayout>
+
+</LinearLayout>

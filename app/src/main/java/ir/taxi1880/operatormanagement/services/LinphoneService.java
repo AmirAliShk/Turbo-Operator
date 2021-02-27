@@ -147,6 +147,9 @@ public class LinphoneService extends Service {
 
                 if (state == Call.State.IncomingReceived || (state == Call.State.IncomingEarlyMedia && mContext.getResources().getBoolean(R.bool.allow_ringing_while_early_media))) {
                     // Brighten screen for at least 10 seconds
+                    android.util.Log.i("TAG", "onCallStateChanged: "+core.getAudioMulticastAddr());
+                    android.util.Log.i("TAG", "onCallStateChanged: "+call.getRemoteAddressAsString()); //"IT1" <sip:401@172.16.2.222>
+                    android.util.Log.i("TAG", "onCallStateChanged: "+call.getRemoteContact()); //<sip:401@172.16.2.222:5060;alias=172.16.2.222~5060~1>
                     if (core.getCallsNb() == 1) {
 
                         requestAudioFocus(STREAM_RING);

@@ -14,6 +14,9 @@ import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.ViewFlipper;
 
+import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.RecyclerView;
+
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -22,9 +25,6 @@ import org.linphone.core.Core;
 import org.linphone.core.CoreListenerStub;
 
 import java.util.ArrayList;
-
-import androidx.fragment.app.Fragment;
-import androidx.recyclerview.widget.RecyclerView;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -47,7 +47,7 @@ import ir.taxi1880.operatormanagement.model.TripModel;
 import ir.taxi1880.operatormanagement.okHttp.RequestHelper;
 import ir.taxi1880.operatormanagement.services.LinphoneService;
 
-public class TripSupportFragment extends Fragment {
+public class SupportDriverTripsFragment extends Fragment {
     Unbinder unbinder;
     ArrayList<TripModel> tripModels;
     TripAdapter tripAdapter;
@@ -132,34 +132,18 @@ public class TripSupportFragment extends Fragment {
         return true;
     }
 
-//  @OnClick(R.id.imgClear)
-//  void onClearPress() {
-//  }
-
     @OnClick(R.id.imgSearchType)
     void onSearchTypePress() {
-        new SearchFilterDialog().show("passenger",searchCase -> {
+        new SearchFilterDialog().show("driver",searchCase -> {
             if (edtSearchTrip == null) return;
             int imageType = R.drawable.ic_call;
             switch (searchCase) {
-                case 1:
-                    imageType = R.drawable.ic_user;
-                    edtSearchTrip.setInputType(InputType.TYPE_CLASS_TEXT);
-                    break;
-                case 2:
+                case 6:
                     imageType = R.drawable.ic_call;
-                    edtSearchTrip.setInputType(InputType.TYPE_CLASS_NUMBER);
-                    break;
-                case 3:
-                    imageType = R.drawable.ic_gps;
                     edtSearchTrip.setInputType(InputType.TYPE_CLASS_TEXT);
                     break;
-                case 4:
+                case 7:
                     imageType = R.drawable.ic_taxi;
-                    edtSearchTrip.setInputType(InputType.TYPE_CLASS_NUMBER);
-                    break;
-                case 5:
-                    imageType = R.drawable.ic_code;
                     edtSearchTrip.setInputType(InputType.TYPE_CLASS_NUMBER);
                     break;
             }
@@ -186,7 +170,7 @@ public class TripSupportFragment extends Fragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_trip_support, container, false);
+        View view = inflater.inflate(R.layout.fragment_support_driver_trip, container, false);
         unbinder = ButterKnife.bind(this, view);
         TypefaceUtil.overrideFonts(view);
         TypefaceUtil.overrideFonts(edtSearchTrip, MyApplication.IraSanSMedume);

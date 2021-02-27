@@ -7,7 +7,9 @@ import android.util.Log;
 import android.view.Gravity;
 import android.view.Window;
 import android.view.WindowManager;
+import android.widget.ViewFlipper;
 
+import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import butterknife.Unbinder;
@@ -27,6 +29,9 @@ public class SearchFilterDialog {
   public interface SearchCaseListener {
     void searchCase(int type);
   }
+
+  @BindView(R.id.vfFilter)
+  ViewFlipper vfFilter;
 
   @OnClick(R.id.llName)
   void onPressName() {
@@ -58,7 +63,19 @@ public class SearchFilterDialog {
     dismiss();
   }
 
-  public void show(SearchCaseListener searchCaseListener) {
+  @OnClick(R.id.llDriverMobile)
+  void onPressDriverCode() {
+    searchCaseListener.searchCase(6);
+    dismiss();
+  }
+
+  @OnClick(R.id.llDriverTaxiCode)
+  void onPressDriverTaxiCode() {
+    searchCaseListener.searchCase(7);
+    dismiss();
+  }
+
+  public void show(String dialogType, SearchCaseListener searchCaseListener) {
     if (MyApplication.currentActivity == null || MyApplication.currentActivity.isFinishing())
       return;
     dialog = new Dialog(MyApplication.currentActivity);
@@ -75,6 +92,14 @@ public class SearchFilterDialog {
     dialog.setCancelable(true);
     KeyBoardHelper.hideKeyboard();
     this.searchCaseListener = searchCaseListener;
+
+    if (dialogType.equals("passenger")){
+      if (vfFilter!=null)
+        vfFilter.setDisplayedChild(0);
+    }else {
+      if (vfFilter!=null)
+        vfFilter.setDisplayedChild(1);
+    }
 
     dialog.show();
 
