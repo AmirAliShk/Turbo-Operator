@@ -23,64 +23,64 @@ import ir.taxi1880.operatormanagement.push.AvaCrashReporter;
 
 public class SupportDialog {
 
-  private static Dialog dialog;
-  Unbinder unbinder;
-  String tellNumber;
+    private static Dialog dialog;
+    Unbinder unbinder;
+    String tellNumber;
 
-  @OnClick(R.id.btnSupport)
-  void onSupport() {
-    Bundle bundle = new Bundle();
-    bundle.putString("tellNumber", tellNumber);
-    dismiss();
-    FragmentHelper.toFragment(MyApplication.currentActivity, new TripSupportFragment()).setArguments(bundle).replace();
-    Log.e("SupportDialog", "onSupport: SupportDialog dismiss");
-  }
-
-  @OnClick(R.id.btnClose)
-  void onClose() {
-    dismiss();
-    Log.e("SupportDialog", "onSupport: SupportDialog dismiss");
-  }
-
-  @BindView(R.id.txtTripStatus)
-  TextView txtTripStatus;
-
-  @BindView(R.id.txtTime)
-  TextView txtTime;
-
-  public void show(String status, int time, String tellNumber) {
-    if (MyApplication.currentActivity == null || MyApplication.currentActivity.isFinishing())
-      return;
-    dialog = new Dialog(MyApplication.currentActivity);
-    dialog.getWindow().requestFeature(Window.FEATURE_NO_TITLE);
-    dialog.getWindow().getAttributes().windowAnimations = R.style.ExpandAnimation;
-    dialog.setContentView(R.layout.dialog_support);
-    TypefaceUtil.overrideFonts(dialog.getWindow().getDecorView());
-    unbinder = ButterKnife.bind(this, dialog.getWindow().getDecorView());
-    dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
-    WindowManager.LayoutParams wlp = dialog.getWindow().getAttributes();
-    wlp.gravity = Gravity.CENTER;
-    wlp.windowAnimations = R.style.ExpandAnimation;
-    dialog.getWindow().setAttributes(wlp);
-    dialog.setCancelable(false);
-
-    txtTime.setText(" " + time + " دقیقه ");
-    txtTripStatus.setText(" " + status + " ");
-    this.tellNumber = tellNumber;
-
-    dialog.show();
-
-  }
-
-  private static void dismiss() {
-    try {
-      if (dialog != null) {
-      //  if (dialog.isShowing())
-          dialog.dismiss();
-      }
-    } catch (Exception e) {
-      AvaCrashReporter.send(e, "SupportDialog class, dismiss method");
+    @OnClick(R.id.btnSupport)
+    void onSupport() {
+        Bundle bundle = new Bundle();
+        bundle.putString("tellNumber", tellNumber);
+        dismiss();
+        FragmentHelper.toFragment(MyApplication.currentActivity, new TripSupportFragment()).setArguments(bundle).replace();
+        Log.e("SupportDialog", "onSupport: SupportDialog dismiss");
     }
-    dialog = null;
-  }
+
+    @OnClick(R.id.btnClose)
+    void onClose() {
+        dismiss();
+        Log.e("SupportDialog", "onSupport: SupportDialog dismiss");
+    }
+
+    @BindView(R.id.txtTripStatus)
+    TextView txtTripStatus;
+
+    @BindView(R.id.txtTime)
+    TextView txtTime;
+
+    public void show(String status, int time, String tellNumber) {
+        if (MyApplication.currentActivity == null || MyApplication.currentActivity.isFinishing())
+            return;
+        dialog = new Dialog(MyApplication.currentActivity);
+        dialog.getWindow().requestFeature(Window.FEATURE_NO_TITLE);
+        dialog.getWindow().getAttributes().windowAnimations = R.style.ExpandAnimation;
+        dialog.setContentView(R.layout.dialog_support);
+        TypefaceUtil.overrideFonts(dialog.getWindow().getDecorView());
+        unbinder = ButterKnife.bind(this, dialog.getWindow().getDecorView());
+        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        WindowManager.LayoutParams wlp = dialog.getWindow().getAttributes();
+        wlp.gravity = Gravity.CENTER;
+        wlp.windowAnimations = R.style.ExpandAnimation;
+        dialog.getWindow().setAttributes(wlp);
+        dialog.setCancelable(false);
+
+        txtTime.setText(" " + time + " دقیقه ");
+        txtTripStatus.setText(" " + status + " ");
+        this.tellNumber = tellNumber;
+
+        dialog.show();
+
+    }
+
+    private static void dismiss() {
+        try {
+            if (dialog != null) {
+                //  if (dialog.isShowing())
+                dialog.dismiss();
+            }
+        } catch (Exception e) {
+            AvaCrashReporter.send(e, "SupportDialog class, dismiss method");
+        }
+        dialog = null;
+    }
 }

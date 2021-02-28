@@ -23,6 +23,7 @@ import ir.taxi1880.operatormanagement.adapter.AllComplaintAdapter;
 import ir.taxi1880.operatormanagement.app.EndPoints;
 import ir.taxi1880.operatormanagement.app.MyApplication;
 import ir.taxi1880.operatormanagement.dataBase.DataBase;
+import ir.taxi1880.operatormanagement.helper.TypefaceUtil;
 import ir.taxi1880.operatormanagement.model.AllComplaintModel;
 import ir.taxi1880.operatormanagement.okHttp.RequestHelper;
 
@@ -40,6 +41,7 @@ public class AllComplaintFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_all_complaint, container, false);
         unbinder = ButterKnife.bind(this, view);
+        TypefaceUtil.overrideFonts(view, MyApplication.IraSanSMedume);
 
         getListen();
 

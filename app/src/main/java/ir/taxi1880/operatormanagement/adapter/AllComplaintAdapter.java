@@ -18,6 +18,7 @@ import ir.taxi1880.operatormanagement.R;
 import ir.taxi1880.operatormanagement.app.EndPoints;
 import ir.taxi1880.operatormanagement.app.MyApplication;
 import ir.taxi1880.operatormanagement.dataBase.DataBase;
+import ir.taxi1880.operatormanagement.helper.TypefaceUtil;
 import ir.taxi1880.operatormanagement.model.AllComplaintModel;
 import ir.taxi1880.operatormanagement.okHttp.RequestHelper;
 
@@ -53,6 +54,7 @@ public class AllComplaintAdapter extends BaseAdapter {
     public View getView(int i, View view, ViewGroup viewGroup) {
         if (view == null) {
             view = LayoutInflater.from(mContext).inflate(R.layout.item_all_complaint, viewGroup, false);
+            TypefaceUtil.overrideFonts(view, MyApplication.IraSanSMedume);
         }
 
         currentAllComplaintModel = (AllComplaintModel) getItem(i);

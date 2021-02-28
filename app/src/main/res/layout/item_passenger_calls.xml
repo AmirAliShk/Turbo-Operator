@@ -6,116 +6,110 @@
     android:layoutDirection="ltr"
     android:orientation="vertical">
 
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginLeft="15dp"
+        android:layout_marginTop="15dp"
+        android:layout_marginRight="15dp"
+        android:layout_marginBottom="5dp"
+        android:background="@drawable/bg_white_edge"
+        android:orientation="vertical"
+        android:padding="10dp">
+
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_gravity="center"
-            android:minWidth="330dp"
-            android:orientation="vertical"
-            android:padding="20dp">
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="10dp"
+            android:layoutDirection="rtl">
 
-            <LinearLayout
-                android:layout_width="match_parent"
+            <ImageView
+                android:layout_width="40dp"
+                android:layout_height="match_parent"
+                android:src="@drawable/ic_date" />
+
+            <TextView
+                android:id="@+id/txtDate"
+                style="@style/tripItemValue"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="15dp"
-                android:layoutDirection="rtl">
+                android:layout_weight="1"
+                android:text="99/12/5"
+                android:textSize="18sp" />
 
-                <ImageView
-                    android:layout_width="40dp"
-                    android:layout_height="match_parent"
-                    android:src="@drawable/ic_date" />
+            <ImageView
+                android:layout_width="40dp"
+                android:layout_height="match_parent"
+                android:src="@drawable/ic_timer" />
 
-                <TextView
-                    android:id="@+id/txtDate"
-                    style="@style/tripItemValue"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:text="99/12/5"
-                    android:textSize="18sp" />
-
-                <ImageView
-                    android:layout_width="40dp"
-                    android:layout_height="match_parent"
-                    android:src="@drawable/ic_timer" />
-
-                <TextView
-                    android:id="@+id/txtTime"
-                    style="@style/tripItemValue"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:text="08:12"
-                    android:textSize="18sp" />
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
+            <TextView
+                android:id="@+id/txtTime"
+                style="@style/tripItemValue"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:gravity="center"
-                android:orientation="horizontal">
-
-                <ViewFlipper
-                    android:id="@+id/vfPlayPause"
-                    android:layout_width="40dp"
-                    android:layout_height="40dp"
-                    android:layout_below="@id/skbTimer"
-                    android:layout_centerHorizontal="true"
-                    android:layout_gravity="center"
-                    android:layout_margin="5dp"
-                    android:elevation="3dp"
-                    android:padding="7dp">
-
-                    <ImageView
-                        android:id="@+id/imgPlay"
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:layout_gravity="center"
-                        android:src="@drawable/ic_play" />
-
-                    <ImageView
-                        android:id="@+id/imgPause"
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:layout_gravity="center"
-                        android:src="@drawable/ic_pause" />
-
-                </ViewFlipper>
-
-                <com.warkiz.widget.IndicatorSeekBar
-                    android:id="@+id/skbTimer"
-                    android:layout_width="0dp"
-                    android:layout_height="match_parent"
-                    android:layout_centerInParent="true"
-                    android:layout_gravity="center"
-                    android:layout_weight="1"
-                    app:isb_seek_smoothly="true"
-                    app:isb_show_indicator="none"
-                    app:isb_thumb_color="@color/colorPrimaryDark"
-                    app:isb_thumb_size="15dp"
-                    app:isb_track_background_color="@color/grayLight"
-                    app:isb_track_background_size="3dp"
-                    app:isb_track_progress_color="@color/colorPrimaryDark"
-                    app:isb_track_progress_size="5dp" />
-
-                <TextView
-                    android:id="@+id/txtTimeRemaining"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="00:00"
-                    android:textColor="@color/colorBlack" />
-            </LinearLayout>
-
+                android:layout_weight="1"
+                android:text="08:12"
+                android:textSize="18sp" />
         </LinearLayout>
 
-        <TextView
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_gravity="center"
             android:gravity="center"
-            android:text="متاسفیم خطایی در هنگام دانلود رخ داد لطفا پس از چند دقیقه مجدد تلاش فرمایید"
-            android:textAppearance="?android:attr/textAppearanceMedium"
-            android:textColor="@color/colorBlack"
-            android:textStyle="bold" />
+            android:layout_marginRight="9dp"
+            android:orientation="horizontal">
+
+            <ViewFlipper
+                android:id="@+id/vfPlayPause"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:layout_below="@id/skbTimer"
+                android:layout_centerHorizontal="true"
+                android:layout_gravity="center"
+                android:elevation="3dp"
+                android:padding="10dp">
+
+                <ImageView
+                    android:id="@+id/imgPlay"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="center"
+                    android:src="@drawable/ic_play" />
+
+                <ImageView
+                    android:id="@+id/imgPause"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="center"
+                    android:src="@drawable/ic_pause" />
+
+            </ViewFlipper>
+
+            <com.warkiz.widget.IndicatorSeekBar
+                android:id="@+id/skbTimer"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_centerInParent="true"
+                android:layout_gravity="center"
+                android:layout_weight="1"
+                app:isb_seek_smoothly="true"
+                app:isb_show_indicator="none"
+                app:isb_thumb_color="@color/colorPrimaryDark"
+                app:isb_thumb_size="15dp"
+                app:isb_track_background_color="@color/grayLight"
+                app:isb_track_background_size="3dp"
+                app:isb_track_progress_color="@color/colorPrimaryDark"
+                app:isb_track_progress_size="5dp" />
+
+            <TextView
+                android:id="@+id/txtTimeRemaining"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="00:00"
+                android:textColor="@color/colorBlack" />
+        </LinearLayout>
+
+    </LinearLayout>
 
 </LinearLayout>

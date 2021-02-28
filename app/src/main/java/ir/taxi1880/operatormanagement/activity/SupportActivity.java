@@ -44,6 +44,7 @@ import ir.taxi1880.operatormanagement.app.MyApplication;
 import ir.taxi1880.operatormanagement.dialog.CallDialog;
 import ir.taxi1880.operatormanagement.dialog.GeneralDialog;
 import ir.taxi1880.operatormanagement.dialog.LoadingDialog;
+import ir.taxi1880.operatormanagement.fragment.CheckVerificationFragment;
 import ir.taxi1880.operatormanagement.fragment.MessageFragment;
 import ir.taxi1880.operatormanagement.fragment.NotificationFragment;
 import ir.taxi1880.operatormanagement.fragment.SupportDriverTripsFragment;
@@ -224,7 +225,7 @@ public class SupportActivity extends AppCompatActivity {
         }
         MyApplication.configureAccount();
         unbinder = ButterKnife.bind(this, view);
-        TypefaceUtil.overrideFonts(view);
+        TypefaceUtil.overrideFonts(view, MyApplication.IraSanSMedume);
         mRipplePulseLayout = findViewById(R.id.layout_ripplepulse);
 
         supportViewPagerAdapter = new SupportViewPagerAdapter(this);
@@ -239,15 +240,17 @@ public class SupportActivity extends AppCompatActivity {
             }
         }).attach();
 
+        tbLayout.setSelectedTabIndicatorColor(Color.parseColor("#FF0000"));
+        tbLayout.setTabTextColors(Color.parseColor("#868a99"), Color.parseColor("#ff5e5b"));
+
         if (MyApplication.prefManager.getActivateStatus()) {
             btnActivate.setBackgroundResource(R.drawable.bg_green_edge);
             btnDeActivate.setBackgroundColor(Color.parseColor("#00FFB2B2"));
-            btnDeActivate.setTextColor(Color.parseColor("#ffffff"));
         } else {
             btnDeActivate.setBackgroundResource(R.drawable.bg_pink_edge);
             btnActivate.setBackgroundColor(Color.parseColor("#00FFB2B2"));
-            btnDeActivate.setTextColor(Color.parseColor("#ffffff"));
         }
+        btnDeActivate.setTextColor(Color.parseColor("#ffffff"));
 
     }
 

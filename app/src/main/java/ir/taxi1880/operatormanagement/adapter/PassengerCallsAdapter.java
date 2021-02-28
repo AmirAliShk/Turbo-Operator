@@ -10,6 +10,7 @@ import android.widget.TextView;
 import java.util.ArrayList;
 
 import ir.taxi1880.operatormanagement.R;
+import ir.taxi1880.operatormanagement.helper.TypefaceUtil;
 import ir.taxi1880.operatormanagement.model.AllComplaintModel;
 import ir.taxi1880.operatormanagement.model.PassengerCallsModel;
 
@@ -42,6 +43,7 @@ public class PassengerCallsAdapter extends BaseAdapter {
     public View getView(int i, View view, ViewGroup viewGroup) {
         if (view == null) {
             view = LayoutInflater.from(mContext).inflate(R.layout.item_passenger_calls, viewGroup, false);
+            TypefaceUtil.overrideFonts(view);
         }
 
         PassengerCallsModel passengerCallsModels = (PassengerCallsModel) getItem(i);
