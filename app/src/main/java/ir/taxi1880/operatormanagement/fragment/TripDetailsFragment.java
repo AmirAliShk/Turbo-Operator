@@ -223,7 +223,7 @@ public class TripDetailsFragment extends Fragment {
     void onError() {
         int cityId = new DataBase(MyApplication.context).getCityCode(cityName);
         new ErrorRegistrationDialog()
-                .show(serviceId, passengerPhone, passengerAddress, passengerName, voipId, cityId, stationCode, userId, callTime, callDate);
+                .show(serviceId, passengerPhone, passengerAddress, passengerName, voipId, cityId, stationCode, userId, callTime, callDate); // TODO user id is true???callTime?? callDate??
     }
 
     @OnClick(R.id.btnComplaintRegistration)

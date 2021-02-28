@@ -581,9 +581,9 @@ public class DeterminationPageFragment extends Fragment {
                 .addParam("customerName", StringHelper.toEnglishDigits(dataBase.getTopAddress().getCustomerName()))
                 .addParam("voipId", StringHelper.toEnglishDigits(dataBase.getTopAddress().getVoipId()))
                 .addParam("tripId", StringHelper.toEnglishDigits(dataBase.getTopAddress().getId() + ""))
-                .addParam("conTime", StringHelper.toEnglishDigits(dataBase.getTopAddress().getId() + ""))
-                .addParam("conDate", StringHelper.toEnglishDigits(dataBase.getTopAddress().getId() + ""))
-                .addParam("userCodeContact", StringHelper.toEnglishDigits(dataBase.getTopAddress().getId() + ""))
+                .addParam("conTime", StringHelper.toEnglishDigits(dataBase.getTopAddress().getSaveDate() + ""))//TODO
+                .addParam("conDate", StringHelper.toEnglishDigits(dataBase.getTopAddress().getSaveDate() + ""))//TODO
+                .addParam("userCodeContact", StringHelper.toEnglishDigits(dataBase.getTopAddress().getOperatorId() + ""))
                 .addParam("cityCode", StringHelper.toEnglishDigits(dataBase.getTopAddress().getCity() + ""))
                 .addParam("stationCode", StringHelper.toEnglishDigits(dataBase.getTopAddress().getOriginStation() + ""))
                 .listener(setMistake)
