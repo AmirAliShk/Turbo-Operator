@@ -24,6 +24,7 @@ import butterknife.Unbinder;
 import ir.taxi1880.operatormanagement.R;
 import ir.taxi1880.operatormanagement.app.EndPoints;
 import ir.taxi1880.operatormanagement.app.MyApplication;
+import ir.taxi1880.operatormanagement.dataBase.DataBase;
 import ir.taxi1880.operatormanagement.dialog.ComplaintRegistrationDialog;
 import ir.taxi1880.operatormanagement.dialog.DriverLockDialog;
 import ir.taxi1880.operatormanagement.dialog.ErrorAddressDialog;
@@ -53,6 +54,11 @@ public class TripDetailsFragment extends Fragment {
     String lastPositionDate = "";
     String carMobile;
     String driverMobile;
+    String stationCode;
+    int userId;
+    String callDate;
+    String callTime;
+    String cityName;
 
     @OnClick(R.id.imgBack)
     void onBackPress() {
@@ -215,8 +221,9 @@ public class TripDetailsFragment extends Fragment {
 
     @OnClick(R.id.btnErrorRegistration)
     void onError() {
+        int cityId = new DataBase(MyApplication.context).getCityCode(cityName);
         new ErrorRegistrationDialog()
-                .show(serviceId, passengerPhone, passengerAddress, passengerName, voipId);
+                .show(serviceId, passengerPhone, passengerAddress, passengerName, voipId, cityId, stationCode, userId, callTime, callDate);
     }
 
     @OnClick(R.id.btnComplaintRegistration)
@@ -276,17 +283,17 @@ public class TripDetailsFragment extends Fragment {
                     if (success) {
                         serviceId = data.getString("serviceId");
                         int status = data.getInt("Status");
-                        String callDate = data.getString("callDate");
-                        String callTime = data.getString("callTime");
+                        callDate = data.getString("callDate");
+                        callTime = data.getString("callTime");
                         String sendDate = data.getString("SendDate");
                         String sendTime = data.getString("SendTime");
-                        String stationCode = data.getString("stationCode");
+                        stationCode = data.getString("stationCode");
                         String price = data.getString("Price");
                         String finishdate = data.getString("Finishdate");
                         String finishTime = data.getString("FinishTime");
                         taxiCode = data.getString("taxicode");
                         String driverId = data.getString("driverId");
-                        int userId = data.getInt("UserId");
+                        userId = data.getInt("UserId");
                         String perDiscount = data.getString("PerDiscount");
                         String discountAmount = data.getString("discountAmount");
                         String rewardCode = data.getString("RewardCode");
@@ -295,7 +302,7 @@ public class TripDetailsFragment extends Fragment {
                         passengerPhone = data.getString("customerTel");
                         customerMobile = data.getString("customerMobile").trim();
                         passengerAddress = data.getString("customerAddress");
-                        String cityName = data.getString("cityName");
+                        cityName = data.getString("cityName");
                         String carType = data.getString("CarType");
                         String plak = data.getString("plak");
                         carMobile = data.getString("carMobile").startsWith("0") ? data.getString("carMobile").substring(1) : data.getString("carMobile");

@@ -29,7 +29,8 @@ public class ErrorRegistrationDialog {
     static Dialog dialog;
     ViewFlipper vfLoader;
 
-    public void show(String ServiceId, String phone, String address, String customerName, String voipId) {
+    public void show(String ServiceId, String phone, String address, String customerName, String voipId,
+                     int cityCode, String stationCode, int userCodeContact, String conTime, String conDate) {
         if (MyApplication.currentActivity == null || MyApplication.currentActivity.isFinishing())
             return;
         dialog = new Dialog(MyApplication.currentActivity);
@@ -60,14 +61,15 @@ public class ErrorRegistrationDialog {
                 return;
             }
 
-            setMistake(ServiceId, phone, address, customerName, voipId, description);
+            setMistake(ServiceId, phone, address, customerName, voipId, description, cityCode, stationCode, userCodeContact, conTime, conDate);
             dismiss();
         });
 
         dialog.show();
     }
 
-    private void setMistake(String ServiceId, String phone, String address, String customerName, String voipId, String desc) {
+    private void setMistake(String ServiceId, String phone, String address, String customerName, String voipId, String desc,
+                            int cityCode, String stationCode, int userCodeContact, String conTime, String conDate) {
         if (vfLoader != null) {
             vfLoader.setDisplayedChild(1);
         }
@@ -79,6 +81,11 @@ public class ErrorRegistrationDialog {
                 .addParam("customerName", customerName)
                 .addParam("voipId", voipId)
                 .addParam("description", desc)
+                .addParam("conTime", conTime)
+                .addParam("conDate", conDate)
+                .addParam("userCodeContact", userCodeContact)
+                .addParam("cityCode", cityCode)
+                .addParam("stationCode", stationCode)
                 .listener(onSetMistake)
                 .post();
     }

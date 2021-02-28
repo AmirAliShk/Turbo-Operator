@@ -39,7 +39,7 @@ public class SaveResultDialog {
         dialog.getWindow().getAttributes().windowAnimations = R.style.ExpandAnimation;
         dialog.setContentView(R.layout.dialog_save_result);
         unbinder = ButterKnife.bind(this, dialog.getWindow().getDecorView());
-        TypefaceUtil.overrideFonts(dialog.getWindow().getDecorView());
+        TypefaceUtil.overrideFonts(dialog.getWindow().getDecorView(), MyApplication.IraSanSMedume);
         dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         WindowManager.LayoutParams wlp = dialog.getWindow().getAttributes();
         wlp.windowAnimations = R.style.ExpandAnimation;

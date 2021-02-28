@@ -46,9 +46,9 @@ public class DataBase extends SQLiteOpenHelper {
     private static String COLUMN_COMPLAINT_DATE = "complaintDate";
     private static String COLUMN_COMPLAINT_TIME = "complaintTime";
     private static String COLUMN_COMPLAINT_DESCRIPTION = "complaintDescription";
-//    private static String COLUMN_COMPLAINT_CITY = "complaintCity";
+    //    private static String COLUMN_COMPLAINT_CITY = "complaintCity";
     private static String COLUMN_COMPLAINT_ADDRESS = "complaintAddress";
-//    private static String COLUMN_COMPLAINT_STATION_CODE = "complaintStationCode";
+    //    private static String COLUMN_COMPLAINT_STATION_CODE = "complaintStationCode";
     private static String COLUMN_COMPLAINT_PASSENGER_VOICE = "complaintPassengerVoice";
     private static String COLUMN_COMPLAINT_SERVICE_CODE = "complaintServiceCode";
     private static String COLUMN_COMPLAINT_USER_CODE = "complaintUserCode";
@@ -260,19 +260,18 @@ public class DataBase extends SQLiteOpenHelper {
         }
     }
 
-    public CityModel getCityName(int id) {
+    public int getCityCode(String name) {
         SQLiteDatabase sqLiteDatabase = this.getReadableDatabase();
-        @SuppressLint("Recycle") Cursor res = sqLiteDatabase.rawQuery("select * from " + CITY_TABLE + " where " + COLUMN_CITY_ID + " = " + id, null);
+        String query = "SELECT " + COLUMN_CITY + " FROM " + CITY_TABLE + " WHERE " + COLUMN_CITY_NAME + "=" + name;
+        //select cityCode from city where cityName=name
+        @SuppressLint("Recycle") Cursor res = sqLiteDatabase.rawQuery(query, null);
 
-        if (res.getCount() == 0) return null;
+        if (res.getCount() == 0) {
+            return 0;
+        }
 
         res.moveToFirst();
-        CityModel model = new CityModel();
-        model.setId(res.getInt(res.getColumnIndex(COLUMN_CITY_ID)));
-        model.setCity(res.getString(res.getColumnIndex(COLUMN_CITY_NAME)));
-        model.setCityLatin(res.getString(res.getColumnIndex(COLUMN_CITY_L_NAME)));
-
-        return model;
+        return res.getInt(res.getColumnIndex(COLUMN_CITY));
     }
 
     public String getCityName2(int id) {
@@ -301,26 +300,26 @@ public class DataBase extends SQLiteOpenHelper {
 
     public void createComplaintTable(SQLiteDatabase database) {
         database.execSQL("CREATE TABLE " + COMPLAINT_TABLE +
-                "(" + COLUMN_COMPLAINT_ID + " INTEGER PRIMARY KEY," +
-                COLUMN_COMPLAINT_DATE + " TEXT," +
-                COLUMN_COMPLAINT_TIME + "TEXT" +
-                COLUMN_COMPLAINT_DESCRIPTION + " TEXT," +
+                        "(" + COLUMN_COMPLAINT_ID + " INTEGER PRIMARY KEY," +
+                        COLUMN_COMPLAINT_DATE + " TEXT," +
+                        COLUMN_COMPLAINT_TIME + "TEXT" +
+                        COLUMN_COMPLAINT_DESCRIPTION + " TEXT," +
 //                COLUMN_COMPLAINT_CITY + " TEXT," +
-                COLUMN_COMPLAINT_ADDRESS + " TEXT," +
-                COLUMN_COMPLAINT_SERVICE_CODE + " INTEGER," +
-                COLUMN_COMPLAINT_USER_CODE + " INTEGER," +
-                COLUMN_COMPLAINT_IS_CHECK + " BOOLEAN," + //TODO VARIABLE
-                COLUMN_COMPLAINT_TELL + " TEXT," +
-                COLUMN_COMPLAINT_RESULT + " TEXT," +
-                COLUMN_COMPLAINT_USER_CODE_CONTACT + " TEXT," +
-                COLUMN_COMPLAINT_TYPE_RESULT + " TEXT," +
-                COLUMN_COMPLAINT_CUSTOMER_NAME + " TEXT," +
-                COLUMN_COMPLAINT_CON_DATE + " TEXT," +
-                COLUMN_COMPLAINT_CON_TIME + " TEXT," +
-                COLUMN_COMPLAINT_SEND_TIME + " TEXT," +
-                COLUMN_COMPLAINT_INSPECTOR_USER + " TEXT," +
+                        COLUMN_COMPLAINT_ADDRESS + " TEXT," +
+                        COLUMN_COMPLAINT_SERVICE_CODE + " INTEGER," +
+                        COLUMN_COMPLAINT_USER_CODE + " INTEGER," +
+                        COLUMN_COMPLAINT_IS_CHECK + " BOOLEAN," + //TODO VARIABLE
+                        COLUMN_COMPLAINT_TELL + " TEXT," +
+                        COLUMN_COMPLAINT_RESULT + " TEXT," +
+                        COLUMN_COMPLAINT_USER_CODE_CONTACT + " TEXT," +
+                        COLUMN_COMPLAINT_TYPE_RESULT + " TEXT," +
+                        COLUMN_COMPLAINT_CUSTOMER_NAME + " TEXT," +
+                        COLUMN_COMPLAINT_CON_DATE + " TEXT," +
+                        COLUMN_COMPLAINT_CON_TIME + " TEXT," +
+                        COLUMN_COMPLAINT_SEND_TIME + " TEXT," +
+                        COLUMN_COMPLAINT_INSPECTOR_USER + " TEXT," +
 //                COLUMN_COMPLAINT_STATION_CODE + " INTEGER," +
-                COLUMN_COMPLAINT_PASSENGER_VOICE + " TEXT)"
+                        COLUMN_COMPLAINT_PASSENGER_VOICE + " TEXT)"
         );
     }
 

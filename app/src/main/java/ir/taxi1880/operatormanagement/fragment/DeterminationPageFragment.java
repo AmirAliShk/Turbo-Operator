@@ -20,6 +20,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -236,6 +237,9 @@ public class DeterminationPageFragment extends Fragment {
 
         changeStatus(MyApplication.prefManager.isStartGettingAddress());
 
+        Date date=new Date();
+        Log.i(TAG, "onCreateView: "+date.toString() );
+
         for (int numberCount = 0; numberCount < 10; numberCount++) {
             View grid = gridNumber.getChildAt(numberCount);
             int count = numberCount;
@@ -279,99 +283,95 @@ public class DeterminationPageFragment extends Fragment {
     RequestHelper.Callback getAddressList = new RequestHelper.Callback() {
         @Override
         public void onResponse(Runnable reCall, Object... args) {
-            MyApplication.handler.post(new Runnable() {
-                @SuppressLint("SetTextI18n")
-                @Override
-                public void run() {
-                    try {
-                        Log.i(TAG, "onResponse: " + args[0].toString());
-                        JSONObject obj = new JSONObject(args[0].toString());
-                        boolean success = obj.getBoolean("success");
-                        String message = obj.getString("message");
-                        JSONArray dataArr = obj.getJSONArray("data");
+            MyApplication.handler.post(() -> {
+                try {
+                    Log.i(TAG, "onResponse: " + args[0].toString());
+                    JSONObject obj = new JSONObject(args[0].toString());
+                    boolean success = obj.getBoolean("success");
+                    String message = obj.getString("message");
+                    JSONArray dataArr = obj.getJSONArray("data");
 
-                        if (success) {
+                    if (success) {
 
-                            if (pressedRefresh) {
-                                if (imgRefresh != null)
-                                    imgRefresh.clearAnimation();
-                                dataBase.deleteAllData();
-                            }
+                        if (pressedRefresh) {
+                            if (imgRefresh != null)
+                                imgRefresh.clearAnimation();
+                            dataBase.deleteAllData();
+                        }
 
-                            if (dataArr.length() == 0) {
-                                isFinished = true;
-                                if (dataBase.getRemainingAddress() > 0) {
-                                    dataBase.deleteRemainingRecord(dataBase.getTopAddress().getId());
-                                    setAddress();
-                                } else {
-                                    dataBase.deleteAllData();
-                                    if (txtAddress == null) return;
-                                    if (!MyApplication.prefManager.isStartGettingAddress()) {
-                                        txtAddress.setText("برای مشاهده آدرس ها فعال شوید");
-                                    } else {
-                                        txtAddress.setText("آدرسی موجود نیست...");
-                                    }
-                                    txtRemainingAddress.setText("");
-                                }
+                        if (dataArr.length() == 0) {
+                            isFinished = true;
+                            if (dataBase.getRemainingAddress() > 0) {
+                                dataBase.deleteRemainingRecord(dataBase.getTopAddress().getId());
+                                setAddress();
                             } else {
-                                if (dataBase.getRemainingAddress() > 1)
-                                    dataBase.deleteRemainingRecord(dataBase.getTopAddress().getId());
-                                for (int i = 0; i < dataArr.length(); i++) {
-                                    try {
-                                        JSONObject dataObj = dataArr.getJSONObject(i);
-                                        DBTripModel DBTripModel = new DBTripModel();
-                                        DBTripModel.setId(dataObj.getInt("Id")); // the unique id for each trip
-                                        DBTripModel.setOriginStation(dataObj.getInt("OriginStation"));
-                                        String content = dataObj.getString("Content");
-                                        JSONObject contentObj = new JSONObject(content);
-                                        DBTripModel.setOperatorId(contentObj.getInt("userId")); // ID of the person who registered the service
-                                        DBTripModel.setCity(contentObj.getInt("cityCode"));
-                                        DBTripModel.setCustomerName(contentObj.getString("callerName"));
-                                        DBTripModel.setTell(contentObj.getString("phoneNumber"));
-                                        DBTripModel.setVoipId(contentObj.getString("voipId"));
-                                        DBTripModel.setOriginText(contentObj.getString("address"));
-                                        DBTripModel.setSaveDate(dataObj.getString("SaveDate"));
-                                        dataBase.insertTripRow(DBTripModel);
-                                    } catch (Exception e) {
-                                        e.printStackTrace();
-                                    }
+                                dataBase.deleteAllData();
+                                if (txtAddress == null) return;
+                                if (!MyApplication.prefManager.isStartGettingAddress()) {
+                                    txtAddress.setText("برای مشاهده آدرس ها فعال شوید");
+                                } else {
+                                    txtAddress.setText("آدرسی موجود نیست...");
                                 }
-
-                                if (txtRemainingAddress != null)
-                                    txtRemainingAddress.setText("" + dataBase.getRemainingAddress());
-
-                                // I can't put setAddress() function here! because I want set address just when the user is enable and is disable and press refresh.
-                                // Do you think it never crossed my mind?! ;)
-
-                                if (isEnable) {
-                                    setAddress();
-                                    isEnable = false;
-                                }
-
-                                if (isFinished) {
-                                    setAddress();
-                                    isFinished = false;
-                                }
-
-                                if (pressedRefresh) {
-                                    setAddress();
-                                    pressedRefresh = false;
-                                }
-
+                                txtRemainingAddress.setText("");
                             }
                         } else {
-                            if (isFragmentOpen) {
-                                new GeneralDialog()
-                                        .title("خطا")
-                                        .message(message)
-                                        .cancelable(false)
-                                        .firstButton("باشه", null)
-                                        .show();
+                            if (dataBase.getRemainingAddress() > 1)
+                                dataBase.deleteRemainingRecord(dataBase.getTopAddress().getId());
+                            for (int i = 0; i < dataArr.length(); i++) {
+                                try {
+                                    JSONObject dataObj = dataArr.getJSONObject(i);
+                                    DBTripModel DBTripModel = new DBTripModel();
+                                    DBTripModel.setId(dataObj.getInt("Id")); // the unique id for each trip
+                                    DBTripModel.setOriginStation(dataObj.getInt("OriginStation"));
+                                    String content = dataObj.getString("Content");
+                                    JSONObject contentObj = new JSONObject(content);
+                                    DBTripModel.setOperatorId(contentObj.getInt("userId")); // ID of the person who registered the service
+                                    DBTripModel.setCity(contentObj.getInt("cityCode"));
+                                    DBTripModel.setCustomerName(contentObj.getString("callerName"));
+                                    DBTripModel.setTell(contentObj.getString("phoneNumber"));
+                                    DBTripModel.setVoipId(contentObj.getString("voipId"));
+                                    DBTripModel.setOriginText(contentObj.getString("address"));
+                                    DBTripModel.setSaveDate(dataObj.getString("SaveDate"));//date and time of service registered by Tehran timeZone,
+                                    dataBase.insertTripRow(DBTripModel);
+                                } catch (Exception e) {
+                                    e.printStackTrace();
+                                }
                             }
+
+                            if (txtRemainingAddress != null)
+                                txtRemainingAddress.setText("" + dataBase.getRemainingAddress());
+
+                            // I can't put setAddress() function here! because I want set address just when the user is enable and is disable and press refresh.
+                            // Do you think it never crossed my mind?! ;)
+
+                            if (isEnable) {
+                                setAddress();
+                                isEnable = false;
+                            }
+
+                            if (isFinished) {
+                                setAddress();
+                                isFinished = false;
+                            }
+
+                            if (pressedRefresh) {
+                                setAddress();
+                                pressedRefresh = false;
+                            }
+
                         }
-                    } catch (JSONException e) {
-                        e.printStackTrace();
+                    } else {
+                        if (isFragmentOpen) {
+                            new GeneralDialog()
+                                    .title("خطا")
+                                    .message(message)
+                                    .cancelable(false)
+                                    .firstButton("باشه", null)
+                                    .show();
+                        }
                     }
+                } catch (JSONException e) {
+                    e.printStackTrace();
                 }
             });
         }
@@ -581,6 +581,11 @@ public class DeterminationPageFragment extends Fragment {
                 .addParam("customerName", StringHelper.toEnglishDigits(dataBase.getTopAddress().getCustomerName()))
                 .addParam("voipId", StringHelper.toEnglishDigits(dataBase.getTopAddress().getVoipId()))
                 .addParam("tripId", StringHelper.toEnglishDigits(dataBase.getTopAddress().getId() + ""))
+                .addParam("conTime", StringHelper.toEnglishDigits(dataBase.getTopAddress().getId() + ""))
+                .addParam("conDate", StringHelper.toEnglishDigits(dataBase.getTopAddress().getId() + ""))
+                .addParam("userCodeContact", StringHelper.toEnglishDigits(dataBase.getTopAddress().getId() + ""))
+                .addParam("cityCode", StringHelper.toEnglishDigits(dataBase.getTopAddress().getCity() + ""))
+                .addParam("stationCode", StringHelper.toEnglishDigits(dataBase.getTopAddress().getOriginStation() + ""))
                 .listener(setMistake)
                 .post();
 
