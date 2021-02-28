@@ -51,7 +51,7 @@ public class SupportDriverTripsFragment extends Fragment {
     Unbinder unbinder;
     ArrayList<TripModel> tripModels;
     TripAdapter tripAdapter;
-    int searchCase = 2;
+    int searchCase = 6;
     int extendedTime = 1;
     Core core;
     String searchText;
@@ -81,7 +81,7 @@ public class SupportDriverTripsFragment extends Fragment {
     TextView txtCancel;
 
     @OnClick(R.id.txtCancel)
-    void txtCancel()  {
+    void txtCancel() {
         if (vfTrip != null) {
             vfTrip.setDisplayedChild(3);
         }
@@ -134,15 +134,15 @@ public class SupportDriverTripsFragment extends Fragment {
 
     @OnClick(R.id.imgSearchType)
     void onSearchTypePress() {
-        new SearchFilterDialog().show("driver",searchCase -> {
+        new SearchFilterDialog().show("driver", searchCase -> {
             if (edtSearchTrip == null) return;
             int imageType = R.drawable.ic_call;
             switch (searchCase) {
-                case 6:
+                case 6: // driver mobile
                     imageType = R.drawable.ic_call;
-                    edtSearchTrip.setInputType(InputType.TYPE_CLASS_TEXT);
+                    edtSearchTrip.setInputType(InputType.TYPE_CLASS_NUMBER);
                     break;
-                case 7:
+                case 7: // taxi code
                     imageType = R.drawable.ic_taxi;
                     edtSearchTrip.setInputType(InputType.TYPE_CLASS_NUMBER);
                     break;
@@ -220,10 +220,11 @@ public class SupportDriverTripsFragment extends Fragment {
 
         switch (searchCase) {
 
-            case 0:
+            case 6: // driver mobile
                 RequestHelper.builder(EndPoints.SEARCH_SERVICE)
                         .ignore422Error(true)
                         .addParam("phonenumber", 0)
+                        .addParam("driverPhone", searchText)
                         .addParam("name", 0)
                         .addParam("address", 0)
                         .addParam("taxiCode", 0)
@@ -233,49 +234,11 @@ public class SupportDriverTripsFragment extends Fragment {
                         .post();
                 break;
 
-            case 1:
+            case 7: // taxi code
                 RequestHelper.builder(EndPoints.SEARCH_SERVICE)
                         .ignore422Error(true)
                         .addParam("phonenumber", 0)
-                        .addParam("name", searchText)
-                        .addParam("address", 0)
-                        .addParam("taxiCode", 0)
-                        .addParam("stationCode", 0)
-                        .addParam("searchInterval", extendedTime)
-                        .listener(onGetTripList)
-                        .post();
-                break;
-
-            case 2:
-                RequestHelper.builder(EndPoints.SEARCH_SERVICE)
-                        .ignore422Error(true)
-                        .addParam("phonenumber", searchText)
-                        .addParam("name", 0)
-                        .addParam("address", 0)
-                        .addParam("taxiCode", 0)
-                        .addParam("stationCode", 0)
-                        .addParam("searchInterval", extendedTime)
-                        .listener(onGetTripList)
-                        .post();
-                break;
-
-            case 3:
-                RequestHelper.builder(EndPoints.SEARCH_SERVICE)
-                        .ignore422Error(true)
-                        .addParam("phonenumber", 0)
-                        .addParam("name", 0)
-                        .addParam("address", searchText)
-                        .addParam("taxiCode", 0)
-                        .addParam("stationCode", 0)
-                        .addParam("searchInterval", extendedTime)
-                        .listener(onGetTripList)
-                        .post();
-                break;
-
-            case 4:
-                RequestHelper.builder(EndPoints.SEARCH_SERVICE)
-                        .ignore422Error(true)
-                        .addParam("phonenumber", 0)
+                        .addParam("driverPhone", 0)
                         .addParam("name", 0)
                         .addParam("address", 0)
                         .addParam("taxiCode", searchText)
@@ -285,18 +248,6 @@ public class SupportDriverTripsFragment extends Fragment {
                         .post();
                 break;
 
-            case 5:
-                RequestHelper.builder(EndPoints.SEARCH_SERVICE)
-                        .ignore422Error(true)
-                        .addParam("phonenumber", 0)
-                        .addParam("name", 0)
-                        .addParam("address", 0)
-                        .addParam("taxiCode", 0)
-                        .addParam("stationCode", searchText)
-                        .addParam("searchInterval", extendedTime)
-                        .listener(onGetTripList)
-                        .post();
-                break;
         }
 
     }
