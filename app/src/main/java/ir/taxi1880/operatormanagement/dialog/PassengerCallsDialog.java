@@ -8,6 +8,9 @@ import android.view.Gravity;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.ListView;
+import android.widget.ProgressBar;
+import android.widget.TextView;
+import android.widget.ViewFlipper;
 
 import java.util.ArrayList;
 
@@ -34,6 +37,15 @@ public class PassengerCallsDialog {
     void onClose() {
         dismiss();
     }
+
+    @BindView(R.id.vfDownload)
+    ViewFlipper vfDownload;
+
+    @BindView(R.id.progressDownload)
+    ProgressBar progressDownload;
+
+    @BindView(R.id.textProgress)
+    TextView textProgress;
 
     PassengerCallsAdapter mAdapter;
     ArrayList<PassengerCallsModel> passengerCallsModels;

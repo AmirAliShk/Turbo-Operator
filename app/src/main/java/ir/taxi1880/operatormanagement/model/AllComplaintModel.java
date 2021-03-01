@@ -4,21 +4,36 @@ public class AllComplaintModel {
     private int id;
     private int serviceCode;
     private int userCode;
+    private int city;
+    private int stationCode;
     private String date;
     private String time;
     private String description;
     private String tell;
     private int userCodeContact;
-    private int typeResult;
-    private int inspectorUser;
+    //    private int inspectorUser;
     private String address;
     private String customerName;
     private String conDate;
     private String conTime;
     private String sendTime;
     private String VoipId;
-    private String result;
-    private boolean ischeck;
+
+    public int getCity() {
+        return city;
+    }
+
+    public void setCity(int city) {
+        this.city = city;
+    }
+
+    public int getStationCode() {
+        return stationCode;
+    }
+
+    public void setStationCode(int stationCode) {
+        this.stationCode = stationCode;
+    }
 
     public int getId() {
         return id;
@@ -68,21 +83,13 @@ public class AllComplaintModel {
         this.userCodeContact = userCodeContact;
     }
 
-    public int getTypeResult() {
-        return typeResult;
-    }
-
-    public void setTypeResult(int typeResult) {
-        this.typeResult = typeResult;
-    }
-
-    public int getInspectorUser() {
-        return inspectorUser;
-    }
-
-    public void setInspectorUser(int inspectorUser) {
-        this.inspectorUser = inspectorUser;
-    }
+//    public int getInspectorUser() {
+//        return inspectorUser;
+//    }
+//
+//    public void setInspectorUser(int inspectorUser) {
+//        this.inspectorUser = inspectorUser;
+//    }
 
     public String getAddress() {
         return address;
@@ -130,22 +137,6 @@ public class AllComplaintModel {
 
     public void setVoipId(String voipId) {
         VoipId = voipId;
-    }
-
-    public String getResult() {
-        return result;
-    }
-
-    public void setResult(String result) {
-        this.result = result;
-    }
-
-    public boolean isIscheck() {
-        return ischeck;
-    }
-
-    public void setIscheck(boolean ischeck) {
-        this.ischeck = ischeck;
     }
 
     public String getDate() {

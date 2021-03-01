@@ -74,18 +74,18 @@ public class ErrorRegistrationDialog {
             vfLoader.setDisplayedChild(1);
         }
         LoadingDialog.makeCancelableLoader();
-        RequestHelper.builder(EndPoints.INSERT_MISTAKE)
+        RequestHelper.builder(EndPoints.MISTAKE)
                 .addParam("serviceId", ServiceId)
                 .addParam("phone", phone)
+                .addParam("userCodeContact", userCodeContact)
+                .addParam("cityCode", cityCode)
+                .addParam("stationCode", stationCode)
+                .addParam("conDate", conDate)
+                .addParam("conTime", conTime)
                 .addParam("adrs", address)
                 .addParam("customerName", customerName)
                 .addParam("voipId", voipId)
                 .addParam("description", desc)
-                .addParam("conTime", conTime)
-                .addParam("conDate", conDate)
-                .addParam("userCodeContact", userCodeContact)
-                .addParam("cityCode", cityCode)
-                .addParam("stationCode", stationCode)
                 .listener(onSetMistake)
                 .post();
     }

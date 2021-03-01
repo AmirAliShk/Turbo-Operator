@@ -39,7 +39,8 @@ public class EndPoints {
   public static final String WEBSERVICE_PATH = IP + ":" + APIPort + "/api/operator/v3/";
   public static final String SCORE_WEBSERVICE_PATH = IP + ":" + TRIP_APIPort + "/api/operator/v3/score/";
   public static final String SUPPORT_WEBSERVICE_PATH = IP + ":" + TRIP_APIPort + "/api/operator/v3/support/";
-  public static final String LISTEN_WEBSERVICE_PATH = IP + ":" + TRIP_APIPort + "/api/operator/v3/support/listen";
+  public static final String LISTEN_WEBSERVICE_PATH = IP + ":" + TRIP_APIPort + "/api/operator/v3/support/listen/";
+  public static final String SUPPORT_TRIP_WEBSERVICE_PATH = IP + ":" + TRIP_APIPort + "/api/operator/v3/support/trip/";
   public static final String SHIFT_WEBSERVICE_PATH = IP + ":" + TRIP_APIPort + "/api/operator/v3/shift/";
   public static final String TRIP_WEBSERVICE_PATH = IP + ":" + TRIP_APIPort + "/api/operator/v3/trip/";
   public static final String CALL_VOICE_PATH = IP + ":" + CALL_VOICE_APIPort + "/api/v1/getCallvoice/"; //  http://turbotaxi.ir:1884/api/getCallvoice1604130536.10343290
@@ -71,7 +72,6 @@ public class EndPoints {
   public static final String HIRE = TRIP_WEBSERVICE_PATH + "hire";
   public static final String GET_TRIP_WITH_ZERO_STATION = TRIP_WEBSERVICE_PATH + "getTripWithZeroStation";
   public static final String UPDATE_TRIP_STATION = TRIP_WEBSERVICE_PATH + "updateTripStation";
-  public static final String SET_MISTAKE = TRIP_WEBSERVICE_PATH + "setMistake";
   public static final String EDIT_STATION = TRIP_WEBSERVICE_PATH + "editStation";
   public static final String CALL_VOICE = CALL_VOICE_PATH;
 
@@ -100,7 +100,7 @@ public class EndPoints {
   public static final String SERVICE_DETAIL = SUPPORT_WEBSERVICE_PATH + "serviceDetail";
   public static final String CANCEL_SERVICE = SUPPORT_WEBSERVICE_PATH + "cancelService";
   public static final String LAST_DRIVER_POSITION = SUPPORT_WEBSERVICE_PATH + "lastDriverPosition";
-  public static final String INSERT_MISTAKE = SUPPORT_WEBSERVICE_PATH + "insertMistake";
+  public static final String MISTAKE = SUPPORT_TRIP_WEBSERVICE_PATH + "mistake";
   public static final String INSERT_COMPLAINT = SUPPORT_WEBSERVICE_PATH + "insertComplaint";
   public static final String INSERT_LOST_OBJECT = SUPPORT_WEBSERVICE_PATH + "insertLostObject";
   public static final String LOCK_TAXI = SUPPORT_WEBSERVICE_PATH + "lockTaxi";

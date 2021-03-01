@@ -237,8 +237,8 @@ public class DeterminationPageFragment extends Fragment {
 
         changeStatus(MyApplication.prefManager.isStartGettingAddress());
 
-        Date date=new Date();
-        Log.i(TAG, "onCreateView: "+date.toString() );
+        Date date = new Date();
+        Log.i(TAG, "onCreateView: " + date.toString());
 
         for (int numberCount = 0; numberCount < 10; numberCount++) {
             View grid = gridNumber.getChildAt(numberCount);
@@ -331,7 +331,7 @@ public class DeterminationPageFragment extends Fragment {
                                     DBTripModel.setTell(contentObj.getString("phoneNumber"));
                                     DBTripModel.setVoipId(contentObj.getString("voipId"));
                                     DBTripModel.setOriginText(contentObj.getString("address"));
-                                    DBTripModel.setSaveDate(dataObj.getString("SaveDate"));//date and time of service registered by Tehran timeZone,
+                                    DBTripModel.setSaveDate(dataObj.getString("SaveDate"));//date and time of service registered by Tehran timeZone,"SaveDate":"2021-03-01T12:24:42.820Z"
                                     dataBase.insertTripRow(DBTripModel);
                                 } catch (Exception e) {
                                     e.printStackTrace();
@@ -574,18 +574,18 @@ public class DeterminationPageFragment extends Fragment {
 
     private void setMistake() {
         LoadingDialog.makeCancelableLoader();
-        RequestHelper.builder(EndPoints.SET_MISTAKE)
-                .addParam("userId", StringHelper.toEnglishDigits(dataBase.getTopAddress().getOperatorId() + ""))
+        RequestHelper.builder(EndPoints.MISTAKE)
+                .addParam("tripId", StringHelper.toEnglishDigits(dataBase.getTopAddress().getId() + ""))
                 .addParam("tell", StringHelper.toEnglishDigits(dataBase.getTopAddress().getTell()))
+                .addParam("tirpUser", StringHelper.toEnglishDigits(dataBase.getTopAddress().getOperatorId() + ""))
                 .addParam("adrs", StringHelper.toEnglishDigits(dataBase.getTopAddress().getOriginText()))
                 .addParam("customerName", StringHelper.toEnglishDigits(dataBase.getTopAddress().getCustomerName()))
                 .addParam("voipId", StringHelper.toEnglishDigits(dataBase.getTopAddress().getVoipId()))
-                .addParam("tripId", StringHelper.toEnglishDigits(dataBase.getTopAddress().getId() + ""))
                 .addParam("conTime", StringHelper.toEnglishDigits(dataBase.getTopAddress().getSaveDate() + ""))//TODO
                 .addParam("conDate", StringHelper.toEnglishDigits(dataBase.getTopAddress().getSaveDate() + ""))//TODO
-                .addParam("userCodeContact", StringHelper.toEnglishDigits(dataBase.getTopAddress().getOperatorId() + ""))
                 .addParam("cityCode", StringHelper.toEnglishDigits(dataBase.getTopAddress().getCity() + ""))
                 .addParam("stationCode", StringHelper.toEnglishDigits(dataBase.getTopAddress().getOriginStation() + ""))
+                .addParam("description", " ")
                 .listener(setMistake)
                 .post();
 

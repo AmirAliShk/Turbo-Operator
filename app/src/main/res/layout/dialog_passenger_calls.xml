@@ -1,8 +1,8 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_gravity="bottom"
     android:gravity="center"
     android:layoutDirection="ltr"
@@ -78,56 +78,54 @@
             <ViewFlipper
                 android:id="@+id/vfDownload"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:background="@drawable/bg_blue_border_edge">
+                android:layout_height="wrap_content">
 
                 <!--downloading-->
-<!--                <LinearLayout-->
-<!--                    android:layout_width="match_parent"-->
-<!--                    android:layout_height="wrap_content"-->
-<!--                    android:layout_gravity="center"-->
-<!--                    android:gravity="center"-->
-<!--                    android:orientation="vertical">-->
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:gravity="center"
+                    android:orientation="vertical">
 
-<!--                    <com.wang.avi.AVLoadingIndicatorView-->
-<!--                        android:id="@+id/avl"-->
-<!--                        android:layout_width="30dp"-->
-<!--                        android:layout_height="30dp"-->
-<!--                        android:layout_gravity="center"-->
-<!--                        app:indicatorColor="@color/colorPrimaryDark"-->
-<!--                        app:indicatorName="BallBeatIndicator" />-->
+                    <com.wang.avi.AVLoadingIndicatorView
+                        android:id="@+id/avl"
+                        android:layout_width="30dp"
+                        android:layout_height="30dp"
+                        android:layout_gravity="center"
+                        app:indicatorColor="@color/colorPrimaryDark"
+                        app:indicatorName="BallBeatIndicator" />
 
-<!--                    <ProgressBar-->
-<!--                        android:id="@+id/progressDownload"-->
-<!--                        style="?android:attr/progressBarStyleHorizontal"-->
-<!--                        android:layout_width="match_parent"-->
-<!--                        android:layout_height="wrap_content"-->
-<!--                        android:layout_marginLeft="15dp"-->
-<!--                        android:layout_marginRight="15dp"-->
-<!--                        android:indeterminate="false"-->
-<!--                        android:progress="20"-->
-<!--                        android:visibility="gone" />-->
+                    <ProgressBar
+                        android:id="@+id/progressDownload"
+                        style="?android:attr/progressBarStyleHorizontal"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="15dp"
+                        android:layout_marginRight="15dp"
+                        android:indeterminate="false"
+                        android:progress="20"
+                        android:visibility="gone" />
 
-<!--                    <TextView-->
-<!--                        android:id="@+id/textProgress"-->
-<!--                        android:layout_width="wrap_content"-->
-<!--                        android:layout_height="wrap_content"-->
-<!--                        android:layout_centerInParent="true"-->
-<!--                        android:text="0%"-->
-<!--                        android:textAppearance="?android:attr/textAppearanceSmall"-->
-<!--                        android:textColor="@color/colorAccent"-->
-<!--                        android:textStyle="bold"-->
-<!--                        android:visibility="gone" />-->
+                    <TextView
+                        android:id="@+id/textProgress"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerInParent="true"
+                        android:text="0%"
+                        android:textAppearance="?android:attr/textAppearanceSmall"
+                        android:textColor="@color/colorAccent"
+                        android:textStyle="bold"
+                        android:visibility="gone" />
 
-<!--                </LinearLayout>-->
+                </LinearLayout>
 
                 <ListView
                     android:id="@+id/listPassengerCalls"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:divider="@null"
-                    android:background="@color/colorPrimaryLighter"
-                    tools:listitem="@layout/item_passenger_calls"/>
+                    tools:listitem="@layout/item_passenger_calls" />
 
                 <TextView
                     android:layout_width="match_parent"

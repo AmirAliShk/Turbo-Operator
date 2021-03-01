@@ -5,6 +5,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ListView;
+import android.widget.ViewFlipper;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -32,6 +33,9 @@ public class AllComplaintFragment extends Fragment {
 
     @BindView(R.id.complaintList)
     ListView complaintList;
+
+    @BindView(R.id.vfDownload)
+    ViewFlipper vfDownload;
 
     AllComplaintAdapter mAdapter;
     ArrayList<AllComplaintModel> allComplaintModels;
@@ -64,6 +68,7 @@ public class AllComplaintFragment extends Fragment {
                     boolean success = listenObj.getBoolean("success");
                     String message = listenObj.getString("message");
                     if (success) {
+                        vfDownload.setDisplayedChild(1);
                         JSONArray dataArr = listenObj.getJSONArray("data");
                         for (int i = 0; i < dataArr.length(); i++) {
                             JSONObject dataObj = dataArr.getJSONObject(i);
@@ -76,26 +81,27 @@ public class AllComplaintFragment extends Fragment {
                             model.setDescription(dataObj.getString("Description"));
                             model.setTell(dataObj.getString("tell"));
                             model.setUserCodeContact(dataObj.getInt("userCodeContact"));
-                            model.setTypeResult(dataObj.getInt("typeResult")); //TODO check variable type
-                            model.setInspectorUser(dataObj.getInt("inspectorUser"));
+//                            model.setInspectorUser(dataObj.getInt("inspectorUser"));
                             model.setAddress(dataObj.getString("address"));
                             model.setCustomerName(dataObj.getString("customerName"));
                             model.setConDate(dataObj.getString("conDate"));
                             model.setConTime(dataObj.getString("conTime"));
                             model.setSendTime(dataObj.getString("sendTime"));
                             model.setVoipId(dataObj.getString("VoipId"));
-                            model.setResult(dataObj.getString("result"));
-                            model.setIscheck(dataObj.getBoolean("ischeck"));
 
                             allComplaintModels.add(model);
                         }
 
                         mAdapter = new AllComplaintAdapter(MyApplication.currentActivity, allComplaintModels);
                         complaintList.setAdapter(mAdapter);
+                    } else {
+                        if (vfDownload != null)
+                            vfDownload.setDisplayedChild(2);
                     }
 
-
                 } catch (Exception e) {
+                    if (vfDownload != null)
+                        vfDownload.setDisplayedChild(2);
                     e.printStackTrace();
                 }
             });
@@ -104,7 +110,8 @@ public class AllComplaintFragment extends Fragment {
         @Override
         public void onFailure(Runnable reCall, Exception e) {
             MyApplication.handler.post(() -> {
-
+                if (vfDownload != null)
+                    vfDownload.setDisplayedChild(2);
             });
         }
     };

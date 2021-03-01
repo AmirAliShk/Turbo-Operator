@@ -18,6 +18,7 @@ import ir.taxi1880.operatormanagement.R;
 import ir.taxi1880.operatormanagement.app.EndPoints;
 import ir.taxi1880.operatormanagement.app.MyApplication;
 import ir.taxi1880.operatormanagement.dataBase.DataBase;
+import ir.taxi1880.operatormanagement.helper.StringHelper;
 import ir.taxi1880.operatormanagement.helper.TypefaceUtil;
 import ir.taxi1880.operatormanagement.model.AllComplaintModel;
 import ir.taxi1880.operatormanagement.okHttp.RequestHelper;
@@ -62,19 +63,19 @@ public class AllComplaintAdapter extends BaseAdapter {
         TextView txtComplaintDate = view.findViewById(R.id.txtComplaintDate);
         TextView txtComplaintTime = view.findViewById(R.id.txtComplaintTime);
 
-        txtComplaintDate.setText(currentAllComplaintModel.getDate());
-        txtComplaintTime.setText(currentAllComplaintModel.getTime());
+        txtComplaintDate.setText(StringHelper.toPersianDigits(currentAllComplaintModel.getDate()));
+        txtComplaintTime.setText(StringHelper.toPersianDigits(currentAllComplaintModel.getTime().substring(0,5)));
 
         view.findViewById(R.id.llAccept).setOnClickListener(view1 -> {
-            getAccept();
+            getAccept(currentAllComplaintModel.getId());
         });
 
         return view;
     }
 
-    private void getAccept() {
+    private void getAccept(int id) {
         RequestHelper.builder(EndPoints.ACCEPT_LISTEN)
-                .addParam("listenId", 1)
+                .addParam("listenId", id)
                 .listener(getAccept)
                 .put();
     }

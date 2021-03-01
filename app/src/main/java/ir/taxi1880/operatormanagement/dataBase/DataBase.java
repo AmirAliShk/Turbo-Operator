@@ -46,22 +46,19 @@ public class DataBase extends SQLiteOpenHelper {
     private static String COLUMN_COMPLAINT_DATE = "complaintDate";
     private static String COLUMN_COMPLAINT_TIME = "complaintTime";
     private static String COLUMN_COMPLAINT_DESCRIPTION = "complaintDescription";
-    //    private static String COLUMN_COMPLAINT_CITY = "complaintCity";
+    private static String COLUMN_COMPLAINT_CITY = "complaintCity";
     private static String COLUMN_COMPLAINT_ADDRESS = "complaintAddress";
-    //    private static String COLUMN_COMPLAINT_STATION_CODE = "complaintStationCode";
+    private static String COLUMN_COMPLAINT_STATION_CODE = "complaintStationCode";
     private static String COLUMN_COMPLAINT_PASSENGER_VOICE = "complaintPassengerVoice";
     private static String COLUMN_COMPLAINT_SERVICE_CODE = "complaintServiceCode";
     private static String COLUMN_COMPLAINT_USER_CODE = "complaintUserCode";
-    private static String COLUMN_COMPLAINT_IS_CHECK = "complaintIsCheck";
     private static String COLUMN_COMPLAINT_TELL = "complaintTell";
-    private static String COLUMN_COMPLAINT_RESULT = "complaintResult";
     private static String COLUMN_COMPLAINT_USER_CODE_CONTACT = "complaintUserCodeContact";
-    private static String COLUMN_COMPLAINT_TYPE_RESULT = "complaintTypeResult";
     private static String COLUMN_COMPLAINT_CUSTOMER_NAME = "complaintCustomerName";
     private static String COLUMN_COMPLAINT_CON_DATE = "complaintConDate";
     private static String COLUMN_COMPLAINT_CON_TIME = "complaintConTime";
     private static String COLUMN_COMPLAINT_SEND_TIME = "complaintSendTime";
-    private static String COLUMN_COMPLAINT_INSPECTOR_USER = "complaintInspectorUser";
+//    private static String COLUMN_COMPLAINT_INSPECTOR_USER = "complaintInspectorUser";
 
     //******************************************************************************************
 
@@ -300,26 +297,22 @@ public class DataBase extends SQLiteOpenHelper {
 
     public void createComplaintTable(SQLiteDatabase database) {
         database.execSQL("CREATE TABLE " + COMPLAINT_TABLE +
-                        "(" + COLUMN_COMPLAINT_ID + " INTEGER PRIMARY KEY," +
-                        COLUMN_COMPLAINT_DATE + " TEXT," +
-                        COLUMN_COMPLAINT_TIME + "TEXT" +
-                        COLUMN_COMPLAINT_DESCRIPTION + " TEXT," +
-//                COLUMN_COMPLAINT_CITY + " TEXT," +
-                        COLUMN_COMPLAINT_ADDRESS + " TEXT," +
-                        COLUMN_COMPLAINT_SERVICE_CODE + " INTEGER," +
-                        COLUMN_COMPLAINT_USER_CODE + " INTEGER," +
-                        COLUMN_COMPLAINT_IS_CHECK + " BOOLEAN," + //TODO VARIABLE
-                        COLUMN_COMPLAINT_TELL + " TEXT," +
-                        COLUMN_COMPLAINT_RESULT + " TEXT," +
-                        COLUMN_COMPLAINT_USER_CODE_CONTACT + " TEXT," +
-                        COLUMN_COMPLAINT_TYPE_RESULT + " TEXT," +
-                        COLUMN_COMPLAINT_CUSTOMER_NAME + " TEXT," +
-                        COLUMN_COMPLAINT_CON_DATE + " TEXT," +
-                        COLUMN_COMPLAINT_CON_TIME + " TEXT," +
-                        COLUMN_COMPLAINT_SEND_TIME + " TEXT," +
-                        COLUMN_COMPLAINT_INSPECTOR_USER + " TEXT," +
-//                COLUMN_COMPLAINT_STATION_CODE + " INTEGER," +
-                        COLUMN_COMPLAINT_PASSENGER_VOICE + " TEXT)"
+                " (" + COLUMN_COMPLAINT_ID + " INTEGER PRIMARY KEY," +
+                COLUMN_COMPLAINT_DATE + " TEXT," +
+                COLUMN_COMPLAINT_TIME + " TEXT," +
+                COLUMN_COMPLAINT_DESCRIPTION + " TEXT," +
+                COLUMN_COMPLAINT_CITY + " TEXT," +
+                COLUMN_COMPLAINT_ADDRESS + " TEXT," +
+                COLUMN_COMPLAINT_SERVICE_CODE + " INTEGER," +
+                COLUMN_COMPLAINT_USER_CODE + " INTEGER," +
+                COLUMN_COMPLAINT_TELL + " TEXT," +
+                COLUMN_COMPLAINT_USER_CODE_CONTACT + " TEXT," +
+                COLUMN_COMPLAINT_CUSTOMER_NAME + " TEXT," +
+                COLUMN_COMPLAINT_CON_DATE + " TEXT," +
+                COLUMN_COMPLAINT_CON_TIME + " TEXT," +
+                COLUMN_COMPLAINT_SEND_TIME + " TEXT," +
+                COLUMN_COMPLAINT_STATION_CODE + " INTEGER," +
+                COLUMN_COMPLAINT_PASSENGER_VOICE + " TEXT)"
         );
     }
 
@@ -331,21 +324,17 @@ public class DataBase extends SQLiteOpenHelper {
             contentValues.put(COLUMN_COMPLAINT_DATE, complaintModel.getDate());
             contentValues.put(COLUMN_COMPLAINT_TIME, complaintModel.getTime());
             contentValues.put(COLUMN_COMPLAINT_DESCRIPTION, complaintModel.getDescription());
-//            contentValues.put(COLUMN_COMPLAINT_CITY, complaintModel.getCity());
+            contentValues.put(COLUMN_COMPLAINT_CITY, complaintModel.getCity());
             contentValues.put(COLUMN_COMPLAINT_ADDRESS, complaintModel.getAddress());
-//            contentValues.put(COLUMN_COMPLAINT_STATION_CODE, complaintModel.getStationCode());
-            contentValues.put(COLUMN_COMPLAINT_SERVICE_CODE, complaintModel.getVoipId());
+            contentValues.put(COLUMN_COMPLAINT_STATION_CODE, complaintModel.getStationCode());
+            contentValues.put(COLUMN_COMPLAINT_SERVICE_CODE, complaintModel.getServiceCode());
             contentValues.put(COLUMN_COMPLAINT_USER_CODE, complaintModel.getUserCode());
-            contentValues.put(COLUMN_COMPLAINT_IS_CHECK, complaintModel.isIscheck());
             contentValues.put(COLUMN_COMPLAINT_TELL, complaintModel.getTell());
-            contentValues.put(COLUMN_COMPLAINT_RESULT, complaintModel.getResult());
             contentValues.put(COLUMN_COMPLAINT_USER_CODE_CONTACT, complaintModel.getUserCodeContact());
-            contentValues.put(COLUMN_COMPLAINT_TYPE_RESULT, complaintModel.getTypeResult());
             contentValues.put(COLUMN_COMPLAINT_CUSTOMER_NAME, complaintModel.getCustomerName());
             contentValues.put(COLUMN_COMPLAINT_CON_DATE, complaintModel.getConDate());
             contentValues.put(COLUMN_COMPLAINT_CON_TIME, complaintModel.getConTime());
             contentValues.put(COLUMN_COMPLAINT_SEND_TIME, complaintModel.getSendTime());
-            contentValues.put(COLUMN_COMPLAINT_INSPECTOR_USER, complaintModel.getInspectorUser());
             contentValues.put(COLUMN_COMPLAINT_PASSENGER_VOICE, complaintModel.getVoipId());
             sqLiteDatabase.insertWithOnConflict(COMPLAINT_TABLE, COLUMN_COMPLAINT_ID, contentValues, SQLiteDatabase.CONFLICT_REPLACE);
         } catch (Exception e) {
@@ -353,10 +342,10 @@ public class DataBase extends SQLiteOpenHelper {
         }
     }
 
-    public AllComplaintModel getComplaintRow(int id) {
+    public AllComplaintModel getComplaintRow() {
         AllComplaintModel pendingComplaintModel = new AllComplaintModel();
         SQLiteDatabase sqLiteDatabase = this.getReadableDatabase();
-        @SuppressLint("Recycle") Cursor res = sqLiteDatabase.rawQuery("select * from " + COMPLAINT_TABLE + " where " + COLUMN_COMPLAINT_ID + " = " + id, null);
+        @SuppressLint("Recycle") Cursor res = sqLiteDatabase.rawQuery("select * from " + COMPLAINT_TABLE , null);
         if (res.getCount() == 0) return null;
 
         res.moveToFirst();
@@ -365,21 +354,17 @@ public class DataBase extends SQLiteOpenHelper {
         pendingComplaintModel.setDate(res.getString(res.getColumnIndex(COLUMN_COMPLAINT_DATE)));
         pendingComplaintModel.setTime(res.getString(res.getColumnIndex(COLUMN_COMPLAINT_TIME)));
         pendingComplaintModel.setDescription(res.getString(res.getColumnIndex(COLUMN_COMPLAINT_DESCRIPTION)));
-//        pendingComplaintModel.setCity(res.getString(res.getColumnIndex(COLUMN_COMPLAINT_CITY)));
+        pendingComplaintModel.setCity(res.getInt(res.getColumnIndex(COLUMN_COMPLAINT_CITY)));
         pendingComplaintModel.setAddress(res.getString(res.getColumnIndex(COLUMN_COMPLAINT_ADDRESS)));
         pendingComplaintModel.setServiceCode(res.getInt(res.getColumnIndex(COLUMN_COMPLAINT_SERVICE_CODE)));
         pendingComplaintModel.setUserCode(res.getInt(res.getColumnIndex(COLUMN_COMPLAINT_USER_CODE)));
-        pendingComplaintModel.setIscheck(res.isNull(res.getColumnIndex(COLUMN_COMPLAINT_IS_CHECK)));
         pendingComplaintModel.setTell(res.getString(res.getColumnIndex(COLUMN_COMPLAINT_TELL)));
-        pendingComplaintModel.setResult(res.getString(res.getColumnIndex(COLUMN_COMPLAINT_RESULT)));
         pendingComplaintModel.setUserCodeContact(res.getInt(res.getColumnIndex(COLUMN_COMPLAINT_USER_CODE_CONTACT)));
-        pendingComplaintModel.setTypeResult(res.getInt(res.getColumnIndex(COLUMN_COMPLAINT_TYPE_RESULT)));
         pendingComplaintModel.setCustomerName(res.getString(res.getColumnIndex(COLUMN_COMPLAINT_CUSTOMER_NAME)));
         pendingComplaintModel.setConDate(res.getString(res.getColumnIndex(COLUMN_COMPLAINT_CON_DATE)));
         pendingComplaintModel.setConTime(res.getString(res.getColumnIndex(COLUMN_COMPLAINT_CON_TIME)));
         pendingComplaintModel.setSendTime(res.getString(res.getColumnIndex(COLUMN_COMPLAINT_SEND_TIME)));
-        pendingComplaintModel.setInspectorUser(res.getInt(res.getColumnIndex(COLUMN_COMPLAINT_INSPECTOR_USER)));
-//        pendingComplaintModel.setStationCode(res.getInt(res.getColumnIndex(COLUMN_COMPLAINT_STATION_CODE)));
+        pendingComplaintModel.setStationCode(res.getInt(res.getColumnIndex(COLUMN_COMPLAINT_STATION_CODE)));
         pendingComplaintModel.setVoipId(res.getString(res.getColumnIndex(COLUMN_COMPLAINT_PASSENGER_VOICE)));
 
         return pendingComplaintModel;
