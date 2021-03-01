@@ -15,7 +15,7 @@ import ir.taxi1880.operatormanagement.model.CityModel;
 
 public class DataBase extends SQLiteOpenHelper {
     // TODO when you change the entitys structure, please increase the version of dataBase.
-    private static int VERSION = 3;
+    private static int VERSION =4;
     //TODO Do not change names any way
     private static String DB_NAME = "operators";
     private static String TRIP_TABLE = "Trip";
@@ -312,7 +312,7 @@ public class DataBase extends SQLiteOpenHelper {
                 COLUMN_COMPLAINT_CON_TIME + " TEXT," +
                 COLUMN_COMPLAINT_SEND_TIME + " TEXT," +
                 COLUMN_COMPLAINT_STATION_CODE + " INTEGER," +
-                COLUMN_COMPLAINT_PASSENGER_VOICE + " TEXT)"
+                COLUMN_COMPLAINT_PASSENGER_VOICE + " TEXT )"
         );
     }
 
@@ -320,10 +320,10 @@ public class DataBase extends SQLiteOpenHelper {
         try {
             SQLiteDatabase sqLiteDatabase = this.getWritableDatabase();
             ContentValues contentValues = new ContentValues();
+            contentValues.put(COLUMN_COMPLAINT_DESCRIPTION, complaintModel.getDescription());
             contentValues.put(COLUMN_COMPLAINT_ID, complaintModel.getId());
             contentValues.put(COLUMN_COMPLAINT_DATE, complaintModel.getDate());
             contentValues.put(COLUMN_COMPLAINT_TIME, complaintModel.getTime());
-            contentValues.put(COLUMN_COMPLAINT_DESCRIPTION, complaintModel.getDescription());
             contentValues.put(COLUMN_COMPLAINT_CITY, complaintModel.getCity());
             contentValues.put(COLUMN_COMPLAINT_ADDRESS, complaintModel.getAddress());
             contentValues.put(COLUMN_COMPLAINT_STATION_CODE, complaintModel.getStationCode());
