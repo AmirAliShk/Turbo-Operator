@@ -225,7 +225,7 @@ public class SupportActivity extends AppCompatActivity {
         }
         MyApplication.configureAccount();
         unbinder = ButterKnife.bind(this, view);
-        TypefaceUtil.overrideFonts(view, MyApplication.IraSanSMedume);
+        TypefaceUtil.overrideFonts(view                           );
         mRipplePulseLayout = findViewById(R.id.layout_ripplepulse);
 
         supportViewPagerAdapter = new SupportViewPagerAdapter(this);

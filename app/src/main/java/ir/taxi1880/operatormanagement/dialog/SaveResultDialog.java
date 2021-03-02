@@ -7,7 +7,9 @@ import android.util.Log;
 import android.view.Gravity;
 import android.view.Window;
 import android.view.WindowManager;
+import android.widget.Button;
 
+import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import butterknife.Unbinder;
@@ -25,6 +27,8 @@ public class SaveResultDialog {
     void onSubmit() {
         dismiss();
     }
+    @BindView(R.id.btnSubmit)
+    Button btnSubmit;
 
     @OnClick(R.id.imgClose)
     void onClose() {
@@ -40,6 +44,7 @@ public class SaveResultDialog {
         dialog.setContentView(R.layout.dialog_save_result);
         unbinder = ButterKnife.bind(this, dialog.getWindow().getDecorView());
         TypefaceUtil.overrideFonts(dialog.getWindow().getDecorView(), MyApplication.IraSanSMedume);
+        TypefaceUtil.overrideFonts(btnSubmit);
         dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         WindowManager.LayoutParams wlp = dialog.getWindow().getAttributes();
         wlp.windowAnimations = R.style.ExpandAnimation;

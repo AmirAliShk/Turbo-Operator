@@ -14,6 +14,8 @@ import butterknife.OnClick;
 import butterknife.Unbinder;
 import ir.taxi1880.operatormanagement.R;
 import ir.taxi1880.operatormanagement.app.MyApplication;
+import ir.taxi1880.operatormanagement.fragment.TripSupportFragment;
+import ir.taxi1880.operatormanagement.helper.FragmentHelper;
 import ir.taxi1880.operatormanagement.helper.TypefaceUtil;
 import ir.taxi1880.operatormanagement.push.AvaCrashReporter;
 
@@ -36,7 +38,7 @@ public class PendingComplaintOptionsDialog {
     @OnClick(R.id.llSearchService)
     void onPressSearchService() {
         dismiss();
-        MyApplication.Toast("llSearchService", Toast.LENGTH_SHORT);
+        FragmentHelper.toFragment(MyApplication.currentActivity, new TripSupportFragment()).replace();
     }
 
     @OnClick(R.id.llNestFollowUp)

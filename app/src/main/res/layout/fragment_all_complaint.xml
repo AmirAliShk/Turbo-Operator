@@ -27,6 +27,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:divider="@null"
+            android:listSelector="@color/transparent"
             tools:listitem="@layout/item_all_complaint" />
 
         <TextView
