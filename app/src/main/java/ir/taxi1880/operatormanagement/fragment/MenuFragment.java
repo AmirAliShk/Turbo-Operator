@@ -24,90 +24,98 @@ import ir.taxi1880.operatormanagement.helper.TypefaceUtil;
  * A simple {@link Fragment} subclass.
  */
 public class MenuFragment extends Fragment {
-  public final String TAG = MenuFragment.class.getSimpleName();
-  private Unbinder unbinder;
+    public final String TAG = MenuFragment.class.getSimpleName();
+    private Unbinder unbinder;
 
-  @OnClick(R.id.llTripRegister)
-  void onTripRegister() {
-    if (MyApplication.prefManager.getAccessInsertService() == 0) {
-      new GeneralDialog()
-              .title("هشدار")
-              .message("شما اجازه دسترسی به این بخش از برنامه را ندارید")
-              .firstButton("باشه", null)
-              .show();
-    } else {
-      startActivity(new Intent(MyApplication.context, TripRegisterActivity.class));
-      MyApplication.currentActivity.finish();
+    @OnClick(R.id.llTripRegister)
+    void onTripRegister() {
+        if (MyApplication.prefManager.getAccessInsertService() == 0) {
+            new GeneralDialog()
+                    .title("هشدار")
+                    .message("شما اجازه دسترسی به این بخش از برنامه را ندارید")
+                    .firstButton("باشه", null)
+                    .show();
+        } else {
+            startActivity(new Intent(MyApplication.context, TripRegisterActivity.class));
+            MyApplication.currentActivity.finish();
+        }
     }
-  }
 
-  @OnClick(R.id.llDetermination)
-  void onDetermination() {
-    if (MyApplication.prefManager.getAccessStationDeterminationPage() == 0) {
-      new GeneralDialog()
-              .title("هشدار")
-              .message("شما اجازه دسترسی به این بخش از برنامه را ندارید")
-              .firstButton("باشه", null)
-              .show();
-    } else {
-      FragmentHelper
-              .toFragment(MyApplication.currentActivity, new DeterminationPageFragment())
-              .replace();
+    @OnClick(R.id.llDetermination)
+    void onDetermination() {
+        if (MyApplication.prefManager.getAccessStationDeterminationPage() == 0) {
+            new GeneralDialog()
+                    .title("هشدار")
+                    .message("شما اجازه دسترسی به این بخش از برنامه را ندارید")
+                    .firstButton("باشه", null)
+                    .show();
+        } else {
+            FragmentHelper
+                    .toFragment(MyApplication.currentActivity, new DeterminationPageFragment())
+                    .replace();
+        }
     }
-  }
 
-  @OnClick(R.id.llSupport)
-  void onSupport(){
-    startActivity(new Intent(MyApplication.currentActivity, SupportActivity.class));
-    MyApplication.currentActivity.finish();
-  }
+    @OnClick(R.id.llSupport)
+    void onSupport() {
+        if (MyApplication.prefManager.getAccessDriverSupport() == 1) {
+            startActivity(new Intent(MyApplication.currentActivity, SupportActivity.class));
+            MyApplication.currentActivity.finish();
+        }else {
+            new GeneralDialog()
+                    .title("هشدار")
+                    .message("شما اجازه دسترسی به این بخش از برنامه را ندارید")
+                    .firstButton("باشه", null)
+                    .show();
+        }
+    }
 
-  @OnClick(R.id.llShift)
-  void onShift() {
-    FragmentHelper
-            .toFragment(MyApplication.currentActivity, new ShiftListFragment())
-            .replace();
-  }
+    @OnClick(R.id.llShift)
+    void onShift() {
+        FragmentHelper
+                .toFragment(MyApplication.currentActivity, new ShiftListFragment())
+                .replace();
+    }
 
-  @OnClick(R.id.llBest)
-  void onBest() {
-    FragmentHelper
-            .toFragment(MyApplication.currentActivity, new BestsFragment())
-            .replace();
-  }
+    @OnClick(R.id.llBest)
+    void onBest() {
+        FragmentHelper
+                .toFragment(MyApplication.currentActivity, new BestsFragment())
+                .replace();
+    }
 
-  @OnClick(R.id.llRequest)
-  void onRequest() {
-    new RequestDialog()
-            .show();
-  }
+    @OnClick(R.id.llRequest)
+    void onRequest() {
+        new RequestDialog()
+                .show();
+    }
 
-  @OnClick(R.id.llRewards)
-  void onRewards() {
-    FragmentHelper
-            .toFragment(MyApplication.currentActivity, new RewardsFragment())
-            .replace();
-  }
+    @OnClick(R.id.llRewards)
+    void onRewards() {
+        FragmentHelper
+                .toFragment(MyApplication.currentActivity, new RewardsFragment())
+                .replace();
+    }
 
-  @OnClick(R.id.llScores)
-  void onScores() {
-    FragmentHelper
-            .toFragment(MyApplication.currentActivity, new ScoreListFragment())
-            .replace();
-  }
+    @OnClick(R.id.llScores)
+    void onScores() {
+        FragmentHelper
+                .toFragment(MyApplication.currentActivity, new ScoreListFragment())
+                .replace();
+    }
 
-  @Override
-  public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-    View view = inflater.inflate(R.layout.fragment_menu, container, false);
-    unbinder = ButterKnife.bind(this, view);
-    TypefaceUtil.overrideFonts(view);
-    return view;
-  }
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        View view = inflater.inflate(R.layout.fragment_menu, container, false);
+        unbinder = ButterKnife.bind(this, view);
+        TypefaceUtil.overrideFonts(view);
+        return view;
+    }
 
-  @Override
-  public void onDestroy() {
-    super.onDestroy();
-    unbinder.unbind();
-  }
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        unbinder.unbind();
+    }
 
 }

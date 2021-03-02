@@ -178,7 +178,7 @@ public class SupportDriverTripsFragment extends Fragment {
         String tellNumber;
         Bundle bundle = getArguments();
         if (bundle != null) {
-            tellNumber = bundle.getString("tellNumber");
+            tellNumber = bundle.getString("number");
             edtSearchTrip.setText(tellNumber);
             onSearchPress();
         }

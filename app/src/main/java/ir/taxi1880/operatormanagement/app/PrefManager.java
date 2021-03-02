@@ -73,6 +73,7 @@ public class PrefManager {
     private static final String SERVICE_COUNT_TODAY = "serviceCountToday";
     private static final String KEY_ACTIVATION_REMAINING_TIME = "activationRemainingTime";
     private static final String ACTIVITY_STATUS = "activityStatus";
+    private static final String ACCESS_DRIVER_SUPPORT = "accessDriverSupport";
 
     public PrefManager(Context context) {
         this._context = context;
@@ -250,6 +251,15 @@ public class PrefManager {
 
     public int getUserCode() {
         return pref.getInt(KEY_USER_CODE, 0);
+    }
+
+    public void setAccessDriverSupport(int access) {
+        editor.putInt(ACCESS_DRIVER_SUPPORT, access);
+        editor.commit();
+    }
+
+    public int getAccessDriverSupport() {
+        return pref.getInt(ACCESS_DRIVER_SUPPORT, 0);
     }
 
     public void setRepetitionTime(int repetitionTime) {

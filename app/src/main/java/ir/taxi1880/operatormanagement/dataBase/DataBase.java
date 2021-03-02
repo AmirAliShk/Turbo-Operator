@@ -272,6 +272,9 @@ public class DataBase extends SQLiteOpenHelper {
     }
 
     public String getCityName2(int id) {
+        if (id==0){
+            return "نامشخص";
+        }
         SQLiteDatabase sqLiteDatabase = this.getReadableDatabase();
         String query = "select " + COLUMN_CITY_NAME +
                 " from " + CITY_TABLE +
@@ -369,5 +372,46 @@ public class DataBase extends SQLiteOpenHelper {
 
         return pendingComplaintModel;
     }
+
+    public AllComplaintModel moveNextComplaint(int id){
+        AllComplaintModel pendingComplaintModel = new AllComplaintModel();
+        SQLiteDatabase sqLiteDatabase = this.getReadableDatabase();
+        @SuppressLint("Recycle") Cursor res = sqLiteDatabase.rawQuery("select * from " + COMPLAINT_TABLE + " WHERE " + COLUMN_COMPLAINT_ID + "=" + id , null);
+        if (res.getCount() == 0) return null;
+
+        res.moveToFirst();
+
+        pendingComplaintModel.setId(res.getInt(res.getColumnIndex(COLUMN_COMPLAINT_ID)));
+        pendingComplaintModel.setDate(res.getString(res.getColumnIndex(COLUMN_COMPLAINT_DATE)));
+        pendingComplaintModel.setTime(res.getString(res.getColumnIndex(COLUMN_COMPLAINT_TIME)));
+        pendingComplaintModel.setDescription(res.getString(res.getColumnIndex(COLUMN_COMPLAINT_DESCRIPTION)));
+        pendingComplaintModel.setCity(res.getInt(res.getColumnIndex(COLUMN_COMPLAINT_CITY)));
+        pendingComplaintModel.setAddress(res.getString(res.getColumnIndex(COLUMN_COMPLAINT_ADDRESS)));
+        pendingComplaintModel.setServiceCode(res.getInt(res.getColumnIndex(COLUMN_COMPLAINT_SERVICE_CODE)));
+        pendingComplaintModel.setUserCode(res.getInt(res.getColumnIndex(COLUMN_COMPLAINT_USER_CODE)));
+        pendingComplaintModel.setTell(res.getString(res.getColumnIndex(COLUMN_COMPLAINT_TELL)));
+        pendingComplaintModel.setUserCodeContact(res.getInt(res.getColumnIndex(COLUMN_COMPLAINT_USER_CODE_CONTACT)));
+        pendingComplaintModel.setCustomerName(res.getString(res.getColumnIndex(COLUMN_COMPLAINT_CUSTOMER_NAME)));
+        pendingComplaintModel.setConDate(res.getString(res.getColumnIndex(COLUMN_COMPLAINT_CON_DATE)));
+        pendingComplaintModel.setConTime(res.getString(res.getColumnIndex(COLUMN_COMPLAINT_CON_TIME)));
+        pendingComplaintModel.setSendTime(res.getString(res.getColumnIndex(COLUMN_COMPLAINT_SEND_TIME)));
+        pendingComplaintModel.setStationCode(res.getInt(res.getColumnIndex(COLUMN_COMPLAINT_STATION_CODE)));
+        pendingComplaintModel.setVoipId(res.getString(res.getColumnIndex(COLUMN_COMPLAINT_PASSENGER_VOICE)));
+
+        return pendingComplaintModel;
+    }
+
+    public void deleteComplaintRow(int id) {
+
+        SQLiteDatabase sqLiteDatabase = this.getWritableDatabase();
+        boolean b = sqLiteDatabase.delete(COMPLAINT_TABLE, COLUMN_COMPLAINT_ID + "=" + id, null) > 0;
+
+        if (b) {
+            Log.i("TripDataBase", "deleteRow: = true  " + id);
+        } else {
+            Log.i("TripDataBase", "deleteRow: = false  " + id);
+        }
+    }
+
 
 }
