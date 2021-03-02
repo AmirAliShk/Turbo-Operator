@@ -51,17 +51,13 @@
                     android:layout_height="wrap_content"
                     android:layout_marginEnd="10dp"
                     android:layout_marginRight="10dp"
-                    android:gravity="center"
+                    android:layout_weight="1"
+                    android:gravity="center|right"
                     android:textColor="@color/colorBlack"
                     android:textSize="@dimen/text_title"
                     android:textStyle="bold" />
 
             </LinearLayout>
-
-            <TextView
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_weight="0.2" />
 
             <LinearLayout
                 android:layout_width="0dp"
@@ -82,7 +78,8 @@
                     android:layout_height="wrap_content"
                     android:layout_marginEnd="10dp"
                     android:layout_marginRight="10dp"
-                    android:gravity="center"
+                    android:layout_weight="1"
+                    android:gravity="center|right"
                     android:textColor="@color/colorBlack"
                     android:textSize="@dimen/text_title"
                     android:textStyle="bold" />
