@@ -10,6 +10,7 @@ import android.view.Window;
 import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.RadioGroup;
+import android.widget.Toast;
 import android.widget.ViewFlipper;
 
 import org.json.JSONObject;
@@ -47,30 +48,36 @@ public class SaveResultDialog {
 
     @OnClick(R.id.btnSubmit)
     void onSubmit() {
-        switch (rgCulprit.getCheckedRadioButtonId()) {
-            case R.id.rbCityRegistrationOperatorBlame:
-                culprit = "1";
-                break;
-            case R.id.rbStationRegistrationOperatorBlame:
-                culprit = "2";
-                break;
-            case R.id.rbUnknown:
-                culprit = "3";
-                break;
-        }
-        switch (rgResult.getCheckedRadioButtonId()) {
-            case R.id.rbDeleteAddress:
-                result = "1";
-                break;
-            case R.id.rbDeleteStation:
-                result = "2";
-                break;
-            case R.id.rbDeleteCity:
-                result = "3";
-                break;
-            case R.id.rbOtherCases:
-                result = "4";
-                break;
+        if (rgCulprit.getCheckedRadioButtonId() == -1) {
+            MyApplication.Toast("لطفا مقصر را مشخص کنید.", Toast.LENGTH_SHORT);
+        } else if (rgResult.getCheckedRadioButtonId() == -1) {
+            MyApplication.Toast("لطفا نتیجه را مشخص کنید.", Toast.LENGTH_SHORT);
+        } else {
+            switch (rgCulprit.getCheckedRadioButtonId()) {
+                case R.id.rbCityRegistrationOperatorBlame:
+                    culprit = "1";
+                    break;
+                case R.id.rbStationRegistrationOperatorBlame:
+                    culprit = "2";
+                    break;
+                case R.id.rbUnknown:
+                    culprit = "3";
+                    break;
+            }
+            switch (rgResult.getCheckedRadioButtonId()) {
+                case R.id.rbDeleteAddress:
+                    result = "1";
+                    break;
+                case R.id.rbDeleteStation:
+                    result = "2";
+                    break;
+                case R.id.rbDeleteCity:
+                    result = "3";
+                    break;
+                case R.id.rbOtherCases:
+                    result = "4";
+                    break;
+            }
         }
         int listenId = dataBase.getComplaintRow().getId();
 
@@ -114,6 +121,7 @@ public class SaveResultDialog {
                 .addParam("culprit", culprit)
                 .addParam("result", result)
                 .addParam("listenId", listenId)
+                .listener(sendResult)
                 .put();
     }
 
