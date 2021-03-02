@@ -84,8 +84,19 @@ public class PendingComplaintFragment extends Fragment {
     @BindView(R.id.txtStationCode)
     TextView txtStationCode;
 
-    @BindView(R.id.imgPlay)
-    ImageView imgPlay;
+    @OnClick(R.id.imgPlay)
+    void onPlay(){
+        Log.i("URL", "show: " + EndPoints.CALL_VOICE + dataBase.getComplaintRow().getVoipId());
+        String voiceName = dataBase.getComplaintRow().getId() + ".mp3";
+        File file = new File(MyApplication.DIR_ROOT + MyApplication.VOICE_FOLDER_NAME + "/" + voiceName);
+        if (file.exists()) {
+            initVoice(Uri.fromFile(file));
+            playVoice();
+        } else {
+            startDownload(EndPoints.CALL_VOICE + dataBase.getComplaintRow().getVoipId(), voiceName);
+        }
+
+    }
 
     @BindView(R.id.skbTimer)
     IndicatorSeekBar skbTimer;
@@ -101,55 +112,6 @@ public class PendingComplaintFragment extends Fragment {
         TypefaceUtil.overrideFonts(view, MyApplication.IraSanSMedume);
 
         dataBase = new DataBase(MyApplication.context);
-
-        if (dataBase.getComplaintRow() != null) {
-            AllComplaintModel model = dataBase.getComplaintRow();
-            txtAddress.setText(StringHelper.toPersianDigits(model.getAddress()));
-            txtStationCode.setText(StringHelper.toPersianDigits("199"));
-            txtCity.setText(StringHelper.toPersianDigits("مشهد"));
-            txtDescription.setText(StringHelper.toPersianDigits(model.getDescription()));
-            txtTripTime.setText(StringHelper.toPersianDigits(model.getSendTime()));
-            txtTripDate.setText(StringHelper.toPersianDigits(model.getDate()));
-
-            skbTimer.setProgress(0);
-            Log.i("URL", "show: " + EndPoints.CALL_VOICE + dataBase.getComplaintRow().getVoipId());
-            String voiceName = dataBase.getComplaintRow().getId() + ".mp3";
-            File file = new File(MyApplication.DIR_ROOT + MyApplication.VOICE_FOLDER_NAME + "/" + voiceName);
-            if (file.exists()) {
-                initVoice(Uri.fromFile(file));
-                playVoice();
-            } else {
-                startDownload(EndPoints.CALL_VOICE + dataBase.getComplaintRow().getVoipId(), voiceName);
-
-            }
-
-            skbTimer.setOnSeekChangeListener(new OnSeekChangeListener() {
-                @Override
-                public void onSeeking(SeekParams seekParams) {
-                    int timeRemaining = seekParams.progress / 1000;
-
-                }
-
-                @Override
-                public void onStartTrackingTouch(IndicatorSeekBar seekBar) {
-
-                }
-
-                @Override
-                public void onStopTrackingTouch(IndicatorSeekBar seekBar) {
-                    if (mediaPlayer != null) {
-                        if (seekBar != null) {
-                            mediaPlayer.seekTo(seekBar.getProgress());
-                        }
-                    }
-                }
-            });
-
-        } else {
-            if (vfPending != null)
-                vfPending.setDisplayedChild(1);
-        }
-
 
         return view;
     }
@@ -271,6 +233,50 @@ public class PendingComplaintFragment extends Fragment {
         UpdateSeekBar task = new UpdateSeekBar();
         timer.scheduleAtFixedRate(task, 500, 1000);
 
+    }
+
+    @Override
+    public void setMenuVisibility(boolean menuVisible) {
+        super.setMenuVisibility(menuVisible);
+        if (menuVisible){
+            if (dataBase.getComplaintRow() != null) {
+                AllComplaintModel model = dataBase.getComplaintRow();
+                txtAddress.setText(StringHelper.toPersianDigits(model.getAddress()));
+                txtStationCode.setText(StringHelper.toPersianDigits("199"));
+                txtCity.setText(StringHelper.toPersianDigits("مشهد"));
+                txtDescription.setText(StringHelper.toPersianDigits(model.getDescription()));
+                txtTripTime.setText(StringHelper.toPersianDigits(model.getSendTime()));
+                txtTripDate.setText(StringHelper.toPersianDigits(model.getDate()));
+
+                skbTimer.setProgress(0);
+
+                skbTimer.setOnSeekChangeListener(new OnSeekChangeListener() {
+                    @Override
+                    public void onSeeking(SeekParams seekParams) {
+                        int timeRemaining = seekParams.progress / 1000;
+
+                    }
+
+                    @Override
+                    public void onStartTrackingTouch(IndicatorSeekBar seekBar) {
+
+                    }
+
+                    @Override
+                    public void onStopTrackingTouch(IndicatorSeekBar seekBar) {
+                        if (mediaPlayer != null) {
+                            if (seekBar != null) {
+                                mediaPlayer.seekTo(seekBar.getProgress());
+                            }
+                        }
+                    }
+                });
+
+            } else {
+                if (vfPending != null)
+                    vfPending.setDisplayedChild(1);
+            }
+        }
     }
 
     @Override

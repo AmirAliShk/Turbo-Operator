@@ -40,6 +40,7 @@
             android:paddingBottom="5dp">
 
             <RadioGroup
+                android:id="@+id/rgResult"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_margin="10dp"
@@ -48,31 +49,32 @@
                 android:padding="10dp">
 
                 <RadioButton
-                    android:id="@+id/radioButton"
+                    android:id="@+id/rbDeleteAddress"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="حذف آدرس" />
 
                 <RadioButton
-                    android:id="@+id/radioButton2"
+                    android:id="@+id/rbDeleteStation"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="حذف ایستگاه" />
 
                 <RadioButton
-                    android:id="@+id/radioButton3"
+                    android:id="@+id/rbDeleteCity"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="حذف شهر" />
 
                 <RadioButton
-                    android:id="@+id/radioButton7"
+                    android:id="@+id/rbOtherCases"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="سایر موارد" />
             </RadioGroup>
 
             <RadioGroup
+                android:id="@+id/rgCulprit"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_margin="10dp"
@@ -81,19 +83,19 @@
                 android:padding="10dp">
 
                 <RadioButton
-                    android:id="@+id/radioButton4"
+                    android:id="@+id/rbCityRegistrationOperatorBlame"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="اپراتور ثبت شهر مقصر است." />
 
                 <RadioButton
-                    android:id="@+id/radioButton5"
+                    android:id="@+id/rbStationRegistrationOperatorBlame"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="اپراتور ثبت ایستگاه مقصر است." />
 
                 <RadioButton
-                    android:id="@+id/radioButton6"
+                    android:id="@+id/rbUnknown"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="نامشخص" />
@@ -132,7 +134,6 @@
         android:id="@+id/imgClose"
         android:layout_width="80dp"
         android:layout_height="80dp"
-        android:padding="20dp"
         android:src="@drawable/ic_close_black_24dp" />
 
 </LinearLayout>

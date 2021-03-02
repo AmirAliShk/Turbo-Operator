@@ -257,7 +257,7 @@ public class SupportActivity extends AppCompatActivity {
     private void setActivate(int sipNumber) {
 
         LoadingDialog.makeCancelableLoader();
-        RequestHelper.builder(EndPoints.ACTIVATE)
+        RequestHelper.builder(EndPoints.ACTIVATE_SUPPORT)
                 .addParam("sipNumber", sipNumber)
                 .listener(setActivate)
                 .post();
@@ -319,7 +319,7 @@ public class SupportActivity extends AppCompatActivity {
             Log.i(TAG, "setDeActivate: " + params);
 
             LoadingDialog.makeCancelableLoader();
-            RequestHelper.builder(EndPoints.DEACTIVATE)
+            RequestHelper.builder(EndPoints.DEACTIVATE_SUPPORT)
                     .addParam("sipNumber", sipNumber)
                     .listener(setDeActivate)
                     .post();

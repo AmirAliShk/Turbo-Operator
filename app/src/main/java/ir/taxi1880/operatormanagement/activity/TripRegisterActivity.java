@@ -539,7 +539,7 @@ public class TripRegisterActivity extends AppCompatActivity {
                         if (MyApplication.prefManager.isCallIncoming()) {
                             MyApplication.Toast(getString(R.string.exit), Toast.LENGTH_SHORT);
                         } else {
-                            setDeActivate( MyApplication.prefManager.getSipNumber());
+                            setDeActivate(MyApplication.prefManager.getSipNumber());
                         }
                     }
                 })
@@ -1049,64 +1049,61 @@ public class TripRegisterActivity extends AppCompatActivity {
     RequestHelper.Callback getPassengerAddress = new RequestHelper.Callback() {
         @Override
         public void onResponse(Runnable reCall, Object... args) {
-            MyApplication.handler.post(new Runnable() {
-                @Override
-                public void run() {
-                    try {
-                        Log.i(TAG, "onResponse: " + args[0].toString());
-                        passengerAddressModels = new ArrayList<>();
-                        JSONObject obj = new JSONObject(args[0].toString());
-                        boolean success = obj.getBoolean("success");
-                        String message = obj.getString("message");
+            MyApplication.handler.post(() -> {
+                try {
+                    Log.i(TAG, "onResponse: " + args[0].toString());
+                    passengerAddressModels = new ArrayList<>();
+                    JSONObject obj = new JSONObject(args[0].toString());
+                    boolean success = obj.getBoolean("success");
+                    String message = obj.getString("message");
 
-                        if (success) {
-                            JSONArray dataArr = obj.getJSONArray("data");
-                            for (int i = 0; i < dataArr.length(); i++) {
-                                JSONObject dataObj = dataArr.getJSONObject(i);
-                                PassengerAddressModel addressModel = new PassengerAddressModel();
-                                addressModel.setPhoneNumber(dataObj.getString("phoneNumber"));
-                                addressModel.setMobile(dataObj.getString("mobile"));
-                                addressModel.setAddress(dataObj.getString("address"));
-                                addressModel.setStation(dataObj.getInt("station"));
-                                addressModel.setStatus(dataObj.getInt("status"));
-                                passengerAddressModels.add(addressModel);
-                            }
-                            if (passengerAddressModels.size() == 0) {
-                                MyApplication.Toast("آدرسی موجود نیست", Toast.LENGTH_SHORT);
-                            } else {
-                                new AddressListDialog().show((address, stationCode) -> {
-                                    if (edtAddress != null) {
-                                        edtAddress.setText(address);
-                                        addressLength = address.length();
-                                        addressChangeCounter = 0;
-                                    }
-                                    originStation = stationCode;
-                                    Log.i(TAG, "run: " + originStation);
-
-                                }, passengerAddressModels);
-                            }
-                        } else {
-                            new GeneralDialog()
-                                    .title("هشدار")
-                                    .message(message)
-                                    .secondButton("باشه", null)
-                                    .cancelable(false)
-                                    .show();
+                    if (success) {
+                        JSONArray dataArr = obj.getJSONArray("data");
+                        for (int i = 0; i < dataArr.length(); i++) {
+                            JSONObject dataObj = dataArr.getJSONObject(i);
+                            PassengerAddressModel addressModel = new PassengerAddressModel();
+                            addressModel.setPhoneNumber(dataObj.getString("phoneNumber"));
+                            addressModel.setMobile(dataObj.getString("mobile"));
+                            addressModel.setAddress(dataObj.getString("address"));
+                            addressModel.setStation(dataObj.getInt("station"));
+                            addressModel.setStatus(dataObj.getInt("status"));
+                            passengerAddressModels.add(addressModel);
                         }
+                        if (passengerAddressModels.size() == 0) {
+                            MyApplication.Toast("آدرسی موجود نیست", Toast.LENGTH_SHORT);
+                        } else {
+                            new AddressListDialog().show((address, stationCode) -> {
+                                if (edtAddress != null) {
+                                    edtAddress.setText(address);
+                                    addressLength = address.length();
+                                    addressChangeCounter = 0;
+                                }
+                                originStation = stationCode;
+                                Log.i(TAG, "run: " + originStation);
 
-                        MyApplication.handler.postDelayed(() -> {
-                            if (vfPassengerAddress != null)
-                                vfPassengerAddress.setDisplayedChild(0);
-                        }, 500);
-
-                    } catch (JSONException e) {
-                        MyApplication.handler.postDelayed(() -> {
-                            if (vfPassengerAddress != null)
-                                vfPassengerAddress.setDisplayedChild(0);
-                        }, 500);
-                        e.printStackTrace();
-                        AvaCrashReporter.send(e, "TripRegisterActivity class, getPassengerAddress onResponse method");
+                            }, passengerAddressModels);
+                        }
+                    } else {
+                        new GeneralDialog()
+                                .title("هشدار")
+                                .message(message)
+                                .secondButton("باشه", null)
+                                .cancelable(false)
+                                .show();
                     }
+
+                    MyApplication.handler.postDelayed(() -> {
+                        if (vfPassengerAddress != null)
+                            vfPassengerAddress.setDisplayedChild(0);
+                    }, 500);
+
+                } catch (JSONException e) {
+                    MyApplication.handler.postDelayed(() -> {
+                        if (vfPassengerAddress != null)
+                            vfPassengerAddress.setDisplayedChild(0);
+                    }, 500);
+                    e.printStackTrace();
+                    AvaCrashReporter.send(e, "TripRegisterActivity class, getPassengerAddress onResponse method");
                 }
             });
         }
@@ -1734,7 +1731,7 @@ public class TripRegisterActivity extends AppCompatActivity {
                             @Override
                             public void run() {
                                 try {
-                                    Intent intent=new Intent(MyApplication.context, MainActivity.class);
+                                    Intent intent = new Intent(MyApplication.context, MainActivity.class);
                                     startActivity(intent);
                                     finish();
                                 } catch (Exception e) {

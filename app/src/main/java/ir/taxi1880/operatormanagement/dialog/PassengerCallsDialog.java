@@ -64,7 +64,7 @@ public class PassengerCallsDialog {
         wlp.gravity = Gravity.CENTER;
         wlp.windowAnimations = R.style.ExpandAnimation;
         dialog.getWindow().setAttributes(wlp);
-        dialog.setCancelable(true);
+        dialog.setCancelable(false);
 
         passengerCallsModels = new ArrayList<>();
 
