@@ -378,8 +378,7 @@ public class DataBase extends SQLiteOpenHelper {
         SQLiteDatabase sqLiteDatabase = this.getReadableDatabase();
         @SuppressLint("Recycle") Cursor res = sqLiteDatabase.rawQuery("select * from " + COMPLAINT_TABLE + " WHERE " + COLUMN_COMPLAINT_ID + "=" + id , null);
         if (res.getCount() == 0) return null;
-
-        res.moveToFirst();
+        res.moveToPosition(res.getPosition()+1);
 
         pendingComplaintModel.setId(res.getInt(res.getColumnIndex(COLUMN_COMPLAINT_ID)));
         pendingComplaintModel.setDate(res.getString(res.getColumnIndex(COLUMN_COMPLAINT_DATE)));

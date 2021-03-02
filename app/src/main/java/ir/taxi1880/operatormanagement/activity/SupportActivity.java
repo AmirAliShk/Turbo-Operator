@@ -225,20 +225,33 @@ public class SupportActivity extends AppCompatActivity {
         }
         MyApplication.configureAccount();
         unbinder = ButterKnife.bind(this, view);
-        TypefaceUtil.overrideFonts(view                           );
+        TypefaceUtil.overrideFonts(view);
         mRipplePulseLayout = findViewById(R.id.layout_ripplepulse);
 
         supportViewPagerAdapter = new SupportViewPagerAdapter(this);
         vpSupport.setAdapter(supportViewPagerAdapter);
 
         new TabLayoutMediator(tbLayout, vpSupport, (tab, position) -> {
-            vpSupport.setCurrentItem(tab.getPosition(), true);
-            if (position == 0) {
-                tab.setText("جدید");
-            } else {
-                tab.setText("در حال بررسی");
-            }
+
+            tab.setCustomView(supportViewPagerAdapter.getTabView(position));
         }).attach();
+
+//        tbLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
+//            @Override
+//            public void onTabSelected(TabLayout.Tab tab) {
+//                supportViewPagerAdapter.setSelectView(tbLayout, tab.getPosition(), "select");
+//            }
+//
+//            @Override
+//            public void onTabUnselected(TabLayout.Tab tab) {
+//                supportViewPagerAdapter.setSelectView(tbLayout, tab.getPosition(), "unSelect");
+//            }
+//
+//            @Override
+//            public void onTabReselected(TabLayout.Tab tab) {
+//
+//            }
+//        });
 
         tbLayout.setSelectedTabIndicatorColor(Color.parseColor("#FF0000"));
         tbLayout.setTabTextColors(Color.parseColor("#868a99"), Color.parseColor("#ff5e5b"));
