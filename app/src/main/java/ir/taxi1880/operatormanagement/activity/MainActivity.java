@@ -25,6 +25,7 @@ import ir.taxi1880.operatormanagement.app.Constant;
 import ir.taxi1880.operatormanagement.app.DataHolder;
 import ir.taxi1880.operatormanagement.app.MyApplication;
 import ir.taxi1880.operatormanagement.dialog.GeneralDialog;
+import ir.taxi1880.operatormanagement.fragment.AccountFragment;
 import ir.taxi1880.operatormanagement.fragment.MessageFragment;
 import ir.taxi1880.operatormanagement.fragment.NotificationFragment;
 import ir.taxi1880.operatormanagement.helper.FragmentHelper;
@@ -60,6 +61,13 @@ public class MainActivity extends AppCompatActivity implements NotificationFragm
     void onMessage() {
         FragmentHelper
                 .toFragment(MyApplication.currentActivity, new MessageFragment())
+                .replace();
+    }
+
+    @OnClick(R.id.imgProfile)
+    void onProfile(){
+        FragmentHelper
+                .toFragment(MyApplication.currentActivity, new AccountFragment())
                 .replace();
     }
 
