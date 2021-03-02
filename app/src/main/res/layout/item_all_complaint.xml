@@ -20,30 +20,23 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:layout_marginStart="10dp"
-
-            android:layout_marginLeft="10dp"
-            android:layout_marginTop="10dp"
-            android:layout_marginEnd="10dp"
-            android:layout_marginRight="10dp"
-            android:layout_weight="0.5"
-            android:layoutDirection="rtl"
-            android:paddingTop="10dp"
-            android:paddingBottom="10dp">
+            android:orientation="horizontal"
+            android:layout_margin="@dimen/_10sdp"
+            android:layout_weight="0.5">
 
             <LinearLayout
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
-                android:layout_weight="0.25"
+                android:layout_weight="1"
                 android:gravity="center_vertical"
-                android:layoutDirection="rtl"
-                android:orientation="horizontal">
+                android:orientation="horizontal"
+                android:padding="@dimen/_8sdp">
 
                 <ImageView
-                    android:layout_width="30dp"
-                    android:layout_height="match_parent"
-                    android:padding="@dimen/_3sdp"
-                    android:src="@drawable/ic_date" />
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:src="@drawable/ic_date"
+                    android:layout_marginLeft="@dimen/_10sdp"/>
 
                 <TextView
                     android:id="@+id/txtComplaintDate"
@@ -62,14 +55,15 @@
             <LinearLayout
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
-                android:layout_weight="0.25"
-                android:layoutDirection="rtl"
+                android:layout_weight="1"
+                android:gravity="center_vertical"
                 android:orientation="horizontal"
                 android:padding="@dimen/_8sdp">
 
                 <ImageView
-                    android:layout_width="30dp"
-                    android:layout_height="match_parent"
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:layout_marginLeft="@dimen/_10sdp"
                     android:src="@drawable/ic_timer" />
 
                 <TextView
@@ -85,7 +79,6 @@
                     android:textStyle="bold" />
 
             </LinearLayout>
-
 
         </LinearLayout>
 

@@ -55,7 +55,7 @@ public class AllComplaintAdapter extends BaseAdapter {
     public View getView(int i, View view, ViewGroup viewGroup) {
         if (view == null) {
             view = LayoutInflater.from(mContext).inflate(R.layout.item_all_complaint, viewGroup, false);
-            TypefaceUtil.overrideFonts(view, MyApplication.IraSanSMedume);
+            TypefaceUtil.overrideFonts(view);
         }
 
         currentAllComplaintModel = (AllComplaintModel) getItem(i);
