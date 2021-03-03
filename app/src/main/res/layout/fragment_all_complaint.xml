@@ -22,13 +22,21 @@
             app:indicatorColor="@color/colorPrimaryDark"
             app:indicatorName="BallBeatIndicator" />
 
-        <ListView
-            android:id="@+id/complaintList"
+        <com.dinuscxj.refresh.RecyclerRefreshLayout
+            android:id="@+id/refreshPage"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:divider="@null"
-            android:listSelector="@color/transparent"
-            tools:listitem="@layout/item_all_complaint" />
+            android:layout_height="match_parent">
+
+            <ListView
+                android:id="@+id/complaintList"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:divider="@null"
+                android:listSelector="@color/transparent"
+                tools:listitem="@layout/item_all_complaint" />
+
+        </com.dinuscxj.refresh.RecyclerRefreshLayout>
+
 
         <TextView
             android:layout_width="match_parent"

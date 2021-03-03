@@ -1,6 +1,5 @@
 package ir.taxi1880.operatormanagement.fragment;
 
-import android.content.Context;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -11,6 +10,8 @@ import android.widget.ViewFlipper;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+
+import com.dinuscxj.refresh.RecyclerRefreshLayout;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -24,13 +25,16 @@ import ir.taxi1880.operatormanagement.R;
 import ir.taxi1880.operatormanagement.adapter.AllComplaintAdapter;
 import ir.taxi1880.operatormanagement.app.EndPoints;
 import ir.taxi1880.operatormanagement.app.MyApplication;
-import ir.taxi1880.operatormanagement.dataBase.DataBase;
 import ir.taxi1880.operatormanagement.helper.TypefaceUtil;
 import ir.taxi1880.operatormanagement.model.AllComplaintModel;
 import ir.taxi1880.operatormanagement.okHttp.RequestHelper;
 
 public class AllComplaintFragment extends Fragment {
     Unbinder unbinder;
+
+
+    @BindView(R.id.refreshPage)
+    RecyclerRefreshLayout refreshPage;
 
     @BindView(R.id.complaintList)
     ListView complaintList;
@@ -53,6 +57,8 @@ public class AllComplaintFragment extends Fragment {
 
         getListen();
 
+        refreshPage.setOnRefreshListener(() -> getListen());
+
         return view;
     }
 
@@ -67,6 +73,8 @@ public class AllComplaintFragment extends Fragment {
         public void onResponse(Runnable reCall, Object... args) {
             MyApplication.handler.post(() -> {
                 try {
+                    if (refreshPage != null)
+                        refreshPage.setRefreshing(false);
                     allComplaintModels = new ArrayList<>();
                     JSONObject listenObj = new JSONObject(args[0].toString());
                     boolean success = listenObj.getBoolean("success");
@@ -113,6 +121,8 @@ public class AllComplaintFragment extends Fragment {
                     }
 
                 } catch (Exception e) {
+                    if (refreshPage != null)
+                        refreshPage.setRefreshing(false);
                     if (vfDownload != null)
                         vfDownload.setDisplayedChild(2);
                     e.printStackTrace();
@@ -123,6 +133,8 @@ public class AllComplaintFragment extends Fragment {
         @Override
         public void onFailure(Runnable reCall, Exception e) {
             MyApplication.handler.post(() -> {
+                if (refreshPage != null)
+                    refreshPage.setRefreshing(false);
                 if (vfDownload != null)
                     vfDownload.setDisplayedChild(2);
             });

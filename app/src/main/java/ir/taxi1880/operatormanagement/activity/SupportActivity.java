@@ -235,6 +235,7 @@ public class SupportActivity extends AppCompatActivity {
 
         supportViewPagerAdapter = new SupportViewPagerAdapter(this);
         vpSupport.setAdapter(supportViewPagerAdapter);
+        vpSupport.setUserInputEnabled(false);
 
         new TabLayoutMediator(tbLayout, vpSupport, (tab, position) -> {
             tab.setCustomView(supportViewPagerAdapter.getTabView(position));
