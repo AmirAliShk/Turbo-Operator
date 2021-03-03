@@ -31,6 +31,12 @@ import ir.taxi1880.operatormanagement.okHttp.RequestHelper;
 public class AllComplaintFragment extends Fragment {
     Unbinder unbinder;
 
+    public interface RefreshBadgeCounter {
+        void counter(int count);
+    }
+
+    RefreshBadgeCounter refreshBadgeCounter;
+
     @BindView(R.id.complaintList)
     ListView complaintList;
 
@@ -39,6 +45,13 @@ public class AllComplaintFragment extends Fragment {
 
     AllComplaintAdapter mAdapter;
     ArrayList<AllComplaintModel> allComplaintModels;
+
+    public AllComplaintFragment(RefreshBadgeCounter refreshBadgeCounter) {
+        this.refreshBadgeCounter = refreshBadgeCounter;
+    }
+
+    public AllComplaintFragment() {
+    }
 
     @Nullable
     @Override
@@ -93,8 +106,17 @@ public class AllComplaintFragment extends Fragment {
                             allComplaintModels.add(model);
                         }
 
-                        mAdapter = new AllComplaintAdapter(MyApplication.currentActivity, allComplaintModels);
-                        complaintList.setAdapter(mAdapter);
+                        if (allComplaintModels.size() == 0) {
+                            if (vfDownload != null)
+                                vfDownload.setDisplayedChild(3);
+                        } else {
+                            if (vfDownload != null)
+                                vfDownload.setDisplayedChild(1);
+                            mAdapter = new AllComplaintAdapter(MyApplication.currentActivity, allComplaintModels);
+                            complaintList.setAdapter(mAdapter);
+                            refreshBadgeCounter.counter(allComplaintModels.size());
+                        }
+
                     } else {
                         if (vfDownload != null)
                             vfDownload.setDisplayedChild(2);

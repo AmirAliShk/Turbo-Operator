@@ -177,6 +177,10 @@ public class SupportActivity extends AppCompatActivity {
         Log.i(TAG, "onRejectPress: " + i);
         if (call != null) {
             call.accept();
+            Address address = call.getRemoteAddress();
+            Bundle b = new Bundle();
+            b.putString("number", address.getUsername());
+            FragmentHelper.toFragment(MyApplication.currentActivity, new SupportDriverTripsFragment()).setArguments(b).replace();
 //      if (getMobileNumber().isEmpty() && isTellValidable)
 //        MyApplication.handler.postDelayed(() -> onPressDownload(), 400);
         } else if (calls.length > 0) {

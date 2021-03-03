@@ -23,6 +23,8 @@ import com.warkiz.widget.IndicatorSeekBar;
 import com.warkiz.widget.OnSeekChangeListener;
 import com.warkiz.widget.SeekParams;
 
+import org.w3c.dom.Text;
+
 import java.io.File;
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -85,7 +87,7 @@ public class PendingComplaintFragment extends Fragment {
     TextView txtStationCode;
 
     @OnClick(R.id.imgPlay)
-    void onPlay(){
+    void onPlay() {
         Log.i("URL", "show: " + EndPoints.CALL_VOICE + dataBase.getComplaintRow().getVoipId());
         String voiceName = dataBase.getComplaintRow().getId() + ".mp3";
         File file = new File(MyApplication.DIR_ROOT + MyApplication.VOICE_FOLDER_NAME + "/" + voiceName);
@@ -104,12 +106,16 @@ public class PendingComplaintFragment extends Fragment {
     @BindView(R.id.vfPlayPause)
     ViewFlipper vfPlayPause;
 
+    @BindView(R.id.txtEmpty)
+    TextView txtEmpty;
+
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_pending_complaint, container, false);
         unbinder = ButterKnife.bind(this, view);
         TypefaceUtil.overrideFonts(view, MyApplication.IraSanSMedume);
+        TypefaceUtil.overrideFonts(txtEmpty);
 
         dataBase = new DataBase(MyApplication.context);
 
@@ -238,8 +244,11 @@ public class PendingComplaintFragment extends Fragment {
     @Override
     public void setMenuVisibility(boolean menuVisible) {
         super.setMenuVisibility(menuVisible);
-        if (menuVisible){
-            if (dataBase.getComplaintRow() != null) {
+        if (menuVisible) {
+            if (dataBase.getComplaintRow() == null) {
+                if (vfPending != null)
+                    vfPending.setDisplayedChild(2);
+            } else {
                 AllComplaintModel model = dataBase.getComplaintRow();
                 txtAddress.setText(StringHelper.toPersianDigits(model.getAddress()));
                 txtStationCode.setText(StringHelper.toPersianDigits("199"));
@@ -271,8 +280,6 @@ public class PendingComplaintFragment extends Fragment {
                         }
                     }
                 });
-
-            } else {
                 if (vfPending != null)
                     vfPending.setDisplayedChild(1);
             }

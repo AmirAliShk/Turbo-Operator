@@ -96,7 +96,7 @@ public class EndPoints {
   /******************************** Support Api *********************************/
 
   public static final String PASSENGER_INFO = SUPPORT_WEBSERVICE_PATH + "passengerInfo";
-  public static final String SEARCH_SERVICE = SUPPORT_WEBSERVICE_PATH + "searchService";
+  public static final String SEARCH_SERVICE = SUPPORT_TRIP_WEBSERVICE_PATH + "search";
   public static final String SERVICE_DETAIL = SUPPORT_WEBSERVICE_PATH + "serviceDetail";
   public static final String CANCEL_SERVICE = SUPPORT_WEBSERVICE_PATH + "cancelService";
   public static final String LAST_DRIVER_POSITION = SUPPORT_WEBSERVICE_PATH + "lastDriverPosition";

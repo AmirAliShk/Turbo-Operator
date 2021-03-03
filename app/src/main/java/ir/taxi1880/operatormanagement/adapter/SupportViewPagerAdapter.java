@@ -1,5 +1,6 @@
 package ir.taxi1880.operatormanagement.adapter;
 
+import android.graphics.Typeface;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ImageView;
@@ -16,8 +17,10 @@ import ir.taxi1880.operatormanagement.R;
 import ir.taxi1880.operatormanagement.app.MyApplication;
 import ir.taxi1880.operatormanagement.fragment.AllComplaintFragment;
 import ir.taxi1880.operatormanagement.fragment.PendingComplaintFragment;
+import ir.taxi1880.operatormanagement.helper.TypefaceUtil;
 
 public class SupportViewPagerAdapter extends FragmentStateAdapter {
+    int badgeCounter;
 
     public SupportViewPagerAdapter(@NonNull FragmentActivity fragment) {
         super(fragment);
@@ -29,7 +32,9 @@ public class SupportViewPagerAdapter extends FragmentStateAdapter {
         Fragment fragment = new AllComplaintFragment();
         switch (position) {
             case 0:
-                fragment = new AllComplaintFragment();
+                fragment = new AllComplaintFragment(count -> {
+                    badgeCounter = count;
+                });
                 break;
             case 1:
                 fragment = new PendingComplaintFragment();
@@ -47,17 +52,19 @@ public class SupportViewPagerAdapter extends FragmentStateAdapter {
         View v = LayoutInflater.from(MyApplication.context).inflate(R.layout.support_item_tab, null);
         TextView txtTabTitle = v.findViewById(R.id.txtTabTitle);
         TextView txtBadgeCount = v.findViewById(R.id.txtBadgeCount);
+        TypefaceUtil.overrideFonts(v);
         if (position == 0) {
             txtTabTitle.setText("جدید");
+            if (badgeCounter == 0) {
+                txtBadgeCount.setVisibility(View.GONE);
+            } else {
+                txtBadgeCount.setVisibility(View.VISIBLE);
+                txtBadgeCount.setText(badgeCounter + "");
+            }
         } else {
             txtTabTitle.setText("درحال بررسی");
+            txtBadgeCount.setVisibility(View.GONE);
         }
-
-//        if (showBadge){
-//           txtBadgeCount.setVisibility(View.VISIBLE);
-//        }else {
-//            txtBadgeCount.setVisibility(View.GONE);
-//        }
 
         return v;
     }
