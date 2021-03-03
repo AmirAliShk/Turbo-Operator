@@ -1,5 +1,6 @@
 package ir.taxi1880.operatormanagement.fragment;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -31,12 +32,6 @@ import ir.taxi1880.operatormanagement.okHttp.RequestHelper;
 public class AllComplaintFragment extends Fragment {
     Unbinder unbinder;
 
-    public interface RefreshBadgeCounter {
-        void counter(int count);
-    }
-
-    RefreshBadgeCounter refreshBadgeCounter;
-
     @BindView(R.id.complaintList)
     ListView complaintList;
 
@@ -45,10 +40,6 @@ public class AllComplaintFragment extends Fragment {
 
     AllComplaintAdapter mAdapter;
     ArrayList<AllComplaintModel> allComplaintModels;
-
-    public AllComplaintFragment(RefreshBadgeCounter refreshBadgeCounter) {
-        this.refreshBadgeCounter = refreshBadgeCounter;
-    }
 
     public AllComplaintFragment() {
     }
@@ -114,7 +105,6 @@ public class AllComplaintFragment extends Fragment {
                                 vfDownload.setDisplayedChild(1);
                             mAdapter = new AllComplaintAdapter(MyApplication.currentActivity, allComplaintModels);
                             complaintList.setAdapter(mAdapter);
-                            refreshBadgeCounter.counter(allComplaintModels.size());
                         }
 
                     } else {

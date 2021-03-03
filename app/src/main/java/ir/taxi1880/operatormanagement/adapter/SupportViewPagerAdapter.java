@@ -20,7 +20,6 @@ import ir.taxi1880.operatormanagement.fragment.PendingComplaintFragment;
 import ir.taxi1880.operatormanagement.helper.TypefaceUtil;
 
 public class SupportViewPagerAdapter extends FragmentStateAdapter {
-    int badgeCounter;
 
     public SupportViewPagerAdapter(@NonNull FragmentActivity fragment) {
         super(fragment);
@@ -32,9 +31,7 @@ public class SupportViewPagerAdapter extends FragmentStateAdapter {
         Fragment fragment = new AllComplaintFragment();
         switch (position) {
             case 0:
-                fragment = new AllComplaintFragment(count -> {
-                    badgeCounter = count;
-                });
+                fragment = new AllComplaintFragment();
                 break;
             case 1:
                 fragment = new PendingComplaintFragment();
@@ -52,15 +49,16 @@ public class SupportViewPagerAdapter extends FragmentStateAdapter {
         View v = LayoutInflater.from(MyApplication.context).inflate(R.layout.support_item_tab, null);
         TextView txtTabTitle = v.findViewById(R.id.txtTabTitle);
         TextView txtBadgeCount = v.findViewById(R.id.txtBadgeCount);
+        txtBadgeCount.setVisibility(View.GONE);
         TypefaceUtil.overrideFonts(v);
         if (position == 0) {
             txtTabTitle.setText("جدید");
-            if (badgeCounter == 0) {
-                txtBadgeCount.setVisibility(View.GONE);
-            } else {
-                txtBadgeCount.setVisibility(View.VISIBLE);
-                txtBadgeCount.setText(badgeCounter + "");
-            }
+//            if (counter == 0) {
+//                txtBadgeCount.setVisibility(View.GONE);
+//            } else {
+//                txtBadgeCount.setVisibility(View.VISIBLE);
+//                txtBadgeCount.setText(counter + "");
+//            }
         } else {
             txtTabTitle.setText("درحال بررسی");
             txtBadgeCount.setVisibility(View.GONE);

@@ -251,7 +251,7 @@ public class PendingComplaintFragment extends Fragment {
             } else {
                 AllComplaintModel model = dataBase.getComplaintRow();
                 txtAddress.setText(StringHelper.toPersianDigits(model.getAddress()));
-                txtStationCode.setText(StringHelper.toPersianDigits("199"));
+                txtStationCode.setText(StringHelper.toPersianDigits("199")); //TODO correct station name an station code
                 txtCity.setText(StringHelper.toPersianDigits("مشهد"));
                 txtDescription.setText(StringHelper.toPersianDigits(model.getDescription()));
                 txtTripTime.setText(StringHelper.toPersianDigits(model.getSendTime()));

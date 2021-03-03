@@ -44,6 +44,7 @@ import ir.taxi1880.operatormanagement.app.MyApplication;
 import ir.taxi1880.operatormanagement.dialog.CallDialog;
 import ir.taxi1880.operatormanagement.dialog.GeneralDialog;
 import ir.taxi1880.operatormanagement.dialog.LoadingDialog;
+import ir.taxi1880.operatormanagement.fragment.AllComplaintFragment;
 import ir.taxi1880.operatormanagement.fragment.CheckVerificationFragment;
 import ir.taxi1880.operatormanagement.fragment.MessageFragment;
 import ir.taxi1880.operatormanagement.fragment.NotificationFragment;
@@ -236,7 +237,6 @@ public class SupportActivity extends AppCompatActivity {
         vpSupport.setAdapter(supportViewPagerAdapter);
 
         new TabLayoutMediator(tbLayout, vpSupport, (tab, position) -> {
-
             tab.setCustomView(supportViewPagerAdapter.getTabView(position));
         }).attach();
 

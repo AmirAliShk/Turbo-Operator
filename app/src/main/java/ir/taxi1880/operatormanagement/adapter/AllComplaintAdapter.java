@@ -9,6 +9,7 @@ import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.RatingBar;
 import android.widget.TextView;
+import android.widget.ViewFlipper;
 
 import org.json.JSONObject;
 
@@ -18,6 +19,7 @@ import ir.taxi1880.operatormanagement.R;
 import ir.taxi1880.operatormanagement.app.EndPoints;
 import ir.taxi1880.operatormanagement.app.MyApplication;
 import ir.taxi1880.operatormanagement.dataBase.DataBase;
+import ir.taxi1880.operatormanagement.dialog.GeneralDialog;
 import ir.taxi1880.operatormanagement.helper.StringHelper;
 import ir.taxi1880.operatormanagement.helper.TypefaceUtil;
 import ir.taxi1880.operatormanagement.model.AllComplaintModel;
@@ -30,6 +32,8 @@ public class AllComplaintAdapter extends BaseAdapter {
     private ArrayList<AllComplaintModel> allComplaintModels;
     DataBase dataBase;
     AllComplaintModel currentAllComplaintModel;
+    ViewFlipper viewFlipper;
+    int position;
 
     public AllComplaintAdapter(Context mContext, ArrayList<AllComplaintModel> allComplaintModels) {
         this.mContext = mContext;
@@ -62,11 +66,13 @@ public class AllComplaintAdapter extends BaseAdapter {
         dataBase = new DataBase(context);
         TextView txtComplaintDate = view.findViewById(R.id.txtComplaintDate);
         TextView txtComplaintTime = view.findViewById(R.id.txtComplaintTime);
+        viewFlipper = view.findViewById(R.id.vfAccept);
 
         txtComplaintDate.setText(StringHelper.toPersianDigits(currentAllComplaintModel.getDate()));
-        txtComplaintTime.setText(StringHelper.toPersianDigits(currentAllComplaintModel.getTime().substring(0,5)));
+        txtComplaintTime.setText(StringHelper.toPersianDigits(currentAllComplaintModel.getTime().substring(0, 5)));
 
-        view.findViewById(R.id.llAccept).setOnClickListener(view1 -> {
+        view.findViewById(R.id.btnAccept).setOnClickListener(view1 -> {
+            position = i;
             getAccept(currentAllComplaintModel.getId());
         });
 
@@ -74,6 +80,9 @@ public class AllComplaintAdapter extends BaseAdapter {
     }
 
     private void getAccept(int id) {
+        if (viewFlipper != null) {
+            viewFlipper.setDisplayedChild(1);
+        }
         RequestHelper.builder(EndPoints.ACCEPT_LISTEN)
                 .addParam("listenId", id)
                 .listener(getAccept)
@@ -92,13 +101,33 @@ public class AllComplaintAdapter extends BaseAdapter {
                         JSONObject data = obj.getJSONObject("data");
                         boolean status = data.getBoolean("status");
                         if (status) {
-                            dataBase.insertComplaint(currentAllComplaintModel);
+                            new GeneralDialog()
+                                    .message("با موفقیت به لیست در حال بررسی اضافه شد")
+                                    .cancelable(false)
+                                    .firstButton("باشه", () -> {
+                                        dataBase.insertComplaint(currentAllComplaintModel);
+                                        allComplaintModels.remove(position);
+                                        notifyDataSetChanged();
+                                    })
+                                    .show();
                         }
                     }
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
+                if (viewFlipper != null) {
+                    viewFlipper.setDisplayedChild(0);
+                }
 
+            });
+        }
+
+        @Override
+        public void onFailure(Runnable reCall, Exception e) {
+            MyApplication.handler.post(() -> {
+                if (viewFlipper != null) {
+                    viewFlipper.setDisplayedChild(0);
+                }
             });
         }
     };
