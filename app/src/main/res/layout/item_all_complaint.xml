@@ -83,6 +83,16 @@
 
         </LinearLayout>
 
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/txtComplaintId"/>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/txtComplaintVoipId"/>
+
         <ViewFlipper
             android:id="@+id/vfAccept"
             android:layout_width="match_parent"

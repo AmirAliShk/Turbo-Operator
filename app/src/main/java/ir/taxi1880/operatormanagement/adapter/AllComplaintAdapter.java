@@ -66,14 +66,18 @@ public class AllComplaintAdapter extends BaseAdapter {
         dataBase = new DataBase(context);
         TextView txtComplaintDate = view.findViewById(R.id.txtComplaintDate);
         TextView txtComplaintTime = view.findViewById(R.id.txtComplaintTime);
+        TextView txtComplaintId = view.findViewById(R.id.txtComplaintId);
+        TextView txtComplaintVoipId = view.findViewById(R.id.txtComplaintVoipId);
         viewFlipper = view.findViewById(R.id.vfAccept);
 
         txtComplaintDate.setText(StringHelper.toPersianDigits(currentAllComplaintModel.getDate()));
         txtComplaintTime.setText(StringHelper.toPersianDigits(currentAllComplaintModel.getTime().substring(0, 5)));
+        txtComplaintId.setText("  id:  "+currentAllComplaintModel.getId()+"");
+        txtComplaintVoipId.setText("  voipId:  "+currentAllComplaintModel.getVoipId()+"");
 
         view.findViewById(R.id.btnAccept).setOnClickListener(view1 -> {
             position = i;
-            getAccept(currentAllComplaintModel.getId());
+            getAccept(allComplaintModels.get(i).getId());
         });
 
         return view;
@@ -105,7 +109,7 @@ public class AllComplaintAdapter extends BaseAdapter {
                                     .message("با موفقیت به لیست در حال بررسی اضافه شد")
                                     .cancelable(false)
                                     .firstButton("باشه", () -> {
-                                        dataBase.insertComplaint(currentAllComplaintModel);
+                                        dataBase.insertComplaint(allComplaintModels.get(position));
                                         allComplaintModels.remove(position);
                                         notifyDataSetChanged();
                                     })

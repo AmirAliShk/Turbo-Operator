@@ -36,6 +36,13 @@ public class SaveResultDialog {
     String culprit;
     String result;
     DataBase dataBase;
+    int complaintId;
+
+    public interface ComplaintResult {
+        void onSuccess(boolean success);
+    }
+
+    ComplaintResult complaintResult;
 
     @BindView(R.id.rgResult)
     RadioGroup rgResult;
@@ -50,42 +57,44 @@ public class SaveResultDialog {
     void onSubmit() {
         if (rgCulprit.getCheckedRadioButtonId() == -1) {
             MyApplication.Toast("لطفا مقصر را مشخص کنید.", Toast.LENGTH_SHORT);
-        } else if (rgResult.getCheckedRadioButtonId() == -1) {
-            MyApplication.Toast("لطفا نتیجه را مشخص کنید.", Toast.LENGTH_SHORT);
-        } else {
-            switch (rgCulprit.getCheckedRadioButtonId()) {
-                case R.id.rbCityRegistrationOperatorBlame:
-                    culprit = "1";
-                    break;
-                case R.id.rbStationRegistrationOperatorBlame:
-                    culprit = "2";
-                    break;
-                case R.id.rbUnknown:
-                    culprit = "3";
-                    break;
-            }
-            switch (rgResult.getCheckedRadioButtonId()) {
-                case R.id.rbDeleteAddress:
-                    result = "1";
-                    break;
-                case R.id.rbDeleteStation:
-                    result = "2";
-                    break;
-                case R.id.rbDeleteCity:
-                    result = "3";
-                    break;
-                case R.id.rbOtherCases:
-                    result = "4";
-                    break;
-            }
+            return;
         }
+
+        if (rgResult.getCheckedRadioButtonId() == -1) {
+            MyApplication.Toast("لطفا نتیجه را مشخص کنید.", Toast.LENGTH_SHORT);
+            return;
+        }
+
+        switch (rgCulprit.getCheckedRadioButtonId()) {
+            case R.id.rbTripRegistrationOperatorBlame:
+                culprit = "1";
+                break;
+            case R.id.rbStationRegistrationOperatorBlame:
+                culprit = "2";
+                break;
+            case R.id.rbUnknown:
+                culprit = "3";
+                break;
+        }
+
+        switch (rgResult.getCheckedRadioButtonId()) {
+            case R.id.rbDeleteAddress:
+                result = "1";
+                break;
+            case R.id.rbDeleteStation:
+                result = "2";
+                break;
+            case R.id.rbDeleteCity:
+                result = "3";
+                break;
+            case R.id.rbOtherCases:
+                result = "4";
+                break;
+        }
+
         int listenId = dataBase.getComplaintRow().getId();
 
-        if (vfLoader != null)
-            vfLoader.setDisplayedChild(1);
-
         sendResult(culprit, result, listenId);
-        dismiss();
     }
 
     @BindView(R.id.btnSubmit)
@@ -96,7 +105,7 @@ public class SaveResultDialog {
         dismiss();
     }
 
-    public void show() {
+    public void show(int complaintId, ComplaintResult complaintResult) {
         if (MyApplication.currentActivity == null || MyApplication.currentActivity.isFinishing())
             return;
         dialog = new Dialog(MyApplication.currentActivity);
@@ -112,11 +121,16 @@ public class SaveResultDialog {
         dialog.getWindow().setAttributes(wlp);
         dialog.setCancelable(false);
 
+        dataBase = new DataBase(MyApplication.context);
+        this.complaintId = complaintId;
+        this.complaintResult = complaintResult;
 
         dialog.show();
     }
 
     private void sendResult(String culprit, String result, int listenId) {
+        if (vfLoader != null)
+            vfLoader.setDisplayedChild(1);
         RequestHelper.builder(EndPoints.LISTEN)
                 .addParam("culprit", culprit)
                 .addParam("result", result)
@@ -135,10 +149,25 @@ public class SaveResultDialog {
                     String message = obj.getString("message");
 
                     if (success) {
+                        JSONObject data = obj.getJSONObject("data");
+                        boolean status = data.getBoolean("status");
+                        if (status) {
+                            new GeneralDialog()
+                                    .title("تایید شد")
+                                    .message(message)
+                                    .cancelable(false)
+                                    .firstButton("باشه", () -> {
+                                        complaintResult.onSuccess(true);
+                                        dismiss();
+                                        dataBase.deleteComplaintRow(complaintId);
+                                    })
+                                    .show();
+                        }
                         if (vfLoader != null)
                             vfLoader.setDisplayedChild(0);
                     }
                 } catch (Exception e) {
+                    complaintResult.onSuccess(false);
                     if (vfLoader != null)
                         vfLoader.setDisplayedChild(0);
                     e.printStackTrace();
@@ -148,9 +177,11 @@ public class SaveResultDialog {
 
         @Override
         public void onFailure(Runnable reCall, Exception e) {
-            if (vfLoader != null)
-                vfLoader.setDisplayedChild(0);
-            super.onFailure(reCall, e);
+            MyApplication.handler.post(() -> {
+                complaintResult.onSuccess(false);
+                if (vfLoader != null)
+                    vfLoader.setDisplayedChild(0);
+            });
         }
     };
 

@@ -83,10 +83,10 @@
                 android:padding="10dp">
 
                 <RadioButton
-                    android:id="@+id/rbCityRegistrationOperatorBlame"
+                    android:id="@+id/rbTripRegistrationOperatorBlame"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="اپراتور ثبت شهر مقصر است." />
+                    android:text="اپراتور ثبت سفر مقصر است." />
 
                 <RadioButton
                     android:id="@+id/rbStationRegistrationOperatorBlame"

@@ -11,14 +11,14 @@ public class EndPoints {
 //    http://172.16.2.210:1885/api/findway/citylatinname/address
 
   public static final String IP = (BuildConfig.DEBUG)
-          ? "http://172.16.2.203"
-//          ? "http://turbotaxi.ir"
+//          ? "http://172.16.2.203"
+          ? "http://turbotaxi.ir"
           : "http://turbotaxi.ir";
 //          : "http://172.16.2.203";
 
   public static final String HAKWEYE_IP = (BuildConfig.DEBUG)
-          ? "http://172.16.2.201"
-//          ? "http://turbotaxi.ir"
+//          ? "http://172.16.2.201"
+          ? "http://turbotaxi.ir"
           : "http://turbotaxi.ir";
 //          : "http://172.16.2.203";
 
@@ -43,7 +43,7 @@ public class EndPoints {
   public static final String SUPPORT_TRIP_WEBSERVICE_PATH = IP + ":" + TRIP_APIPort + "/api/operator/v3/support/trip/";
   public static final String SHIFT_WEBSERVICE_PATH = IP + ":" + TRIP_APIPort + "/api/operator/v3/shift/";
   public static final String TRIP_WEBSERVICE_PATH = IP + ":" + TRIP_APIPort + "/api/operator/v3/trip/";
-  public static final String CALL_VOICE_PATH = "http://172.16.2.222" + ":" + CALL_VOICE_APIPort + "/api/v1/getCallvoice/"; //  http://turbotaxi.ir:1884/api/getCallvoice1604130536.10343290
+  public static final String CALL_VOICE_PATH = IP + ":" + CALL_VOICE_APIPort + "/api/v1/getCallvoice/"; //  http://turbotaxi.ir:1884/api/getCallvoice1604130536.10343290
 
   public static final String HAWKEYE_PATH = HAKWEYE_IP + ":" + HAWKEYE_APIPort + "/api/user/v1/";
   public static final String HAWKEYE_LOGIN_PATH = HAKWEYE_IP + ":" + HAWKEYE_APIPort + "/api/user/v1/login/phone/";

@@ -42,6 +42,7 @@ import ir.taxi1880.operatormanagement.dataBase.DataBase;
 import ir.taxi1880.operatormanagement.dialog.PendingComplaintOptionsDialog;
 import ir.taxi1880.operatormanagement.dialog.SaveResultDialog;
 import ir.taxi1880.operatormanagement.helper.FileHelper;
+import ir.taxi1880.operatormanagement.helper.FragmentHelper;
 import ir.taxi1880.operatormanagement.helper.StringHelper;
 import ir.taxi1880.operatormanagement.helper.TypefaceUtil;
 import ir.taxi1880.operatormanagement.model.AllComplaintModel;
@@ -52,11 +53,16 @@ public class PendingComplaintFragment extends Fragment {
     Unbinder unbinder;
     DataBase dataBase;
     MediaPlayer mediaPlayer;
+    AllComplaintModel model;
 
     @OnClick(R.id.btnSaveResult)
     void onSaveResult() {
         new SaveResultDialog()
-                .show();
+                .show(model.getId(), success -> {
+                    if (success) {
+                        MyApplication.handler.postDelayed(() -> getComplaintFromDB(),200);
+                    }
+                });
     }
 
     @OnClick(R.id.btnOptions)
@@ -108,6 +114,12 @@ public class PendingComplaintFragment extends Fragment {
 
     @BindView(R.id.txtEmpty)
     TextView txtEmpty;
+
+    @BindView(R.id.txtComplaintVoipId)
+    TextView txtComplaintVoipId;
+
+    @BindView(R.id.txtComplaintId)
+    TextView txtComplaintId;
 
     @Nullable
     @Override
@@ -245,45 +257,52 @@ public class PendingComplaintFragment extends Fragment {
     public void setMenuVisibility(boolean menuVisible) {
         super.setMenuVisibility(menuVisible);
         if (menuVisible) {
-            if (dataBase.getComplaintRow() == null) {
-                if (vfPending != null)
-                    vfPending.setDisplayedChild(2);
-            } else {
-                AllComplaintModel model = dataBase.getComplaintRow();
-                txtAddress.setText(StringHelper.toPersianDigits(model.getAddress()));
-                txtStationCode.setText(StringHelper.toPersianDigits("199")); //TODO correct station name an station code
-                txtCity.setText(StringHelper.toPersianDigits("مشهد"));
-                txtDescription.setText(StringHelper.toPersianDigits(model.getDescription()));
-                txtTripTime.setText(StringHelper.toPersianDigits(model.getSendTime()));
-                txtTripDate.setText(StringHelper.toPersianDigits(model.getDate()));
+            getComplaintFromDB();
+        }
+    }
 
-                skbTimer.setProgress(0);
+    void getComplaintFromDB() {
+        if (dataBase.getComplaintCount() == 0) {
+            if (vfPending != null)
+                vfPending.setDisplayedChild(2);
+        } else {
+            model = dataBase.getComplaintRow();
+            txtAddress.setText(StringHelper.toPersianDigits(model.getAddress()));
+            txtStationCode.setText(StringHelper.toPersianDigits("199")); //TODO correct station name an station code
+            txtCity.setText(StringHelper.toPersianDigits("مشهد"));
+            txtDescription.setText(StringHelper.toPersianDigits(model.getDescription()));
+            txtTripTime.setText(StringHelper.toPersianDigits(model.getTime()));
+            txtTripDate.setText(StringHelper.toPersianDigits(model.getDate()));
+            txtComplaintId.setText(StringHelper.toPersianDigits(model.getId() + ""));
+            txtComplaintVoipId.setText(StringHelper.toPersianDigits(model.getVoipId() + ""));
 
-                skbTimer.setOnSeekChangeListener(new OnSeekChangeListener() {
-                    @Override
-                    public void onSeeking(SeekParams seekParams) {
-                        int timeRemaining = seekParams.progress / 1000;
+            skbTimer.setProgress(0);
 
-                    }
+            skbTimer.setOnSeekChangeListener(new OnSeekChangeListener() {
+                @Override
+                public void onSeeking(SeekParams seekParams) {
+                    int timeRemaining = seekParams.progress / 1000;
 
-                    @Override
-                    public void onStartTrackingTouch(IndicatorSeekBar seekBar) {
+                }
 
-                    }
+                @Override
+                public void onStartTrackingTouch(IndicatorSeekBar seekBar) {
 
-                    @Override
-                    public void onStopTrackingTouch(IndicatorSeekBar seekBar) {
-                        if (mediaPlayer != null) {
-                            if (seekBar != null) {
-                                mediaPlayer.seekTo(seekBar.getProgress());
-                            }
+                }
+
+                @Override
+                public void onStopTrackingTouch(IndicatorSeekBar seekBar) {
+                    if (mediaPlayer != null) {
+                        if (seekBar != null) {
+                            mediaPlayer.seekTo(seekBar.getProgress());
                         }
                     }
-                });
-                if (vfPending != null)
-                    vfPending.setDisplayedChild(1);
-            }
+                }
+            });
+            if (vfPending != null)
+                vfPending.setDisplayedChild(1);
         }
+
     }
 
     @Override
@@ -330,5 +349,17 @@ public class PendingComplaintFragment extends Fragment {
             new AuthenticationInterceptor().refreshToken();
             return null;
         }
+    }
+
+    @Override
+    public void onPause() {
+        Log.i("TAG", "onPause: ");
+        super.onPause();
+    }
+
+    @Override
+    public void onResume() {
+        Log.i("TAG", "onResume: ");
+        super.onResume();
     }
 }

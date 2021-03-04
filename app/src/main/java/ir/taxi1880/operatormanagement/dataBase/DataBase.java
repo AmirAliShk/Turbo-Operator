@@ -406,10 +406,19 @@ public class DataBase extends SQLiteOpenHelper {
         boolean b = sqLiteDatabase.delete(COMPLAINT_TABLE, COLUMN_COMPLAINT_ID + "=" + id, null) > 0;
 
         if (b) {
-            Log.i("TripDataBase", "deleteRow: = true  " + id);
+            Log.i("deleteComplaintRow", "deleteRow: = true  " + id);
         } else {
-            Log.i("TripDataBase", "deleteRow: = false  " + id);
+            Log.i("deleteComplaintRow", "deleteRow: = false  " + id);
         }
+    }
+
+    public int getComplaintCount() {
+        String countQuery = "SELECT  * FROM " + COMPLAINT_TABLE;
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor cursor = db.rawQuery(countQuery, null);
+        int count = cursor.getCount();
+        cursor.close();
+        return count;
     }
 
 
