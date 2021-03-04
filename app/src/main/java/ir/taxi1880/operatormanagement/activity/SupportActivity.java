@@ -2,9 +2,13 @@ package ir.taxi1880.operatormanagement.activity;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
+import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 import androidx.viewpager2.widget.ViewPager2;
 
+import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
@@ -37,6 +41,7 @@ import butterknife.Unbinder;
 import ir.taxi1880.operatormanagement.R;
 import ir.taxi1880.operatormanagement.adapter.SupportViewPagerAdapter;
 import ir.taxi1880.operatormanagement.app.EndPoints;
+import ir.taxi1880.operatormanagement.app.Keys;
 import ir.taxi1880.operatormanagement.app.MyApplication;
 import ir.taxi1880.operatormanagement.dialog.CallDialog;
 import ir.taxi1880.operatormanagement.dialog.GeneralDialog;
@@ -284,7 +289,6 @@ public class SupportActivity extends AppCompatActivity {
             MyApplication.handler.post(() -> {
                 try {
                     LoadingDialog.dismissCancelableDialog();
-                    Log.i(TAG, "onResponse: " + args[0].toString());
                     JSONObject obj = new JSONObject(args[0].toString());
                     boolean success = obj.getBoolean("success");
                     String message = obj.getString("message");
@@ -311,7 +315,6 @@ public class SupportActivity extends AppCompatActivity {
                 } catch (JSONException e) {
                     LoadingDialog.dismiss();
                     e.printStackTrace();
-                    AvaCrashReporter.send(e, "TripRegisterActivity class, setActivate onResponse method");
                 }
 
             });
@@ -350,7 +353,6 @@ public class SupportActivity extends AppCompatActivity {
             MyApplication.handler.post(() -> {
                 try {
                     LoadingDialog.dismissCancelableDialog();
-                    Log.i(TAG, "onResponse: " + args[0].toString());
                     JSONObject obj = new JSONObject(args[0].toString());
                     boolean success = obj.getBoolean("success");
                     String message = obj.getString("message");
@@ -377,7 +379,6 @@ public class SupportActivity extends AppCompatActivity {
                 } catch (JSONException e) {
                     e.printStackTrace();
                     LoadingDialog.dismiss();
-                    AvaCrashReporter.send(e, "TripRegisterActivity class, setDeActivate onResponse method");
                 }
             });
         }
@@ -403,6 +404,26 @@ public class SupportActivity extends AppCompatActivity {
         rlNewInComingCall.setVisibility(View.GONE);
         llActionBar.setVisibility(View.VISIBLE);
     }
+
+    //receive userStatus from local broadcast
+    BroadcastReceiver userStatusReceiver = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            String messageUserStatus = intent.getStringExtra(Keys.KEY_MESSAGE_USER_STATUS);
+            boolean userStatus = intent.getBooleanExtra(Keys.KEY_USER_STATUS, false);
+            if (!userStatus) {
+                btnDeActivate.setBackgroundResource(R.drawable.bg_pink_edge);
+                btnActivate.setBackgroundColor(Color.parseColor("#00FFB2B2"));
+                btnDeActivate.setTextColor(Color.parseColor("#ffffff"));
+                MyApplication.prefManager.setActivateStatus(false);
+            } else {
+                btnActivate.setBackgroundResource(R.drawable.bg_green_edge);
+                btnDeActivate.setBackgroundColor(Color.parseColor("#00FFB2B2"));
+                btnDeActivate.setTextColor(Color.parseColor("#ffffff"));
+                MyApplication.prefManager.setActivateStatus(true);
+            }
+        }
+    };
 
     CoreListenerStub mCoreListener = new CoreListenerStub() {
         @Override
@@ -514,6 +535,10 @@ public class SupportActivity extends AppCompatActivity {
     protected void onStop() {
         super.onStop();
         MyApplication.prefManager.setAppRun(false);
+        if (userStatusReceiver != null) {
+            unregisterReceiver(userStatusReceiver);
+            LocalBroadcastManager.getInstance(MyApplication.currentActivity).unregisterReceiver(userStatusReceiver);
+        }
     }
 
     @Override
@@ -531,6 +556,8 @@ public class SupportActivity extends AppCompatActivity {
         MyApplication.prefManager.setAppRun(true);
         core = LinphoneService.getCore();
         core.addListener(mCoreListener);
+        registerReceiver(userStatusReceiver, new IntentFilter());
+        LocalBroadcastManager.getInstance(MyApplication.currentActivity).registerReceiver((userStatusReceiver), new IntentFilter(Keys.KEY_REFRESH_USER_STATUS));
     }
 
     @Override
