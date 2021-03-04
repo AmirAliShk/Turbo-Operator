@@ -1,6 +1,8 @@
 package ir.taxi1880.operatormanagement.activity;
 
 import android.app.NotificationManager;
+import android.content.ClipData;
+import android.content.ClipboardManager;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Build;
@@ -53,6 +55,11 @@ public class CallIncomingActivity extends AppCompatActivity {
             } else if (calls.length > 0) {
                 calls[0].accept();
             }
+
+            ClipboardManager clipboard = (ClipboardManager) getSystemService(Context.CLIPBOARD_SERVICE);
+            ClipData clip = ClipData.newPlainText("passengerTell", txtCallerNum.getText().toString());
+            clipboard.setPrimaryClip(clip);
+
         } catch (Exception e) {
             e.printStackTrace();
             AvaCrashReporter.send(e, "CallIncomingActivity class, onAcceptPress");

@@ -539,33 +539,13 @@ public class SupportActivity extends AppCompatActivity {
 
     @Override
     public void onBackPressed() {
-        try {
-            KeyBoardHelper.hideKeyboard();
-            if (getFragmentManager().getBackStackEntryCount() > 0 || getSupportFragmentManager().getBackStackEntryCount() > 0) {
-                super.onBackPressed();
-            } else {
-                new GeneralDialog()
-                        .title("خروج")
-                        .message("آیا از خروج خود اطمینان دارید؟")
-                        .firstButton("بله", new Runnable() {
-                            @Override
-                            public void run() {
-                                try {
-                                    Intent intent = new Intent(MyApplication.context, MainActivity.class);
-                                    startActivity(intent);
-                                    finish();
-                                } catch (Exception e) {
-                                    e.printStackTrace();
-                                    AvaCrashReporter.send(e, "SupportActivity class, onBackPressed method");
-                                }
-                            }
-                        })
-                        .secondButton("خیر", null)
-                        .show();
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-            AvaCrashReporter.send(e, "TripRegister class, onBackPressed method");
+        KeyBoardHelper.hideKeyboard();
+        if (getFragmentManager().getBackStackEntryCount() > 0 || getSupportFragmentManager().getBackStackEntryCount() > 0) {
+            super.onBackPressed();
+        }else {
+            Intent intent = new Intent(MyApplication.context, MainActivity.class);
+            startActivity(intent);
+            finish();
         }
     }
 

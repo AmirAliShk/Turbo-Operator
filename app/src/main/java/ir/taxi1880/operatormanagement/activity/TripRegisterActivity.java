@@ -1727,17 +1727,14 @@ public class TripRegisterActivity extends AppCompatActivity {
                 new GeneralDialog()
                         .title("خروج")
                         .message("آیا از خروج خود اطمینان دارید؟")
-                        .firstButton("بله", new Runnable() {
-                            @Override
-                            public void run() {
-                                try {
-                                    Intent intent = new Intent(MyApplication.context, MainActivity.class);
-                                    startActivity(intent);
-                                    finish();
-                                } catch (Exception e) {
-                                    e.printStackTrace();
-                                    AvaCrashReporter.send(e, "TripRegisterActivity class, onBackPressed method");
-                                }
+                        .firstButton("بله", () -> {
+                            try {
+                                Intent intent = new Intent(MyApplication.context, MainActivity.class);
+                                startActivity(intent);
+                                finish();
+                            } catch (Exception e) {
+                                e.printStackTrace();
+                                AvaCrashReporter.send(e, "TripRegisterActivity class, onBackPressed method");
                             }
                         })
                         .secondButton("خیر", null)
