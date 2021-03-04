@@ -19,7 +19,7 @@ import ir.taxi1880.operatormanagement.helper.FragmentHelper;
 import ir.taxi1880.operatormanagement.helper.TypefaceUtil;
 import ir.taxi1880.operatormanagement.push.AvaCrashReporter;
 
-public class PendingComplaintOptionsDialog {
+public class PendingMistakesOptionsDialog {
     Unbinder unbinder;
     static Dialog dialog;
 
@@ -53,7 +53,7 @@ public class PendingComplaintOptionsDialog {
         dialog = new Dialog(MyApplication.currentActivity);
         dialog.getWindow().requestFeature(Window.FEATURE_NO_TITLE);
         dialog.getWindow().getAttributes().windowAnimations = R.style.ExpandAnimation;
-        dialog.setContentView(R.layout.dialog_pending_complaint_options);
+        dialog.setContentView(R.layout.dialog_pending_mistakes_options);
         unbinder = ButterKnife.bind(this, dialog.getWindow().getDecorView());
         TypefaceUtil.overrideFonts(dialog.getWindow().getDecorView());
         dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));

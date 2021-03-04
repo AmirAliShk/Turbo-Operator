@@ -8,7 +8,6 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.ViewFlipper;
 
@@ -22,8 +21,6 @@ import com.downloader.PRDownloader;
 import com.warkiz.widget.IndicatorSeekBar;
 import com.warkiz.widget.OnSeekChangeListener;
 import com.warkiz.widget.SeekParams;
-
-import org.w3c.dom.Text;
 
 import java.io.File;
 import java.net.MalformedURLException;
@@ -39,35 +36,33 @@ import ir.taxi1880.operatormanagement.R;
 import ir.taxi1880.operatormanagement.app.EndPoints;
 import ir.taxi1880.operatormanagement.app.MyApplication;
 import ir.taxi1880.operatormanagement.dataBase.DataBase;
-import ir.taxi1880.operatormanagement.dialog.PendingComplaintOptionsDialog;
+import ir.taxi1880.operatormanagement.dialog.PendingMistakesOptionsDialog;
 import ir.taxi1880.operatormanagement.dialog.SaveResultDialog;
 import ir.taxi1880.operatormanagement.helper.FileHelper;
-import ir.taxi1880.operatormanagement.helper.FragmentHelper;
 import ir.taxi1880.operatormanagement.helper.StringHelper;
 import ir.taxi1880.operatormanagement.helper.TypefaceUtil;
-import ir.taxi1880.operatormanagement.model.AllComplaintModel;
+import ir.taxi1880.operatormanagement.model.AllMistakesModel;
 import ir.taxi1880.operatormanagement.okHttp.AuthenticationInterceptor;
-import ir.taxi1880.operatormanagement.push.AvaCrashReporter;
 
-public class PendingComplaintFragment extends Fragment {
+public class PendingMistakesFragment extends Fragment {
     Unbinder unbinder;
     DataBase dataBase;
     MediaPlayer mediaPlayer;
-    AllComplaintModel model;
+    AllMistakesModel model;
 
     @OnClick(R.id.btnSaveResult)
     void onSaveResult() {
         new SaveResultDialog()
                 .show(model.getId(), success -> {
                     if (success) {
-                        MyApplication.handler.postDelayed(() -> getComplaintFromDB(),200);
+                        MyApplication.handler.postDelayed(() -> getMistakesFromDB(),200);
                     }
                 });
     }
 
     @OnClick(R.id.btnOptions)
     void onOptions() {
-        new PendingComplaintOptionsDialog()
+        new PendingMistakesOptionsDialog()
                 .show();
     }
 
@@ -94,14 +89,14 @@ public class PendingComplaintFragment extends Fragment {
 
     @OnClick(R.id.imgPlay)
     void onPlay() {
-        Log.i("URL", "show: " + EndPoints.CALL_VOICE + dataBase.getComplaintRow().getVoipId());
-        String voiceName = dataBase.getComplaintRow().getId() + ".mp3";
+        Log.i("URL", "show: " + EndPoints.CALL_VOICE + dataBase.getMistakesRow().getVoipId());
+        String voiceName = dataBase.getMistakesRow().getId() + ".mp3";
         File file = new File(MyApplication.DIR_ROOT + MyApplication.VOICE_FOLDER_NAME + "/" + voiceName);
         if (file.exists()) {
             initVoice(Uri.fromFile(file));
             playVoice();
         } else {
-            startDownload(EndPoints.CALL_VOICE + dataBase.getComplaintRow().getVoipId(), voiceName);
+            startDownload(EndPoints.CALL_VOICE + dataBase.getMistakesRow().getVoipId(), voiceName);
         }
 
     }
@@ -115,16 +110,16 @@ public class PendingComplaintFragment extends Fragment {
     @BindView(R.id.txtEmpty)
     TextView txtEmpty;
 
-    @BindView(R.id.txtComplaintVoipId)
+    @BindView(R.id.txtMistakesVoipId)
     TextView txtComplaintVoipId;
 
-    @BindView(R.id.txtComplaintId)
+    @BindView(R.id.txtMistakesId)
     TextView txtComplaintId;
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_pending_complaint, container, false);
+        View view = inflater.inflate(R.layout.fragment_pending_mistakes, container, false);
         unbinder = ButterKnife.bind(this, view);
         TypefaceUtil.overrideFonts(view, MyApplication.IraSanSMedume);
         TypefaceUtil.overrideFonts(txtEmpty);
@@ -257,16 +252,16 @@ public class PendingComplaintFragment extends Fragment {
     public void setMenuVisibility(boolean menuVisible) {
         super.setMenuVisibility(menuVisible);
         if (menuVisible) {
-            getComplaintFromDB();
+            getMistakesFromDB();
         }
     }
 
-    void getComplaintFromDB() {
-        if (dataBase.getComplaintCount() == 0) {
+    void getMistakesFromDB() {
+        if (dataBase.getMistakesCount() == 0) {
             if (vfPending != null)
                 vfPending.setDisplayedChild(2);
         } else {
-            model = dataBase.getComplaintRow();
+            model = dataBase.getMistakesRow();
             txtAddress.setText(StringHelper.toPersianDigits(model.getAddress()));
             txtStationCode.setText(StringHelper.toPersianDigits("199")); //TODO correct station name an station code
             txtCity.setText(StringHelper.toPersianDigits("مشهد"));

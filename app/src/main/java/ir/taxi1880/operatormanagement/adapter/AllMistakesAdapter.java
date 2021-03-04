@@ -5,9 +5,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
-import android.widget.Button;
-import android.widget.LinearLayout;
-import android.widget.RatingBar;
 import android.widget.TextView;
 import android.widget.ViewFlipper;
 
@@ -22,32 +19,32 @@ import ir.taxi1880.operatormanagement.dataBase.DataBase;
 import ir.taxi1880.operatormanagement.dialog.GeneralDialog;
 import ir.taxi1880.operatormanagement.helper.StringHelper;
 import ir.taxi1880.operatormanagement.helper.TypefaceUtil;
-import ir.taxi1880.operatormanagement.model.AllComplaintModel;
+import ir.taxi1880.operatormanagement.model.AllMistakesModel;
 import ir.taxi1880.operatormanagement.okHttp.RequestHelper;
 
 import static ir.taxi1880.operatormanagement.app.MyApplication.context;
 
-public class AllComplaintAdapter extends BaseAdapter {
+public class AllMistakesAdapter extends BaseAdapter {
     private Context mContext;
-    private ArrayList<AllComplaintModel> allComplaintModels;
+    private ArrayList<AllMistakesModel> allMistakesModels;
     DataBase dataBase;
-    AllComplaintModel currentAllComplaintModel;
+    AllMistakesModel currentAllMistakesModel;
     ViewFlipper viewFlipper;
     int position;
 
-    public AllComplaintAdapter(Context mContext, ArrayList<AllComplaintModel> allComplaintModels) {
+    public AllMistakesAdapter(Context mContext, ArrayList<AllMistakesModel> allMistakesModels) {
         this.mContext = mContext;
-        this.allComplaintModels = allComplaintModels;
+        this.allMistakesModels = allMistakesModels;
     }
 
     @Override
     public int getCount() {
-        return allComplaintModels.size();
+        return allMistakesModels.size();
     }
 
     @Override
     public Object getItem(int i) {
-        return allComplaintModels.get(i);
+        return allMistakesModels.get(i);
     }
 
     @Override
@@ -58,26 +55,26 @@ public class AllComplaintAdapter extends BaseAdapter {
     @Override
     public View getView(int i, View view, ViewGroup viewGroup) {
         if (view == null) {
-            view = LayoutInflater.from(mContext).inflate(R.layout.item_all_complaint, viewGroup, false);
+            view = LayoutInflater.from(mContext).inflate(R.layout.item_all_mistakes, viewGroup, false);
             TypefaceUtil.overrideFonts(view);
         }
 
-        currentAllComplaintModel = (AllComplaintModel) getItem(i);
+        currentAllMistakesModel = (AllMistakesModel) getItem(i);
         dataBase = new DataBase(context);
-        TextView txtComplaintDate = view.findViewById(R.id.txtComplaintDate);
-        TextView txtComplaintTime = view.findViewById(R.id.txtComplaintTime);
-        TextView txtComplaintId = view.findViewById(R.id.txtComplaintId);
-        TextView txtComplaintVoipId = view.findViewById(R.id.txtComplaintVoipId);
+        TextView txtComplaintDate = view.findViewById(R.id.txtMistakesDate);
+        TextView txtComplaintTime = view.findViewById(R.id.txtMistakesTime);
+        TextView txtComplaintId = view.findViewById(R.id.txtMistakesId);
+        TextView txtComplaintVoipId = view.findViewById(R.id.txtMistakesVoipId);
         viewFlipper = view.findViewById(R.id.vfAccept);
 
-        txtComplaintDate.setText(StringHelper.toPersianDigits(currentAllComplaintModel.getDate()));
-        txtComplaintTime.setText(StringHelper.toPersianDigits(currentAllComplaintModel.getTime().substring(0, 5)));
-        txtComplaintId.setText("  id:  "+currentAllComplaintModel.getId()+"");
-        txtComplaintVoipId.setText("  voipId:  "+currentAllComplaintModel.getVoipId()+"");
+        txtComplaintDate.setText(StringHelper.toPersianDigits(currentAllMistakesModel.getDate()));
+        txtComplaintTime.setText(StringHelper.toPersianDigits(currentAllMistakesModel.getTime().substring(0, 5)));
+        txtComplaintId.setText("  id:  "+ currentAllMistakesModel.getId()+"");
+        txtComplaintVoipId.setText("  voipId:  "+ currentAllMistakesModel.getVoipId()+"");
 
         view.findViewById(R.id.btnAccept).setOnClickListener(view1 -> {
             position = i;
-            getAccept(allComplaintModels.get(i).getId());
+            getAccept(allMistakesModels.get(i).getId());
         });
 
         return view;
@@ -109,8 +106,8 @@ public class AllComplaintAdapter extends BaseAdapter {
                                     .message("با موفقیت به لیست در حال بررسی اضافه شد")
                                     .cancelable(false)
                                     .firstButton("باشه", () -> {
-                                        dataBase.insertComplaint(allComplaintModels.get(position));
-                                        allComplaintModels.remove(position);
+                                        dataBase.insertMistakes(allMistakesModels.get(position));
+                                        allMistakesModels.remove(position);
                                         notifyDataSetChanged();
                                     })
                                     .show();

@@ -1,6 +1,6 @@
 package ir.taxi1880.operatormanagement.model;
 
-public class AllComplaintModel {
+public class AllMistakesModel {
     private int id;
     private int serviceCode;
     private int userCode;

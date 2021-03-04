@@ -22,36 +22,36 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
 import ir.taxi1880.operatormanagement.R;
-import ir.taxi1880.operatormanagement.adapter.AllComplaintAdapter;
+import ir.taxi1880.operatormanagement.adapter.AllMistakesAdapter;
 import ir.taxi1880.operatormanagement.app.EndPoints;
 import ir.taxi1880.operatormanagement.app.MyApplication;
 import ir.taxi1880.operatormanagement.helper.TypefaceUtil;
-import ir.taxi1880.operatormanagement.model.AllComplaintModel;
+import ir.taxi1880.operatormanagement.model.AllMistakesModel;
 import ir.taxi1880.operatormanagement.okHttp.RequestHelper;
 
-public class AllComplaintFragment extends Fragment {
+public class AllMistakesFragment extends Fragment {
     Unbinder unbinder;
 
 
     @BindView(R.id.refreshPage)
     RecyclerRefreshLayout refreshPage;
 
-    @BindView(R.id.complaintList)
-    ListView complaintList;
+    @BindView(R.id.mistakesList)
+    ListView mistakesList;
 
     @BindView(R.id.vfDownload)
     ViewFlipper vfDownload;
 
-    AllComplaintAdapter mAdapter;
-    ArrayList<AllComplaintModel> allComplaintModels;
+    AllMistakesAdapter mAdapter;
+    ArrayList<AllMistakesModel> allMistakesModels;
 
-    public AllComplaintFragment() {
+    public AllMistakesFragment() {
     }
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_all_complaint, container, false);
+        View view = inflater.inflate(R.layout.fragment_all_mistakes, container, false);
         unbinder = ButterKnife.bind(this, view);
         TypefaceUtil.overrideFonts(view, MyApplication.IraSanSMedume);
 
@@ -75,7 +75,7 @@ public class AllComplaintFragment extends Fragment {
                 try {
                     if (refreshPage != null)
                         refreshPage.setRefreshing(false);
-                    allComplaintModels = new ArrayList<>();
+                    allMistakesModels = new ArrayList<>();
                     JSONObject listenObj = new JSONObject(args[0].toString());
                     boolean success = listenObj.getBoolean("success");
                     String message = listenObj.getString("message");
@@ -84,7 +84,7 @@ public class AllComplaintFragment extends Fragment {
                         JSONArray dataArr = listenObj.getJSONArray("data");
                         for (int i = 0; i < dataArr.length(); i++) {
                             JSONObject dataObj = dataArr.getJSONObject(i);
-                            AllComplaintModel model = new AllComplaintModel();
+                            AllMistakesModel model = new AllMistakesModel();
                             model.setId(dataObj.getInt("id"));
                             model.setServiceCode(dataObj.getInt("serviceCode"));
                             model.setUserCode(dataObj.getInt("userCode"));
@@ -102,17 +102,17 @@ public class AllComplaintFragment extends Fragment {
                             model.setVoipId(dataObj.getString("VoipId"));
                             model.setCity(dataObj.getInt("cityId"));
 
-                            allComplaintModels.add(model);
+                            allMistakesModels.add(model);
                         }
 
-                        if (allComplaintModels.size() == 0) {
+                        if (allMistakesModels.size() == 0) {
                             if (vfDownload != null)
                                 vfDownload.setDisplayedChild(3);
                         } else {
                             if (vfDownload != null)
                                 vfDownload.setDisplayedChild(1);
-                            mAdapter = new AllComplaintAdapter(MyApplication.currentActivity, allComplaintModels);
-                            complaintList.setAdapter(mAdapter);
+                            mAdapter = new AllMistakesAdapter(MyApplication.currentActivity, allMistakesModels);
+                            mistakesList.setAdapter(mAdapter);
                         }
 
                     } else {

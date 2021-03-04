@@ -1,9 +1,7 @@
 package ir.taxi1880.operatormanagement.adapter;
 
-import android.graphics.Typeface;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -11,12 +9,10 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentActivity;
 import androidx.viewpager2.adapter.FragmentStateAdapter;
 
-import com.google.android.material.tabs.TabLayout;
-
 import ir.taxi1880.operatormanagement.R;
 import ir.taxi1880.operatormanagement.app.MyApplication;
-import ir.taxi1880.operatormanagement.fragment.AllComplaintFragment;
-import ir.taxi1880.operatormanagement.fragment.PendingComplaintFragment;
+import ir.taxi1880.operatormanagement.fragment.AllMistakesFragment;
+import ir.taxi1880.operatormanagement.fragment.PendingMistakesFragment;
 import ir.taxi1880.operatormanagement.helper.TypefaceUtil;
 
 public class SupportViewPagerAdapter extends FragmentStateAdapter {
@@ -28,13 +24,13 @@ public class SupportViewPagerAdapter extends FragmentStateAdapter {
     @NonNull
     @Override
     public Fragment createFragment(int position) {
-        Fragment fragment = new AllComplaintFragment();
+        Fragment fragment = new AllMistakesFragment();
         switch (position) {
             case 0:
-                fragment = new AllComplaintFragment();
+                fragment = new AllMistakesFragment();
                 break;
             case 1:
-                fragment = new PendingComplaintFragment();
+                fragment = new PendingMistakesFragment();
                 break;
         }
         return fragment;

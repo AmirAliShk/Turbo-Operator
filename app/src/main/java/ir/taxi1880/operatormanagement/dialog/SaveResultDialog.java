@@ -3,9 +3,7 @@ package ir.taxi1880.operatormanagement.dialog;
 import android.app.Dialog;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
-import android.provider.ContactsContract;
 import android.util.Log;
-import android.view.Gravity;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.Button;
@@ -23,9 +21,6 @@ import ir.taxi1880.operatormanagement.R;
 import ir.taxi1880.operatormanagement.app.EndPoints;
 import ir.taxi1880.operatormanagement.app.MyApplication;
 import ir.taxi1880.operatormanagement.dataBase.DataBase;
-import ir.taxi1880.operatormanagement.helper.DateHelper;
-import ir.taxi1880.operatormanagement.helper.KeyBoardHelper;
-import ir.taxi1880.operatormanagement.helper.StringHelper;
 import ir.taxi1880.operatormanagement.helper.TypefaceUtil;
 import ir.taxi1880.operatormanagement.okHttp.RequestHelper;
 import ir.taxi1880.operatormanagement.push.AvaCrashReporter;
@@ -36,13 +31,13 @@ public class SaveResultDialog {
     String culprit;
     String result;
     DataBase dataBase;
-    int complaintId;
+    int mistakesId;
 
-    public interface ComplaintResult {
+    public interface MistakesResult {
         void onSuccess(boolean success);
     }
 
-    ComplaintResult complaintResult;
+    MistakesResult mistakesResult;
 
     @BindView(R.id.rgResult)
     RadioGroup rgResult;
@@ -92,7 +87,7 @@ public class SaveResultDialog {
                 break;
         }
 
-        int listenId = dataBase.getComplaintRow().getId();
+        int listenId = dataBase.getMistakesRow().getId();
 
         sendResult(culprit, result, listenId);
     }
@@ -105,7 +100,7 @@ public class SaveResultDialog {
         dismiss();
     }
 
-    public void show(int complaintId, ComplaintResult complaintResult) {
+    public void show(int complaintId, MistakesResult mistakesResult) {
         if (MyApplication.currentActivity == null || MyApplication.currentActivity.isFinishing())
             return;
         dialog = new Dialog(MyApplication.currentActivity);
@@ -122,8 +117,8 @@ public class SaveResultDialog {
         dialog.setCancelable(false);
 
         dataBase = new DataBase(MyApplication.context);
-        this.complaintId = complaintId;
-        this.complaintResult = complaintResult;
+        this.mistakesId = complaintId;
+        this.mistakesResult = mistakesResult;
 
         dialog.show();
     }
@@ -157,9 +152,9 @@ public class SaveResultDialog {
                                     .message(message)
                                     .cancelable(false)
                                     .firstButton("باشه", () -> {
-                                        complaintResult.onSuccess(true);
+                                        mistakesResult.onSuccess(true);
                                         dismiss();
-                                        dataBase.deleteComplaintRow(complaintId);
+                                        dataBase.deleteMistakesRow(mistakesId);
                                     })
                                     .show();
                         }
@@ -167,7 +162,7 @@ public class SaveResultDialog {
                             vfLoader.setDisplayedChild(0);
                     }
                 } catch (Exception e) {
-                    complaintResult.onSuccess(false);
+                    mistakesResult.onSuccess(false);
                     if (vfLoader != null)
                         vfLoader.setDisplayedChild(0);
                     e.printStackTrace();
@@ -178,7 +173,7 @@ public class SaveResultDialog {
         @Override
         public void onFailure(Runnable reCall, Exception e) {
             MyApplication.handler.post(() -> {
-                complaintResult.onSuccess(false);
+                mistakesResult.onSuccess(false);
                 if (vfLoader != null)
                     vfLoader.setDisplayedChild(0);
             });

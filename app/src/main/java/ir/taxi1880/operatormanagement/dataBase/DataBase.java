@@ -10,7 +10,7 @@ import android.util.Log;
 
 import java.util.ArrayList;
 
-import ir.taxi1880.operatormanagement.model.AllComplaintModel;
+import ir.taxi1880.operatormanagement.model.AllMistakesModel;
 import ir.taxi1880.operatormanagement.model.CityModel;
 
 public class DataBase extends SQLiteOpenHelper {
@@ -20,7 +20,7 @@ public class DataBase extends SQLiteOpenHelper {
     private static String DB_NAME = "operators";
     private static String TRIP_TABLE = "Trip";
     private static String CITY_TABLE = "City";
-    private static String COMPLAINT_TABLE = "Complaint";
+    private static String MISTAKES_TABLE = "Mistakes";
 
     //**************************** Trip Column ****************************
     private static String COLUMN_TRIP_ID = "tripId";
@@ -40,25 +40,25 @@ public class DataBase extends SQLiteOpenHelper {
     private static String COLUMN_CITY_NAME = "cityName";
     private static String COLUMN_CITY_L_NAME = "cityLName";
 
-    //************************** Complaint Column *********************************
+    //************************** MISTAKES Column *********************************
 
-    private static String COLUMN_COMPLAINT_ID = "complaintId";
-    private static String COLUMN_COMPLAINT_DATE = "complaintDate";
-    private static String COLUMN_COMPLAINT_TIME = "complaintTime";
-    private static String COLUMN_COMPLAINT_DESCRIPTION = "complaintDescription";
-    private static String COLUMN_COMPLAINT_CITY = "complaintCity";
-    private static String COLUMN_COMPLAINT_ADDRESS = "complaintAddress";
-    private static String COLUMN_COMPLAINT_STATION_CODE = "complaintStationCode";
-    private static String COLUMN_COMPLAINT_PASSENGER_VOICE = "complaintPassengerVoice";
-    private static String COLUMN_COMPLAINT_SERVICE_CODE = "complaintServiceCode";
-    private static String COLUMN_COMPLAINT_USER_CODE = "complaintUserCode";
-    private static String COLUMN_COMPLAINT_TELL = "complaintTell";
-    private static String COLUMN_COMPLAINT_USER_CODE_CONTACT = "complaintUserCodeContact";
-    private static String COLUMN_COMPLAINT_CUSTOMER_NAME = "complaintCustomerName";
-    private static String COLUMN_COMPLAINT_CON_DATE = "complaintConDate";
-    private static String COLUMN_COMPLAINT_CON_TIME = "complaintConTime";
-    private static String COLUMN_COMPLAINT_SEND_TIME = "complaintSendTime";
-//    private static String COLUMN_COMPLAINT_INSPECTOR_USER = "complaintInspectorUser";
+    private static String COLUMN_MISTAKES_ID = "mistakesId";
+    private static String COLUMN_MISTAKES_DATE = "mistakesDate";
+    private static String COLUMN_MISTAKES_TIME = "mistakesTime";
+    private static String COLUMN_MISTAKES_DESCRIPTION = "mistakesDescription";
+    private static String COLUMN_MISTAKES_CITY = "mistakesCity";
+    private static String COLUMN_MISTAKES_ADDRESS = "mistakesAddress";
+    private static String COLUMN_MISTAKES_STATION_CODE = "mistakesStationCode";
+    private static String COLUMN_MISTAKES_PASSENGER_VOICE = "mistakesPassengerVoice";
+    private static String COLUMN_MISTAKES_SERVICE_CODE = "mistakesServiceCode";
+    private static String COLUMN_MISTAKES_USER_CODE = "mistakesUserCode";
+    private static String COLUMN_MISTAKES_TELL = "mistakesTell";
+    private static String COLUMN_MISTAKES_USER_CODE_CONTACT = "mistakesUserCodeContact";
+    private static String COLUMN_MISTAKES_CUSTOMER_NAME = "mistakesCustomerName";
+    private static String COLUMN_MISTAKES_CON_DATE = "mistakesConDate";
+    private static String COLUMN_MISTAKES_CON_TIME = "mistakesConTime";
+    private static String COLUMN_MISTAKES_SEND_TIME = "mistakesSendTime";
+//    private static String COLUMN_MISTAKES_INSPECTOR_USER = "MISTAKESInspectorUser";
 
     //******************************************************************************************
 
@@ -70,14 +70,14 @@ public class DataBase extends SQLiteOpenHelper {
     public void onCreate(SQLiteDatabase sqLiteDatabase) {
         createTripTable(sqLiteDatabase);
         createCityTable(sqLiteDatabase);
-        createComplaintTable(sqLiteDatabase);
+        createMistakesTable(sqLiteDatabase);
     }
 
     @Override
     public void onUpgrade(SQLiteDatabase sqLiteDatabase, int i, int i1) {
         sqLiteDatabase.execSQL("DROP TABLE IF EXISTS " + TRIP_TABLE);
         sqLiteDatabase.execSQL("DROP TABLE IF EXISTS " + CITY_TABLE);
-        sqLiteDatabase.execSQL("DROP TABLE IF EXISTS " + COMPLAINT_TABLE);
+        sqLiteDatabase.execSQL("DROP TABLE IF EXISTS " + MISTAKES_TABLE);
         onCreate(sqLiteDatabase);
     }
 
@@ -296,124 +296,124 @@ public class DataBase extends SQLiteOpenHelper {
         return res.getString(res.getColumnIndex(COLUMN_CITY_NAME));
     }
 
-    //******************************************************** Complaint Table *******************************************
+    //******************************************************** MISTAKES Table *******************************************
 
-    public void createComplaintTable(SQLiteDatabase database) {
-        database.execSQL("CREATE TABLE " + COMPLAINT_TABLE +
-                " (" + COLUMN_COMPLAINT_ID + " INTEGER PRIMARY KEY," +
-                COLUMN_COMPLAINT_DATE + " TEXT," +
-                COLUMN_COMPLAINT_TIME + " TEXT," +
-                COLUMN_COMPLAINT_DESCRIPTION + " TEXT," +
-                COLUMN_COMPLAINT_CITY + " TEXT," +
-                COLUMN_COMPLAINT_ADDRESS + " TEXT," +
-                COLUMN_COMPLAINT_SERVICE_CODE + " INTEGER," +
-                COLUMN_COMPLAINT_USER_CODE + " INTEGER," +
-                COLUMN_COMPLAINT_TELL + " TEXT," +
-                COLUMN_COMPLAINT_USER_CODE_CONTACT + " TEXT," +
-                COLUMN_COMPLAINT_CUSTOMER_NAME + " TEXT," +
-                COLUMN_COMPLAINT_CON_DATE + " TEXT," +
-                COLUMN_COMPLAINT_CON_TIME + " TEXT," +
-                COLUMN_COMPLAINT_SEND_TIME + " TEXT," +
-                COLUMN_COMPLAINT_STATION_CODE + " INTEGER," +
-                COLUMN_COMPLAINT_PASSENGER_VOICE + " TEXT )"
+    public void createMistakesTable(SQLiteDatabase database) {
+        database.execSQL("CREATE TABLE " + MISTAKES_TABLE +
+                " (" + COLUMN_MISTAKES_ID + " INTEGER PRIMARY KEY," +
+                COLUMN_MISTAKES_DATE + " TEXT," +
+                COLUMN_MISTAKES_TIME + " TEXT," +
+                COLUMN_MISTAKES_DESCRIPTION + " TEXT," +
+                COLUMN_MISTAKES_CITY + " TEXT," +
+                COLUMN_MISTAKES_ADDRESS + " TEXT," +
+                COLUMN_MISTAKES_SERVICE_CODE + " INTEGER," +
+                COLUMN_MISTAKES_USER_CODE + " INTEGER," +
+                COLUMN_MISTAKES_TELL + " TEXT," +
+                COLUMN_MISTAKES_USER_CODE_CONTACT + " TEXT," +
+                COLUMN_MISTAKES_CUSTOMER_NAME + " TEXT," +
+                COLUMN_MISTAKES_CON_DATE + " TEXT," +
+                COLUMN_MISTAKES_CON_TIME + " TEXT," +
+                COLUMN_MISTAKES_SEND_TIME + " TEXT," +
+                COLUMN_MISTAKES_STATION_CODE + " INTEGER," +
+                COLUMN_MISTAKES_PASSENGER_VOICE + " TEXT )"
         );
     }
 
-    public void insertComplaint(AllComplaintModel complaintModel) {
+    public void insertMistakes(AllMistakesModel mistakesModel) {
         try {
             SQLiteDatabase sqLiteDatabase = this.getWritableDatabase();
             ContentValues contentValues = new ContentValues();
-            contentValues.put(COLUMN_COMPLAINT_DESCRIPTION, complaintModel.getDescription());
-            contentValues.put(COLUMN_COMPLAINT_ID, complaintModel.getId());
-            contentValues.put(COLUMN_COMPLAINT_DATE, complaintModel.getDate());
-            contentValues.put(COLUMN_COMPLAINT_TIME, complaintModel.getTime());
-            contentValues.put(COLUMN_COMPLAINT_CITY, complaintModel.getCity());
-            contentValues.put(COLUMN_COMPLAINT_ADDRESS, complaintModel.getAddress());
-            contentValues.put(COLUMN_COMPLAINT_STATION_CODE, complaintModel.getStationCode());
-            contentValues.put(COLUMN_COMPLAINT_SERVICE_CODE, complaintModel.getServiceCode());
-            contentValues.put(COLUMN_COMPLAINT_USER_CODE, complaintModel.getUserCode());
-            contentValues.put(COLUMN_COMPLAINT_TELL, complaintModel.getTell());
-            contentValues.put(COLUMN_COMPLAINT_USER_CODE_CONTACT, complaintModel.getUserCodeContact());
-            contentValues.put(COLUMN_COMPLAINT_CUSTOMER_NAME, complaintModel.getCustomerName());
-            contentValues.put(COLUMN_COMPLAINT_CON_DATE, complaintModel.getConDate());
-            contentValues.put(COLUMN_COMPLAINT_CON_TIME, complaintModel.getConTime());
-            contentValues.put(COLUMN_COMPLAINT_SEND_TIME, complaintModel.getSendTime());
-            contentValues.put(COLUMN_COMPLAINT_PASSENGER_VOICE, complaintModel.getVoipId());
-            sqLiteDatabase.insertWithOnConflict(COMPLAINT_TABLE, COLUMN_COMPLAINT_ID, contentValues, SQLiteDatabase.CONFLICT_REPLACE);
+            contentValues.put(COLUMN_MISTAKES_DESCRIPTION, mistakesModel.getDescription());
+            contentValues.put(COLUMN_MISTAKES_ID, mistakesModel.getId());
+            contentValues.put(COLUMN_MISTAKES_DATE, mistakesModel.getDate());
+            contentValues.put(COLUMN_MISTAKES_TIME, mistakesModel.getTime());
+            contentValues.put(COLUMN_MISTAKES_CITY, mistakesModel.getCity());
+            contentValues.put(COLUMN_MISTAKES_ADDRESS, mistakesModel.getAddress());
+            contentValues.put(COLUMN_MISTAKES_STATION_CODE, mistakesModel.getStationCode());
+            contentValues.put(COLUMN_MISTAKES_SERVICE_CODE, mistakesModel.getServiceCode());
+            contentValues.put(COLUMN_MISTAKES_USER_CODE, mistakesModel.getUserCode());
+            contentValues.put(COLUMN_MISTAKES_TELL, mistakesModel.getTell());
+            contentValues.put(COLUMN_MISTAKES_USER_CODE_CONTACT, mistakesModel.getUserCodeContact());
+            contentValues.put(COLUMN_MISTAKES_CUSTOMER_NAME, mistakesModel.getCustomerName());
+            contentValues.put(COLUMN_MISTAKES_CON_DATE, mistakesModel.getConDate());
+            contentValues.put(COLUMN_MISTAKES_CON_TIME, mistakesModel.getConTime());
+            contentValues.put(COLUMN_MISTAKES_SEND_TIME, mistakesModel.getSendTime());
+            contentValues.put(COLUMN_MISTAKES_PASSENGER_VOICE, mistakesModel.getVoipId());
+            sqLiteDatabase.insertWithOnConflict(MISTAKES_TABLE, COLUMN_MISTAKES_ID, contentValues, SQLiteDatabase.CONFLICT_REPLACE);
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
 
-    public AllComplaintModel getComplaintRow() {
-        AllComplaintModel pendingComplaintModel = new AllComplaintModel();
+    public AllMistakesModel getMistakesRow() {
+        AllMistakesModel pendingMistakesModel = new AllMistakesModel();
         SQLiteDatabase sqLiteDatabase = this.getReadableDatabase();
-        @SuppressLint("Recycle") Cursor res = sqLiteDatabase.rawQuery("select * from " + COMPLAINT_TABLE , null);
+        @SuppressLint("Recycle") Cursor res = sqLiteDatabase.rawQuery("select * from " + MISTAKES_TABLE, null);
         if (res.getCount() == 0) return null;
 
         res.moveToFirst();
 
-        pendingComplaintModel.setId(res.getInt(res.getColumnIndex(COLUMN_COMPLAINT_ID)));
-        pendingComplaintModel.setDate(res.getString(res.getColumnIndex(COLUMN_COMPLAINT_DATE)));
-        pendingComplaintModel.setTime(res.getString(res.getColumnIndex(COLUMN_COMPLAINT_TIME)));
-        pendingComplaintModel.setDescription(res.getString(res.getColumnIndex(COLUMN_COMPLAINT_DESCRIPTION)));
-        pendingComplaintModel.setCity(res.getInt(res.getColumnIndex(COLUMN_COMPLAINT_CITY)));
-        pendingComplaintModel.setAddress(res.getString(res.getColumnIndex(COLUMN_COMPLAINT_ADDRESS)));
-        pendingComplaintModel.setServiceCode(res.getInt(res.getColumnIndex(COLUMN_COMPLAINT_SERVICE_CODE)));
-        pendingComplaintModel.setUserCode(res.getInt(res.getColumnIndex(COLUMN_COMPLAINT_USER_CODE)));
-        pendingComplaintModel.setTell(res.getString(res.getColumnIndex(COLUMN_COMPLAINT_TELL)));
-        pendingComplaintModel.setUserCodeContact(res.getInt(res.getColumnIndex(COLUMN_COMPLAINT_USER_CODE_CONTACT)));
-        pendingComplaintModel.setCustomerName(res.getString(res.getColumnIndex(COLUMN_COMPLAINT_CUSTOMER_NAME)));
-        pendingComplaintModel.setConDate(res.getString(res.getColumnIndex(COLUMN_COMPLAINT_CON_DATE)));
-        pendingComplaintModel.setConTime(res.getString(res.getColumnIndex(COLUMN_COMPLAINT_CON_TIME)));
-        pendingComplaintModel.setSendTime(res.getString(res.getColumnIndex(COLUMN_COMPLAINT_SEND_TIME)));
-        pendingComplaintModel.setStationCode(res.getInt(res.getColumnIndex(COLUMN_COMPLAINT_STATION_CODE)));
-        pendingComplaintModel.setVoipId(res.getString(res.getColumnIndex(COLUMN_COMPLAINT_PASSENGER_VOICE)));
+        pendingMistakesModel.setId(res.getInt(res.getColumnIndex(COLUMN_MISTAKES_ID)));
+        pendingMistakesModel.setDate(res.getString(res.getColumnIndex(COLUMN_MISTAKES_DATE)));
+        pendingMistakesModel.setTime(res.getString(res.getColumnIndex(COLUMN_MISTAKES_TIME)));
+        pendingMistakesModel.setDescription(res.getString(res.getColumnIndex(COLUMN_MISTAKES_DESCRIPTION)));
+        pendingMistakesModel.setCity(res.getInt(res.getColumnIndex(COLUMN_MISTAKES_CITY)));
+        pendingMistakesModel.setAddress(res.getString(res.getColumnIndex(COLUMN_MISTAKES_ADDRESS)));
+        pendingMistakesModel.setServiceCode(res.getInt(res.getColumnIndex(COLUMN_MISTAKES_SERVICE_CODE)));
+        pendingMistakesModel.setUserCode(res.getInt(res.getColumnIndex(COLUMN_MISTAKES_USER_CODE)));
+        pendingMistakesModel.setTell(res.getString(res.getColumnIndex(COLUMN_MISTAKES_TELL)));
+        pendingMistakesModel.setUserCodeContact(res.getInt(res.getColumnIndex(COLUMN_MISTAKES_USER_CODE_CONTACT)));
+        pendingMistakesModel.setCustomerName(res.getString(res.getColumnIndex(COLUMN_MISTAKES_CUSTOMER_NAME)));
+        pendingMistakesModel.setConDate(res.getString(res.getColumnIndex(COLUMN_MISTAKES_CON_DATE)));
+        pendingMistakesModel.setConTime(res.getString(res.getColumnIndex(COLUMN_MISTAKES_CON_TIME)));
+        pendingMistakesModel.setSendTime(res.getString(res.getColumnIndex(COLUMN_MISTAKES_SEND_TIME)));
+        pendingMistakesModel.setStationCode(res.getInt(res.getColumnIndex(COLUMN_MISTAKES_STATION_CODE)));
+        pendingMistakesModel.setVoipId(res.getString(res.getColumnIndex(COLUMN_MISTAKES_PASSENGER_VOICE)));
 
-        return pendingComplaintModel;
+        return pendingMistakesModel;
     }
 
-    public AllComplaintModel moveNextComplaint(int id){
-        AllComplaintModel pendingComplaintModel = new AllComplaintModel();
+    public AllMistakesModel moveNextMistakes(int id){
+        AllMistakesModel pendingMistakesModel = new AllMistakesModel();
         SQLiteDatabase sqLiteDatabase = this.getReadableDatabase();
-        @SuppressLint("Recycle") Cursor res = sqLiteDatabase.rawQuery("select * from " + COMPLAINT_TABLE + " WHERE " + COLUMN_COMPLAINT_ID + "=" + id , null);
+        @SuppressLint("Recycle") Cursor res = sqLiteDatabase.rawQuery("select * from " + MISTAKES_TABLE + " WHERE " + COLUMN_MISTAKES_ID + "=" + id , null);
         if (res.getCount() == 0) return null;
         res.moveToPosition(res.getPosition()+1);
 
-        pendingComplaintModel.setId(res.getInt(res.getColumnIndex(COLUMN_COMPLAINT_ID)));
-        pendingComplaintModel.setDate(res.getString(res.getColumnIndex(COLUMN_COMPLAINT_DATE)));
-        pendingComplaintModel.setTime(res.getString(res.getColumnIndex(COLUMN_COMPLAINT_TIME)));
-        pendingComplaintModel.setDescription(res.getString(res.getColumnIndex(COLUMN_COMPLAINT_DESCRIPTION)));
-        pendingComplaintModel.setCity(res.getInt(res.getColumnIndex(COLUMN_COMPLAINT_CITY)));
-        pendingComplaintModel.setAddress(res.getString(res.getColumnIndex(COLUMN_COMPLAINT_ADDRESS)));
-        pendingComplaintModel.setServiceCode(res.getInt(res.getColumnIndex(COLUMN_COMPLAINT_SERVICE_CODE)));
-        pendingComplaintModel.setUserCode(res.getInt(res.getColumnIndex(COLUMN_COMPLAINT_USER_CODE)));
-        pendingComplaintModel.setTell(res.getString(res.getColumnIndex(COLUMN_COMPLAINT_TELL)));
-        pendingComplaintModel.setUserCodeContact(res.getInt(res.getColumnIndex(COLUMN_COMPLAINT_USER_CODE_CONTACT)));
-        pendingComplaintModel.setCustomerName(res.getString(res.getColumnIndex(COLUMN_COMPLAINT_CUSTOMER_NAME)));
-        pendingComplaintModel.setConDate(res.getString(res.getColumnIndex(COLUMN_COMPLAINT_CON_DATE)));
-        pendingComplaintModel.setConTime(res.getString(res.getColumnIndex(COLUMN_COMPLAINT_CON_TIME)));
-        pendingComplaintModel.setSendTime(res.getString(res.getColumnIndex(COLUMN_COMPLAINT_SEND_TIME)));
-        pendingComplaintModel.setStationCode(res.getInt(res.getColumnIndex(COLUMN_COMPLAINT_STATION_CODE)));
-        pendingComplaintModel.setVoipId(res.getString(res.getColumnIndex(COLUMN_COMPLAINT_PASSENGER_VOICE)));
+        pendingMistakesModel.setId(res.getInt(res.getColumnIndex(COLUMN_MISTAKES_ID)));
+        pendingMistakesModel.setDate(res.getString(res.getColumnIndex(COLUMN_MISTAKES_DATE)));
+        pendingMistakesModel.setTime(res.getString(res.getColumnIndex(COLUMN_MISTAKES_TIME)));
+        pendingMistakesModel.setDescription(res.getString(res.getColumnIndex(COLUMN_MISTAKES_DESCRIPTION)));
+        pendingMistakesModel.setCity(res.getInt(res.getColumnIndex(COLUMN_MISTAKES_CITY)));
+        pendingMistakesModel.setAddress(res.getString(res.getColumnIndex(COLUMN_MISTAKES_ADDRESS)));
+        pendingMistakesModel.setServiceCode(res.getInt(res.getColumnIndex(COLUMN_MISTAKES_SERVICE_CODE)));
+        pendingMistakesModel.setUserCode(res.getInt(res.getColumnIndex(COLUMN_MISTAKES_USER_CODE)));
+        pendingMistakesModel.setTell(res.getString(res.getColumnIndex(COLUMN_MISTAKES_TELL)));
+        pendingMistakesModel.setUserCodeContact(res.getInt(res.getColumnIndex(COLUMN_MISTAKES_USER_CODE_CONTACT)));
+        pendingMistakesModel.setCustomerName(res.getString(res.getColumnIndex(COLUMN_MISTAKES_CUSTOMER_NAME)));
+        pendingMistakesModel.setConDate(res.getString(res.getColumnIndex(COLUMN_MISTAKES_CON_DATE)));
+        pendingMistakesModel.setConTime(res.getString(res.getColumnIndex(COLUMN_MISTAKES_CON_TIME)));
+        pendingMistakesModel.setSendTime(res.getString(res.getColumnIndex(COLUMN_MISTAKES_SEND_TIME)));
+        pendingMistakesModel.setStationCode(res.getInt(res.getColumnIndex(COLUMN_MISTAKES_STATION_CODE)));
+        pendingMistakesModel.setVoipId(res.getString(res.getColumnIndex(COLUMN_MISTAKES_PASSENGER_VOICE)));
 
-        return pendingComplaintModel;
+        return pendingMistakesModel;
     }
 
-    public void deleteComplaintRow(int id) {
+    public void deleteMistakesRow(int id) {
 
         SQLiteDatabase sqLiteDatabase = this.getWritableDatabase();
-        boolean b = sqLiteDatabase.delete(COMPLAINT_TABLE, COLUMN_COMPLAINT_ID + "=" + id, null) > 0;
+        boolean b = sqLiteDatabase.delete(MISTAKES_TABLE, COLUMN_MISTAKES_ID + "=" + id, null) > 0;
 
         if (b) {
-            Log.i("deleteComplaintRow", "deleteRow: = true  " + id);
+            Log.i("deleteMistakesRow", "deleteRow: = true  " + id);
         } else {
-            Log.i("deleteComplaintRow", "deleteRow: = false  " + id);
+            Log.i("deleteMistakesRow", "deleteRow: = false  " + id);
         }
     }
 
-    public int getComplaintCount() {
-        String countQuery = "SELECT  * FROM " + COMPLAINT_TABLE;
+    public int getMistakesCount() {
+        String countQuery = "SELECT  * FROM " + MISTAKES_TABLE;
         SQLiteDatabase db = this.getReadableDatabase();
         Cursor cursor = db.rawQuery(countQuery, null);
         int count = cursor.getCount();

@@ -11,7 +11,6 @@ import java.util.ArrayList;
 
 import ir.taxi1880.operatormanagement.R;
 import ir.taxi1880.operatormanagement.helper.TypefaceUtil;
-import ir.taxi1880.operatormanagement.model.AllComplaintModel;
 import ir.taxi1880.operatormanagement.model.PassengerCallsModel;
 
 public class PassengerCallsAdapter extends BaseAdapter {

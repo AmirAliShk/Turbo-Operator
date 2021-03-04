@@ -40,7 +40,7 @@
                     android:src="@drawable/ic_date" />
 
                 <TextView
-                    android:id="@+id/txtComplaintDate"
+                    android:id="@+id/txtMistakesDate"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginEnd="10dp"
@@ -68,7 +68,7 @@
                     android:src="@drawable/ic_timer" />
 
                 <TextView
-                    android:id="@+id/txtComplaintTime"
+                    android:id="@+id/txtMistakesTime"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginEnd="10dp"
@@ -86,12 +86,12 @@
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:id="@+id/txtComplaintId"/>
+            android:id="@+id/txtMistakesId"/>
 
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:id="@+id/txtComplaintVoipId"/>
+            android:id="@+id/txtMistakesVoipId"/>
 
         <ViewFlipper
             android:id="@+id/vfAccept"
