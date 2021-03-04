@@ -14,6 +14,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.ViewFlipper;
 
+import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -53,6 +54,8 @@ public class SupportDriverTripsFragment extends Fragment {
     TripAdapter tripAdapter;
     int searchCase = 6;
     int extendedTime = 1;
+    private int mDisplayedQuality = -1;
+    private Runnable mCallQualityUpdater = null;
     Core core;
     String searchText;
 
@@ -70,6 +73,9 @@ public class SupportDriverTripsFragment extends Fragment {
 
     @BindView(R.id.imgEndCall)
     ImageView imgEndCall;
+
+    @BindView(R.id.imgCallQuality)
+    ImageView imgCallQuality;
 
     @BindView(R.id.imgExtendedTime)
     ImageView imgExtendedTime;
@@ -330,16 +336,77 @@ public class SupportDriverTripsFragment extends Fragment {
         @Override
         public void onCallStateChanged(Core core, final Call call, Call.State state, String message) {
             if (state == Call.State.End) {
+                if (imgCallQuality != null)
+                    imgCallQuality.setVisibility(View.INVISIBLE);
                 imgEndCall.setBackgroundResource(0);
+                if (mCallQualityUpdater != null) {
+                    LinphoneService.removeFromUIThreadDispatcher(mCallQualityUpdater);
+                    mCallQualityUpdater = null;
+                }
+            } else if (state == Call.State.Released) {
+                if (mCallQualityUpdater != null) {
+                    LinphoneService.removeFromUIThreadDispatcher(mCallQualityUpdater);
+                    mCallQualityUpdater = null;
+                }
             }
         }
     };
+
+    private void updateQualityOfSignalIcon(float quality) {
+        int iQuality = (int) quality;
+
+        int imageRes = R.drawable.ic_quality_0;
+
+        if (iQuality == mDisplayedQuality) return;
+        if (quality >= 4) { // Good Quality
+            imageRes = R.drawable.ic_quality_4;
+        } else if (quality >= 3) {// Average quality
+            imageRes = (R.drawable.ic_quality_3);
+        } else if (quality >= 2) { // Low quality
+            imageRes = (R.drawable.ic_quality_2);
+        } else if (quality >= 1) { // Very low quality
+            imageRes = (R.drawable.ic_quality_1);
+        }
+        if (imgCallQuality != null) {
+            imgCallQuality.setVisibility(View.VISIBLE);
+            imgCallQuality.setImageResource(imageRes);
+        }
+        mDisplayedQuality = iQuality;
+    }
+
+    private void startCallQuality() {
+        if (mCallQualityUpdater == null)
+            LinphoneService.dispatchOnUIThreadAfter(
+                    mCallQualityUpdater =
+                            new Runnable() {
+                                final Call mCurrentCall = LinphoneService.getCore().getCurrentCall();
+
+                                public void run() {
+                                    if (mCurrentCall == null) {
+                                        mCallQualityUpdater = null;
+                                        return;
+                                    }
+                                    float newQuality = mCurrentCall.getCurrentQuality();
+                                    updateQualityOfSignalIcon(newQuality);
+
+                                    if (MyApplication.prefManager.getConnectedCall())
+                                        LinphoneService.dispatchOnUIThreadAfter(this, 1000);
+                                }
+                            },
+                    1000);
+    }
 
     @Override
     public void onStart() {
         super.onStart();
         core = LinphoneService.getCore();
         core.addListener(mCoreListener);
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        startCallQuality();
     }
 
     @Override

@@ -144,7 +144,7 @@ public class CallIncomingActivity extends AppCompatActivity {
     }
 
     private void gotoCalling() {
-        Intent intent = new Intent(this, TripRegisterActivity.class);
+        Intent intent = new Intent(this, MainActivity.class);
         if (MyApplication.prefManager.getActivityStatus() == 1) {  //you are enable in trip register queue
             intent = new Intent(this, TripRegisterActivity.class);
         } else if (MyApplication.prefManager.getActivityStatus() == 2) { // you are enable in support queue (800)
