@@ -122,7 +122,7 @@
                     android:layout_margin="5dp"
                     android:background="@drawable/bg_circle_purple"
                     android:elevation="3dp"
-                    android:padding="7dp">
+                    android:padding="10dp">
 
                     <ImageView
                         android:id="@+id/imgPlay"
@@ -132,11 +132,11 @@
                         android:src="@drawable/ic_play_last_conversation" />
 
                     <ImageView
-                        android:id="@+id/imgPause"
+                        android:id="@+id/imgStop"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:layout_gravity="center"
-                        android:src="@drawable/ic_pause_last_conversation" />
+                        android:src="@drawable/ic_stop_white" />
 
                 </ViewFlipper>
 

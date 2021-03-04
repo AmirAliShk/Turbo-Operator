@@ -27,6 +27,8 @@ import butterknife.OnClick;
 import butterknife.Unbinder;
 import ir.taxi1880.operatormanagement.R;
 import ir.taxi1880.operatormanagement.app.MyApplication;
+import ir.taxi1880.operatormanagement.fragment.SupportDriverTripsFragment;
+import ir.taxi1880.operatormanagement.helper.FragmentHelper;
 import ir.taxi1880.operatormanagement.helper.TypefaceUtil;
 import ir.taxi1880.operatormanagement.push.AvaCrashReporter;
 import ir.taxi1880.operatormanagement.services.LinphoneService;
@@ -143,22 +145,23 @@ public class CallIncomingActivity extends AppCompatActivity {
 
     private void gotoCalling() {
         Intent intent = new Intent(this, TripRegisterActivity.class);
-        if (MyApplication.prefManager.getActivityStatus() == 1) {
+        if (MyApplication.prefManager.getActivityStatus() == 1) {  //you are enable in trip register queue
             intent = new Intent(this, TripRegisterActivity.class);
-        } else if (MyApplication.prefManager.getActivityStatus() == 2) {
+        } else if (MyApplication.prefManager.getActivityStatus() == 2) { // you are enable in support queue (800)
             intent = new Intent(this, SupportActivity.class);
+            intent.putExtra("comeFromCallActivity",true);
         }
-        // This flag is required to start an Activity from a Service context
         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         startActivity(intent);
         finish();
-
+        // This flag is required to start an Activity from a Service context
     }
 
     @Override
     protected void onResume() {
         super.onResume();
         MyApplication.currentActivity = this;
+        MyApplication.prefManager.setAppRun(true);
         try {
             Core core = LinphoneService.getCore();
             if (core != null) {
@@ -180,19 +183,32 @@ public class CallIncomingActivity extends AppCompatActivity {
     }
 
     @Override
+    protected void onStart() {
+        super.onStart();
+        MyApplication.prefManager.setAppRun(true);
+    }
+
+    @Override
     protected void onDestroy() {
         super.onDestroy();
         unbinder.unbind();
-
+        MyApplication.prefManager.setAppRun(false);
     }
 
     @Override
     protected void onPause() {
+        MyApplication.prefManager.setAppRun(false);
         Core core = LinphoneService.getCore();
         if (core != null) {
             core.removeListener(mListener);
         }
         super.onPause();
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        MyApplication.prefManager.setAppRun(false);
     }
 
     @Override

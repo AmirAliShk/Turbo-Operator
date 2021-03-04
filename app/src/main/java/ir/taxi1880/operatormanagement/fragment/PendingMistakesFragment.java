@@ -52,16 +52,18 @@ public class PendingMistakesFragment extends Fragment {
 
     @OnClick(R.id.btnSaveResult)
     void onSaveResult() {
+        pauseVoice();
         new SaveResultDialog()
                 .show(model.getId(), success -> {
                     if (success) {
-                        MyApplication.handler.postDelayed(() -> getMistakesFromDB(),200);
+                        MyApplication.handler.postDelayed(() -> getMistakesFromDB(), 200);
                     }
                 });
     }
 
     @OnClick(R.id.btnOptions)
     void onOptions() {
+        pauseVoice();
         new PendingMistakesOptionsDialog()
                 .show();
     }
@@ -99,6 +101,11 @@ public class PendingMistakesFragment extends Fragment {
             startDownload(EndPoints.CALL_VOICE + dataBase.getMistakesRow().getVoipId(), voiceName);
         }
 
+    }
+
+    @OnClick(R.id.imgPause)
+    void onImgPause() {
+        pauseVoice();
     }
 
     @BindView(R.id.skbTimer)
@@ -199,7 +206,9 @@ public class PendingMistakesFragment extends Fragment {
         try {
             mediaPlayer = MediaPlayer.create(MyApplication.context, uri);
             mediaPlayer.setOnCompletionListener(mp -> {
-//TODO thumb of seekbar goes to start
+                if (vfPlayPause != null) {
+                    vfPlayPause.setDisplayedChild(0);
+                }
             });
             TOTAL_VOICE_DURATION = mediaPlayer.getDuration();
 
@@ -226,6 +235,9 @@ public class PendingMistakesFragment extends Fragment {
         try {
             if (mediaPlayer != null)
                 mediaPlayer.pause();
+
+            skbTimer.setProgress(0);
+
             if (vfPlayPause != null)
                 vfPlayPause.setDisplayedChild(0);
         } catch (Exception e) {
@@ -348,8 +360,14 @@ public class PendingMistakesFragment extends Fragment {
 
     @Override
     public void onPause() {
-        Log.i("TAG", "onPause: ");
         super.onPause();
+        pauseVoice();
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        pauseVoice();
     }
 
     @Override

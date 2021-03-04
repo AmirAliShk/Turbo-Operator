@@ -203,14 +203,14 @@
                         android:layout_below="@id/skbTimer"
                         android:layout_centerHorizontal="true"
                         android:layout_gravity="center"
-                        android:elevation="3dp"
-                        android:padding="10dp">
+                        android:elevation="3dp">
 
                         <ImageView
                             android:id="@+id/imgPlay"
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
                             android:layout_gravity="center"
+                            android:padding="10dp"
                             android:src="@drawable/ic_play" />
 
                         <ImageView
@@ -218,7 +218,8 @@
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
                             android:layout_gravity="center"
-                            android:src="@drawable/ic_pause" />
+                            android:padding="10dp"
+                            android:src="@drawable/ic_stop" />
 
                     </ViewFlipper>
 

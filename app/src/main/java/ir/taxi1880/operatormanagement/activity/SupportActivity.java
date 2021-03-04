@@ -249,6 +249,11 @@ public class SupportActivity extends AppCompatActivity {
 //            }
 //        });
 
+        Intent intent = getIntent();
+        if (intent.getBooleanExtra("comeFromCallActivity",false)){
+            MyApplication.handler.postDelayed(() -> FragmentHelper.toFragment(MyApplication.currentActivity, new SupportDriverTripsFragment()).replace(), 400);
+        }
+
         tbLayout.setSelectedTabIndicatorColor(Color.parseColor("#FF0000"));
         tbLayout.setTabTextColors(Color.parseColor("#868a99"), Color.parseColor("#ff5e5b"));
 
@@ -508,7 +513,7 @@ public class SupportActivity extends AppCompatActivity {
     @Override
     protected void onStop() {
         super.onStop();
-
+        MyApplication.prefManager.setAppRun(false);
     }
 
     @Override
@@ -523,7 +528,7 @@ public class SupportActivity extends AppCompatActivity {
         super.onStart();
         MyApplication.currentActivity = this;
         supportActivityIsRunning = true;
-
+        MyApplication.prefManager.setAppRun(true);
         core = LinphoneService.getCore();
         core.addListener(mCoreListener);
     }
@@ -531,6 +536,7 @@ public class SupportActivity extends AppCompatActivity {
     @Override
     protected void onDestroy() {
         super.onDestroy();
+        MyApplication.prefManager.setAppRun(false);
         unbinder.unbind();
         core.removeListener(mCoreListener);
 //    MyApplication.prefManager.setLastCallerId("");// set empty, because I don't want save this permanently .

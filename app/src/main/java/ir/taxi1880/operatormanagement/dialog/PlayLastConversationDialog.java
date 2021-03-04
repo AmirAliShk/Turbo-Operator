@@ -57,6 +57,11 @@ public class PlayLastConversationDialog {
         dismiss();
     }
 
+    @OnClick(R.id.imgStop)
+    void onStop() {
+        pauseVoice();
+    }
+
     @BindView(R.id.skbTimer)
     IndicatorSeekBar skbTimer;
 
@@ -252,6 +257,9 @@ public class PlayLastConversationDialog {
         try {
             if (mediaPlayer != null)
                 mediaPlayer.pause();
+
+            skbTimer.setProgress(0);
+
             if (vfPlayPause != null)
                 vfPlayPause.setDisplayedChild(0);
         } catch (Exception e) {
