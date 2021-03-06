@@ -1,6 +1,7 @@
 package ir.taxi1880.operatormanagement.dialog;
 
 import android.app.Dialog;
+import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.util.Log;
@@ -10,6 +11,8 @@ import android.widget.Button;
 import android.widget.RadioGroup;
 import android.widget.Toast;
 import android.widget.ViewFlipper;
+
+import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 
 import org.json.JSONObject;
 
@@ -25,6 +28,11 @@ import ir.taxi1880.operatormanagement.helper.TypefaceUtil;
 import ir.taxi1880.operatormanagement.okHttp.RequestHelper;
 import ir.taxi1880.operatormanagement.push.AvaCrashReporter;
 
+import static ir.taxi1880.operatormanagement.app.Keys.KEY_NEW_MISTAKE_COUNT;
+import static ir.taxi1880.operatormanagement.app.Keys.KEY_PENDING_MISTAKE_COUNT;
+import static ir.taxi1880.operatormanagement.app.Keys.NEW_MISTAKE_COUNT;
+import static ir.taxi1880.operatormanagement.app.Keys.PENDING_MISTAKE_COUNT;
+
 public class SaveResultDialog {
     static Dialog dialog;
     Unbinder unbinder;
@@ -32,6 +40,7 @@ public class SaveResultDialog {
     String result;
     DataBase dataBase;
     int mistakesId;
+    LocalBroadcastManager broadcaster;
 
     public interface MistakesResult {
         void onSuccess(boolean success);
@@ -155,6 +164,12 @@ public class SaveResultDialog {
                                         mistakesResult.onSuccess(true);
                                         dismiss();
                                         dataBase.deleteMistakesRow(mistakesId);
+
+                                        broadcaster = LocalBroadcastManager.getInstance(MyApplication.context);
+                                        Intent broadcastIntent = new Intent(KEY_PENDING_MISTAKE_COUNT);
+                                        broadcastIntent.putExtra(PENDING_MISTAKE_COUNT, dataBase.getMistakesCount());
+                                        broadcaster.sendBroadcast(broadcastIntent);
+
                                     })
                                     .show();
                         }
@@ -179,7 +194,6 @@ public class SaveResultDialog {
             });
         }
     };
-
 
     private void dismiss() {
         try {

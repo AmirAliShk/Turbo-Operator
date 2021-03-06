@@ -1,6 +1,7 @@
 package ir.taxi1880.operatormanagement.adapter;
 
 import android.content.Context;
+import android.content.Intent;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -10,6 +11,7 @@ import android.widget.TextView;
 import android.widget.ViewFlipper;
 
 import androidx.annotation.NonNull;
+import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import org.json.JSONObject;
@@ -26,10 +28,13 @@ import ir.taxi1880.operatormanagement.helper.TypefaceUtil;
 import ir.taxi1880.operatormanagement.model.AllMistakesModel;
 import ir.taxi1880.operatormanagement.okHttp.RequestHelper;
 
+import static ir.taxi1880.operatormanagement.app.Keys.KEY_PENDING_MISTAKE_COUNT;
+import static ir.taxi1880.operatormanagement.app.Keys.PENDING_MISTAKE_COUNT;
 import static ir.taxi1880.operatormanagement.app.MyApplication.context;
 
 public class AllMistakesAdapter extends RecyclerView.Adapter<AllMistakesAdapter.ViewHolder> {
     private Context mContext;
+    LocalBroadcastManager broadcaster;
     private ArrayList<AllMistakesModel> allMistakesModels;
     DataBase dataBase;
     ViewFlipper viewFlipper;
@@ -121,6 +126,12 @@ public class AllMistakesAdapter extends RecyclerView.Adapter<AllMistakesAdapter.
                                         dataBase.insertMistakes(allMistakesModels.get(position));
                                         allMistakesModels.remove(position);
                                         notifyDataSetChanged();
+
+                                        broadcaster = LocalBroadcastManager.getInstance(MyApplication.context);
+                                        Intent broadcastIntent = new Intent(KEY_PENDING_MISTAKE_COUNT);
+                                        broadcastIntent.putExtra(PENDING_MISTAKE_COUNT, dataBase.getMistakesCount());
+                                        broadcaster.sendBroadcast(broadcastIntent);
+
                                     })
                                     .show();
                         }

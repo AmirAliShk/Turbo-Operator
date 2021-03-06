@@ -1,5 +1,6 @@
 package ir.taxi1880.operatormanagement.fragment;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -9,6 +10,7 @@ import android.widget.ViewFlipper;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.dinuscxj.refresh.RecyclerRefreshLayout;
@@ -29,8 +31,12 @@ import ir.taxi1880.operatormanagement.helper.TypefaceUtil;
 import ir.taxi1880.operatormanagement.model.AllMistakesModel;
 import ir.taxi1880.operatormanagement.okHttp.RequestHelper;
 
+import static ir.taxi1880.operatormanagement.app.Keys.KEY_NEW_MISTAKE_COUNT;
+import static ir.taxi1880.operatormanagement.app.Keys.NEW_MISTAKE_COUNT;
+
 public class AllMistakesFragment extends Fragment {
     Unbinder unbinder;
+    LocalBroadcastManager broadcaster;
 
     @BindView(R.id.refreshPage)
     RecyclerRefreshLayout refreshPage;
@@ -112,6 +118,12 @@ public class AllMistakesFragment extends Fragment {
                                 vfDownload.setDisplayedChild(1);
                             mAdapter = new AllMistakesAdapter(MyApplication.currentActivity, allMistakesModels);
                             mistakesList.setAdapter(mAdapter);
+
+                            broadcaster = LocalBroadcastManager.getInstance(MyApplication.context);
+                            Intent broadcastIntent = new Intent(KEY_NEW_MISTAKE_COUNT);
+                            broadcastIntent.putExtra(NEW_MISTAKE_COUNT, allMistakesModels.size());
+                            broadcaster.sendBroadcast(broadcastIntent);
+
                         }
 
                     } else {

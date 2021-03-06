@@ -54,6 +54,11 @@ import ir.taxi1880.operatormanagement.okHttp.RequestHelper;
 import ir.taxi1880.operatormanagement.push.AvaCrashReporter;
 import ir.taxi1880.operatormanagement.services.LinphoneService;
 
+import static ir.taxi1880.operatormanagement.app.Keys.KEY_NEW_MISTAKE_COUNT;
+import static ir.taxi1880.operatormanagement.app.Keys.KEY_PENDING_MISTAKE_COUNT;
+import static ir.taxi1880.operatormanagement.app.Keys.NEW_MISTAKE_COUNT;
+import static ir.taxi1880.operatormanagement.app.Keys.PENDING_MISTAKE_COUNT;
+
 public class SupportActivity extends AppCompatActivity {
     public static final String TAG = SupportActivity.class.getSimpleName();
     Unbinder unbinder;
@@ -65,6 +70,8 @@ public class SupportActivity extends AppCompatActivity {
     String voipId = "0";
     Core core;
     Call call;
+    int mistakeCountNew;
+    int mistakeCountPending;
 
     @BindView(R.id.vpSupport)
     ViewPager2 vpSupport;
@@ -233,34 +240,31 @@ public class SupportActivity extends AppCompatActivity {
         vpSupport.setAdapter(supportViewPagerAdapter);
         vpSupport.setUserInputEnabled(false);
 
-        new TabLayoutMediator(tbLayout, vpSupport, (tab, position) -> {
-            tab.setCustomView(supportViewPagerAdapter.getTabView(position));
-        }).attach();
+//        new TabLayoutMediator(tbLayout, vpSupport, (tab, position) -> {
+//            tab.setCustomView(supportViewPagerAdapter.getTabView(position, mistakeCount));
+//        }).attach();
 
-//        tbLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
-//            @Override
-//            public void onTabSelected(TabLayout.Tab tab) {
-//                supportViewPagerAdapter.setSelectView(tbLayout, tab.getPosition(), "select");
-//            }
-//
-//            @Override
-//            public void onTabUnselected(TabLayout.Tab tab) {
-//                supportViewPagerAdapter.setSelectView(tbLayout, tab.getPosition(), "unSelect");
-//            }
-//
-//            @Override
-//            public void onTabReselected(TabLayout.Tab tab) {
-//
-//            }
-//        });
+        tbLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
+            @Override
+            public void onTabSelected(TabLayout.Tab tab) {
+                supportViewPagerAdapter.setSelectView(tbLayout, tab.getPosition(), "select");
+            }
+
+            @Override
+            public void onTabUnselected(TabLayout.Tab tab) {
+                supportViewPagerAdapter.setSelectView(tbLayout, tab.getPosition(), "unSelect");
+            }
+
+            @Override
+            public void onTabReselected(TabLayout.Tab tab) {
+
+            }
+        });
 
         Intent intent = getIntent();
-        if (intent.getBooleanExtra("comeFromCallActivity",false)){
+        if (intent.getBooleanExtra("comeFromCallActivity", false)) {
             MyApplication.handler.postDelayed(() -> FragmentHelper.toFragment(MyApplication.currentActivity, new SupportDriverTripsFragment()).replace(), 400);
         }
-
-        tbLayout.setSelectedTabIndicatorColor(Color.parseColor("#FF0000"));
-        tbLayout.setTabTextColors(Color.parseColor("#868a99"), Color.parseColor("#ff5e5b"));
 
         if (MyApplication.prefManager.getActivateStatus()) {
             btnActivate.setBackgroundResource(R.drawable.bg_green_edge);
@@ -269,8 +273,6 @@ public class SupportActivity extends AppCompatActivity {
             btnDeActivate.setBackgroundResource(R.drawable.bg_pink_edge);
             btnActivate.setBackgroundColor(Color.parseColor("#00FFB2B2"));
         }
-        btnDeActivate.setTextColor(Color.parseColor("#ffffff"));
-
     }
 
     private void setActivate(int sipNumber) {
@@ -409,7 +411,6 @@ public class SupportActivity extends AppCompatActivity {
     BroadcastReceiver userStatusReceiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
-            String messageUserStatus = intent.getStringExtra(Keys.KEY_MESSAGE_USER_STATUS);
             boolean userStatus = intent.getBooleanExtra(Keys.KEY_USER_STATUS, false);
             if (!userStatus) {
                 btnDeActivate.setBackgroundResource(R.drawable.bg_pink_edge);
@@ -459,6 +460,30 @@ public class SupportActivity extends AppCompatActivity {
                     LinphoneService.removeFromUIThreadDispatcher(mCallQualityUpdater);
                     mCallQualityUpdater = null;
                 }
+            }
+        }
+    };
+
+    BroadcastReceiver counterReceiverNew = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            mistakeCountNew = intent.getIntExtra(NEW_MISTAKE_COUNT, 0);
+            if (vpSupport != null) {
+                new TabLayoutMediator(tbLayout, vpSupport, (tab, position) -> {
+                    tab.setCustomView(supportViewPagerAdapter.getTabView(position, mistakeCountNew, mistakeCountPending));
+                }).attach();
+            }
+        }
+    };
+
+    BroadcastReceiver counterReceiverPending = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            mistakeCountPending = intent.getIntExtra(PENDING_MISTAKE_COUNT, 0);
+            if (vpSupport != null) {
+                new TabLayoutMediator(tbLayout, vpSupport, (tab, position) -> {
+                    tab.setCustomView(supportViewPagerAdapter.getTabView(position, mistakeCountNew, mistakeCountPending));
+                }).attach();
             }
         }
     };
@@ -556,8 +581,15 @@ public class SupportActivity extends AppCompatActivity {
         MyApplication.prefManager.setAppRun(true);
         core = LinphoneService.getCore();
         core.addListener(mCoreListener);
+
         registerReceiver(userStatusReceiver, new IntentFilter());
         LocalBroadcastManager.getInstance(MyApplication.currentActivity).registerReceiver((userStatusReceiver), new IntentFilter(Keys.KEY_REFRESH_USER_STATUS));
+
+        registerReceiver(counterReceiverNew, new IntentFilter());
+        LocalBroadcastManager.getInstance(MyApplication.currentActivity).registerReceiver((counterReceiverNew), new IntentFilter(KEY_NEW_MISTAKE_COUNT));
+
+        registerReceiver(counterReceiverPending, new IntentFilter());
+        LocalBroadcastManager.getInstance(MyApplication.currentActivity).registerReceiver((counterReceiverPending), new IntentFilter(KEY_PENDING_MISTAKE_COUNT));
     }
 
     @Override
@@ -575,7 +607,7 @@ public class SupportActivity extends AppCompatActivity {
         KeyBoardHelper.hideKeyboard();
         if (getFragmentManager().getBackStackEntryCount() > 0 || getSupportFragmentManager().getBackStackEntryCount() > 0) {
             super.onBackPressed();
-        }else {
+        } else {
             Intent intent = new Intent(MyApplication.context, MainActivity.class);
             startActivity(intent);
             finish();

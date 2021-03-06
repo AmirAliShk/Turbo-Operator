@@ -7,4 +7,10 @@ public class Keys {
   public static final String KEY_USER_STATUS = "userStatus";
   public static final String KEY_MESSAGE_USER_STATUS = "messageUserStatus";
 
+  public static final String KEY_NEW_MISTAKE_COUNT = "newMistakeCount";
+  public static final String NEW_MISTAKE_COUNT = "newCount";
+
+  public static final String KEY_PENDING_MISTAKE_COUNT = "pendingMistakeCount";
+  public static final String PENDING_MISTAKE_COUNT = "pendingCount";
+
 }
