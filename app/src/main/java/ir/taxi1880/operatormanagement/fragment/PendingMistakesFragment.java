@@ -91,6 +91,7 @@ public class PendingMistakesFragment extends Fragment {
 
     @OnClick(R.id.imgPlay)
     void onPlay() {
+        vfPlayPause.setDisplayedChild(1);
         Log.i("URL", "show: " + EndPoints.CALL_VOICE + dataBase.getMistakesRow().getVoipId());
         String voiceName = dataBase.getMistakesRow().getId() + ".mp3";
         File file = new File(MyApplication.DIR_ROOT + MyApplication.VOICE_FOLDER_NAME + "/" + voiceName);
@@ -224,7 +225,7 @@ public class PendingMistakesFragment extends Fragment {
             if (mediaPlayer != null)
                 mediaPlayer.start();
             if (vfPlayPause != null)
-                vfPlayPause.setDisplayedChild(1);
+                vfPlayPause.setDisplayedChild(2);
         } catch (Exception e) {
         }
 
@@ -374,5 +375,16 @@ public class PendingMistakesFragment extends Fragment {
     public void onResume() {
         Log.i("TAG", "onResume: ");
         super.onResume();
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        try {
+            pauseVoice();
+            cancelTimer();
+        } catch (Exception e) {
+
+        }
     }
 }

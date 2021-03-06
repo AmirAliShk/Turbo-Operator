@@ -213,6 +213,13 @@
                             android:padding="10dp"
                             android:src="@drawable/ic_play" />
 
+                        <com.wang.avi.AVLoadingIndicatorView
+                            android:layout_width="17dp"
+                            android:layout_height="17dp"
+                            android:layout_gravity="center"
+                            app:indicatorColor="@color/colorPrimaryDark"
+                            app:indicatorName="BallBeatIndicator" />
+
                         <ImageView
                             android:id="@+id/imgPause"
                             android:layout_width="match_parent"
