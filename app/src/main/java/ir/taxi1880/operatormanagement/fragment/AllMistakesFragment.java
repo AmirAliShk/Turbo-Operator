@@ -4,12 +4,12 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ListView;
 import android.widget.ViewFlipper;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.dinuscxj.refresh.RecyclerRefreshLayout;
 
@@ -32,12 +32,11 @@ import ir.taxi1880.operatormanagement.okHttp.RequestHelper;
 public class AllMistakesFragment extends Fragment {
     Unbinder unbinder;
 
-
     @BindView(R.id.refreshPage)
     RecyclerRefreshLayout refreshPage;
 
     @BindView(R.id.mistakesList)
-    ListView mistakesList;
+    RecyclerView mistakesList;
 
     @BindView(R.id.vfDownload)
     ViewFlipper vfDownload;

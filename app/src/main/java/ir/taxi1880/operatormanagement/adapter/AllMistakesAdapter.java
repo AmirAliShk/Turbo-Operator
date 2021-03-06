@@ -1,12 +1,16 @@
 package ir.taxi1880.operatormanagement.adapter;
 
 import android.content.Context;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.BaseAdapter;
+import android.widget.Button;
 import android.widget.TextView;
 import android.widget.ViewFlipper;
+
+import androidx.annotation.NonNull;
+import androidx.recyclerview.widget.RecyclerView;
 
 import org.json.JSONObject;
 
@@ -24,11 +28,10 @@ import ir.taxi1880.operatormanagement.okHttp.RequestHelper;
 
 import static ir.taxi1880.operatormanagement.app.MyApplication.context;
 
-public class AllMistakesAdapter extends BaseAdapter {
+public class AllMistakesAdapter extends RecyclerView.Adapter<AllMistakesAdapter.ViewHolder> {
     private Context mContext;
     private ArrayList<AllMistakesModel> allMistakesModels;
     DataBase dataBase;
-    AllMistakesModel currentAllMistakesModel;
     ViewFlipper viewFlipper;
     int position;
 
@@ -38,52 +41,61 @@ public class AllMistakesAdapter extends BaseAdapter {
     }
 
     @Override
-    public int getCount() {
+    public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+        View view = LayoutInflater.from(context).inflate(R.layout.item_all_mistakes, parent, false);
+        TypefaceUtil.overrideFonts(view);
+        dataBase = new DataBase(context);
+        return new ViewHolder(view);
+    }
+
+    @Override
+    public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
+        AllMistakesModel model = allMistakesModels.get(position);
+
+        holder.txtComplaintDate.setText(StringHelper.toPersianDigits(model.getDate()));
+        holder.txtComplaintTime.setText(StringHelper.toPersianDigits(model.getTime().substring(0, 5)));
+        holder.txtComplaintId.setText("  id:  " + model.getId() + "");
+        holder.txtComplaintVoipId.setText("  voipId:  " + model.getVoipId() + "");
+
+        holder.btn.setOnClickListener(view1 -> {
+            this.viewFlipper = holder.viewFlipper;
+            this.position = position;
+            if (holder.viewFlipper != null) {
+                holder.viewFlipper.setDisplayedChild(1);
+                Log.i(String.valueOf(position), "vf position: " + position);
+            }
+            Log.i(String.valueOf(position), "btn position: " + position);
+            getAccept(allMistakesModels.get(position).getId());
+        });
+    }
+
+    @Override
+    public int getItemCount() {
         return allMistakesModels.size();
     }
 
-    @Override
-    public Object getItem(int i) {
-        return allMistakesModels.get(i);
-    }
+    public class ViewHolder extends RecyclerView.ViewHolder {
+        TextView txtComplaintDate;
+        TextView txtComplaintTime;
+        TextView txtComplaintId;
+        TextView txtComplaintVoipId;
+        ViewFlipper viewFlipper;
+        Button btn;
 
-    @Override
-    public long getItemId(int i) {
-        return i;
-    }
+        public ViewHolder(@NonNull View itemView) {
+            super(itemView);
+            txtComplaintDate = itemView.findViewById(R.id.txtMistakesDate);
+            txtComplaintTime = itemView.findViewById(R.id.txtMistakesTime);
+            txtComplaintId = itemView.findViewById(R.id.txtMistakesId);
+            txtComplaintVoipId = itemView.findViewById(R.id.txtMistakesVoipId);
+            viewFlipper = itemView.findViewById(R.id.vfAccept);
+            btn = itemView.findViewById(R.id.btnAccept);
 
-    @Override
-    public View getView(int i, View view, ViewGroup viewGroup) {
-        if (view == null) {
-            view = LayoutInflater.from(mContext).inflate(R.layout.item_all_mistakes, viewGroup, false);
-            TypefaceUtil.overrideFonts(view);
         }
-
-        currentAllMistakesModel = (AllMistakesModel) getItem(i);
-        dataBase = new DataBase(context);
-        TextView txtComplaintDate = view.findViewById(R.id.txtMistakesDate);
-        TextView txtComplaintTime = view.findViewById(R.id.txtMistakesTime);
-        TextView txtComplaintId = view.findViewById(R.id.txtMistakesId);
-        TextView txtComplaintVoipId = view.findViewById(R.id.txtMistakesVoipId);
-        viewFlipper = view.findViewById(R.id.vfAccept);
-
-        txtComplaintDate.setText(StringHelper.toPersianDigits(currentAllMistakesModel.getDate()));
-        txtComplaintTime.setText(StringHelper.toPersianDigits(currentAllMistakesModel.getTime().substring(0, 5)));
-        txtComplaintId.setText("  id:  "+ currentAllMistakesModel.getId()+"");
-        txtComplaintVoipId.setText("  voipId:  "+ currentAllMistakesModel.getVoipId()+"");
-
-        view.findViewById(R.id.btnAccept).setOnClickListener(view1 -> {
-            position = i;
-            getAccept(allMistakesModels.get(i).getId());
-        });
-
-        return view;
     }
 
     private void getAccept(int id) {
-        if (viewFlipper != null) {
-            viewFlipper.setDisplayedChild(1);
-        }
+
         RequestHelper.builder(EndPoints.ACCEPT_LISTEN)
                 .addParam("listenId", id)
                 .listener(getAccept)
