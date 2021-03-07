@@ -6,6 +6,8 @@ import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 import androidx.viewpager2.widget.ViewPager2;
 
 import android.content.BroadcastReceiver;
+import android.content.ClipData;
+import android.content.ClipboardManager;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
@@ -192,6 +194,12 @@ public class SupportActivity extends AppCompatActivity {
         } else if (calls.length > 0) {
             calls[0].accept();
         }
+
+
+        ClipboardManager clipboard = (ClipboardManager) getSystemService(Context.CLIPBOARD_SERVICE);
+        ClipData clip = ClipData.newPlainText("passengerTell", txtCallerNum.getText().toString());
+        clipboard.setPrimaryClip(clip);
+
     }
 
     @OnClick(R.id.imgReject)

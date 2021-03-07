@@ -9,6 +9,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+import android.widget.Toast;
 import android.widget.ViewFlipper;
 
 import androidx.annotation.NonNull;
@@ -101,13 +102,16 @@ public class PendingMistakesFragment extends Fragment {
         Log.i("URL", "show: " + EndPoints.CALL_VOICE + dataBase.getMistakesRow().getVoipId());
         String voiceName = dataBase.getMistakesRow().getId() + ".mp3";
         File file = new File(MyApplication.DIR_ROOT + MyApplication.VOICE_FOLDER_NAME + "/" + voiceName);
+        String voipId = dataBase.getMistakesRow().getVoipId();
         if (file.exists()) {
             initVoice(Uri.fromFile(file));
             playVoice();
+        } else if (voipId.equals("0")) {
+            MyApplication.Toast("صوتی برای این تماس وجود ندارد", Toast.LENGTH_SHORT);
+            vfPlayPause.setDisplayedChild(0);
         } else {
             startDownload(EndPoints.CALL_VOICE + dataBase.getMistakesRow().getVoipId(), voiceName);
         }
-
     }
 
     @OnClick(R.id.imgPause)
