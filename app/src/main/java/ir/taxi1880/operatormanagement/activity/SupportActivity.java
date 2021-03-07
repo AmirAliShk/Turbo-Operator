@@ -43,6 +43,7 @@ import ir.taxi1880.operatormanagement.adapter.SupportViewPagerAdapter;
 import ir.taxi1880.operatormanagement.app.EndPoints;
 import ir.taxi1880.operatormanagement.app.Keys;
 import ir.taxi1880.operatormanagement.app.MyApplication;
+import ir.taxi1880.operatormanagement.dataBase.DataBase;
 import ir.taxi1880.operatormanagement.dialog.CallDialog;
 import ir.taxi1880.operatormanagement.dialog.GeneralDialog;
 import ir.taxi1880.operatormanagement.dialog.LoadingDialog;
@@ -72,6 +73,7 @@ public class SupportActivity extends AppCompatActivity {
     Call call;
     int mistakeCountNew;
     int mistakeCountPending;
+    DataBase dataBase;
 
     @BindView(R.id.vpSupport)
     ViewPager2 vpSupport;
@@ -240,9 +242,11 @@ public class SupportActivity extends AppCompatActivity {
         vpSupport.setAdapter(supportViewPagerAdapter);
         vpSupport.setUserInputEnabled(false);
 
-//        new TabLayoutMediator(tbLayout, vpSupport, (tab, position) -> {
-//            tab.setCustomView(supportViewPagerAdapter.getTabView(position, mistakeCount));
-//        }).attach();
+        dataBase = new DataBase(MyApplication.context);
+
+        new TabLayoutMediator(tbLayout, vpSupport, (tab, position) -> {
+            tab.setCustomView(supportViewPagerAdapter.getTabView(position, 0, dataBase.getMistakesCount()));
+        }).attach();
 
         tbLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
             @Override
@@ -470,7 +474,7 @@ public class SupportActivity extends AppCompatActivity {
             mistakeCountNew = intent.getIntExtra(NEW_MISTAKE_COUNT, 0);
             if (vpSupport != null) {
                 new TabLayoutMediator(tbLayout, vpSupport, (tab, position) -> {
-                    tab.setCustomView(supportViewPagerAdapter.getTabView(position, mistakeCountNew, mistakeCountPending));
+                    tab.setCustomView(supportViewPagerAdapter.getTabView(position, mistakeCountNew, dataBase.getMistakesCount()));
                 }).attach();
             }
         }
