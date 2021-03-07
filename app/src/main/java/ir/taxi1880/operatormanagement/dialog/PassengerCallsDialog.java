@@ -7,10 +7,11 @@ import android.util.Log;
 import android.view.Gravity;
 import android.view.Window;
 import android.view.WindowManager;
-import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.ViewFlipper;
+
+import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.ArrayList;
 
@@ -31,7 +32,7 @@ public class PassengerCallsDialog {
     Unbinder unbinder;
 
     @BindView(R.id.listPassengerCalls)
-    ListView listPassengerCalls;
+    RecyclerView listPassengerCalls;
 
     @OnClick(R.id.imgClose)
     void onClose() {
@@ -68,6 +69,15 @@ public class PassengerCallsDialog {
 
         passengerCallsModels = new ArrayList<>();
 
+        passengerCallsModels.add(new PassengerCallsModel("99/12/24", "12:23", "00:30"));
+        passengerCallsModels.add(new PassengerCallsModel("99/12/24", "12:23", "00:30"));
+        passengerCallsModels.add(new PassengerCallsModel("99/12/24", "12:23", "00:30"));
+        passengerCallsModels.add(new PassengerCallsModel("99/12/24", "12:23", "00:30"));
+        passengerCallsModels.add(new PassengerCallsModel("99/12/24", "12:23", "00:30"));
+        passengerCallsModels.add(new PassengerCallsModel("99/12/24", "12:23", "00:30"));
+        passengerCallsModels.add(new PassengerCallsModel("99/12/24", "12:23", "00:30"));
+        passengerCallsModels.add(new PassengerCallsModel("99/12/24", "12:23", "00:30"));
+        passengerCallsModels.add(new PassengerCallsModel("99/12/24", "12:23", "00:30"));
         passengerCallsModels.add(new PassengerCallsModel("99/12/24", "12:23", "00:30"));
         passengerCallsModels.add(new PassengerCallsModel("99/12/24", "12:23", "00:30"));
         passengerCallsModels.add(new PassengerCallsModel("99/12/24", "12:23", "00:30"));

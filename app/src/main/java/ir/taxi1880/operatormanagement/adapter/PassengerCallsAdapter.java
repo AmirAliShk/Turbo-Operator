@@ -4,8 +4,10 @@ import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.BaseAdapter;
 import android.widget.TextView;
+
+import androidx.annotation.NonNull;
+import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.ArrayList;
 
@@ -13,7 +15,9 @@ import ir.taxi1880.operatormanagement.R;
 import ir.taxi1880.operatormanagement.helper.TypefaceUtil;
 import ir.taxi1880.operatormanagement.model.PassengerCallsModel;
 
-public class PassengerCallsAdapter extends BaseAdapter {
+import static ir.taxi1880.operatormanagement.app.MyApplication.context;
+
+public class PassengerCallsAdapter extends RecyclerView.Adapter<PassengerCallsAdapter.ViewHolder> {
     private Context mContext;
     private ArrayList<PassengerCallsModel> passengerCallsModels;
 
@@ -24,37 +28,38 @@ public class PassengerCallsAdapter extends BaseAdapter {
     }
 
     @Override
-    public int getCount() {
+    public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+        View view = LayoutInflater.from(context).inflate(R.layout.item_passenger_calls, parent, false);
+        TypefaceUtil.overrideFonts(view);
+        return new ViewHolder(view);
+    }
+
+    @Override
+    public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
+        PassengerCallsModel model = passengerCallsModels.get(position);
+
+        holder.txtDate.setText(model.getTxtDate());
+        holder.txtTime.setText(model.getTxtTime());
+        holder.txtTimeRemaining.setText(model.getTxtTimeRemaining());
+    }
+
+    @Override
+    public int getItemCount() {
         return passengerCallsModels.size();
     }
 
-    @Override
-    public Object getItem(int i) {
-        return passengerCallsModels.get(i);
-    }
 
-    @Override
-    public long getItemId(int i) {
-        return i;
-    }
+    public class ViewHolder extends RecyclerView.ViewHolder {
+        TextView txtDate;
+        TextView txtTime;
+        TextView txtTimeRemaining;
 
-    @Override
-    public View getView(int i, View view, ViewGroup viewGroup) {
-        if (view == null) {
-            view = LayoutInflater.from(mContext).inflate(R.layout.item_passenger_calls, viewGroup, false);
-            TypefaceUtil.overrideFonts(view);
+        public ViewHolder(@NonNull View itemView) {
+            super(itemView);
+            txtDate = itemView.findViewById(R.id.txtDate);
+            txtTime = itemView.findViewById(R.id.txtTime);
+            txtTimeRemaining = itemView.findViewById(R.id.txtTimeRemaining);
+
         }
-
-        PassengerCallsModel passengerCallsModels = (PassengerCallsModel) getItem(i);
-
-        TextView txtDate = view.findViewById(R.id.txtDate);
-        TextView txtTime = view.findViewById(R.id.txtTime);
-        TextView txtTimeRemaining = view.findViewById(R.id.txtTimeRemaining);
-
-        txtDate.setText(passengerCallsModels.getTxtDate());
-        txtTime.setText(passengerCallsModels.getTxtTime());
-        txtTimeRemaining.setText(passengerCallsModels.getTxtTimeRemaining());
-
-        return view;
     }
 }
