@@ -71,6 +71,12 @@ public class PendingMistakesFragment extends Fragment {
     @BindView(R.id.txtTripDate)
     TextView txtTripDate;
 
+    @BindView(R.id.txtPassengerName)
+    TextView txtPassengerName;
+
+    @BindView(R.id.txtPassengerPhone)
+    TextView txtPassengerPhone;
+
     @BindView(R.id.vfPending)
     ViewFlipper vfPending;
 
@@ -276,6 +282,8 @@ public class PendingMistakesFragment extends Fragment {
         } else {
             model = dataBase.getMistakesRow();
             txtAddress.setText(StringHelper.toPersianDigits(model.getAddress()));
+            txtPassengerName.setText(StringHelper.toPersianDigits(model.getCustomerName()));
+            txtPassengerPhone.setText(StringHelper.toPersianDigits(model.getTell()));
             txtStationCode.setText(StringHelper.toPersianDigits("199")); //TODO correct station name an station code
             txtCity.setText(StringHelper.toPersianDigits("مشهد"));
             txtDescription.setText(StringHelper.toPersianDigits(model.getDescription()));

@@ -11,7 +11,6 @@ public class AllMistakesModel {
     private String description;
     private String tell;
     private int userCodeContact;
-    //    private int inspectorUser;
     private String address;
     private String customerName;
     private String conDate;
@@ -82,14 +81,6 @@ public class AllMistakesModel {
     public void setUserCodeContact(int userCodeContact) {
         this.userCodeContact = userCodeContact;
     }
-
-//    public int getInspectorUser() {
-//        return inspectorUser;
-//    }
-//
-//    public void setInspectorUser(int inspectorUser) {
-//        this.inspectorUser = inspectorUser;
-//    }
 
     public String getAddress() {
         return address;
