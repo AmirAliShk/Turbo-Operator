@@ -59,6 +59,7 @@ public class TripDetailsFragment extends Fragment {
     String callDate;
     String callTime;
     String cityName;
+    int cityCode;
 
     @OnClick(R.id.imgBack)
     void onBackPress() {
@@ -221,9 +222,9 @@ public class TripDetailsFragment extends Fragment {
 
     @OnClick(R.id.btnErrorRegistration)
     void onError() {
-        int cityId = new DataBase(MyApplication.context).getCityCode(cityName);
+//        String cityName= new DataBase(MyApplication.context).getCityName2(cityCode);
         new ErrorRegistrationDialog()
-                .show(serviceId, passengerPhone, passengerAddress, passengerName, voipId, cityId, stationCode, userId, callTime, callDate); // TODO user id is true???callTime?? callDate??
+                .show(serviceId, passengerPhone, passengerAddress, passengerName, voipId, cityCode, stationCode, userId, callTime, callDate); // TODO user id is true???callTime?? callDate??
     }
 
     @OnClick(R.id.btnComplaintRegistration)
@@ -303,6 +304,7 @@ public class TripDetailsFragment extends Fragment {
                         customerMobile = data.getString("customerMobile").trim();
                         passengerAddress = data.getString("customerAddress");
                         cityName = data.getString("cityName");
+                        cityCode = data.getInt("cityCode");
                         String carType = data.getString("CarType");
                         String plak = data.getString("plak");
                         carMobile = data.getString("carMobile").startsWith("0") ? data.getString("carMobile").substring(1) : data.getString("carMobile");

@@ -77,11 +77,11 @@ public class ErrorRegistrationDialog {
         RequestHelper.builder(EndPoints.MISTAKE)
                 .addParam("serviceId", ServiceId)
                 .addParam("phone", phone)
-                .addParam("userCodeContact", userCodeContact)
-                .addParam("cityCode", cityCode)
-                .addParam("stationCode", stationCode)
-                .addParam("conDate", conDate)
-                .addParam("conTime", conTime)
+                .addParam("tripUser", userCodeContact)//
+                .addParam("cityId", cityCode)//
+                .addParam("tripStation", stationCode)//
+                .addParam("tripDate", conDate)//
+                .addParam("tripTime", conTime)//
                 .addParam("adrs", address)
                 .addParam("customerName", customerName)
                 .addParam("voipId", voipId)
