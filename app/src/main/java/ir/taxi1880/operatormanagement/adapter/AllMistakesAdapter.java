@@ -28,7 +28,9 @@ import ir.taxi1880.operatormanagement.helper.TypefaceUtil;
 import ir.taxi1880.operatormanagement.model.AllMistakesModel;
 import ir.taxi1880.operatormanagement.okHttp.RequestHelper;
 
+import static ir.taxi1880.operatormanagement.app.Keys.KEY_NEW_MISTAKE_COUNT;
 import static ir.taxi1880.operatormanagement.app.Keys.KEY_PENDING_MISTAKE_COUNT;
+import static ir.taxi1880.operatormanagement.app.Keys.NEW_MISTAKE_COUNT;
 import static ir.taxi1880.operatormanagement.app.Keys.PENDING_MISTAKE_COUNT;
 import static ir.taxi1880.operatormanagement.app.MyApplication.context;
 
@@ -128,9 +130,14 @@ public class AllMistakesAdapter extends RecyclerView.Adapter<AllMistakesAdapter.
                                         notifyDataSetChanged();
 
                                         broadcaster = LocalBroadcastManager.getInstance(MyApplication.context);
-                                        Intent broadcastIntent = new Intent(KEY_PENDING_MISTAKE_COUNT);
-                                        broadcastIntent.putExtra(PENDING_MISTAKE_COUNT, dataBase.getMistakesCount());
-                                        broadcaster.sendBroadcast(broadcastIntent);
+                                        Intent broadcastIntent1 = new Intent(KEY_PENDING_MISTAKE_COUNT);
+                                        broadcastIntent1.putExtra(PENDING_MISTAKE_COUNT, dataBase.getMistakesCount());
+                                        broadcaster.sendBroadcast(broadcastIntent1);
+
+                                        broadcaster = LocalBroadcastManager.getInstance(MyApplication.context);
+                                        Intent broadcastIntent2 = new Intent(KEY_NEW_MISTAKE_COUNT);
+                                        broadcastIntent2.putExtra(NEW_MISTAKE_COUNT, allMistakesModels.size());
+                                        broadcaster.sendBroadcast(broadcastIntent2);
 
                                     })
                                     .show();
