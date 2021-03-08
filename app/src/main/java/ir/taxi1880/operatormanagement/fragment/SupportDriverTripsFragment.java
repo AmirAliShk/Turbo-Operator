@@ -10,6 +10,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.ViewFlipper;
@@ -50,6 +51,7 @@ import ir.taxi1880.operatormanagement.services.LinphoneService;
 
 public class SupportDriverTripsFragment extends Fragment {
     Unbinder unbinder;
+    View view;
     ArrayList<TripModel> tripModels;
     TripAdapter tripAdapter;
     int searchCase = 6;
@@ -130,6 +132,7 @@ public class SupportDriverTripsFragment extends Fragment {
         }
         KeyBoardHelper.hideKeyboard();
         searchService(searchText, searchCase);
+        getDriverInfo(searchText, searchCase);
     }
 
     @OnLongClick(R.id.imgClear)
@@ -174,11 +177,21 @@ public class SupportDriverTripsFragment extends Fragment {
     @BindView(R.id.recycleTrip)
     RecyclerView recycleTrip;
 
+    @BindView(R.id.llDriverInfo)
+    LinearLayout llDriverInfo;
+
+    @BindView(R.id.txtDriverName)
+    TextView txtDriverName;
+
+    @BindView(R.id.txtDriverCode)
+    TextView txtDriverCode;
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_support_driver_trip, container, false);
+        view = inflater.inflate(R.layout.fragment_support_driver_trip, container, false);
         unbinder = ButterKnife.bind(this, view);
         TypefaceUtil.overrideFonts(view);
+        TypefaceUtil.overrideFonts(llDriverInfo, MyApplication.IraSanSMedume);
         TypefaceUtil.overrideFonts(edtSearchTrip, MyApplication.IraSanSMedume);
 
         String tellNumber;
@@ -273,26 +286,28 @@ public class SupportDriverTripsFragment extends Fragment {
 
                     if (success) {
                         for (int i = 0; i < data.length(); i++) {
-                            JSONObject dataObj = data.getJSONObject(i);
-                            TripModel tripModel = new TripModel();
-                            tripModel.setServiceId(dataObj.getString("serviceId"));
-                            tripModel.setStatus(dataObj.getInt("Status"));
-                            tripModel.setCallDate(dataObj.getString("ContDate"));
-                            tripModel.setCallTime(dataObj.getString("ContTime"));
-                            tripModel.setSendTime(dataObj.getString("SendTime"));
-                            tripModel.setSendDate(dataObj.getString("SendDate"));
-                            tripModel.setStationCode(dataObj.getInt("stcode"));
-                            tripModel.setCustomerName(dataObj.getString("MoshName"));
-                            tripModel.setCustomerTell(dataObj.getString("MoshTel"));
-                            tripModel.setCustomerMob(dataObj.getString("MoshZone"));
-                            tripModel.setAddress(dataObj.getString("MoshAddr"));
-                            tripModel.setCity(dataObj.getString("cityName"));
-                            tripModel.setCarType(dataObj.getString("CarType2"));
-                            tripModel.setDriverMobile(dataObj.getString("MobCar"));
-                            tripModel.setFinished(dataObj.getInt("Finished"));
-                            tripModel.setStatusText(dataObj.getString("statusDes"));
-                            tripModel.setStatusColor(dataObj.getString("statusColor"));
-                            tripModels.add(tripModel);
+                            try {
+                                JSONObject dataObj = data.getJSONObject(i);
+                                TripModel tripModel = new TripModel();
+                                tripModel.setServiceId(dataObj.getString("serviceId"));
+                                tripModel.setStatus(dataObj.getInt("Status"));
+                                tripModel.setCallDate(dataObj.getString("ContDate"));
+                                tripModel.setCallTime(dataObj.getString("ContTime"));
+                                tripModel.setSendTime(dataObj.getString("SendTime"));
+                                tripModel.setSendDate(dataObj.getString("SendDate"));
+                                tripModel.setStationCode(dataObj.getInt("stcode"));
+                                tripModel.setCustomerName(dataObj.getString("MoshName"));
+                                tripModel.setCustomerTell(dataObj.getString("MoshTel"));
+                                tripModel.setCustomerMob(dataObj.getString("MoshZone"));
+                                tripModel.setAddress(dataObj.getString("MoshAddr"));
+                                tripModel.setCity(dataObj.getString("cityName"));
+                                tripModel.setCarType(dataObj.getString("CarType2"));
+                                tripModel.setDriverMobile(dataObj.getString("MobCar"));
+                                tripModel.setFinished(dataObj.getInt("Finished"));
+                                tripModel.setStatusText(dataObj.getString("statusDes"));
+                                tripModel.setStatusColor(dataObj.getString("statusColor"));
+                                tripModels.add(tripModel);
+                            }catch (Exception ignored){}
                         }
 
                         tripAdapter = new TripAdapter(tripModels);
@@ -316,6 +331,9 @@ public class SupportDriverTripsFragment extends Fragment {
 
                 } catch (JSONException e) {
                     e.printStackTrace();
+                    if (vfTrip != null) {
+                        vfTrip.setDisplayedChild(3);
+                    }
                 }
             });
         }
@@ -326,6 +344,109 @@ public class SupportDriverTripsFragment extends Fragment {
 //       e = {"message":"Unprocessable Entity","data":[{"field":"stationCode","message":"کد ایستگاه صحیح نیست"}],"success":false}
                 if (vfTrip != null) {
                     vfTrip.setDisplayedChild(3);
+                }
+            });
+        }
+
+    };
+
+    private void getDriverInfo(String searchText, int searchCase) {
+        if (vfTrip != null) {
+            vfTrip.setDisplayedChild(1);
+        }
+
+        switch (searchCase) {
+
+            case 6: // driver mobile
+                RequestHelper.builder(EndPoints.DRIVER_INFO)
+                        .ignore422Error(true)
+                        .addPath("0")
+                        .addPath(searchText)
+                        .listener(onGetDriverInfo)
+                        .get();
+                break;
+
+            case 7: // taxi code
+                RequestHelper.builder(EndPoints.DRIVER_INFO)
+                        .ignore422Error(true)
+                        .addPath(searchText)
+                        .addPath("0")
+                        .listener(onGetDriverInfo)
+                        .get();
+                break;
+
+        }
+
+    }
+
+    RequestHelper.Callback onGetDriverInfo = new RequestHelper.Callback() {
+
+        @Override
+        public void onResponse(Runnable reCall, Object... args) {
+            MyApplication.handler.post(() -> {
+                try {
+                    if (view!=null){
+                        llDriverInfo.setVisibility(View.VISIBLE);
+                    }
+
+                    JSONObject object = new JSONObject(args[0].toString());
+                    Boolean success = object.getBoolean("success");
+                    String message = object.getString("message");
+
+                    if (success) {
+                        JSONObject dataObj = object.getJSONObject("data");
+                        JSONObject infoObj = dataObj.getJSONObject("info");
+                        int cityCode = infoObj.getInt("cityCode");
+                        int driverCode = infoObj.getInt("driverCode");
+                        int carCode = infoObj.getInt("carCode");
+                        int smartCode = infoObj.getInt("smartCode");
+                        String driverName = infoObj.getString("driverName");
+                        int smartTaximeter = infoObj.getInt("smartTaximeter");
+                        int carClass = infoObj.getInt("carClass");
+                        int gender = infoObj.getInt("gender");
+                        int confirmation = infoObj.getInt("confirmation");
+                        String nationalCode = infoObj.getString("nationalCode");
+                        String fatherName = infoObj.getString("fatherName");
+                        String vin = infoObj.getString("vin");
+                        String sheba = infoObj.getString("sheba");
+                        String shenasname = infoObj.getString("shenasname");
+                        int fuelRationing = infoObj.getInt("fuelRationing");
+                        int cancelFuel = infoObj.getInt("cancelFuel");
+                        String startActiveDate = infoObj.getString("startActiveDate");
+
+                        JSONObject registrationObj = dataObj.getJSONObject("registration");
+                        int status = registrationObj.getInt("status");
+                        int station = registrationObj.getInt("station");
+                        int dist = registrationObj.getInt("dist");
+                        int turn = registrationObj.getInt("turn");
+                        String futureTime = registrationObj.getString("futureTime");
+                        String activeTime = registrationObj.getString("activeTime");
+                        String lat = registrationObj.getString("lat");
+                        String lng = registrationObj.getString("lng");
+                        String borderLimit = registrationObj.getString("borderLimit");
+
+                        if (view!=null){
+                            txtDriverName.setText(driverName);
+                            txtDriverCode.setText(StringHelper.toPersianDigits(driverCode+""));
+                        }
+                    }
+
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                    if (view!=null){
+                        llDriverInfo.setVisibility(View.GONE);
+                        MyApplication.Toast("خطا در دریافت اطلاعات راننده",Toast.LENGTH_SHORT);
+                    }
+                }
+            });
+        }
+
+        @Override
+        public void onFailure(Runnable reCall, Exception e) {
+            MyApplication.handler.post(() -> {
+                if (view!=null){
+                    llDriverInfo.setVisibility(View.GONE);
+                    MyApplication.Toast("خطا در دریافت اطلاعات راننده",Toast.LENGTH_SHORT);
                 }
             });
         }
