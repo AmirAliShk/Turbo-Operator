@@ -58,11 +58,49 @@ public class CallDialog {
     @BindView(R.id.llTransferr)
     LinearLayout llTransferr;
 
+    @BindView(R.id.llCall)
+    LinearLayout llCall;
+
+    @BindView(R.id.llSupportOperatorRecentCalls)
+    LinearLayout llSupportOperatorRecentCalls;
+
+    @BindView(R.id.llOperatorRecentCalls)
+    LinearLayout llOperatorRecentCalls;
+
     @BindView(R.id.llCallSupport)
     LinearLayout llCallSupport;
 
     @BindView(R.id.view)
     View view;
+
+    @BindView(R.id.view1)
+    View view1;
+
+    @BindView(R.id.view2)
+    View view2;
+
+    @BindView(R.id.view3)
+    View view3;
+
+    @BindView(R.id.view4)
+    View view4;
+
+    @BindView(R.id.view7)
+    View view7;
+
+
+    @OnClick(R.id.llSupportOperatorRecentCalls)
+    void llSupportOperatorRecentCalls(){
+        dismiss();
+        new OperatorRecentCallsDialog() .show();
+    }
+
+    @OnClick(R.id.llOperatorRecentCalls)
+    void llOperatorRecentCalls(){
+        dismiss();
+        new OperatorRecentCallsDialog() .show();
+    }
+
 
     @Optional
     @OnClick(R.id.llTransfer)
@@ -158,12 +196,6 @@ public class CallDialog {
         vfCall.setDisplayedChild(2);
     }
 
-    @OnClick(R.id.llLastConversation)
-    void onLastConversation() {
-        //TODO currect this
-//    new PlayLastConversationDialog().show("","");
-    }
-
     @OnClick(R.id.llTestConnection)
     void onTestConnectionPress() {
         Address addressToCall = core.interpretUrl("998");
@@ -176,24 +208,6 @@ public class CallDialog {
 
         setCancelable(false);
         vfCall.setDisplayedChild(2);
-    }
-
-    @OnClick(R.id.llLastCall)
-    void onLastCallPress() {
-        if (MyApplication.prefManager.getLastCall() == "null") {
-            MyApplication.Toast("اخیرا تماسی برقرار نشده است.", Toast.LENGTH_LONG);
-        } else {
-            Address addressToCall = core.interpretUrl(MyApplication.prefManager.getLastCall());
-            CallParams params = core.createCallParams(null);
-            params.enableVideo(false);
-            if (addressToCall != null) {
-                core.inviteAddressWithParams(addressToCall, params);
-            }
-            callAddress = addressToCall;
-
-            setCancelable(false);
-            vfCall.setDisplayedChild(2);
-        }
     }
 
     @OnClick(R.id.imgClose)
@@ -237,7 +251,11 @@ public class CallDialog {
         if (MyApplication.prefManager.getCustomerSupport() == 1) {
             llTransferr.setVisibility(View.GONE);
             llCallSupport.setVisibility(View.GONE);
+            llCall.setVisibility(View.GONE);
             view.setVisibility(View.GONE);
+        }else if (MyApplication.prefManager.getCustomerSupport() == 0){
+            llSupportOperatorRecentCalls.setVisibility(View.GONE);
+            view7.setVisibility(View.GONE);
         }
 
         if (isFromSupport) {
