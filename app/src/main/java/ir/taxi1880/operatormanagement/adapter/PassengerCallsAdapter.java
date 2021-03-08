@@ -45,7 +45,8 @@ public class PassengerCallsAdapter extends RecyclerView.Adapter<PassengerCallsAd
 
     @Override
     public int getItemCount() {
-        return passengerCallsModels.size();
+//        return passengerCallsModels.size();
+        return 5;
     }
 
 

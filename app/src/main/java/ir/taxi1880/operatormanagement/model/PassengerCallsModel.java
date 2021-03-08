@@ -6,12 +6,6 @@ public class PassengerCallsModel {
     String txtTime;
     String txtTimeRemaining;
 
-    public PassengerCallsModel(String txtDate, String txtTime, String txtTimeRemaining) {
-        this.txtDate = txtDate;
-        this.txtTime = txtTime;
-        this.txtTimeRemaining = txtTimeRemaining;
-    }
-
     public String getTxtDate() {
         return txtDate;
     }

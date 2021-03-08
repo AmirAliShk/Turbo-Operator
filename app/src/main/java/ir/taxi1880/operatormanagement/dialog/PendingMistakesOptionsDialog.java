@@ -38,7 +38,7 @@ public class PendingMistakesOptionsDialog {
     void onPressGuestCalls() {
         dismiss();
         new PassengerCallsDialog()
-                .show();
+                .show(tell);
     }
 
     @OnClick(R.id.llSearchService)
