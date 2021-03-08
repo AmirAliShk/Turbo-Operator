@@ -65,8 +65,9 @@ public class PendingMistakesFragment extends Fragment {
     @OnClick(R.id.btnOptions)
     void onOptions() {
         pauseVoice();
+        String tell = dataBase.getMistakesRow().getTell();
         new PendingMistakesOptionsDialog()
-                .show();
+                .show(tell);
     }
 
     @BindView(R.id.txtTripDate)

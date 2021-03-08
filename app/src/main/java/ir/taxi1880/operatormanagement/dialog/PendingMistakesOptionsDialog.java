@@ -3,17 +3,22 @@ package ir.taxi1880.operatormanagement.dialog;
 import android.app.Dialog;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
+import android.os.Bundle;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.Toast;
 
+import org.linphone.core.Address;
+
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import butterknife.Unbinder;
 import ir.taxi1880.operatormanagement.R;
 import ir.taxi1880.operatormanagement.app.MyApplication;
+import ir.taxi1880.operatormanagement.dataBase.DataBase;
+import ir.taxi1880.operatormanagement.fragment.SupportDriverTripsFragment;
 import ir.taxi1880.operatormanagement.fragment.TripSupportFragment;
 import ir.taxi1880.operatormanagement.helper.FragmentHelper;
 import ir.taxi1880.operatormanagement.helper.TypefaceUtil;
@@ -22,6 +27,7 @@ import ir.taxi1880.operatormanagement.push.AvaCrashReporter;
 public class PendingMistakesOptionsDialog {
     Unbinder unbinder;
     static Dialog dialog;
+    String tell;
 
     @OnClick(R.id.imgClose)
     void onClose() {
@@ -38,7 +44,10 @@ public class PendingMistakesOptionsDialog {
     @OnClick(R.id.llSearchService)
     void onPressSearchService() {
         dismiss();
-        FragmentHelper.toFragment(MyApplication.currentActivity, new TripSupportFragment()).replace();
+
+        Bundle bundle = new Bundle();
+        bundle.putString("tellNumber", tell);
+        FragmentHelper.toFragment(MyApplication.currentActivity, new TripSupportFragment()).setArguments(bundle).replace();
     }
 
     @OnClick(R.id.llNestFollowUp)
@@ -47,7 +56,7 @@ public class PendingMistakesOptionsDialog {
         MyApplication.Toast("llNestFollowUp", Toast.LENGTH_SHORT);
     }
 
-    public void show() {
+    public void show(String tell) {
         if (MyApplication.currentActivity == null || MyApplication.currentActivity.isFinishing())
             return;
         dialog = new Dialog(MyApplication.currentActivity);
@@ -62,6 +71,7 @@ public class PendingMistakesOptionsDialog {
         wlp.windowAnimations = R.style.ExpandAnimation;
         dialog.getWindow().setAttributes(wlp);
         dialog.setCancelable(true);
+        this.tell = tell;
 
         dialog.show();
     }

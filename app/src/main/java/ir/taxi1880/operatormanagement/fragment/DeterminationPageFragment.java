@@ -182,12 +182,7 @@ public class DeterminationPageFragment extends Fragment {
         pressedRefresh = true;
         txtStation.setText("");
         imgRefresh.startAnimation(AnimationUtils.loadAnimation(MyApplication.context, R.anim.rotate));
-        MyApplication.handler.postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                getAddressList();
-            }
-        }, 500);
+        MyApplication.handler.postDelayed(() -> getAddressList(), 500);
 
     }
 

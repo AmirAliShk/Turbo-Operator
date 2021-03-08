@@ -383,12 +383,9 @@ public class TripRegisterActivity extends AppCompatActivity {
     @OnClick(R.id.btnOptions)
     void onPressOptions() {
         KeyBoardHelper.hideKeyboard();
-        new TripOptionDialog().show(new TripOptionDialog.Listener() {
-            @Override
-            public void onClose(boolean b) {
-                if (b) {
-                    clearData();
-                }
+        new TripOptionDialog().show(b -> {
+            if (b) {
+                clearData();
             }
         }, getMobileNumber(), edtFamily.getText().toString(), cityCode);
     }

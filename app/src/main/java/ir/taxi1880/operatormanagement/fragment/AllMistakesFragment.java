@@ -22,6 +22,7 @@ import java.util.ArrayList;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 import butterknife.Unbinder;
 import ir.taxi1880.operatormanagement.R;
 import ir.taxi1880.operatormanagement.adapter.AllMistakesAdapter;
@@ -47,6 +48,16 @@ public class AllMistakesFragment extends Fragment {
     @BindView(R.id.vfDownload)
     ViewFlipper vfDownload;
 
+    @OnClick(R.id.imgRefresh)
+    void onRefresh() {
+        getListen();
+    }
+
+    @OnClick(R.id.imgRefreshFail)
+    void onRefreshFail() {
+        getListen();
+    }
+
     AllMistakesAdapter mAdapter;
     ArrayList<AllMistakesModel> allMistakesModels;
 
@@ -68,6 +79,8 @@ public class AllMistakesFragment extends Fragment {
     }
 
     private void getListen() {
+        if (vfDownload != null)
+            vfDownload.setDisplayedChild(0);
         RequestHelper.builder(EndPoints.LISTEN)
                 .listener(listenCallBack)
                 .get();
