@@ -43,6 +43,7 @@ public class EndPoints {
   public static final String SUPPORT_TRIP_WEBSERVICE_PATH = IP + ":" + TRIP_APIPort + "/api/operator/v3/support/trip/";
   public static final String SHIFT_WEBSERVICE_PATH = IP + ":" + TRIP_APIPort + "/api/operator/v3/shift/";
   public static final String TRIP_WEBSERVICE_PATH = IP + ":" + TRIP_APIPort + "/api/operator/v3/trip/";
+  public static final String DRIVER_WEBSERVICE_PATH = IP + ":" + TRIP_APIPort + "/api/operator/v3/support/driver/";
   public static final String CALL_VOICE_PATH = IP + ":" + CALL_VOICE_APIPort + "/api/v1/voice/"; //  http://turbotaxi.ir:1884/api/voice/1604130536.10343290
 
   public static final String HAWKEYE_PATH = HAKWEYE_IP + ":" + HAWKEYE_APIPort + "/api/user/v1/";
@@ -111,6 +112,12 @@ public class EndPoints {
   public static final String ACCEPT_LISTEN = LISTEN_WEBSERVICE_PATH + "accept";
   public static final String ACTIVATE_SUPPORT = SUPPORT_WEBSERVICE_PATH + "activate";
   public static final String DEACTIVATE_SUPPORT = SUPPORT_WEBSERVICE_PATH + "deActivate";
+
+  /******************************** Driver Api *********************************/
+
+  public static final String DRIVER_INFO = DRIVER_WEBSERVICE_PATH + "info";
+
+
 
   /******************************** refresh token Api *********************************/
 

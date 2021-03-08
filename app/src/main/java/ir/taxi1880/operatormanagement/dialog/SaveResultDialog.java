@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.util.Log;
+import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.Button;
@@ -41,6 +42,7 @@ public class SaveResultDialog {
     DataBase dataBase;
     int mistakesId;
     LocalBroadcastManager broadcaster;
+    View view;
 
     public interface MistakesResult {
         void onSuccess(boolean success);
@@ -116,8 +118,9 @@ public class SaveResultDialog {
         dialog.getWindow().requestFeature(Window.FEATURE_NO_TITLE);
         dialog.getWindow().getAttributes().windowAnimations = R.style.ExpandAnimation;
         dialog.setContentView(R.layout.dialog_save_result);
-        unbinder = ButterKnife.bind(this, dialog.getWindow().getDecorView());
-        TypefaceUtil.overrideFonts(dialog.getWindow().getDecorView(), MyApplication.IraSanSMedume);
+        view = dialog.getWindow().getDecorView();
+        unbinder = ButterKnife.bind(this, view);
+        TypefaceUtil.overrideFonts(view, MyApplication.IraSanSMedume);
         TypefaceUtil.overrideFonts(btnSubmit);
         dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         WindowManager.LayoutParams wlp = dialog.getWindow().getAttributes();
@@ -133,6 +136,7 @@ public class SaveResultDialog {
     }
 
     private void sendResult(String culprit, String result, int listenId) {
+        LoadingDialog.makeCancelableLoader();
         if (vfLoader != null)
             vfLoader.setDisplayedChild(1);
         RequestHelper.builder(EndPoints.LISTEN)
@@ -148,6 +152,7 @@ public class SaveResultDialog {
         public void onResponse(Runnable reCall, Object... args) {
             MyApplication.handler.post(() -> {
                 try {
+                    LoadingDialog.dismissCancelableDialog();
                     JSONObject obj = new JSONObject(args[0].toString());
                     boolean success = obj.getBoolean("success");
                     String message = obj.getString("message");
@@ -164,12 +169,10 @@ public class SaveResultDialog {
                                         mistakesResult.onSuccess(true);
                                         dismiss();
                                         dataBase.deleteMistakesRow(mistakesId);
-
                                         broadcaster = LocalBroadcastManager.getInstance(MyApplication.context);
                                         Intent broadcastIntent = new Intent(KEY_PENDING_MISTAKE_COUNT);
                                         broadcastIntent.putExtra(PENDING_MISTAKE_COUNT, dataBase.getMistakesCount());
                                         broadcaster.sendBroadcast(broadcastIntent);
-
                                     })
                                     .show();
                         }
@@ -177,6 +180,7 @@ public class SaveResultDialog {
                             vfLoader.setDisplayedChild(0);
                     }
                 } catch (Exception e) {
+                    LoadingDialog.dismissCancelableDialog();
                     mistakesResult.onSuccess(false);
                     if (vfLoader != null)
                         vfLoader.setDisplayedChild(0);
@@ -188,6 +192,7 @@ public class SaveResultDialog {
         @Override
         public void onFailure(Runnable reCall, Exception e) {
             MyApplication.handler.post(() -> {
+                LoadingDialog.dismissCancelableDialog();
                 mistakesResult.onSuccess(false);
                 if (vfLoader != null)
                     vfLoader.setDisplayedChild(0);
