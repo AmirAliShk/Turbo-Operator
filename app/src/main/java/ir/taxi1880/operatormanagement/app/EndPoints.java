@@ -117,6 +117,7 @@ public class EndPoints {
     /******************************** Driver Api *********************************/
 
     public static final String DRIVER_INFO = DRIVER_WEBSERVICE_PATH + "info";
+    public static final String DRIVER_FINANCIAL = DRIVER_WEBSERVICE_PATH + "financial";
 
 
     /******************************** refresh token Api *********************************/
