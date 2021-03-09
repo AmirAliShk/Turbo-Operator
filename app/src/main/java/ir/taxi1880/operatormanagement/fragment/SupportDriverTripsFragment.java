@@ -436,7 +436,7 @@ public class SupportDriverTripsFragment extends Fragment {
                             txtDriverCode.setText(StringHelper.toPersianDigits(driverCode + ""));
                             switch (status) {
                                 case 1:
-                                    statusMessage = "نوبت شما در ایستگاه " + station + " نفر : " + turn;
+                                    statusMessage = " نفر " + turn + " در ایستگاه " + station;
                                     break;
 
                                 case 2:
@@ -448,7 +448,7 @@ public class SupportDriverTripsFragment extends Fragment {
                                     break;
 
                                 case 4:
-                                    statusMessage = "شما ثبت ایستگاه نکرده اید";
+                                    statusMessage = "ثبت ایستگاه نکرده";
                                     break;
 
                                 case 5:

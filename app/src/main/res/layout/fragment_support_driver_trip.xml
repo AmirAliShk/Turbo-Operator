@@ -128,7 +128,6 @@
                 android:background="@color/transparent"
                 android:gravity="right|center_vertical"
                 android:hint="@string/search"
-                android:nextFocusDown="@id/edtSearchTrip"
                 android:padding="10dp"
                 android:singleLine="true"
                 android:textColorHint="@color/grayMedium" />
@@ -201,7 +200,8 @@
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:orientation="horizontal">
+                        android:orientation="horizontal"
+                        android:padding="@dimen/_5sdp">
 
                         <TextView
                             style="@style/tripItemTitle"
@@ -221,6 +221,7 @@
                             style="@style/tripItemTitle"
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
+                            android:gravity="center"
                             android:layout_weight="0.75"
                             android:text="@string/driverCode" />
 
@@ -228,97 +229,103 @@
                             android:id="@+id/txtDriverCode"
                             style="@style/tripItemValue"
                             android:layout_width="0dp"
+                            android:gravity="left"
                             android:layout_height="wrap_content"
-                            android:layout_weight="1" />
+                            android:layout_weight="0.6" />
 
                     </LinearLayout>
 
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:background="@drawable/bg_light_gray_strock"
                         android:orientation="horizontal"
-                        android:padding="@dimen/_5sdp">
+                        android:padding="@dimen/_8sdp">
 
                         <TextView
                             android:id="@+id/txtDriverQueue"
                             style="@style/tripItemValue"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:gravity="center"
-                            android:text="نفر 5 در ایستگاه 199" />
+                            android:gravity="center" />
 
                     </LinearLayout>
 
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:orientation="horizontal"
-                        android:padding="@dimen/_5sdp">
+                        android:layout_marginTop="@dimen/_5sdp"
+                        android:orientation="horizontal">
 
-                        <Button
+                        <ImageView
                             android:layout_width="0dp"
                             android:layout_height="?android:attr/actionBarSize"
+                            android:layout_margin="@dimen/_5sdp"
                             android:layout_weight="1"
-                            android:background="@drawable/bg_purple_gradient_edge"
-                            android:text="btn1"
-                            android:textColor="@color/colorWhite"
-                            android:textSize="@dimen/text_header" />
+                            android:background="@drawable/bg_light_gray_edge"
+                            android:elevation="@dimen/_3sdp"
+                            android:padding="@dimen/_5sdp"
+                            android:src="@drawable/ic_change" />
 
                         <ViewFlipper
                             android:layout_width="0dp"
                             android:layout_height="match_parent"
                             android:layout_weight="0.10" />
 
-                        <Button
+                        <ImageView
                             android:layout_width="0dp"
                             android:layout_height="?android:attr/actionBarSize"
+                            android:layout_margin="@dimen/_5sdp"
                             android:layout_weight="1"
-                            android:background="@drawable/bg_purple_gradient_edge"
-                            android:text="btn2"
-                            android:textColor="@color/colorWhite"
-                            android:textSize="@dimen/text_header" />
+                            android:background="@drawable/bg_light_gray_edge"
+                            android:elevation="@dimen/_3sdp"
+                            android:padding="@dimen/_5sdp"
+                            android:src="@drawable/ic_info" />
 
                         <ViewFlipper
                             android:layout_width="0dp"
                             android:layout_height="match_parent"
                             android:layout_weight="0.10" />
 
-                        <Button
+                        <ImageView
                             android:layout_width="0dp"
                             android:layout_height="?android:attr/actionBarSize"
+                            android:layout_margin="@dimen/_5sdp"
                             android:layout_weight="1"
-                            android:background="@drawable/bg_purple_gradient_edge"
-                            android:text="btn3"
-                            android:textColor="@color/colorWhite"
-                            android:textSize="@dimen/text_header" />
+                            android:background="@drawable/bg_light_gray_edge"
+                            android:elevation="@dimen/_3sdp"
+                            android:padding="@dimen/_5sdp"
+                            android:src="@drawable/ic_financial_report" />
 
                         <ViewFlipper
                             android:layout_width="0dp"
                             android:layout_height="match_parent"
                             android:layout_weight="0.10" />
 
-                        <Button
+                        <ImageView
                             android:layout_width="0dp"
                             android:layout_height="?android:attr/actionBarSize"
+                            android:layout_margin="@dimen/_5sdp"
                             android:layout_weight="1"
-                            android:background="@drawable/bg_purple_gradient_edge"
-                            android:text="btn4"
-                            android:textColor="@color/colorWhite"
-                            android:textSize="@dimen/text_header" />
+                            android:background="@drawable/bg_light_gray_edge"
+                            android:elevation="@dimen/_3sdp"
+                            android:padding="@dimen/_5sdp"
+                            android:src="@drawable/ic_driver_information" />
 
                         <ViewFlipper
                             android:layout_width="0dp"
                             android:layout_height="match_parent"
                             android:layout_weight="0.10" />
 
-                        <Button
+                        <ImageView
                             android:layout_width="0dp"
                             android:layout_height="?android:attr/actionBarSize"
+                            android:layout_margin="@dimen/_5sdp"
                             android:layout_weight="1"
-                            android:background="@drawable/bg_purple_gradient_edge"
-                            android:text="btn5"
-                            android:textColor="@color/colorWhite"
-                            android:textSize="@dimen/text_header" />
+                            android:background="@drawable/bg_light_gray_edge"
+                            android:elevation="@dimen/_3sdp"
+                            android:padding="@dimen/_5sdp"
+                            android:src="@drawable/ic_location" />
 
                     </LinearLayout>
 
