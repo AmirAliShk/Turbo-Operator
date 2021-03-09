@@ -55,6 +55,7 @@
                 android:id="@+id/imgProfile"
                 android:layout_width="100dp"
                 android:layout_height="100dp"
+                android:padding="@dimen/_6sdp"
                 android:background="@drawable/bg_circle"
                 android:src="@drawable/ic_operator_user" />
 

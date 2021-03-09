@@ -262,7 +262,7 @@
                 android:visibility="visible"
                 android:background="@drawable/bg_menu_item"
                 android:elevation="5dp"
-                android:padding="8dp"
+                android:padding="15dp"
                 android:src="@drawable/ic_play"
                 app:tint="@color/colorPrimaryDark" />
 

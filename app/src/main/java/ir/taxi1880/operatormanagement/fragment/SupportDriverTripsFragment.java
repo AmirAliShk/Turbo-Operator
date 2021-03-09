@@ -186,6 +186,9 @@ public class SupportDriverTripsFragment extends Fragment {
     @BindView(R.id.txtDriverCode)
     TextView txtDriverCode;
 
+    @BindView(R.id.txtDriverQueue)
+    TextView txtDriverQueue;
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.fragment_support_driver_trip, container, false);
@@ -307,7 +310,8 @@ public class SupportDriverTripsFragment extends Fragment {
                                 tripModel.setStatusText(dataObj.getString("statusDes"));
                                 tripModel.setStatusColor(dataObj.getString("statusColor"));
                                 tripModels.add(tripModel);
-                            }catch (Exception ignored){}
+                            } catch (Exception ignored) {
+                            }
                         }
 
                         tripAdapter = new TripAdapter(tripModels);
@@ -385,7 +389,7 @@ public class SupportDriverTripsFragment extends Fragment {
         public void onResponse(Runnable reCall, Object... args) {
             MyApplication.handler.post(() -> {
                 try {
-                    if (view!=null){
+                    if (view != null) {
                         llDriverInfo.setVisibility(View.VISIBLE);
                     }
 
@@ -425,17 +429,40 @@ public class SupportDriverTripsFragment extends Fragment {
                         String lng = registrationObj.getString("lng");
                         String borderLimit = registrationObj.getString("borderLimit");
 
-                        if (view!=null){
+                        String statusMessage = "";
+
+                        if (view != null) {
                             txtDriverName.setText(driverName);
-                            txtDriverCode.setText(StringHelper.toPersianDigits(driverCode+""));
+                            txtDriverCode.setText(StringHelper.toPersianDigits(driverCode + ""));
+                            switch (status) {
+                                case 1:
+                                    statusMessage = "نوبت شما در ایستگاه " + station + " نفر : " + turn;
+                                    break;
+
+                                case 2:
+                                    statusMessage = "ثبت آینده در ایستگاه " + station + " مدت زمان :" + futureTime;
+                                    break;
+
+                                case 3:
+                                    statusMessage = "در حال سرویس دهی";
+                                    break;
+
+                                case 4:
+                                    statusMessage = "شما ثبت ایستگاه نکرده اید";
+                                    break;
+
+                                case 5:
+                                    statusMessage = "برای فعال شدن ورود را بزنید";
+                                    break;
+                            }
+                            txtDriverQueue.setText(statusMessage);
                         }
                     }
-
                 } catch (JSONException e) {
                     e.printStackTrace();
-                    if (view!=null){
+                    if (view != null) {
                         llDriverInfo.setVisibility(View.GONE);
-                        MyApplication.Toast("خطا در دریافت اطلاعات راننده",Toast.LENGTH_SHORT);
+                        MyApplication.Toast("خطا در دریافت اطلاعات راننده", Toast.LENGTH_SHORT);
                     }
                 }
             });
@@ -444,9 +471,9 @@ public class SupportDriverTripsFragment extends Fragment {
         @Override
         public void onFailure(Runnable reCall, Exception e) {
             MyApplication.handler.post(() -> {
-                if (view!=null){
+                if (view != null) {
                     llDriverInfo.setVisibility(View.GONE);
-                    MyApplication.Toast("خطا در دریافت اطلاعات راننده",Toast.LENGTH_SHORT);
+                    MyApplication.Toast("خطا در دریافت اطلاعات راننده", Toast.LENGTH_SHORT);
                 }
             });
         }
