@@ -331,9 +331,7 @@ public class PendingMistakesFragment extends Fragment {
         try {
             pauseVoice();
             cancelTimer();
-        } catch (Exception e) {
-
-        }
+        } catch (Exception e) {}
         super.onDestroyView();
     }
 
@@ -342,9 +340,7 @@ public class PendingMistakesFragment extends Fragment {
             if (timer == null) return;
             timer.cancel();
             timer = null;
-        } catch (Exception e) {
-
-        }
+        } catch (Exception e) { }
 
     }
 

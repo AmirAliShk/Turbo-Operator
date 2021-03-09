@@ -4,7 +4,9 @@ public class PassengerCallsModel {
 
     String txtDate;
     String txtTime;
-    String txtTimeRemaining;
+    String voipId;
+    int txtTimeRemaining;
+
 
     public String getTxtDate() {
         return txtDate;
@@ -22,11 +24,19 @@ public class PassengerCallsModel {
         this.txtTime = txtTime;
     }
 
-    public String getTxtTimeRemaining() {
+    public int getTxtTimeRemaining() {
         return txtTimeRemaining;
     }
 
-    public void setTxtTimeRemaining(String txtTimeRemaining) {
+    public void setTxtTimeRemaining(int txtTimeRemaining) {
         this.txtTimeRemaining = txtTimeRemaining;
+    }
+
+    public String getVoipId() {
+        return voipId;
+    }
+
+    public void setVoipId(String voipId) {
+        this.voipId = voipId;
     }
 }

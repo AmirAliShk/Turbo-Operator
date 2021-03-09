@@ -103,6 +103,7 @@ public class AllMistakesFragment extends Fragment {
                         for (int i = 0; i < dataArr.length(); i++) {
                             JSONObject dataObj = dataArr.getJSONObject(i);
                             AllMistakesModel model = new AllMistakesModel();
+
                             model.setId(dataObj.getInt("id"));
                             model.setServiceCode(dataObj.getInt("serviceCode"));
                             model.setUserCode(dataObj.getInt("userCode"));

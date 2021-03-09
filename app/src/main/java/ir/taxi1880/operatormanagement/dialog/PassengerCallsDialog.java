@@ -32,6 +32,8 @@ import ir.taxi1880.operatormanagement.model.PassengerCallsModel;
 import ir.taxi1880.operatormanagement.okHttp.RequestHelper;
 import ir.taxi1880.operatormanagement.push.AvaCrashReporter;
 
+import static ir.taxi1880.operatormanagement.adapter.PassengerCallsAdapter.pauseVoice;
+
 public class PassengerCallsDialog {
 
     Dialog dialog;
@@ -73,10 +75,7 @@ public class PassengerCallsDialog {
         dialog.getWindow().setAttributes(wlp);
         dialog.setCancelable(false);
 
-        getPassengerCalls(tell);
-
-        mAdapter = new PassengerCallsAdapter(MyApplication.currentActivity, passengerCallsModels);
-        listPassengerCalls.setAdapter(mAdapter);
+        getPassengerCalls(tell.startsWith("0") ? tell : "0" + tell);
 
         dialog.show();
     }
@@ -93,24 +92,44 @@ public class PassengerCallsDialog {
         @Override
         public void onResponse(Runnable reCall, Object... args) {
             MyApplication.handler.post(() -> {
-//                try {
-//                    passengerCallsModels = new ArrayList<>();
-//                    JSONObject listenObj = new JSONObject(args[0].toString());
-//                    boolean success = listenObj.getBoolean("success");
-//                    String message = listenObj.getString("message");
-////                    if (success) {
-//                        vfDownload.setDisplayedChild(1);
-////                        JSONArray dataArr = listenObj.getJSONArray("data");
-////                        for (int i = 0; i < dataArr.length(); i++) {
-////                            JSONObject dataObj = dataArr.getJSONObject(i);
-////                            PassengerCallsModel model = new PassengerCallsModel();
-////
-////                            passengerCallsModels.add(model);
-////                        }
-////                    }
-//                } catch (Exception e) {
-//                    e.printStackTrace();
-//                }
+                try {
+                    passengerCallsModels = new ArrayList<>();
+                    JSONObject listenObj = new JSONObject(args[0].toString());
+                    boolean success = listenObj.getBoolean("success");
+                    String message = listenObj.getString("message");
+                    if (success) {
+                        if (vfDownload != null)
+                            vfDownload.setDisplayedChild(1);
+                        JSONArray dataArr = listenObj.getJSONArray("data");
+                        for (int i = 0; i < dataArr.length(); i++) {
+                            JSONObject dataObj = dataArr.getJSONObject(i);
+                            PassengerCallsModel model = new PassengerCallsModel();
+
+                            model.setTxtTimeRemaining(dataObj.getInt("duration"));
+                            model.setTxtDate(dataObj.getString("starttime"));
+                            model.setTxtTime(dataObj.getString("voiceId"));
+                            model.setVoipId(dataObj.getString("voiceId"));
+
+                            passengerCallsModels.add(model);
+                        }
+                    }
+                    mAdapter = new PassengerCallsAdapter(MyApplication.currentActivity, passengerCallsModels);
+                    listPassengerCalls.setAdapter(mAdapter);
+
+//                    "id": "6044cfee3214a60468e2a298",
+//                            "src": "09376148583",
+//                            "starttime": "2021-03-07T13:06:53.890Z",
+//                            "voiceId": "1615122413.10363140",
+//                            "duration": 1,
+//                            "disposition": "NO ANSWER", "BUSY", "ANSWERED", "
+//                            "dst": "1880",
+//                            "type": "incoming",
+//                            "queueName": "1880",
+//                            "endtime": "2021-03-07T13:06:54.890Z"
+
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
             });
         }
 
@@ -125,10 +144,12 @@ public class PassengerCallsDialog {
             if (dialog != null) {
                 dialog.dismiss();
             }
+
         } catch (Exception e) {
             Log.e("TAG", "dismiss: " + e.getMessage());
             AvaCrashReporter.send(e, "ReserveDialog class, dismiss method");
         }
+        pauseVoice();
         dialog = null;
         unbinder.unbind();
     }
