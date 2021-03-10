@@ -102,7 +102,6 @@ public class AllMistakesAdapter extends RecyclerView.Adapter<AllMistakesAdapter.
     }
 
     private void getAccept(int id) {
-
         RequestHelper.builder(EndPoints.ACCEPT_LISTEN)
                 .addParam("listenId", id)
                 .listener(getAccept)

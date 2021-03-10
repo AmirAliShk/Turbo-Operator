@@ -28,28 +28,27 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
 
+<!--                <LinearLayout-->
+<!--                    android:layout_width="match_parent"-->
+<!--                    android:layout_height="wrap_content"-->
+<!--                    android:background="@drawable/bg_dialog_header"-->
+<!--                    android:gravity="center"-->
+<!--                    android:orientation="horizontal"-->
+<!--                    android:padding="10dp">-->
+
+<!--                    <TextView-->
+<!--                        android:layout_width="match_parent"-->
+<!--                        android:layout_height="wrap_content"-->
+<!--                        android:layout_gravity="center"-->
+<!--                        android:gravity="center"-->
+<!--                        android:text="تماس های اخیر"-->
+<!--                        android:textAppearance="?android:attr/textAppearanceMedium"-->
+<!--                        android:textColor="@color/colorWhite"-->
+<!--                        android:textStyle="bold" />-->
+
+<!--                </LinearLayout>-->
+
                 <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:background="@drawable/bg_dialog_header"
-                    android:gravity="center"
-                    android:orientation="horizontal"
-                    android:padding="10dp">
-
-                    <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center"
-                        android:gravity="center"
-                        android:text="تماس های اخیر"
-                        android:textAppearance="?android:attr/textAppearanceMedium"
-                        android:textColor="@color/colorWhite"
-                        android:textStyle="bold" />
-
-                </LinearLayout>
-
-                <LinearLayout
-                    android:id="@+id/llDismissDialog"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:background="@drawable/bg_dialog_header"
@@ -58,37 +57,39 @@
 
 
                     <RelativeLayout
+                        android:id="@+id/rlSearch"
                         android:layout_width="40dp"
                         android:layout_height="40dp"
                         android:background="@drawable/bg_activate_status"
                         android:padding="8dp">
 
-
                         <ImageView
-                            android:id="@+id/imageView2"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:src="@drawable/ic_search" />
+
                     </RelativeLayout>
 
                     <RadioGroup
+                        android:id="@+id/rgSearchType"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:layoutDirection="rtl"
                         android:orientation="horizontal">
 
                         <RadioButton
-                            android:id="@+id/rBtnPhone"
+                            android:id="@+id/rbTell"
                             android:layout_width="wrap_content"
                             android:layout_height="match_parent"
                             android:layout_weight="0.5"
                             android:buttonTint="@color/colorAccent"
                             android:shadowColor="@color/colorAccent"
                             android:text="تلفن"
-                            android:textColor="@color/colorWhite" />
+                            android:textColor="@color/colorWhite"
+                            android:checked="true"/>
 
                         <RadioButton
-                            android:id="@+id/rBtnMobile"
+                            android:id="@+id/rbMobile"
                             android:layout_width="wrap_content"
                             android:layout_height="match_parent"
                             android:layout_weight="1"

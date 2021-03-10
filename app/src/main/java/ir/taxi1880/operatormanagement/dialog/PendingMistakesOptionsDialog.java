@@ -24,6 +24,7 @@ public class PendingMistakesOptionsDialog {
     Unbinder unbinder;
     static Dialog dialog;
     String tell;
+    String mobile;
 
     @OnClick(R.id.imgClose)
     void onClose() {
@@ -34,7 +35,7 @@ public class PendingMistakesOptionsDialog {
     void onPressGuestCalls() {
         dismiss();
         new RecentCallsDialog()
-                .show(tell, 0, true);
+                .show(tell, mobile, 0, true);
     }
 
     @OnClick(R.id.llSearchService)
@@ -52,7 +53,7 @@ public class PendingMistakesOptionsDialog {
         MyApplication.Toast("llNestFollowUp", Toast.LENGTH_SHORT);
     }
 
-    public void show(String tell) {
+    public void show(String tell, String mobile) {
         if (MyApplication.currentActivity == null || MyApplication.currentActivity.isFinishing())
             return;
         dialog = new Dialog(MyApplication.currentActivity);
@@ -68,6 +69,7 @@ public class PendingMistakesOptionsDialog {
         dialog.getWindow().setAttributes(wlp);
         dialog.setCancelable(true);
         this.tell = tell;
+        this.mobile = mobile;
 
         dialog.show();
     }

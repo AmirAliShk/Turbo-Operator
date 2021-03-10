@@ -54,6 +54,7 @@ public class DataBase extends SQLiteOpenHelper {
     private static String COLUMN_MISTAKES_SERVICE_CODE = "mistakesServiceCode";
     private static String COLUMN_MISTAKES_USER_CODE = "mistakesUserCode";
     private static String COLUMN_MISTAKES_TELL = "mistakesTell";
+    private static String COLUMN_MISTAKES_MOBILE = "mistakesMobile";
     private static String COLUMN_MISTAKES_USER_CODE_CONTACT = "mistakesUserCodeContact";
     private static String COLUMN_MISTAKES_CUSTOMER_NAME = "mistakesCustomerName";
     private static String COLUMN_MISTAKES_CON_DATE = "mistakesConDate";
@@ -312,6 +313,7 @@ public class DataBase extends SQLiteOpenHelper {
                 COLUMN_MISTAKES_SERVICE_CODE + " INTEGER," +
                 COLUMN_MISTAKES_USER_CODE + " INTEGER," +
                 COLUMN_MISTAKES_TELL + " TEXT," +
+                COLUMN_MISTAKES_MOBILE + " TEXT," +
                 COLUMN_MISTAKES_USER_CODE_CONTACT + " TEXT," +
                 COLUMN_MISTAKES_CUSTOMER_NAME + " TEXT," +
                 COLUMN_MISTAKES_CON_DATE + " TEXT," +
@@ -336,6 +338,7 @@ public class DataBase extends SQLiteOpenHelper {
             contentValues.put(COLUMN_MISTAKES_SERVICE_CODE, mistakesModel.getServiceCode());
             contentValues.put(COLUMN_MISTAKES_USER_CODE, mistakesModel.getUserCode());
             contentValues.put(COLUMN_MISTAKES_TELL, mistakesModel.getTell());
+            contentValues.put(COLUMN_MISTAKES_MOBILE, mistakesModel.getMobile());
             contentValues.put(COLUMN_MISTAKES_USER_CODE_CONTACT, mistakesModel.getUserCodeContact());
             contentValues.put(COLUMN_MISTAKES_CUSTOMER_NAME, mistakesModel.getCustomerName());
             contentValues.put(COLUMN_MISTAKES_CON_DATE, mistakesModel.getConDate());
@@ -365,6 +368,7 @@ public class DataBase extends SQLiteOpenHelper {
         pendingMistakesModel.setServiceCode(res.getInt(res.getColumnIndex(COLUMN_MISTAKES_SERVICE_CODE)));
         pendingMistakesModel.setUserCode(res.getInt(res.getColumnIndex(COLUMN_MISTAKES_USER_CODE)));
         pendingMistakesModel.setTell(res.getString(res.getColumnIndex(COLUMN_MISTAKES_TELL)));
+        pendingMistakesModel.setMobile(res.getString(res.getColumnIndex(COLUMN_MISTAKES_MOBILE)));
         pendingMistakesModel.setUserCodeContact(res.getInt(res.getColumnIndex(COLUMN_MISTAKES_USER_CODE_CONTACT)));
         pendingMistakesModel.setCustomerName(res.getString(res.getColumnIndex(COLUMN_MISTAKES_CUSTOMER_NAME)));
         pendingMistakesModel.setConDate(res.getString(res.getColumnIndex(COLUMN_MISTAKES_CON_DATE)));
@@ -392,6 +396,7 @@ public class DataBase extends SQLiteOpenHelper {
         pendingMistakesModel.setServiceCode(res.getInt(res.getColumnIndex(COLUMN_MISTAKES_SERVICE_CODE)));
         pendingMistakesModel.setUserCode(res.getInt(res.getColumnIndex(COLUMN_MISTAKES_USER_CODE)));
         pendingMistakesModel.setTell(res.getString(res.getColumnIndex(COLUMN_MISTAKES_TELL)));
+        pendingMistakesModel.setMobile(res.getString(res.getColumnIndex(COLUMN_MISTAKES_MOBILE)));
         pendingMistakesModel.setUserCodeContact(res.getInt(res.getColumnIndex(COLUMN_MISTAKES_USER_CODE_CONTACT)));
         pendingMistakesModel.setCustomerName(res.getString(res.getColumnIndex(COLUMN_MISTAKES_CUSTOMER_NAME)));
         pendingMistakesModel.setConDate(res.getString(res.getColumnIndex(COLUMN_MISTAKES_CON_DATE)));

@@ -10,6 +10,7 @@ public class AllMistakesModel {
     private String time;
     private String description;
     private String tell;
+    private String mobile;
     private int userCodeContact;
     private String address;
     private String customerName;
@@ -72,6 +73,14 @@ public class AllMistakesModel {
 
     public void setTell(String tell) {
         this.tell = tell;
+    }
+
+    public String getMobile() {
+        return mobile;
+    }
+
+    public void setMobile(String mobile) {
+        this.mobile = mobile;
     }
 
     public int getUserCodeContact() {

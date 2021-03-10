@@ -8,6 +8,7 @@ import android.view.Gravity;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.ProgressBar;
+import android.widget.RadioGroup;
 import android.widget.TextView;
 import android.widget.ViewFlipper;
 
@@ -38,6 +39,8 @@ public class RecentCallsDialog {
     Dialog dialog;
     Unbinder unbinder;
     boolean fromPassengerCalls;
+    String tell;
+    String mobile;
 
     @BindView(R.id.vfHeader)
     ViewFlipper vfHeader;
@@ -59,10 +62,31 @@ public class RecentCallsDialog {
     @BindView(R.id.textProgress)
     TextView textProgress;
 
+    @BindView(R.id.rgSearchType)
+    RadioGroup rgSearchType;
+
+    @OnClick(R.id.rbTell)
+    void onTell() {
+        if (tell.length() == 10 && !tell.startsWith("0")) {
+            tell = "0" + tell;
+            getPassengerCalls("/src", tell, "/4");
+        } else if (tell.length() == 8) {
+            tell = "051" + tell;
+            getPassengerCalls("/src", tell, "/4");
+        }
+    }
+
+    @OnClick(R.id.rbMobile)
+    void onMobile() {
+        if (rgSearchType.getCheckedRadioButtonId() == R.id.rbMobile) {
+            getPassengerCalls("/src", mobile.startsWith("0") ? mobile : "0" + mobile, "/4");
+        }
+    }
+
     RecentCallsAdapter mAdapter;
     ArrayList<PassengerCallsModel> passengerCallsModels;
 
-    public void show(String tell, int sip, Boolean fromPassengerCalls) {
+    public void show(String tell, String mobile, int sip, Boolean fromPassengerCalls) {
         if (MyApplication.currentActivity == null || MyApplication.currentActivity.isFinishing())
             return;
         dialog = new Dialog(MyApplication.currentActivity);
@@ -79,13 +103,25 @@ public class RecentCallsDialog {
         dialog.setCancelable(false);
 
         this.fromPassengerCalls = fromPassengerCalls;
+        this.tell = tell;
+        this.mobile = mobile;
 
         if (fromPassengerCalls) {
             vfHeader.setDisplayedChild(1);
-            getPassengerCalls("/src",tell.startsWith("0") ? tell : "0" + tell, "/4");
+            if (rgSearchType.getCheckedRadioButtonId() == R.id.rbTell) {
+                if (tell.length() == 10 && !tell.startsWith("0")) {
+                    tell = "0" + tell;
+                    getPassengerCalls("/src", tell, "/4");
+                } else if (tell.length() == 8) {
+                    tell = "051" + tell;
+                    getPassengerCalls("/src", tell, "/4");
+                }
+            } else if (rgSearchType.getCheckedRadioButtonId() == R.id.rbMobile) {
+                getPassengerCalls("/src", mobile.startsWith("0") ? mobile : "0" + mobile, "/4");
+            }
         } else {
             vfHeader.setDisplayedChild(0);
-            getPassengerCalls("/dst",sip + "", "/1");
+            getPassengerCalls("/dst", sip + "", "/1");
         }
         dialog.show();
     }
