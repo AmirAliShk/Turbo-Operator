@@ -46,6 +46,7 @@ public class DriverLocationFragment extends Fragment implements OnMapReadyCallba
     double lng = 0;
     String carCode;
     String time;
+    boolean isFromDriverSupport;
 
     @OnClick(R.id.imgBack)
     void onBack() {
@@ -86,6 +87,10 @@ public class DriverLocationFragment extends Fragment implements OnMapReadyCallba
             txtLastTime.setText(bundle.getString("time"));
             bundle.getString("date");
             carCode = bundle.getString("taxiCode");
+            isFromDriverSupport = bundle.getBoolean("isFromDriverSupport");
+            if (isFromDriverSupport) {
+                getLastLocation();
+            }
         }
 
         return view;
@@ -101,7 +106,7 @@ public class DriverLocationFragment extends Fragment implements OnMapReadyCallba
 
     private void animateToLocation(final double latitude, final double longitude) {
 
-        if (lat == 0 || lng == 0) {
+        if ((lat == 0 || lng == 0) && !isFromDriverSupport) {
             MyApplication.Toast("موقعیت راننده در دسترس نمیباشد", Toast.LENGTH_SHORT);
             return;
         }
@@ -141,38 +146,35 @@ public class DriverLocationFragment extends Fragment implements OnMapReadyCallba
     RequestHelper.Callback onGetLastLocation = new RequestHelper.Callback() {
         @Override
         public void onResponse(Runnable reCall, Object... args) {
-            MyApplication.handler.post(new Runnable() {
-                @Override
-                public void run() {
-                    try {
+            MyApplication.handler.post(() -> {
+                try {
 //            {"success":true,"message":"","data":{"lat":"35.2510216","lon":"60.6222999","r_time":"11:24:11","r_date":"1399/08/24","bearing":2.03999}}
-                        if (imgRefresh != null)
-                            imgRefresh.clearAnimation();
-                        JSONObject object = new JSONObject(args[0].toString());
-                        boolean success = object.getBoolean("success");
-                        String message = object.getString("message");
-                        JSONObject dataObj = object.getJSONObject("data");
+                    if (imgRefresh != null)
+                        imgRefresh.clearAnimation();
+                    JSONObject object = new JSONObject(args[0].toString());
+                    boolean success = object.getBoolean("success");
+                    String message = object.getString("message");
+                    JSONObject dataObj = object.getJSONObject("data");
 
-                        if (success) {
-                            lat = dataObj.getDouble("lat");
-                            lng = dataObj.getDouble("long");
-                            time = dataObj.getString("r_time");
-                            if (txtLastTime != null) {
-                                txtLastTime.setText(time);
-                            }
-                            animateToLocation(lat, lng);
-                        } else {
-                            new GeneralDialog()
-                                    .title("خطا")
-                                    .message(message)
-                                    .cancelable(false)
-                                    .firstButton("باشه", () -> MyApplication.currentActivity.onBackPressed())
-                                    .show();
+                    if (success) {
+                        lat = dataObj.getDouble("lat");
+                        lng = dataObj.getDouble("long");
+                        time = dataObj.getString("r_time");
+                        if (txtLastTime != null) {
+                            txtLastTime.setText(time);
                         }
-
-                    } catch (Exception e) {
-                        e.printStackTrace();
+                        animateToLocation(lat, lng);
+                    } else {
+                        new GeneralDialog()
+                                .title("خطا")
+                                .message(message)
+                                .cancelable(false)
+                                .firstButton("باشه", () -> MyApplication.currentActivity.onBackPressed())
+                                .show();
                     }
+
+                } catch (Exception e) {
+                    e.printStackTrace();
                 }
             });
         }

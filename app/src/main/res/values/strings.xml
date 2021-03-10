@@ -119,5 +119,17 @@
     <string name="accountInfo">اطلاعات حساب</string>
     <string name="archiveAddress">بایگانی آدرس</string>
     <string name="editAddress">ویرایش آدرس</string>
+    <string name="full_name">نام و نام خانوادگی</string>
+    <string name="father_name">نام پدر</string>
+    <string name="national_code">کد ملی</string>
+    <string name="birth_certificate_no">شماره شناسنامه</string>
+    <string name="gender">جنسیت</string>
+    <string name="start_date">تاریخ شروع کار</string>
+    <string name="car_class">کلاس خودرو</string>
+    <string name="IBEN_no">شماره شبا</string>
+    <string name="VIN_no">شماره vin خودرو</string>
+    <string name="smart_taxi_meter">تاکسی متر هوشمند</string>
+    <string name="fuel_quota">سهمیه سوخت</string>
+    <string name="confirm_info">تایید اطلاعات</string>
 
 </resources>

@@ -39,9 +39,11 @@ import ir.taxi1880.operatormanagement.adapter.TripAdapter;
 import ir.taxi1880.operatormanagement.app.EndPoints;
 import ir.taxi1880.operatormanagement.app.MyApplication;
 import ir.taxi1880.operatormanagement.dialog.CallDialog;
+import ir.taxi1880.operatormanagement.dialog.DriverInfoDialog;
 import ir.taxi1880.operatormanagement.dialog.ExtendedTimeDialog;
 import ir.taxi1880.operatormanagement.dialog.GeneralDialog;
 import ir.taxi1880.operatormanagement.dialog.SearchFilterDialog;
+import ir.taxi1880.operatormanagement.helper.FragmentHelper;
 import ir.taxi1880.operatormanagement.helper.KeyBoardHelper;
 import ir.taxi1880.operatormanagement.helper.PhoneNumberValidation;
 import ir.taxi1880.operatormanagement.helper.StringHelper;
@@ -61,6 +63,9 @@ public class SupportDriverTripsFragment extends Fragment {
     private Runnable mCallQualityUpdater = null;
     Core core;
     String searchText;
+    String driverInfo;
+    String taxiCode = "";
+    String carCode = "";
 
     @OnClick(R.id.imgBack)
     void onBackPress() {
@@ -70,6 +75,53 @@ public class SupportDriverTripsFragment extends Fragment {
 
     @BindView(R.id.vfTrip)
     ViewFlipper vfTrip;
+
+    @OnClick(R.id.imgChangeDriverQueue)
+    void onPressChangeDriverQueue() {
+        RequestHelper.builder(EndPoints.DRIVER_STATION_POSITION)
+                .ignore422Error(true)
+                .addParam("driverCode","")
+                .addParam("position","")
+                .listener(onGetDriverInfo)
+                .put();
+    }
+
+    @OnClick(R.id.imgStationInfo)
+    void onPressStationInfo() {
+        RequestHelper.builder(EndPoints.DRIVER_FINANCIAL)
+                .ignore422Error(true)
+                .addPath(taxiCode) // driverCode
+                .addPath(carCode) // carCode
+                .listener(onGetDriverInfo)
+                .get();
+    }
+
+    @OnClick(R.id.imgFinancial)
+    void onPressFinancial() {
+        RequestHelper.builder(EndPoints.DRIVER_FINANCIAL)
+                .ignore422Error(true)
+                .addPath(taxiCode) // driverCode
+                .addPath(carCode) // carCode
+                .listener(onGetDriverInfo)
+                .get();
+    }
+
+    @OnClick(R.id.imgDriverInfo)
+    void onPressDriverInfo() {
+        new DriverInfoDialog().show(driverInfo);
+    }
+
+    @OnClick(R.id.imgDriverLocation)
+    void onPressDriverLocation() {
+        if (taxiCode.isEmpty()){
+            MyApplication.Toast("خطا در دریافت اطلاعات لظفا بعدا تلاش کنید.",Toast.LENGTH_SHORT);
+        }else {
+            Bundle bundle = new Bundle();
+            bundle.putString("taxiCode", taxiCode);
+            bundle.putBoolean("isFromDriverSupport", true);
+            FragmentHelper.toFragment(MyApplication.currentActivity, new DriverLocationFragment()).setArguments(bundle).add();
+        }
+    }
 
     @BindView(R.id.imgSearchType)
     ImageView imgSearchType;
@@ -401,9 +453,10 @@ public class SupportDriverTripsFragment extends Fragment {
                     if (success) {
                         JSONObject dataObj = object.getJSONObject("data");
                         JSONObject infoObj = dataObj.getJSONObject("info");
+                        driverInfo = infoObj.toString();
                         int cityCode = infoObj.getInt("cityCode");
-                        int driverCode = infoObj.getInt("driverCode");
-                        int carCode = infoObj.getInt("carCode");
+                        taxiCode = infoObj.getString("driverCode");
+                        carCode = infoObj.getString("carCode");
                         int smartCode = infoObj.getInt("smartCode");
                         String driverName = infoObj.getString("driverName");
                         int smartTaximeter = infoObj.getInt("smartTaximeter");
@@ -434,7 +487,7 @@ public class SupportDriverTripsFragment extends Fragment {
 
                         if (view != null) {
                             txtDriverName.setText(driverName);
-                            txtDriverCode.setText(StringHelper.toPersianDigits(driverCode + ""));
+                            txtDriverCode.setText(StringHelper.toPersianDigits(taxiCode + ""));
                             switch (status) {
                                 case 1:
                                     statusMessage = " نفر " + turn + " در ایستگاه " + station;
@@ -449,11 +502,11 @@ public class SupportDriverTripsFragment extends Fragment {
                                     break;
 
                                 case 4:
-                                    statusMessage = "ثبت ایستگاه نکرده";
+                                    statusMessage = "ثبت ایستگاه نشده";
                                     break;
 
                                 case 5:
-                                    statusMessage = "برای فعال شدن ورود را بزنید";
+                                    statusMessage = "فعال نیست";
                                     break;
                             }
                             txtDriverQueue.setText(statusMessage);

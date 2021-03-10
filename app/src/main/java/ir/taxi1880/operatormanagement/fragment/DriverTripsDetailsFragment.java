@@ -203,6 +203,7 @@ public class DriverTripsDetailsFragment extends Fragment {
         bundle.putString("time", lastPositionTime);
         bundle.putString("date", lastPositionDate);
         bundle.putString("taxiCode", taxiCode);
+        bundle.putBoolean("isFromDriverSupport", false);
         FragmentHelper.toFragment(MyApplication.currentActivity, new DriverLocationFragment()).setArguments(bundle).add();
     }
 
@@ -246,8 +247,6 @@ public class DriverTripsDetailsFragment extends Fragment {
         TypefaceUtil.overrideFonts(view, MyApplication.IraSanSMedume);
         TypefaceUtil.overrideFonts(txtTitle);
         TypefaceUtil.overrideFonts(txtNull);
-
-        MyApplication.Toast("driver support", Toast.LENGTH_SHORT);
 
         Bundle bundle = getArguments();
         if (bundle != null) {

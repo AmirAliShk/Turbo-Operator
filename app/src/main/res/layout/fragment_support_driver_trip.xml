@@ -221,17 +221,17 @@
                             style="@style/tripItemTitle"
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
-                            android:gravity="center"
                             android:layout_weight="0.75"
+                            android:gravity="center"
                             android:text="@string/driverCode" />
 
                         <TextView
                             android:id="@+id/txtDriverCode"
                             style="@style/tripItemValue"
                             android:layout_width="0dp"
-                            android:gravity="left"
                             android:layout_height="wrap_content"
-                            android:layout_weight="0.6" />
+                            android:layout_weight="0.6"
+                            android:gravity="left" />
 
                     </LinearLayout>
 
@@ -258,6 +258,7 @@
                         android:orientation="horizontal">
 
                         <ImageView
+                            android:id="@+id/imgChangeDriverQueue"
                             android:layout_width="0dp"
                             android:layout_height="?android:attr/actionBarSize"
                             android:layout_margin="@dimen/_5sdp"
@@ -273,14 +274,15 @@
                             android:layout_weight="0.10" />
 
                         <ImageView
+                            android:id="@+id/imgStationInfo"
                             android:layout_width="0dp"
                             android:layout_height="?android:attr/actionBarSize"
                             android:layout_margin="@dimen/_5sdp"
                             android:layout_weight="1"
                             android:background="@drawable/bg_light_gray_edge"
                             android:elevation="@dimen/_3sdp"
-                            android:padding="@dimen/_5sdp"
-                            android:src="@drawable/ic_info" />
+                            android:padding="@dimen/_8sdp"
+                            android:src="@drawable/ic_station_report" />
 
                         <ViewFlipper
                             android:layout_width="0dp"
@@ -288,6 +290,7 @@
                             android:layout_weight="0.10" />
 
                         <ImageView
+                            android:id="@+id/imgFinancial"
                             android:layout_width="0dp"
                             android:layout_height="?android:attr/actionBarSize"
                             android:layout_margin="@dimen/_5sdp"
@@ -303,6 +306,7 @@
                             android:layout_weight="0.10" />
 
                         <ImageView
+                            android:id="@+id/imgDriverInfo"
                             android:layout_width="0dp"
                             android:layout_height="?android:attr/actionBarSize"
                             android:layout_margin="@dimen/_5sdp"
@@ -310,7 +314,7 @@
                             android:background="@drawable/bg_light_gray_edge"
                             android:elevation="@dimen/_3sdp"
                             android:padding="@dimen/_5sdp"
-                            android:src="@drawable/ic_driver_information" />
+                            android:src="@drawable/ic_info" />
 
                         <ViewFlipper
                             android:layout_width="0dp"
@@ -318,6 +322,7 @@
                             android:layout_weight="0.10" />
 
                         <ImageView
+                            android:id="@+id/imgDriverLocation"
                             android:layout_width="0dp"
                             android:layout_height="?android:attr/actionBarSize"
                             android:layout_margin="@dimen/_5sdp"

@@ -80,8 +80,7 @@ public class GetAppInfo {
                 try {
                     JSONObject object = new JSONObject(args[0].toString());
                     int block = object.getInt("isBlock");
-//                    int accessDriverSupport = object.getInt("accessDriverSupport");//TODO uncomment this line and remove next line;
-                    int accessDriverSupport = 1;
+                    int accessDriverSupport = object.getInt("accessDriverSupport");
                     int updateAvailable = object.getInt("updateAvailable");
                     int forceUpdate = object.getInt("forceUpdate");
                     String updateUrl = object.getString("updateUrl");
