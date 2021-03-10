@@ -2,7 +2,6 @@ package ir.taxi1880.operatormanagement.fragment;
 
 import android.graphics.Color;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,10 +11,10 @@ import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.ViewFlipper;
 
+import androidx.fragment.app.Fragment;
+
 import org.json.JSONException;
 import org.json.JSONObject;
-
-import androidx.fragment.app.Fragment;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -24,7 +23,6 @@ import butterknife.Unbinder;
 import ir.taxi1880.operatormanagement.R;
 import ir.taxi1880.operatormanagement.app.EndPoints;
 import ir.taxi1880.operatormanagement.app.MyApplication;
-import ir.taxi1880.operatormanagement.dataBase.DataBase;
 import ir.taxi1880.operatormanagement.dialog.ComplaintRegistrationDialog;
 import ir.taxi1880.operatormanagement.dialog.DriverLockDialog;
 import ir.taxi1880.operatormanagement.dialog.ErrorAddressDialog;
@@ -35,10 +33,9 @@ import ir.taxi1880.operatormanagement.dialog.LostDialog;
 import ir.taxi1880.operatormanagement.helper.FragmentHelper;
 import ir.taxi1880.operatormanagement.helper.StringHelper;
 import ir.taxi1880.operatormanagement.helper.TypefaceUtil;
-import ir.taxi1880.operatormanagement.model.PassengerAddressModel;
 import ir.taxi1880.operatormanagement.okHttp.RequestHelper;
 
-public class TripDetailsFragment extends Fragment {
+public class DriverTripsDetailsFragment extends Fragment {
     Unbinder unbinder;
     String serviceId;
     String passengerPhone;
@@ -234,7 +231,7 @@ public class TripDetailsFragment extends Fragment {
 
     @OnClick(R.id.btnLost)
     void onLost() {
-        new LostDialog().show(serviceId, passengerName, passengerPhone, taxiCode, false);
+        new LostDialog().show(serviceId, passengerName, passengerPhone, taxiCode, true);
     }
 
     @OnClick(R.id.btnDriverLock)
@@ -249,6 +246,8 @@ public class TripDetailsFragment extends Fragment {
         TypefaceUtil.overrideFonts(view, MyApplication.IraSanSMedume);
         TypefaceUtil.overrideFonts(txtTitle);
         TypefaceUtil.overrideFonts(txtNull);
+
+        MyApplication.Toast("driver support", Toast.LENGTH_SHORT);
 
         Bundle bundle = getArguments();
         if (bundle != null) {
@@ -440,59 +439,35 @@ public class TripDetailsFragment extends Fragment {
     }
 
     private void cancelService() {
-
-        String driverMessage = "اپراتور گرامی، این تماس از سمت راننده میباشد و امکان لغو سرویس میسر نیست.\n" +
-                "اگر راننده خود را به عنوان مسافر معرفی کرده و درخواست لغو سفرش را دارد، با همین موضوع ثبت خطا کنید.";
-
-        if (MyApplication.prefManager.getLastCallerId().trim().equals(driverMobile.trim()) || MyApplication.prefManager.getLastCallerId().trim().equals(carMobile.trim())) {
-            new GeneralDialog()
-                    .title("هشدار")
-                    .message(driverMessage)
-                    .cancelable(false)
-                    .firstButton("باشه", null)
-                    .show();
-        } else {
-            LoadingDialog.makeCancelableLoader();
-            RequestHelper.builder(EndPoints.CANCEL)
-                    .addParam("serviceId", serviceId)
-                    .addParam("scope", "passenger")
-                    .listener(onCancelService)
-                    .post();
-        }
-
+        LoadingDialog.makeCancelableLoader();
+        RequestHelper.builder(EndPoints.CANCEL)
+                .addParam("serviceId", serviceId)
+                .addParam("scope", "driver")
+                .listener(onCancelService)
+                .post();
     }
 
     RequestHelper.Callback onCancelService = new RequestHelper.Callback() {
         @Override
         public void onResponse(Runnable reCall, Object... args) {
-            MyApplication.handler.post(new Runnable() {
-                @Override
-                public void run() {
-                    try {
+            MyApplication.handler.post(() -> {
+                try {
 //            {"success":true,"message":"","data":{"status":true}}
-                        JSONObject object = new JSONObject(args[0].toString());
-                        boolean success = object.getBoolean("success");
-                        String message = object.getString("message");
+                    JSONObject object = new JSONObject(args[0].toString());
+                    boolean success = object.getBoolean("success");
+                    String message = object.getString("message");
 
-                        if (success) {
-                            JSONObject dataObj = object.getJSONObject("data");
-                            boolean status = dataObj.getBoolean("status");
-                            if (status) {
+                    if (success) {
+                        JSONObject dataObj = object.getJSONObject("data");
+                        boolean status = dataObj.getBoolean("status");
+                        if (status) {
 //              MyApplication.prefManager.setLastCallerId("");// set empty, because I don't want save this permanently .
-                                new GeneralDialog()
-                                        .title("تایید شد")
-                                        .message(message)
-                                        .cancelable(false)
-                                        .firstButton("باشه", null)
-                                        .show();
-                            } else {
-                                new GeneralDialog()
-                                        .title("خطا")
-                                        .message(message)
-                                        .cancelable(false)
-                                        .firstButton("باشه", null)
-                                        .show();
-                            }
+                            new GeneralDialog()
+                                    .title("تایید شد")
+                                    .message(message)
+                                    .cancelable(false)
+                                    .firstButton("باشه", null)
+                                    .show();
                         } else {
                             new GeneralDialog()
                                     .title("خطا")
@@ -501,10 +476,17 @@ public class TripDetailsFragment extends Fragment {
                                     .firstButton("باشه", null)
                                     .show();
                         }
-                        LoadingDialog.dismissCancelableDialog();
-                    } catch (Exception e) {
-                        e.printStackTrace();
+                    } else {
+                        new GeneralDialog()
+                                .title("خطا")
+                                .message(message)
+                                .cancelable(false)
+                                .firstButton("باشه", null)
+                                .show();
                     }
+                    LoadingDialog.dismissCancelableDialog();
+                } catch (Exception e) {
+                    e.printStackTrace();
                 }
             });
         }

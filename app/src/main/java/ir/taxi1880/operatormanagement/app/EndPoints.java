@@ -44,6 +44,7 @@ public class EndPoints {
     public static final String SHIFT_WEBSERVICE_PATH = IP + ":" + TRIP_APIPort + "/api/operator/v3/shift/";
     public static final String TRIP_WEBSERVICE_PATH = IP + ":" + TRIP_APIPort + "/api/operator/v3/trip/";
     public static final String DRIVER_WEBSERVICE_PATH = IP + ":" + TRIP_APIPort + "/api/operator/v3/support/driver/";
+    public static final String DRIVER_STATION_WEBSERVICE_PATH = IP + ":" + TRIP_APIPort + "/api/operator/v3/support/driver/station/";
     public static final String CALL_VOICE_PATH = IP + ":" + CALL_VOICE_APIPort + "/api/v1/"; //  http://turbotaxi.ir:1884/api/v1/
 
     public static final String HAWKEYE_PATH = HAKWEYE_IP + ":" + HAWKEYE_APIPort + "/api/user/v1/";
@@ -96,12 +97,13 @@ public class EndPoints {
 
     /******************************** Support Api *********************************/
 
-    public static final String PASSENGER_INFO = SUPPORT_WEBSERVICE_PATH + "passengerInfo";
     public static final String SEARCH_SERVICE = SUPPORT_TRIP_WEBSERVICE_PATH + "search";
+    public static final String MISTAKE = SUPPORT_TRIP_WEBSERVICE_PATH + "mistake";
+    public static final String CANCEL = SUPPORT_TRIP_WEBSERVICE_PATH + "cancel";
+    public static final String PASSENGER_INFO = SUPPORT_WEBSERVICE_PATH + "passengerInfo";
     public static final String SERVICE_DETAIL = SUPPORT_WEBSERVICE_PATH + "serviceDetail";
     public static final String CANCEL_SERVICE = SUPPORT_WEBSERVICE_PATH + "cancelService";
     public static final String LAST_DRIVER_POSITION = SUPPORT_WEBSERVICE_PATH + "lastDriverPosition";
-    public static final String MISTAKE = SUPPORT_TRIP_WEBSERVICE_PATH + "mistake";
     public static final String INSERT_COMPLAINT = SUPPORT_WEBSERVICE_PATH + "insertComplaint";
     public static final String INSERT_LOST_OBJECT = SUPPORT_WEBSERVICE_PATH + "insertLostObject";
     public static final String LOCK_TAXI = SUPPORT_WEBSERVICE_PATH + "lockTaxi";
@@ -118,7 +120,8 @@ public class EndPoints {
 
     public static final String DRIVER_INFO = DRIVER_WEBSERVICE_PATH + "info";
     public static final String DRIVER_FINANCIAL = DRIVER_WEBSERVICE_PATH + "financial";
-    public static final String DRIVER_STATION_REGISTRATION = DRIVER_WEBSERVICE_PATH + "station/registration";
+    public static final String DRIVER_STATION_REGISTRATION = DRIVER_STATION_WEBSERVICE_PATH + "registration";
+    public static final String DRIVER_STATION_POSITION = DRIVER_STATION_WEBSERVICE_PATH + "position";
 
     /******************************** refresh token Api *********************************/
 

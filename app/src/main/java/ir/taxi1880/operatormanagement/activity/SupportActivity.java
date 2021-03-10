@@ -148,8 +148,8 @@ public class SupportActivity extends AppCompatActivity {
         FragmentHelper.toFragment(MyApplication.currentActivity, new SupportDriverTripsFragment()).replace();
     }
 
-    @BindView(R.id.imgCallQuality)
-    ImageView imgCallQuality;
+    @BindView(R.id.imgHelpWarning)
+    ImageView imgHelpWarning;
 
     @BindView(R.id.imgTestConnection)
     ImageView imgTestConnection;
@@ -454,7 +454,7 @@ public class SupportActivity extends AppCompatActivity {
                     mCallQualityUpdater = null;
                 }
             } else if (state == Call.State.Connected) {
-                startCallQuality();
+//                startCallQuality();
                 if (imgTestConnection != null)
                     imgTestConnection.setColorFilter(ContextCompat.getColor(MyApplication.context, R.color.colorRed), android.graphics.PorterDuff.Mode.MULTIPLY);
                 Address address = call.getRemoteAddress();
@@ -465,8 +465,8 @@ public class SupportActivity extends AppCompatActivity {
             } else if (state == Call.State.Error) {
                 showTitleBar();
             } else if (state == Call.State.End) {
-                if (imgCallQuality != null)
-                    imgCallQuality.setVisibility(View.INVISIBLE);
+//                if (imgCallQuality != null)
+//                    imgCallQuality.setVisibility(View.INVISIBLE);
                 showTitleBar();
                 if (mCallQualityUpdater != null) {
                     LinphoneService.removeFromUIThreadDispatcher(mCallQualityUpdater);
@@ -500,50 +500,50 @@ public class SupportActivity extends AppCompatActivity {
         }
     };
 
-    private void startCallQuality() {
-        if (mCallQualityUpdater == null)
-            LinphoneService.dispatchOnUIThreadAfter(
-                    mCallQualityUpdater =
-                            new Runnable() {
-                                final Call mCurrentCall = LinphoneService.getCore().getCurrentCall();
+//    private void startCallQuality() {
+//        if (mCallQualityUpdater == null)
+//            LinphoneService.dispatchOnUIThreadAfter(
+//                    mCallQualityUpdater =
+//                            new Runnable() {
+//                                final Call mCurrentCall = LinphoneService.getCore().getCurrentCall();
+//
+//                                public void run() {
+//                                    if (mCurrentCall == null) {
+//                                        mCallQualityUpdater = null;
+//                                        return;
+//                                    }
+//                                    float newQuality = mCurrentCall.getCurrentQuality();
+//                                    updateQualityOfSignalIcon(newQuality);
+//
+//                                    if (MyApplication.prefManager.getConnectedCall())
+//                                        LinphoneService.dispatchOnUIThreadAfter(this, 1000);
+//                                }
+//                            },
+//                    1000);
+//    }
 
-                                public void run() {
-                                    if (mCurrentCall == null) {
-                                        mCallQualityUpdater = null;
-                                        return;
-                                    }
-                                    float newQuality = mCurrentCall.getCurrentQuality();
-                                    updateQualityOfSignalIcon(newQuality);
-
-                                    if (MyApplication.prefManager.getConnectedCall())
-                                        LinphoneService.dispatchOnUIThreadAfter(this, 1000);
-                                }
-                            },
-                    1000);
-    }
-
-    private void updateQualityOfSignalIcon(float quality) {
-        Log.d(TAG, "updateQualityOfSignalIcon: " + quality);
-        int iQuality = (int) quality;
-
-        int imageRes = R.drawable.ic_quality_0;
-
-        if (iQuality == mDisplayedQuality) return;
-        if (quality >= 4) { // Good Quality
-            imageRes = R.drawable.ic_quality_4;
-        } else if (quality >= 3) {// Average quality
-            imageRes = (R.drawable.ic_quality_3);
-        } else if (quality >= 2) { // Low quality
-            imageRes = (R.drawable.ic_quality_2);
-        } else if (quality >= 1) { // Very low quality
-            imageRes = (R.drawable.ic_quality_1);
-        }
-        if (imgCallQuality != null) {
-            imgCallQuality.setVisibility(View.VISIBLE);
-            imgCallQuality.setImageResource(imageRes);
-        }
-        mDisplayedQuality = iQuality;
-    }
+//    private void updateQualityOfSignalIcon(float quality) {
+//        Log.d(TAG, "updateQualityOfSignalIcon: " + quality);
+//        int iQuality = (int) quality;
+//
+//        int imageRes = R.drawable.ic_quality_0;
+//
+//        if (iQuality == mDisplayedQuality) return;
+//        if (quality >= 4) { // Good Quality
+//            imageRes = R.drawable.ic_quality_4;
+//        } else if (quality >= 3) {// Average quality
+//            imageRes = (R.drawable.ic_quality_3);
+//        } else if (quality >= 2) { // Low quality
+//            imageRes = (R.drawable.ic_quality_2);
+//        } else if (quality >= 1) { // Very low quality
+//            imageRes = (R.drawable.ic_quality_1);
+//        }
+//        if (imgCallQuality != null) {
+//            imgCallQuality.setVisibility(View.VISIBLE);
+//            imgCallQuality.setImageResource(imageRes);
+//        }
+//        mDisplayedQuality = iQuality;
+//    }
 
     @Override
     protected void onResume() {
@@ -552,7 +552,7 @@ public class SupportActivity extends AppCompatActivity {
         MyApplication.prefManager.setAppRun(true);
         showTitleBar();
         if (MyApplication.prefManager.getConnectedCall()) {
-            startCallQuality();
+//            startCallQuality();
             imgTestConnection.setColorFilter(ContextCompat.getColor(MyApplication.context, R.color.colorRed), android.graphics.PorterDuff.Mode.MULTIPLY);
 
             Call[] calls = core.getCalls();

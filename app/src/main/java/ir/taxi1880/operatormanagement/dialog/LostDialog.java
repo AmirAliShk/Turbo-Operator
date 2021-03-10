@@ -42,7 +42,7 @@ public class LostDialog {
 
     static Dialog dialog;
 
-    public void show(String serviceId, String name, String phone, String carCode) {
+    public void show(String serviceId, String name, String phone, String carCode, boolean isDriverSupport) {
         if (MyApplication.currentActivity == null || MyApplication.currentActivity.isFinishing())
             return;
         dialog = new Dialog(MyApplication.currentActivity);
@@ -77,6 +77,10 @@ public class LostDialog {
             if (address.isEmpty()) {
                 MyApplication.Toast("لطفا آدرس را وارد کنید", Toast.LENGTH_SHORT);
                 return;
+            }
+
+            if (isDriverSupport) {
+                comment = " (اعلام شده توسط راننده) " + comment;
             }
 
             setLostObject(serviceId, carCode, phone, name, address, comment);

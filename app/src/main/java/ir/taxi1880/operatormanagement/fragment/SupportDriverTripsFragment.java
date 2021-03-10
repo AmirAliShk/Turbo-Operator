@@ -34,6 +34,7 @@ import butterknife.OnClick;
 import butterknife.OnLongClick;
 import butterknife.Unbinder;
 import ir.taxi1880.operatormanagement.R;
+import ir.taxi1880.operatormanagement.adapter.DriverTripsAdapter;
 import ir.taxi1880.operatormanagement.adapter.TripAdapter;
 import ir.taxi1880.operatormanagement.app.EndPoints;
 import ir.taxi1880.operatormanagement.app.MyApplication;
@@ -53,7 +54,7 @@ public class SupportDriverTripsFragment extends Fragment {
     Unbinder unbinder;
     View view;
     ArrayList<TripModel> tripModels;
-    TripAdapter tripAdapter;
+    DriverTripsAdapter tripAdapter;
     int searchCase = 6;
     int extendedTime = 1;
     private int mDisplayedQuality = -1;
@@ -314,7 +315,7 @@ public class SupportDriverTripsFragment extends Fragment {
                             }
                         }
 
-                        tripAdapter = new TripAdapter(tripModels);
+                        tripAdapter = new DriverTripsAdapter(tripModels);
                         if (recycleTrip != null)
                             recycleTrip.setAdapter(tripAdapter);
 
