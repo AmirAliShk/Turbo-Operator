@@ -23,21 +23,24 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import butterknife.Unbinder;
 import ir.taxi1880.operatormanagement.R;
-import ir.taxi1880.operatormanagement.adapter.PassengerCallsAdapter;
+import ir.taxi1880.operatormanagement.adapter.RecentCallsAdapter;
 import ir.taxi1880.operatormanagement.app.EndPoints;
 import ir.taxi1880.operatormanagement.app.MyApplication;
 import ir.taxi1880.operatormanagement.helper.TypefaceUtil;
-import ir.taxi1880.operatormanagement.model.AllMistakesModel;
 import ir.taxi1880.operatormanagement.model.PassengerCallsModel;
 import ir.taxi1880.operatormanagement.okHttp.RequestHelper;
 import ir.taxi1880.operatormanagement.push.AvaCrashReporter;
 
-import static ir.taxi1880.operatormanagement.adapter.PassengerCallsAdapter.pauseVoice;
+import static ir.taxi1880.operatormanagement.adapter.RecentCallsAdapter.pauseVoice;
 
-public class PassengerCallsDialog {
+public class RecentCallsDialog {
 
     Dialog dialog;
     Unbinder unbinder;
+    boolean fromPassengerCalls;
+
+    @BindView(R.id.vfHeader)
+    ViewFlipper vfHeader;
 
     @BindView(R.id.listPassengerCalls)
     RecyclerView listPassengerCalls;
@@ -56,16 +59,16 @@ public class PassengerCallsDialog {
     @BindView(R.id.textProgress)
     TextView textProgress;
 
-    PassengerCallsAdapter mAdapter;
+    RecentCallsAdapter mAdapter;
     ArrayList<PassengerCallsModel> passengerCallsModels;
 
-    public void show(String tell) {
+    public void show(String tell, int sip, Boolean fromPassengerCalls) {
         if (MyApplication.currentActivity == null || MyApplication.currentActivity.isFinishing())
             return;
         dialog = new Dialog(MyApplication.currentActivity);
         dialog.getWindow().requestFeature(Window.FEATURE_NO_TITLE);
         dialog.getWindow().getAttributes().windowAnimations = R.style.ExpandAnimation;
-        dialog.setContentView(R.layout.dialog_passenger_calls);
+        dialog.setContentView(R.layout.dialog_recent_calls);
         unbinder = ButterKnife.bind(this, dialog.getWindow().getDecorView());
         TypefaceUtil.overrideFonts(dialog.getWindow().getDecorView(), MyApplication.IraSanSMedume);
         dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
@@ -75,15 +78,22 @@ public class PassengerCallsDialog {
         dialog.getWindow().setAttributes(wlp);
         dialog.setCancelable(false);
 
-        getPassengerCalls(tell.startsWith("0") ? tell : "0" + tell);
+        this.fromPassengerCalls = fromPassengerCalls;
 
+        if (fromPassengerCalls) {
+            vfHeader.setDisplayedChild(1);
+            getPassengerCalls(tell.startsWith("0") ? tell : "0" + tell, "/4");
+        } else {
+            vfHeader.setDisplayedChild(0);
+            getPassengerCalls(sip + "", "/1");
+        }
         dialog.show();
     }
 
-    public void getPassengerCalls(String tell) {
+    public void getPassengerCalls(String num, String dateInterval) {
         if (vfDownload != null)
             vfDownload.setDisplayedChild(0);
-        RequestHelper.builder(EndPoints.PASSENGER_CALLS + tell + "/4")
+        RequestHelper.builder(EndPoints.RECENT_CALLS + num + dateInterval)
                 .listener(passengerCallsCallBack)
                 .get();
     }
@@ -105,27 +115,33 @@ public class PassengerCallsDialog {
                             JSONObject dataObj = dataArr.getJSONObject(i);
                             PassengerCallsModel model = new PassengerCallsModel();
 
-                            model.setTxtTimeRemaining(dataObj.getInt("duration"));
+                            if (!dataObj.getString("disposition").equals("ANSWERED"))
+                                continue;
+
                             model.setTxtDate(dataObj.getString("starttime"));
-                            model.setTxtTime(dataObj.getString("voiceId"));
+                            model.setTxtTime(dataObj.getString("disposition"));
                             model.setVoipId(dataObj.getString("voiceId"));
+
+                            if (!fromPassengerCalls) {
+                                model.setPhone(dataObj.getString("src"));
+                            }
 
                             passengerCallsModels.add(model);
                         }
                     }
-                    mAdapter = new PassengerCallsAdapter(MyApplication.currentActivity, passengerCallsModels);
+                    mAdapter = new RecentCallsAdapter(MyApplication.currentActivity, passengerCallsModels);
                     listPassengerCalls.setAdapter(mAdapter);
 
 //                    "id": "6044cfee3214a60468e2a298",
-//                            "src": "09376148583",
-//                            "starttime": "2021-03-07T13:06:53.890Z",
-//                            "voiceId": "1615122413.10363140",
-//                            "duration": 1,
-//                            "disposition": "NO ANSWER", "BUSY", "ANSWERED", "
-//                            "dst": "1880",
-//                            "type": "incoming",
-//                            "queueName": "1880",
-//                            "endtime": "2021-03-07T13:06:54.890Z"
+//                     "src": "09376148583",
+//                     "starttime": "2021-03-07T13:06:53.890Z",
+//                     "voiceId": "1615122413.10363140",
+//                     "duration": 1,
+//                     "disposition": "NO ANSWER", "BUSY", "ANSWERED", " "
+//                     "dst": "1880",
+//                     "type": "incoming",
+//                     "queueName": "1880",
+//                     "endtime": "2021-03-07T13:06:54.890Z"
 
                 } catch (Exception e) {
                     e.printStackTrace();

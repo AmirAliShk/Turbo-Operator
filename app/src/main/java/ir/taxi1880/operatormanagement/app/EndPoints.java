@@ -114,7 +114,7 @@ public class EndPoints {
     public static final String ACCEPT_LISTEN = LISTEN_WEBSERVICE_PATH + "accept";
     public static final String ACTIVATE_SUPPORT = SUPPORT_WEBSERVICE_PATH + "activate";
     public static final String DEACTIVATE_SUPPORT = SUPPORT_WEBSERVICE_PATH + "deActivate";
-    public static final String PASSENGER_CALLS = CALL_VOICE_PATH + "report/"; //http://turbotaxi.ir:1884/api/v1/report/09376148583/4
+    public static final String RECENT_CALLS = CALL_VOICE_PATH + "report/"; //http://turbotaxi.ir:1884/api/v1/report/09376148583/4
 
     /******************************** Driver Api *********************************/
 

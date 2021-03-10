@@ -10,15 +10,11 @@ import android.view.Window;
 import android.view.WindowManager;
 import android.widget.Toast;
 
-import org.linphone.core.Address;
-
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import butterknife.Unbinder;
 import ir.taxi1880.operatormanagement.R;
 import ir.taxi1880.operatormanagement.app.MyApplication;
-import ir.taxi1880.operatormanagement.dataBase.DataBase;
-import ir.taxi1880.operatormanagement.fragment.SupportDriverTripsFragment;
 import ir.taxi1880.operatormanagement.fragment.TripSupportFragment;
 import ir.taxi1880.operatormanagement.helper.FragmentHelper;
 import ir.taxi1880.operatormanagement.helper.TypefaceUtil;
@@ -37,8 +33,8 @@ public class PendingMistakesOptionsDialog {
     @OnClick(R.id.llGuestCalls)
     void onPressGuestCalls() {
         dismiss();
-        new PassengerCallsDialog()
-                .show(tell);
+        new RecentCallsDialog()
+                .show(tell, 0, true);
     }
 
     @OnClick(R.id.llSearchService)

@@ -5,6 +5,7 @@ public class PassengerCallsModel {
     String txtDate;
     String txtTime;
     String voipId;
+    String phone;
     int txtTimeRemaining;
 
 
@@ -38,5 +39,13 @@ public class PassengerCallsModel {
 
     public void setVoipId(String voipId) {
         this.voipId = voipId;
+    }
+
+    public String getPhone() {
+        return phone;
+    }
+
+    public void setPhone(String phone) {
+        this.phone = phone;
     }
 }

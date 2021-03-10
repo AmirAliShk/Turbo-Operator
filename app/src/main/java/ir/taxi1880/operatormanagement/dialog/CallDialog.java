@@ -92,13 +92,13 @@ public class CallDialog {
     @OnClick(R.id.llSupportOperatorRecentCalls)
     void llSupportOperatorRecentCalls(){
         dismiss();
-        new OperatorRecentCallsDialog() .show();
+        new RecentCallsDialog() .show("0",MyApplication.prefManager.getSipNumber(), false);
     }
 
     @OnClick(R.id.llOperatorRecentCalls)
     void llOperatorRecentCalls(){
         dismiss();
-        new OperatorRecentCallsDialog() .show();
+        new RecentCallsDialog() .show("0",MyApplication.prefManager.getSipNumber(), false);
     }
 
 

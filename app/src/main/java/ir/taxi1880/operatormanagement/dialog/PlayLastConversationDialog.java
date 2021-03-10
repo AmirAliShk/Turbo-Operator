@@ -13,6 +13,7 @@ import android.view.Window;
 import android.view.WindowManager;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+import android.widget.Toast;
 import android.widget.ViewFlipper;
 
 import com.downloader.Error;
@@ -40,6 +41,7 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import butterknife.Unbinder;
 import ir.taxi1880.operatormanagement.R;
+import ir.taxi1880.operatormanagement.app.EndPoints;
 import ir.taxi1880.operatormanagement.app.MyApplication;
 import ir.taxi1880.operatormanagement.helper.FileHelper;
 import ir.taxi1880.operatormanagement.helper.KeyBoardHelper;
@@ -51,6 +53,8 @@ public class PlayLastConversationDialog {
     static Dialog dialog;
     Unbinder unbinder;
     MediaPlayer mediaPlayer;
+    String url;
+    int idTrip;
 
     @OnClick(R.id.llDismissDialog)
     void onBack() {
@@ -60,6 +64,24 @@ public class PlayLastConversationDialog {
     @OnClick(R.id.imgStop)
     void onStop() {
         pauseVoice();
+    }
+
+    @OnClick(R.id.imgPlay)
+    void onPlay() {
+        skbTimer.setProgress(0);
+        Log.i("URL", "show: " + url);
+        String voiceName = idTrip + ".mp3";
+        File file = new File(MyApplication.DIR_ROOT + MyApplication.VOICE_FOLDER_NAME + "/" + voiceName);
+        if (file.exists()) {
+            initVoice(Uri.fromFile(file));
+            playVoice();
+            if (vfDownload != null)
+                vfDownload.setDisplayedChild(1);
+        } else {
+            startDownload(vfDownload, progressDownload, textProgress, url, voiceName);
+            if (vfDownload != null)
+                vfDownload.setDisplayedChild(0);
+        }
     }
 
     @BindView(R.id.skbTimer)
@@ -98,6 +120,9 @@ public class PlayLastConversationDialog {
         dialog.setCancelable(false);
         TypefaceUtil.overrideFonts(dialog.getWindow().getDecorView());
         unbinder = ButterKnife.bind(this, dialog);
+
+        url = urlString;
+        idTrip = tripId;
 
         skbTimer.setProgress(0);
         Log.i("URL", "show: " + urlString);

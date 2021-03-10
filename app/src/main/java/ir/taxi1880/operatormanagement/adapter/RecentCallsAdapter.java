@@ -9,6 +9,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.ViewFlipper;
@@ -20,11 +21,14 @@ import com.downloader.Error;
 import com.downloader.OnDownloadListener;
 import com.downloader.PRDownloader;
 import com.warkiz.widget.IndicatorSeekBar;
+import com.warkiz.widget.OnSeekChangeListener;
+import com.warkiz.widget.SeekParams;
 
 import java.io.File;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.Locale;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -38,7 +42,7 @@ import ir.taxi1880.operatormanagement.okHttp.AuthenticationInterceptor;
 
 import static ir.taxi1880.operatormanagement.app.MyApplication.context;
 
-public class PassengerCallsAdapter extends RecyclerView.Adapter<PassengerCallsAdapter.ViewHolder> {
+public class RecentCallsAdapter extends RecyclerView.Adapter<RecentCallsAdapter.ViewHolder> {
     private Context mContext;
     private ArrayList<PassengerCallsModel> passengerCallsModels;
     static ViewFlipper vfPlayPause;
@@ -50,16 +54,16 @@ public class PassengerCallsAdapter extends RecyclerView.Adapter<PassengerCallsAd
     ImageView imgPlay;
     ImageView imgPause;
     int position;
+    LinearLayout llPhone;
 
-
-    public PassengerCallsAdapter(Context mContext, ArrayList<PassengerCallsModel> passengerCallsModels) {
+    public RecentCallsAdapter(Context mContext, ArrayList<PassengerCallsModel> passengerCallsModels) {
         this.mContext = mContext;
         this.passengerCallsModels = passengerCallsModels;
     }
 
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(context).inflate(R.layout.item_passenger_calls, parent, false);
+        View view = LayoutInflater.from(context).inflate(R.layout.item_recent_calls, parent, false);
         TypefaceUtil.overrideFonts(view);
         return new ViewHolder(view);
     }
@@ -69,6 +73,8 @@ public class PassengerCallsAdapter extends RecyclerView.Adapter<PassengerCallsAd
         TextView txtTime;
         ViewFlipper vfPlayPause;
         IndicatorSeekBar skbTimer;
+        TextView txtTimeRemaining;
+        TextView phone;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -79,6 +85,8 @@ public class PassengerCallsAdapter extends RecyclerView.Adapter<PassengerCallsAd
             imgPause = itemView.findViewById(R.id.imgPause);
             vfPlayPause = itemView.findViewById(R.id.vfPlayPause);
             skbTimer = itemView.findViewById(R.id.skbTimer);
+            phone = itemView.findViewById(R.id.txtPassengerTell);
+            llPhone = itemView.findViewById(R.id.llPhone);
         }
     }
 
@@ -88,7 +96,11 @@ public class PassengerCallsAdapter extends RecyclerView.Adapter<PassengerCallsAd
 
         holder.txtDate.setText(model.getTxtDate());
         holder.txtTime.setText(model.getTxtTime());
-        txtTimeRemaining.setText(model.getTxtTimeRemaining() + "");
+        if (model.getPhone() == null) {
+            llPhone.setVisibility(View.GONE);
+        } else {
+            holder.phone.setText(model.getPhone());
+        }
 
         imgPlay.setOnClickListener(view -> {
             if (mediaPlayer != null && mediaPlayer.isPlaying()) {
@@ -114,11 +126,35 @@ public class PassengerCallsAdapter extends RecyclerView.Adapter<PassengerCallsAd
                 startDownload(EndPoints.CALL_VOICE + model.getVoipId(), voiceName);
             }
 
+            skbTimer.setOnSeekChangeListener(new OnSeekChangeListener() {
+                @Override
+                public void onSeeking(SeekParams seekParams) {
+                    int timeRemaining = seekParams.progress / 1000;
+                    String strTimeRemaining = String.format(new Locale("en_US"), "%02d:%02d", timeRemaining / 60, timeRemaining % 60);
+                    txtTimeRemaining = holder.txtTimeRemaining;
+                    txtTimeRemaining.setText(strTimeRemaining);
+                }
+
+                @Override
+                public void onStartTrackingTouch(IndicatorSeekBar seekBar) {
+
+                }
+
+                @Override
+                public void onStopTrackingTouch(IndicatorSeekBar seekBar) {
+                    if (mediaPlayer != null) {
+                        if (seekBar != null) {
+                            mediaPlayer.seekTo(seekBar.getProgress());
+                        }
+                    }
+                }
+            });
         });
 
         imgPause.setOnClickListener(view -> {
             pauseVoice();
         });
+
     }
 
     @Override
@@ -262,6 +298,9 @@ public class PassengerCallsAdapter extends RecyclerView.Adapter<PassengerCallsAd
                     MyApplication.handler.post(() -> {
                         Log.i("PlayConversationDialog", "onStopTrackingTouch run: " + mediaPlayer.getCurrentPosition());
                         skbTimer.setProgress(mediaPlayer.getCurrentPosition());
+                        int timeRemaining = mediaPlayer.getCurrentPosition() / 1000;
+                        String strTimeRemaining = String.format(new Locale("en_US"), "%02d:%02d", timeRemaining / 60, timeRemaining % 60);
+                        txtTimeRemaining.setText(strTimeRemaining);
                     });
                 } catch (Exception e) {
                     e.printStackTrace();
@@ -280,22 +319,3 @@ public class PassengerCallsAdapter extends RecyclerView.Adapter<PassengerCallsAd
     }
 
 }
-//I/URL: show: http://turbotaxi.ir:1884/api/v1/voice/1615283716.10914667
-//        I/MediaPlayer: setDataSource(107, 0, 576460752303423487)
-//        I/MediaPlayer: [HSM] stayAwake true uid: 10955, pid: 6111
-//        I/MediaPlayer: Pid:6111 MediaPlayer::start
-//        I/PlayConversationDialog: startTimer:
-//        E/MediaPlayer: error (1, -19)
-//        E/MediaPlayer: invoke failed: wrong state 0, mPlayer(0x7e17aa5900)
-//        E/MediaPlayer: Error (1,-19)
-//        I/MediaPlayer: [HSM] stayAwake false uid: 10955, pid: 6111
-//        E/MediaPlayer: Error (1,-1010)
-//        I/MediaPlayer: [HSM] stayAwake false uid: 10955, pid: 6111
-//        I/PlayConversationDialog: onStopTrackingTouch run: 0
-//        I/PlayConversationDialog: onStopTrackingTouch run: 0
-//        I/MediaPlayer: [HSM] stayAwake false uid: 10955, pid: 6111
-//        E/MediaPlayer: pause called in state 0, mPlayer(0x7e17aa5900)
-//        E/MediaPlayer: error (-38, 0)
-//        E/MediaPlayer: Error (-38,0)
-//        I/MediaPlayer: [HSM] stayAwake false uid: 10955, pid: 6111
-//

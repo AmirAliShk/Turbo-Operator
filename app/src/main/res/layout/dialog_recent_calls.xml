@@ -2,7 +2,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
+    android:layout_height="match_parent"
     android:layout_gravity="bottom"
     android:gravity="center"
     android:layoutDirection="ltr"
@@ -13,7 +13,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:gravity="center"
-        android:minWidth="@dimen/_300sdp"
+        android:minWidth="@dimen/_280sdp"
         android:orientation="vertical">
 
         <LinearLayout
@@ -23,25 +23,87 @@
             android:background="@drawable/bg_gray_lite_edge"
             android:orientation="vertical">
 
-            <LinearLayout
+            <ViewFlipper
+                android:id="@+id/vfHeader"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:background="@drawable/bg_dialog_header"
-                android:gravity="center"
-                android:orientation="horizontal"
-                android:padding="10dp">
+                android:layout_height="wrap_content">
 
-                <TextView
+                <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_gravity="center"
+                    android:background="@drawable/bg_dialog_header"
                     android:gravity="center"
-                    android:text="تماس های اخیر"
-                    android:textAppearance="?android:attr/textAppearanceMedium"
-                    android:textColor="@color/colorWhite"
-                    android:textStyle="bold" />
+                    android:orientation="horizontal"
+                    android:padding="10dp">
 
-            </LinearLayout>
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:gravity="center"
+                        android:text="تماس های اخیر"
+                        android:textAppearance="?android:attr/textAppearanceMedium"
+                        android:textColor="@color/colorWhite"
+                        android:textStyle="bold" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/llDismissDialog"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/bg_dialog_header"
+                    android:gravity="center"
+                    android:padding="10dp">
+
+
+                    <RelativeLayout
+                        android:layout_width="40dp"
+                        android:layout_height="40dp"
+                        android:background="@drawable/bg_activate_status"
+                        android:padding="8dp">
+
+
+                        <ImageView
+                            android:id="@+id/imageView2"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:src="@drawable/ic_search" />
+                    </RelativeLayout>
+
+                    <RadioGroup
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layoutDirection="rtl"
+                        android:orientation="horizontal">
+
+                        <RadioButton
+                            android:id="@+id/rBtnPhone"
+                            android:layout_width="wrap_content"
+                            android:layout_height="match_parent"
+                            android:layout_weight="0.5"
+                            android:buttonTint="@color/colorAccent"
+                            android:shadowColor="@color/colorAccent"
+                            android:text="تلفن"
+                            android:textColor="@color/colorWhite" />
+
+                        <RadioButton
+                            android:id="@+id/rBtnMobile"
+                            android:layout_width="wrap_content"
+                            android:layout_height="match_parent"
+                            android:layout_weight="1"
+                            android:buttonTint="@color/colorAccent"
+                            android:shadowColor="@color/colorAccent"
+                            android:text="همراه"
+                            android:textColor="@color/colorWhite"
+                            android:textStyle="bold" />
+                    </RadioGroup>
+
+                </LinearLayout>
+
+            </ViewFlipper>
+
+
 
             <ViewFlipper
                 android:id="@+id/vfDownload"
@@ -89,12 +151,12 @@
                 </LinearLayout>
 
                 <androidx.recyclerview.widget.RecyclerView
-                    android:id="@+id/listOperatorCalls"
+                    android:id="@+id/listPassengerCalls"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:divider="@null"
                     app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-                    tools:listitem="@layout/item_operator_recent_calls" />
+                    tools:listitem="@layout/item_recent_calls" />
 
                 <TextView
                     android:layout_width="match_parent"
@@ -106,8 +168,6 @@
                     android:textColor="@color/colorBlack"
                     android:textStyle="bold" />
             </ViewFlipper>
-
-
         </LinearLayout>
 
         <ImageView
