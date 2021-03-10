@@ -31,6 +31,7 @@ public class DataBase extends SQLiteOpenHelper {
     private static String COLUMN_SAVE_DATE = "saveDate";
     private static String COLUMN_SEND_DATE = "sendDate";
     private static String COLUMN_TELL = "tell";
+    private static String COLUMN_MOBILE = "mobile";
     private static String COLUMN_CUSTOMER_NAME = "customerName";
     private static String COLUMN_VOIP_ID = "voipId";
     private static String COLUMN_NEXT_RECORD = "nextRecord";
@@ -58,7 +59,6 @@ public class DataBase extends SQLiteOpenHelper {
     private static String COLUMN_MISTAKES_CON_DATE = "mistakesConDate";
     private static String COLUMN_MISTAKES_CON_TIME = "mistakesConTime";
     private static String COLUMN_MISTAKES_SEND_TIME = "mistakesSendTime";
-//    private static String COLUMN_MISTAKES_INSPECTOR_USER = "MISTAKESInspectorUser";
 
     //******************************************************************************************
 
@@ -91,6 +91,7 @@ public class DataBase extends SQLiteOpenHelper {
                 COLUMN_SEND_DATE + " TEXT," +
                 COLUMN_CITY + " TEXT," +
                 COLUMN_TELL + " TEXT," +
+                COLUMN_MOBILE + " TEXT," +
                 COLUMN_CUSTOMER_NAME + " TEXT," +
                 COLUMN_NEXT_RECORD + " INTEGER DEFAULT 0," +
                 COLUMN_VOIP_ID + " TEXT)");
@@ -108,6 +109,7 @@ public class DataBase extends SQLiteOpenHelper {
             contentValues.put(COLUMN_SEND_DATE, DBTripModel.getSendDate());
             contentValues.put(COLUMN_CITY, DBTripModel.getCity());
             contentValues.put(COLUMN_TELL, DBTripModel.getTell());
+            contentValues.put(COLUMN_MOBILE, DBTripModel.getMobile());
             contentValues.put(COLUMN_CUSTOMER_NAME, DBTripModel.getCustomerName());
             contentValues.put(COLUMN_VOIP_ID, DBTripModel.getVoipId());
             sqLiteDatabase.insertWithOnConflict(TRIP_TABLE, COLUMN_TRIP_ID, contentValues, SQLiteDatabase.CONFLICT_REPLACE);
@@ -163,6 +165,7 @@ public class DataBase extends SQLiteOpenHelper {
                     DBTripModel.setSendDate(cursor.getString(cursor.getColumnIndex(COLUMN_SEND_DATE)));
                     DBTripModel.setCity(cursor.getInt(cursor.getColumnIndex(COLUMN_CITY)));
                     DBTripModel.setTell(cursor.getString(cursor.getColumnIndex(COLUMN_TELL)));
+                    DBTripModel.setMobile(cursor.getString(cursor.getColumnIndex(COLUMN_MOBILE)));
                     DBTripModel.setCustomerName(cursor.getString(cursor.getColumnIndex(COLUMN_CUSTOMER_NAME)));
                     DBTripModel.setVoipId(cursor.getString(cursor.getColumnIndex(COLUMN_VOIP_ID)));
                     return DBTripModel;

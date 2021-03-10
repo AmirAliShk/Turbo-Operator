@@ -222,7 +222,7 @@ public class DriverTripsDetailsFragment extends Fragment {
     void onError() {
 //        String cityName= new DataBase(MyApplication.context).getCityName2(cityCode);
         new ErrorRegistrationDialog()
-                .show(serviceId, passengerPhone, passengerAddress, passengerName, voipId, cityCode, stationCode, userId, callTime, callDate); // TODO user id is true???callTime?? callDate??
+                .show(serviceId, passengerPhone, customerMobile, passengerAddress, passengerName, voipId, cityCode, stationCode, userId, callTime, callDate); // TODO user id is true???callTime?? callDate??
     }
 
     @OnClick(R.id.btnComplaintRegistration)
