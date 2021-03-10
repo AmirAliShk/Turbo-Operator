@@ -82,6 +82,9 @@ public class PendingMistakesFragment extends Fragment {
     @BindView(R.id.vfPending)
     ViewFlipper vfPending;
 
+    @BindView(R.id.vfVoiceStatus)
+    ViewFlipper vfVoiceStatus;
+
     @BindView(R.id.txtTripTime)
     TextView txtTripTime;
 
@@ -108,7 +111,7 @@ public class PendingMistakesFragment extends Fragment {
             initVoice(Uri.fromFile(file));
             playVoice();
         } else if (voipId.equals("0")) {
-            MyApplication.Toast("صوتی برای این تماس وجود ندارد", Toast.LENGTH_SHORT);
+            vfVoiceStatus.setDisplayedChild(1);
             vfPlayPause.setDisplayedChild(0);
         } else {
             startDownload(EndPoints.CALL_VOICE + dataBase.getMistakesRow().getVoipId(), voiceName);
@@ -203,6 +206,8 @@ public class PendingMistakesFragment extends Fragment {
                             FileHelper.deleteFile(dirPathTemp, fileName);
                             if (error.getResponseCode() == 401)
                                 new RefreshTokenAsyncTask().execute();
+                            if (error.getResponseCode() == 404)
+                                vfVoiceStatus.setDisplayedChild(1);
                         }
                     });
 

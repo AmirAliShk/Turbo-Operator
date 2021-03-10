@@ -46,6 +46,7 @@ public class RecentCallsAdapter extends RecyclerView.Adapter<RecentCallsAdapter.
     private Context mContext;
     private ArrayList<PassengerCallsModel> passengerCallsModels;
     static ViewFlipper vfPlayPause;
+    ViewFlipper vfVoiceStatus;
     static MediaPlayer mediaPlayer;
     private int TOTAL_VOICE_DURATION;
     static private Timer timer;
@@ -72,6 +73,7 @@ public class RecentCallsAdapter extends RecyclerView.Adapter<RecentCallsAdapter.
         TextView txtDate;
         TextView txtTime;
         ViewFlipper vfPlayPause;
+        ViewFlipper vfVoiceStatus;
         IndicatorSeekBar skbTimer;
         TextView txtTimeRemaining;
         TextView phone;
@@ -84,6 +86,7 @@ public class RecentCallsAdapter extends RecyclerView.Adapter<RecentCallsAdapter.
             imgPlay = itemView.findViewById(R.id.imgPlay);
             imgPause = itemView.findViewById(R.id.imgPause);
             vfPlayPause = itemView.findViewById(R.id.vfPlayPause);
+            vfVoiceStatus = itemView.findViewById(R.id.vfVoiceStatus);
             skbTimer = itemView.findViewById(R.id.skbTimer);
             phone = itemView.findViewById(R.id.txtPassengerTell);
             llPhone = itemView.findViewById(R.id.llPhone);
@@ -109,6 +112,7 @@ public class RecentCallsAdapter extends RecyclerView.Adapter<RecentCallsAdapter.
             this.vfPlayPause = holder.vfPlayPause;
             this.position = position;
             this.skbTimer = holder.skbTimer;
+            this.vfVoiceStatus = holder.vfVoiceStatus;
             if (holder.vfPlayPause != null) {
                 holder.vfPlayPause.setDisplayedChild(1);
             }
@@ -215,6 +219,8 @@ public class RecentCallsAdapter extends RecyclerView.Adapter<RecentCallsAdapter.
                             FileHelper.deleteFile(dirPathTemp, fileName);
                             if (error.getResponseCode() == 401)
                                 new RefreshTokenAsyncTask().execute();
+                            if (error.getResponseCode() == 404)
+                                vfVoiceStatus.setDisplayedChild(1);
                         }
                     });
 

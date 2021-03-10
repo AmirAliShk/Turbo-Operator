@@ -173,8 +173,7 @@
         <ImageView
             android:id="@+id/imgClose"
             android:layout_width="80dp"
-            android:layout_height="0dp"
-            android:layout_weight="0.15"
+            android:layout_height="80dp"
             android:padding="20dp"
             android:src="@drawable/ic_close_black_24dp" />
 

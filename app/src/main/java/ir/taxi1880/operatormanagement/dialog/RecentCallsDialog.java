@@ -82,18 +82,18 @@ public class RecentCallsDialog {
 
         if (fromPassengerCalls) {
             vfHeader.setDisplayedChild(1);
-            getPassengerCalls(tell.startsWith("0") ? tell : "0" + tell, "/4");
+            getPassengerCalls("/src",tell.startsWith("0") ? tell : "0" + tell, "/4");
         } else {
             vfHeader.setDisplayedChild(0);
-            getPassengerCalls(sip + "", "/1");
+            getPassengerCalls("/dst",sip + "", "/1");
         }
         dialog.show();
     }
 
-    public void getPassengerCalls(String num, String dateInterval) {
+    public void getPassengerCalls(String type, String num, String dateInterval) {
         if (vfDownload != null)
             vfDownload.setDisplayedChild(0);
-        RequestHelper.builder(EndPoints.RECENT_CALLS + num + dateInterval)
+        RequestHelper.builder(EndPoints.RECENT_CALLS + num + type + dateInterval)
                 .listener(passengerCallsCallBack)
                 .get();
     }
