@@ -9,6 +9,7 @@ public class DBTripModel {
   int originStation;
   int city;
   String tell;
+  String mobile;
   String customerName;
   String voipId;
 
@@ -26,6 +27,14 @@ public class DBTripModel {
 
   public void setTell(String tell) {
     this.tell = tell;
+  }
+
+  public String getMobile() {
+    return mobile;
+  }
+
+  public void setMobile(String mobile) {
+    this.mobile = mobile;
   }
 
   public String getCustomerName() {

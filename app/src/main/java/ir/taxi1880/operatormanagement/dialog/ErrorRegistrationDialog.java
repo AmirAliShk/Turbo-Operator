@@ -29,7 +29,7 @@ public class ErrorRegistrationDialog {
     static Dialog dialog;
     ViewFlipper vfLoader;
 
-    public void show(String ServiceId, String phone, String address, String customerName, String voipId,
+    public void show(String ServiceId, String phone, String mobile,String address, String customerName, String voipId,
                      int cityCode, String stationCode, int userCodeContact, String conTime, String conDate) {
         if (MyApplication.currentActivity == null || MyApplication.currentActivity.isFinishing())
             return;
@@ -61,14 +61,14 @@ public class ErrorRegistrationDialog {
                 return;
             }
 
-            setMistake(ServiceId, phone, address, customerName, voipId, description, cityCode, stationCode, userCodeContact, conTime, conDate);
+            setMistake(ServiceId, phone, mobile, address, customerName, voipId, description, cityCode, stationCode, userCodeContact, conTime, conDate);
             dismiss();
         });
 
         dialog.show();
     }
 
-    private void setMistake(String ServiceId, String phone, String address, String customerName, String voipId, String desc,
+    private void setMistake(String ServiceId, String phone, String mobile, String address, String customerName, String voipId, String desc,
                             int cityCode, String stationCode, int userCodeContact, String conTime, String conDate) {
         if (vfLoader != null) {
             vfLoader.setDisplayedChild(1);
@@ -77,6 +77,7 @@ public class ErrorRegistrationDialog {
         RequestHelper.builder(EndPoints.MISTAKE)
                 .addParam("serviceId", ServiceId)
                 .addParam("phone", phone)
+                .addParam("mobile", mobile)
                 .addParam("tripUser", userCodeContact)//
                 .addParam("cityId", cityCode)//
                 .addParam("tripStation", stationCode)//
