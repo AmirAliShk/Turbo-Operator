@@ -1,6 +1,6 @@
 package ir.taxi1880.operatormanagement.model;
 
-public class PassengerCallsModel {
+public class RecentCallsModel {
 
     String txtDate;
     String txtTime;

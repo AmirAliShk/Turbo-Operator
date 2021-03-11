@@ -37,14 +37,14 @@ import ir.taxi1880.operatormanagement.app.EndPoints;
 import ir.taxi1880.operatormanagement.app.MyApplication;
 import ir.taxi1880.operatormanagement.helper.FileHelper;
 import ir.taxi1880.operatormanagement.helper.TypefaceUtil;
-import ir.taxi1880.operatormanagement.model.PassengerCallsModel;
+import ir.taxi1880.operatormanagement.model.RecentCallsModel;
 import ir.taxi1880.operatormanagement.okHttp.AuthenticationInterceptor;
 
 import static ir.taxi1880.operatormanagement.app.MyApplication.context;
 
 public class RecentCallsAdapter extends RecyclerView.Adapter<RecentCallsAdapter.ViewHolder> {
     private Context mContext;
-    private ArrayList<PassengerCallsModel> passengerCallsModels;
+    private ArrayList<RecentCallsModel> recentCallsModels;
     static ViewFlipper vfPlayPause;
     ViewFlipper vfVoiceStatus;
     static MediaPlayer mediaPlayer;
@@ -57,9 +57,9 @@ public class RecentCallsAdapter extends RecyclerView.Adapter<RecentCallsAdapter.
     int position;
     LinearLayout llPhone;
 
-    public RecentCallsAdapter(Context mContext, ArrayList<PassengerCallsModel> passengerCallsModels) {
+    public RecentCallsAdapter(Context mContext, ArrayList<RecentCallsModel> recentCallsModels) {
         this.mContext = mContext;
-        this.passengerCallsModels = passengerCallsModels;
+        this.recentCallsModels = recentCallsModels;
     }
 
     @Override
@@ -95,7 +95,7 @@ public class RecentCallsAdapter extends RecyclerView.Adapter<RecentCallsAdapter.
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-        PassengerCallsModel model = passengerCallsModels.get(position);
+        RecentCallsModel model = recentCallsModels.get(position);
 
         holder.txtDate.setText(model.getTxtDate());
         holder.txtTime.setText(model.getTxtTime());
@@ -163,7 +163,7 @@ public class RecentCallsAdapter extends RecyclerView.Adapter<RecentCallsAdapter.
 
     @Override
     public int getItemCount() {
-        return passengerCallsModels.size();
+        return recentCallsModels.size();
     }
 
     private void startDownload(final String urlString, final String fileName) {

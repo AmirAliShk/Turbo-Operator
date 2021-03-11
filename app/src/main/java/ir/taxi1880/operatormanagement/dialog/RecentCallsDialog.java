@@ -17,7 +17,9 @@ import androidx.recyclerview.widget.RecyclerView;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -27,8 +29,9 @@ import ir.taxi1880.operatormanagement.R;
 import ir.taxi1880.operatormanagement.adapter.RecentCallsAdapter;
 import ir.taxi1880.operatormanagement.app.EndPoints;
 import ir.taxi1880.operatormanagement.app.MyApplication;
+import ir.taxi1880.operatormanagement.helper.DateHelper;
 import ir.taxi1880.operatormanagement.helper.TypefaceUtil;
-import ir.taxi1880.operatormanagement.model.PassengerCallsModel;
+import ir.taxi1880.operatormanagement.model.RecentCallsModel;
 import ir.taxi1880.operatormanagement.okHttp.RequestHelper;
 import ir.taxi1880.operatormanagement.push.AvaCrashReporter;
 
@@ -45,8 +48,8 @@ public class RecentCallsDialog {
     @BindView(R.id.vfHeader)
     ViewFlipper vfHeader;
 
-    @BindView(R.id.listPassengerCalls)
-    RecyclerView listPassengerCalls;
+    @BindView(R.id.listRecentCalls)
+    RecyclerView listRecentCalls;
 
     @OnClick(R.id.imgClose)
     void onClose() {
@@ -69,22 +72,25 @@ public class RecentCallsDialog {
     void onTell() {
         if (tell.length() == 10 && !tell.startsWith("0")) {
             tell = "0" + tell;
-            getPassengerCalls("/src", tell, "/4");
+            getRecentCalls("/src", tell, "/4");
         } else if (tell.length() == 8) {
             tell = "051" + tell;
-            getPassengerCalls("/src", tell, "/4");
+            getRecentCalls("/src", tell, "/4");
+        } else {
+            if (vfDownload != null)
+                vfDownload.setDisplayedChild(2);
         }
     }
 
     @OnClick(R.id.rbMobile)
     void onMobile() {
         if (rgSearchType.getCheckedRadioButtonId() == R.id.rbMobile) {
-            getPassengerCalls("/src", mobile.startsWith("0") ? mobile : "0" + mobile, "/4");
+            getRecentCalls("/src", mobile.startsWith("0") ? mobile : "0" + mobile, "/4");
         }
     }
 
     RecentCallsAdapter mAdapter;
-    ArrayList<PassengerCallsModel> passengerCallsModels;
+    ArrayList<RecentCallsModel> recentCallsModels;
 
     public void show(String tell, String mobile, int sip, Boolean fromPassengerCalls) {
         if (MyApplication.currentActivity == null || MyApplication.currentActivity.isFinishing())
@@ -111,35 +117,38 @@ public class RecentCallsDialog {
             if (rgSearchType.getCheckedRadioButtonId() == R.id.rbTell) {
                 if (tell.length() == 10 && !tell.startsWith("0")) {
                     tell = "0" + tell;
-                    getPassengerCalls("/src", tell, "/4");
+                    getRecentCalls("/src", tell, "/4");
                 } else if (tell.length() == 8) {
                     tell = "051" + tell;
-                    getPassengerCalls("/src", tell, "/4");
+                    getRecentCalls("/src", tell, "/4");
+                } else {
+                    if (vfDownload != null)
+                        vfDownload.setDisplayedChild(2);
                 }
             } else if (rgSearchType.getCheckedRadioButtonId() == R.id.rbMobile) {
-                getPassengerCalls("/src", mobile.startsWith("0") ? mobile : "0" + mobile, "/4");
+                getRecentCalls("/src", mobile.startsWith("0") ? mobile : "0" + mobile, "/4");
             }
         } else {
             vfHeader.setDisplayedChild(0);
-            getPassengerCalls("/dst", sip + "", "/1");
+            getRecentCalls("/dst", sip + "", "/1");
         }
         dialog.show();
     }
 
-    public void getPassengerCalls(String type, String num, String dateInterval) {
+    public void getRecentCalls(String type, String num, String dateInterval) {
         if (vfDownload != null)
             vfDownload.setDisplayedChild(0);
         RequestHelper.builder(EndPoints.RECENT_CALLS + num + type + dateInterval)
-                .listener(passengerCallsCallBack)
+                .listener(recentCallsCallBack)
                 .get();
     }
 
-    RequestHelper.Callback passengerCallsCallBack = new RequestHelper.Callback() {
+    RequestHelper.Callback recentCallsCallBack = new RequestHelper.Callback() {
         @Override
         public void onResponse(Runnable reCall, Object... args) {
             MyApplication.handler.post(() -> {
                 try {
-                    passengerCallsModels = new ArrayList<>();
+                    recentCallsModels = new ArrayList<>();
                     JSONObject listenObj = new JSONObject(args[0].toString());
                     boolean success = listenObj.getBoolean("success");
                     String message = listenObj.getString("message");
@@ -149,25 +158,49 @@ public class RecentCallsDialog {
                         JSONArray dataArr = listenObj.getJSONArray("data");
                         for (int i = 0; i < dataArr.length(); i++) {
                             JSONObject dataObj = dataArr.getJSONObject(i);
-                            PassengerCallsModel model = new PassengerCallsModel();
+                            RecentCallsModel model = new RecentCallsModel();
 
                             if (!dataObj.getString("disposition").equals("ANSWERED"))
                                 continue;
 
-                            model.setTxtDate(dataObj.getString("starttime"));
-                            model.setTxtTime(dataObj.getString("disposition"));
+                            String dateTime = dataObj.getString("starttime");
+                            String[] separated = dateTime.split("T");
+
+//                            Date time;
+//                            String dateTime = dataObj.getString("starttime");
+//                            SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'");
+//                            try {
+//                                Date date = format.parse(dateTime);
+//                            .applyPattern
+//                                time = DateHelper.gregorianToJalali(date);
+//                            } catch (Exception e) {
+//                                e.printStackTrace();
+//                            }
+
+                            model.setTxtDate(separated[0]);
+                            model.setTxtTime(separated[1]);
                             model.setVoipId(dataObj.getString("voiceId"));
 
                             if (!fromPassengerCalls) {
                                 model.setPhone(dataObj.getString("src"));
                             }
 
-                            passengerCallsModels.add(model);
+                            recentCallsModels.add(model);
                         }
-                    }
-                    mAdapter = new RecentCallsAdapter(MyApplication.currentActivity, passengerCallsModels);
-                    listPassengerCalls.setAdapter(mAdapter);
 
+                        if (recentCallsModels.size() == 0) {
+                            if (vfDownload != null)
+                                vfDownload.setDisplayedChild(2);
+                        } else {
+                            if (vfDownload != null)
+                                vfDownload.setDisplayedChild(1);
+                            mAdapter = new RecentCallsAdapter(MyApplication.currentActivity, recentCallsModels);
+                            listRecentCalls.setAdapter(mAdapter);
+                        }
+                    } else {
+                        if (vfDownload != null)
+                            vfDownload.setDisplayedChild(3);
+                    }
 //                    "id": "6044cfee3214a60468e2a298",
 //                     "src": "09376148583",
 //                     "starttime": "2021-03-07T13:06:53.890Z",
@@ -180,6 +213,8 @@ public class RecentCallsDialog {
 //                     "endtime": "2021-03-07T13:06:54.890Z"
 
                 } catch (Exception e) {
+                    if (vfDownload != null)
+                        vfDownload.setDisplayedChild(3);
                     e.printStackTrace();
                 }
             });
@@ -187,6 +222,10 @@ public class RecentCallsDialog {
 
         @Override
         public void onFailure(Runnable reCall, Exception e) {
+            MyApplication.handler.post(() -> {
+                if (vfDownload != null)
+                    vfDownload.setDisplayedChild(3);
+            });
             super.onFailure(reCall, e);
         }
     };

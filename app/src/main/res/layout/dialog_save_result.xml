@@ -40,6 +40,34 @@
             android:paddingBottom="5dp">
 
             <RadioGroup
+                android:id="@+id/rgCulprit"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="10dp"
+                android:background="@drawable/bg_white_edge"
+                android:layoutDirection="rtl"
+                android:padding="10dp">
+
+                <RadioButton
+                    android:id="@+id/rbTripRegistrationOperatorBlame"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="اپراتور ثبت سفر مقصر است." />
+
+                <RadioButton
+                    android:id="@+id/rbStationRegistrationOperatorBlame"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="اپراتور ثبت ایستگاه مقصر است." />
+
+                <RadioButton
+                    android:id="@+id/rbUnknown"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="نامشخص" />
+            </RadioGroup>
+
+            <RadioGroup
                 android:id="@+id/rgResult"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -71,34 +99,6 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="سایر موارد" />
-            </RadioGroup>
-
-            <RadioGroup
-                android:id="@+id/rgCulprit"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_margin="10dp"
-                android:background="@drawable/bg_white_edge"
-                android:layoutDirection="rtl"
-                android:padding="10dp">
-
-                <RadioButton
-                    android:id="@+id/rbTripRegistrationOperatorBlame"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="اپراتور ثبت سفر مقصر است." />
-
-                <RadioButton
-                    android:id="@+id/rbStationRegistrationOperatorBlame"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="اپراتور ثبت ایستگاه مقصر است." />
-
-                <RadioButton
-                    android:id="@+id/rbUnknown"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="نامشخص" />
             </RadioGroup>
 
             <ViewFlipper
