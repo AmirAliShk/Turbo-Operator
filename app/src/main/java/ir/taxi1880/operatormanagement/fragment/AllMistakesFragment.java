@@ -98,7 +98,8 @@ public class AllMistakesFragment extends Fragment {
                     boolean success = listenObj.getBoolean("success");
                     String message = listenObj.getString("message");
                     if (success) {
-                        vfDownload.setDisplayedChild(1);
+                        if (vfDownload != null)
+                            vfDownload.setDisplayedChild(1);
                         JSONArray dataArr = listenObj.getJSONArray("data");
                         for (int i = 0; i < dataArr.length(); i++) {
                             JSONObject dataObj = dataArr.getJSONObject(i);

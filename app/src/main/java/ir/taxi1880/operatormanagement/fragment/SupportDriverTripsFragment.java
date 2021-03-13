@@ -80,8 +80,8 @@ public class SupportDriverTripsFragment extends Fragment {
     void onPressChangeDriverQueue() {
         RequestHelper.builder(EndPoints.DRIVER_STATION_POSITION)
                 .ignore422Error(true)
-                .addParam("driverCode","")
-                .addParam("position","")
+                .addParam("driverCode", "")
+                .addParam("position", "")
                 .listener(onGetDriverInfo)
                 .put();
     }
@@ -113,9 +113,9 @@ public class SupportDriverTripsFragment extends Fragment {
 
     @OnClick(R.id.imgDriverLocation)
     void onPressDriverLocation() {
-        if (taxiCode.isEmpty()){
-            MyApplication.Toast("خطا در دریافت اطلاعات لظفا بعدا تلاش کنید.",Toast.LENGTH_SHORT);
-        }else {
+        if (taxiCode.isEmpty()) {
+            MyApplication.Toast("خطا در دریافت اطلاعات لظفا بعدا تلاش کنید.", Toast.LENGTH_SHORT);
+        } else {
             Bundle bundle = new Bundle();
             bundle.putString("taxiCode", taxiCode);
             bundle.putBoolean("isFromDriverSupport", true);
@@ -178,18 +178,25 @@ public class SupportDriverTripsFragment extends Fragment {
 
     @OnClick(R.id.imgSearch)
     void onSearchPress() {
+        if (view != null) {
+            llDriverInfo.setVisibility(View.GONE);
+        }
         searchText = StringHelper.toEnglishDigits(edtSearchTrip.getText().toString());
         if (searchText.isEmpty()) {
             MyApplication.Toast("موردی را برای جستو جو وارد کنید", Toast.LENGTH_SHORT);
             return;
         }
         KeyBoardHelper.hideKeyboard();
-        searchService(searchText, searchCase);
         getDriverInfo(searchText, searchCase);
+        searchService(searchText, searchCase);
     }
 
     @OnLongClick(R.id.imgClear)
     boolean onLongPressClear() {
+        if (vfTrip != null) {
+            vfTrip.setDisplayedChild(0);
+            llDriverInfo.setVisibility(View.GONE);
+        }
         edtSearchTrip.setText("");
         return true;
     }
@@ -442,15 +449,15 @@ public class SupportDriverTripsFragment extends Fragment {
         public void onResponse(Runnable reCall, Object... args) {
             MyApplication.handler.post(() -> {
                 try {
-                    if (view != null) {
-                        llDriverInfo.setVisibility(View.VISIBLE);
-                    }
-
                     JSONObject object = new JSONObject(args[0].toString());
                     Boolean success = object.getBoolean("success");
                     String message = object.getString("message");
 
                     if (success) {
+                        if (view != null) {
+                            llDriverInfo.setVisibility(View.VISIBLE);
+                        }
+
                         JSONObject dataObj = object.getJSONObject("data");
                         JSONObject infoObj = dataObj.getJSONObject("info");
                         driverInfo = infoObj.toString();
@@ -511,6 +518,16 @@ public class SupportDriverTripsFragment extends Fragment {
                             }
                             txtDriverQueue.setText(statusMessage);
                         }
+                    }else {
+                        if (view != null) {
+                            llDriverInfo.setVisibility(View.GONE);
+                        }
+                        new GeneralDialog()
+                                .title("هشدار")
+                                .message(message)
+                                .cancelable(false)
+                                .firstButton("باشه",null)
+                                .show();
                     }
                 } catch (JSONException e) {
                     e.printStackTrace();

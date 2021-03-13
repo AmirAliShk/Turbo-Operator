@@ -22,6 +22,7 @@ import butterknife.OnClick;
 import butterknife.Unbinder;
 import ir.taxi1880.operatormanagement.R;
 import ir.taxi1880.operatormanagement.app.MyApplication;
+import ir.taxi1880.operatormanagement.dataBase.DataBase;
 import ir.taxi1880.operatormanagement.helper.KeyBoardHelper;
 import ir.taxi1880.operatormanagement.helper.TypefaceUtil;
 import ir.taxi1880.operatormanagement.push.AvaCrashReporter;
@@ -75,7 +76,7 @@ public class DriverInfoDialog {
     ImageView imgConfirmInfo;
 
     @OnClick(R.id.imgClose)
-    void onPressCLose(){
+    void onPressCLose() {
         dismiss();
     }
 
@@ -87,7 +88,7 @@ public class DriverInfoDialog {
         dialog.getWindow().getAttributes().windowAnimations = R.style.ExpandAnimation;
         dialog.setContentView(R.layout.dialog_driver_info);
         unbinder = ButterKnife.bind(this, dialog);
-        TypefaceUtil.overrideFonts(dialog.getWindow().getDecorView());
+        TypefaceUtil.overrideFonts(dialog.getWindow().getDecorView(),MyApplication.IraSanSMedume);
         dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         WindowManager.LayoutParams wlp = dialog.getWindow().getAttributes();
         wlp.gravity = Gravity.CENTER;
@@ -95,25 +96,47 @@ public class DriverInfoDialog {
         dialog.getWindow().setAttributes(wlp);
         dialog.setCancelable(false);
 
+        DataBase dataBase = new DataBase(MyApplication.context);
+
         try {
-            JSONObject driverInfoObj=new JSONObject(driverInfo);
-            int cityCode = driverInfoObj.getInt("cityCode");
-            txtDriverCode.setText(driverInfoObj.getInt("driverCode")+"");
+            JSONObject driverInfoObj = new JSONObject(driverInfo);
+            String city = dataBase.getCityName(driverInfoObj.getInt("cityCode"));
+            txtCity.setText(city);
+            txtDriverCode.setText(driverInfoObj.getInt("driverCode") + "");
             int carCode = driverInfoObj.getInt("carCode");
             int smartCode = driverInfoObj.getInt("smartCode");
             txtFullName.setText(driverInfoObj.getString("driverName"));
-            int smartTaximeter = driverInfoObj.getInt("smartTaximeter");
-            txtCarClass.setText( driverInfoObj.getInt("carClass")+"");
-            txtGender.setText(driverInfoObj.getInt("gender")+"");
-            int confirmation = driverInfoObj.getInt("confirmation");
+            String carClass = "ثبت نشده";
+            switch (driverInfoObj.getInt("carClass")) {
+                case 1:
+                    carClass = "اقتصادی";
+                    break;
+
+                case 2:
+                    carClass = "ممتاز";
+                    break;
+
+                case 3:
+                    carClass = "تشریفات";
+                    break;
+
+                case 4:
+                    carClass = "تاکسی";
+                    break;
+            }
+            txtCarClass.setText(carClass);
+            String gender = driverInfoObj.getInt("gender") == 1 ? "مرد" : "زن";
+            txtGender.setText(gender);
             txtNationalCode.setText(driverInfoObj.getString("nationalCode"));
-            txtFatherName.setText( driverInfoObj.getString("fatherName"));
+            txtFatherName.setText(driverInfoObj.getString("fatherName"));
             txtVinNo.setText(driverInfoObj.getString("vin"));
-            txtIbenNo.setText( driverInfoObj.getString("sheba"));
+            txtIbenNo.setText(driverInfoObj.getString("sheba"));
             txtBirthCertificate.setText(driverInfoObj.getString("shenasname"));
-            int fuelRationing = driverInfoObj.getInt("fuelRationing");
+            imgFuelQuota.setImageResource(driverInfoObj.getInt("fuelRationing") == 1 ? R.drawable.ic_tick : R.drawable.ic_close_black_24dp);
+            imgSmartTaxiMeter.setImageResource(driverInfoObj.getInt("smartTaximeter") == 1 ? R.drawable.ic_tick : R.drawable.ic_close_black_24dp);
+            imgConfirmInfo.setImageResource(driverInfoObj.getInt("confirmation") == 1 ? R.drawable.ic_tick : R.drawable.ic_close_black_24dp);
             int cancelFuel = driverInfoObj.getInt("cancelFuel");
-            txtStartDate.setText( driverInfoObj.getString("startActiveDate"));
+            txtStartDate.setText(driverInfoObj.getString("startActiveDate"));
         } catch (JSONException e) {
             e.printStackTrace();
         }

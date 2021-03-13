@@ -166,6 +166,7 @@ public class SaveResultDialog {
                                     .message(message)
                                     .cancelable(false)
                                     .firstButton("باشه", () -> {
+
                                         mistakesResult.onSuccess(true);
                                         dismiss();
                                         dataBase.deleteMistakesRow(mistakesId);

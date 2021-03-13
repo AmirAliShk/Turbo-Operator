@@ -15,7 +15,7 @@ import ir.taxi1880.operatormanagement.model.CityModel;
 
 public class DataBase extends SQLiteOpenHelper {
     // TODO when you change the entitys structure, please increase the version of dataBase.
-    private static int VERSION =4;
+    private static int VERSION = 4;
     //TODO Do not change names any way
     private static String DB_NAME = "operators";
     private static String TRIP_TABLE = "Trip";
@@ -261,22 +261,22 @@ public class DataBase extends SQLiteOpenHelper {
         }
     }
 
-    public int getCityCode(String name) {
+    public String getCityName(int id) {
         SQLiteDatabase sqLiteDatabase = this.getReadableDatabase();
-        String query = "SELECT " + COLUMN_CITY + " FROM " + CITY_TABLE + " WHERE " + COLUMN_CITY_NAME + "=" + name;
-        //select cityCode from city where cityName=name
+        String query = "SELECT " + COLUMN_CITY_NAME + " FROM " + CITY_TABLE + " WHERE " + COLUMN_CITY_ID + "=" + id;
+        //select cityName from city where cityId = id
         @SuppressLint("Recycle") Cursor res = sqLiteDatabase.rawQuery(query, null);
 
         if (res.getCount() == 0) {
-            return 0;
+            return "نامشخص";
         }
 
         res.moveToFirst();
-        return res.getInt(res.getColumnIndex(COLUMN_CITY));
+        return res.getString(res.getColumnIndex(COLUMN_CITY_NAME));
     }
 
     public String getCityName2(int id) {
-        if (id==0){
+        if (id == 0) {
             return "نامشخص";
         }
         SQLiteDatabase sqLiteDatabase = this.getReadableDatabase();
@@ -294,7 +294,7 @@ public class DataBase extends SQLiteOpenHelper {
 //    where Trip.CityId = id
 
         if (res.getCount() == 0)
-            return "";
+            return "نامشخص";
 
         res.moveToFirst();
         return res.getString(res.getColumnIndex(COLUMN_CITY_NAME));
@@ -380,12 +380,12 @@ public class DataBase extends SQLiteOpenHelper {
         return pendingMistakesModel;
     }
 
-    public AllMistakesModel moveNextMistakes(int id){
+    public AllMistakesModel moveNextMistakes(int id) {
         AllMistakesModel pendingMistakesModel = new AllMistakesModel();
         SQLiteDatabase sqLiteDatabase = this.getReadableDatabase();
-        @SuppressLint("Recycle") Cursor res = sqLiteDatabase.rawQuery("select * from " + MISTAKES_TABLE + " WHERE " + COLUMN_MISTAKES_ID + "=" + id , null);
+        @SuppressLint("Recycle") Cursor res = sqLiteDatabase.rawQuery("select * from " + MISTAKES_TABLE + " WHERE " + COLUMN_MISTAKES_ID + "=" + id, null);
         if (res.getCount() == 0) return null;
-        res.moveToPosition(res.getPosition()+1);
+        res.moveToPosition(res.getPosition() + 1);
 
         pendingMistakesModel.setId(res.getInt(res.getColumnIndex(COLUMN_MISTAKES_ID)));
         pendingMistakesModel.setDate(res.getString(res.getColumnIndex(COLUMN_MISTAKES_DATE)));
