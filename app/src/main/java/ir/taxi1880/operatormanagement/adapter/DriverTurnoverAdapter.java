@@ -10,6 +10,8 @@ import android.widget.TextView;
 import java.util.ArrayList;
 
 import ir.taxi1880.operatormanagement.R;
+import ir.taxi1880.operatormanagement.app.MyApplication;
+import ir.taxi1880.operatormanagement.helper.StringHelper;
 import ir.taxi1880.operatormanagement.helper.TypefaceUtil;
 import ir.taxi1880.operatormanagement.model.DriverTurnoverModel;
 
@@ -43,9 +45,8 @@ public class DriverTurnoverAdapter extends BaseAdapter {
 
         if (view == null) {
             view = LayoutInflater.from(mContext).inflate(R.layout.item_driver_turnover, null);
-            TypefaceUtil.overrideFonts(view);
+            TypefaceUtil.overrideFonts(view, MyApplication.IraSanSMedume);
         }
-
 
         DriverTurnoverModel driverTurnoverModel = (DriverTurnoverModel) getItem(i);
 
@@ -55,11 +56,11 @@ public class DriverTurnoverAdapter extends BaseAdapter {
         TextView txtDescription = view.findViewById(R.id.txtDescription);
         TextView txtAmount = view.findViewById(R.id.txtAmount);
 
-        txtTripDate.setText(driverTurnoverModel.getDate());
-        txtTripTime.setText(driverTurnoverModel.getTime());
-        txtDocumentType.setText(driverTurnoverModel.getDocumentType());
-        txtDescription.setText(driverTurnoverModel.getDescription());
-        txtAmount.setText(driverTurnoverModel.getAmount());
+        txtTripDate.setText(StringHelper.toPersianDigits(driverTurnoverModel.getDate()));
+        txtTripTime.setText(StringHelper.toPersianDigits(driverTurnoverModel.getTime()));
+        txtDocumentType.setText(StringHelper.toPersianDigits(driverTurnoverModel.getDocumentType()));
+        txtDescription.setText(StringHelper.toPersianDigits(driverTurnoverModel.getDescription()));
+        txtAmount.setText(StringHelper.toPersianDigits(driverTurnoverModel.getAmount()));
 
         return view;
     }

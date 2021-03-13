@@ -1,4 +1,5 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -7,18 +8,20 @@
     android:layoutDirection="ltr"
     android:orientation="vertical"
     android:paddingTop="30dp">
-
+visible
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:gravity="center"
         android:minWidth="@dimen/_280sdp"
+        android:minHeight="@dimen/_350sdp"
         android:orientation="vertical">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_weight="1"
+            android:background="@drawable/bg_gray_lite_edge"
             android:orientation="vertical">
 
             <LinearLayout
@@ -41,13 +44,35 @@
 
             </LinearLayout>
 
-            <ListView
-                android:id="@+id/listDriverTurnover"
+            <ViewFlipper
+                android:id="@+id/vfFinancial"
                 android:layout_width="match_parent"
-                android:layout_height="0dp"
-                android:layout_weight="1"
-                android:divider="@null"
-                tools:listitem="@layout/item_driver_turnover" />
+                android:layout_height="match_parent"
+                android:padding="@dimen/_5sdp">
+
+                <com.wang.avi.AVLoadingIndicatorView
+                    android:layout_width="50dp"
+                    android:layout_height="50dp"
+                    android:layout_gravity="center"
+                    app:indicatorColor="@color/colorPrimaryDark"
+                    app:indicatorName="BallSpinFadeLoaderIndicator" />
+
+                <ListView
+                    android:id="@+id/listDriverTurnover"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:divider="@null"
+                    tools:listitem="@layout/item_driver_turnover" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:gravity="center"
+                    android:text="هنوز تراکنشی ثبت نشده!"
+                    android:textColor="@color/colorBlack"
+                    android:textSize="@dimen/text_title" />
+
+            </ViewFlipper>
 
         </LinearLayout>
 

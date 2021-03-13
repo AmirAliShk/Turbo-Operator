@@ -3,11 +3,14 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:layoutDirection="rtl"
+    android:padding="5dp"
     android:orientation="vertical">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:background="@drawable/bg_edit_text"
+        android:padding="@dimen/_10sdp"
         android:orientation="vertical">
 
         <LinearLayout
@@ -21,7 +24,7 @@
                 style="@style/tripItemTitle"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
-                android:layout_weight="1"
+                android:layout_weight="0.8"
                 android:text="تاریخ" />
 
             <TextView
@@ -29,14 +32,14 @@
                 style="@style/tripItemValue"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
-                android:layout_weight="1"
+                android:layout_weight="1.5"
                 android:text="99/12/22" />
 
             <TextView
                 style="@style/tripItemTitle"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
-                android:layout_weight="1"
+                android:layout_weight="0.8"
                 android:text="ساعت" />
 
             <TextView
@@ -60,7 +63,7 @@
                 style="@style/tripItemTitle"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
-                android:layout_weight="1"
+                android:layout_weight="0.8"
                 android:text="نوع سند" />
 
             <TextView
@@ -84,7 +87,7 @@
                 style="@style/tripItemTitle"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
-                android:layout_weight="1"
+                android:layout_weight="0.8"
                 android:text="توضیحات" />
 
             <TextView
@@ -108,7 +111,7 @@
                 style="@style/tripItemTitle"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
-                android:layout_weight="1"
+                android:layout_weight="0.8"
                 android:text="مبلغ" />
 
             <TextView

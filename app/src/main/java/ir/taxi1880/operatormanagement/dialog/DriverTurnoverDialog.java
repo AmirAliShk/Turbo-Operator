@@ -8,10 +8,16 @@ import android.view.Gravity;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.ListView;
+import android.widget.ViewFlipper;
+
+import org.json.JSONArray;
+import org.json.JSONObject;
 
 import java.util.ArrayList;
 
+import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 import butterknife.Unbinder;
 import ir.taxi1880.operatormanagement.R;
 import ir.taxi1880.operatormanagement.adapter.DriverTurnoverAdapter;
@@ -29,10 +35,21 @@ public class DriverTurnoverDialog {
     Dialog dialog;
     Unbinder unbinder;
 
-    ListView listDriverTurnover;
     ArrayList<DriverTurnoverModel> driverTurnoverModels;
+    DriverTurnoverAdapter adapter;
 
-    public void show(String taxiCode, String carCode){
+    @BindView(R.id.vfFinancial)
+    ViewFlipper vfFinancial;
+
+    @BindView(R.id.listDriverTurnover)
+    ListView listDriverTurnover;
+
+    @OnClick(R.id.imgClose)
+    void onPressClose() {
+        dismiss();
+    }
+
+    public void show(String taxiCode, String carCode) {
         if (MyApplication.currentActivity == null || MyApplication.currentActivity.isFinishing())
             return;
         dialog = new Dialog(MyApplication.currentActivity);
@@ -48,24 +65,16 @@ public class DriverTurnoverDialog {
         dialog.getWindow().setAttributes(wlp);
         dialog.setCancelable(false);
 
-        listDriverTurnover = dialog.findViewById(R.id.listDriverTurnover);
-
         getFinancial(taxiCode, carCode);
 
-//        driverTurnoverModels = new ArrayList<>();
-//
-//        DriverTurnoverAdapter driverTurnoverAdapter = new DriverTurnoverAdapter(MyApplication.context, driverTurnoverModels);
-//
-//        driverTurnoverModels.add(new DriverTurnoverModel());
-//        driverTurnoverModels.add(new DriverTurnoverModel());
-//        driverTurnoverModels.add(new DriverTurnoverModel());
-//        driverTurnoverModels.add(new DriverTurnoverModel());
-//
-//        listDriverTurnover.setAdapter(driverTurnoverAdapter);
+        dialog.show();
 
     }
 
-    public void getFinancial(String taxiCode, String carCode){
+    public void getFinancial(String taxiCode, String carCode) {
+        if (vfFinancial != null)
+            vfFinancial.setDisplayedChild(0);
+
         RequestHelper.builder(EndPoints.DRIVER_FINANCIAL)
                 .ignore422Error(true)
                 .addPath(taxiCode) // driverCode
@@ -79,6 +88,35 @@ public class DriverTurnoverDialog {
         public void onResponse(Runnable reCall, Object... args) {
             MyApplication.handler.post(() -> {
                 try {
+                    driverTurnoverModels = new ArrayList<>();
+                    JSONObject listenObj = new JSONObject(args[0].toString());
+                    boolean success = listenObj.getBoolean("success");
+                    String message = listenObj.getString("message");
+                    if (success) {
+//                        {"code":703830,"date":"1399/12/16","time":"18:36","sharh":"جريمه کنسلي بيشتر از حد مجاز ماهانه ","debit":15000,"credit":0}
+                        JSONArray dataArr = listenObj.getJSONArray("data");
+                        for (int i = 0; i < dataArr.length(); i++) {
+                            JSONObject dataObj = dataArr.getJSONObject(i);
+                            DriverTurnoverModel model = new DriverTurnoverModel();
+                            model.setDate(dataObj.getString("date"));
+                            model.setTime(dataObj.getString("time"));
+                            model.setDescription(dataObj.getString("sharh"));
+                            model.setAmount(dataObj.getString("debit"));
+                            model.setDocumentType(dataObj.getString("credit"));
+                            driverTurnoverModels.add(model);
+                        }
+
+                        if (driverTurnoverModels.size() == 0) {
+                            if (vfFinancial != null)
+                                vfFinancial.setDisplayedChild(2);
+                        } else {
+                            if (vfFinancial != null)
+                                vfFinancial.setDisplayedChild(1);
+                            adapter = new DriverTurnoverAdapter(MyApplication.context, driverTurnoverModels);
+                            listDriverTurnover.setAdapter(adapter);
+                        }
+
+                    }
 
                 } catch (Exception e) {
                     e.printStackTrace();
@@ -90,7 +128,7 @@ public class DriverTurnoverDialog {
         public void onFailure(Runnable reCall, Exception e) {
             super.onFailure(reCall, e);
         }
-    } ;
+    };
 
     private void dismiss() {
         try {

@@ -196,13 +196,14 @@
                             style="@style/tripItemTitle"
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
-                            android:layout_weight="1"
+                            android:layout_weight="1.5"
                             android:text="@string/IBEN_no" />
 
                         <TextView
                             android:id="@+id/txtIbenNo"
                             style="@style/tripItemValue"
                             android:layout_width="0dp"
+                            android:gravity="right"
                             android:layout_height="wrap_content"
                             android:layout_weight="3" />
 

@@ -24,6 +24,7 @@ import ir.taxi1880.operatormanagement.R;
 import ir.taxi1880.operatormanagement.app.MyApplication;
 import ir.taxi1880.operatormanagement.dataBase.DataBase;
 import ir.taxi1880.operatormanagement.helper.KeyBoardHelper;
+import ir.taxi1880.operatormanagement.helper.StringHelper;
 import ir.taxi1880.operatormanagement.helper.TypefaceUtil;
 import ir.taxi1880.operatormanagement.push.AvaCrashReporter;
 
@@ -102,7 +103,7 @@ public class DriverInfoDialog {
             JSONObject driverInfoObj = new JSONObject(driverInfo);
             String city = dataBase.getCityName(driverInfoObj.getInt("cityCode"));
             txtCity.setText(city);
-            txtDriverCode.setText(driverInfoObj.getInt("driverCode") + "");
+            txtDriverCode.setText(StringHelper.toPersianDigits(driverInfoObj.getInt("driverCode") + ""));
             int carCode = driverInfoObj.getInt("carCode");
             int smartCode = driverInfoObj.getInt("smartCode");
             txtFullName.setText(driverInfoObj.getString("driverName"));
@@ -127,16 +128,16 @@ public class DriverInfoDialog {
             txtCarClass.setText(carClass);
             String gender = driverInfoObj.getInt("gender") == 1 ? "مرد" : "زن";
             txtGender.setText(gender);
-            txtNationalCode.setText(driverInfoObj.getString("nationalCode"));
+            txtNationalCode.setText(StringHelper.toPersianDigits(driverInfoObj.getString("nationalCode")));
             txtFatherName.setText(driverInfoObj.getString("fatherName"));
-            txtVinNo.setText(driverInfoObj.getString("vin"));
-            txtIbenNo.setText(driverInfoObj.getString("sheba"));
-            txtBirthCertificate.setText(driverInfoObj.getString("shenasname"));
+            txtVinNo.setText(StringHelper.toPersianDigits(driverInfoObj.getString("vin")));
+            txtIbenNo.setText(StringHelper.toPersianDigits(driverInfoObj.getString("sheba")));
+            txtBirthCertificate.setText(StringHelper.toPersianDigits(driverInfoObj.getString("shenasname")));
             imgFuelQuota.setImageResource(driverInfoObj.getInt("fuelRationing") == 1 ? R.drawable.ic_tick : R.drawable.ic_close_black_24dp);
             imgSmartTaxiMeter.setImageResource(driverInfoObj.getInt("smartTaximeter") == 1 ? R.drawable.ic_tick : R.drawable.ic_close_black_24dp);
             imgConfirmInfo.setImageResource(driverInfoObj.getInt("confirmation") == 1 ? R.drawable.ic_tick : R.drawable.ic_close_black_24dp);
             int cancelFuel = driverInfoObj.getInt("cancelFuel");
-            txtStartDate.setText(driverInfoObj.getString("startActiveDate"));
+            txtStartDate.setText(StringHelper.toPersianDigits(driverInfoObj.getString("startActiveDate")));
         } catch (JSONException e) {
             e.printStackTrace();
         }

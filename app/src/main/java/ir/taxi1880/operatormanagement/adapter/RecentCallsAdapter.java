@@ -19,7 +19,9 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.downloader.Error;
 import com.downloader.OnDownloadListener;
+import com.downloader.OnProgressListener;
 import com.downloader.PRDownloader;
+import com.downloader.Progress;
 import com.warkiz.widget.IndicatorSeekBar;
 import com.warkiz.widget.OnSeekChangeListener;
 import com.warkiz.widget.SeekParams;
@@ -56,6 +58,7 @@ public class RecentCallsAdapter extends RecyclerView.Adapter<RecentCallsAdapter.
     ImageView imgPause;
     int position;
     LinearLayout llPhone;
+    boolean isDownloading = false;
 
     public RecentCallsAdapter(Context mContext, ArrayList<RecentCallsModel> recentCallsModels) {
         this.mContext = mContext;
@@ -195,17 +198,21 @@ public class RecentCallsAdapter extends RecyclerView.Adapter<RecentCallsAdapter.
                     .setOnStartOrResumeListener(() -> {
                     })
                     .setOnPauseListener(() -> {
+                        isDownloading = false;
                     })
                     .setOnCancelListener(() -> {
+                        isDownloading = false;
+                    })
+                    .setOnProgressListener(progress -> {
+                        isDownloading = true;
                     })
                     .start(new OnDownloadListener() {
 
                         @Override
                         public void onDownloadComplete() {
-//                    FinishedDownload.execute(urlString);
+                            isDownloading = false;
                             FileHelper.moveFile(dirPathTemp, fileName, dirPath);
                             File file = new File(dirPath + fileName);
-
                             MyApplication.handler.postDelayed(() -> {
                                 initVoice(Uri.fromFile(file));
                                 playVoice();
@@ -214,6 +221,7 @@ public class RecentCallsAdapter extends RecyclerView.Adapter<RecentCallsAdapter.
 
                         @Override
                         public void onError(Error error) {
+                            isDownloading = false;
                             Log.e("PlayConversationDialog", "onError: " + error.getResponseCode() + "");
                             Log.e("PlayConversationDialog", "onError: " + error.getServerErrorMessage() + "");
                             FileHelper.deleteFile(dirPathTemp, fileName);
