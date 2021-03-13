@@ -39,6 +39,7 @@ import ir.taxi1880.operatormanagement.adapter.TripAdapter;
 import ir.taxi1880.operatormanagement.app.EndPoints;
 import ir.taxi1880.operatormanagement.app.MyApplication;
 import ir.taxi1880.operatormanagement.dialog.CallDialog;
+import ir.taxi1880.operatormanagement.dialog.ChangeDriverQueueDialog;
 import ir.taxi1880.operatormanagement.dialog.DriverInfoDialog;
 import ir.taxi1880.operatormanagement.dialog.ExtendedTimeDialog;
 import ir.taxi1880.operatormanagement.dialog.GeneralDialog;
@@ -78,12 +79,7 @@ public class SupportDriverTripsFragment extends Fragment {
 
     @OnClick(R.id.imgChangeDriverQueue)
     void onPressChangeDriverQueue() {
-        RequestHelper.builder(EndPoints.DRIVER_STATION_POSITION)
-                .ignore422Error(true)
-                .addParam("driverCode", "")
-                .addParam("position", "")
-                .listener(onGetDriverInfo)
-                .put();
+        new ChangeDriverQueueDialog().show();
     }
 
     @OnClick(R.id.imgStationInfo)
@@ -518,7 +514,7 @@ public class SupportDriverTripsFragment extends Fragment {
                             }
                             txtDriverQueue.setText(statusMessage);
                         }
-                    }else {
+                    } else {
                         if (view != null) {
                             llDriverInfo.setVisibility(View.GONE);
                         }
@@ -526,7 +522,7 @@ public class SupportDriverTripsFragment extends Fragment {
                                 .title("هشدار")
                                 .message(message)
                                 .cancelable(false)
-                                .firstButton("باشه",null)
+                                .firstButton("باشه", null)
                                 .show();
                     }
                 } catch (JSONException e) {
