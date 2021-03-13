@@ -8,7 +8,6 @@ public class RecentCallsModel {
     String phone;
     int txtTimeRemaining;
 
-
     public String getTxtDate() {
         return txtDate;
     }

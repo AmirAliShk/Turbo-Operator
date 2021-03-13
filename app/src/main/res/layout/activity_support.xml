@@ -124,7 +124,7 @@
             android:layout_height="match_parent"
             android:layout_toLeftOf="@id/llEndCall"
             android:src="@drawable/ic_error"
-            android:visibility="visible" />
+            android:visibility="invisible" />
 
         <LinearLayout
             android:id="@+id/llStatus"

@@ -1,5 +1,6 @@
 package ir.taxi1880.operatormanagement.fragment;
 
+import android.content.Intent;
 import android.media.MediaPlayer;
 import android.net.Uri;
 import android.os.AsyncTask;
@@ -15,6 +16,7 @@ import android.widget.ViewFlipper;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 
 import com.downloader.Error;
 import com.downloader.OnDownloadListener;
@@ -23,9 +25,13 @@ import com.warkiz.widget.IndicatorSeekBar;
 import com.warkiz.widget.OnSeekChangeListener;
 import com.warkiz.widget.SeekParams;
 
+import org.json.JSONArray;
+import org.json.JSONObject;
+
 import java.io.File;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -34,6 +40,7 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import butterknife.Unbinder;
 import ir.taxi1880.operatormanagement.R;
+import ir.taxi1880.operatormanagement.adapter.AllMistakesAdapter;
 import ir.taxi1880.operatormanagement.app.EndPoints;
 import ir.taxi1880.operatormanagement.app.MyApplication;
 import ir.taxi1880.operatormanagement.dataBase.DataBase;
@@ -44,6 +51,10 @@ import ir.taxi1880.operatormanagement.helper.StringHelper;
 import ir.taxi1880.operatormanagement.helper.TypefaceUtil;
 import ir.taxi1880.operatormanagement.model.AllMistakesModel;
 import ir.taxi1880.operatormanagement.okHttp.AuthenticationInterceptor;
+import ir.taxi1880.operatormanagement.okHttp.RequestHelper;
+
+import static ir.taxi1880.operatormanagement.app.Keys.KEY_NEW_MISTAKE_COUNT;
+import static ir.taxi1880.operatormanagement.app.Keys.NEW_MISTAKE_COUNT;
 
 public class PendingMistakesFragment extends Fragment {
     Unbinder unbinder;
@@ -288,15 +299,14 @@ public class PendingMistakesFragment extends Fragment {
 
     void getMistakesFromDB() {
         if (dataBase.getMistakesCount() == 0) {
-            if (vfPending != null)
-                vfPending.setDisplayedChild(2);
+            getAccepted();
         } else {
             model = dataBase.getMistakesRow();
             txtAddress.setText(StringHelper.toPersianDigits(model.getAddress()));
             txtPassengerName.setText(StringHelper.toPersianDigits(model.getCustomerName()));
             txtPassengerPhone.setText(StringHelper.toPersianDigits(model.getTell()));
-            txtStationCode.setText(StringHelper.toPersianDigits("199")); //TODO correct station name an station code
-            txtCity.setText(StringHelper.toPersianDigits("مشهد"));
+            txtStationCode.setText(StringHelper.toPersianDigits(model.getStationCode() + "")); //TODO correct station name an station code
+            txtCity.setText(StringHelper.toPersianDigits(model.getCity() + ""));
             txtDescription.setText(StringHelper.toPersianDigits(model.getDescription()));
             txtTripTime.setText(StringHelper.toPersianDigits(model.getTime()));
             txtTripDate.setText(StringHelper.toPersianDigits(model.getDate()));
@@ -337,7 +347,8 @@ public class PendingMistakesFragment extends Fragment {
         try {
             pauseVoice();
             cancelTimer();
-        } catch (Exception e) {}
+        } catch (Exception e) {
+        }
         super.onDestroyView();
     }
 
@@ -346,7 +357,8 @@ public class PendingMistakesFragment extends Fragment {
             if (timer == null) return;
             timer.cancel();
             timer = null;
-        } catch (Exception e) { }
+        } catch (Exception e) {
+        }
 
     }
 
@@ -373,6 +385,65 @@ public class PendingMistakesFragment extends Fragment {
             return null;
         }
     }
+
+    public void getAccepted() {
+        RequestHelper.builder(EndPoints.ACCEPT_LISTEN + "ed")
+                .listener(getAccepted)
+                .get();
+    }
+
+    RequestHelper.Callback getAccepted = new RequestHelper.Callback() {
+        @Override
+        public void onResponse(Runnable reCall, Object... args) {
+            MyApplication.handler.post(() -> {
+                try {
+
+                    JSONObject listenObj = new JSONObject(args[0].toString());
+                    boolean success = listenObj.getBoolean("success");
+                    String message = listenObj.getString("message");
+                    if (success) {
+                        JSONArray dataArr = listenObj.getJSONArray("data");
+                        for (int i = 0; i < dataArr.length(); i++) {
+                            JSONObject dataObj = dataArr.getJSONObject(i);
+
+                            model = new AllMistakesModel();
+
+                            model.setId(dataObj.getInt("id"));
+                            model.setServiceCode(dataObj.getInt("serviceCode"));
+                            model.setUserCode(dataObj.getInt("userCode"));
+                            model.setDate(dataObj.getString("saveDate"));
+                            model.setTime(dataObj.getString("saveTime"));
+                            model.setDescription(dataObj.getString("Description"));
+                            model.setTell(dataObj.getString("tell"));
+                            model.setMobile(dataObj.getString("mobile"));
+                            model.setUserCodeContact(dataObj.getInt("userCodeContact"));
+                            model.setAddress(dataObj.getString("address"));
+                            model.setCustomerName(dataObj.getString("customerName"));
+                            model.setConDate(dataObj.getString("conDate"));
+                            model.setConTime(dataObj.getString("conTime"));
+                            model.setSendTime(dataObj.getString("sendTime"));
+                            model.setVoipId(dataObj.getString("VoipId"));
+                            model.setCity(dataObj.getInt("cityId"));
+
+                            dataBase.insertMistakes(model);
+                        }
+
+                        if (dataBase.getMistakesCount() == 0) {
+                            if (vfPending != null)
+                                vfPending.setDisplayedChild(2);
+                        }
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            });
+        }
+
+        @Override
+        public void onFailure(Runnable reCall, Exception e) {
+            super.onFailure(reCall, e);
+        }
+    };
 
     @Override
     public void onPause() {

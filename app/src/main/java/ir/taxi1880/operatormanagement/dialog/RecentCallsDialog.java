@@ -235,7 +235,6 @@ public class RecentCallsDialog {
             if (dialog != null) {
                 dialog.dismiss();
             }
-
         } catch (Exception e) {
             Log.e("TAG", "dismiss: " + e.getMessage());
             AvaCrashReporter.send(e, "ReserveDialog class, dismiss method");

@@ -8,7 +8,7 @@
 
     <LinearLayout
         android:layout_width="330dp"
-        android:layout_height="@dimen/_230sdp"
+        android:layout_height="@dimen/_200sdp"
         android:layout_gravity="center"
         android:background="@drawable/bg_gray_lite_edge"
         android:gravity="top"
@@ -97,7 +97,7 @@
             android:layout_weight="1"
             android:gravity="center_vertical"
             android:orientation="horizontal"
-            android:visibility="visible">
+            android:visibility="gone">
 
             <View
                 android:layout_width="0dp"
