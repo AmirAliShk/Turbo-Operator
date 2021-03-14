@@ -129,10 +129,11 @@ public class AllMistakesFragment extends Fragment {
                             if (vfDownload != null)
                                 vfDownload.setDisplayedChild(3);
                         } else {
-                            if (vfDownload != null)
+                            if (vfDownload != null) {
                                 vfDownload.setDisplayedChild(1);
-                            mAdapter = new AllMistakesAdapter(MyApplication.currentActivity, allMistakesModels);
-                            mistakesList.setAdapter(mAdapter);
+                                mAdapter = new AllMistakesAdapter(MyApplication.currentActivity, allMistakesModels);
+                                mistakesList.setAdapter(mAdapter);
+                            }
 
                             broadcaster = LocalBroadcastManager.getInstance(MyApplication.context);
                             Intent broadcastIntent = new Intent(KEY_NEW_MISTAKE_COUNT);

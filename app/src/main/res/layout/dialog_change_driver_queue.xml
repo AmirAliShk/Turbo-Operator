@@ -43,8 +43,6 @@
             android:layout_weight="0.7"
             android:background="@drawable/bg_edit_text"
             android:elevation="3dp"
-            android:focusable="true"
-            android:focusedByDefault="true"
             android:gravity="center"
             android:inputType="number"
             android:minHeight="40dp"

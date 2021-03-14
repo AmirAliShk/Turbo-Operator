@@ -42,6 +42,7 @@ import ir.taxi1880.operatormanagement.helper.FileHelper;
 import ir.taxi1880.operatormanagement.helper.TypefaceUtil;
 import ir.taxi1880.operatormanagement.model.RecentCallsModel;
 import ir.taxi1880.operatormanagement.okHttp.AuthenticationInterceptor;
+import ir.taxi1880.operatormanagement.push.AvaCrashReporter;
 
 import static ir.taxi1880.operatormanagement.app.MyApplication.context;
 
@@ -60,6 +61,7 @@ public class RecentCallsAdapter extends RecyclerView.Adapter<RecentCallsAdapter.
     int position;
     LinearLayout llPhone;
     boolean isDownloading = false;
+    View view;
 
     public RecentCallsAdapter(Context mContext, ArrayList<RecentCallsModel> recentCallsModels) {
         this.mContext = mContext;
@@ -68,7 +70,7 @@ public class RecentCallsAdapter extends RecyclerView.Adapter<RecentCallsAdapter.
 
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(context).inflate(R.layout.item_recent_calls, parent, false);
+        view = LayoutInflater.from(context).inflate(R.layout.item_recent_calls, parent, false);
         TypefaceUtil.overrideFonts(view);
         return new ViewHolder(view);
     }
@@ -243,15 +245,17 @@ public class RecentCallsAdapter extends RecyclerView.Adapter<RecentCallsAdapter.
 
     private void initVoice(Uri uri) {
         try {
-            mediaPlayer = MediaPlayer.create(MyApplication.context, uri);
-            mediaPlayer.setOnCompletionListener(mp -> {
-                if (vfPlayPause != null) {
-                    vfPlayPause.setDisplayedChild(0);
-                }
-            });
-            TOTAL_VOICE_DURATION = mediaPlayer.getDuration();
+            if (view!=null){
+                mediaPlayer = MediaPlayer.create(MyApplication.context, uri);
+                mediaPlayer.setOnCompletionListener(mp -> {
+                    if (vfPlayPause != null) {
+                        vfPlayPause.setDisplayedChild(0);
+                    }
+                });
+                TOTAL_VOICE_DURATION = mediaPlayer.getDuration();
 
-            skbTimer.setMax(TOTAL_VOICE_DURATION);
+                skbTimer.setMax(TOTAL_VOICE_DURATION);
+            }
 
         } catch (Exception e) {
             e.printStackTrace();
@@ -260,14 +264,16 @@ public class RecentCallsAdapter extends RecyclerView.Adapter<RecentCallsAdapter.
 
     private void playVoice() {
         try {
-            if (mediaPlayer != null)
+            if (view != null) {
                 mediaPlayer.start();
-            if (vfPlayPause != null)
                 vfPlayPause.setDisplayedChild(2);
+                startTimer();
+            }
+
         } catch (Exception e) {
+            AvaCrashReporter.send(e, "RecentCallsAdapter in playVoice");
         }
 
-        startTimer();
     }
 
     public static void pauseVoice() {
@@ -315,7 +321,8 @@ public class RecentCallsAdapter extends RecyclerView.Adapter<RecentCallsAdapter.
                         skbTimer.setProgress(mediaPlayer.getCurrentPosition());
                         int timeRemaining = mediaPlayer.getCurrentPosition() / 1000;
                         String strTimeRemaining = String.format(new Locale("en_US"), "%02d:%02d", timeRemaining / 60, timeRemaining % 60);
-                        txtTimeRemaining.setText(strTimeRemaining);
+                        if (txtTimeRemaining != null)
+                            txtTimeRemaining.setText(strTimeRemaining);
                     });
                 } catch (Exception e) {
                     e.printStackTrace();

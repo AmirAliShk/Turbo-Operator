@@ -43,6 +43,10 @@ public class ChangeDriverQueueDialog {
     @OnClick(R.id.btnSubmit)
     void onSubmit() {
         position = txtNumber.getText().toString();
+        if (position.isEmpty()) {
+            MyApplication.Toast("لطفا اولویت راننده را وارد کنید.", Toast.LENGTH_SHORT);
+            return;
+        }
         setQueue(driverCode, position);
     }
 
@@ -61,11 +65,7 @@ public class ChangeDriverQueueDialog {
         dialog.getWindow().setAttributes(wlp);
         unbinder = ButterKnife.bind(this, dialog);
         dialog.setCancelable(false);
-
-        KeyBoardHelper.showKeyboard(MyApplication.context);
-
         this.driverCode = driverCode;
-
         dialog.show();
     }
 
@@ -84,7 +84,6 @@ public class ChangeDriverQueueDialog {
         public void onResponse(Runnable reCall, Object... args) {
             MyApplication.handler.post(() -> {
                 try {
-                    KeyBoardHelper.hideKeyboard();
                     LoadingDialog.dismissCancelableDialog();
                     JSONObject object = new JSONObject(args[0].toString());
                     Boolean success = object.getBoolean("success");
@@ -106,7 +105,6 @@ public class ChangeDriverQueueDialog {
                                 .show();
                     }
                 } catch (Exception e) {
-                    KeyBoardHelper.hideKeyboard();
                     LoadingDialog.dismissCancelableDialog();
                     MyApplication.Toast("خطا در ثبت اولویت", Toast.LENGTH_SHORT);
                     e.printStackTrace();
@@ -121,7 +119,6 @@ public class ChangeDriverQueueDialog {
 
         @Override
         public void onFailure(Runnable reCall, Exception e) {
-            KeyBoardHelper.hideKeyboard();
             LoadingDialog.dismissCancelableDialog();
             MyApplication.Toast("خطا در ثبت اولویت", Toast.LENGTH_SHORT);
             super.onFailure(reCall, e);
@@ -129,10 +126,15 @@ public class ChangeDriverQueueDialog {
     };
 
     private void dismiss() {
+        MyApplication.handler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                KeyBoardHelper.hideKeyboard();
+            }
+        }, 30);
         try {
             if (dialog != null) {
                 dialog.dismiss();
-                KeyBoardHelper.hideKeyboard();
             }
         } catch (Exception e) {
             e.getMessage();

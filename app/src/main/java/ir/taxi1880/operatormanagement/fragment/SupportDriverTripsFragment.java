@@ -82,12 +82,13 @@ public class SupportDriverTripsFragment extends Fragment {
 
     @OnClick(R.id.imgChangeDriverQueue)
     void onPressChangeDriverQueue() {
+        KeyBoardHelper.showKeyboard(MyApplication.context);
         new ChangeDriverQueueDialog().show(taxiCode);
     }
 
     @OnClick(R.id.imgStationInfo)
     void onPressStationInfo() {
-        new DriverStationRegistrationDialog() .show(taxiCode);
+        new DriverStationRegistrationDialog().show(taxiCode);
     }
 
     @OnClick(R.id.imgFinancial)
