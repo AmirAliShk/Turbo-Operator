@@ -8,6 +8,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.EditorInfo;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -203,6 +204,20 @@ public class TripSupportFragment extends Fragment {
         edtSearchTrip.setInputType(InputType.TYPE_CLASS_NUMBER);
 
         edtSearchTrip.addTextChangedListener(searchWatcher);
+
+        edtSearchTrip.setOnEditorActionListener((v, actionId, event) -> {
+            if (actionId == EditorInfo.IME_ACTION_NEXT) {
+                searchText = StringHelper.toEnglishDigits(edtSearchTrip.getText().toString());
+                if (searchText.isEmpty()) {
+                    MyApplication.Toast("موردی را برای جستو جو وارد کنید", Toast.LENGTH_SHORT);
+                    return false;
+                }
+                KeyBoardHelper.hideKeyboard();
+                searchService(searchText, searchCase);
+                return true;
+            }
+            return false;
+        });
 
         if (MyApplication.prefManager.getConnectedCall()) {
             imgEndCall.setBackgroundResource(R.drawable.bg_pink_edge);
