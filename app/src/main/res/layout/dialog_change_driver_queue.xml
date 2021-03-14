@@ -10,9 +10,61 @@
 
     <LinearLayout
         android:layout_width="330dp"
-        android:layout_height="230dp"
-        android:orientation="vertical"
-        android:background="@drawable/bg_gray_lite_edge">
+        android:layout_height="wrap_content"
+        android:background="@drawable/bg_gray_lite_edge"
+        android:minHeight="160dp"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:id="@+id/llColor"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:background="@drawable/bg_dialog_header"
+            android:gravity="center"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/txtTitle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:text="اولویت در صف"
+                android:textColor="@color/colorWhite"
+                android:textSize="@dimen/text_header"
+                android:textStyle="bold" />
+
+        </LinearLayout>
+
+        <EditText
+            android:id="@+id/txtNumber"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_margin="10dp"
+            android:layout_weight="0.7"
+            android:background="@drawable/bg_edit_text"
+            android:elevation="3dp"
+            android:focusable="true"
+            android:focusedByDefault="true"
+            android:gravity="center"
+            android:inputType="number"
+            android:minHeight="40dp"
+            android:padding="5dp"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:textColor="@color/colorBlack" />
+
+        <Button
+            android:id="@+id/btnSubmit"
+            android:layout_width="170dp"
+            android:layout_height="0dp"
+            android:layout_gravity="center"
+            android:layout_marginBottom="10dp"
+            android:layout_weight="0.5"
+            android:background="@drawable/bg_circle_green"
+            android:minHeight="35dp"
+            android:text="ثبت"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:textColor="@color/colorWhite"
+            android:textStyle="bold" />
 
     </LinearLayout>
 

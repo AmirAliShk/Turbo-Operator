@@ -80,7 +80,7 @@ public class SupportDriverTripsFragment extends Fragment {
 
     @OnClick(R.id.imgChangeDriverQueue)
     void onPressChangeDriverQueue() {
-        new ChangeDriverQueueDialog().show();
+        new ChangeDriverQueueDialog().show(taxiCode);
     }
 
     @OnClick(R.id.imgStationInfo)
@@ -95,7 +95,7 @@ public class SupportDriverTripsFragment extends Fragment {
 
     @OnClick(R.id.imgFinancial)
     void onPressFinancial() {
-       new DriverTurnoverDialog() .show(taxiCode, carCode);
+        new DriverTurnoverDialog().show(taxiCode, carCode);
     }
 
     @OnClick(R.id.imgDriverInfo)
@@ -623,6 +623,7 @@ public class SupportDriverTripsFragment extends Fragment {
     @Override
     public void onDestroy() {
         super.onDestroy();
+        KeyBoardHelper.hideKeyboard();
         core.removeListener(mCoreListener);
         core = null;
     }

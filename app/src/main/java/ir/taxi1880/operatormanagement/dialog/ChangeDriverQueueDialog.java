@@ -3,26 +3,18 @@ package ir.taxi1880.operatormanagement.dialog;
 import android.app.Dialog;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
-import android.util.Log;
 import android.view.Gravity;
-import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
+import android.widget.TextView;
 import android.widget.Toast;
-import android.widget.ViewFlipper;
 
-import org.linphone.core.Address;
-import org.linphone.core.Call;
-import org.linphone.core.CallParams;
-import org.linphone.core.Core;
-import org.linphone.core.CoreListenerStub;
+import org.json.JSONObject;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
-import butterknife.Optional;
 import butterknife.Unbinder;
 import ir.taxi1880.operatormanagement.R;
 import ir.taxi1880.operatormanagement.app.EndPoints;
@@ -30,12 +22,12 @@ import ir.taxi1880.operatormanagement.app.MyApplication;
 import ir.taxi1880.operatormanagement.helper.KeyBoardHelper;
 import ir.taxi1880.operatormanagement.helper.TypefaceUtil;
 import ir.taxi1880.operatormanagement.okHttp.RequestHelper;
-import ir.taxi1880.operatormanagement.push.AvaCrashReporter;
-import ir.taxi1880.operatormanagement.services.LinphoneService;
 
 public class ChangeDriverQueueDialog {
     Dialog dialog;
     Unbinder unbinder;
+    String driverCode;
+    String position;
 
     @OnClick(R.id.imgClose)
     void onClosePress() {
@@ -45,7 +37,16 @@ public class ChangeDriverQueueDialog {
     @BindView(R.id.imgClose)
     ImageView imgClose;
 
-    public void show() {
+    @BindView(R.id.txtNumber)
+    TextView txtNumber;
+
+    @OnClick(R.id.btnSubmit)
+    void onSubmit() {
+        position = txtNumber.getText().toString();
+        setQueue(driverCode, position);
+    }
+
+    public void show(String driverCode) {
         if (MyApplication.currentActivity == null || MyApplication.currentActivity.isFinishing())
             return;
         dialog = new Dialog(MyApplication.currentActivity);
@@ -61,14 +62,19 @@ public class ChangeDriverQueueDialog {
         unbinder = ButterKnife.bind(this, dialog);
         dialog.setCancelable(false);
 
+        KeyBoardHelper.showKeyboard(MyApplication.context);
+
+        this.driverCode = driverCode;
+
         dialog.show();
     }
 
-    private void setQueue() {
+    private void setQueue(String driverCode, String position) {
+        LoadingDialog.makeCancelableLoader();
         RequestHelper.builder(EndPoints.DRIVER_STATION_POSITION)
                 .ignore422Error(true)
-                .addParam("driverCode", "")
-                .addParam("position", "")
+                .addParam("driverCode", driverCode)
+                .addParam("position", position)
                 .listener(onChangeQueue)
                 .put();
     }
@@ -76,11 +82,48 @@ public class ChangeDriverQueueDialog {
     private RequestHelper.Callback onChangeQueue = new RequestHelper.Callback() {
         @Override
         public void onResponse(Runnable reCall, Object... args) {
+            MyApplication.handler.post(() -> {
+                try {
+                    KeyBoardHelper.hideKeyboard();
+                    LoadingDialog.dismissCancelableDialog();
+                    JSONObject object = new JSONObject(args[0].toString());
+                    Boolean success = object.getBoolean("success");
+                    String message = object.getString("message");
 
+                    if (success) {
+                        new GeneralDialog()
+                                .title("تایید شد")
+                                .message(message)
+                                .cancelable(false)
+                                .firstButton("باشه", () -> dismiss())
+                                .show();
+                    } else {
+                        new GeneralDialog()
+                                .title("هشدار")
+                                .message(message)
+                                .cancelable(false)
+                                .firstButton("باشه", null)
+                                .show();
+                    }
+                } catch (Exception e) {
+                    KeyBoardHelper.hideKeyboard();
+                    LoadingDialog.dismissCancelableDialog();
+                    MyApplication.Toast("خطا در ثبت اولویت", Toast.LENGTH_SHORT);
+                    e.printStackTrace();
+                }
+            });
+//                {"success": true,
+//                    "message": "عملیات با موفقیت انجام شد",
+//                    "data": {
+//                "status": true}
+//               }
         }
 
         @Override
         public void onFailure(Runnable reCall, Exception e) {
+            KeyBoardHelper.hideKeyboard();
+            LoadingDialog.dismissCancelableDialog();
+            MyApplication.Toast("خطا در ثبت اولویت", Toast.LENGTH_SHORT);
             super.onFailure(reCall, e);
         }
     };
