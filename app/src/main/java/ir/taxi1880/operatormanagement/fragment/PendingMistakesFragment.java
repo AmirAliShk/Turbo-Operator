@@ -431,6 +431,8 @@ public class PendingMistakesFragment extends Fragment {
                         if (dataBase.getMistakesCount() == 0) {
                             if (vfPending != null)
                                 vfPending.setDisplayedChild(2);
+                        }else {
+                            getMistakesFromDB();
                         }
                     }
                 } catch (Exception e) {
