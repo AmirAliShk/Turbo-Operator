@@ -9,6 +9,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
+import android.view.inputmethod.EditorInfo;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
@@ -106,6 +107,28 @@ public class LoginFragment extends Fragment {
 
         unbinder = ButterKnife.bind(this, view);
         TypefaceUtil.overrideFonts(view);
+
+        edtPassword.setOnEditorActionListener((v, actionId, event) -> {
+            if (actionId == EditorInfo.IME_ACTION_DONE) {
+                userName = edtUserName.getText().toString();
+                password = edtPassword.getText().toString();
+
+                if (userName.isEmpty()) {
+                    MyApplication.Toast("لطفا نام کاربری خود را وارد نمایید", Toast.LENGTH_SHORT);
+                    return false;
+                }
+                if (password.isEmpty()) {
+                    MyApplication.Toast("لطفا رمز عبور خود را وارد نمایید", Toast.LENGTH_SHORT);
+                    return false;
+                }
+
+                logIn(userName, password);
+                KeyBoardHelper.hideKeyboard();
+                return true;
+            }
+            return false;
+        });
+
 
         return view;
     }
