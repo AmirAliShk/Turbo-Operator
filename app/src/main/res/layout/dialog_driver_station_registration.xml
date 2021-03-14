@@ -37,7 +37,7 @@
                     android:layout_height="match_parent"
                     android:layout_gravity="center"
                     android:gravity="center"
-                    android:text="گردش مالی"
+                    android:text="گزارش ثبت ایستگاه"
                     android:textAppearance="?android:attr/textAppearanceMedium"
                     android:textColor="@color/colorWhite"
                     android:textStyle="bold" />
@@ -45,7 +45,7 @@
             </LinearLayout>
 
             <ViewFlipper
-                android:id="@+id/vfFinancial"
+                android:id="@+id/vfStationRegistration"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:padding="@dimen/_5sdp">
@@ -58,7 +58,7 @@
                     app:indicatorName="BallSpinFadeLoaderIndicator" />
 
                 <ListView
-                    android:id="@+id/listDriverTurnover"
+                    android:id="@+id/listDriverStationRegistration"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:divider="@null"

@@ -42,6 +42,7 @@ import ir.taxi1880.operatormanagement.app.MyApplication;
 import ir.taxi1880.operatormanagement.dialog.CallDialog;
 import ir.taxi1880.operatormanagement.dialog.ChangeDriverQueueDialog;
 import ir.taxi1880.operatormanagement.dialog.DriverInfoDialog;
+import ir.taxi1880.operatormanagement.dialog.DriverStationRegistrationDialog;
 import ir.taxi1880.operatormanagement.dialog.DriverTurnoverDialog;
 import ir.taxi1880.operatormanagement.dialog.ExtendedTimeDialog;
 import ir.taxi1880.operatormanagement.dialog.GeneralDialog;
@@ -86,12 +87,7 @@ public class SupportDriverTripsFragment extends Fragment {
 
     @OnClick(R.id.imgStationInfo)
     void onPressStationInfo() {
-        RequestHelper.builder(EndPoints.DRIVER_FINANCIAL)
-                .ignore422Error(true)
-                .addPath(taxiCode) // driverCode
-                .addPath(carCode) // carCode
-                .listener(onGetDriverInfo)
-                .get();
+        new DriverStationRegistrationDialog() .show(taxiCode);
     }
 
     @OnClick(R.id.imgFinancial)
