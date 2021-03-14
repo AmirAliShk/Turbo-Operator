@@ -37,6 +37,7 @@ import java.util.TimerTask;
 import ir.taxi1880.operatormanagement.R;
 import ir.taxi1880.operatormanagement.app.EndPoints;
 import ir.taxi1880.operatormanagement.app.MyApplication;
+import ir.taxi1880.operatormanagement.helper.DateHelper;
 import ir.taxi1880.operatormanagement.helper.FileHelper;
 import ir.taxi1880.operatormanagement.helper.TypefaceUtil;
 import ir.taxi1880.operatormanagement.model.RecentCallsModel;
@@ -100,8 +101,8 @@ public class RecentCallsAdapter extends RecyclerView.Adapter<RecentCallsAdapter.
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         RecentCallsModel model = recentCallsModels.get(position);
 
-        holder.txtDate.setText(model.getTxtDate());
-        holder.txtTime.setText(model.getTxtTime());
+        holder.txtDate.setText(DateHelper.parseFormatToString(model.getTxtDate()));
+        holder.txtTime.setText(DateHelper.parseFormat(model.getTxtDate()));
         if (model.getPhone() == null) {
             llPhone.setVisibility(View.GONE);
         } else {

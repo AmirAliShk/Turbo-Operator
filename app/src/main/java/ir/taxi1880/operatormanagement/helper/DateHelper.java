@@ -574,13 +574,13 @@ public class DateHelper {
 
   /**
    * @param date <br>
-   *             <b>return a value such as: <br>30 دی 18:07<b/><br>
+   *             <b>return a value such as: <br>30 دی ساعت 18:07<b/><br>
    */
   public static String strPersianEghit(Date date) {
     try {
       DateHelper util = new DateHelper();
       SolarCalendar sc = util.new SolarCalendar(date);
-      return String.format(new Locale("en_US"), "%02d %s %02d:%02d", sc.date, sc.strMonth, date.getHours(), date.getMinutes());
+      return String.format(new Locale("en_US"), "%02d %s ساعت %02d:%02d", sc.date, sc.strMonth, date.getHours(), date.getMinutes());
     } catch (Exception e) {
       e.printStackTrace();
       AvaCrashReporter.send(e, "DateHelper class, strPersianEghit method");
@@ -626,8 +626,12 @@ public class DateHelper {
     return strPersianFive(d.getTime());
   }
 
+  public static String parseFormatToString(String date) {
+    return strPersianTree(parseFormat(date, null));
+  }
+
   public static String parseFormat(String date) {
-    return strPersianDate(parseFormat(date, null));
+    return strPersianFour1(parseFormat(date, null));
   }
 
 //  /**

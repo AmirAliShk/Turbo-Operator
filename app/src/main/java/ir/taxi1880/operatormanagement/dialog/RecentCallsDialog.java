@@ -163,22 +163,7 @@ public class RecentCallsDialog {
                             if (!dataObj.getString("disposition").equals("ANSWERED"))
                                 continue;
 
-                            String dateTime = dataObj.getString("starttime");
-                            String[] separated = dateTime.split("T");
-
-//                            Date time;
-//                            String dateTime = dataObj.getString("starttime");
-//                            SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'");
-//                            try {
-//                                Date date = format.parse(dateTime);
-//                            .applyPattern
-//                                time = DateHelper.gregorianToJalali(date);
-//                            } catch (Exception e) {
-//                                e.printStackTrace();
-//                            }
-
-                            model.setTxtDate(separated[0]);
-                            model.setTxtTime(separated[1]);
+                            model.setTxtDate(dataObj.getString("starttime"));
                             model.setVoipId(dataObj.getString("voiceId"));
 
                             if (!fromPassengerCalls) {

@@ -16,14 +16,6 @@ public class RecentCallsModel {
         this.txtDate = txtDate;
     }
 
-    public String getTxtTime() {
-        return txtTime;
-    }
-
-    public void setTxtTime(String txtTime) {
-        this.txtTime = txtTime;
-    }
-
     public int getTxtTimeRemaining() {
         return txtTimeRemaining;
     }
