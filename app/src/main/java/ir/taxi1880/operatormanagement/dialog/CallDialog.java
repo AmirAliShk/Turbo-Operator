@@ -13,6 +13,8 @@ import android.widget.LinearLayout;
 import android.widget.Toast;
 import android.widget.ViewFlipper;
 
+import com.downloader.PRDownloader;
+
 import org.linphone.core.Address;
 import org.linphone.core.Call;
 import org.linphone.core.CallParams;
@@ -30,6 +32,8 @@ import ir.taxi1880.operatormanagement.helper.KeyBoardHelper;
 import ir.taxi1880.operatormanagement.helper.TypefaceUtil;
 import ir.taxi1880.operatormanagement.push.AvaCrashReporter;
 import ir.taxi1880.operatormanagement.services.LinphoneService;
+
+import static ir.taxi1880.operatormanagement.adapter.RecentCallsAdapter.pauseVoice;
 
 public class CallDialog {
 
@@ -92,13 +96,25 @@ public class CallDialog {
     @OnClick(R.id.llSupportOperatorRecentCalls)
     void llSupportOperatorRecentCalls(){
         dismiss();
-        new RecentCallsDialog() .show("0", "0",MyApplication.prefManager.getSipNumber(), false);
+        new RecentCallsDialog() .show("0", "0", MyApplication.prefManager.getSipNumber(), false, (b) -> {
+            if (b){
+                PRDownloader.cancelAll();
+                PRDownloader.shutDown();
+                pauseVoice();
+            }
+        });
     }
 
     @OnClick(R.id.llOperatorRecentCalls)
     void llOperatorRecentCalls(){
         dismiss();
-        new RecentCallsDialog() .show("0", "0",MyApplication.prefManager.getSipNumber(), false);
+        new RecentCallsDialog() .show("0", "0", MyApplication.prefManager.getSipNumber(), false, (b) -> {
+            if (b){
+                PRDownloader.cancelAll();
+                PRDownloader.shutDown();
+                pauseVoice();
+            }
+        });
     }
 
 

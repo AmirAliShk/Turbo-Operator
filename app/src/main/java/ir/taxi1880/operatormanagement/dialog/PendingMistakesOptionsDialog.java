@@ -10,6 +10,8 @@ import android.view.Window;
 import android.view.WindowManager;
 import android.widget.Toast;
 
+import com.downloader.PRDownloader;
+
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import butterknife.Unbinder;
@@ -19,6 +21,8 @@ import ir.taxi1880.operatormanagement.fragment.TripSupportFragment;
 import ir.taxi1880.operatormanagement.helper.FragmentHelper;
 import ir.taxi1880.operatormanagement.helper.TypefaceUtil;
 import ir.taxi1880.operatormanagement.push.AvaCrashReporter;
+
+import static ir.taxi1880.operatormanagement.adapter.RecentCallsAdapter.pauseVoice;
 
 public class PendingMistakesOptionsDialog {
     Unbinder unbinder;
@@ -35,7 +39,15 @@ public class PendingMistakesOptionsDialog {
     void onPressGuestCalls() {
         dismiss();
         new RecentCallsDialog()
-                .show(tell, mobile, 0, true);
+                .show(tell, mobile, 0, true, (b) -> {
+                    if (b){
+                        MyApplication.handler.postDelayed(() -> {
+                            PRDownloader.cancelAll();
+                            PRDownloader.shutDown();
+                            pauseVoice();
+                        }, 500);
+                    }
+                });
     }
 
     @OnClick(R.id.llSearchService)

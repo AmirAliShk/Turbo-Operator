@@ -208,6 +208,7 @@ public class RecentCallsAdapter extends RecyclerView.Adapter<RecentCallsAdapter.
                     })
                     .setOnProgressListener(progress -> {
                         isDownloading = true;
+                        Log.i("TAG", "startDownload: " + progress);
                     })
                     .start(new OnDownloadListener() {
 
@@ -217,9 +218,11 @@ public class RecentCallsAdapter extends RecyclerView.Adapter<RecentCallsAdapter.
                             FileHelper.moveFile(dirPathTemp, fileName, dirPath);
                             File file = new File(dirPath + fileName);
                             MyApplication.handler.postDelayed(() -> {
-                                initVoice(Uri.fromFile(file));
-                                playVoice();
-                            }, 500);
+                                if (view != null) {
+                                    initVoice(Uri.fromFile(file));
+                                    playVoice();
+                                }
+                            }, 200);
                         }
 
                         @Override
@@ -245,7 +248,7 @@ public class RecentCallsAdapter extends RecyclerView.Adapter<RecentCallsAdapter.
 
     private void initVoice(Uri uri) {
         try {
-            if (view!=null){
+            if (view != null) {
                 mediaPlayer = MediaPlayer.create(MyApplication.context, uri);
                 mediaPlayer.setOnCompletionListener(mp -> {
                     if (vfPlayPause != null) {
@@ -307,9 +310,7 @@ public class RecentCallsAdapter extends RecyclerView.Adapter<RecentCallsAdapter.
             timer.cancel();
             timer = null;
         } catch (Exception e) {
-
         }
-
     }
 
     private class UpdateSeekBar extends TimerTask {

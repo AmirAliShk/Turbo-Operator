@@ -1,6 +1,7 @@
 package ir.taxi1880.operatormanagement.dialog;
 
 import android.app.Dialog;
+import android.content.DialogInterface;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.util.Log;
@@ -13,6 +14,8 @@ import android.widget.TextView;
 import android.widget.ViewFlipper;
 
 import androidx.recyclerview.widget.RecyclerView;
+
+import com.downloader.PRDownloader;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -44,6 +47,12 @@ public class RecentCallsDialog {
     boolean fromPassengerCalls;
     String tell;
     String mobile;
+
+    public interface DismissInterface {
+        void onDismiss(boolean b);
+    }
+
+    DismissInterface dismissInterface;
 
     @BindView(R.id.vfHeader)
     ViewFlipper vfHeader;
@@ -92,7 +101,7 @@ public class RecentCallsDialog {
     RecentCallsAdapter mAdapter;
     ArrayList<RecentCallsModel> recentCallsModels;
 
-    public void show(String tell, String mobile, int sip, Boolean fromPassengerCalls) {
+    public void show(String tell, String mobile, int sip, boolean fromPassengerCalls, DismissInterface dismissInterface) {
         if (MyApplication.currentActivity == null || MyApplication.currentActivity.isFinishing())
             return;
         dialog = new Dialog(MyApplication.currentActivity);
@@ -111,6 +120,7 @@ public class RecentCallsDialog {
         this.fromPassengerCalls = fromPassengerCalls;
         this.tell = tell;
         this.mobile = mobile;
+        this.dismissInterface = dismissInterface;
 
         if (fromPassengerCalls) {
             vfHeader.setDisplayedChild(1);
@@ -132,6 +142,7 @@ public class RecentCallsDialog {
             vfHeader.setDisplayedChild(0);
             getRecentCalls("/dst", sip + "", "/1");
         }
+
         dialog.show();
     }
 
@@ -216,6 +227,7 @@ public class RecentCallsDialog {
     };
 
     private void dismiss() {
+        dismissInterface.onDismiss(true);
         try {
             if (dialog != null) {
                 dialog.dismiss();
@@ -224,8 +236,10 @@ public class RecentCallsDialog {
             Log.e("TAG", "dismiss: " + e.getMessage());
             AvaCrashReporter.send(e, "ReserveDialog class, dismiss method");
         }
-        pauseVoice();
         dialog = null;
+        PRDownloader.cancelAll();
+        PRDownloader.shutDown();
+        pauseVoice();
         unbinder.unbind();
     }
 }
