@@ -59,12 +59,23 @@ public class DriverStationRegistrationAdapter extends BaseAdapter {
         TextView txtOutDate = view.findViewById(R.id.txtOutDate);
         TextView txtOutTime = view.findViewById(R.id.txtOutTime);
 
-        txtInDate.setText(StringHelper.toPersianDigits(driverStationRegistrationModels.getInDate()));
-        txtInTime.setText(StringHelper.toPersianDigits(driverStationRegistrationModels.getInTime()));
+        String inTime = driverStationRegistrationModels.getInTime().substring(0,5);
+        String inDate = driverStationRegistrationModels.getInDate().substring(5);
+
+        txtInDate.setText(StringHelper.toPersianDigits(inDate));
+        txtInTime.setText(StringHelper.toPersianDigits(inTime));
         txtStationCode.setText(StringHelper.toPersianDigits(driverStationRegistrationModels.getStationCode()));
-        txtOutType.setText(StringHelper.toPersianDigits(driverStationRegistrationModels.getOutType()));
-        txtOutDate.setText(StringHelper.toPersianDigits(driverStationRegistrationModels.getOutDate()));
-        txtOutTime.setText(StringHelper.toPersianDigits(driverStationRegistrationModels.getOutTime()));
+        if (driverStationRegistrationModels.getOutType().equals("null")) {
+            txtOutType.setText(StringHelper.toPersianDigits("خارج نشده"));
+            txtOutDate.setText(StringHelper.toPersianDigits("-"));
+            txtOutTime.setText(StringHelper.toPersianDigits("-"));
+        } else {
+            String outDate = driverStationRegistrationModels.getOutDate().substring(5);
+            String outTime = driverStationRegistrationModels.getOutTime().substring(0,5);
+            txtOutType.setText(StringHelper.toPersianDigits(driverStationRegistrationModels.getOutType()));
+            txtOutTime.setText(StringHelper.toPersianDigits(outTime));
+            txtOutDate.setText(StringHelper.toPersianDigits(outDate));
+        }
 
         return view;
     }
