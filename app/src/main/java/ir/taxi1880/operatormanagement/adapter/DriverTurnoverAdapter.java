@@ -6,6 +6,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.TextView;
+import android.widget.ViewFlipper;
 
 import java.util.ArrayList;
 
@@ -52,15 +53,20 @@ public class DriverTurnoverAdapter extends BaseAdapter {
 
         TextView txtTripDate = view.findViewById(R.id.txtTripDate);
         TextView txtTripTime = view.findViewById(R.id.txtTripTime);
-        TextView txtDocumentType = view.findViewById(R.id.txtDocumentType);
         TextView txtDescription = view.findViewById(R.id.txtDescription);
         TextView txtAmount = view.findViewById(R.id.txtAmount);
+        ViewFlipper vfTurnoverStatus = view.findViewById(R.id.vfTurnoverStatus);
 
         txtTripDate.setText(StringHelper.toPersianDigits(driverTurnoverModel.getDate()));
         txtTripTime.setText(StringHelper.toPersianDigits(driverTurnoverModel.getTime()));
-        txtDocumentType.setText(StringHelper.toPersianDigits(driverTurnoverModel.getDocumentType()));
         txtDescription.setText(StringHelper.toPersianDigits(driverTurnoverModel.getDescription()));
-        txtAmount.setText(StringHelper.toPersianDigits(driverTurnoverModel.getAmount()));
+        if (driverTurnoverModel.getCredit().equals("0")){
+            vfTurnoverStatus.setDisplayedChild(1);
+            txtAmount.setText(StringHelper.toPersianDigits(driverTurnoverModel.getDebit()));
+        }else if (driverTurnoverModel.getDebit().equals("0")){
+            vfTurnoverStatus.setDisplayedChild(0);
+            txtAmount.setText(StringHelper.toPersianDigits(driverTurnoverModel.getCredit()));
+        }
 
         return view;
     }

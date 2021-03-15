@@ -32,8 +32,7 @@
                 style="@style/tripItemValue"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
-                android:layout_weight="1.5"
-                android:text="99/12/22" />
+                android:layout_weight="1.5" />
 
             <TextView
                 style="@style/tripItemTitle"
@@ -47,8 +46,7 @@
                 style="@style/tripItemValue"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:text="12:55" />
+                android:layout_weight="1" />
 
         </LinearLayout>
 
@@ -64,15 +62,41 @@
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="0.8"
-                android:text="نوع سند" />
+                android:text="نوع" />
+
+            <ViewFlipper
+                android:id="@+id/vfTurnoverStatus"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1.5">
+
+                <TextView
+                    style="@style/tripItemTitle"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:text="بستانکار" />
+
+                <TextView
+                    style="@style/tripItemTitle"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:text="بدهکار" />
+
+            </ViewFlipper>
 
             <TextView
-                android:id="@+id/txtDocumentType"
+                style="@style/tripItemTitle"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="0.8"
+                android:text="مبلغ" />
+
+            <TextView
+                android:id="@+id/txtAmount"
                 style="@style/tripItemValue"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_weight="3"
-                android:text="بدهکاری" />
+                android:layout_weight="1" />
 
         </LinearLayout>
 
@@ -95,34 +119,10 @@
                 style="@style/tripItemValue"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_weight="3"
-                android:text="سرویس رفت!!" />
+                android:layout_weight="3" />
 
         </LinearLayout>
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:gravity="center"
-            android:orientation="horizontal"
-            android:padding="@dimen/_5sdp">
-
-            <TextView
-                style="@style/tripItemTitle"
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_weight="0.8"
-                android:text="مبلغ" />
-
-            <TextView
-                android:id="@+id/txtAmount"
-                style="@style/tripItemValue"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="3"
-                android:text="15000" />
-
-        </LinearLayout>
     </LinearLayout>
 
 </LinearLayout>

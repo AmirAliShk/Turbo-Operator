@@ -28,8 +28,6 @@ import ir.taxi1880.operatormanagement.model.DriverTurnoverModel;
 import ir.taxi1880.operatormanagement.okHttp.RequestHelper;
 import ir.taxi1880.operatormanagement.push.AvaCrashReporter;
 
-import static ir.taxi1880.operatormanagement.adapter.RecentCallsAdapter.pauseVoice;
-
 public class DriverTurnoverDialog {
 
     Dialog dialog;
@@ -100,8 +98,8 @@ public class DriverTurnoverDialog {
                             model.setDate(dataObj.getString("date"));
                             model.setTime(dataObj.getString("time"));
                             model.setDescription(dataObj.getString("sharh"));
-                            model.setAmount(dataObj.getString("debit"));
-                            model.setDocumentType(dataObj.getString("credit"));
+                            model.setDebit(dataObj.getString("debit"));
+                            model.setCredit(dataObj.getString("credit"));
                             driverTurnoverModels.add(model);
                         }
 
