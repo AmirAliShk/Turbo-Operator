@@ -51,25 +51,28 @@ public class SupportViewPagerAdapter extends FragmentStateAdapter {
         txtBadgeCount.setVisibility(View.GONE);
         TypefaceUtil.overrideFonts(v);
 
+        txtTabTitle.setTextColor(MyApplication.currentActivity.getResources().getColor(R.color.grayMedium));
+        txtBadgeCount.setBackgroundResource(R.drawable.badge_unselected);
+
         if (position == 0) {
             txtTabTitle.setText("جدید");
-            txtTabTitle.setTextColor(MyApplication.currentActivity.getResources().getColor(R.color.colorAccent));
+//            txtTabTitle.setTextColor(MyApplication.currentActivity.getResources().getColor(R.color.colorAccent));
             if (newCount == 0) {
                 txtBadgeCount.setVisibility(View.GONE);
             } else {
                 txtBadgeCount.setVisibility(View.VISIBLE);
                 txtBadgeCount.setText(newCount + "");
-                txtBadgeCount.setBackgroundResource(R.drawable.badge_selected);
+//                txtBadgeCount.setBackgroundResource(R.drawable.badge_selected);
             }
         } else {
             txtTabTitle.setText("درحال بررسی");
-            txtTabTitle.setTextColor(MyApplication.currentActivity.getResources().getColor(R.color.grayMedium));
+//            txtTabTitle.setTextColor(MyApplication.currentActivity.getResources().getColor(R.color.grayMedium));
             if (pendingCount == 0) {
                 txtBadgeCount.setVisibility(View.GONE);
             } else {
                 txtBadgeCount.setVisibility(View.VISIBLE);
                 txtBadgeCount.setText(pendingCount + "");
-                txtBadgeCount.setBackgroundResource(R.drawable.badge_unselected);
+//                txtBadgeCount.setBackgroundResource(R.drawable.badge_unselected);
             }
         }
 
@@ -81,13 +84,13 @@ public class SupportViewPagerAdapter extends FragmentStateAdapter {
         View view = tab.getCustomView();
         TextView txtTabTitle = view.findViewById(R.id.txtTabTitle);
         TextView txtBadgeCount = view.findViewById(R.id.txtBadgeCount);
-        if (type.equals("select")) {
-            txtTabTitle.setTextColor(MyApplication.currentActivity.getResources().getColor(R.color.colorAccent));
-            txtBadgeCount.setBackgroundResource(R.drawable.badge_selected);
-        } else if (type.equals("unSelect")) {
-            txtTabTitle.setTextColor(MyApplication.currentActivity.getResources().getColor(R.color.grayMedium));
-            txtBadgeCount.setBackgroundResource(R.drawable.badge_unselected);
-        }
+//        if (type.equals("select")) {
+//            txtTabTitle.setTextColor(MyApplication.currentActivity.getResources().getColor(R.color.colorAccent));
+//            txtBadgeCount.setBackgroundResource(R.drawable.badge_selected);
+//        } else if (type.equals("unSelect")) {
+//            txtTabTitle.setTextColor(MyApplication.currentActivity.getResources().getColor(R.color.grayMedium));
+//            txtBadgeCount.setBackgroundResource(R.drawable.badge_unselected);
+//        }
     }
 
 }
