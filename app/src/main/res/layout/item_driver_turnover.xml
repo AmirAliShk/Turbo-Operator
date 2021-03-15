@@ -71,13 +71,13 @@
                 android:layout_weight="1.5">
 
                 <TextView
-                    style="@style/tripItemTitle"
+                    style="@style/tripItemValue"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:text="بستانکار" />
 
                 <TextView
-                    style="@style/tripItemTitle"
+                    style="@style/tripItemValue"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:text="بدهکار" />

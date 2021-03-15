@@ -32,101 +32,108 @@
                 android:textColor="@color/colorWhite" />
         </RelativeLayout>
 
-        <LinearLayout
+        <ScrollView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@drawable/bg_dialog_body"
-            android:orientation="vertical"
-            android:paddingBottom="5dp">
+            android:fillViewport="true">
 
-            <RadioGroup
-                android:id="@+id/rgCulprit"
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_margin="10dp"
-                android:background="@drawable/bg_white_edge"
-                android:layoutDirection="rtl"
-                android:padding="10dp">
+                android:background="@drawable/bg_dialog_body"
+                android:orientation="vertical"
+                android:paddingBottom="5dp">
 
-                <RadioButton
-                    android:id="@+id/rbTripRegistrationOperatorBlame"
+                <RadioGroup
+                    android:id="@+id/rgCulprit"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="اپراتور ثبت سفر مقصر است." />
+                    android:layout_margin="10dp"
+                    android:background="@drawable/bg_white_edge"
+                    android:layoutDirection="rtl"
+                    android:padding="10dp">
 
-                <RadioButton
-                    android:id="@+id/rbStationRegistrationOperatorBlame"
+                    <RadioButton
+                        android:id="@+id/rbTripRegistrationOperatorBlame"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="اپراتور ثبت سفر مقصر است." />
+
+                    <RadioButton
+                        android:id="@+id/rbStationRegistrationOperatorBlame"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="اپراتور ثبت ایستگاه مقصر است." />
+
+                    <RadioButton
+                        android:id="@+id/rbUnknown"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="نامشخص" />
+                </RadioGroup>
+
+                <RadioGroup
+                    android:id="@+id/rgResult"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="اپراتور ثبت ایستگاه مقصر است." />
+                    android:layout_margin="10dp"
+                    android:background="@drawable/bg_white_edge"
+                    android:layoutDirection="rtl"
+                    android:padding="10dp">
 
-                <RadioButton
-                    android:id="@+id/rbUnknown"
+                    <RadioButton
+                        android:id="@+id/rbDeleteAddress"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="حذف آدرس" />
+
+                    <RadioButton
+                        android:id="@+id/rbDeleteStation"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="حذف ایستگاه" />
+
+                    <RadioButton
+                        android:id="@+id/rbDeleteCity"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="حذف شهر" />
+
+                    <RadioButton
+                        android:id="@+id/rbOtherCases"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="سایر موارد" />
+                </RadioGroup>
+
+                <ViewFlipper
+                    android:id="@+id/vfLoader"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="نامشخص" />
-            </RadioGroup>
+                    android:layout_height="match_parent"
+                    android:background="@drawable/green_shadow">
 
-            <RadioGroup
-                android:id="@+id/rgResult"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_margin="10dp"
-                android:background="@drawable/bg_white_edge"
-                android:layoutDirection="rtl"
-                android:padding="10dp">
+                    <Button
+                        android:id="@+id/btnSubmit"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="40dp"
+                        android:layout_marginRight="40dp"
+                        android:background="@color/transparent"
+                        android:text="ثبت"
+                        android:textAppearance="?android:attr/textAppearanceLarge"
+                        android:textColor="@color/colorWhite"
+                        android:textStyle="bold" />
 
-                <RadioButton
-                    android:id="@+id/rbDeleteAddress"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="حذف آدرس" />
+                    <com.wang.avi.AVLoadingIndicatorView
+                        android:layout_width="30dp"
+                        android:layout_height="30dp"
+                        android:layout_gravity="center"
+                        app:indicatorColor="@color/colorWhite" />
 
-                <RadioButton
-                    android:id="@+id/rbDeleteStation"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="حذف ایستگاه" />
+                </ViewFlipper>
+            </LinearLayout>
 
-                <RadioButton
-                    android:id="@+id/rbDeleteCity"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="حذف شهر" />
-
-                <RadioButton
-                    android:id="@+id/rbOtherCases"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="سایر موارد" />
-            </RadioGroup>
-
-            <ViewFlipper
-                android:id="@+id/vfLoader"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:background="@drawable/green_shadow">
-
-                <Button
-                    android:id="@+id/btnSubmit"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="40dp"
-                    android:layout_marginRight="40dp"
-                    android:background="@color/transparent"
-                    android:text="ثبت"
-                    android:textAppearance="?android:attr/textAppearanceLarge"
-                    android:textColor="@color/colorWhite"
-                    android:textStyle="bold" />
-
-                <com.wang.avi.AVLoadingIndicatorView
-                    android:layout_width="30dp"
-                    android:layout_height="30dp"
-                    android:layout_gravity="center"
-                    app:indicatorColor="@color/colorWhite" />
-
-            </ViewFlipper>
-        </LinearLayout>
+        </ScrollView>
 
     </LinearLayout>
 

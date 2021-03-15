@@ -419,6 +419,7 @@ public class SupportDriverTripsFragment extends Fragment {
 
     };
 
+
     private void getDriverInfo(String searchText, int searchCase) {
         if (vfTrip != null) {
             vfTrip.setDisplayedChild(1);

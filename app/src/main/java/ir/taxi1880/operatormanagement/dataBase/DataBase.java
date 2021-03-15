@@ -429,5 +429,8 @@ public class DataBase extends SQLiteOpenHelper {
         return count;
     }
 
-
+    public void clearMistakeTable() {
+        SQLiteDatabase sqLiteDatabase = this.getWritableDatabase();
+        sqLiteDatabase.delete(MISTAKES_TABLE, null, null);
+    }
 }

@@ -134,13 +134,12 @@ public class AllMistakesFragment extends Fragment {
                                 mAdapter = new AllMistakesAdapter(MyApplication.currentActivity, allMistakesModels);
                                 mistakesList.setAdapter(mAdapter);
                             }
-
-                            broadcaster = LocalBroadcastManager.getInstance(MyApplication.context);
-                            Intent broadcastIntent = new Intent(KEY_NEW_MISTAKE_COUNT);
-                            broadcastIntent.putExtra(NEW_MISTAKE_COUNT, allMistakesModels.size());
-                            broadcaster.sendBroadcast(broadcastIntent);
-
                         }
+
+                        broadcaster = LocalBroadcastManager.getInstance(MyApplication.context);
+                        Intent broadcastIntent = new Intent(KEY_NEW_MISTAKE_COUNT);
+                        broadcastIntent.putExtra(NEW_MISTAKE_COUNT, allMistakesModels.size());
+                        broadcaster.sendBroadcast(broadcastIntent);
 
                     } else {
                         if (vfDownload != null)

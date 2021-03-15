@@ -55,7 +55,7 @@ public class DriverTurnoverDialog {
         dialog.getWindow().getAttributes().windowAnimations = R.style.ExpandAnimation;
         dialog.setContentView(R.layout.dialog_driver_turnover);
         unbinder = ButterKnife.bind(this, dialog.getWindow().getDecorView());
-        TypefaceUtil.overrideFonts(dialog.getWindow().getDecorView(), MyApplication.IraSanSMedume);
+        TypefaceUtil.overrideFonts(dialog.getWindow().getDecorView());
         dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         WindowManager.LayoutParams wlp = dialog.getWindow().getAttributes();
         wlp.gravity = Gravity.CENTER;

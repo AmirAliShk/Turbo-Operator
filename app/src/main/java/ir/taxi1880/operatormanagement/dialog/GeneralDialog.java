@@ -202,7 +202,7 @@ public class GeneralDialog {
   }
 
   private Dialog dialog;
-  private static Dialog staticDialog = null;
+  private Dialog staticDialog = null;
 
   public void show() {
     if (MyApplication.currentActivity == null || MyApplication.currentActivity.isFinishing())

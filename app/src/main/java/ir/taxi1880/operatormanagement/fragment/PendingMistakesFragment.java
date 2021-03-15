@@ -67,11 +67,20 @@ public class PendingMistakesFragment extends Fragment {
 
     @OnClick(R.id.btnSaveResult)
     void onSaveResult() {
+        if (vfSaveResult != null)
+            vfSaveResult.setDisplayedChild(1);
         pauseVoice();
         new SaveResultDialog()
-                .show(model.getId(), success -> {
-                    if (success) {
+                .show(model.getId(), new SaveResultDialog.MistakesResult() {
+                    @Override
+                    public void onSuccess(boolean success) {
                         MyApplication.handler.postDelayed(() -> getMistakesFromDB(), 200);
+                    }
+
+                    @Override
+                    public void dismiss() {
+                        if (vfSaveResult != null)
+                            vfSaveResult.setDisplayedChild(0);
                     }
                 });
     }
@@ -87,6 +96,9 @@ public class PendingMistakesFragment extends Fragment {
 
     @BindView(R.id.txtTripDate)
     TextView txtTripDate;
+
+    @BindView(R.id.vfSaveResult)
+    ViewFlipper vfSaveResult;
 
     @BindView(R.id.txtPassengerName)
     TextView txtPassengerName;
@@ -296,53 +308,48 @@ public class PendingMistakesFragment extends Fragment {
     public void setMenuVisibility(boolean menuVisible) {
         super.setMenuVisibility(menuVisible);
         if (menuVisible) {
-            getMistakesFromDB();
+            getAccepted();
         }
     }
 
     void getMistakesFromDB() {
-        if (dataBase.getMistakesCount() == 0) {
-            getAccepted();
-        } else {
-            model = dataBase.getMistakesRow();
-            txtAddress.setText(StringHelper.toPersianDigits(model.getAddress()));
-            txtPassengerName.setText(StringHelper.toPersianDigits(model.getCustomerName()));
-            txtPassengerPhone.setText(StringHelper.toPersianDigits(model.getTell()));
-            txtStationCode.setText(StringHelper.toPersianDigits(model.getStationCode() + "")); //TODO correct station name an station code
-            txtCity.setText(StringHelper.toPersianDigits(model.getCity() + ""));
-            txtDescription.setText(StringHelper.toPersianDigits(model.getDescription()));
-            txtTripTime.setText(StringHelper.toPersianDigits(model.getTime()));
-            txtTripDate.setText(StringHelper.toPersianDigits(model.getDate()));
-            txtComplaintId.setText(StringHelper.toPersianDigits(model.getId() + ""));
-            txtComplaintVoipId.setText(StringHelper.toPersianDigits(model.getVoipId() + ""));
+        model = dataBase.getMistakesRow();
+        txtAddress.setText(StringHelper.toPersianDigits(model.getAddress()));
+        txtPassengerName.setText(StringHelper.toPersianDigits(model.getCustomerName()));
+        txtPassengerPhone.setText(StringHelper.toPersianDigits(model.getTell()));
+        txtStationCode.setText(StringHelper.toPersianDigits(model.getStationCode() + "")); //TODO correct station name an station code
+        txtCity.setText(StringHelper.toPersianDigits(dataBase.getCityName(model.getCity())));
+        txtDescription.setText(StringHelper.toPersianDigits(model.getDescription()));
+        txtTripTime.setText(StringHelper.toPersianDigits(model.getTime()));
+        txtTripDate.setText(StringHelper.toPersianDigits(model.getDate()));
+        txtComplaintId.setText(StringHelper.toPersianDigits(model.getId() + ""));
+        txtComplaintVoipId.setText(StringHelper.toPersianDigits(model.getVoipId() + ""));
 
-            skbTimer.setProgress(0);
+        skbTimer.setProgress(0);
 
-            skbTimer.setOnSeekChangeListener(new OnSeekChangeListener() {
-                @Override
-                public void onSeeking(SeekParams seekParams) {
-                    int timeRemaining = seekParams.progress / 1000;
+        skbTimer.setOnSeekChangeListener(new OnSeekChangeListener() {
+            @Override
+            public void onSeeking(SeekParams seekParams) {
+                int timeRemaining = seekParams.progress / 1000;
 
-                }
+            }
 
-                @Override
-                public void onStartTrackingTouch(IndicatorSeekBar seekBar) {
+            @Override
+            public void onStartTrackingTouch(IndicatorSeekBar seekBar) {
 
-                }
+            }
 
-                @Override
-                public void onStopTrackingTouch(IndicatorSeekBar seekBar) {
-                    if (mediaPlayer != null) {
-                        if (seekBar != null) {
-                            mediaPlayer.seekTo(seekBar.getProgress());
-                        }
+            @Override
+            public void onStopTrackingTouch(IndicatorSeekBar seekBar) {
+                if (mediaPlayer != null) {
+                    if (seekBar != null) {
+                        mediaPlayer.seekTo(seekBar.getProgress());
                     }
                 }
-            });
-            if (vfPending != null)
-                vfPending.setDisplayedChild(1);
-        }
-
+            }
+        });
+        if (vfPending != null)
+            vfPending.setDisplayedChild(1);
     }
 
     @Override
@@ -400,7 +407,7 @@ public class PendingMistakesFragment extends Fragment {
         public void onResponse(Runnable reCall, Object... args) {
             MyApplication.handler.post(() -> {
                 try {
-
+                    dataBase.clearMistakeTable();
                     JSONObject listenObj = new JSONObject(args[0].toString());
                     boolean success = listenObj.getBoolean("success");
                     String message = listenObj.getString("message");
@@ -434,7 +441,7 @@ public class PendingMistakesFragment extends Fragment {
                         if (dataBase.getMistakesCount() == 0) {
                             if (vfPending != null)
                                 vfPending.setDisplayedChild(2);
-                        }else {
+                        } else {
                             getMistakesFromDB();
                             broadcaster = LocalBroadcastManager.getInstance(MyApplication.context);
                             Intent broadcastIntent = new Intent(KEY_PENDING_MISTAKE_COUNT);

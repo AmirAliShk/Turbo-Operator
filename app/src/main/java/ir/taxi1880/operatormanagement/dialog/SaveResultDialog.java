@@ -36,16 +36,19 @@ import static ir.taxi1880.operatormanagement.app.Keys.PENDING_MISTAKE_COUNT;
 
 public class SaveResultDialog {
     static Dialog dialog;
+    private Dialog staticDialog = null;
     Unbinder unbinder;
     String culprit;
     String result;
     DataBase dataBase;
     int mistakesId;
     LocalBroadcastManager broadcaster;
+    private boolean singleInstance = true;
     View view;
 
     public interface MistakesResult {
         void onSuccess(boolean success);
+        void dismiss();
     }
 
     MistakesResult mistakesResult;
@@ -114,25 +117,34 @@ public class SaveResultDialog {
     public void show(int complaintId, MistakesResult mistakesResult) {
         if (MyApplication.currentActivity == null || MyApplication.currentActivity.isFinishing())
             return;
-        dialog = new Dialog(MyApplication.currentActivity);
-        dialog.getWindow().requestFeature(Window.FEATURE_NO_TITLE);
-        dialog.getWindow().getAttributes().windowAnimations = R.style.ExpandAnimation;
-        dialog.setContentView(R.layout.dialog_save_result);
-        view = dialog.getWindow().getDecorView();
-        unbinder = ButterKnife.bind(this, view);
-        TypefaceUtil.overrideFonts(view, MyApplication.IraSanSMedume);
-        TypefaceUtil.overrideFonts(btnSubmit);
-        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
-        WindowManager.LayoutParams wlp = dialog.getWindow().getAttributes();
+        Dialog tempDialog = null;
+        if (singleInstance) {
+            if (staticDialog != null) {
+                staticDialog.dismiss();
+                staticDialog = null;
+            }
+            staticDialog = new Dialog(MyApplication.currentActivity);
+            tempDialog = staticDialog;
+        } else {
+            dialog = new Dialog(MyApplication.currentActivity);
+            tempDialog = dialog;
+        }
+        tempDialog.getWindow().requestFeature(Window.FEATURE_NO_TITLE);
+        tempDialog.setContentView(R.layout.dialog_save_result);
+        tempDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        tempDialog.setCancelable(false);
+        unbinder = ButterKnife.bind(this, tempDialog);
+        TypefaceUtil.overrideFonts(tempDialog.getWindow().getDecorView(),MyApplication.IraSanSMedume);
+        tempDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        WindowManager.LayoutParams wlp = tempDialog.getWindow().getAttributes();
         wlp.windowAnimations = R.style.ExpandAnimation;
-        dialog.getWindow().setAttributes(wlp);
-        dialog.setCancelable(false);
+        tempDialog.getWindow().setAttributes(wlp);
 
         dataBase = new DataBase(MyApplication.context);
         this.mistakesId = complaintId;
         this.mistakesResult = mistakesResult;
 
-        dialog.show();
+        tempDialog.show();
     }
 
     private void sendResult(String culprit, String result, int listenId) {
@@ -202,13 +214,20 @@ public class SaveResultDialog {
     };
 
     private void dismiss() {
+        mistakesResult.dismiss();
         try {
-            if (dialog != null) {
-                dialog.dismiss();
+            if (singleInstance) {
+                if (staticDialog != null) {
+                    staticDialog.dismiss();
+                    staticDialog = null;
+                }
+            } else {
+                if (dialog != null)
+                    if (dialog.isShowing())
+                        dialog.dismiss();
             }
         } catch (Exception e) {
-            Log.e("TAG", "dismiss: " + e.getMessage());
-            AvaCrashReporter.send(e, "ReserveDialog class, dismiss method");
+            AvaCrashReporter.send(e, "SaveResultDialog class, dismiss method");
         }
         dialog = null;
         unbinder.unbind();
