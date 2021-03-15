@@ -4,9 +4,9 @@ public class DriverTurnoverModel {
 
     String date;
     String time;
-    String documentType;
+    String debit;
     String description;
-    String amount;
+    String credit;
 
     public String getDate() {
         return date;
@@ -32,19 +32,19 @@ public class DriverTurnoverModel {
         this.description = description;
     }
 
-    public String getDocumentType() {
-        return documentType;
+    public String getDebit() {
+        return debit;
     }
 
-    public void setDocumentType(String documentType) {
-        this.documentType = documentType;
+    public void setDebit(String debit) {
+        this.debit = debit;
     }
 
-    public String getAmount() {
-        return amount;
+    public String getCredit() {
+        return credit;
     }
 
-    public void setAmount(String amount) {
-        this.amount = amount;
+    public void setCredit(String credit) {
+        this.credit = credit;
     }
 }
