@@ -686,7 +686,6 @@ public class LinphoneService extends Service {
                     mRingerPlayer.prepare();
                     mRingerPlayer.setLooping(true);
                     mRingerPlayer.start();
-                    //TODO In the next version, check for these crashes(startRinging crash), if the problem was solved, remove the extra caches in bel0ow
                 } catch (SecurityException ex) {
                     try {
                         mRingerPlayer.setDataSource(mContext, Uri.parse(MyApplication.SOUND + R.raw.ring));

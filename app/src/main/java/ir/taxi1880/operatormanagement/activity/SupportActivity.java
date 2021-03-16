@@ -49,6 +49,7 @@ import ir.taxi1880.operatormanagement.dataBase.DataBase;
 import ir.taxi1880.operatormanagement.dialog.CallDialog;
 import ir.taxi1880.operatormanagement.dialog.GeneralDialog;
 import ir.taxi1880.operatormanagement.dialog.LoadingDialog;
+import ir.taxi1880.operatormanagement.fragment.PendingMistakesFragment;
 import ir.taxi1880.operatormanagement.fragment.SupportDriverTripsFragment;
 import ir.taxi1880.operatormanagement.helper.FragmentHelper;
 import ir.taxi1880.operatormanagement.helper.KeyBoardHelper;
@@ -57,6 +58,7 @@ import ir.taxi1880.operatormanagement.okHttp.RequestHelper;
 import ir.taxi1880.operatormanagement.push.AvaCrashReporter;
 import ir.taxi1880.operatormanagement.services.LinphoneService;
 
+import static ir.taxi1880.operatormanagement.adapter.RecentCallsAdapter.pauseVoice;
 import static ir.taxi1880.operatormanagement.app.Keys.KEY_NEW_MISTAKE_COUNT;
 import static ir.taxi1880.operatormanagement.app.Keys.KEY_PENDING_MISTAKE_COUNT;
 import static ir.taxi1880.operatormanagement.app.Keys.NEW_MISTAKE_COUNT;
@@ -145,6 +147,7 @@ public class SupportActivity extends AppCompatActivity {
 
     @OnClick(R.id.imgOpenDriverSupport)
     void onPressOpenDriverSupport() {
+        new PendingMistakesFragment().pauseVoice();
         FragmentHelper.toFragment(MyApplication.currentActivity, new SupportDriverTripsFragment()).replace();
     }
 
@@ -454,19 +457,13 @@ public class SupportActivity extends AppCompatActivity {
                     mCallQualityUpdater = null;
                 }
             } else if (state == Call.State.Connected) {
-//                startCallQuality();
                 if (imgTestConnection != null)
                     imgTestConnection.setColorFilter(ContextCompat.getColor(MyApplication.context, R.color.colorRed), android.graphics.PorterDuff.Mode.MULTIPLY);
                 Address address = call.getRemoteAddress();
-//                if (voipId.equals("0")) {  //TODO
-//                    edtTell.setText(PhoneNumberValidation.removePrefix(address.getUsername()));
-//                }
                 showTitleBar();
             } else if (state == Call.State.Error) {
                 showTitleBar();
             } else if (state == Call.State.End) {
-//                if (imgCallQuality != null)
-//                    imgCallQuality.setVisibility(View.INVISIBLE);
                 showTitleBar();
                 if (mCallQualityUpdater != null) {
                     LinphoneService.removeFromUIThreadDispatcher(mCallQualityUpdater);
@@ -500,51 +497,6 @@ public class SupportActivity extends AppCompatActivity {
         }
     };
 
-//    private void startCallQuality() {
-//        if (mCallQualityUpdater == null)
-//            LinphoneService.dispatchOnUIThreadAfter(
-//                    mCallQualityUpdater =
-//                            new Runnable() {
-//                                final Call mCurrentCall = LinphoneService.getCore().getCurrentCall();
-//
-//                                public void run() {
-//                                    if (mCurrentCall == null) {
-//                                        mCallQualityUpdater = null;
-//                                        return;
-//                                    }
-//                                    float newQuality = mCurrentCall.getCurrentQuality();
-//                                    updateQualityOfSignalIcon(newQuality);
-//
-//                                    if (MyApplication.prefManager.getConnectedCall())
-//                                        LinphoneService.dispatchOnUIThreadAfter(this, 1000);
-//                                }
-//                            },
-//                    1000);
-//    }
-
-//    private void updateQualityOfSignalIcon(float quality) {
-//        Log.d(TAG, "updateQualityOfSignalIcon: " + quality);
-//        int iQuality = (int) quality;
-//
-//        int imageRes = R.drawable.ic_quality_0;
-//
-//        if (iQuality == mDisplayedQuality) return;
-//        if (quality >= 4) { // Good Quality
-//            imageRes = R.drawable.ic_quality_4;
-//        } else if (quality >= 3) {// Average quality
-//            imageRes = (R.drawable.ic_quality_3);
-//        } else if (quality >= 2) { // Low quality
-//            imageRes = (R.drawable.ic_quality_2);
-//        } else if (quality >= 1) { // Very low quality
-//            imageRes = (R.drawable.ic_quality_1);
-//        }
-//        if (imgCallQuality != null) {
-//            imgCallQuality.setVisibility(View.VISIBLE);
-//            imgCallQuality.setImageResource(imageRes);
-//        }
-//        mDisplayedQuality = iQuality;
-//    }
-
     @Override
     protected void onResume() {
         super.onResume();
@@ -558,10 +510,6 @@ public class SupportActivity extends AppCompatActivity {
             Call[] calls = core.getCalls();
             for (Call call : calls) {
                 if (call != null && call.getState() == Call.State.StreamsRunning) {
-//                    if (voipId.equals("0")) {
-//                        Address address = call.getRemoteAddress();
-//                        edtTell.setText(PhoneNumberValidation.removePrefix(address.getUsername()));
-//                    }
                 }
             }
         }

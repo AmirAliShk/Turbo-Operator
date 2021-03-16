@@ -154,7 +154,6 @@ public class ReplacementFragment extends Fragment {
     };
 
     private void getOnlineOperator() {
-        // TODO test it ...
         if (loader != null)
             loader.setVisibility(View.VISIBLE);
 

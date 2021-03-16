@@ -569,6 +569,9 @@ public class DeterminationPageFragment extends Fragment {
     };
 
     private void setMistake() {
+        String tripTime = DateHelper.strPersianFour1(DateHelper.parseFormat(dataBase.getTopAddress().getSaveDate() + "", null));
+        String tripDate = DateHelper.strPersianSeven(DateHelper.parseFormat(dataBase.getTopAddress().getSaveDate() + "", null));
+
         LoadingDialog.makeCancelableLoader();
         RequestHelper.builder(EndPoints.MISTAKE)
                 .addParam("serviceId", StringHelper.toEnglishDigits(dataBase.getTopAddress().getId() + ""))
@@ -578,14 +581,13 @@ public class DeterminationPageFragment extends Fragment {
                 .addParam("adrs", StringHelper.toEnglishDigits(dataBase.getTopAddress().getOriginText()))
                 .addParam("customerName", StringHelper.toEnglishDigits(dataBase.getTopAddress().getCustomerName()))
                 .addParam("voipId", StringHelper.toEnglishDigits(dataBase.getTopAddress().getVoipId()))
-                .addParam("tripTime", StringHelper.toEnglishDigits(dataBase.getTopAddress().getSaveDate() + ""))//TODO
-                .addParam("tripDate", StringHelper.toEnglishDigits(dataBase.getTopAddress().getSaveDate() + ""))//TODO
+                .addParam("tripTime", tripTime)
+                .addParam("tripDate", tripDate)
                 .addParam("cityId", StringHelper.toEnglishDigits(dataBase.getTopAddress().getCity() + ""))
                 .addParam("tripStation", StringHelper.toEnglishDigits(dataBase.getTopAddress().getOriginStation() + ""))
                 .addParam("description", " ")
                 .listener(setMistake)
                 .post();
-
     }
 
     RequestHelper.Callback setMistake = new RequestHelper.Callback() {

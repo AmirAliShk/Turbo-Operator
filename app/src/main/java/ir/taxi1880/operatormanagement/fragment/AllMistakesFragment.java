@@ -120,6 +120,7 @@ public class AllMistakesFragment extends Fragment {
                             model.setConTime(dataObj.getString("conTime"));
                             model.setSendTime(dataObj.getString("sendTime"));
                             model.setVoipId(dataObj.getString("VoipId"));
+                            model.setStationCode(dataObj.getInt("stationCode"));
                             model.setCity(dataObj.getInt("cityId"));
 
                             allMistakesModels.add(model);

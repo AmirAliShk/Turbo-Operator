@@ -15,7 +15,6 @@
         android:layout_height="match_parent">
 
         <com.wang.avi.AVLoadingIndicatorView
-            android:id="@+id/avl"
             android:layout_width="30dp"
             android:layout_height="30dp"
             android:layout_gravity="center"
@@ -299,16 +298,6 @@
 
                     </LinearLayout>
 
-                    <TextView
-                        android:id="@+id/txtMistakesId"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content" />
-
-                    <TextView
-                        android:id="@+id/txtMistakesVoipId"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content" />
-
                 </LinearLayout>
 
             </ScrollView>
@@ -339,7 +328,6 @@
                         android:textStyle="bold" />
 
                     <com.wang.avi.AVLoadingIndicatorView
-                        android:id="@+id/avl"
                         android:layout_width="30dp"
                         android:layout_height="30dp"
                         android:layout_gravity="center"

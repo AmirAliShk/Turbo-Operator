@@ -61,8 +61,6 @@ public class AllMistakesAdapter extends RecyclerView.Adapter<AllMistakesAdapter.
 
         holder.txtComplaintDate.setText(StringHelper.toPersianDigits(model.getDate()));
         holder.txtComplaintTime.setText(StringHelper.toPersianDigits(model.getTime().substring(0, 5)));
-        holder.txtComplaintId.setText("  id:  " + model.getId() + "");
-        holder.txtComplaintVoipId.setText("  voipId:  " + model.getVoipId() + "");
 
         holder.btn.setOnClickListener(view1 -> {
             this.viewFlipper = holder.viewFlipper;
@@ -84,8 +82,6 @@ public class AllMistakesAdapter extends RecyclerView.Adapter<AllMistakesAdapter.
     public class ViewHolder extends RecyclerView.ViewHolder {
         TextView txtComplaintDate;
         TextView txtComplaintTime;
-        TextView txtComplaintId;
-        TextView txtComplaintVoipId;
         ViewFlipper viewFlipper;
         Button btn;
 
@@ -93,8 +89,6 @@ public class AllMistakesAdapter extends RecyclerView.Adapter<AllMistakesAdapter.
             super(itemView);
             txtComplaintDate = itemView.findViewById(R.id.txtMistakesDate);
             txtComplaintTime = itemView.findViewById(R.id.txtMistakesTime);
-            txtComplaintId = itemView.findViewById(R.id.txtMistakesId);
-            txtComplaintVoipId = itemView.findViewById(R.id.txtMistakesVoipId);
             viewFlipper = itemView.findViewById(R.id.vfAccept);
             btn = itemView.findViewById(R.id.btnAccept);
 

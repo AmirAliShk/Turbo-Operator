@@ -98,7 +98,6 @@ public class NotificationHelper {
         }
 
         NotificationCompat.Builder builder = new NotificationCompat.Builder(MyApplication.context.getApplicationContext(), channelId)
-                /*TODO: small icon shoudnt be null*/
                 .setSmallIcon(smallIcon)
 //                .setCustomContentView(collapsedView)
                 .setAutoCancel(autoCancel)
