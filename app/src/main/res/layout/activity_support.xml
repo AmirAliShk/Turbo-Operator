@@ -164,15 +164,13 @@
         </LinearLayout>
 
         <ImageView
-            android:id="@+id/imgTestConnection"
             android:layout_width="0dp"
             android:layout_weight="0.5"
             android:layout_height="match_parent"
             android:layout_toRightOf="@+id/imgBack"
             android:background="@color/colorPrimaryDark"
             android:padding="@dimen/_10sdp"
-            android:src="@drawable/ic_status"
-            android:visibility="visible" />
+            android:visibility="invisible" />
 
         <ImageView
             android:id="@+id/imgBack"

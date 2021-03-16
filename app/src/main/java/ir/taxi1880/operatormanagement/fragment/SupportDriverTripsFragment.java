@@ -162,7 +162,23 @@ public class SupportDriverTripsFragment extends Fragment {
                 }
             }, true);
         } else {
-            MyApplication.Toast("در حال حاضر تماسی برقرار نیست", Toast.LENGTH_SHORT);
+            new CallDialog().show(new CallDialog.CallBack() {
+            @Override
+            public void onDismiss() {
+            }
+
+            @Override
+            public void onCallReceived() {
+            }
+
+            @Override
+            public void onCallTransferred() {
+            }
+
+            @Override
+            public void onCallEnded() {
+             }
+        }, false);
         }
     }
 
