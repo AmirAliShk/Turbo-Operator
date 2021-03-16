@@ -154,32 +154,6 @@ public class SupportActivity extends AppCompatActivity {
     @BindView(R.id.imgHelpWarning)
     ImageView imgHelpWarning;
 
-    @BindView(R.id.imgTestConnection)
-    ImageView imgTestConnection;
-
-    @OnClick(R.id.imgTestConnection)
-    void onTestConnectionPress() {
-        new CallDialog().show(new CallDialog.CallBack() {
-            @Override
-            public void onDismiss() {
-            }
-
-            @Override
-            public void onCallReceived() {
-            }
-
-            @Override
-            public void onCallTransferred() {
-            }
-
-            @Override
-            public void onCallEnded() {
-                if (imgTestConnection != null)
-                    imgTestConnection.setColorFilter(ContextCompat.getColor(MyApplication.context, R.color.colorRed), android.graphics.PorterDuff.Mode.MULTIPLY);
-            }
-        }, false);
-    }
-
     @OnClick(R.id.imgAccept)
     void onAcceptPress() {
         call = core.getCurrentCall();
@@ -449,16 +423,12 @@ public class SupportActivity extends AppCompatActivity {
             if (state == Call.State.IncomingReceived) {
                 showCallIncoming();
             } else if (state == Call.State.Released) {
-                if (imgTestConnection != null)
-                    imgTestConnection.setColorFilter(ContextCompat.getColor(MyApplication.context, R.color.colorWhite), android.graphics.PorterDuff.Mode.MULTIPLY);
-                showTitleBar();
+                 showTitleBar();
                 if (mCallQualityUpdater != null) {
                     LinphoneService.removeFromUIThreadDispatcher(mCallQualityUpdater);
                     mCallQualityUpdater = null;
                 }
             } else if (state == Call.State.Connected) {
-                if (imgTestConnection != null)
-                    imgTestConnection.setColorFilter(ContextCompat.getColor(MyApplication.context, R.color.colorRed), android.graphics.PorterDuff.Mode.MULTIPLY);
                 Address address = call.getRemoteAddress();
                 showTitleBar();
             } else if (state == Call.State.Error) {
@@ -505,8 +475,6 @@ public class SupportActivity extends AppCompatActivity {
         showTitleBar();
         if (MyApplication.prefManager.getConnectedCall()) {
 //            startCallQuality();
-            imgTestConnection.setColorFilter(ContextCompat.getColor(MyApplication.context, R.color.colorRed), android.graphics.PorterDuff.Mode.MULTIPLY);
-
             Call[] calls = core.getCalls();
             for (Call call : calls) {
                 if (call != null && call.getState() == Call.State.StreamsRunning) {
