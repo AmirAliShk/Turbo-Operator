@@ -28,6 +28,7 @@ import ir.taxi1880.operatormanagement.R;
 import ir.taxi1880.operatormanagement.adapter.AllMistakesAdapter;
 import ir.taxi1880.operatormanagement.app.EndPoints;
 import ir.taxi1880.operatormanagement.app.MyApplication;
+import ir.taxi1880.operatormanagement.dialog.GeneralDialog;
 import ir.taxi1880.operatormanagement.helper.TypefaceUtil;
 import ir.taxi1880.operatormanagement.model.AllMistakesModel;
 import ir.taxi1880.operatormanagement.okHttp.RequestHelper;
@@ -79,6 +80,17 @@ public class AllMistakesFragment extends Fragment {
     }
 
     private void getListen() {
+        if (!MyApplication.prefManager.isActiveInSupport()) {
+            if (vfDownload != null)
+                vfDownload.setDisplayedChild(3);
+            new GeneralDialog()
+                    .title("هشدار")
+                    .message("لطفا فعال شوید")
+                    .firstButton("باشه", null)
+                    .cancelable(false)
+                    .show();
+            return;
+        }
         if (vfDownload != null)
             vfDownload.setDisplayedChild(0);
         RequestHelper.builder(EndPoints.LISTEN)

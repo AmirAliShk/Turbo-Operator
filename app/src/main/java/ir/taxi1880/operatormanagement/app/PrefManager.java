@@ -74,11 +74,21 @@ public class PrefManager {
     private static final String KEY_ACTIVATION_REMAINING_TIME = "activationRemainingTime";
     private static final String ACTIVITY_STATUS = "activityStatus";
     private static final String ACCESS_DRIVER_SUPPORT = "accessDriverSupport";
+    private static final String ACTIVE_IN_DRIVER_SUPPORT = "activeInDriverSupport";
 
     public PrefManager(Context context) {
         this._context = context;
         pref = _context.getSharedPreferences(PREF_NAME, PRIVATE_MODE);
         editor = pref.edit();
+    }
+
+    public boolean isActiveInSupport() {
+        return pref.getBoolean(ACTIVE_IN_DRIVER_SUPPORT, false);
+    }
+
+    public void activeInSupport(boolean active) {
+        editor.putBoolean(ACTIVE_IN_DRIVER_SUPPORT, active);
+        editor.commit();
     }
 
     public void setActivationRemainingTime(long v) {

@@ -311,6 +311,7 @@ public class SupportActivity extends AppCompatActivity {
                     String message = obj.getString("message");
 
                     if (success) {
+                        MyApplication.prefManager.activeInSupport(true);
                         MyApplication.prefManager.setActivityStatus(2);
                         MyApplication.Toast("شما باموفقیت وارد صف شدید", Toast.LENGTH_SHORT);
                         if (btnActivate != null)
@@ -375,6 +376,7 @@ public class SupportActivity extends AppCompatActivity {
                     String message = obj.getString("message");
 
                     if (success) {
+                        MyApplication.prefManager.activeInSupport(false);
                         MyApplication.prefManager.setActivityStatus(0);
                         MyApplication.Toast("شما باموفقیت از صف خارج شدید", Toast.LENGTH_SHORT);
                         MyApplication.prefManager.setActivateStatus(false);

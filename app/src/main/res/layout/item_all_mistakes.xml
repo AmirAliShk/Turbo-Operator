@@ -95,7 +95,7 @@
                 android:layout_height="match_parent"
                 android:background="@color/transparent"
                 android:text="قبول میکنم"
-                android:textAppearance="?android:attr/textAppearanceSmall"
+                android:textAppearance="?android:attr/textAppearanceMedium"
                 android:textColor="@color/colorWhite"
                 android:textStyle="bold" />
 
