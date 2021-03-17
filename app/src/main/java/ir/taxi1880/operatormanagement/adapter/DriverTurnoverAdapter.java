@@ -60,10 +60,10 @@ public class DriverTurnoverAdapter extends BaseAdapter {
         txtTripDate.setText(StringHelper.toPersianDigits(driverTurnoverModel.getDate()));
         txtTripTime.setText(StringHelper.toPersianDigits(driverTurnoverModel.getTime()));
         txtDescription.setText(StringHelper.toPersianDigits(driverTurnoverModel.getDescription()));
-        if (driverTurnoverModel.getCredit().equals("0")){
+        if (driverTurnoverModel.getCredit().equals("0")) {
             vfTurnoverStatus.setDisplayedChild(1);
-            txtAmount.setText(StringHelper.toPersianDigits(driverTurnoverModel.getDebit()));
-        }else if (driverTurnoverModel.getDebit().equals("0")){
+            txtAmount.setText(StringHelper.toPersianDigits(StringHelper.setComma(driverTurnoverModel.getDebit())));
+        } else if (driverTurnoverModel.getDebit().equals("0")) {
             vfTurnoverStatus.setDisplayedChild(0);
             txtAmount.setText(StringHelper.toPersianDigits(driverTurnoverModel.getCredit()));
         }
