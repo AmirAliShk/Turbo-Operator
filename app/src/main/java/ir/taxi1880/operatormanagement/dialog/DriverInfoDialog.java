@@ -12,6 +12,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -79,6 +80,11 @@ public class DriverInfoDialog {
     @OnClick(R.id.imgClose)
     void onPressCLose() {
         dismiss();
+    }
+
+    @OnClick(R.id.imgSendLinkToDriver)
+    void onPressSendLinkToDriver() {
+        MyApplication.Toast("send link", Toast.LENGTH_SHORT);
     }
 
     public void show(String driverInfo) {
