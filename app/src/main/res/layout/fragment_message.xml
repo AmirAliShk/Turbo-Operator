@@ -69,9 +69,7 @@
                             android:paddingLeft="10dp"
                             android:paddingRight="10dp"
                             android:text="ارتباط با مدیر"
-                            android:textAppearance="?android:attr/textAppearanceMedium"
-                            android:textColor="@color/colorWhite"
-                            android:textStyle="bold" />
+                            style="@style/pageTitle"/>
 
                         <TextView
                             android:id="@+id/tvStatus"

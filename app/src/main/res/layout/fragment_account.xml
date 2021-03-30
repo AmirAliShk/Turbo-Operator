@@ -23,8 +23,7 @@
             android:layout_centerHorizontal="true"
             android:padding="@dimen/_12sdp"
             android:text="@string/accountInfo"
-            android:textColor="@color/colorWhite"
-            android:textSize="@dimen/text_header" />
+            style="@style/pageTitle"/>
 
         <ImageView
             android:id="@+id/imgBack"

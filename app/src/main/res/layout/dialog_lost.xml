@@ -15,8 +15,7 @@
         android:minWidth="350dp"
         android:padding="@dimen/_8sdp"
         android:text="ثبت اشیا گمشده"
-        android:textAppearance="?android:attr/textAppearanceLarge"
-        android:textColor="@color/colorWhite" />
+        style="@style/dialogTitle"/>
 
     <LinearLayout
         android:layout_width="350dp"

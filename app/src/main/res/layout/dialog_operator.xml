@@ -31,9 +31,7 @@
                 android:layout_height="wrap_content"
                 android:gravity="center"
                 android:text="اپراتورها"
-                android:textColor="@color/colorWhite"
-                android:textSize="@dimen/text_header"
-                android:textStyle="bold" />
+                style="@style/dialogTitle"/>
 
         </LinearLayout>
 

@@ -425,7 +425,7 @@ public class SupportActivity extends AppCompatActivity {
             if (state == Call.State.IncomingReceived) {
                 showCallIncoming();
             } else if (state == Call.State.Released) {
-                 showTitleBar();
+                showTitleBar();
                 if (mCallQualityUpdater != null) {
                     LinphoneService.removeFromUIThreadDispatcher(mCallQualityUpdater);
                     mCallQualityUpdater = null;

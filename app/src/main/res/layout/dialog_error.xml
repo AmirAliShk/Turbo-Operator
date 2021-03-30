@@ -24,9 +24,7 @@
             android:gravity="center"
             android:padding="5dp"
             android:text="خطایی رخ داده"
-            android:textColor="@color/colorWhite"
-            android:textSize="22sp"
-            android:textStyle="bold" />
+            style="@style/dialogTitle"/>
 
         <TextView
             android:id="@+id/txtMessage"

@@ -43,9 +43,7 @@
             android:layout_centerInParent="true"
             android:gravity="center"
             android:text="@string/driver_support"
-            android:textColor="@color/colorWhite"
-            android:textSize="@dimen/text_header"
-            android:textStyle="bold" />
+            style="@style/pageTitle"/>
 
         <ImageView
             android:id="@+id/imgCallQuality"

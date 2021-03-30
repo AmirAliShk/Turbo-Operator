@@ -52,4 +52,14 @@
         <item name="android:layout_marginTop">10dp</item>
     </style>
 
+    <style name="pageTitle">
+        <item name="android:textColor">@color/colorWhite</item>
+        <item name="android:textSize">@dimen/_22ssp</item>
+    </style>
+
+    <style name="dialogTitle">
+        <item name="android:textColor">@color/colorWhite</item>
+        <item name="android:textSize">@dimen/_18ssp</item>
+    </style>
+
 </resources>

@@ -69,11 +69,9 @@
 
                 <TextView
                     android:id="@+id/txtCallerNum"
-
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:gravity="center"
-                    android:text="235"
                     android:textAppearance="?android:attr/textAppearanceLarge"
                     android:textColor="#fff"
                     android:textStyle="bold" />

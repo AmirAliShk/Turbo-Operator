@@ -14,19 +14,26 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+
+import java.util.ArrayList;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import butterknife.Unbinder;
 import ir.taxi1880.operatormanagement.R;
+import ir.taxi1880.operatormanagement.adapter.DriverTurnoverAdapter;
+import ir.taxi1880.operatormanagement.app.EndPoints;
 import ir.taxi1880.operatormanagement.app.MyApplication;
 import ir.taxi1880.operatormanagement.dataBase.DataBase;
 import ir.taxi1880.operatormanagement.helper.KeyBoardHelper;
 import ir.taxi1880.operatormanagement.helper.StringHelper;
 import ir.taxi1880.operatormanagement.helper.TypefaceUtil;
+import ir.taxi1880.operatormanagement.model.DriverTurnoverModel;
+import ir.taxi1880.operatormanagement.okHttp.RequestHelper;
 import ir.taxi1880.operatormanagement.push.AvaCrashReporter;
 
 public class DriverInfoDialog {
@@ -34,6 +41,7 @@ public class DriverInfoDialog {
     private static final String TAG = DriverInfoDialog.class.getSimpleName();
     static Dialog dialog;
     Unbinder unbinder;
+    String driverMobile;
 
     @BindView(R.id.txtFullName)
     TextView txtFullName;
@@ -84,7 +92,7 @@ public class DriverInfoDialog {
 
     @OnClick(R.id.imgSendLinkToDriver)
     void onPressSendLinkToDriver() {
-        MyApplication.Toast("send link", Toast.LENGTH_SHORT);
+        sendAppLink(driverMobile);
     }
 
     public void show(String driverInfo) {
@@ -113,6 +121,7 @@ public class DriverInfoDialog {
             int carCode = driverInfoObj.getInt("carCode");
             int smartCode = driverInfoObj.getInt("smartCode");
             txtFullName.setText(driverInfoObj.getString("driverName"));
+            driverMobile=driverInfoObj.getString("driverMobile");
             String carClass = "ثبت نشده";
             switch (driverInfoObj.getInt("carClass")) {
                 case 1:
@@ -159,6 +168,47 @@ public class DriverInfoDialog {
 
         dialog.show();
     }
+
+    public void sendAppLink(String mobile) {
+        RequestHelper.builder(EndPoints.DRIVER_SEND_APP_LINK)
+                .ignore422Error(true)
+                .addParam("mobile", mobile) // mobile
+                .listener(sendLinkCallBack)
+                .post();
+    }
+
+    RequestHelper.Callback sendLinkCallBack = new RequestHelper.Callback() {
+        @Override
+        public void onResponse(Runnable reCall, Object... args) {
+            MyApplication.handler.post(() -> {
+                try {
+                    JSONObject object = new JSONObject(args[0].toString());
+                    boolean success = object.getBoolean("success");
+                    String message = object.getString("message");
+                    if (success) {
+                        JSONObject dataObj = object.getJSONObject("data");
+                        boolean status = dataObj.getBoolean("status");
+                        //TODO‌ if status is true, show dialog or a toast?
+                    }else {
+                        new GeneralDialog()
+                                .title("خطا")
+                                .message(message)
+                                .cancelable(false)
+                                .firstButton("باشه", null)
+                                .show();
+                    }
+
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            });
+        }
+
+        @Override
+        public void onFailure(Runnable reCall, Exception e) {
+            super.onFailure(reCall, e);
+        }
+    };
 
     private static void dismiss() {
         try {

@@ -28,8 +28,8 @@
                 android:gravity="center"
                 android:padding="@dimen/_8sdp"
                 android:text="ثبت نتیجه"
+                style="@style/dialogTitle"/>
 
-                android:textColor="@color/colorWhite" />
         </RelativeLayout>
 
         <ScrollView

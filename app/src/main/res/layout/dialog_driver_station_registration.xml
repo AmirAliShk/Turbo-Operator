@@ -38,9 +38,7 @@
                     android:layout_gravity="center"
                     android:gravity="center"
                     android:text="گزارش ثبت ایستگاه"
-                    android:textAppearance="?android:attr/textAppearanceMedium"
-                    android:textColor="@color/colorWhite"
-                    android:textStyle="bold" />
+                    style="@style/dialogTitle"/>
 
             </LinearLayout>
 

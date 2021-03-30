@@ -29,8 +29,7 @@
                   android:layout_height="wrap_content"
                   android:layout_centerInParent="true"
                   android:text="@string/notification"
-                  android:textColor="@color/colorWhite"
-                  android:textSize="@dimen/text_header" />
+                  style="@style/pageTitle"/>
 
     </RelativeLayout>
 

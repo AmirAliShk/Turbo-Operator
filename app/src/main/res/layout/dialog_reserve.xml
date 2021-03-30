@@ -14,8 +14,7 @@
         android:minWidth="330dp"
         android:padding="@dimen/_8sdp"
         android:text="رزرو سفر"
-        android:textAppearance="?android:attr/textAppearanceLarge"
-        android:textColor="@color/colorWhite" />
+        style="@style/dialogTitle"/>
 
     <LinearLayout
         android:layout_width="330dp"
