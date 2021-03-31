@@ -65,7 +65,7 @@ public class DriverTurnoverAdapter extends BaseAdapter {
             txtAmount.setText(StringHelper.toPersianDigits(StringHelper.setComma(driverTurnoverModel.getDebit())));
         } else if (driverTurnoverModel.getDebit().equals("0")) {
             vfTurnoverStatus.setDisplayedChild(0);
-            txtAmount.setText(StringHelper.toPersianDigits(driverTurnoverModel.getCredit()));
+            txtAmount.setText(StringHelper.toPersianDigits(StringHelper.setComma(driverTurnoverModel.getCredit())));
         }
 
         return view;

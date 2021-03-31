@@ -70,7 +70,7 @@ public class AllMistakesFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_all_mistakes, container, false);
         unbinder = ButterKnife.bind(this, view);
-        TypefaceUtil.overrideFonts(view, MyApplication.IraSanSMedume);
+        TypefaceUtil.overrideFonts(view);
 
         getListen();
 
