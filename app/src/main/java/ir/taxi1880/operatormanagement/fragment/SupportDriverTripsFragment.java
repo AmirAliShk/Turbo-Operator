@@ -163,22 +163,22 @@ public class SupportDriverTripsFragment extends Fragment {
             }, true);
         } else {
             new CallDialog().show(new CallDialog.CallBack() {
-            @Override
-            public void onDismiss() {
-            }
+                @Override
+                public void onDismiss() {
+                }
 
-            @Override
-            public void onCallReceived() {
-            }
+                @Override
+                public void onCallReceived() {
+                }
 
-            @Override
-            public void onCallTransferred() {
-            }
+                @Override
+                public void onCallTransferred() {
+                }
 
-            @Override
-            public void onCallEnded() {
-             }
-        }, false);
+                @Override
+                public void onCallEnded() {
+                }
+            }, false);
         }
     }
 
@@ -219,6 +219,14 @@ public class SupportDriverTripsFragment extends Fragment {
                     break;
                 case 7: // taxi code
                     imageType = R.drawable.ic_taxi;
+                    edtSearchTrip.setInputType(InputType.TYPE_CLASS_NUMBER);
+                    break;
+                case 8: // driver address
+                    imageType = R.drawable.ic_gps;
+                    edtSearchTrip.setInputType(InputType.TYPE_CLASS_TEXT);
+                    break;
+                case 9: // station code
+                    imageType = R.drawable.ic_station_report;
                     edtSearchTrip.setInputType(InputType.TYPE_CLASS_NUMBER);
                     break;
             }
@@ -323,7 +331,7 @@ public class SupportDriverTripsFragment extends Fragment {
 
         switch (searchCase) {
 
-            case 6: // driver mobile
+            case 6: // search by driver mobile
                 RequestHelper.builder(EndPoints.SEARCH_SERVICE)
                         .ignore422Error(true)
                         .addParam("phonenumber", 0)
@@ -337,7 +345,7 @@ public class SupportDriverTripsFragment extends Fragment {
                         .post();
                 break;
 
-            case 7: // taxi code
+            case 7: //search by taxi code
                 RequestHelper.builder(EndPoints.SEARCH_SERVICE)
                         .ignore422Error(true)
                         .addParam("phonenumber", 0)
@@ -346,6 +354,34 @@ public class SupportDriverTripsFragment extends Fragment {
                         .addParam("address", 0)
                         .addParam("taxiCode", searchText)
                         .addParam("stationCode", 0)
+                        .addParam("searchInterval", extendedTime)
+                        .listener(onGetTripList)
+                        .post();
+                break;
+
+            case 8: //search by address
+                RequestHelper.builder(EndPoints.SEARCH_SERVICE)
+                        .ignore422Error(true)
+                        .addParam("phonenumber", 0)
+                        .addParam("driverPhone", 0)
+                        .addParam("name", 0)
+                        .addParam("address", searchText)
+                        .addParam("taxiCode", 0)
+                        .addParam("stationCode", 0)
+                        .addParam("searchInterval", extendedTime)
+                        .listener(onGetTripList)
+                        .post();
+                break;
+
+            case 9: //search by station code
+                RequestHelper.builder(EndPoints.SEARCH_SERVICE)
+                        .ignore422Error(true)
+                        .addParam("phonenumber", 0)
+                        .addParam("driverPhone", 0)
+                        .addParam("name", 0)
+                        .addParam("address", 0)
+                        .addParam("taxiCode", 0)
+                        .addParam("stationCode", searchText)
                         .addParam("searchInterval", extendedTime)
                         .listener(onGetTripList)
                         .post();
@@ -435,14 +471,12 @@ public class SupportDriverTripsFragment extends Fragment {
 
     };
 
-
     private void getDriverInfo(String searchText, int searchCase) {
         if (vfTrip != null) {
             vfTrip.setDisplayedChild(1);
         }
 
         switch (searchCase) {
-
             case 6: // driver mobile
                 RequestHelper.builder(EndPoints.DRIVER_INFO)
                         .ignore422Error(true)
@@ -451,7 +485,6 @@ public class SupportDriverTripsFragment extends Fragment {
                         .listener(onGetDriverInfo)
                         .get();
                 break;
-
             case 7: // taxi code
                 RequestHelper.builder(EndPoints.DRIVER_INFO)
                         .ignore422Error(true)
@@ -460,7 +493,6 @@ public class SupportDriverTripsFragment extends Fragment {
                         .listener(onGetDriverInfo)
                         .get();
                 break;
-
         }
 
     }

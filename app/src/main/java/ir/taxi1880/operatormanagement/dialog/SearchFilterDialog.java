@@ -80,6 +80,18 @@ public class SearchFilterDialog {
     dismiss();
   }
 
+  @OnClick(R.id.llDriverAddress)
+  void onPressDDriverAddress() {
+    searchCaseListener.searchCase(8);
+    dismiss();
+  }
+
+  @OnClick(R.id.llDriverStationCode)
+  void onPressDriverStationCode() {
+    searchCaseListener.searchCase(9);
+    dismiss();
+  }
+
   public void show(String dialogType, SearchCaseListener searchCaseListener) {
     if (MyApplication.currentActivity == null || MyApplication.currentActivity.isFinishing())
       return;

@@ -143,24 +143,24 @@ public class TripSupportFragment extends Fragment {
             if (edtSearchTrip == null) return;
             int imageType = R.drawable.ic_call;
             switch (searchCase) {
-                case 1:
+                case 1: //search by name
                     imageType = R.drawable.ic_user;
                     edtSearchTrip.setInputType(InputType.TYPE_CLASS_TEXT);
                     break;
-                case 2:
+                case 2: //search by tell
                     imageType = R.drawable.ic_call;
                     edtSearchTrip.setInputType(InputType.TYPE_CLASS_NUMBER);
                     break;
-                case 3:
+                case 3: //search by address
                     imageType = R.drawable.ic_gps;
                     edtSearchTrip.setInputType(InputType.TYPE_CLASS_TEXT);
                     break;
-                case 4:
+                case 4: //search by taxi code
                     imageType = R.drawable.ic_taxi;
                     edtSearchTrip.setInputType(InputType.TYPE_CLASS_NUMBER);
                     break;
-                case 5:
-                    imageType = R.drawable.ic_code;
+                case 5: //search by station code
+                    imageType = R.drawable.ic_station_report;
                     edtSearchTrip.setInputType(InputType.TYPE_CLASS_NUMBER);
                     break;
             }
