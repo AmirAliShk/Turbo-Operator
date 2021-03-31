@@ -290,6 +290,15 @@ public class PrefManager {
         return pref.getBoolean(ACTIVATE_STATUS, false);
     }
 
+    public void setActivateDriverSupport(boolean activateStatus) {
+        editor.putBoolean(ACTIVATE_STATUS, activateStatus);
+        editor.commit();
+    }
+
+    public boolean getActivateDriverSupport() {
+        return pref.getBoolean(ACTIVATE_STATUS, false);
+    }
+
     public void setCustomerSupport(int customerSupport) {
         editor.putInt(CUSTOMER_SUPPORT, customerSupport);
         editor.commit();

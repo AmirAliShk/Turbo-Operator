@@ -255,7 +255,7 @@ public class SupportActivity extends AppCompatActivity {
             MyApplication.handler.postDelayed(() -> FragmentHelper.toFragment(MyApplication.currentActivity, new SupportDriverTripsFragment()).replace(), 400);
         }
 
-        if (MyApplication.prefManager.getActivateStatus()) {
+        if (MyApplication.prefManager.getActivateDriverSupport()) {
             btnActivate.setBackgroundResource(R.drawable.bg_green_edge);
             btnDeActivate.setBackgroundColor(Color.parseColor("#00FFB2B2"));
         } else {
@@ -290,7 +290,7 @@ public class SupportActivity extends AppCompatActivity {
                         MyApplication.Toast("شما باموفقیت وارد صف شدید", Toast.LENGTH_SHORT);
                         if (btnActivate != null)
                             btnActivate.setBackgroundResource(R.drawable.bg_green_edge);
-                        MyApplication.prefManager.setActivateStatus(true);
+                        MyApplication.prefManager.setActivateDriverSupport(true);
                         if (btnDeActivate != null) {
                             btnDeActivate.setBackgroundColor(Color.parseColor("#00FFB2B2"));
                             btnDeActivate.setTextColor(Color.parseColor("#ffffff"));
@@ -353,7 +353,7 @@ public class SupportActivity extends AppCompatActivity {
                         MyApplication.prefManager.activeInSupport(false);
                         MyApplication.prefManager.setActivityStatus(0);
                         MyApplication.Toast("شما باموفقیت از صف خارج شدید", Toast.LENGTH_SHORT);
-                        MyApplication.prefManager.setActivateStatus(false);
+                        MyApplication.prefManager.setActivateDriverSupport(false);
                         if (btnActivate != null)
                             btnActivate.setBackgroundColor(Color.parseColor("#00FFB2B2"));
                         if (btnDeActivate != null) {
@@ -407,12 +407,12 @@ public class SupportActivity extends AppCompatActivity {
                 btnDeActivate.setBackgroundResource(R.drawable.bg_pink_edge);
                 btnActivate.setBackgroundColor(Color.parseColor("#00FFB2B2"));
                 btnDeActivate.setTextColor(Color.parseColor("#ffffff"));
-                MyApplication.prefManager.setActivateStatus(false);
+                MyApplication.prefManager.setActivateDriverSupport(false);
             } else {
                 btnActivate.setBackgroundResource(R.drawable.bg_green_edge);
                 btnDeActivate.setBackgroundColor(Color.parseColor("#00FFB2B2"));
                 btnDeActivate.setTextColor(Color.parseColor("#ffffff"));
-                MyApplication.prefManager.setActivateStatus(true);
+                MyApplication.prefManager.setActivateDriverSupport(true);
             }
         }
     };
