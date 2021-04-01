@@ -100,7 +100,7 @@
             <ImageView
                 android:layout_width="25dp"
                 android:layout_height="25dp"
-                android:src="@drawable/ic_station_report" />
+                android:src="@drawable/ic_station_search" />
 
             <TextView
                 style="@style/tripItemValue"
@@ -223,7 +223,7 @@
             <ImageView
                 android:layout_width="25dp"
                 android:layout_height="25dp"
-                android:src="@drawable/ic_station_report" />
+                android:src="@drawable/ic_station_search" />
 
             <TextView
                 style="@style/tripItemValue"

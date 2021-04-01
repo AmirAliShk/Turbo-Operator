@@ -42,7 +42,7 @@ public class ExtendedTimeDialog {
 
   @OnClick(R.id.llTwoDayAgo)
   void onPressAddress() {
-    extendedTime.extendTime(3, "دوروز قبل",R.drawable.ic_twodayago); // two day ago
+    extendedTime.extendTime(3, "دوروز قبل",R.drawable.ic_twodaysago); // two day ago
     dismiss();
   }
 
