@@ -519,7 +519,7 @@ public class DeterminationPageFragment extends Fragment {
                 .addParam("tripId", StringHelper.toEnglishDigits(tripId + ""))
                 .addParam("stationCode", StringHelper.toEnglishDigits(stationCode + ""))
                 .addParam("cityCode", StringHelper.toEnglishDigits(cityCode + ""))
-                .addParam("tripOperatorId", StringHelper.toEnglishDigits(dataBase.getTopAddress().getId() + ""))
+                .addParam("tripOperatorId", StringHelper.toEnglishDigits(dataBase.getTopAddress().getOperatorId() + ""))
                 .listener(setStationCode)
                 .put();
 
