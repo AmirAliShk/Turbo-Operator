@@ -2,6 +2,7 @@ package ir.taxi1880.operatormanagement.fragment;
 
 import android.graphics.Color;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,8 +14,11 @@ import android.widget.ViewFlipper;
 
 import androidx.fragment.app.Fragment;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+
+import java.util.ArrayList;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -28,12 +32,18 @@ import ir.taxi1880.operatormanagement.dialog.DriverLockDialog;
 import ir.taxi1880.operatormanagement.dialog.ErrorAddressDialog;
 import ir.taxi1880.operatormanagement.dialog.ErrorRegistrationDialog;
 import ir.taxi1880.operatormanagement.dialog.GeneralDialog;
+import ir.taxi1880.operatormanagement.dialog.GetStationCodeDialog;
 import ir.taxi1880.operatormanagement.dialog.LoadingDialog;
 import ir.taxi1880.operatormanagement.dialog.LostDialog;
+import ir.taxi1880.operatormanagement.dialog.StationInfoDialog;
+import ir.taxi1880.operatormanagement.helper.DateHelper;
 import ir.taxi1880.operatormanagement.helper.FragmentHelper;
 import ir.taxi1880.operatormanagement.helper.StringHelper;
 import ir.taxi1880.operatormanagement.helper.TypefaceUtil;
+import ir.taxi1880.operatormanagement.model.CallModel;
+import ir.taxi1880.operatormanagement.model.StationInfoModel;
 import ir.taxi1880.operatormanagement.okHttp.RequestHelper;
+import ir.taxi1880.operatormanagement.push.AvaCrashReporter;
 
 public class DriverTripsDetailsFragment extends Fragment {
     Unbinder unbinder;
@@ -57,6 +67,7 @@ public class DriverTripsDetailsFragment extends Fragment {
     String callTime;
     String cityName;
     int cityCode;
+    String serviceDetails;
 
     @OnClick(R.id.imgBack)
     void onBackPress() {
@@ -240,6 +251,11 @@ public class DriverTripsDetailsFragment extends Fragment {
         new DriverLockDialog().show(taxiCode);
     }
 
+    @OnClick(R.id.btnResendService)
+    void onResendService() {
+        new GetStationCodeDialog().show(serviceDetails);
+    }
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_driver_trip_details, container, false);
@@ -277,9 +293,10 @@ public class DriverTripsDetailsFragment extends Fragment {
                     JSONObject tripObject = new JSONObject(args[0].toString());
                     Boolean success = tripObject.getBoolean("success");
                     String message = tripObject.getString("message");
-                    JSONObject data = tripObject.getJSONObject("data");
 
                     if (success) {
+                        JSONObject data = tripObject.getJSONObject("data");
+                        serviceDetails = tripObject.getJSONObject("data").toString();
                         serviceId = data.getString("serviceId");
                         int status = data.getInt("Status");
                         callDate = data.getString("callDate");

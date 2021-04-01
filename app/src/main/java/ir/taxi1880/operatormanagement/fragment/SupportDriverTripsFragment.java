@@ -193,8 +193,11 @@ public class SupportDriverTripsFragment extends Fragment {
             return;
         }
         KeyBoardHelper.hideKeyboard();
-        getDriverInfo(searchText, searchCase);
         searchService(searchText, searchCase);
+
+        if (searchCase == 8 || searchCase == 9) // 9=search by station code, 8=search by address
+            return;
+        getDriverInfo(searchText, searchCase);
     }
 
     @OnLongClick(R.id.imgClear)
