@@ -11,6 +11,7 @@ import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -85,6 +86,12 @@ public class DriverInfoDialog {
     @BindView(R.id.imgConfirmInfo)
     ImageView imgConfirmInfo;
 
+    @BindView(R.id.txtLockStatus)
+    TextView txtLockStatus;
+
+    @BindView(R.id.llLockStatus)
+    LinearLayout llLockStatus;
+
     @OnClick(R.id.imgClose)
     void onPressCLose() {
         dismiss();
@@ -121,7 +128,7 @@ public class DriverInfoDialog {
             int carCode = driverInfoObj.getInt("carCode");
             int smartCode = driverInfoObj.getInt("smartCode");
             txtFullName.setText(driverInfoObj.getString("driverName"));
-            driverMobile=driverInfoObj.getString("driverMobile");
+            driverMobile = driverInfoObj.getString("driverMobile");
             String carClass = "ثبت نشده";
             switch (driverInfoObj.getInt("carClass")) {
                 case 1:
@@ -142,6 +149,16 @@ public class DriverInfoDialog {
             }
             txtCarClass.setText(carClass);
             String gender = driverInfoObj.getInt("gender") == 1 ? "مرد" : "زن";
+            int isLock = driverInfoObj.getInt("isLock");
+            String lockDes = driverInfoObj.getString("lockDes");
+            String lockFromDate = StringHelper.toPersianDigits(driverInfoObj.getString("lockFromDate").substring(5));
+            String lockFromTime = StringHelper.toPersianDigits(driverInfoObj.getString("lockFromTime").substring(0, 5));
+
+
+//                         String outDate = driverStationRegistrationModels.getOutDate().substring(5);
+//            String outTime = driverStationRegistrationModels.getOutTime().substring(0,5);
+//                        "lockFromDate": "1400/01/07",
+//                                "lockFromTime": "17:23:54",
             txtGender.setText(gender);
             txtNationalCode.setText(StringHelper.toPersianDigits(driverInfoObj.getString("nationalCode")));
             txtFatherName.setText(driverInfoObj.getString("fatherName"));
@@ -161,6 +178,18 @@ public class DriverInfoDialog {
             } else {
                 imgFuelQuota.setImageResource(R.drawable.ic_close_black_24dp);
             }
+
+            String statusMessage = "";
+
+            if (isLock == 2) {
+                statusMessage = "راننده به دلیل " + lockDes + " از تاریخ " + lockFromDate + " ساعت " + lockFromTime + " قفل خواهد شد.";
+            } else if (isLock == 1) {
+                statusMessage = "راننده به دلیل " + lockDes + " قفل میباشد.";
+            } else if (isLock == 0) {
+                llLockStatus.setVisibility(View.GONE);
+            }
+            txtLockStatus.setText(statusMessage);
+
             txtStartDate.setText(StringHelper.toPersianDigits(driverInfoObj.getString("startActiveDate")));
         } catch (JSONException e) {
             e.printStackTrace();
@@ -189,7 +218,7 @@ public class DriverInfoDialog {
                         JSONObject dataObj = object.getJSONObject("data");
                         boolean status = dataObj.getBoolean("status");
                         //TODO‌ if status is true, show dialog or a toast?
-                    }else {
+                    } else {
                         new GeneralDialog()
                                 .title("خطا")
                                 .message(message)

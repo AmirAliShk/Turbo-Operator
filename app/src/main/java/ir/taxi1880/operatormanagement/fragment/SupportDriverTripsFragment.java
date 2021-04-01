@@ -532,6 +532,10 @@ public class SupportDriverTripsFragment extends Fragment {
                         int fuelRationing = infoObj.getInt("fuelRationing");
                         int cancelFuel = infoObj.getInt("cancelFuel");
                         String startActiveDate = infoObj.getString("startActiveDate");
+                        int isLock = infoObj.getInt("isLock"); //todo status lock
+                        String lockDes = infoObj.getString("lockDes"); //todo description lock
+                        String lockFromDate = infoObj.getString("lockFromDate"); //todo date lock
+                        String lockFromTime = infoObj.getString("lockFromTime"); //todo time lock
 
                         JSONObject registrationObj = dataObj.getJSONObject("registration");
                         int status = registrationObj.getInt("status");
@@ -549,26 +553,31 @@ public class SupportDriverTripsFragment extends Fragment {
                         if (view != null) {
                             txtDriverName.setText(driverName);
                             txtDriverCode.setText(StringHelper.toPersianDigits(taxiCode + ""));
-                            switch (status) {
-                                case 1:
-                                    statusMessage = " نفر " + turn + " در ایستگاه " + station;
-                                    break;
 
-                                case 2:
-                                    statusMessage = "ثبت آینده در ایستگاه " + station + " مدت زمان :" + futureTime;
-                                    break;
+                            if (isLock == 1) {
+                                statusMessage ="راننده قفل میباشد.";
+                            } else {
+                                switch (status) {
+                                    case 1:
+                                        statusMessage = " نفر " + turn + " در ایستگاه " + station;
+                                        break;
 
-                                case 3:
-                                    statusMessage = "در حال سرویس دهی";
-                                    break;
+                                    case 2:
+                                        statusMessage = "ثبت آینده در ایستگاه " + station + " مدت زمان :" + futureTime;
+                                        break;
 
-                                case 4:
-                                    statusMessage = "ثبت ایستگاه نشده";
-                                    break;
+                                    case 3:
+                                        statusMessage = "در حال سرویس دهی";
+                                        break;
 
-                                case 5:
-                                    statusMessage = "فعال نیست";
-                                    break;
+                                    case 4:
+                                        statusMessage = "ثبت ایستگاه نشده";
+                                        break;
+
+                                    case 5:
+                                        statusMessage = "فعال نیست";
+                                        break;
+                                }
                             }
                             txtDriverQueue.setText(statusMessage);
                         }
