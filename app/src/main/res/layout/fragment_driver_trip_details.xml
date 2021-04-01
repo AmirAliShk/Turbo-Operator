@@ -32,6 +32,14 @@
             android:layout_centerInParent="true"
             android:text="@string/tripDetails" />
 
+        <ImageView
+            android:id="@+id/btnStationInfo"
+            android:layout_width="?android:attr/actionBarSize"
+            android:layout_height="match_parent"
+            android:layout_alignParentRight="true"
+            android:padding="15dp"
+            android:src="@drawable/ic_bronze" />
+
     </RelativeLayout>
 
     <ViewFlipper

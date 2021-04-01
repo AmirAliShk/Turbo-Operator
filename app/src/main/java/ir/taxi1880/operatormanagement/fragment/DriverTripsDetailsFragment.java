@@ -68,6 +68,7 @@ public class DriverTripsDetailsFragment extends Fragment {
     String cityName;
     int cityCode;
     String serviceDetails;
+    ArrayList<StationInfoModel> stationInfoModels;
 
     @OnClick(R.id.imgBack)
     void onBackPress() {
@@ -178,6 +179,12 @@ public class DriverTripsDetailsFragment extends Fragment {
 
     @BindView(R.id.btnDriverLocation)
     Button btnDriverLocation;
+
+    @OnClick(R.id.btnStationInfo)
+    void onStationInfo() {
+        String origin = txtStationCode.getText().toString();
+        getStationInfo(origin);
+    }
 
     @OnClick(R.id.btnCancelTrip)
     void onCancel() {
@@ -410,6 +417,78 @@ public class DriverTripsDetailsFragment extends Fragment {
                     vfTripDetails.setDisplayedChild(2);
                 }
             });
+        }
+
+    };
+
+    private void getStationInfo(String stationCode) {
+        RequestHelper.builder(EndPoints.STATION_INFO)
+                .addPath(StringHelper.toEnglishDigits(stationCode) + "")
+                .listener(getStationInfo)
+                .get();
+
+    }
+
+    RequestHelper.Callback getStationInfo = new RequestHelper.Callback() {
+        @Override
+        public void onResponse(Runnable reCall, Object... args) {
+            MyApplication.handler.post(() -> {
+                try {
+                    boolean isCountrySide = false;
+                    String stationName = "";
+                    Log.i("TAG", "onResponse: " + args[0].toString());
+                    stationInfoModels = new ArrayList<>();
+                    JSONObject obj = new JSONObject(args[0].toString());
+                    boolean success = obj.getBoolean("success");
+                    String message = obj.getString("message");
+
+                    if (success) {
+                        JSONArray dataArr = obj.getJSONArray("data");
+                        for (int i = 0; i < dataArr.length(); i++) {
+                            JSONObject dataObj = dataArr.getJSONObject(i);
+                            StationInfoModel stationInfoModel = new StationInfoModel();
+                            stationInfoModel.setStcode(dataObj.getInt("stcode"));
+                            stationInfoModel.setStreet(dataObj.getString("street"));
+                            stationInfoModel.setOdd(dataObj.getString("odd"));
+                            stationInfoModel.setEven(dataObj.getString("even"));
+                            stationInfoModel.setStationName(dataObj.getString("stationName"));
+                            stationInfoModel.setCountrySide(dataObj.getInt("countrySide"));
+                            isCountrySide = dataObj.getInt("countrySide") == 1;
+
+                            if (!dataObj.getString("stationName").equals("")) {
+                                stationName = dataObj.getString("stationName");
+                            }
+                            if (stationInfoModel.getStreet().isEmpty()) continue;
+                            stationInfoModels.add(stationInfoModel);
+                        }
+                        if (stationInfoModels.size() == 0) {
+                            MyApplication.Toast("اطلاعاتی موجود نیست", Toast.LENGTH_SHORT);
+                        } else {
+                            if (txtStationCode == null) return;
+                            if (stationName.equals("")) {
+                                new StationInfoDialog().show(stationInfoModels, "کد ایستگاه : " + txtStationCode.getText().toString(), isCountrySide);
+                            } else {
+                                new StationInfoDialog().show(stationInfoModels, stationName + " \n " + "کد ایستگاه : " + txtStationCode.getText().toString(), isCountrySide);
+                            }
+                        }
+
+                    } else {
+                        new GeneralDialog()
+                                .title("هشدار")
+                                .message(message)
+                                .secondButton("باشه", null)
+                                .cancelable(false)
+                                .show();
+                    }
+
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            });
+        }
+
+        @Override
+        public void onFailure(Runnable reCall, Exception e) {
         }
 
     };
