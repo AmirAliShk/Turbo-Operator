@@ -72,8 +72,8 @@ public class AllMistakesFragment extends Fragment {
         unbinder = ButterKnife.bind(this, view);
         TypefaceUtil.overrideFonts(view);
 
-        getListen();
-
+        if (vfDownload != null)
+            vfDownload.setDisplayedChild(3);
         refreshPage.setOnRefreshListener(() -> getListen());
 
         return view;
