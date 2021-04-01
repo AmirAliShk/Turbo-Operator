@@ -160,7 +160,7 @@ public class TripSupportFragment extends Fragment {
                     edtSearchTrip.setInputType(InputType.TYPE_CLASS_NUMBER);
                     break;
                 case 5: //search by station code
-                    imageType = R.drawable.ic_station_report;
+                    imageType = R.drawable.ic_station_search;
                     edtSearchTrip.setInputType(InputType.TYPE_CLASS_NUMBER);
                     break;
             }

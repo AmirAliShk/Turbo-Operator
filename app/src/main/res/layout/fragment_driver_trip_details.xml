@@ -32,13 +32,27 @@
             android:layout_centerInParent="true"
             android:text="@string/tripDetails" />
 
-        <ImageView
-            android:id="@+id/btnStationInfo"
+        <ViewFlipper
+            android:id="@+id/vfStationInfo"
             android:layout_width="?android:attr/actionBarSize"
             android:layout_height="match_parent"
-            android:layout_alignParentRight="true"
-            android:padding="15dp"
-            android:src="@drawable/ic_bronze" />
+            android:layout_alignParentRight="true">
+
+            <ImageView
+                android:id="@+id/btnStationInfo"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_alignParentRight="true"
+                android:padding="15dp"
+                android:src="@drawable/ic_bronze" />
+
+            <com.wang.avi.AVLoadingIndicatorView
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:layout_gravity="center"
+                app:indicatorColor="@color/colorWhite" />
+
+        </ViewFlipper>
 
     </RelativeLayout>
 

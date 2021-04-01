@@ -229,7 +229,7 @@ public class SupportDriverTripsFragment extends Fragment {
                     edtSearchTrip.setInputType(InputType.TYPE_CLASS_TEXT);
                     break;
                 case 9: // station code
-                    imageType = R.drawable.ic_station_report;
+                    imageType = R.drawable.ic_station_search;
                     edtSearchTrip.setInputType(InputType.TYPE_CLASS_NUMBER);
                     break;
             }
@@ -535,10 +535,10 @@ public class SupportDriverTripsFragment extends Fragment {
                         int fuelRationing = infoObj.getInt("fuelRationing");
                         int cancelFuel = infoObj.getInt("cancelFuel");
                         String startActiveDate = infoObj.getString("startActiveDate");
-                        int isLock = infoObj.getInt("isLock"); //todo status lock
-                        String lockDes = infoObj.getString("lockDes"); //todo description lock
-                        String lockFromDate = infoObj.getString("lockFromDate"); //todo date lock
-                        String lockFromTime = infoObj.getString("lockFromTime"); //todo time lock
+                        int isLock = infoObj.getInt("isLock");
+                        String lockDes = infoObj.getString("lockDes");
+                        String lockFromDate = infoObj.getString("lockFromDate");
+                        String lockFromTime = infoObj.getString("lockFromTime");
 
                         JSONObject registrationObj = dataObj.getJSONObject("registration");
                         int status = registrationObj.getInt("status");

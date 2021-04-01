@@ -180,9 +180,16 @@ public class DriverTripsDetailsFragment extends Fragment {
     @BindView(R.id.btnDriverLocation)
     Button btnDriverLocation;
 
+    @BindView(R.id.vfStationInfo)
+    ViewFlipper vfStationInfo;
+
     @OnClick(R.id.btnStationInfo)
     void onStationInfo() {
         String origin = txtStationCode.getText().toString();
+        if (origin.isEmpty()) {
+            MyApplication.Toast("لطفا شماره ایستگاه را وارد کنید", Toast.LENGTH_SHORT);
+            return;
+        }
         getStationInfo(origin);
     }
 
@@ -421,7 +428,11 @@ public class DriverTripsDetailsFragment extends Fragment {
 
     };
 
+
     private void getStationInfo(String stationCode) {
+        if (vfStationInfo != null) {
+            vfStationInfo.setDisplayedChild(1);
+        }
         RequestHelper.builder(EndPoints.STATION_INFO)
                 .addPath(StringHelper.toEnglishDigits(stationCode) + "")
                 .listener(getStationInfo)
@@ -481,14 +492,29 @@ public class DriverTripsDetailsFragment extends Fragment {
                                 .show();
                     }
 
+                    if (vfStationInfo != null) {
+                        vfStationInfo.setDisplayedChild(0);
+                    }
+
                 } catch (JSONException e) {
                     e.printStackTrace();
+                    if (vfStationInfo != null) {
+                        vfStationInfo.setDisplayedChild(0);
+                    }
                 }
             });
         }
 
         @Override
         public void onFailure(Runnable reCall, Exception e) {
+            MyApplication.handler.post(new Runnable() {
+                @Override
+                public void run() {
+                    if (vfStationInfo != null) {
+                        vfStationInfo.setDisplayedChild(0);
+                    }
+                }
+            });
         }
 
     };
