@@ -14,7 +14,7 @@
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
             android:gravity="center"
             android:orientation="vertical">
 
@@ -22,40 +22,47 @@
                 android:layout_width="@dimen/_300sdp"
                 android:layout_height="wrap_content"
                 android:layout_gravity="top|center_horizontal"
-                android:background="@drawable/bg_gray_lite_edge"
+                android:background="@drawable/bg_white_edge"
                 android:gravity="top"
                 android:minWidth="@dimen/_270sdp"
-                android:minHeight="@dimen/_350sdp"
                 android:orientation="vertical"
                 android:paddingTop="@dimen/_10sdp">
 
-                <LinearLayout
-                    android:id="@+id/llLockStatus"
+                <RelativeLayout
+                    android:id="@+id/rlLockStatus"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="@dimen/_10sdp"
-                    android:layout_marginTop="@dimen/_10sdp"
-                    android:layout_marginRight="@dimen/_10sdp"
-                    android:gravity="center"
-                    android:orientation="horizontal"
-                    android:paddingBottom="5dp">
+                    android:visibility="gone">
 
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="@dimen/_10sdp"
+                        android:layout_marginTop="@dimen/_15sdp"
+                        android:layout_marginRight="@dimen/_10sdp"
+                        android:background="@drawable/bg_locked_driver"
+                        android:gravity="center"
+                        android:orientation="horizontal"
+                        android:padding="10dp">
+
+                        <TextView
+                            android:id="@+id/txtLockStatus"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:gravity="center"
+                            android:text="راننده به دلیل تاخیر زیاد در سرویس دهی قفل میباشد."
+                            android:textColor="@color/colorBlack"
+                            android:textSize="@dimen/_15ssp"
+                            android:textStyle="bold" />
+
+                    </LinearLayout>
 
                     <ImageView
-                        android:layout_width="@dimen/_20sdp"
-                        android:layout_height="@dimen/_20sdp"
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/_25sdp"
                         android:src="@drawable/ic_error" />
 
-                    <TextView
-                        android:id="@+id/txtLockStatus"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginRight="@dimen/_10sdp"
-                        android:textColor="@color/colorBlack"
-                        android:textSize="@dimen/_14ssp"
-                        android:textStyle="bold" />
-
-                </LinearLayout>
+                </RelativeLayout>
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -66,16 +73,23 @@
 
                     <TextView
                         android:id="@+id/txtTitle"
-                        android:layout_width="wrap_content"
+                        android:layout_width="match_parent"
                         android:layout_height="@dimen/_30sdp"
                         android:layout_weight="1"
                         android:gravity="right|center_vertical"
                         android:text="اطلاعات راننده:"
-                        android:textColor="@color/colorBlack"
+                        android:textColor="@color/colorPrimaryDark"
                         android:textSize="@dimen/_14ssp"
                         android:textStyle="bold" />
 
                 </LinearLayout>
+
+                <ImageView
+                    android:layout_width="match_parent"
+                    android:layout_height="0.7dp"
+                    android:layout_marginLeft="@dimen/_10sdp"
+                    android:layout_marginRight="@dimen/_10sdp"
+                    android:background="@color/colorBlack" />
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -279,9 +293,16 @@
                     android:layout_marginRight="@dimen/_10sdp"
                     android:gravity="right|center_vertical"
                     android:text="اطلاعات خودرو:"
-                    android:textColor="@color/colorBlack"
+                    android:textColor="@color/colorPrimaryDark"
                     android:textSize="@dimen/_14ssp"
                     android:textStyle="bold" />
+
+                <ImageView
+                    android:layout_width="match_parent"
+                    android:layout_height="0.7dp"
+                    android:layout_marginLeft="@dimen/_10sdp"
+                    android:layout_marginRight="@dimen/_10sdp"
+                    android:background="@color/colorBlack" />
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -419,22 +440,35 @@
 
                 <ViewFlipper
                     android:id="@+id/vfLoader"
-                    android:layout_width="wrap_content"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_margin="@dimen/_10sdp"
                     android:background="@drawable/bg_light_pink_edge">
 
-                    <TextView
-                        android:id="@+id/imgSendLinkToDriver"
-                        android:layout_width="wrap_content"
+                    <LinearLayout
+                        android:layout_width="match_parent"
                         android:layout_height="@dimen/_30sdp"
-                        android:gravity="center"
-                        android:paddingLeft="@dimen/_10sdp"
-                        android:paddingRight="@dimen/_10sdp"
-                        android:text="ارسال لینک"
-                        android:textColor="@color/colorWhite"
-                        android:textSize="@dimen/_14ssp"
-                        android:textStyle="bold" />
+                        android:gravity="center">
+
+                        <ImageView
+                            android:layout_width="30dp"
+                            android:layout_height="30dp"
+                            android:padding="2dp"
+                            android:src="@drawable/ic_link" />
+
+                        <TextView
+                            android:id="@+id/imgSendLinkToDriver"
+                            android:layout_width="wrap_content"
+                            android:layout_height="@dimen/_30sdp"
+                            android:layout_marginRight="@dimen/_3sdp"
+                            android:gravity="center"
+                            android:text="ارسال لینک"
+                            android:textColor="@color/colorWhite"
+                            android:textSize="@dimen/_14ssp"
+                            android:textStyle="bold" />
+
+                    </LinearLayout>
+
 
                     <com.wang.avi.AVLoadingIndicatorView
                         android:layout_width="30dp"

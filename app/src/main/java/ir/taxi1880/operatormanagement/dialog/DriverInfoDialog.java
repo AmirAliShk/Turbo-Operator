@@ -12,6 +12,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.ViewFlipper;
@@ -90,8 +91,8 @@ public class DriverInfoDialog {
     @BindView(R.id.txtLockStatus)
     TextView txtLockStatus;
 
-    @BindView(R.id.llLockStatus)
-    LinearLayout llLockStatus;
+    @BindView(R.id.rlLockStatus)
+    RelativeLayout llLockStatus;
 
     @BindView(R.id.vfLoader)
     ViewFlipper vfLoader;
@@ -186,11 +187,11 @@ public class DriverInfoDialog {
             String statusMessage = "";
 
             if (isLock == 2) {
+                llLockStatus.setVisibility(View.VISIBLE);
                 statusMessage = "راننده به دلیل " + lockDes + " از تاریخ " + lockFromDate + " ساعت " + lockFromTime + " قفل خواهد شد.";
             } else if (isLock == 1) {
+                llLockStatus.setVisibility(View.VISIBLE);
                 statusMessage = "راننده به دلیل " + lockDes + " قفل میباشد.";
-            } else if (isLock == 0) {
-                llLockStatus.setVisibility(View.GONE);
             }
             txtLockStatus.setText(statusMessage);
 
