@@ -70,19 +70,9 @@ public class StationInfoDialog {
     stationInfoAdapter = new StationInfoAdapter(stationInfoModels, MyApplication.context);
     listStationInfo.setAdapter(stationInfoAdapter);
 
-    llCLose.setOnClickListener(new View.OnClickListener() {
-      @Override
-      public void onClick(View view) {
-        dismiss();
-      }
-    });
+    llCLose.setOnClickListener(view -> dismiss());
 
-    listStationInfo.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-      @Override
-      public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-        dismiss();
-      }
-    });
+    listStationInfo.setOnItemClickListener((adapterView, view, i, l) -> dismiss());
 
     dialog.show();
 

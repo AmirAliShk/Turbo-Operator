@@ -1,8 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:gravity="center"
+    android:layout_height="match_parent"
     android:layoutDirection="rtl"
     android:id="@+id/llStation"
     android:orientation="vertical">
@@ -25,9 +24,9 @@
 
         <TextView
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:gravity="right|center_vertical"
-            android:text="خیابان :  "
+            android:text="خیابان : "
             android:textAppearance="?android:attr/textAppearanceSmall"
             android:textColor="@color/colorPrimaryDark" />
 
@@ -38,7 +37,6 @@
             android:layout_height="match_parent"
             android:text="خیابان"
             android:gravity="right|center_vertical"
-            android:singleLine="true"
             android:textColor="@color/colorBlack"
             android:textAppearance="?android:attr/textAppearanceSmall"/>
 
@@ -59,22 +57,23 @@
             android:id="@+id/llEven"
             android:layout_width="0dp"
             android:layout_weight="1"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:gravity="center"
             android:orientation="horizontal">
 
             <TextView
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_height="match_parent"
                 android:gravity="right|center_vertical"
-                android:text="محدوده زوج :  "
+                android:text="محدوده زوج : "
                 android:textAppearance="?android:attr/textAppearanceSmall"
                 android:textColor="@color/colorPrimaryDark" />
 
             <TextView
                 android:id="@+id/txtEven"
-                android:layout_width="match_parent"
+                android:layout_width="0dp"
                 android:layout_height="match_parent"
+                android:layout_weight="1"
                 android:text="زوج"
                 android:gravity="right|center_vertical"
                 android:textColor="@color/colorBlack"
@@ -86,7 +85,7 @@
             android:id="@+id/llOdd"
             android:layout_width="0dp"
             android:layout_weight="1"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:gravity="center"
             android:layoutDirection="rtl"
             android:orientation="horizontal">
@@ -101,8 +100,9 @@
 
             <TextView
                 android:id="@+id/txtOdd"
-                android:layout_width="match_parent"
+                android:layout_width="0dp"
                 android:layout_height="match_parent"
+                android:layout_weight="1"
                 android:text="فرد"
                 android:gravity="right|center_vertical"
                 android:textColor="@color/colorBlack"
