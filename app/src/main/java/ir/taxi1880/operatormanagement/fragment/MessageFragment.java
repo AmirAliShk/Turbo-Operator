@@ -140,10 +140,11 @@ public class MessageFragment extends Fragment {
                     if (listMessage != null) {
                         listMessage.setAdapter(messageAdapter);
                         MyApplication.handler.postDelayed(() -> {
-                            listMessage.scrollToPosition(listMessage.getAdapter().getItemCount() - 1);
-                            messageAdapter.notifyDataSetChanged();
-                            if (vfMessage != null)
+                            if (vfMessage != null) {
                                 vfMessage.setDisplayedChild(1);
+                                listMessage.scrollToPosition(listMessage.getAdapter().getItemCount() - 1);
+                                messageAdapter.notifyDataSetChanged();
+                            }
                         }, 200);
                     }
 

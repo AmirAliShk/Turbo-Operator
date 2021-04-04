@@ -82,7 +82,7 @@ public class TripSupportFragment extends Fragment {
     TextView txtCancel;
 
     @OnClick(R.id.txtCancel)
-    void txtCancel()  {
+    void txtCancel() {
         if (vfTrip != null) {
             vfTrip.setDisplayedChild(3);
         }
@@ -139,7 +139,7 @@ public class TripSupportFragment extends Fragment {
 
     @OnClick(R.id.imgSearchType)
     void onSearchTypePress() {
-        new SearchFilterDialog().show("passenger",searchCase -> {
+        new SearchFilterDialog().show("passenger", searchCase -> {
             if (edtSearchTrip == null) return;
             int imageType = R.drawable.ic_call;
             switch (searchCase) {
@@ -173,9 +173,11 @@ public class TripSupportFragment extends Fragment {
     @OnClick(R.id.llExtendedTime)
     void onExtendedTimePress() {
         new ExtendedTimeDialog().show((type, title, icon) -> {
-            extendedTime = type;
-            txtExtendTime.setText(title);
-            imgExtendedTime.setImageResource(icon);
+            if (txtExtendTime != null) {
+                extendedTime = type;
+                txtExtendTime.setText(title);
+                imgExtendedTime.setImageResource(icon);
+            }
         });
     }
 

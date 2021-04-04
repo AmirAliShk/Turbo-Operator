@@ -123,11 +123,11 @@ public class AllMistakesAdapter extends RecyclerView.Adapter<AllMistakesAdapter.
                                         notifyDataSetChanged();
 
                                         broadcaster = LocalBroadcastManager.getInstance(MyApplication.context);
+
                                         Intent broadcastIntent1 = new Intent(KEY_PENDING_MISTAKE_COUNT);
                                         broadcastIntent1.putExtra(PENDING_MISTAKE_COUNT, dataBase.getMistakesCount());
                                         broadcaster.sendBroadcast(broadcastIntent1);
 
-                                        broadcaster = LocalBroadcastManager.getInstance(MyApplication.context);
                                         Intent broadcastIntent2 = new Intent(KEY_NEW_MISTAKE_COUNT);
                                         broadcastIntent2.putExtra(NEW_MISTAKE_COUNT, allMistakesModels.size());
                                         broadcaster.sendBroadcast(broadcastIntent2);

@@ -267,7 +267,7 @@ public class RecentCallsAdapter extends RecyclerView.Adapter<RecentCallsAdapter.
 
     private void playVoice() {
         try {
-            if (view != null) {
+            if (mediaPlayer != null) {
                 mediaPlayer.start();
                 vfPlayPause.setDisplayedChild(2);
                 startTimer();
@@ -294,14 +294,12 @@ public class RecentCallsAdapter extends RecyclerView.Adapter<RecentCallsAdapter.
     }
 
     private void startTimer() {
-        Log.i("PlayConversationDialog", "startTimer: ");
         if (timer != null) {
             return;
         }
         timer = new Timer();
         UpdateSeekBar task = new UpdateSeekBar();
         timer.scheduleAtFixedRate(task, 500, 1000);
-
     }
 
     private static void cancelTimer() {
@@ -318,7 +316,6 @@ public class RecentCallsAdapter extends RecyclerView.Adapter<RecentCallsAdapter.
             if (mediaPlayer != null) {
                 try {
                     MyApplication.handler.post(() -> {
-                        Log.i("PlayConversationDialog", "onStopTrackingTouch run: " + mediaPlayer.getCurrentPosition());
                         skbTimer.setProgress(mediaPlayer.getCurrentPosition());
                         int timeRemaining = mediaPlayer.getCurrentPosition() / 1000;
                         String strTimeRemaining = String.format(new Locale("en_US"), "%02d:%02d", timeRemaining / 60, timeRemaining % 60);
