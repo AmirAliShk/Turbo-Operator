@@ -102,7 +102,6 @@ public class EndPoints {
     public static final String CANCEL = SUPPORT_TRIP_WEBSERVICE_PATH + "cancel";
     public static final String PASSENGER_INFO = SUPPORT_WEBSERVICE_PATH + "passengerInfo";
     public static final String SERVICE_DETAIL = SUPPORT_WEBSERVICE_PATH + "serviceDetail";
-    public static final String CANCEL_SERVICE = SUPPORT_WEBSERVICE_PATH + "cancelService";
     public static final String LAST_DRIVER_POSITION = SUPPORT_WEBSERVICE_PATH + "lastDriverPosition";
     public static final String INSERT_COMPLAINT = SUPPORT_WEBSERVICE_PATH + "insertComplaint";
     public static final String INSERT_LOST_OBJECT = SUPPORT_WEBSERVICE_PATH + "insertLostObject";

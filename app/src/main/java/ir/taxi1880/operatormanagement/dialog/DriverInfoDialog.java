@@ -14,6 +14,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
+import android.widget.ViewFlipper;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -91,6 +92,9 @@ public class DriverInfoDialog {
 
     @BindView(R.id.llLockStatus)
     LinearLayout llLockStatus;
+
+    @BindView(R.id.vfLoader)
+    ViewFlipper vfLoader;
 
     @OnClick(R.id.imgClose)
     void onPressCLose() {
@@ -199,6 +203,8 @@ public class DriverInfoDialog {
     }
 
     public void sendAppLink(String mobile) {
+        if (vfLoader != null)
+            vfLoader.setDisplayedChild(1);
         RequestHelper.builder(EndPoints.DRIVER_SEND_APP_LINK)
                 .ignore422Error(true)
                 .addParam("mobile", mobile) // mobile
@@ -211,13 +217,22 @@ public class DriverInfoDialog {
         public void onResponse(Runnable reCall, Object... args) {
             MyApplication.handler.post(() -> {
                 try {
+                    if (vfLoader != null)
+                        vfLoader.setDisplayedChild(0);
                     JSONObject object = new JSONObject(args[0].toString());
                     boolean success = object.getBoolean("success");
                     String message = object.getString("message");
                     if (success) {
                         JSONObject dataObj = object.getJSONObject("data");
                         boolean status = dataObj.getBoolean("status");
-                        //TODO‌ if status is true, show dialog or a toast?
+                        if (status) {
+                            new GeneralDialog()
+                                    .title("ثبت شد")
+                                    .message(message)
+                                    .cancelable(false)
+                                    .firstButton("باشه", null)
+                                    .show();
+                        }
                     } else {
                         new GeneralDialog()
                                 .title("خطا")
@@ -229,13 +244,18 @@ public class DriverInfoDialog {
 
                 } catch (Exception e) {
                     e.printStackTrace();
+                    if (vfLoader != null)
+                        vfLoader.setDisplayedChild(0);
                 }
             });
         }
 
         @Override
         public void onFailure(Runnable reCall, Exception e) {
-            super.onFailure(reCall, e);
+            MyApplication.handler.post(() -> {
+                if (vfLoader != null)
+                    vfLoader.setDisplayedChild(0);
+            });
         }
     };
 

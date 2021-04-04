@@ -35,7 +35,7 @@
         </LinearLayout>
 
         <EditText
-            android:id="@+id/txtNumber"
+            android:id="@+id/edtNumber"
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_margin="10dp"
@@ -52,17 +52,17 @@
         <ViewFlipper
             android:id="@+id/vfSubmit"
             android:layout_width="wrap_content"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
             android:background="@drawable/green_shadow">
 
             <Button
                 android:id="@+id/btnSubmit"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="40dp"
-                android:layout_marginRight="40dp"
                 android:background="@color/transparent"
                 android:text="ثبت"
+                android:paddingLeft="50dp"
+                android:paddingRight="50dp"
                 android:textAppearance="?android:attr/textAppearanceLarge"
                 android:textColor="@color/colorWhite"
                 android:textStyle="bold" />

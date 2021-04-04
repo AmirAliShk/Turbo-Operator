@@ -33,6 +33,7 @@ public class GetStationCodeDialog {
     Unbinder unbinder;
     String stationCode;
     String serviceDetails;
+    JSONObject objServiceDetails;
 
     @OnClick(R.id.imgClose)
     void onClosePress() {
@@ -42,20 +43,26 @@ public class GetStationCodeDialog {
     @BindView(R.id.imgClose)
     ImageView imgClose;
 
-    @BindView(R.id.txtNumber)
-    TextView txtNumber;
+    @BindView(R.id.edtNumber)
+    TextView edtNumber;
 
     @BindView(R.id.vfSubmit)
     ViewFlipper vfSubmit;
 
     @OnClick(R.id.btnSubmit)
     void onSubmit() {
-        stationCode = txtNumber.getText().toString();
+        stationCode = edtNumber.getText().toString();
         if (stationCode.isEmpty()) {
             MyApplication.Toast("لطفا کد ایستگاه را وارد کنید.", Toast.LENGTH_SHORT);
             return;
         }
-        insertService(serviceDetails);
+        new GeneralDialog()
+                .title("هشدار")
+                .message("آیا از ارسال مجدد سرویس اطمینان دارید؟")
+                .cancelable(false)
+                .firstButton("بله", this::cancelService)
+                .secondButton("خیر", null)
+                .show();
     }
 
     public void show(String serviceDetails) {
@@ -74,33 +81,100 @@ public class GetStationCodeDialog {
         unbinder = ButterKnife.bind(this, dialog);
         dialog.setCancelable(false);
 
-        this.serviceDetails = serviceDetails;
+        try {
+            objServiceDetails = new JSONObject(serviceDetails);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
 
         dialog.show();
     }
 
-    private void insertService(String serviceDetails) {
+    private void cancelService() {
         try {
-            JSONObject objServiceDetails = new JSONObject(serviceDetails);
             LoadingDialog.makeCancelableLoader();
+            if (vfSubmit != null) {
+                vfSubmit.setDisplayedChild(1);
+            }
+            RequestHelper.builder(EndPoints.CANCEL)
+                    .addParam("serviceId", objServiceDetails.getString("serviceId"))
+                    .addParam("scope", "driver")
+                    .listener(onCancelService)
+                    .post();
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+    }
+
+    RequestHelper.Callback onCancelService = new RequestHelper.Callback() {
+        @Override
+        public void onResponse(Runnable reCall, Object... args) {
+            MyApplication.handler.post(() -> {
+                try {
+//            {"success":true,"message":"","data":{"status":true}}
+                    JSONObject object = new JSONObject(args[0].toString());
+                    boolean success = object.getBoolean("success");
+                    String message = object.getString("message");
+
+                    if (success) {
+                        JSONObject dataObj = object.getJSONObject("data");
+                        boolean status = dataObj.getBoolean("status");
+                        if (status) {
+
+                            insertService(objServiceDetails);// register service again...
+
+                        } else {
+                            //TODO  what to do? show error dialog?
+                        }
+                    } else {
+                        new GeneralDialog()
+                                .title("هشدار")
+                                .message(message)
+                                .cancelable(false)
+                                .firstButton("باشه", null)
+                                .show();
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
+                    LoadingDialog.dismissCancelableDialog();
+                    if (vfSubmit != null)
+                        vfSubmit.setDisplayedChild(0);
+                }
+            });
+        }
+
+        @Override
+        public void onFailure(Runnable reCall, Exception e) {
+            MyApplication.handler.post(() -> {
+                //TODO  what to do? show error dialog?
+                LoadingDialog.dismissCancelableDialog();
+                if (vfSubmit != null)
+                    vfSubmit.setDisplayedChild(0);
+            });
+        }
+
+    };
+
+    private void insertService(JSONObject objServiceDetails) {
+        try {
             RequestHelper.builder(EndPoints.INSERT_TRIP_SENDING_QUEUE)
-                    .addParam("phoneNumber", objServiceDetails.getString("customerTel"))
-                    .addParam("mobile", objServiceDetails.getString("customerMobile"))
+                    .addParam("phoneNumber", objServiceDetails.getString("customerTel").trim())
+                    .addParam("mobile", objServiceDetails.getString("customerMobile").trim())
                     .addParam("callerName", objServiceDetails.getString("customerName"))
                     .addParam("fixedComment", objServiceDetails.getString("customerFixedDes"))
                     .addParam("address", objServiceDetails.getString("customerAddress"))
-                    .addParam("stationCode", objServiceDetails.getString("stationCode"))
+                    .addParam("stationCode", stationCode)
                     .addParam("destinationStation", 0)
-                    .addParam("destination", "")
-                    .addParam("cityCode", objServiceDetails.getString("cityCode"))
-                    .addParam("typeService", objServiceDetails.getString("typeService"))
+                    .addParam("destination", " ")
+                    .addParam("cityCode", objServiceDetails.getInt("cityCode"))
+                    .addParam("typeService", objServiceDetails.getInt("ServiceTypeId"))
                     .addParam("description", objServiceDetails.getString("serviceComment"))
-                    .addParam("TrafficPlan", objServiceDetails.getString("TrafficPlan"))
+                    .addParam("TrafficPlan", objServiceDetails.getInt("TrafficPlan"))
                     .addParam("voipId", objServiceDetails.getString("VoipId"))
-                    .addParam("classType", objServiceDetails.getString("classType")) //
-                    .addParam("defaultClass", objServiceDetails.getString("defaultClass")) //
-                    .addParam("count", objServiceDetails.getString("count")) // 1
-                    .addParam("queue", objServiceDetails.getString("queue")) //
+                    .addParam("classType", objServiceDetails.getInt("classType"))
+                    .addParam("defaultClass", 0)
+                    .addParam("count", 1)
+                    .addParam("queue", objServiceDetails.getString("queue"))
                     .addParam("senderClient", 0)
                     .listener(insertService)
                     .post();
@@ -114,20 +188,25 @@ public class GetStationCodeDialog {
         public void onResponse(Runnable reCall, Object... args) {
             MyApplication.handler.post(() -> {
                 try {
-                    if (vfSubmit != null)
-                        vfSubmit.setDisplayedChild(0);
                     LoadingDialog.dismissCancelableDialog();
+                    if (vfSubmit != null) {
+                        vfSubmit.setDisplayedChild(0);
+                    }
                     JSONObject obj = new JSONObject(args[0].toString());
                     boolean success = obj.getBoolean("success");
                     String message = obj.getString("message");
 
                     if (success) {
-
                         new GeneralDialog()
                                 .title("ثبت شد")
                                 .message(message)
                                 .cancelable(false)
-                                .firstButton("باشه", null)
+                                .firstButton("باشه", new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        dismiss();
+                                    }
+                                })
                                 .show();
                     } else {
                         new GeneralDialog()
@@ -136,11 +215,12 @@ public class GetStationCodeDialog {
                                 .secondButton("بستن", null)
                                 .show();
                     }
-                    LoadingDialog.dismissCancelableDialog();
-
                 } catch (JSONException e) {
+                    //TODO  what to do? show error dialog?
                     LoadingDialog.dismissCancelableDialog();
                     e.printStackTrace();
+                    if (vfSubmit != null)
+                        vfSubmit.setDisplayedChild(0);
                     AvaCrashReporter.send(e, "TripRegisterActivity class, insertService onResponse method");
                 }
             });
@@ -150,6 +230,7 @@ public class GetStationCodeDialog {
         public void onFailure(Runnable reCall, Exception e) {
             MyApplication.handler.post(() -> {
                 LoadingDialog.dismissCancelableDialog();
+                //TODO  what to do? show error dialog?
                 if (vfSubmit != null)
                     vfSubmit.setDisplayedChild(0);
             });
@@ -157,18 +238,7 @@ public class GetStationCodeDialog {
 
         @Override
         public void onReloadPress(boolean v) {
-
             super.onReloadPress(v);
-            try {
-                if (v)
-                    MyApplication.handler.post(LoadingDialog::makeCancelableLoader);
-                else
-                    MyApplication.handler.post(LoadingDialog::dismissCancelableDialog);
-
-            } catch (Exception e) {
-                e.printStackTrace();
-                AvaCrashReporter.send(e, "GetStationCodeDialog class, onReloadPress method");
-            }
         }
     };
 
