@@ -33,17 +33,17 @@
             android:layout_centerVertical="true"
             android:layout_marginLeft="20dp"
             android:layout_toRightOf="@id/imgBack"
-            android:padding="12dp"
-            android:src="@drawable/ic_end_call" />
+            android:padding="7dp"
+            android:src="@drawable/ic_call_dialog" />
 
         <TextView
             android:id="@+id/txtPageTitle"
+            style="@style/pageTitle"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:layout_centerInParent="true"
             android:gravity="center"
-            android:text="@string/driver_support"
-            style="@style/pageTitle"/>
+            android:text="@string/driver_support" />
 
         <ImageView
             android:id="@+id/imgCallQuality"
@@ -147,8 +147,8 @@
             android:layout_marginTop="@dimen/_10sdp"
             android:background="@drawable/bg_blue_border_edge"
             android:orientation="vertical"
-            android:visibility="gone"
-            android:padding="@dimen/_10sdp">
+            android:padding="@dimen/_10sdp"
+            android:visibility="gone">
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -168,8 +168,8 @@
                     style="@style/tripItemValue"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:gravity="right"
-                    android:layout_weight="2" />
+                    android:layout_weight="2"
+                    android:gravity="right" />
 
                 <TextView
                     style="@style/tripItemTitle"
@@ -181,12 +181,12 @@
 
                 <TextView
                     android:id="@+id/txtDriverCode"
-                    android:textColor="@color/colorBlack"
-                    android:textAppearance="?android:attr/textAppearanceMedium"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="0.6"
-                    android:gravity="right" />
+                    android:gravity="right"
+                    android:textAppearance="?android:attr/textAppearanceMedium"
+                    android:textColor="@color/colorBlack" />
 
             </LinearLayout>
 
