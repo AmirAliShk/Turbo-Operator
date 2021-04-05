@@ -374,9 +374,9 @@
 
                             <ImageView
                                 android:id="@+id/imgSmartTaxiMeter"
-                                android:layout_width="@dimen/_20sdp"
-                                android:layout_height="@dimen/_20sdp"
-                                android:src="@drawable/ic_tick" />
+                                android:layout_width="@dimen/_15sdp"
+                                android:layout_height="@dimen/_15sdp"
+                                android:src="@drawable/ic_true" />
 
                             <TextView
                                 style="@style/tripItemValue"
@@ -398,9 +398,9 @@
 
                             <ImageView
                                 android:id="@+id/imgFuelQuota"
-                                android:layout_width="@dimen/_20sdp"
-                                android:layout_height="@dimen/_20sdp"
-                                android:src="@drawable/ic_tick" />
+                                android:layout_width="@dimen/_15sdp"
+                                android:layout_height="@dimen/_15sdp"
+                                android:src="@drawable/ic_true" />
 
                             <TextView
                                 style="@style/tripItemValue"
@@ -423,9 +423,9 @@
 
                         <ImageView
                             android:id="@+id/imgConfirmInfo"
-                            android:layout_width="@dimen/_20sdp"
-                            android:layout_height="@dimen/_20sdp"
-                            android:src="@drawable/ic_tick" />
+                            android:layout_width="@dimen/_15sdp"
+                            android:layout_height="@dimen/_15sdp"
+                            android:src="@drawable/ic_true" />
 
                         <TextView
                             style="@style/tripItemValue"

@@ -170,18 +170,18 @@ public class DriverInfoDialog {
             txtVinNo.setText(StringHelper.toPersianDigits(driverInfoObj.getString("vin")));
             txtIbenNo.setText(StringHelper.toPersianDigits(driverInfoObj.getString("sheba")));
             txtBirthCertificate.setText(StringHelper.toPersianDigits(driverInfoObj.getString("shenasname")));
-            imgSmartTaxiMeter.setImageResource(driverInfoObj.getInt("smartTaximeter") == 1 ? R.drawable.ic_tick : R.drawable.ic_close_black_24dp);
-            imgConfirmInfo.setImageResource(driverInfoObj.getInt("confirmation") == 1 ? R.drawable.ic_tick : R.drawable.ic_close_black_24dp);
+            imgSmartTaxiMeter.setImageResource(driverInfoObj.getInt("smartTaximeter") == 1 ? R.drawable.ic_true : R.drawable.ic_false);
+            imgConfirmInfo.setImageResource(driverInfoObj.getInt("confirmation") == 1 ? R.drawable.ic_true : R.drawable.ic_false);
             int cancelFuel = driverInfoObj.getInt("cancelFuel");
             int fuelRationing = driverInfoObj.getInt("fuelRationing");
             if (fuelRationing == 1) {
                 if (cancelFuel == 1) {
-                    imgFuelQuota.setImageResource(R.drawable.ic_close_black_24dp);
+                    imgFuelQuota.setImageResource(R.drawable.ic_false);
                 } else {
-                    imgFuelQuota.setImageResource(R.drawable.ic_tick);
+                    imgFuelQuota.setImageResource(R.drawable.ic_true);
                 }
             } else {
-                imgFuelQuota.setImageResource(R.drawable.ic_close_black_24dp);
+                imgFuelQuota.setImageResource(R.drawable.ic_false);
             }
 
             String statusMessage = "";
