@@ -59,6 +59,8 @@ import ir.taxi1880.operatormanagement.push.AvaCrashReporter;
 import ir.taxi1880.operatormanagement.services.LinphoneService;
 
 import static ir.taxi1880.operatormanagement.adapter.RecentCallsAdapter.pauseVoice;
+import static ir.taxi1880.operatormanagement.app.Keys.ACTIVE_IN_DRIVER_SUPPORT;
+import static ir.taxi1880.operatormanagement.app.Keys.KEY_ACTIVE_IN_DRIVER_SUPPORT;
 import static ir.taxi1880.operatormanagement.app.Keys.KEY_NEW_MISTAKE_COUNT;
 import static ir.taxi1880.operatormanagement.app.Keys.KEY_PENDING_MISTAKE_COUNT;
 import static ir.taxi1880.operatormanagement.app.Keys.NEW_MISTAKE_COUNT;
@@ -78,6 +80,7 @@ public class SupportActivity extends AppCompatActivity {
     int mistakeCountNew;
     int mistakeCountPending;
     DataBase dataBase;
+    LocalBroadcastManager broadcaster;
 
     @BindView(R.id.vpSupport)
     ViewPager2 vpSupport;
@@ -228,6 +231,7 @@ public class SupportActivity extends AppCompatActivity {
         vpSupport.setUserInputEnabled(false);
 
         dataBase = new DataBase(MyApplication.context);
+        broadcaster = LocalBroadcastManager.getInstance(MyApplication.context);
 
         new TabLayoutMediator(tbLayout, vpSupport, (tab, position) -> {
             tab.setCustomView(supportViewPagerAdapter.getTabView(position, 0, dataBase.getMistakesCount()));
@@ -285,6 +289,10 @@ public class SupportActivity extends AppCompatActivity {
                     String message = obj.getString("message");
 
                     if (success) {
+                        Intent broadcastIntent = new Intent(KEY_ACTIVE_IN_DRIVER_SUPPORT);
+                        broadcastIntent.putExtra(ACTIVE_IN_DRIVER_SUPPORT,"active");
+                        broadcaster.sendBroadcast(broadcastIntent);
+
                         MyApplication.prefManager.activeInSupport(true);
                         MyApplication.prefManager.setActivityStatus(2);
                         MyApplication.Toast("شما باموفقیت وارد صف شدید", Toast.LENGTH_SHORT);
@@ -350,6 +358,10 @@ public class SupportActivity extends AppCompatActivity {
                     String message = obj.getString("message");
 
                     if (success) {
+                        Intent broadcastIntent = new Intent(KEY_ACTIVE_IN_DRIVER_SUPPORT);
+                        broadcastIntent.putExtra(ACTIVE_IN_DRIVER_SUPPORT,"deActive");
+                        broadcaster.sendBroadcast(broadcastIntent);
+
                         MyApplication.prefManager.activeInSupport(false);
                         MyApplication.prefManager.setActivityStatus(0);
                         MyApplication.Toast("شما باموفقیت از صف خارج شدید", Toast.LENGTH_SHORT);

@@ -1,10 +1,16 @@
 package ir.taxi1880.operatormanagement.fragment;
 
+import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
+import android.graphics.Color;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 import android.widget.ViewFlipper;
 
 import androidx.annotation.NonNull;
@@ -14,6 +20,7 @@ import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.dinuscxj.refresh.RecyclerRefreshLayout;
+import com.google.android.material.tabs.TabLayoutMediator;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -33,6 +40,8 @@ import ir.taxi1880.operatormanagement.helper.TypefaceUtil;
 import ir.taxi1880.operatormanagement.model.AllMistakesModel;
 import ir.taxi1880.operatormanagement.okHttp.RequestHelper;
 
+import static ir.taxi1880.operatormanagement.app.Keys.ACTIVE_IN_DRIVER_SUPPORT;
+import static ir.taxi1880.operatormanagement.app.Keys.KEY_ACTIVE_IN_DRIVER_SUPPORT;
 import static ir.taxi1880.operatormanagement.app.Keys.KEY_NEW_MISTAKE_COUNT;
 import static ir.taxi1880.operatormanagement.app.Keys.NEW_MISTAKE_COUNT;
 
@@ -46,8 +55,8 @@ public class AllMistakesFragment extends Fragment {
     @BindView(R.id.mistakesList)
     RecyclerView mistakesList;
 
-    @BindView(R.id.vfDownload)
-    ViewFlipper vfDownload;
+    @BindView(R.id.vfAllMistake)
+    ViewFlipper vfAllMistake;
 
     @OnClick(R.id.imgRefresh)
     void onRefresh() {
@@ -62,9 +71,6 @@ public class AllMistakesFragment extends Fragment {
     AllMistakesAdapter mAdapter;
     ArrayList<AllMistakesModel> allMistakesModels;
 
-    public AllMistakesFragment() {
-    }
-
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -72,8 +78,13 @@ public class AllMistakesFragment extends Fragment {
         unbinder = ButterKnife.bind(this, view);
         TypefaceUtil.overrideFonts(view);
 
-        if (vfDownload != null)
-            vfDownload.setDisplayedChild(3);
+        if (!MyApplication.prefManager.isActiveInSupport()) {
+            if (vfAllMistake != null)
+                vfAllMistake.setDisplayedChild(4);
+        }else {
+            getListen();
+        }
+
         refreshPage.setOnRefreshListener(() -> getListen());
 
         return view;
@@ -81,8 +92,8 @@ public class AllMistakesFragment extends Fragment {
 
     private void getListen() {
         if (!MyApplication.prefManager.isActiveInSupport()) {
-            if (vfDownload != null)
-                vfDownload.setDisplayedChild(3);
+            if (vfAllMistake != null)
+                vfAllMistake.setDisplayedChild(3);
             new GeneralDialog()
                     .title("هشدار")
                     .message("لطفا فعال شوید")
@@ -91,8 +102,8 @@ public class AllMistakesFragment extends Fragment {
                     .show();
             return;
         }
-        if (vfDownload != null)
-            vfDownload.setDisplayedChild(0);
+        if (vfAllMistake != null)
+            vfAllMistake.setDisplayedChild(0);
         RequestHelper.builder(EndPoints.LISTEN)
                 .listener(listenCallBack)
                 .get();
@@ -110,8 +121,8 @@ public class AllMistakesFragment extends Fragment {
                     boolean success = listenObj.getBoolean("success");
                     String message = listenObj.getString("message");
                     if (success) {
-                        if (vfDownload != null)
-                            vfDownload.setDisplayedChild(1);
+                        if (vfAllMistake != null)
+                            vfAllMistake.setDisplayedChild(1);
                         JSONArray dataArr = listenObj.getJSONArray("data");
                         for (int i = 0; i < dataArr.length(); i++) {
                             JSONObject dataObj = dataArr.getJSONObject(i);
@@ -139,11 +150,11 @@ public class AllMistakesFragment extends Fragment {
                         }
 
                         if (allMistakesModels.size() == 0) {
-                            if (vfDownload != null)
-                                vfDownload.setDisplayedChild(3);
+                            if (vfAllMistake != null)
+                                vfAllMistake.setDisplayedChild(3);
                         } else {
-                            if (vfDownload != null) {
-                                vfDownload.setDisplayedChild(1);
+                            if (vfAllMistake != null) {
+                                vfAllMistake.setDisplayedChild(1);
                                 mAdapter = new AllMistakesAdapter(MyApplication.currentActivity, allMistakesModels);
                                 mistakesList.setAdapter(mAdapter);
                             }
@@ -155,15 +166,15 @@ public class AllMistakesFragment extends Fragment {
                         broadcaster.sendBroadcast(broadcastIntent);
 
                     } else {
-                        if (vfDownload != null)
-                            vfDownload.setDisplayedChild(2);
+                        if (vfAllMistake != null)
+                            vfAllMistake.setDisplayedChild(2);
                     }
 
                 } catch (Exception e) {
                     if (refreshPage != null)
                         refreshPage.setRefreshing(false);
-                    if (vfDownload != null)
-                        vfDownload.setDisplayedChild(2);
+                    if (vfAllMistake != null)
+                        vfAllMistake.setDisplayedChild(2);
                     e.printStackTrace();
                 }
             });
@@ -174,11 +185,42 @@ public class AllMistakesFragment extends Fragment {
             MyApplication.handler.post(() -> {
                 if (refreshPage != null)
                     refreshPage.setRefreshing(false);
-                if (vfDownload != null)
-                    vfDownload.setDisplayedChild(2);
+                if (vfAllMistake != null)
+                    vfAllMistake.setDisplayedChild(2);
             });
         }
     };
+
+    BroadcastReceiver counterReceiverNew = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            String state = intent.getStringExtra(ACTIVE_IN_DRIVER_SUPPORT);
+            if (state.equals("active")) {
+                getListen();
+                MyApplication.Toast("active", Toast.LENGTH_SHORT);
+            } else {
+                if (vfAllMistake != null)
+                    vfAllMistake.setDisplayedChild(4);
+                MyApplication.Toast("deActive", Toast.LENGTH_SHORT);
+            }
+
+        }
+    };
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        if (counterReceiverNew != null) {
+            LocalBroadcastManager.getInstance(MyApplication.currentActivity).unregisterReceiver(counterReceiverNew);
+        }
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        MyApplication.currentActivity.registerReceiver(counterReceiverNew, new IntentFilter());
+        LocalBroadcastManager.getInstance(MyApplication.currentActivity).registerReceiver((counterReceiverNew), new IntentFilter(KEY_ACTIVE_IN_DRIVER_SUPPORT));
+    }
 
     @Override
     public void onDestroyView() {
