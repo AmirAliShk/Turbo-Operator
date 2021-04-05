@@ -15,11 +15,16 @@ import android.widget.ViewFlipper;
 
 import com.downloader.PRDownloader;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 import org.linphone.core.Address;
 import org.linphone.core.Call;
 import org.linphone.core.CallParams;
 import org.linphone.core.Core;
 import org.linphone.core.CoreListenerStub;
+
+import java.util.ArrayList;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -27,9 +32,13 @@ import butterknife.OnClick;
 import butterknife.Optional;
 import butterknife.Unbinder;
 import ir.taxi1880.operatormanagement.R;
+import ir.taxi1880.operatormanagement.app.EndPoints;
 import ir.taxi1880.operatormanagement.app.MyApplication;
 import ir.taxi1880.operatormanagement.helper.KeyBoardHelper;
+import ir.taxi1880.operatormanagement.helper.StringHelper;
 import ir.taxi1880.operatormanagement.helper.TypefaceUtil;
+import ir.taxi1880.operatormanagement.model.StationInfoModel;
+import ir.taxi1880.operatormanagement.okHttp.RequestHelper;
 import ir.taxi1880.operatormanagement.push.AvaCrashReporter;
 import ir.taxi1880.operatormanagement.services.LinphoneService;
 
@@ -92,12 +101,17 @@ public class CallDialog {
     @BindView(R.id.view7)
     View view7;
 
+    @OnClick(R.id.llStationGuide)
+    void onStationInfo() {
+        new StationInfoDialog().show(0);
+        dismiss();
+    }
 
     @OnClick(R.id.llSupportOperatorRecentCalls)
-    void llSupportOperatorRecentCalls(){
+    void llSupportOperatorRecentCalls() {
         dismiss();
-        new RecentCallsDialog() .show("0", "0", MyApplication.prefManager.getSipNumber(), false, (b) -> {
-            if (b){
+        new RecentCallsDialog().show("0", "0", MyApplication.prefManager.getSipNumber(), false, (b) -> {
+            if (b) {
                 PRDownloader.cancelAll();
                 PRDownloader.shutDown();
                 pauseVoice();
@@ -106,17 +120,16 @@ public class CallDialog {
     }
 
     @OnClick(R.id.llOperatorRecentCalls)
-    void llOperatorRecentCalls(){
+    void llOperatorRecentCalls() {
         dismiss();
-        new RecentCallsDialog() .show("0", "0", MyApplication.prefManager.getSipNumber(), false, (b) -> {
-            if (b){
+        new RecentCallsDialog().show("0", "0", MyApplication.prefManager.getSipNumber(), false, (b) -> {
+            if (b) {
                 PRDownloader.cancelAll();
                 PRDownloader.shutDown();
                 pauseVoice();
             }
         });
     }
-
 
     @Optional
     @OnClick(R.id.llTransfer)
@@ -267,9 +280,10 @@ public class CallDialog {
         if (MyApplication.prefManager.getCustomerSupport() == 1) {
             llTransferr.setVisibility(View.GONE);
             llCallSupport.setVisibility(View.GONE);
-            llCall.setVisibility(View.GONE);
+            view4.setVisibility(View.GONE);
+            llOperatorRecentCalls.setVisibility(View.GONE);
             view.setVisibility(View.GONE);
-        }else if (MyApplication.prefManager.getCustomerSupport() == 0){
+        } else if (MyApplication.prefManager.getCustomerSupport() == 0) {
             llSupportOperatorRecentCalls.setVisibility(View.GONE);
             view7.setVisibility(View.GONE);
         }
@@ -282,7 +296,6 @@ public class CallDialog {
     }
 
     CoreListenerStub coreListener = new CoreListenerStub() {
-
         @Override
         public void onCallStateChanged(Core lc, Call _call, Call.State state, String message) {
             super.onCallStateChanged(lc, _call, state, message);

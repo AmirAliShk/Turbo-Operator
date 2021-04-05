@@ -57,7 +57,6 @@ public class DeterminationPageFragment extends Fragment {
     boolean isFinished = false;
     boolean isFragmentOpen = false;
     boolean pressSubmit = false; // press twice for generate station Code
-    ArrayList<StationInfoModel> stationInfoModels;
     DataBase dataBase;
     Timer timer;
 
@@ -118,7 +117,7 @@ public class DeterminationPageFragment extends Fragment {
             MyApplication.Toast("لطفا شماره ایستگاه را وارد کنید", Toast.LENGTH_SHORT);
             return;
         }
-        getStationInfo(origin);
+        new StationInfoDialog().show(Integer.parseInt(origin));
     }
 
     @OnClick(R.id.imgSetMistake)
@@ -422,96 +421,6 @@ public class DeterminationPageFragment extends Fragment {
             }
         }
     }
-
-    private void getStationInfo(String stationCode) {
-        if (vfStationInfo != null) {
-            vfStationInfo.setDisplayedChild(1);
-        }
-        RequestHelper.builder(EndPoints.STATION_INFO)
-                .addPath(StringHelper.toEnglishDigits(stationCode) + "")
-                .listener(getStationInfo)
-                .get();
-
-    }
-
-    RequestHelper.Callback getStationInfo = new RequestHelper.Callback() {
-        @Override
-        public void onResponse(Runnable reCall, Object... args) {
-            MyApplication.handler.post(() -> {
-                try {
-                    boolean isCountrySide = false;
-                    String stationName = "";
-                    Log.i(TAG, "onResponse: " + args[0].toString());
-                    stationInfoModels = new ArrayList<>();
-                    JSONObject obj = new JSONObject(args[0].toString());
-                    boolean success = obj.getBoolean("success");
-                    String message = obj.getString("message");
-
-                    if (success) {
-                        JSONArray dataArr = obj.getJSONArray("data");
-                        for (int i = 0; i < dataArr.length(); i++) {
-                            JSONObject dataObj = dataArr.getJSONObject(i);
-                            StationInfoModel stationInfoModel = new StationInfoModel();
-                            stationInfoModel.setStcode(dataObj.getInt("stcode"));
-                            stationInfoModel.setStreet(dataObj.getString("street"));
-                            stationInfoModel.setOdd(dataObj.getString("odd"));
-                            stationInfoModel.setEven(dataObj.getString("even"));
-                            stationInfoModel.setStationName(dataObj.getString("stationName"));
-                            stationInfoModel.setCountrySide(dataObj.getInt("countrySide"));
-                            isCountrySide = dataObj.getInt("countrySide") == 1;
-
-                            if (!dataObj.getString("stationName").equals("")) {
-                                stationName = dataObj.getString("stationName");
-                            }
-                            if (stationInfoModel.getStreet().isEmpty()) continue;
-                            stationInfoModels.add(stationInfoModel);
-                        }
-                        if (stationInfoModels.size() == 0) {
-                            MyApplication.Toast("اطلاعاتی موجود نیست", Toast.LENGTH_SHORT);
-                        } else {
-                            if (txtStation == null) return;
-                            if (stationName.equals("")) {
-                                new StationInfoDialog().show(stationInfoModels, "کد ایستگاه : " + txtStation.getText().toString(), isCountrySide);
-                            } else {
-                                new StationInfoDialog().show(stationInfoModels, stationName + " \n " + "کد ایستگاه : " + txtStation.getText().toString(), isCountrySide);
-                            }
-                        }
-
-                    } else {
-                        new GeneralDialog()
-                                .title("هشدار")
-                                .message(message)
-                                .secondButton("باشه", null)
-                                .cancelable(false)
-                                .show();
-                    }
-
-                    if (vfStationInfo != null) {
-                        vfStationInfo.setDisplayedChild(0);
-                    }
-
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                    if (vfStationInfo != null) {
-                        vfStationInfo.setDisplayedChild(0);
-                    }
-                }
-            });
-        }
-
-        @Override
-        public void onFailure(Runnable reCall, Exception e) {
-            MyApplication.handler.post(new Runnable() {
-                @Override
-                public void run() {
-                    if (vfStationInfo != null) {
-                        vfStationInfo.setDisplayedChild(0);
-                    }
-                }
-            });
-        }
-
-    };
 
     private void setStationCode(int tripId, String stationCode, int cityCode) {
 

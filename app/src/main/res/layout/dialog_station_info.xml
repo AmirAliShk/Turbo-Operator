@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_gravity="center"
     android:gravity="center"
     android:layoutDirection="rtl"
@@ -12,7 +12,6 @@
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1"
-        android:minHeight="500dp"
         android:fillViewport="true">
 
         <LinearLayout
@@ -33,10 +32,11 @@
 
                 <TextView
                     android:id="@+id/txtTitle"
+                    style="@style/dialogTitle"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:gravity="center"
-                    style="@style/dialogTitle"/>
+                    android:text="کد ایستگاه" />
 
             </LinearLayout>
 
@@ -49,17 +49,64 @@
                 android:padding="5dp"
                 android:text="توجه : ایستگاه واقع در حومه شهر میباشد."
                 android:textAppearance="?android:attr/textAppearanceMedium"
-                android:textColor="@color/colorBlack" />
+                android:textColor="@color/colorBlack"
+                android:visibility="gone"/>
 
-            <ListView
-                android:id="@+id/listStationInfo"
+            <ViewFlipper
+                android:id="@+id/vfSearchStation"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_gravity="center"
-                android:layout_marginBottom="10dp"
-                android:divider="@null"
-                android:scrollbars="none"
-                tools:listitem="@layout/item_station_info"/>
+                android:layout_height="match_parent">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/bg_gray_lite_edge"
+                    android:orientation="vertical">
+
+                    <EditText
+                        android:id="@+id/txtStationCode"
+                        android:layout_width="match_parent"
+                        android:layout_height="0dp"
+                        android:layout_margin="10dp"
+                        android:layout_weight="0.7"
+                        android:background="@drawable/bg_edit_text"
+                        android:elevation="3dp"
+                        android:gravity="center"
+                        android:inputType="number"
+                        android:minHeight="40dp"
+                        android:padding="5dp"
+                        android:singleLine="true"
+                        android:textAppearance="?android:attr/textAppearanceLarge"
+                        android:textColor="@color/colorBlack" />
+
+                    <Button
+                        android:id="@+id/btnSubmit"
+                        android:layout_width="170dp"
+                        android:layout_height="0dp"
+                        android:layout_gravity="center"
+                        android:layout_marginBottom="10dp"
+                        android:layout_weight="0.5"
+                        android:background="@drawable/bg_circle_green"
+                        android:minHeight="35dp"
+                        android:text="ثبت"
+                        android:textAppearance="?android:attr/textAppearanceLarge"
+                        android:textColor="@color/colorWhite"
+                        android:textStyle="bold" />
+
+                </LinearLayout>
+
+                <ListView
+                    android:id="@+id/listStationInfo"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginBottom="10dp"
+                    android:divider="@null"
+                    android:scrollbars="none"
+                    tools:listitem="@layout/item_station_info"
+                    android:minHeight="500dp"/>
+
+            </ViewFlipper>
 
         </LinearLayout>
 
@@ -67,9 +114,9 @@
 
     <LinearLayout
         android:id="@+id/llCLose"
-        android:gravity="center"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:gravity="center">
 
         <ImageView
             android:id="@+id/imgClose"
