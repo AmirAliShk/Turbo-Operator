@@ -35,7 +35,9 @@ import butterknife.OnClick;
 import butterknife.OnLongClick;
 import butterknife.Unbinder;
 import ir.taxi1880.operatormanagement.R;
+import ir.taxi1880.operatormanagement.adapter.DriverStationRegistrationAdapter;
 import ir.taxi1880.operatormanagement.adapter.DriverTripsAdapter;
+import ir.taxi1880.operatormanagement.adapter.DriverTurnoverAdapter;
 import ir.taxi1880.operatormanagement.adapter.TripAdapter;
 import ir.taxi1880.operatormanagement.app.EndPoints;
 import ir.taxi1880.operatormanagement.app.MyApplication;
@@ -52,6 +54,8 @@ import ir.taxi1880.operatormanagement.helper.KeyBoardHelper;
 import ir.taxi1880.operatormanagement.helper.PhoneNumberValidation;
 import ir.taxi1880.operatormanagement.helper.StringHelper;
 import ir.taxi1880.operatormanagement.helper.TypefaceUtil;
+import ir.taxi1880.operatormanagement.model.DriverStationRegistrationModel;
+import ir.taxi1880.operatormanagement.model.DriverTurnoverModel;
 import ir.taxi1880.operatormanagement.model.TripModel;
 import ir.taxi1880.operatormanagement.okHttp.RequestHelper;
 import ir.taxi1880.operatormanagement.services.LinphoneService;
@@ -88,12 +92,12 @@ public class SupportDriverTripsFragment extends Fragment {
 
     @OnClick(R.id.imgStationInfo)
     void onPressStationInfo() {
-        new DriverStationRegistrationDialog().show(taxiCode);
+        getRegistrationReport(taxiCode);
     }
 
     @OnClick(R.id.imgFinancial)
     void onPressFinancial() {
-        new DriverTurnoverDialog().show(taxiCode, carCode);
+        getFinancial(taxiCode, carCode);
     }
 
     @OnClick(R.id.imgDriverInfo)
@@ -158,7 +162,7 @@ public class SupportDriverTripsFragment extends Fragment {
                 @Override
                 public void onCallEnded() {
                     if (imgEndCall != null)
-                        imgEndCall.setBackgroundResource(0);
+                        imgEndCall.setImageResource(R.drawable.ic_call_dialog_disable);
                 }
             }, true);
         } else {
@@ -266,6 +270,12 @@ public class SupportDriverTripsFragment extends Fragment {
     @BindView(R.id.txtDriverQueue)
     TextView txtDriverQueue;
 
+    @BindView(R.id.vfStationInfo)
+    ViewFlipper vfStationInfo;
+
+    @BindView(R.id.vfFinancial)
+    ViewFlipper vfFinancial;
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.fragment_support_driver_trip, container, false);
@@ -303,9 +313,9 @@ public class SupportDriverTripsFragment extends Fragment {
         });
 
         if (MyApplication.prefManager.getConnectedCall()) {
-            imgEndCall.setBackgroundResource(R.drawable.bg_pink_edge);
+            imgEndCall.setImageResource(R.drawable.ic_call_dialog_enable);
         } else {
-            imgEndCall.setBackgroundResource(0);
+            imgEndCall.setImageResource(R.drawable.ic_call_dialog_disable);
         }
 
         return view;
@@ -558,7 +568,7 @@ public class SupportDriverTripsFragment extends Fragment {
                             txtDriverCode.setText(StringHelper.toPersianDigits(taxiCode + ""));
 
                             if (isLock == 1) {
-                                statusMessage ="راننده قفل میباشد.";
+                                statusMessage = "راننده قفل میباشد.";
                             } else {
                                 switch (status) {
                                     case 1:
@@ -623,7 +633,7 @@ public class SupportDriverTripsFragment extends Fragment {
             if (state == Call.State.End) {
                 if (imgCallQuality != null)
                     imgCallQuality.setVisibility(View.INVISIBLE);
-                imgEndCall.setBackgroundResource(0);
+                imgEndCall.setImageResource(R.drawable.ic_call_dialog_disable);
                 if (mCallQualityUpdater != null) {
                     LinphoneService.removeFromUIThreadDispatcher(mCallQualityUpdater);
                     mCallQualityUpdater = null;
@@ -680,6 +690,115 @@ public class SupportDriverTripsFragment extends Fragment {
                             },
                     1000);
     }
+
+    public void getRegistrationReport(String driverCode) {
+        if (vfStationInfo != null)
+            vfStationInfo.setDisplayedChild(1);
+        RequestHelper.builder(EndPoints.DRIVER_STATION_REGISTRATION + "/" + driverCode)
+                .listener(onGetRegistrationReport)
+                .get();
+    }
+
+    RequestHelper.Callback onGetRegistrationReport = new RequestHelper.Callback() {
+        @Override
+        public void onResponse(Runnable reCall, Object... args) {
+            MyApplication.handler.post(() -> {
+                try {
+                    JSONObject listenObj = new JSONObject(args[0].toString());
+                    boolean success = listenObj.getBoolean("success");
+                    String message = listenObj.getString("message");
+                    if (success) {
+                        JSONArray data = listenObj.getJSONArray("data");
+                        if (data.length() == 0) {
+                            MyApplication.Toast("موردی ثبت نشده", Toast.LENGTH_SHORT);
+                            if (vfStationInfo != null)
+                                vfStationInfo.setDisplayedChild(0);
+                            return;
+                        }
+                        new DriverStationRegistrationDialog().show(data);
+                    } else {
+                        new GeneralDialog()
+                                .title("هشدار")
+                                .message(message)
+                                .cancelable(false)
+                                .firstButton("باشه", null)
+                                .show();
+                    }
+                    if (vfStationInfo != null)
+                        vfStationInfo.setDisplayedChild(0);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                    if (vfStationInfo != null)
+                        vfStationInfo.setDisplayedChild(0);
+                }
+            });
+        }
+
+        @Override
+        public void onFailure(Runnable reCall, Exception e) {
+            MyApplication.handler.post(() -> {
+                if (vfStationInfo != null)
+                    vfStationInfo.setDisplayedChild(0);
+            });
+        }
+    };
+
+    public void getFinancial(String taxiCode, String carCode) {
+        if (vfFinancial != null)
+            vfFinancial.setDisplayedChild(1);
+
+        RequestHelper.builder(EndPoints.DRIVER_FINANCIAL)
+                .ignore422Error(true)
+                .addPath(taxiCode) // driverCode
+                .addPath(carCode) // carCode
+                .listener(onGetFinancial)
+                .get();
+    }
+
+    RequestHelper.Callback onGetFinancial = new RequestHelper.Callback() {
+        @Override
+        public void onResponse(Runnable reCall, Object... args) {
+            MyApplication.handler.post(() -> {
+                try {
+                    JSONObject listenObj = new JSONObject(args[0].toString());
+                    boolean success = listenObj.getBoolean("success");
+                    String message = listenObj.getString("message");
+                    if (success) {
+//                        {"code":703830,"date":"1399/12/16","time":"18:36","sharh":"جريمه کنسلي بيشتر از حد مجاز ماهانه ","debit":15000,"credit":0}
+                        JSONArray dataArr = listenObj.getJSONArray("data");
+                        if (dataArr.length() == 0) {
+                            MyApplication.Toast("موردی ثبت نشده", Toast.LENGTH_SHORT);
+                            if (vfFinancial != null)
+                                vfFinancial.setDisplayedChild(0);
+                            return;
+                        }
+                        new DriverTurnoverDialog().show(dataArr);
+                    }else {
+                        new GeneralDialog()
+                                .title("هشدار")
+                                .message(message)
+                                .cancelable(false)
+                                .firstButton("باشه", null)
+                                .show();
+                    }
+                    if (vfFinancial != null)
+                        vfFinancial.setDisplayedChild(0);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                    if (vfFinancial != null)
+                        vfFinancial.setDisplayedChild(0);
+                }
+            });
+        }
+
+        @Override
+        public void onFailure(Runnable reCall, Exception e) {
+            MyApplication.handler.post(() -> {
+                if (vfFinancial != null)
+                    vfFinancial.setDisplayedChild(0);
+            });
+        }
+    };
 
     @Override
     public void onStart() {

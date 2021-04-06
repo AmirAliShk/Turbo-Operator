@@ -58,13 +58,6 @@
                 android:layout_height="match_parent"
                 android:padding="@dimen/_5sdp">
 
-                <com.wang.avi.AVLoadingIndicatorView
-                    android:layout_width="50dp"
-                    android:layout_height="50dp"
-                    android:layout_gravity="center"
-                    app:indicatorColor="@color/colorPrimaryDark"
-                    app:indicatorName="BallSpinFadeLoaderIndicator" />
-
                 <ListView
                     android:id="@+id/listDriverTurnover"
                     android:layout_width="match_parent"

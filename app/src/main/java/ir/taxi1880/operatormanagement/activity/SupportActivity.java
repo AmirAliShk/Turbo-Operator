@@ -362,6 +362,10 @@ public class SupportActivity extends AppCompatActivity {
                         broadcastIntent.putExtra(ACTIVE_IN_DRIVER_SUPPORT,"deActive");
                         broadcaster.sendBroadcast(broadcastIntent);
 
+                        Intent broadcastIntent2 = new Intent(KEY_NEW_MISTAKE_COUNT);
+                        broadcastIntent2.putExtra(NEW_MISTAKE_COUNT, 0);
+                        broadcaster.sendBroadcast(broadcastIntent2);
+
                         MyApplication.prefManager.activeInSupport(false);
                         MyApplication.prefManager.setActivityStatus(0);
                         MyApplication.Toast("شما باموفقیت از صف خارج شدید", Toast.LENGTH_SHORT);

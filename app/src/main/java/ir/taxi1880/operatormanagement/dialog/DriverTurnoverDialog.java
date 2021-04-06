@@ -47,7 +47,7 @@ public class DriverTurnoverDialog {
         dismiss();
     }
 
-    public void show(String taxiCode, String carCode) {
+    public void show(JSONArray data) {
         if (MyApplication.currentActivity == null || MyApplication.currentActivity.isFinishing())
             return;
         dialog = new Dialog(MyApplication.currentActivity);
@@ -59,73 +59,43 @@ public class DriverTurnoverDialog {
         dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         WindowManager.LayoutParams wlp = dialog.getWindow().getAttributes();
         wlp.gravity = Gravity.CENTER;
+        wlp.width = WindowManager.LayoutParams.MATCH_PARENT;
         wlp.windowAnimations = R.style.ExpandAnimation;
         dialog.getWindow().setAttributes(wlp);
         dialog.setCancelable(false);
 
-        getFinancial(taxiCode, carCode);
+        fillList(data);
 
         dialog.show();
     }
 
-    public void getFinancial(String taxiCode, String carCode) {
-        if (vfFinancial != null)
-            vfFinancial.setDisplayedChild(0);
+    void fillList(JSONArray dataArr) {
+        driverTurnoverModels = new ArrayList<>();
+        try {
+            for (int i = 0; i < dataArr.length(); i++) {
+                JSONObject dataObj = dataArr.getJSONObject(i);
+                DriverTurnoverModel model = new DriverTurnoverModel();
+                model.setDate(dataObj.getString("date"));
+                model.setTime(dataObj.getString("time"));
+                model.setDescription(dataObj.getString("sharh"));
+                model.setDebit(dataObj.getString("debit"));
+                model.setCredit(dataObj.getString("credit"));
+                driverTurnoverModels.add(model);
+            }
 
-        RequestHelper.builder(EndPoints.DRIVER_FINANCIAL)
-                .ignore422Error(true)
-                .addPath(taxiCode) // driverCode
-                .addPath(carCode) // carCode
-                .listener(onGetFinancial)
-                .get();
+            if (driverTurnoverModels.size() == 0) {
+                if (vfFinancial != null)
+                    vfFinancial.setDisplayedChild(1);
+            } else {
+                if (vfFinancial != null)
+                    vfFinancial.setDisplayedChild(0);
+                adapter = new DriverTurnoverAdapter(MyApplication.context, driverTurnoverModels);
+                listDriverTurnover.setAdapter(adapter);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
-
-    RequestHelper.Callback onGetFinancial = new RequestHelper.Callback() {
-        @Override
-        public void onResponse(Runnable reCall, Object... args) {
-            MyApplication.handler.post(() -> {
-                try {
-                    driverTurnoverModels = new ArrayList<>();
-                    JSONObject listenObj = new JSONObject(args[0].toString());
-                    boolean success = listenObj.getBoolean("success");
-                    String message = listenObj.getString("message");
-                    if (success) {
-//                        {"code":703830,"date":"1399/12/16","time":"18:36","sharh":"جريمه کنسلي بيشتر از حد مجاز ماهانه ","debit":15000,"credit":0}
-                        JSONArray dataArr = listenObj.getJSONArray("data");
-                        for (int i = 0; i < dataArr.length(); i++) {
-                            JSONObject dataObj = dataArr.getJSONObject(i);
-                            DriverTurnoverModel model = new DriverTurnoverModel();
-                            model.setDate(dataObj.getString("date"));
-                            model.setTime(dataObj.getString("time"));
-                            model.setDescription(dataObj.getString("sharh"));
-                            model.setDebit(dataObj.getString("debit"));
-                            model.setCredit(dataObj.getString("credit"));
-                            driverTurnoverModels.add(model);
-                        }
-
-                        if (driverTurnoverModels.size() == 0) {
-                            if (vfFinancial != null)
-                                vfFinancial.setDisplayedChild(2);
-                        } else {
-                            if (vfFinancial != null)
-                                vfFinancial.setDisplayedChild(1);
-                            adapter = new DriverTurnoverAdapter(MyApplication.context, driverTurnoverModels);
-                            listDriverTurnover.setAdapter(adapter);
-                        }
-
-                    }
-
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-            });
-        }
-
-        @Override
-        public void onFailure(Runnable reCall, Exception e) {
-            super.onFailure(reCall, e);
-        }
-    };
 
     private void dismiss() {
         try {

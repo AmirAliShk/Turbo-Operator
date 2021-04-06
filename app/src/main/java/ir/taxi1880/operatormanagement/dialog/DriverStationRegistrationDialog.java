@@ -11,6 +11,7 @@ import android.widget.ListView;
 import android.widget.ViewFlipper;
 
 import org.json.JSONArray;
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
@@ -49,7 +50,7 @@ public class DriverStationRegistrationDialog {
         dismiss();
     }
 
-    public void show(String driverCode) {
+    public void show(JSONArray data) {
         if (MyApplication.currentActivity == null || MyApplication.currentActivity.isFinishing())
             return;
         dialog = new Dialog(MyApplication.currentActivity);
@@ -61,66 +62,46 @@ public class DriverStationRegistrationDialog {
         dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         WindowManager.LayoutParams wlp = dialog.getWindow().getAttributes();
         wlp.gravity = Gravity.CENTER;
+        wlp.width = WindowManager.LayoutParams.MATCH_PARENT;
         wlp.windowAnimations = R.style.ExpandAnimation;
         dialog.getWindow().setAttributes(wlp);
         dialog.setCancelable(false);
 
-        getRegistrationReport(driverCode);
+        driverStationRegistration(data);
 
         dialog.show();
     }
 
-    public void getRegistrationReport(String driverCode) {
-        RequestHelper.builder(EndPoints.DRIVER_STATION_REGISTRATION + "/" + driverCode)
-                .listener(onGetRegistrationReport)
-                .get();
+    void driverStationRegistration(JSONArray dataArr) {
+        driverStationRegistrationModels = new ArrayList<>();
+
+        try {
+            for (int i = 0; i < dataArr.length(); i++) {
+                JSONObject dataObj = dataArr.getJSONObject(i);
+                DriverStationRegistrationModel model = new DriverStationRegistrationModel();
+                model.setInDate(dataObj.getString("StrIndate"));
+                model.setInTime(dataObj.getString("StrInTime"));
+                model.setStationCode(dataObj.getString("StationCode"));
+                model.setOutType(dataObj.getString("type"));
+                model.setOutDate(dataObj.getString("StrOutDate"));
+                model.setOutTime(dataObj.getString("StrOutTime"));
+                driverStationRegistrationModels.add(model);
+            }
+
+            if (driverStationRegistrationModels.size() == 0) {
+                if (vfStationRegistration != null)
+                    vfStationRegistration.setDisplayedChild(1);
+            } else {
+                if (vfStationRegistration != null)
+                    vfStationRegistration.setDisplayedChild(0);
+                adapter = new DriverStationRegistrationAdapter(MyApplication.context, driverStationRegistrationModels);
+                listDriverStationRegistration.setAdapter(adapter);
+            }
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
     }
 
-    RequestHelper.Callback onGetRegistrationReport = new RequestHelper.Callback() {
-        @Override
-        public void onResponse(Runnable reCall, Object... args) {
-            MyApplication.handler.post(() -> {
-                try {
-                    driverStationRegistrationModels = new ArrayList<>();
-                    JSONObject listenObj = new JSONObject(args[0].toString());
-                    boolean success = listenObj.getBoolean("success");
-                    String message = listenObj.getString("message");
-                    if (success) {
-                         JSONArray dataArr = listenObj.getJSONArray("data");
-                        for (int i = 0; i < dataArr.length(); i++) {
-                            JSONObject dataObj = dataArr.getJSONObject(i);
-                            DriverStationRegistrationModel model = new DriverStationRegistrationModel();
-                            model.setInDate(dataObj.getString("StrIndate"));
-                            model.setInTime(dataObj.getString("StrInTime"));
-                            model.setStationCode(dataObj.getString("StationCode"));
-                            model.setOutType(dataObj.getString("type"));
-                            model.setOutDate(dataObj.getString("StrOutDate"));
-                            model.setOutTime(dataObj.getString("StrOutTime"));
-                            driverStationRegistrationModels.add(model);
-                        }
-
-                        if (driverStationRegistrationModels.size() == 0) {
-                            if (vfStationRegistration != null)
-                                vfStationRegistration.setDisplayedChild(2);
-                        } else {
-                            if (vfStationRegistration != null)
-                                vfStationRegistration.setDisplayedChild(1);
-                            adapter = new DriverStationRegistrationAdapter(MyApplication.context, driverStationRegistrationModels);
-                            listDriverStationRegistration.setAdapter(adapter);
-                        }
-                    }
-//                    "StationCode": 71,
-//                            "StrIndate": "1399/12/23",
-//                            "StrInTime": "05:18:50",
-//                            "type": "قطع اينترنت",
-//                            "StrOutDate": "1399/12/23",
-//                            "StrOutTime": "05:38:37",
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-            });
-        }
-    };
 
     private void dismiss() {
         try {

@@ -51,6 +51,7 @@ public class EndPoints {
     public static final String HAWKEYE_LOGIN_PATH = HAKWEYE_IP + ":" + HAWKEYE_APIPort + "/api/user/v1/login/phone/";
 
     /******************************** Base Api *********************************/
+    /******************************** Base Api *********************************/
     public static final String GET_APP_INFO = WEBSERVICE_PATH + "getAppInfo";
     public static final String GET_MESSAGES = WEBSERVICE_PATH + "getMessages";
     public static final String GET_NEWS = WEBSERVICE_PATH + "getNews";

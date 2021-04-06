@@ -29,12 +29,12 @@
         <ImageView
             android:id="@+id/imgEndCall"
             android:layout_width="50dp"
-            android:layout_height="40dp"
+            android:layout_height="match_parent"
             android:layout_centerVertical="true"
             android:layout_marginLeft="20dp"
             android:layout_toRightOf="@id/imgBack"
-            android:padding="7dp"
-            android:src="@drawable/ic_call_dialog" />
+            android:padding="10dp"
+            android:src="@drawable/ic_call_dialog_disable" />
 
         <TextView
             android:id="@+id/txtPageTitle"
@@ -224,41 +224,52 @@
                     android:src="@drawable/ic_change" />
 
                 <ViewFlipper
-                    android:layout_width="0dp"
-                    android:layout_height="match_parent"
-                    android:layout_weight="0.10" />
-
-                <ImageView
-                    android:id="@+id/imgStationInfo"
+                    android:id="@+id/vfStationInfo"
                     android:layout_width="0dp"
                     android:layout_height="?android:attr/actionBarSize"
-                    android:layout_margin="@dimen/_5sdp"
                     android:layout_weight="1"
-                    android:background="@drawable/bg_button_gray_edge"
-                    android:elevation="@dimen/_5sdp"
-                    android:padding="@dimen/_8sdp"
-                    android:src="@drawable/ic_station_report" />
+                    android:layout_margin="@dimen/_5sdp"
+                    android:elevation="@dimen/_3sdp"
+                    android:background="@drawable/bg_button_gray_edge">
+
+                    <ImageView
+                        android:id="@+id/imgStationInfo"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:padding="@dimen/_8sdp"
+                        android:src="@drawable/ic_station_report" />
+
+                    <com.wang.avi.AVLoadingIndicatorView
+                        android:layout_width="@dimen/_20sdp"
+                        android:layout_height="@dimen/_20sdp"
+                        android:layout_gravity="center"
+                        app:indicatorColor="@color/colorPrimaryDark"/>
+
+                </ViewFlipper>
 
                 <ViewFlipper
-                    android:layout_width="0dp"
-                    android:layout_height="match_parent"
-                    android:layout_weight="0.10" />
-
-                <ImageView
-                    android:id="@+id/imgFinancial"
+                    android:id="@+id/vfFinancial"
                     android:layout_width="0dp"
                     android:layout_height="?android:attr/actionBarSize"
-                    android:layout_margin="@dimen/_5sdp"
                     android:layout_weight="1"
-                    android:background="@drawable/bg_button_gray_edge"
-                    android:elevation="@dimen/_5sdp"
-                    android:padding="@dimen/_5sdp"
-                    android:src="@drawable/ic_financial_report" />
+                    android:layout_margin="@dimen/_5sdp"
+                    android:elevation="@dimen/_3sdp"
+                    android:background="@drawable/bg_button_gray_edge">
 
-                <ViewFlipper
-                    android:layout_width="0dp"
-                    android:layout_height="match_parent"
-                    android:layout_weight="0.10" />
+                    <ImageView
+                        android:id="@+id/imgFinancial"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:padding="@dimen/_6sdp"
+                        android:src="@drawable/ic_financial_report" />
+
+                    <com.wang.avi.AVLoadingIndicatorView
+                        android:layout_width="@dimen/_20sdp"
+                        android:layout_height="@dimen/_20sdp"
+                        android:layout_gravity="center"
+                        app:indicatorColor="@color/colorPrimaryDark"/>
+
+                </ViewFlipper>
 
                 <ImageView
                     android:id="@+id/imgDriverInfo"
@@ -270,11 +281,6 @@
                     android:elevation="@dimen/_5sdp"
                     android:padding="@dimen/_5sdp"
                     android:src="@drawable/ic_info" />
-
-                <ViewFlipper
-                    android:layout_width="0dp"
-                    android:layout_height="match_parent"
-                    android:layout_weight="0.10" />
 
                 <ImageView
                     android:id="@+id/imgDriverLocation"

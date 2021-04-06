@@ -204,7 +204,7 @@
                     android:layout_centerInParent="true"
                     android:layout_weight="1"
                     android:padding="10dp"
-                    android:src="@drawable/ic_call_dialog" />
+                    android:src="@drawable/ic_call_dialog_disable" />
 
             </RelativeLayout>
 

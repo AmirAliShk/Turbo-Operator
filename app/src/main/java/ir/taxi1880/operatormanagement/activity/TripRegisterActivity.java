@@ -1609,7 +1609,7 @@ public class TripRegisterActivity extends AppCompatActivity {
                 showCallIncoming();
             } else if (state == Call.State.Released) {
                 if (imgEndCall != null)
-                    imgEndCall.setColorFilter(ContextCompat.getColor(MyApplication.context, R.color.colorWhite), android.graphics.PorterDuff.Mode.MULTIPLY);
+                    imgEndCall.setImageResource(R.drawable.ic_call_dialog_disable);
                 showTitleBar();
                 if (mCallQualityUpdater != null) {
                     LinphoneService.removeFromUIThreadDispatcher(mCallQualityUpdater);
@@ -1618,7 +1618,7 @@ public class TripRegisterActivity extends AppCompatActivity {
             } else if (state == Call.State.Connected) {
                 startCallQuality();
                 if (imgEndCall != null)
-                    imgEndCall.setColorFilter(ContextCompat.getColor(MyApplication.context, R.color.colorRed), android.graphics.PorterDuff.Mode.MULTIPLY);
+                    imgEndCall.setImageResource(R.drawable.ic_call_dialog_enable);
                 Address address = call.getRemoteAddress();
                 if (voipId.equals("0")) {
                     edtTell.setText(PhoneNumberValidation.removePrefix(address.getUsername()));
@@ -1660,7 +1660,7 @@ public class TripRegisterActivity extends AppCompatActivity {
         showTitleBar();
         if (MyApplication.prefManager.getConnectedCall()) {
             startCallQuality();
-            imgEndCall.setColorFilter(ContextCompat.getColor(MyApplication.context, R.color.colorRed), android.graphics.PorterDuff.Mode.MULTIPLY);
+            imgEndCall.setImageResource(R.drawable.ic_call_dialog_enable);
 
             Call[] calls = core.getCalls();
             for (Call call : calls) {

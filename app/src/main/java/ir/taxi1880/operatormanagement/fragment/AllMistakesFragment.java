@@ -197,11 +197,9 @@ public class AllMistakesFragment extends Fragment {
             String state = intent.getStringExtra(ACTIVE_IN_DRIVER_SUPPORT);
             if (state.equals("active")) {
                 getListen();
-                MyApplication.Toast("active", Toast.LENGTH_SHORT);
             } else {
                 if (vfAllMistake != null)
                     vfAllMistake.setDisplayedChild(4);
-                MyApplication.Toast("deActive", Toast.LENGTH_SHORT);
             }
 
         }
