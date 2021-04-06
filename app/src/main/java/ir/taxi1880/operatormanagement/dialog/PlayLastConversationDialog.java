@@ -117,6 +117,7 @@ public class PlayLastConversationDialog {
         wlp.gravity = Gravity.BOTTOM;
         wlp.windowAnimations = R.style.SlideAnimation;
         dialog.getWindow().setAttributes(wlp);
+        wlp.width = WindowManager.LayoutParams.MATCH_PARENT;
         dialog.setCancelable(false);
         TypefaceUtil.overrideFonts(dialog.getWindow().getDecorView());
         unbinder = ButterKnife.bind(this, dialog);

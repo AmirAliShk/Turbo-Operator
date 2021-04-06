@@ -12,6 +12,8 @@ import android.view.WindowManager;
 import android.widget.EditText;
 import android.widget.ListView;
 
+import com.github.mmin18.widget.RealtimeBlurView;
+
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -39,6 +41,7 @@ public class OperatorDialog {
     private OperatorAdapter operatorAdapter;
     static Dialog dialog;
     ListView listOperator;
+    RealtimeBlurView blrView;
 
     String opName;
 
@@ -52,6 +55,7 @@ public class OperatorDialog {
         dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         WindowManager.LayoutParams wlp = dialog.getWindow().getAttributes();
         wlp.gravity = Gravity.BOTTOM;
+        wlp.width = WindowManager.LayoutParams.MATCH_PARENT;
         wlp.windowAnimations = R.style.ExpandAnimation;
         dialog.getWindow().setAttributes(wlp);
         dialog.setCancelable(true);
@@ -59,7 +63,10 @@ public class OperatorDialog {
 
         EditText edtSearchOperator = dialog.findViewById(R.id.edtSearchOperator);
         listOperator = dialog.findViewById(R.id.listOperator);
+        blrView = dialog.findViewById(R.id.blrView);
         operatorModels = getOperatorList();
+
+        blrView.setOnClickListener(view -> dismiss());
 
         listOperator.setOnItemClickListener((parent, view, position, id) -> {
             OperatorModel op = operatorAdapter.getOperator(position);

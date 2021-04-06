@@ -30,6 +30,11 @@ public class PendingMistakesOptionsDialog {
     String tell;
     String mobile;
 
+    @OnClick(R.id.blrView)
+    void onBlur() {
+        dismiss();
+    }
+
     @OnClick(R.id.imgClose)
     void onClose() {
         dismiss();
@@ -77,6 +82,7 @@ public class PendingMistakesOptionsDialog {
         dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         WindowManager.LayoutParams wlp = dialog.getWindow().getAttributes();
         wlp.gravity = Gravity.CENTER;
+        wlp.width = WindowManager.LayoutParams.MATCH_PARENT;
         wlp.windowAnimations = R.style.ExpandAnimation;
         dialog.getWindow().setAttributes(wlp);
         dialog.setCancelable(true);

@@ -1,85 +1,99 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-    android:layout_gravity="top|right"
-    android:layout_marginTop="50dp"
-    android:layout_marginRight="20dp"
-    android:background="@drawable/bg_gray_lite_edge"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
     android:clickable="true"
-    android:gravity="center_vertical|right"
-    android:layoutDirection="rtl"
-    android:orientation="vertical"
-    android:padding="10dp">
+    android:layoutDirection="rtl">
+
+    <com.github.mmin18.widget.RealtimeBlurView
+        android:id="@+id/blrView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:realtimeBlurRadius="20dp"
+        app:realtimeOverlayColor="#8000" />
 
     <LinearLayout
-        android:id="@+id/llToday"
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:background="@drawable/bg_ripple"
-        android:orientation="horizontal"
-        android:gravity="center_vertical"
+        android:layout_gravity="top|right"
+        android:layout_marginTop="50dp"
+        android:layout_marginRight="20dp"
+        android:background="@drawable/bg_gray_lite_edge"
+        android:clickable="true"
+        android:gravity="center_vertical|right"
+        android:layoutDirection="rtl"
+        android:orientation="vertical"
         android:padding="10dp">
 
-        <ImageView
-            android:layout_width="25dp"
-            android:layout_height="25dp"
-            android:src="@drawable/ic_today" />
-
-        <TextView
-            style="@style/tripItemValue"
+        <LinearLayout
+            android:id="@+id/llToday"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginRight="10dp"
-            android:text="@string/today" />
+            android:background="@drawable/bg_ripple"
+            android:gravity="center_vertical"
+            android:orientation="horizontal"
+            android:padding="10dp">
 
-    </LinearLayout>
+            <ImageView
+                android:layout_width="25dp"
+                android:layout_height="25dp"
+                android:src="@drawable/ic_today" />
 
-    <LinearLayout
-        android:id="@+id/llYesterday"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@drawable/bg_ripple"
-        android:orientation="horizontal"
-        android:gravity="center_vertical"
-        android:padding="10dp">
+            <TextView
+                style="@style/tripItemValue"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="10dp"
+                android:text="@string/today" />
 
-        <ImageView
-            android:layout_width="25dp"
-            android:layout_height="25dp"
-            android:src="@drawable/ic_yesterday" />
+        </LinearLayout>
 
-        <TextView
-            style="@style/tripItemValue"
+        <LinearLayout
+            android:id="@+id/llYesterday"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginRight="10dp"
-            android:text="@string/Yesterday" />
+            android:background="@drawable/bg_ripple"
+            android:gravity="center_vertical"
+            android:orientation="horizontal"
+            android:padding="10dp">
 
-    </LinearLayout>
+            <ImageView
+                android:layout_width="25dp"
+                android:layout_height="25dp"
+                android:src="@drawable/ic_yesterday" />
 
-    <LinearLayout
-        android:id="@+id/llTwoDayAgo"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@drawable/bg_ripple"
-        android:gravity="center_vertical"
-        android:orientation="horizontal"
-        android:padding="10dp">
+            <TextView
+                style="@style/tripItemValue"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="10dp"
+                android:text="@string/Yesterday" />
 
-        <ImageView
-            android:layout_width="25dp"
-            android:layout_height="25dp"
-            android:src="@drawable/ic_twodaysago" />
+        </LinearLayout>
 
-        <TextView
-            style="@style/tripItemValue"
+        <LinearLayout
+            android:id="@+id/llTwoDayAgo"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginRight="10dp"
-            android:text="@string/twoDaysAgo" />
+            android:background="@drawable/bg_ripple"
+            android:gravity="center_vertical"
+            android:orientation="horizontal"
+            android:padding="10dp">
+
+            <ImageView
+                android:layout_width="25dp"
+                android:layout_height="25dp"
+                android:src="@drawable/ic_twodaysago" />
+
+            <TextView
+                style="@style/tripItemValue"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="10dp"
+                android:text="@string/twoDaysAgo" />
+
+        </LinearLayout>
 
     </LinearLayout>
-
-</LinearLayout>
+</RelativeLayout>

@@ -1,37 +1,46 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_gravity="top"
     android:gravity="center"
     android:orientation="vertical">
 
+    <com.github.mmin18.widget.RealtimeBlurView
+        android:id="@+id/blrView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:realtimeBlurRadius="20dp"
+        app:realtimeOverlayColor="#8000" />
+
     <LinearLayout
-        android:layout_width="300dp"
-        android:background="@drawable/bg_edit_text"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:minHeight="300dp"
         android:layout_gravity="center"
+        android:layout_margin="15dp"
+        android:background="@drawable/bg_edit_text"
         android:gravity="top"
-        android:layout_margin="40dp"
         android:minWidth="300dp"
+        android:minHeight="300dp"
         android:orientation="vertical">
 
         <LinearLayout
             android:id="@+id/llColor"
             android:layout_width="match_parent"
             android:layout_height="50dp"
-            android:gravity="center"
             android:background="@drawable/bg_dialog_header"
+            android:gravity="center"
             android:orientation="vertical">
 
             <TextView
                 android:id="@+id/txtTitle"
+                style="@style/dialogTitle"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:gravity="center"
-                android:text="اپراتورها"
-                style="@style/dialogTitle"/>
+                android:text="اپراتورها" />
 
         </LinearLayout>
 
@@ -67,10 +76,10 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_gravity="center"
+            android:divider="@null"
             android:minHeight="100dp"
-            android:divider="@null" />
+            tools:listitem="@layout/item_operator"/>
 
     </LinearLayout>
 
-
-</LinearLayout>
+</RelativeLayout>

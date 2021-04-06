@@ -1,44 +1,52 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_gravity="center"
-    android:layoutDirection="rtl"
     android:gravity="center"
+    android:layoutDirection="rtl"
     android:orientation="vertical">
+
+    <com.github.mmin18.widget.RealtimeBlurView
+        android:id="@+id/blrView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:realtimeBlurRadius="20dp"
+        app:realtimeOverlayColor="#8000" />
 
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:fillViewport="true">
+        android:fillViewport="true"
+        android:layout_centerInParent="true">
 
         <LinearLayout
             android:layout_width="300dp"
-            android:background="@drawable/bg_gray_lite_edge"
             android:layout_height="wrap_content"
-            android:minHeight="300dp"
             android:layout_gravity="center"
-            android:gravity="top"
             android:layout_margin="40dp"
+            android:background="@drawable/bg_gray_lite_edge"
+            android:gravity="top"
             android:minWidth="200dp"
+            android:minHeight="300dp"
             android:orientation="vertical">
 
             <LinearLayout
                 android:id="@+id/llColor"
                 android:layout_width="match_parent"
                 android:layout_height="50dp"
-                android:gravity="center"
                 android:background="@drawable/bg_dialog_header"
+                android:gravity="center"
                 android:orientation="vertical">
 
                 <TextView
                     android:id="@+id/txtTitle"
+                    style="@style/dialogTitle"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:gravity="center"
-                    android:text="انتخاب شهر"
-                    style="@style/dialogTitle"/>
+                    android:text="انتخاب شهر" />
 
             </LinearLayout>
 
@@ -56,4 +64,4 @@
 
     </ScrollView>
 
-</LinearLayout>
+</RelativeLayout>

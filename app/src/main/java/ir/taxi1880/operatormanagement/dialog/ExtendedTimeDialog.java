@@ -3,10 +3,16 @@ package ir.taxi1880.operatormanagement.dialog;
 import android.app.Dialog;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
+import android.os.Build;
 import android.util.Log;
 import android.view.Gravity;
+import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
+
+import androidx.core.content.ContextCompat;
+
+import com.google.android.material.appbar.AppBarLayout;
 
 import butterknife.ButterKnife;
 import butterknife.OnClick;
@@ -26,6 +32,11 @@ public class ExtendedTimeDialog {
 
   public interface ExtendedTimeListener {
     void extendTime(int type, String title, int icon);
+  }
+
+  @OnClick(R.id.blrView)
+  void onBlur() {
+    dismiss();
   }
 
   @OnClick(R.id.llToday)
@@ -58,6 +69,7 @@ public class ExtendedTimeDialog {
     dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
     WindowManager.LayoutParams wlp = dialog.getWindow().getAttributes();
     wlp.gravity = Gravity.TOP | Gravity.RIGHT;
+    wlp.width = WindowManager.LayoutParams.MATCH_PARENT;
     wlp.windowAnimations = R.style.ExpandAnimation;
     dialog.getWindow().setAttributes(wlp);
     dialog.setCancelable(true);

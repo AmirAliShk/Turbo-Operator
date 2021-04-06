@@ -16,6 +16,8 @@ import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.ViewFlipper;
 
+import com.github.mmin18.widget.RealtimeBlurView;
+
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -45,7 +47,7 @@ public class HireDialog {
     private Spinner spHireType;
     private int hireType;
     ViewFlipper vfLoader;
-
+    RealtimeBlurView blrView;
     static Dialog dialog;
 
     public void show(Listener listener, String mobile, String name, int cityCode) {
@@ -59,6 +61,7 @@ public class HireDialog {
         dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         WindowManager.LayoutParams wlp = dialog.getWindow().getAttributes();
         wlp.gravity = Gravity.CENTER;
+        wlp.width = WindowManager.LayoutParams.MATCH_PARENT;
         wlp.windowAnimations = R.style.ExpandAnimation;
         dialog.getWindow().setAttributes(wlp);
         dialog.setCancelable(true);
@@ -70,8 +73,11 @@ public class HireDialog {
         Button btnSubmit = dialog.findViewById(R.id.btnSubmit);
         EditText edtComment = dialog.findViewById(R.id.edtComment);
         LinearLayout llParent = dialog.findViewById(R.id.llParent);
+        blrView = dialog.findViewById(R.id.blrView);
         vfLoader = dialog.findViewById(R.id.vfLoader);
         spHireType = dialog.findViewById(R.id.spHireType);
+
+        blrView.setOnClickListener(view -> dismiss());
 
         imgClose.setOnClickListener(view -> dismiss());
 

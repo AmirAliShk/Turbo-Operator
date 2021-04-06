@@ -1,14 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="300dip"
-    android:layout_height="100dip"
-    android:gravity="center"
-    android:layoutDirection="ltr"
-    android:orientation="vertical">
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layoutDirection="ltr">
 
-    <RelativeLayout
+    <com.github.mmin18.widget.RealtimeBlurView
+        android:id="@+id/blrView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        app:realtimeBlurRadius="20dp"
+        app:realtimeOverlayColor="#8000" />
+
+    <RelativeLayout
+        android:layout_width="300dip"
+        android:layout_height="100dip"
         android:layout_centerInParent="true"
         android:gravity="center">
 
@@ -17,9 +23,8 @@
             android:id="@+id/progressBar5"
             android:layout_width="85dip"
             android:layout_height="85dip"
-            android:layout_centerInParent="true"
-            />
+            android:layout_centerInParent="true" />
 
     </RelativeLayout>
 
-</LinearLayout>
+</RelativeLayout>

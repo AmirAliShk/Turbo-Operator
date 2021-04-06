@@ -11,6 +11,8 @@ import android.view.WindowManager;
 import android.widget.AdapterView;
 import android.widget.ListView;
 
+import com.github.mmin18.widget.RealtimeBlurView;
+
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -35,7 +37,7 @@ public class CityDialog {
 
   private CityAdapter cityAdapter;
   private ListView listCity;
-
+  RealtimeBlurView blrView;
   private Listener listener;
   private static Dialog dialog;
 
@@ -50,12 +52,16 @@ public class CityDialog {
     dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
     WindowManager.LayoutParams wlp = dialog.getWindow().getAttributes();
     wlp.gravity = Gravity.CENTER;
+    wlp.width = WindowManager.LayoutParams.MATCH_PARENT;
     wlp.windowAnimations = R.style.ExpandAnimation;
     dialog.getWindow().setAttributes(wlp);
     dialog.setCancelable(true);
     this.listener = listener;
 
     listCity = dialog.findViewById(R.id.listCity);
+    blrView = dialog.findViewById(R.id.blrView);
+
+    blrView.setOnClickListener(view -> dismiss());
 
     ArrayList<CityModel> cityModels = new ArrayList<>();
     try {
@@ -77,12 +83,9 @@ public class CityDialog {
     cityAdapter = new CityAdapter(cityModels, MyApplication.context);
     listCity.setAdapter(cityAdapter);
 
-    listCity.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-      @Override
-      public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-        listener.selectedCity(position);
-        dismiss();
-      }
+    listCity.setOnItemClickListener((parent, view, position, id) -> {
+      listener.selectedCity(position);
+      dismiss();
     });
     try {
       dialog.show();

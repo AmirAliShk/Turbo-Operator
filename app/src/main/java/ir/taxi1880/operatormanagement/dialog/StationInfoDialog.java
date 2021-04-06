@@ -15,6 +15,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.ViewFlipper;
 
+import com.github.mmin18.widget.RealtimeBlurView;
+
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -50,6 +52,7 @@ public class StationInfoDialog {
     TextView txtTitle;
     TextView txtCountrySide;
     ViewFlipper vfSearchStation;
+    RealtimeBlurView blrView;
     private Listener listener;
     private static Dialog dialog;
 
@@ -75,7 +78,9 @@ public class StationInfoDialog {
         LinearLayout llCLose = dialog.findViewById(R.id.llCLose);
         Button btnSubmit = dialog.findViewById(R.id.btnSubmit);
         vfSearchStation = dialog.findViewById(R.id.vfSearchStation);
+        blrView = dialog.findViewById(R.id.blrView);
 
+        blrView.setOnClickListener(view -> dismiss());
         this.stationCode = stationCode;
 
         if (stationCode == 0) {
