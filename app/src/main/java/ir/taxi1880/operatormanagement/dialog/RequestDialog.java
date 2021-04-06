@@ -28,6 +28,11 @@ public class RequestDialog {
     Unbinder unbinder;
     static Dialog dialog;
 
+    @OnClick(R.id.blrView)
+    void onBlur() {
+        dismiss();
+    }
+
     @OnClick(R.id.llSendRequest)
     void onSendRequest() {
         FragmentHelper.toFragment(MyApplication.currentActivity, new SendReplacementReqFragment()).replace();
@@ -35,7 +40,7 @@ public class RequestDialog {
     }
 
     @OnClick(R.id.llGetRequest)
-    void onGetRequest(){
+    void onGetRequest() {
         FragmentHelper
                 .toFragment(MyApplication.currentActivity, new ReplacementWaitingFragment())
                 .replace();
@@ -43,7 +48,7 @@ public class RequestDialog {
     }
 
     @OnClick(R.id.btnClose)
-    void onClose(){
+    void onClose() {
         dismiss();
     }
 
@@ -59,6 +64,7 @@ public class RequestDialog {
         dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         WindowManager.LayoutParams wlp = dialog.getWindow().getAttributes();
         wlp.gravity = Gravity.CENTER;
+        wlp.width = WindowManager.LayoutParams.MATCH_PARENT;
         wlp.windowAnimations = R.style.ExpandAnimation;
         dialog.getWindow().setAttributes(wlp);
         dialog.setCancelable(true);

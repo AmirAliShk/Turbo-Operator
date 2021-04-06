@@ -1,147 +1,164 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_gravity="center"
-    android:gravity="center"
-    android:minWidth="300dp"
-    android:orientation="vertical">
+    android:layoutDirection="rtl">
+
+    <com.github.mmin18.widget.RealtimeBlurView
+        android:id="@+id/blrView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:realtimeBlurRadius="20dp"
+        app:realtimeOverlayColor="#8000" />
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@drawable/bg_blue_border_edge"
+        android:layout_height="match_parent"
+        android:layout_centerInParent="true"
+        android:layout_marginLeft="15dp"
+        android:layout_marginRight="15dp"
         android:gravity="center"
         android:orientation="vertical">
 
-        <RelativeLayout
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@drawable/bg_dialog_header"
+            android:layout_marginTop="80dp"
+            android:background="@drawable/bg_blue_border_edge"
             android:gravity="center"
-            android:textAppearance="?android:attr/textAppearanceLarge">
+            android:orientation="vertical">
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:gravity="center"
-                android:padding="@dimen/_8sdp"
-                android:text="ثبت نتیجه"
-                style="@style/dialogTitle"/>
-
-        </RelativeLayout>
-
-        <ScrollView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:fillViewport="true">
-
-            <LinearLayout
+            <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="@drawable/bg_dialog_body"
-                android:orientation="vertical"
-                android:paddingBottom="5dp">
+                android:background="@drawable/bg_dialog_header"
+                android:gravity="center"
+                android:textAppearance="?android:attr/textAppearanceLarge">
 
-                <RadioGroup
-                    android:id="@+id/rgCulprit"
+                <TextView
+                    style="@style/dialogTitle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:padding="@dimen/_8sdp"
+                    android:text="ثبت نتیجه" />
+
+            </RelativeLayout>
+
+            <ScrollView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:fillViewport="true">
+
+                <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_margin="10dp"
-                    android:background="@drawable/bg_white_edge"
-                    android:layoutDirection="rtl"
-                    android:padding="10dp">
+                    android:background="@drawable/bg_dialog_body"
+                    android:orientation="vertical"
+                    android:paddingBottom="5dp">
 
-                    <RadioButton
-                        android:id="@+id/rbTripRegistrationOperatorBlame"
+                    <RadioGroup
+                        android:id="@+id/rgCulprit"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="اپراتور ثبت سفر مقصر است." />
+                        android:layout_margin="10dp"
+                        android:background="@drawable/bg_white_edge"
+                        android:layoutDirection="rtl"
+                        android:padding="10dp">
 
-                    <RadioButton
-                        android:id="@+id/rbStationRegistrationOperatorBlame"
+                        <RadioButton
+                            android:id="@+id/rbTripRegistrationOperatorBlame"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="اپراتور ثبت سفر مقصر است." />
+
+                        <RadioButton
+                            android:id="@+id/rbStationRegistrationOperatorBlame"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="اپراتور ثبت ایستگاه مقصر است." />
+
+                        <RadioButton
+                            android:id="@+id/rbUnknown"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="نامشخص" />
+                    </RadioGroup>
+
+                    <RadioGroup
+                        android:id="@+id/rgResult"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="اپراتور ثبت ایستگاه مقصر است." />
+                        android:layout_margin="10dp"
+                        android:background="@drawable/bg_white_edge"
+                        android:layoutDirection="rtl"
+                        android:padding="10dp">
 
-                    <RadioButton
-                        android:id="@+id/rbUnknown"
+                        <RadioButton
+                            android:id="@+id/rbDeleteAddress"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="حذف آدرس" />
+
+                        <RadioButton
+                            android:id="@+id/rbDeleteStation"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="حذف ایستگاه" />
+
+                        <RadioButton
+                            android:id="@+id/rbDeleteCity"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="حذف شهر" />
+
+                        <RadioButton
+                            android:id="@+id/rbOtherCases"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="سایر موارد" />
+                    </RadioGroup>
+
+                    <ViewFlipper
+                        android:id="@+id/vfLoader"
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:text="نامشخص" />
-                </RadioGroup>
+                        android:layout_height="match_parent"
+                        android:background="@drawable/green_shadow">
 
-                <RadioGroup
-                    android:id="@+id/rgResult"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_margin="10dp"
-                    android:background="@drawable/bg_white_edge"
-                    android:layoutDirection="rtl"
-                    android:padding="10dp">
+                        <Button
+                            android:id="@+id/btnSubmit"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="40dp"
+                            android:layout_marginRight="40dp"
+                            android:background="@color/transparent"
+                            android:text="ثبت"
+                            android:textAppearance="?android:attr/textAppearanceLarge"
+                            android:textColor="@color/colorWhite"
+                            android:textStyle="bold" />
 
-                    <RadioButton
-                        android:id="@+id/rbDeleteAddress"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:text="حذف آدرس" />
+                        <com.wang.avi.AVLoadingIndicatorView
+                            android:layout_width="30dp"
+                            android:layout_height="30dp"
+                            android:layout_gravity="center"
+                            app:indicatorColor="@color/colorWhite" />
 
-                    <RadioButton
-                        android:id="@+id/rbDeleteStation"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:text="حذف ایستگاه" />
+                    </ViewFlipper>
 
-                    <RadioButton
-                        android:id="@+id/rbDeleteCity"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:text="حذف شهر" />
+                </LinearLayout>
 
-                    <RadioButton
-                        android:id="@+id/rbOtherCases"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:text="سایر موارد" />
-                </RadioGroup>
+            </ScrollView>
 
-                <ViewFlipper
-                    android:id="@+id/vfLoader"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:background="@drawable/green_shadow">
+        </LinearLayout>
 
-                    <Button
-                        android:id="@+id/btnSubmit"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginLeft="40dp"
-                        android:layout_marginRight="40dp"
-                        android:background="@color/transparent"
-                        android:text="ثبت"
-                        android:textAppearance="?android:attr/textAppearanceLarge"
-                        android:textColor="@color/colorWhite"
-                        android:textStyle="bold" />
-
-                    <com.wang.avi.AVLoadingIndicatorView
-                        android:layout_width="30dp"
-                        android:layout_height="30dp"
-                        android:layout_gravity="center"
-                        app:indicatorColor="@color/colorWhite" />
-
-                </ViewFlipper>
-            </LinearLayout>
-
-        </ScrollView>
+        <ImageView
+            android:id="@+id/imgClose"
+            android:layout_width="80dp"
+            android:layout_height="80dp"
+            android:padding="20dp"
+            android:src="@drawable/ic_close_black_24dp" />
 
     </LinearLayout>
 
-    <ImageView
-        android:id="@+id/imgClose"
-        android:layout_width="80dp"
-        android:layout_height="80dp"
-        android:padding="20dp"
-        android:src="@drawable/ic_close_black_24dp" />
-
-</LinearLayout>
+</RelativeLayout>

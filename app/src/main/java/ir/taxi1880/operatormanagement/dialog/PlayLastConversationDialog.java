@@ -84,6 +84,11 @@ public class PlayLastConversationDialog {
         }
     }
 
+    @OnClick(R.id.blrView)
+    void onBlur() {
+        dismiss();
+    }
+
     @BindView(R.id.skbTimer)
     IndicatorSeekBar skbTimer;
 
@@ -118,7 +123,7 @@ public class PlayLastConversationDialog {
         wlp.windowAnimations = R.style.SlideAnimation;
         dialog.getWindow().setAttributes(wlp);
         wlp.width = WindowManager.LayoutParams.MATCH_PARENT;
-        dialog.setCancelable(false);
+        dialog.setCancelable(true);
         TypefaceUtil.overrideFonts(dialog.getWindow().getDecorView());
         unbinder = ButterKnife.bind(this, dialog);
 

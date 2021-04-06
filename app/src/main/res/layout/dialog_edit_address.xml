@@ -4,9 +4,7 @@
     android:id="@+id/llParent"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:gravity="center"
-    android:layoutDirection="rtl"
-    android:orientation="vertical">
+    android:layoutDirection="rtl">
 
     <com.github.mmin18.widget.RealtimeBlurView
         android:id="@+id/blrView"
@@ -16,30 +14,30 @@
         app:realtimeOverlayColor="#8000" />
 
     <LinearLayout
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
         android:orientation="vertical"
         android:gravity="center"
-        android:layout_centerInParent="true">
+        android:layout_centerInParent="true"
+        android:layout_marginLeft="15dp"
+        android:layout_marginRight="15dp">
 
         <TextView
             style="@style/dialogTitle"
-            android:layout_width="350dp"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@drawable/bg_dialog_header"
             android:gravity="center"
-            android:minWidth="350dp"
             android:padding="@dimen/_8sdp"
             android:text="ویرایش آدرس"
             android:layout_marginTop="80dp"/>
 
         <LinearLayout
-            android:layout_width="350dp"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="top|center_horizontal"
             android:background="@drawable/bg_dialog_body"
             android:gravity="top"
-            android:minWidth="350dp"
             android:orientation="vertical"
             android:padding="10dp">
 

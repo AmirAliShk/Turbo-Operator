@@ -38,6 +38,11 @@ public class SearchFilterDialog {
   @BindView(R.id.llDriverFilter)
   LinearLayout llDriverFilter;
 
+  @OnClick(R.id.blrView)
+  void onBlur() {
+    dismiss();
+  }
+
   @OnClick(R.id.llName)
   void onPressName() {
     searchCaseListener.searchCase(1);
@@ -106,6 +111,7 @@ public class SearchFilterDialog {
     wlp.gravity = Gravity.TOP | Gravity.RIGHT;
     wlp.windowAnimations = R.style.ExpandAnimation;
     dialog.getWindow().setAttributes(wlp);
+    wlp.width = WindowManager.LayoutParams.MATCH_PARENT;
     dialog.setCancelable(true);
     KeyBoardHelper.hideKeyboard();
     this.searchCaseListener = searchCaseListener;

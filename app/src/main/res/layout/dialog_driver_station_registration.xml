@@ -3,10 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:layout_gravity="bottom"
-    android:gravity="center"
-    android:layoutDirection="ltr"
-    android:orientation="vertical">
+    android:layoutDirection="ltr">
 
     <com.github.mmin18.widget.RealtimeBlurView
         android:id="@+id/blrView"
@@ -17,10 +14,8 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
         android:gravity="center"
-        android:minWidth="@dimen/_280sdp"
-        android:minHeight="@dimen/_350sdp"
         android:orientation="vertical">
 
         <LinearLayout

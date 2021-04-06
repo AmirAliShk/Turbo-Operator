@@ -48,6 +48,7 @@ public class SaveResultDialog {
 
     public interface MistakesResult {
         void onSuccess(boolean success);
+
         void dismiss();
     }
 
@@ -134,9 +135,10 @@ public class SaveResultDialog {
         tempDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         tempDialog.setCancelable(false);
         unbinder = ButterKnife.bind(this, tempDialog);
-        TypefaceUtil.overrideFonts(tempDialog.getWindow().getDecorView(),MyApplication.IraSanSMedume);
+        TypefaceUtil.overrideFonts(tempDialog.getWindow().getDecorView(), MyApplication.IraSanSMedume);
         tempDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         WindowManager.LayoutParams wlp = tempDialog.getWindow().getAttributes();
+        wlp.width = WindowManager.LayoutParams.MATCH_PARENT;
         wlp.windowAnimations = R.style.ExpandAnimation;
         tempDialog.getWindow().setAttributes(wlp);
 
