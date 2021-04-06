@@ -132,5 +132,6 @@
     <string name="smart_taxi_meter">تاکسی متر هوشمند</string>
     <string name="fuel_quota">سهمیه سوخت</string>
     <string name="confirm_info">تایید اطلاعات</string>
+    <string name="stationName">نام ایستگاه</string>
 
 </resources>

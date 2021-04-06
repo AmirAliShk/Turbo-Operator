@@ -11,6 +11,7 @@ import android.widget.TextView;
 import java.util.ArrayList;
 
 import ir.taxi1880.operatormanagement.R;
+import ir.taxi1880.operatormanagement.app.MyApplication;
 import ir.taxi1880.operatormanagement.helper.TypefaceUtil;
 import ir.taxi1880.operatormanagement.model.StationInfoModel;
 import ir.taxi1880.operatormanagement.push.AvaCrashReporter;
@@ -48,7 +49,7 @@ public class StationInfoAdapter extends BaseAdapter {
       final StationInfoModel stationInfoModel = stationInfoModels.get(position);
       if (myView == null) {
         myView = layoutInflater.inflate(R.layout.item_station_info, null);
-        TypefaceUtil.overrideFonts(myView);
+        TypefaceUtil.overrideFonts(myView, MyApplication.IraSanSMedume);
       }
 
       TextView txtStreet = myView.findViewById(R.id.txtStreet);

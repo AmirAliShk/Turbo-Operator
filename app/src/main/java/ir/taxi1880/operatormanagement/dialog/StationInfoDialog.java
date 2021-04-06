@@ -9,6 +9,8 @@ import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.Button;
+import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -36,25 +38,21 @@ import ir.taxi1880.operatormanagement.okHttp.RequestHelper;
 import ir.taxi1880.operatormanagement.push.AvaCrashReporter;
 
 public class StationInfoDialog {
-
-    public interface Listener {
-        void description(String address, int stationCode);
-
-//    void selectedAddress(boolean b);
-    }
-
     private StationInfoAdapter stationInfoAdapter;
-    private ListView listStationInfo;
     ArrayList<StationInfoModel> stationInfoModels;
     private static final String TAG = StationInfoDialog.class.getSimpleName();
     int stationCode;
-    TextView txtStationCode;
-    TextView txtTitle;
-    TextView txtCountrySide;
-    ViewFlipper vfSearchStation;
-    RealtimeBlurView blrView;
-    private Listener listener;
     private static Dialog dialog;
+    private ListView listStationInfo;
+    TextView txtStationCode;
+    TextView txtStationName;
+    EditText edtStationCode;
+    LinearLayout llSuburbs;
+    LinearLayout llSearchStation;
+    ViewFlipper vfStationInfo;
+    ImageView imgClear;
+    ImageView imgSearch;
+    RealtimeBlurView blrView;
 
     public void show(int stationCode) {
         if (MyApplication.currentActivity == null || MyApplication.currentActivity.isFinishing())
@@ -63,43 +61,53 @@ public class StationInfoDialog {
         dialog.getWindow().requestFeature(Window.FEATURE_NO_TITLE);
         dialog.getWindow().getAttributes().windowAnimations = R.style.ExpandAnimation;
         dialog.setContentView(R.layout.dialog_station_info);
-        TypefaceUtil.overrideFonts(dialog.getWindow().getDecorView());
+        TypefaceUtil.overrideFonts(dialog.getWindow().getDecorView(),MyApplication.IraSanSMedume);
         dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         WindowManager.LayoutParams wlp = dialog.getWindow().getAttributes();
         wlp.gravity = Gravity.CENTER;
+        wlp.width = WindowManager.LayoutParams.MATCH_PARENT;
         wlp.windowAnimations = R.style.ExpandAnimation;
         dialog.getWindow().setAttributes(wlp);
         dialog.setCancelable(true);
 
         listStationInfo = dialog.findViewById(R.id.listStationInfo);
-        txtTitle = dialog.findViewById(R.id.txtTitle);
-        txtCountrySide = dialog.findViewById(R.id.txtCountrySide);
+        llSearchStation = dialog.findViewById(R.id.llSearchStation);
+        txtStationName = dialog.findViewById(R.id.txtStationName);
+        llSuburbs = dialog.findViewById(R.id.llSuburbs);
+        edtStationCode = dialog.findViewById(R.id.edtStationCode);
         txtStationCode = dialog.findViewById(R.id.txtStationCode);
         LinearLayout llCLose = dialog.findViewById(R.id.llCLose);
-        Button btnSubmit = dialog.findViewById(R.id.btnSubmit);
-        vfSearchStation = dialog.findViewById(R.id.vfSearchStation);
+        imgSearch = dialog.findViewById(R.id.imgSearch);
+        imgClear = dialog.findViewById(R.id.imgClear);
+        vfStationInfo = dialog.findViewById(R.id.vfStationInfo);
         blrView = dialog.findViewById(R.id.blrView);
 
-        blrView.setOnClickListener(view -> dismiss());
         this.stationCode = stationCode;
 
         if (stationCode == 0) {
-            if (vfSearchStation != null)
-                vfSearchStation.setDisplayedChild(0);
+            llSearchStation.setVisibility(View.VISIBLE);
+            if (vfStationInfo != null)
+                vfStationInfo.setDisplayedChild(2);
         } else {
-            if (vfSearchStation != null)
-                vfSearchStation.setDisplayedChild(1);
+            llSearchStation.setVisibility(View.GONE);
             getStationInfo(stationCode + "");
         }
+        blrView.setOnClickListener(view -> dismiss());
 
-        btnSubmit.setOnClickListener(view -> {
-            String origin = txtStationCode.getText().toString();
+        imgSearch.setOnClickListener(view -> {
+            String origin = edtStationCode.getText().toString();
             if (origin.isEmpty()) {
                 MyApplication.Toast("لطفا شماره ایستگاه را وارد کنید", Toast.LENGTH_SHORT);
                 return;
             }
-            getStationInfo(origin);
             KeyBoardHelper.hideKeyboard();
+            getStationInfo(origin);
+        });
+
+        imgClear.setOnClickListener(view -> {
+            edtStationCode.setText("");
+            if (vfStationInfo != null)
+                vfStationInfo.setDisplayedChild(2);
         });
 
         llCLose.setOnClickListener(view -> dismiss());
@@ -109,6 +117,9 @@ public class StationInfoDialog {
     }
 
     private void getStationInfo(String stationCode) {
+        if (vfStationInfo != null)
+            vfStationInfo.setDisplayedChild(0);
+        KeyBoardHelper.hideKeyboard();
         RequestHelper.builder(EndPoints.STATION_INFO)
                 .addPath(StringHelper.toEnglishDigits(stationCode) + "")
                 .listener(getStationInfo)
@@ -120,6 +131,7 @@ public class StationInfoDialog {
         public void onResponse(Runnable reCall, Object... args) {
             MyApplication.handler.post(() -> {
                 try {
+                    KeyBoardHelper.hideKeyboard();
                     boolean isCountrySide = false;
                     String stationName = "";
                     Log.i("TAG", "onResponse: " + args[0].toString());
@@ -157,17 +169,20 @@ public class StationInfoDialog {
                             stationInfoAdapter = new StationInfoAdapter(stationInfoModels, MyApplication.context);
                             listStationInfo.setAdapter(stationInfoAdapter);
 
-                            if (vfSearchStation != null)
-                                vfSearchStation.setDisplayedChild(1);
+                            if (vfStationInfo != null)
+                                vfStationInfo.setDisplayedChild(1);
 
+                            txtStationCode.setText(stationCode + "");
                             if (stationName.equals("")) {
-                                txtTitle.setText("کد ایستگاه : " + txtStationCode.getText().toString());
+                                txtStationName.setText("ثبت نشده");
                             } else {
-                                txtTitle.setText(stationName + " \n " + "کد ایستگاه : " + txtStationCode.getText().toString());
+                                txtStationName.setText(stationName);
                             }
 
                             if (isCountrySide) {
-                                txtCountrySide.setVisibility(View.VISIBLE);
+                                llSuburbs.setVisibility(View.VISIBLE);
+                            }else {
+                                llSuburbs.setVisibility(View.GONE);
                             }
                         }
 

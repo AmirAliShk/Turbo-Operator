@@ -27,18 +27,15 @@
             android:layout_height="match_parent"
             android:gravity="right|center_vertical"
             android:text="خیابان : "
-            android:textAppearance="?android:attr/textAppearanceSmall"
-            android:textColor="@color/colorPrimaryDark" />
+            style="@style/tripItemTitle"/>
 
         <TextView
             android:id="@+id/txtStreet"
             android:layout_width="0dp"
             android:layout_weight="1"
             android:layout_height="match_parent"
-            android:text="خیابان"
-            android:gravity="right|center_vertical"
-            android:textColor="@color/colorBlack"
-            android:textAppearance="?android:attr/textAppearanceSmall"/>
+            style="@style/tripItemValue"
+            android:gravity="right|center_vertical"/>
 
     </LinearLayout>
 
@@ -66,18 +63,15 @@
                 android:layout_height="match_parent"
                 android:gravity="right|center_vertical"
                 android:text="محدوده زوج : "
-                android:textAppearance="?android:attr/textAppearanceSmall"
-                android:textColor="@color/colorPrimaryDark" />
+                style="@style/tripItemTitle"/>
 
             <TextView
                 android:id="@+id/txtEven"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
-                android:text="زوج"
                 android:gravity="right|center_vertical"
-                android:textColor="@color/colorBlack"
-                android:textAppearance="?android:attr/textAppearanceSmall" />
+                style="@style/tripItemValue"/>
 
         </LinearLayout>
 
@@ -95,28 +89,18 @@
                 android:layout_height="match_parent"
                 android:text=" محدوده فرد :  "
                 android:gravity="right|center_vertical"
-                android:textColor="@color/colorPrimaryDark"
-                android:textAppearance="?android:attr/textAppearanceSmall" />
+                style="@style/tripItemTitle"/>
 
             <TextView
                 android:id="@+id/txtOdd"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
-                android:text="فرد"
                 android:gravity="right|center_vertical"
-                android:textColor="@color/colorBlack"
-                android:textAppearance="?android:attr/textAppearanceSmall" />
+                style="@style/tripItemValue"/>
 
         </LinearLayout>
 
     </LinearLayout>
-
-    <ImageView
-        android:layout_width="match_parent"
-        android:layout_height="0.5dp"
-        android:layout_marginLeft="25dp"
-        android:layout_marginRight="25dp"
-        android:background="#D6D4D4" />
 
 </LinearLayout>
