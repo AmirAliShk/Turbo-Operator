@@ -12,6 +12,8 @@ import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.ViewFlipper;
 
+import com.github.mmin18.widget.RealtimeBlurView;
+
 import java.util.ArrayList;
 
 import ir.taxi1880.operatormanagement.R;
@@ -35,6 +37,7 @@ public class AddressListDialog {
     private LastAddressAdapter lastAddressAdapter;
     private ListView listLastAddress;
     private ViewFlipper vfLastAddress;
+    RealtimeBlurView blrView;
 
     private Listener listener;
     private static Dialog dialog;
@@ -50,6 +53,7 @@ public class AddressListDialog {
         dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         WindowManager.LayoutParams wlp = dialog.getWindow().getAttributes();
         wlp.gravity = Gravity.CENTER;
+        wlp.width = WindowManager.LayoutParams.MATCH_PARENT;
         wlp.windowAnimations = R.style.ExpandAnimation;
         dialog.getWindow().setAttributes(wlp);
         dialog.setCancelable(true);
@@ -57,9 +61,12 @@ public class AddressListDialog {
 
         listLastAddress = dialog.findViewById(R.id.listLastAddress);
         vfLastAddress = dialog.findViewById(R.id.vfLastAddress);
+        blrView = dialog.findViewById(R.id.blrView);
 
         lastAddressAdapter = new LastAddressAdapter(passengerAddressModels, MyApplication.context);
         listLastAddress.setAdapter(lastAddressAdapter);
+
+        blrView.setOnClickListener(view -> dismiss());
 
         listLastAddress.setOnItemClickListener((parent, view, position, id) -> {
             listener.description(passengerAddressModels.get(position).getAddress(), passengerAddressModels.get(position).getStation());

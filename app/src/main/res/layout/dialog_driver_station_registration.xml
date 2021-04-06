@@ -1,4 +1,4 @@
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -6,8 +6,14 @@
     android:layout_gravity="bottom"
     android:gravity="center"
     android:layoutDirection="ltr"
-    android:orientation="vertical"
-    android:paddingTop="30dp">
+    android:orientation="vertical">
+
+    <com.github.mmin18.widget.RealtimeBlurView
+        android:id="@+id/blrView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:realtimeBlurRadius="20dp"
+        app:realtimeOverlayColor="#8000" />
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -20,6 +26,9 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="0dp"
+            android:layout_marginLeft="15dp"
+            android:layout_marginTop="80dp"
+            android:layout_marginRight="15dp"
             android:layout_weight="1"
             android:background="@drawable/bg_gray_lite_edge"
             android:orientation="vertical">
@@ -33,12 +42,12 @@
                 android:padding="10dp">
 
                 <TextView
+                    style="@style/dialogTitle"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:layout_gravity="center"
                     android:gravity="center"
-                    android:text="گزارش ثبت ایستگاه"
-                    style="@style/dialogTitle"/>
+                    android:text="گزارش ثبت ایستگاه" />
 
             </LinearLayout>
 
@@ -60,8 +69,8 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:divider="@null"
-                    android:scrollbars="none"
                     android:listSelector="@color/transparent"
+                    android:scrollbars="none"
                     tools:listitem="@layout/item_driver_turnover" />
 
                 <TextView
@@ -85,4 +94,4 @@
 
     </LinearLayout>
 
-</LinearLayout>
+</RelativeLayout>

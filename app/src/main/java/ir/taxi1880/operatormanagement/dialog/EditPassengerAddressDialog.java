@@ -13,6 +13,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.Spinner;
 import android.widget.Toast;
 import android.widget.ViewFlipper;
@@ -65,6 +66,7 @@ public class EditPassengerAddressDialog {
         dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         WindowManager.LayoutParams wlp = dialog.getWindow().getAttributes();
         wlp.gravity = Gravity.CENTER;
+        wlp.width = WindowManager.LayoutParams.MATCH_PARENT;
         wlp.windowAnimations = R.style.ExpandAnimation;
         dialog.getWindow().setAttributes(wlp);
         dialog.setCancelable(false);
@@ -74,7 +76,7 @@ public class EditPassengerAddressDialog {
         Button btnSubmit = dialog.findViewById(R.id.btnSubmit);
         EditText edtStation = dialog.findViewById(R.id.edtStation);
         EditText edtAddress = dialog.findViewById(R.id.edtAddress);
-        LinearLayout llParent = dialog.findViewById(R.id.llParent);
+        RelativeLayout llParent = dialog.findViewById(R.id.llParent);
         spCity = dialog.findViewById(R.id.spCity);
         vfLoader = dialog.findViewById(R.id.vfLoader);
 

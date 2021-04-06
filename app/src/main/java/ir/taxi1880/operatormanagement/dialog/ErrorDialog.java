@@ -77,7 +77,6 @@ public class ErrorDialog {
         TypefaceUtil.overrideFonts(dialog.getWindow().getDecorView());
         dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         WindowManager.LayoutParams wlp = dialog.getWindow().getAttributes();
-        wlp.gravity = Gravity.BOTTOM;
         wlp.width = LinearLayout.LayoutParams.MATCH_PARENT;
 //    wlp.windowAnimations = R.style.ExpandAnimation;
         dialog.getWindow().setAttributes(wlp);

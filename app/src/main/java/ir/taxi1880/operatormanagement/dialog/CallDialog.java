@@ -101,6 +101,11 @@ public class CallDialog {
     @BindView(R.id.view7)
     View view7;
 
+    @OnClick(R.id.blrView)
+    void onBlur() {
+        dismiss();
+    }
+
     @OnClick(R.id.llStationGuide)
     void onStationInfo() {
         new StationInfoDialog().show(0);
@@ -266,6 +271,7 @@ public class CallDialog {
         dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         WindowManager.LayoutParams wlp = dialog.getWindow().getAttributes();
         wlp.gravity = Gravity.CENTER;
+        wlp.width = WindowManager.LayoutParams.MATCH_PARENT;
         wlp.windowAnimations = R.style.ExpandAnimation;
         dialog.getWindow().setAttributes(wlp);
         unbinder = ButterKnife.bind(this, dialog);

@@ -12,6 +12,8 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ViewFlipper;
 
+import com.github.mmin18.widget.RealtimeBlurView;
+
 import ir.taxi1880.operatormanagement.R;
 import ir.taxi1880.operatormanagement.app.MyApplication;
 import ir.taxi1880.operatormanagement.helper.KeyBoardHelper;
@@ -19,7 +21,7 @@ import ir.taxi1880.operatormanagement.helper.TypefaceUtil;
 import ir.taxi1880.operatormanagement.push.AvaCrashReporter;
 
 public class DescriptionDialog {
-
+    RealtimeBlurView blrView;
     private static final String TAG = DescriptionDialog.class.getSimpleName();
 
     public interface Listener {
@@ -42,6 +44,7 @@ public class DescriptionDialog {
         dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         WindowManager.LayoutParams wlp = dialog.getWindow().getAttributes();
         wlp.gravity = Gravity.CENTER;
+        wlp.width = WindowManager.LayoutParams.MATCH_PARENT;
         wlp.windowAnimations = R.style.ExpandAnimation;
         dialog.getWindow().setAttributes(wlp);
         dialog.setCancelable(true);
@@ -50,10 +53,12 @@ public class DescriptionDialog {
         EditText edtAlwaysDescription = dialog.findViewById(R.id.edtAlwaysDescription);
         EditText edtDescription = dialog.findViewById(R.id.edtDescription);
         Button btnSubmit = dialog.findViewById(R.id.btnSubmit);
+        blrView = dialog.findViewById(R.id.blrView);
 
         edtAlwaysDescription.setText(description);
         edtDescription.setText(normalDescription);
 
+        blrView.setOnClickListener(view -> dismiss());
 //        InputFilter filter = new InputFilter() {
 //            public CharSequence filter(CharSequence source, int start, int end, Spanned dest, int dstart, int dend) {
 //                boolean temp = false;

@@ -98,4 +98,6 @@ dependencies {
     implementation 'com.chaos.view:pinview:1.4.4'
 
     implementation 'com.dinuscxj:recyclerrefreshlayout:2.0.5'
+
+    implementation 'com.github.mmin18:realtimeblurview:1.2.1'
 }
