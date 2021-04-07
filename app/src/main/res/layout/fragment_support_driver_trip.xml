@@ -5,7 +5,6 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/colorPrimaryLighter"
-    android:clickable="true"
     android:layoutDirection="rtl"
     android:orientation="vertical"
     tools:context=".fragment.TripSupportFragment">
@@ -193,7 +192,7 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="@drawable/bg_button_gray_edge"
+                android:background="@drawable/bg_warning"
                 android:orientation="horizontal"
                 android:padding="@dimen/_8sdp">
 
@@ -219,57 +218,68 @@
                     android:layout_margin="@dimen/_5sdp"
                     android:layout_weight="1"
                     android:background="@drawable/bg_button_gray_edge"
-                    android:elevation="@dimen/_5sdp"
                     android:padding="@dimen/_5sdp"
                     android:src="@drawable/ic_change" />
 
-                <ViewFlipper
-                    android:id="@+id/vfStationInfo"
+                <LinearLayout
                     android:layout_width="0dp"
                     android:layout_height="?android:attr/actionBarSize"
                     android:layout_weight="1"
-                    android:layout_margin="@dimen/_5sdp"
-                    android:elevation="@dimen/_3sdp"
-                    android:background="@drawable/bg_button_gray_edge">
+                    android:gravity="center"
+                    android:background="@drawable/bg_button_gray_edge"
+                    android:layout_margin="@dimen/_5sdp">
 
-                    <ImageView
-                        android:id="@+id/imgStationInfo"
+                    <ViewFlipper
+                        android:id="@+id/vfStationInfo"
                         android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:padding="@dimen/_8sdp"
-                        android:src="@drawable/ic_station_report" />
+                        android:layout_height="match_parent">
 
-                    <com.wang.avi.AVLoadingIndicatorView
-                        android:layout_width="@dimen/_20sdp"
-                        android:layout_height="@dimen/_20sdp"
-                        android:layout_gravity="center"
-                        app:indicatorColor="@color/colorPrimaryDark"/>
+                        <ImageView
+                            android:id="@+id/imgStationInfo"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:padding="@dimen/_8sdp"
+                            android:src="@drawable/ic_station_report" />
 
-                </ViewFlipper>
+                        <com.wang.avi.AVLoadingIndicatorView
+                            android:layout_width="@dimen/_20sdp"
+                            android:layout_height="@dimen/_20sdp"
+                            android:layout_gravity="center"
+                            app:indicatorColor="@color/colorPrimaryDark"/>
 
-                <ViewFlipper
-                    android:id="@+id/vfFinancial"
+                    </ViewFlipper>
+
+                </LinearLayout>
+
+                <LinearLayout
                     android:layout_width="0dp"
                     android:layout_height="?android:attr/actionBarSize"
                     android:layout_weight="1"
-                    android:layout_margin="@dimen/_5sdp"
-                    android:elevation="@dimen/_3sdp"
-                    android:background="@drawable/bg_button_gray_edge">
+                    android:gravity="center"
+                    android:background="@drawable/bg_button_gray_edge"
+                    android:layout_margin="@dimen/_5sdp">
 
-                    <ImageView
-                        android:id="@+id/imgFinancial"
+                    <ViewFlipper
+                        android:id="@+id/vfFinancial"
                         android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:padding="@dimen/_6sdp"
-                        android:src="@drawable/ic_financial_report" />
+                        android:layout_height="match_parent">
 
-                    <com.wang.avi.AVLoadingIndicatorView
-                        android:layout_width="@dimen/_20sdp"
-                        android:layout_height="@dimen/_20sdp"
-                        android:layout_gravity="center"
-                        app:indicatorColor="@color/colorPrimaryDark"/>
+                        <ImageView
+                            android:id="@+id/imgFinancial"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:padding="@dimen/_6sdp"
+                            android:src="@drawable/ic_financial_report" />
 
-                </ViewFlipper>
+                        <com.wang.avi.AVLoadingIndicatorView
+                            android:layout_width="@dimen/_20sdp"
+                            android:layout_height="@dimen/_20sdp"
+                            android:layout_gravity="center"
+                            app:indicatorColor="@color/colorPrimaryDark"/>
+
+                    </ViewFlipper>
+
+                </LinearLayout>
 
                 <ImageView
                     android:id="@+id/imgDriverInfo"
@@ -278,7 +288,6 @@
                     android:layout_margin="@dimen/_5sdp"
                     android:layout_weight="1"
                     android:background="@drawable/bg_button_gray_edge"
-                    android:elevation="@dimen/_5sdp"
                     android:padding="@dimen/_5sdp"
                     android:src="@drawable/ic_info" />
 
@@ -289,7 +298,6 @@
                     android:layout_margin="@dimen/_5sdp"
                     android:layout_weight="1"
                     android:background="@drawable/bg_button_gray_edge"
-                    android:elevation="@dimen/_5sdp"
                     android:padding="@dimen/_5sdp"
                     android:src="@drawable/ic_location" />
 

@@ -108,7 +108,7 @@ public class SupportDriverTripsFragment extends Fragment {
     @OnClick(R.id.imgDriverLocation)
     void onPressDriverLocation() {
         if (taxiCode.isEmpty()) {
-            MyApplication.Toast("خطا در دریافت اطلاعات لظفا بعدا تلاش کنید.", Toast.LENGTH_SHORT);
+            MyApplication.Toast("خطا در دریافت اطلاعات لطفا بعدا تلاش کنید.", Toast.LENGTH_SHORT);
         } else {
             Bundle bundle = new Bundle();
             bundle.putString("taxiCode", taxiCode);
