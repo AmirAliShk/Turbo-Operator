@@ -1,6 +1,8 @@
 package ir.taxi1880.operatormanagement.fragment;
 
 import android.graphics.Color;
+import android.graphics.drawable.Drawable;
+import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -15,6 +17,8 @@ import android.widget.ViewFlipper;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import androidx.appcompat.content.res.AppCompatResources;
+import androidx.core.graphics.drawable.DrawableCompat;
 import androidx.fragment.app.Fragment;
 
 import butterknife.BindView;
@@ -37,6 +41,8 @@ import ir.taxi1880.operatormanagement.helper.StringHelper;
 import ir.taxi1880.operatormanagement.helper.TypefaceUtil;
 import ir.taxi1880.operatormanagement.model.PassengerAddressModel;
 import ir.taxi1880.operatormanagement.okHttp.RequestHelper;
+
+import static ir.taxi1880.operatormanagement.app.MyApplication.context;
 
 public class TripDetailsFragment extends Fragment {
     Unbinder unbinder;
@@ -368,7 +374,13 @@ public class TripDetailsFragment extends Fragment {
                         txtPlaque.setText(plak.equals("null") ? " " : StringHelper.toPersianDigits(plak));
                         txtServiceFixedComment.setText(customerFixedDes.equals("null") ? " " : StringHelper.toPersianDigits(customerFixedDes));
 
-                        llHeaderStatus.setBackgroundColor(Color.parseColor(statusColor));
+                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                            Drawable bg_blue_border_edge = AppCompatResources.getDrawable(context, R.drawable.bg_blue_border_edge);
+                            llHeaderStatus.setBackground(bg_blue_border_edge);
+                            DrawableCompat.setTint(bg_blue_border_edge, Color.parseColor(statusColor));
+                        } else {
+                            llHeaderStatus.setBackgroundColor(Color.parseColor(statusColor));
+                        }
 
                         txtStatus.setText(statusText);
 
