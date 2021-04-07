@@ -34,13 +34,13 @@
                 android:id="@+id/llSearchStation"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/_10sdp"
                 android:background="@drawable/bg_blue_border_edge"
                 android:gravity="center_vertical"
                 android:layoutDirection="ltr"
                 android:orientation="horizontal"
-                android:visibility="visible"
-                android:layout_marginBottom="@dimen/_10sdp"
-                android:padding="10dp">
+                android:padding="10dp"
+                android:visibility="visible">
 
                 <ImageView
                     android:id="@+id/imgSearch"
@@ -65,6 +65,7 @@
                     android:background="@color/transparent"
                     android:gravity="right|center_vertical"
                     android:hint="کد ایستگاه"
+                    android:inputType="number"
                     android:padding="10dp"
                     android:singleLine="true"
                     android:textColorHint="@color/grayMedium" />
@@ -76,6 +77,14 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:background="@drawable/bg_blue_border_edge">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:gravity="center"
+                    android:text="لطفا کد ایستگاه را وارد کنید"
+                    android:textAppearance="?android:attr/textAppearanceMedium"
+                    android:textColor="@color/colorBlack" />
 
                 <com.wang.avi.AVLoadingIndicatorView
                     android:layout_width="30dp"
@@ -92,7 +101,8 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:orientation="horizontal"
-                        android:padding="@dimen/_10sdp">
+                        android:paddingTop="@dimen/_10sdp"
+                        android:paddingRight="@dimen/_10sdp">
 
                         <TextView
                             style="@style/tripItemTitle"
@@ -136,6 +146,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="@dimen/_10sdp"
                         android:layout_marginRight="@dimen/_10sdp"
+                        android:layout_marginBottom="@dimen/_10sdp"
                         android:background="@drawable/bg_warning"
                         android:gravity="center"
                         android:orientation="horizontal"
@@ -172,9 +183,9 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:gravity="center"
-                    android:textColor="@color/colorBlack"
+                    android:text="خطایی پیش آمده \n لطفا مجدد امتحان کنید"
                     android:textAppearance="?android:attr/textAppearanceMedium"
-                    android:text="لطفا کد ایستگاه را وارد کنید"/>
+                    android:textColor="@color/colorBlack" />
 
             </ViewFlipper>
 

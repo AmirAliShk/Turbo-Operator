@@ -244,7 +244,7 @@ public class GetStationCodeDialog {
     };
 
     private void dismiss() {
-        MyApplication.handler.postDelayed(() -> KeyBoardHelper.hideKeyboard(), 30);
+        MyApplication.handler.postDelayed(() -> KeyBoardHelper.hideKeyboard(), 50);
         try {
             if (dialog != null) {
                 dialog.dismiss();

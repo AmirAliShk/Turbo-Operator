@@ -24,6 +24,7 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/_40sdp"
             android:background="@drawable/bg_purple_gradient_edge"
             android:orientation="vertical">
 

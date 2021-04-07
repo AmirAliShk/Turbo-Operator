@@ -108,7 +108,7 @@ public class CallDialog {
 
     @OnClick(R.id.llStationGuide)
     void onStationInfo() {
-//        new StationInfoDialog().show(0);
+        new SearchStationInfoDialog().show();
         dismiss();
     }
 

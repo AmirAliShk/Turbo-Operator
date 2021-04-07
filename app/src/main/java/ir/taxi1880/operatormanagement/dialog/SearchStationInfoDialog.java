@@ -37,7 +37,6 @@ public class SearchStationInfoDialog {
     private StationInfoAdapter stationInfoAdapter;
     ArrayList<StationInfoModel> stationInfoModels;
     private static final String TAG = SearchStationInfoDialog.class.getSimpleName();
-    int stationCode;
     private static Dialog dialog;
     private ListView listStationInfo;
     TextView txtStationCode;
@@ -49,7 +48,7 @@ public class SearchStationInfoDialog {
     ImageView imgClear;
     ImageView imgSearch;
 
-    public void show(int stationCode) {
+    public void show() {
         if (MyApplication.currentActivity == null || MyApplication.currentActivity.isFinishing())
             return;
         dialog = new Dialog(MyApplication.currentActivity);
@@ -76,31 +75,19 @@ public class SearchStationInfoDialog {
         imgClear = dialog.findViewById(R.id.imgClear);
         vfStationInfo = dialog.findViewById(R.id.vfStationInfo);
 
-        this.stationCode = stationCode;
-
-        if (stationCode == 0) {
-            llSearchStation.setVisibility(View.VISIBLE);
-            if (vfStationInfo != null)
-                vfStationInfo.setDisplayedChild(2);
-        } else {
-            llSearchStation.setVisibility(View.GONE);
-            getStationInfo(stationCode + "");
-        }
-
         imgSearch.setOnClickListener(view -> {
             String origin = edtStationCode.getText().toString();
             if (origin.isEmpty()) {
                 MyApplication.Toast("لطفا شماره ایستگاه را وارد کنید", Toast.LENGTH_SHORT);
                 return;
             }
-            KeyBoardHelper.hideKeyboard();
             getStationInfo(origin);
         });
 
         imgClear.setOnClickListener(view -> {
             edtStationCode.setText("");
             if (vfStationInfo != null)
-                vfStationInfo.setDisplayedChild(2);
+                vfStationInfo.setDisplayedChild(0);
         });
 
         llCLose.setOnClickListener(view -> dismiss());
@@ -110,9 +97,9 @@ public class SearchStationInfoDialog {
     }
 
     private void getStationInfo(String stationCode) {
+        MyApplication.handler.postDelayed(() -> KeyBoardHelper.hideKeyboard(), 30);
         if (vfStationInfo != null)
-            vfStationInfo.setDisplayedChild(0);
-        KeyBoardHelper.hideKeyboard();
+            vfStationInfo.setDisplayedChild(1);
         RequestHelper.builder(EndPoints.STATION_INFO)
                 .addPath(StringHelper.toEnglishDigits(stationCode) + "")
                 .listener(getStationInfo)
@@ -124,10 +111,10 @@ public class SearchStationInfoDialog {
         public void onResponse(Runnable reCall, Object... args) {
             MyApplication.handler.post(() -> {
                 try {
-                    KeyBoardHelper.hideKeyboard();
+                    if (vfStationInfo != null)
+                        vfStationInfo.setDisplayedChild(2);
                     boolean isCountrySide = false;
                     String stationName = "";
-                    Log.i("TAG", "onResponse: " + args[0].toString());
                     stationInfoModels = new ArrayList<>();
                     JSONObject obj = new JSONObject(args[0].toString());
                     boolean success = obj.getBoolean("success");
@@ -149,6 +136,9 @@ public class SearchStationInfoDialog {
                             if (!dataObj.getString("stationName").equals("")) {
                                 stationName = dataObj.getString("stationName");
                             }
+
+                            txtStationCode.setText(dataObj.getString("stcode") + "");
+
                             if (stationInfoModel.getStreet().isEmpty()) continue;
                             stationInfoModels.add(stationInfoModel);
                         }
@@ -156,16 +146,10 @@ public class SearchStationInfoDialog {
                         if (stationInfoModels.size() == 0) {
                             MyApplication.Toast("اطلاعاتی موجود نیست", Toast.LENGTH_SHORT);
                         } else {
-
                             if (txtStationCode == null) return;
-
                             stationInfoAdapter = new StationInfoAdapter(stationInfoModels, MyApplication.context);
                             listStationInfo.setAdapter(stationInfoAdapter);
 
-                            if (vfStationInfo != null)
-                                vfStationInfo.setDisplayedChild(1);
-
-                            txtStationCode.setText(stationCode + "");
                             if (stationName.equals("")) {
                                 txtStationName.setText("ثبت نشده");
                             } else {
@@ -189,12 +173,18 @@ public class SearchStationInfoDialog {
                     }
                 } catch (JSONException e) {
                     e.printStackTrace();
+                    if (vfStationInfo != null)
+                    vfStationInfo.setDisplayedChild(3);
                 }
             });
         }
 
         @Override
         public void onFailure(Runnable reCall, Exception e) {
+            MyApplication.handler.post(() -> {
+                if (vfStationInfo != null)
+                    vfStationInfo.setDisplayedChild(3);
+            });
         }
     };
 
@@ -202,11 +192,10 @@ public class SearchStationInfoDialog {
         try {
             if (dialog != null) {
                 dialog.dismiss();
-                KeyBoardHelper.hideKeyboard();
+                MyApplication.handler.postDelayed(() -> KeyBoardHelper.hideKeyboard(), 200);
             }
         } catch (Exception e) {
-            Log.e("TAG", "dismiss: " + e.getMessage());
-            AvaCrashReporter.send(e, "StationInfoDialog class, dismiss method");
+            AvaCrashReporter.send(e, "SearchStationInfoDialog class, dismiss method");
         }
         dialog = null;
     }
