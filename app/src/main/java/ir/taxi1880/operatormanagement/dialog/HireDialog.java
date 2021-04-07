@@ -68,7 +68,7 @@ public class HireDialog {
         this.listener = listener;
 
         getHireType();
-
+        LinearLayout llHire = dialog.findViewById(R.id.llHire);
         ImageView imgClose = dialog.findViewById(R.id.imgClose);
         Button btnSubmit = dialog.findViewById(R.id.btnSubmit);
         EditText edtComment = dialog.findViewById(R.id.edtComment);
@@ -77,6 +77,9 @@ public class HireDialog {
         vfLoader = dialog.findViewById(R.id.vfLoader);
         spHireType = dialog.findViewById(R.id.spHireType);
 
+        llHire.setOnClickListener(view -> {
+            return;
+        });
         blrView.setOnClickListener(view -> dismiss());
 
         imgClose.setOnClickListener(view -> dismiss());
@@ -150,7 +153,7 @@ public class HireDialog {
                                     .cancelable(false)
                                     .show();
                         }
-                    }else{
+                    } else {
                         new GeneralDialog()
                                 .title("هشدار")
                                 .message(message)

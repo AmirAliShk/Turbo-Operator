@@ -10,6 +10,7 @@ import android.view.Window;
 import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.ViewFlipper;
 
 import com.github.mmin18.widget.RealtimeBlurView;
@@ -53,8 +54,10 @@ public class DescriptionDialog {
         EditText edtAlwaysDescription = dialog.findViewById(R.id.edtAlwaysDescription);
         EditText edtDescription = dialog.findViewById(R.id.edtDescription);
         Button btnSubmit = dialog.findViewById(R.id.btnSubmit);
+        LinearLayout llDescription = dialog.findViewById(R.id.llDescription);
         blrView = dialog.findViewById(R.id.blrView);
 
+        llDescription.setOnClickListener(view -> {return;});
         edtAlwaysDescription.setText(description);
         edtDescription.setText(normalDescription);
 

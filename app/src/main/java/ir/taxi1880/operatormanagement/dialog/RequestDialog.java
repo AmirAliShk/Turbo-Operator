@@ -33,6 +33,11 @@ public class RequestDialog {
         dismiss();
     }
 
+    @OnClick(R.id.llRequest)
+    void onRequest() {
+        return;
+    }
+
     @OnClick(R.id.llSendRequest)
     void onSendRequest() {
         FragmentHelper.toFragment(MyApplication.currentActivity, new SendReplacementReqFragment()).replace();

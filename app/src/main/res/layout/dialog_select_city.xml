@@ -12,15 +12,16 @@
         app:realtimeBlurRadius="20dp"
         app:realtimeOverlayColor="#8000" />
 
-    <ScrollView
+    <LinearLayout
+        android:id="@+id/llSelectCity"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         android:layout_centerInParent="true"
         android:layout_marginLeft="15dp"
         android:layout_marginTop="80dp"
         android:layout_marginRight="15dp"
         android:layout_marginBottom="80dp"
-        android:fillViewport="true">
+        android:orientation="vertical">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -60,6 +61,6 @@
 
         </LinearLayout>
 
-    </ScrollView>
+    </LinearLayout>
 
 </RelativeLayout>

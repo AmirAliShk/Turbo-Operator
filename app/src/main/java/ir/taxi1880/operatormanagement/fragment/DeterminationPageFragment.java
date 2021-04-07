@@ -134,7 +134,7 @@ public class DeterminationPageFragment extends Fragment {
         new GeneralDialog()
                 .title("هشدار")
                 .message("آیا از اشتباه بودن آدرس اطمینان دارید؟")
-                .cancelable(true)
+                .cancelable(false)
                 .firstButton("بله", () -> setMistake())
                 .secondButton("خیر", null)
                 .show();

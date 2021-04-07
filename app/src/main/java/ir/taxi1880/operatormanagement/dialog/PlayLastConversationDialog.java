@@ -61,6 +61,11 @@ public class PlayLastConversationDialog {
         dismiss();
     }
 
+    @OnClick(R.id.llLastConversationDialog)
+    void onLastConversation() {
+       return;
+    }
+
     @OnClick(R.id.imgStop)
     void onStop() {
         pauseVoice();
@@ -115,12 +120,9 @@ public class PlayLastConversationDialog {
             return;
         dialog = new Dialog(MyApplication.currentActivity);
         dialog.getWindow().requestFeature(Window.FEATURE_NO_TITLE);
-        dialog.getWindow().getAttributes().windowAnimations = R.style.SlideAnimation;
         dialog.setContentView(R.layout.dialog_paly_last_conversation);
         dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         WindowManager.LayoutParams wlp = dialog.getWindow().getAttributes();
-        wlp.gravity = Gravity.BOTTOM;
-        wlp.windowAnimations = R.style.SlideAnimation;
         dialog.getWindow().setAttributes(wlp);
         wlp.width = WindowManager.LayoutParams.MATCH_PARENT;
         dialog.setCancelable(true);

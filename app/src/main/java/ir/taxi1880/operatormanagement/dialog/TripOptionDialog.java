@@ -54,10 +54,15 @@ public class TripOptionDialog {
         LinearLayout llHire = dialog.findViewById(R.id.llHire);
         LinearLayout llSupport = dialog.findViewById(R.id.llSupport);
         LinearLayout llReserve = dialog.findViewById(R.id.llReserve);
+        LinearLayout llTripOption = dialog.findViewById(R.id.llTripOption);
         ImageView imgClose = dialog.findViewById(R.id.imgClose);
         blrView = dialog.findViewById(R.id.blrView);
 
         blrView.setOnClickListener(view -> dismiss());
+
+        llTripOption.setOnClickListener(view -> {
+            return;
+        });
 
         if (MyApplication.prefManager.getCustomerSupport() == 1) {
             llSupport.setVisibility(View.VISIBLE);

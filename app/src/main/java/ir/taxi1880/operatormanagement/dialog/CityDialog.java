@@ -9,6 +9,7 @@ import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.AdapterView;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 
 import com.github.mmin18.widget.RealtimeBlurView;
@@ -29,85 +30,90 @@ import ir.taxi1880.operatormanagement.push.AvaCrashReporter;
 
 public class CityDialog {
 
-  private static final String TAG = CityDialog.class.getSimpleName();
+    private static final String TAG = CityDialog.class.getSimpleName();
 
-  public interface Listener {
-    void selectedCity(int position);
-  }
+    public interface Listener {
+        void selectedCity(int position);
+    }
 
-  private CityAdapter cityAdapter;
-  private ListView listCity;
-  RealtimeBlurView blrView;
-  private Listener listener;
-  private static Dialog dialog;
+    private CityAdapter cityAdapter;
+    private ListView listCity;
+    RealtimeBlurView blrView;
+    private Listener listener;
+    private static Dialog dialog;
+    LinearLayout llSelectCity;
 
-  public void show(Listener listener) {
-    if (MyApplication.currentActivity == null || MyApplication.currentActivity.isFinishing())
-      return;
-    dialog = new Dialog(MyApplication.currentActivity);
-    dialog.getWindow().requestFeature(Window.FEATURE_NO_TITLE);
-    dialog.getWindow().getAttributes().windowAnimations = R.style.ExpandAnimation;
-    dialog.setContentView(R.layout.dialog_select_city);
-    TypefaceUtil.overrideFonts(dialog.getWindow().getDecorView());
-    dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
-    WindowManager.LayoutParams wlp = dialog.getWindow().getAttributes();
-    wlp.gravity = Gravity.CENTER;
-    wlp.width = WindowManager.LayoutParams.MATCH_PARENT;
-    wlp.windowAnimations = R.style.ExpandAnimation;
-    dialog.getWindow().setAttributes(wlp);
-    dialog.setCancelable(true);
-    this.listener = listener;
+    public void show(Listener listener) {
+        if (MyApplication.currentActivity == null || MyApplication.currentActivity.isFinishing())
+            return;
+        dialog = new Dialog(MyApplication.currentActivity);
+        dialog.getWindow().requestFeature(Window.FEATURE_NO_TITLE);
+        dialog.getWindow().getAttributes().windowAnimations = R.style.ExpandAnimation;
+        dialog.setContentView(R.layout.dialog_select_city);
+        TypefaceUtil.overrideFonts(dialog.getWindow().getDecorView());
+        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        WindowManager.LayoutParams wlp = dialog.getWindow().getAttributes();
+        wlp.gravity = Gravity.CENTER;
+        wlp.width = WindowManager.LayoutParams.MATCH_PARENT;
+        wlp.windowAnimations = R.style.ExpandAnimation;
+        dialog.getWindow().setAttributes(wlp);
+        dialog.setCancelable(true);
+        this.listener = listener;
 
-    listCity = dialog.findViewById(R.id.listCity);
-    blrView = dialog.findViewById(R.id.blrView);
+        listCity = dialog.findViewById(R.id.listCity);
+        blrView = dialog.findViewById(R.id.blrView);
+        llSelectCity = dialog.findViewById(R.id.llSelectCity);
 
-    blrView.setOnClickListener(view -> dismiss());
+        llSelectCity.setOnClickListener(view -> {
+            return;
+        });
+        blrView.setOnClickListener(view -> dismiss());
 
-    ArrayList<CityModel> cityModels = new ArrayList<>();
-    try {
-      JSONArray cityArr = new JSONArray(MyApplication.prefManager.getCity());
-      for (int i = 0; i < cityArr.length(); i++) {
-        JSONObject cityObj = cityArr.getJSONObject(i);
-        CityModel cityModel = new CityModel();
-        cityModel.setCity(cityObj.getString("cityname"));
-        cityModel.setId(cityObj.getInt("cityid"));
-        cityModel.setCityLatin(cityObj.getString("latinName"));
-        cityModels.add(cityModel);
-      }
-    } catch (JSONException e) {
-      e.printStackTrace();
-      AvaCrashReporter.send(e,"CityDialog class, show method");
+        ArrayList<CityModel> cityModels = new ArrayList<>();
+        try {
+            JSONArray cityArr = new JSONArray(MyApplication.prefManager.getCity());
+            for (int i = 0; i < cityArr.length(); i++) {
+                JSONObject cityObj = cityArr.getJSONObject(i);
+                CityModel cityModel = new CityModel();
+                cityModel.setCity(cityObj.getString("cityname"));
+                cityModel.setId(cityObj.getInt("cityid"));
+                cityModel.setCityLatin(cityObj.getString("latinName"));
+                cityModels.add(cityModel);
+            }
+        } catch (JSONException e) {
+            e.printStackTrace();
+            AvaCrashReporter.send(e, "CityDialog class, show method");
+
+        }
+
+        cityAdapter = new CityAdapter(cityModels, MyApplication.context);
+        listCity.setAdapter(cityAdapter);
+
+        listCity.setOnItemClickListener((parent, view, position, id) -> {
+            listener.selectedCity(position);
+            dismiss();
+        });
+        try {
+            dialog.show();
+        } catch (Exception e) {
+            e.printStackTrace();
+            AvaCrashReporter.send(e, "CityDialog: Crash in show dialog line 89");
+
+        }
 
     }
 
-    cityAdapter = new CityAdapter(cityModels, MyApplication.context);
-    listCity.setAdapter(cityAdapter);
-
-    listCity.setOnItemClickListener((parent, view, position, id) -> {
-      listener.selectedCity(position);
-      dismiss();
-    });
-    try {
-      dialog.show();
-    } catch (Exception e) {
-      e.printStackTrace();
-      AvaCrashReporter.send(e,"CityDialog: Crash in show dialog line 89");
-
+    private static void dismiss() {
+        try {
+            if (dialog != null) {
+                dialog.dismiss();
+                KeyBoardHelper.hideKeyboard();
+            }
+        } catch (Exception e) {
+            Log.e("TAG", "dismiss: " + e.getMessage());
+            AvaCrashReporter.send(e, "CityDialog class, dismiss method");
+        }
+        dialog = null;
     }
-
-  }
-
-  private static void dismiss() {
-    try {
-      if (dialog != null) {
-        dialog.dismiss();
-        KeyBoardHelper.hideKeyboard();
-      }
-    } catch (Exception e) {
-      Log.e("TAG", "dismiss: " + e.getMessage());
-      AvaCrashReporter.send(e,"CityDialog class, dismiss method");
-    }
-    dialog = null;
-  }
 
 }

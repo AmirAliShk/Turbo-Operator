@@ -35,6 +35,11 @@ public class PendingMistakesOptionsDialog {
         dismiss();
     }
 
+    @OnClick(R.id.llPendingMistakesOptions)
+    void onPendingMistakesOptions() {
+        return;
+    }
+
     @OnClick(R.id.imgClose)
     void onClose() {
         dismiss();

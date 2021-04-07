@@ -66,6 +66,7 @@ public class ReserveDialog {
 
         LinearLayout llDate = dialog.findViewById(R.id.llDate);
         LinearLayout llTime = dialog.findViewById(R.id.llTime);
+        LinearLayout llReserveTrip = dialog.findViewById(R.id.llReserveTrip);
         ImageView imgClose = dialog.findViewById(R.id.imgClose);
         TextView txtTime = dialog.findViewById(R.id.txtTime);
         TextView txtDate = dialog.findViewById(R.id.txtDate);
@@ -75,6 +76,7 @@ public class ReserveDialog {
         txtDate.setText(StringHelper.toPersianDigits(DateHelper.strPersianSeven(selectedDate)));
         txtTime.setText(StringHelper.toPersianDigits(DateHelper.strPersianFour1(selectedDate)));
 
+        llReserveTrip.setOnClickListener(view -> {return;});
         blrView.setOnClickListener(view -> dismiss());
 
         txtTime.setOnClickListener(v -> {

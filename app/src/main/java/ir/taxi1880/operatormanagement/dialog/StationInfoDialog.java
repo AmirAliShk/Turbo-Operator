@@ -52,7 +52,6 @@ public class StationInfoDialog {
     ViewFlipper vfStationInfo;
     ImageView imgClear;
     ImageView imgSearch;
-    RealtimeBlurView blrView;
 
     public void show(int stationCode) {
         if (MyApplication.currentActivity == null || MyApplication.currentActivity.isFinishing())
@@ -68,7 +67,7 @@ public class StationInfoDialog {
         wlp.width = WindowManager.LayoutParams.MATCH_PARENT;
         wlp.windowAnimations = R.style.ExpandAnimation;
         dialog.getWindow().setAttributes(wlp);
-        dialog.setCancelable(true);
+        dialog.setCancelable(false);
 
         listStationInfo = dialog.findViewById(R.id.listStationInfo);
         llSearchStation = dialog.findViewById(R.id.llSearchStation);
@@ -80,7 +79,6 @@ public class StationInfoDialog {
         imgSearch = dialog.findViewById(R.id.imgSearch);
         imgClear = dialog.findViewById(R.id.imgClear);
         vfStationInfo = dialog.findViewById(R.id.vfStationInfo);
-        blrView = dialog.findViewById(R.id.blrView);
 
         this.stationCode = stationCode;
 
@@ -92,7 +90,6 @@ public class StationInfoDialog {
             llSearchStation.setVisibility(View.GONE);
             getStationInfo(stationCode + "");
         }
-        blrView.setOnClickListener(view -> dismiss());
 
         imgSearch.setOnClickListener(view -> {
             String origin = edtStationCode.getText().toString();
