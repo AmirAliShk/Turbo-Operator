@@ -218,6 +218,10 @@ public class SupportDriverTripsFragment extends Fragment {
     void onSearchTypePress() {
         new SearchFilterDialog().show("driver", searchCase -> {
             if (edtSearchTrip == null) return;
+            if (vfTrip != null) {
+                vfTrip.setDisplayedChild(0);
+                llDriverInfo.setVisibility(View.GONE);
+            }
             int imageType = R.drawable.ic_call;
             switch (searchCase) {
                 case 6: // driver mobile

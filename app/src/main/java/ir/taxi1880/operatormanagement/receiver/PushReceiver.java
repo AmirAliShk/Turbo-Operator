@@ -33,15 +33,12 @@ import static ir.taxi1880.operatormanagement.app.Keys.KEY_USER_STATUS;
 public class PushReceiver extends BroadcastReceiver {
   public static final String TAG = PushReceiver.class.getSimpleName();
 
-  String res;
-
   @Override
   public void onReceive(Context context, Intent intent) {
     try {
 
       Bundle bundle = intent.getExtras();
       String result = bundle.getString(Keys.KEY_MESSAGE);
-      res = result;
       int type = bundle.getInt(Keys.KEY_BROADCAST_TYPE);
 
       JSONObject object = new JSONObject(result);
@@ -113,10 +110,6 @@ public class PushReceiver extends BroadcastReceiver {
 
     } catch (JSONException e) {
       e.printStackTrace();
-      if (res == null)
-        res = "res is null !";
-      AvaCrashReporter.send(e, "PushReceiver class, onReceive method, info : " + res +
-              " , pushToken = " + MyApplication.prefManager.getPushToken() + ", pushId = " + MyApplication.prefManager.getPushId() + ", userId = " + MyApplication.prefManager.getUserCode());
     }
   }
 

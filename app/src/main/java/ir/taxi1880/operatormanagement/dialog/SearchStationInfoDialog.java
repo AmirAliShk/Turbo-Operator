@@ -97,7 +97,6 @@ public class SearchStationInfoDialog {
     }
 
     private void getStationInfo(String stationCode) {
-        MyApplication.handler.postDelayed(() -> KeyBoardHelper.hideKeyboard(), 30);
         if (vfStationInfo != null)
             vfStationInfo.setDisplayedChild(1);
         RequestHelper.builder(EndPoints.STATION_INFO)
@@ -111,6 +110,7 @@ public class SearchStationInfoDialog {
         public void onResponse(Runnable reCall, Object... args) {
             MyApplication.handler.post(() -> {
                 try {
+                    MyApplication.handler.postDelayed(() -> KeyBoardHelper.hideKeyboard(), 100);
                     if (vfStationInfo != null)
                         vfStationInfo.setDisplayedChild(2);
                     boolean isCountrySide = false;

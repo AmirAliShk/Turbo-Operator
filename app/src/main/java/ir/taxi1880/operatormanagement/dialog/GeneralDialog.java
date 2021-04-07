@@ -170,10 +170,10 @@ public class GeneralDialog {
 
     @OnClick(R.id.btnFirst)
     void onFirstPress() {
+        dismiss();
         if (edtMessage.getVisibility() == View.VISIBLE) {
             descListener.onDescription(edtMessage.getText().toString());
         }
-        dismiss();
         if (firstBtn != null) {
             if (firstBtn.getBody() != null) {
                 firstBtn.getBody().run();

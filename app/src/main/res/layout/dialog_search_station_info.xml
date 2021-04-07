@@ -179,6 +179,7 @@
                         android:layout_height="match_parent"
                         android:divider="@null"
                         android:scrollbars="none"
+                        android:listSelector="@color/transparent"
                         tools:listitem="@layout/item_station_info" />
 
                 </LinearLayout>
