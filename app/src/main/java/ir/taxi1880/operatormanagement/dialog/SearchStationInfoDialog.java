@@ -137,14 +137,16 @@ public class SearchStationInfoDialog {
                                 stationName = dataObj.getString("stationName");
                             }
 
-                            txtStationCode.setText(dataObj.getString("stcode") + "");
+                            txtStationCode.setText(StringHelper.toPersianDigits(dataObj.getString("stcode") + ""));
 
                             if (stationInfoModel.getStreet().isEmpty()) continue;
+
                             stationInfoModels.add(stationInfoModel);
                         }
 
                         if (stationInfoModels.size() == 0) {
-                            MyApplication.Toast("اطلاعاتی موجود نیست", Toast.LENGTH_SHORT);
+                            if (vfStationInfo != null)
+                                vfStationInfo.setDisplayedChild(4);
                         } else {
                             if (txtStationCode == null) return;
                             stationInfoAdapter = new StationInfoAdapter(stationInfoModels, MyApplication.context);

@@ -21,11 +21,15 @@
         android:orientation="vertical"
         android:padding="@dimen/_15sdp">
 
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1" />
+
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_marginTop="80dp"
-            android:layout_weight="1"
+            android:layout_height="0dp"
+            android:layout_weight="10"
             android:background="@drawable/bg_gray_lite_edge"
             android:orientation="vertical"
             android:padding="@dimen/_10sdp">
@@ -83,7 +87,7 @@
                     android:layout_height="match_parent"
                     android:gravity="center"
                     android:text="لطفا کد ایستگاه را وارد کنید"
-                    android:textAppearance="?android:attr/textAppearanceMedium"
+                    android:textAppearance="?android:attr/textAppearanceSmall"
                     android:textColor="@color/colorBlack" />
 
                 <com.wang.avi.AVLoadingIndicatorView
@@ -187,6 +191,14 @@
                     android:textAppearance="?android:attr/textAppearanceMedium"
                     android:textColor="@color/colorBlack" />
 
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:gravity="center"
+                    android:text="اطلاعاتی موجود نیست"
+                    android:textAppearance="?android:attr/textAppearanceMedium"
+                    android:textColor="@color/colorBlack" />
+
             </ViewFlipper>
 
         </LinearLayout>
@@ -194,7 +206,8 @@
         <LinearLayout
             android:id="@+id/llCLose"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="0dp"
+            android:layout_weight="1"
             android:gravity="center">
 
             <ImageView
