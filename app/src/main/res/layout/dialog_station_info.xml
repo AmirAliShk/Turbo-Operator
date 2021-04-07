@@ -23,160 +23,80 @@
 
         <LinearLayout
             android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/bg_purple_gradient_edge"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/txtStationName"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:padding="@dimen/_5sdp"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:textColor="@color/colorWhite" />
+
+            <TextView
+                android:id="@+id/txtStationCode"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:padding="@dimen/_5sdp"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:textColor="@color/colorWhite" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_marginTop="80dp"
+            android:layout_marginTop="@dimen/_10sdp"
             android:layout_weight="1"
-            android:background="@drawable/bg_gray_lite_edge"
+            android:background="@drawable/bg_blue_border_edge"
             android:orientation="vertical"
             android:padding="@dimen/_10sdp">
 
             <LinearLayout
-                android:id="@+id/llSearchStation"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:background="@drawable/bg_blue_border_edge"
-                android:gravity="center_vertical"
-                android:layoutDirection="ltr"
-                android:orientation="horizontal"
-                android:visibility="visible"
-                android:layout_marginBottom="@dimen/_10sdp"
-                android:padding="10dp">
-
-                <ImageView
-                    android:id="@+id/imgSearch"
-                    android:layout_width="50dp"
-                    android:layout_height="50dp"
-                    android:background="@drawable/bg_button_gray_edge"
-                    android:padding="10dp"
-                    android:src="@drawable/ic_search" />
-
-                <ImageView
-                    android:id="@+id/imgClear"
-                    android:layout_width="?android:attr/actionBarSize"
-                    android:layout_height="match_parent"
-                    android:padding="8dp"
-                    android:src="@drawable/ic_reject" />
-
-                <EditText
-                    android:id="@+id/edtStationCode"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:background="@color/transparent"
-                    android:gravity="right|center_vertical"
-                    android:hint="کد ایستگاه"
-                    android:padding="10dp"
-                    android:singleLine="true"
-                    android:textColorHint="@color/grayMedium" />
-
-            </LinearLayout>
-
-            <ViewFlipper
-                android:id="@+id/vfStationInfo"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:background="@drawable/bg_blue_border_edge">
-
-                <com.wang.avi.AVLoadingIndicatorView
-                    android:layout_width="30dp"
-                    android:layout_height="30dp"
-                    android:layout_gravity="center"
-                    app:indicatorColor="@color/colorPrimaryDark" />
+                android:orientation="vertical">
 
                 <LinearLayout
+                    android:id="@+id/llSuburbs"
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:orientation="vertical">
+                    android:layout_height="wrap_content"
+                    android:layout_margin="@dimen/_10sdp"
+                    android:background="@drawable/bg_warning"
+                    android:gravity="center"
+                    android:orientation="horizontal"
+                    android:padding="@dimen/_5sdp"
+                    android:visibility="gone">
 
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:orientation="horizontal"
-                        android:padding="@dimen/_10sdp">
-
-                        <TextView
-                            style="@style/tripItemTitle"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:minWidth="60dp"
-                            android:text="@string/stationName" />
-
-                        <TextView
-                            android:id="@+id/txtStationName"
-                            style="@style/tripItemValue"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content" />
-
-                    </LinearLayout>
-
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:orientation="horizontal"
-                        android:padding="@dimen/_10sdp">
-
-                        <TextView
-                            style="@style/tripItemTitle"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:minWidth="60dp"
-                            android:text="@string/stationCode" />
-
-                        <TextView
-                            android:id="@+id/txtStationCode"
-                            style="@style/tripItemValue"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content" />
-
-                    </LinearLayout>
-
-                    <LinearLayout
-                        android:id="@+id/llSuburbs"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
+                    <ImageView
+                        android:layout_width="@dimen/_15sdp"
+                        android:layout_height="@dimen/_15sdp"
                         android:layout_marginLeft="@dimen/_10sdp"
-                        android:layout_marginRight="@dimen/_10sdp"
-                        android:background="@drawable/bg_warning"
-                        android:gravity="center"
-                        android:orientation="horizontal"
-                        android:padding="@dimen/_5sdp"
-                        android:visibility="gone">
+                        android:src="@drawable/ic_error" />
 
-                        <ImageView
-                            android:layout_width="@dimen/_15sdp"
-                            android:layout_height="@dimen/_15sdp"
-                            android:layout_marginLeft="@dimen/_10sdp"
-                            android:src="@drawable/ic_error" />
-
-                        <TextView
-                            android:id="@+id/txtSuburbs"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="ایستگاه واقع در حومه شهر است"
-                            android:textAppearance="?android:attr/textAppearanceMedium"
-                            android:textColor="@color/colorRed" />
-
-                    </LinearLayout>
-
-                    <ListView
-                        android:id="@+id/listStationInfo"
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:divider="@null"
-                        android:scrollbars="none"
-                        tools:listitem="@layout/item_station_info" />
+                    <TextView
+                        android:id="@+id/txtSuburbs"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="ایستگاه واقع در حومه شهر است"
+                        android:textAppearance="?android:attr/textAppearanceMedium"
+                        android:textColor="@color/colorRed" />
 
                 </LinearLayout>
 
-                <TextView
+                <ListView
+                    android:id="@+id/listStationInfo"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:gravity="center"
-                    android:textColor="@color/colorBlack"
-                    android:textAppearance="?android:attr/textAppearanceMedium"
-                    android:text="لطفا کد ایستگاه را وارد کنید"/>
+                    android:divider="@null"
+                    android:scrollbars="none"
+                    tools:listitem="@layout/item_station_info" />
 
-            </ViewFlipper>
+            </LinearLayout>
 
         </LinearLayout>
 

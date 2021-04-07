@@ -32,6 +32,7 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import butterknife.Unbinder;
 import ir.taxi1880.operatormanagement.R;
+import ir.taxi1880.operatormanagement.adapter.StationInfoAdapter;
 import ir.taxi1880.operatormanagement.app.EndPoints;
 import ir.taxi1880.operatormanagement.app.MyApplication;
 import ir.taxi1880.operatormanagement.customView.PinEntryEditText;
@@ -43,6 +44,7 @@ import ir.taxi1880.operatormanagement.dialog.LoadingDialog;
 import ir.taxi1880.operatormanagement.dialog.PlayLastConversationDialog;
 import ir.taxi1880.operatormanagement.dialog.StationInfoDialog;
 import ir.taxi1880.operatormanagement.helper.DateHelper;
+import ir.taxi1880.operatormanagement.helper.KeyBoardHelper;
 import ir.taxi1880.operatormanagement.helper.StringHelper;
 import ir.taxi1880.operatormanagement.helper.TypefaceUtil;
 import ir.taxi1880.operatormanagement.model.StationInfoModel;
@@ -117,7 +119,7 @@ public class DeterminationPageFragment extends Fragment {
             MyApplication.Toast("لطفا شماره ایستگاه را وارد کنید", Toast.LENGTH_SHORT);
             return;
         }
-        new StationInfoDialog().show(Integer.parseInt(origin));
+        getStationInfo(origin);
     }
 
     @OnClick(R.id.imgSetMistake)
@@ -544,6 +546,62 @@ public class DeterminationPageFragment extends Fragment {
             });
         }
 
+    };
+
+    private void getStationInfo(String stationCode) {
+        if (vfStationInfo != null)
+            vfStationInfo.setDisplayedChild(1);
+        KeyBoardHelper.hideKeyboard();
+        RequestHelper.builder(EndPoints.STATION_INFO)
+                .addPath(StringHelper.toEnglishDigits(stationCode) + "")
+                .listener(getStationInfo)
+                .get();
+    }
+
+    RequestHelper.Callback getStationInfo = new RequestHelper.Callback() {
+        @Override
+        public void onResponse(Runnable reCall, Object... args) {
+            MyApplication.handler.post(() -> {
+                try {
+                    if (vfStationInfo != null)
+                        vfStationInfo.setDisplayedChild(0);
+
+                    KeyBoardHelper.hideKeyboard();
+                    JSONObject obj = new JSONObject(args[0].toString());
+                    boolean success = obj.getBoolean("success");
+                    String message = obj.getString("message");
+
+                    if (success) {
+                        JSONArray dataArr = obj.getJSONArray("data");
+                        if (dataArr.length() == 0) {
+                            MyApplication.Toast("اطلاعاتی موجود نیست", Toast.LENGTH_SHORT);
+                            return;
+                        }
+                        new StationInfoDialog().show(dataArr);
+                    } else {
+                        new GeneralDialog()
+                                .title("هشدار")
+                                .message(message)
+                                .secondButton("باشه", null)
+                                .cancelable(false)
+                                .show();
+                    }
+
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                    if (vfStationInfo != null)
+                        vfStationInfo.setDisplayedChild(0);
+                }
+            });
+        }
+
+        @Override
+        public void onFailure(Runnable reCall, Exception e) {
+            MyApplication.handler.post(() -> {
+                if (vfStationInfo != null)
+                    vfStationInfo.setDisplayedChild(0);
+            });
+        }
     };
 
     @SuppressLint("SetTextI18n")

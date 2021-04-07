@@ -35,7 +35,7 @@
             android:layout_weight="1"
             android:layout_height="match_parent"
             style="@style/tripItemValue"
-            android:gravity="right|center_vertical"/>
+            android:gravity="right|top"/>
 
     </LinearLayout>
 
@@ -62,7 +62,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:gravity="right|center_vertical"
-                android:text="محدوده زوج : "
+                android:text="زوج : "
                 style="@style/tripItemTitle"/>
 
             <TextView
@@ -87,7 +87,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
-                android:text=" محدوده فرد :  "
+                android:text="فرد :  "
                 android:gravity="right|center_vertical"
                 style="@style/tripItemTitle"/>
 
@@ -102,5 +102,13 @@
         </LinearLayout>
 
     </LinearLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_marginLeft="@dimen/_10sdp"
+        android:layout_marginRight="@dimen/_10sdp"
+        android:alpha="0.5"
+        android:background="@color/colorAccent"/>
 
 </LinearLayout>

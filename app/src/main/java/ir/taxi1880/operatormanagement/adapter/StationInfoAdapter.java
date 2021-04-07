@@ -12,6 +12,7 @@ import java.util.ArrayList;
 
 import ir.taxi1880.operatormanagement.R;
 import ir.taxi1880.operatormanagement.app.MyApplication;
+import ir.taxi1880.operatormanagement.helper.StringHelper;
 import ir.taxi1880.operatormanagement.helper.TypefaceUtil;
 import ir.taxi1880.operatormanagement.model.StationInfoModel;
 import ir.taxi1880.operatormanagement.push.AvaCrashReporter;
@@ -55,15 +56,13 @@ public class StationInfoAdapter extends BaseAdapter {
       TextView txtStreet = myView.findViewById(R.id.txtStreet);
       TextView txtEven = myView.findViewById(R.id.txtEven);
       TextView txtOdd = myView.findViewById(R.id.txtOdd);
-      TextView txtStation = myView.findViewById(R.id.txtStation);
-      LinearLayout llStation = myView.findViewById(R.id.llStation);
       LinearLayout llEven = myView.findViewById(R.id.llEven);
       LinearLayout llOdd = myView.findViewById(R.id.llOdd);
       LinearLayout llStreet = myView.findViewById(R.id.llStreet);
 
       txtStreet.setText(stationInfoModel.getStreet());
-      txtEven.setText(stationInfoModel.getEven());
-      txtOdd.setText(stationInfoModel.getOdd());
+      txtEven.setText(StringHelper.toPersianDigits(stationInfoModel.getEven()));
+      txtOdd.setText(StringHelper.toPersianDigits(stationInfoModel.getOdd()));
 
       if (stationInfoModel.getOdd().equals("")){
         llOdd.setVisibility(View.GONE);
