@@ -5,6 +5,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.ViewFlipper;
 
@@ -12,6 +13,7 @@ import java.util.ArrayList;
 
 import ir.taxi1880.operatormanagement.R;
 import ir.taxi1880.operatormanagement.app.MyApplication;
+import ir.taxi1880.operatormanagement.helper.DateHelper;
 import ir.taxi1880.operatormanagement.helper.StringHelper;
 import ir.taxi1880.operatormanagement.helper.TypefaceUtil;
 import ir.taxi1880.operatormanagement.model.DriverTurnoverModel;
@@ -46,7 +48,7 @@ public class DriverTurnoverAdapter extends BaseAdapter {
 
         if (view == null) {
             view = LayoutInflater.from(mContext).inflate(R.layout.item_driver_turnover, null);
-            TypefaceUtil.overrideFonts(view, MyApplication.IraSanSMedume);
+            TypefaceUtil.overrideFonts(view,MyApplication.IraSanSMedume);
         }
 
         DriverTurnoverModel driverTurnoverModel = (DriverTurnoverModel) getItem(i);
@@ -55,16 +57,20 @@ public class DriverTurnoverAdapter extends BaseAdapter {
         TextView txtTripTime = view.findViewById(R.id.txtTripTime);
         TextView txtDescription = view.findViewById(R.id.txtDescription);
         TextView txtAmount = view.findViewById(R.id.txtAmount);
-        ViewFlipper vfTurnoverStatus = view.findViewById(R.id.vfTurnoverStatus);
+        ImageView imgDepositStatus = view.findViewById(R.id.imgDepositStatus);
 
-        txtTripDate.setText(StringHelper.toPersianDigits(driverTurnoverModel.getDate()));
-        txtTripTime.setText(StringHelper.toPersianDigits(driverTurnoverModel.getTime()));
+        txtTripDate.setText(StringHelper.toPersianDigits(DateHelper.strPersianTen(DateHelper.parseDate(driverTurnoverModel.getDate()))));
+        txtTripTime.setText(StringHelper.toPersianDigits(driverTurnoverModel.getTime().substring(0, 5)));
         txtDescription.setText(StringHelper.toPersianDigits(driverTurnoverModel.getDescription()));
-        if (driverTurnoverModel.getCredit().equals("0")) {
-            vfTurnoverStatus.setDisplayedChild(1);
+        if (driverTurnoverModel.getCredit().equals("0")) { // بدهی
+            txtDescription.setTextColor(MyApplication.currentActivity.getResources().getColor(R.color.colorRedDark));
+            txtAmount.setTextColor(MyApplication.currentActivity.getResources().getColor(R.color.colorRedDark));
+            imgDepositStatus.setImageResource(R.drawable.ic_baseline_horizontal_rule_24);
             txtAmount.setText(StringHelper.toPersianDigits(StringHelper.setComma(driverTurnoverModel.getDebit())));
-        } else if (driverTurnoverModel.getDebit().equals("0")) {
-            vfTurnoverStatus.setDisplayedChild(0);
+        } else if (driverTurnoverModel.getDebit().equals("0")) { // بستانکاری
+            txtDescription.setTextColor(MyApplication.currentActivity.getResources().getColor(R.color.colorGreen));
+            txtAmount.setTextColor(MyApplication.currentActivity.getResources().getColor(R.color.colorGreen));
+            imgDepositStatus.setImageResource(R.drawable.ic_baseline_add_24);
             txtAmount.setText(StringHelper.toPersianDigits(StringHelper.setComma(driverTurnoverModel.getCredit())));
         }
 

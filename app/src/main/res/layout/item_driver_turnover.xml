@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_height="wrap_content"
     android:layoutDirection="rtl"
     android:padding="5dp"
     android:orientation="vertical">
@@ -9,119 +9,46 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@drawable/bg_edit_text"
-        android:padding="@dimen/_10sdp"
-        android:orientation="vertical">
+        android:padding="@dimen/_5sdp"
+        android:gravity="top|right"
+        android:orientation="horizontal">
 
-        <LinearLayout
-            android:layout_width="match_parent"
+        <TextView
+            android:id="@+id/txtTripDate"
+            style="@style/tripItemValue"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1.5" />
+
+        <TextView
+            android:id="@+id/txtTripTime"
+            style="@style/tripItemValue"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1" />
+
+        <ImageView
+            android:id="@+id/imgDepositStatus"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="0.5"/>
+
+        <TextView
+            android:id="@+id/txtDescription"
+            style="@style/tripItemValue"
+            android:layout_width="0dp"
+            android:gravity="top|right"
             android:layout_height="wrap_content"
-            android:gravity="center"
-            android:orientation="horizontal"
-            android:padding="@dimen/_5sdp">
+            android:layout_weight="3" />
 
-            <TextView
-                style="@style/tripItemTitle"
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_weight="0.8"
-                android:text="تاریخ" />
-
-            <TextView
-                android:id="@+id/txtTripDate"
-                style="@style/tripItemValue"
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_weight="1.5" />
-
-            <TextView
-                style="@style/tripItemTitle"
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_weight="0.8"
-                android:text="ساعت" />
-
-            <TextView
-                android:id="@+id/txtTripTime"
-                style="@style/tripItemValue"
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_weight="1" />
-
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="match_parent"
+        <TextView
+            android:id="@+id/txtAmount"
+            style="@style/tripItemValue"
+            android:gravity="left"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:gravity="center"
-            android:orientation="horizontal"
-            android:padding="@dimen/_5sdp">
+            android:layout_weight="1" />
 
-            <TextView
-                style="@style/tripItemTitle"
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_weight="0.8"
-                android:text="نوع" />
-
-            <ViewFlipper
-                android:id="@+id/vfTurnoverStatus"
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_weight="1.5">
-
-                <TextView
-                    style="@style/tripItemValue"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:text="بستانکار" />
-
-                <TextView
-                    style="@style/tripItemValue"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:text="بدهکار" />
-
-            </ViewFlipper>
-
-            <TextView
-                style="@style/tripItemTitle"
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_weight="0.8"
-                android:text="مبلغ" />
-
-            <TextView
-                android:id="@+id/txtAmount"
-                style="@style/tripItemValue"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1" />
-
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:gravity="center"
-            android:orientation="horizontal"
-            android:padding="@dimen/_5sdp">
-
-            <TextView
-                style="@style/tripItemTitle"
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_weight="0.8"
-                android:text="توضیحات" />
-
-            <TextView
-                android:id="@+id/txtDescription"
-                style="@style/tripItemValue"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="3" />
-
-        </LinearLayout>
 
     </LinearLayout>
 
