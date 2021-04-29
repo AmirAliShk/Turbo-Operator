@@ -2,6 +2,9 @@ package ir.taxi1880.operatormanagement.fragment;
 
 
 import android.annotation.SuppressLint;
+import android.content.Intent;
+import android.graphics.Paint;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -12,6 +15,7 @@ import android.view.WindowManager;
 import android.view.inputmethod.EditorInfo;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.ViewFlipper;
 
@@ -57,6 +61,13 @@ public class LoginFragment extends Fragment {
 
     @BindView(R.id.vfEnter)
     ViewFlipper vfEnter;
+
+    @OnClick(R.id.llRules)
+    void OnRules() {
+        Intent i = new Intent(Intent.ACTION_VIEW);
+        i.setData(Uri.parse("http://turbotaxi.ir:1880/operatorRules"));
+        MyApplication.currentActivity.startActivity(i);
+    }
 
     @OnClick(R.id.btnLogin)
     void onLogin() {
@@ -107,6 +118,9 @@ public class LoginFragment extends Fragment {
 
         unbinder = ButterKnife.bind(this, view);
         TypefaceUtil.overrideFonts(view);
+
+        TextView txtRules = view.findViewById(R.id.txtRules);
+        txtRules.setPaintFlags(txtRules.getPaintFlags() | Paint.UNDERLINE_TEXT_FLAG);
 
         edtPassword.setOnEditorActionListener((v, actionId, event) -> {
             if (actionId == EditorInfo.IME_ACTION_DONE) {

@@ -1,5 +1,8 @@
 package ir.taxi1880.operatormanagement.fragment;
 
+import android.content.Intent;
+import android.graphics.Paint;
+import android.net.Uri;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
@@ -10,6 +13,7 @@ import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.ViewFlipper;
 
@@ -38,6 +42,13 @@ public class VerificationFragment extends Fragment {
 
     @BindView(R.id.vfSend)
     ViewFlipper vfSend;
+
+    @OnClick(R.id.llRules)
+    void OnRules() {
+        Intent i = new Intent(Intent.ACTION_VIEW);
+        i.setData(Uri.parse("http://turbotaxi.ir:1880/operatorRules"));
+        MyApplication.currentActivity.startActivity(i);
+    }
 
     @OnClick(R.id.btnSend)
     void onSend() {
@@ -80,6 +91,9 @@ public class VerificationFragment extends Fragment {
         getActivity().getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_NOTHING);
         unbinder = ButterKnife.bind(this, view);
         TypefaceUtil.overrideFonts(view);
+
+        TextView txtRules = view.findViewById(R.id.txtRules);
+        txtRules.setPaintFlags(txtRules.getPaintFlags() | Paint.UNDERLINE_TEXT_FLAG);
 
         return view;
     }
