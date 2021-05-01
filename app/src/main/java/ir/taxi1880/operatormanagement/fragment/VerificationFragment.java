@@ -12,6 +12,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -43,6 +44,9 @@ public class VerificationFragment extends Fragment {
     @BindView(R.id.vfSend)
     ViewFlipper vfSend;
 
+    @BindView(R.id.cbRules)
+    CheckBox cbRules;
+
     @OnClick(R.id.llRules)
     void OnRules() {
         Intent i = new Intent(Intent.ACTION_VIEW);
@@ -55,15 +59,18 @@ public class VerificationFragment extends Fragment {
         mobileNumber = edtMobileNumber.getText().toString();
 
         if (mobileNumber.isEmpty()) {
-            MyApplication.Toast("شماره موبایل را وارد کنید", Toast.LENGTH_SHORT);
+            MyApplication.Toast("شماره موبایل را وارد کنید.", Toast.LENGTH_SHORT);
             return;
         }
 
         if (!PhoneNumberValidation.isValid(mobileNumber)) {
-            MyApplication.Toast("شماره موبایل نا معتبر میباشد", Toast.LENGTH_SHORT);
+            MyApplication.Toast("شماره موبایل نا معتبر میباشد.", Toast.LENGTH_SHORT);
             return;
         }
-
+        if (!cbRules.isChecked()) {
+            MyApplication.ErrorToast("لطفا قوانین و مقررات را قبول نمایید.", Toast.LENGTH_SHORT);
+            return;
+        }
         mobileNumber = mobileNumber.startsWith("0") ? mobileNumber : "0" + mobileNumber;
 
         KeyBoardHelper.hideKeyboard();

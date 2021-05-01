@@ -51,7 +51,7 @@ public class EndPoints {
     public static final String HAWKEYE_LOGIN_PATH = HAKWEYE_IP + ":" + HAWKEYE_APIPort + "/api/user/v1/login/phone/";
 
     /******************************** Base Api *********************************/
-    /******************************** Base Api *********************************/
+
     public static final String GET_APP_INFO = WEBSERVICE_PATH + "getAppInfo";
     public static final String GET_MESSAGES = WEBSERVICE_PATH + "getMessages";
     public static final String GET_NEWS = WEBSERVICE_PATH + "getNews";
@@ -90,11 +90,6 @@ public class EndPoints {
     public static final String BESTS = SCORE_WEBSERVICE_PATH + "bests";
     public static final String REWARDS = SCORE_WEBSERVICE_PATH + "rewards";
     public static final String SINGLE = SCORE_WEBSERVICE_PATH + "single";
-
-    /******************************** Contract Api *********************************/
-
-    public static final String CONTRACT = WEBSERVICE_PATH + "getContractText";
-    public static final String UPLOAD_NATIONAL_CARD = IP + ":" + PIC_APIPort + "/api/v1/setContract";
 
     /******************************** Support Api *********************************/
 

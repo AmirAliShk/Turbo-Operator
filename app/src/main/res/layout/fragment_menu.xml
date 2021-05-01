@@ -214,9 +214,9 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:gravity="center"
-                    android:text="@string/best"
+                    android:text="@string/complaint"
                     android:textColor="@color/colorBlack"
-                    android:textSize="@dimen/_15ssp" />
+                    android:textSize="@dimen/_15ssp" /> <!-- todo -->
 
             </LinearLayout>
 

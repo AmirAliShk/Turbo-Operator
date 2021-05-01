@@ -14,6 +14,7 @@ import android.view.Window;
 import android.view.WindowManager;
 import android.view.inputmethod.EditorInfo;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -62,6 +63,9 @@ public class LoginFragment extends Fragment {
     @BindView(R.id.vfEnter)
     ViewFlipper vfEnter;
 
+    @BindView(R.id.cbRules)
+    CheckBox cbRules;
+
     @OnClick(R.id.llRules)
     void OnRules() {
         Intent i = new Intent(Intent.ACTION_VIEW);
@@ -82,7 +86,10 @@ public class LoginFragment extends Fragment {
             MyApplication.Toast("لطفا رمز عبور خود را وارد نمایید", Toast.LENGTH_SHORT);
             return;
         }
-
+        if (!cbRules.isChecked()) {
+            MyApplication.ErrorToast("لطفا قوانین و مقررات را قبول نمایید.", Toast.LENGTH_SHORT);
+            return;
+        }
         logIn(userName, password);
         KeyBoardHelper.hideKeyboard();
     }
