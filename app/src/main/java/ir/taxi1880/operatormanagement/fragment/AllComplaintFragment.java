@@ -26,9 +26,10 @@ import butterknife.OnClick;
 import butterknife.Unbinder;
 import ir.taxi1880.operatormanagement.R;
 import ir.taxi1880.operatormanagement.adapter.AllComplaintAdapter;
+import ir.taxi1880.operatormanagement.app.EndPoints;
 import ir.taxi1880.operatormanagement.app.MyApplication;
 import ir.taxi1880.operatormanagement.helper.TypefaceUtil;
-import ir.taxi1880.operatormanagement.model.ComplaintsModel;
+import ir.taxi1880.operatormanagement.model.AllComplaintsModel;
 import ir.taxi1880.operatormanagement.okHttp.RequestHelper;
 
 import static ir.taxi1880.operatormanagement.app.Keys.KEY_COUNT_ALL_COMPLAINT;
@@ -36,6 +37,9 @@ import static ir.taxi1880.operatormanagement.app.Keys.KEY_COUNT_ALL_COMPLAINT;
 public class AllComplaintFragment extends Fragment {
     Unbinder unbinder;
     LocalBroadcastManager broadcaster;
+
+    AllComplaintAdapter mAdapter;
+    ArrayList<AllComplaintsModel> allComplaintsModels;
 
     @BindView(R.id.refreshPage)
     RecyclerRefreshLayout refreshPage;
@@ -56,9 +60,6 @@ public class AllComplaintFragment extends Fragment {
         getAllComplaints();
     }
 
-    AllComplaintAdapter mAdapter;
-    ArrayList<ComplaintsModel> complaintsModels;
-
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -74,9 +75,9 @@ public class AllComplaintFragment extends Fragment {
     private void getAllComplaints() {
         if (vfAllComplaint != null)
             vfAllComplaint.setDisplayedChild(0);
-//        RequestHelper.builder(EndPoints.)//todo
-//                .listener(allComplaintsRequestCallBack)
-//                .get();
+        RequestHelper.builder(EndPoints.COMPLAINT_WEBSERVICE_PATH + 0)//todo Status = New 0 , admission 1
+                .listener(allComplaintsRequestCallBack)
+                .get();
     }
 
     RequestHelper.Callback allComplaintsRequestCallBack = new RequestHelper.Callback() {
@@ -84,9 +85,11 @@ public class AllComplaintFragment extends Fragment {
         public void onResponse(Runnable reCall, Object... args) {
             MyApplication.handler.post(() -> {
                 try {
+//                    { saveDate: '1400/02/11', saveTime: '15:29   ', id: 1 }
+
                     if (refreshPage != null)
                         refreshPage.setRefreshing(false);
-                    complaintsModels = new ArrayList<ComplaintsModel>();
+                    allComplaintsModels = new ArrayList<AllComplaintsModel>();
                     JSONObject listenObj = new JSONObject(args[0].toString());
                     boolean success = listenObj.getBoolean("success");
                     String message = listenObj.getString("message");
@@ -96,35 +99,29 @@ public class AllComplaintFragment extends Fragment {
                         JSONArray dataArr = listenObj.getJSONArray("data");
                         for (int i = 0; i < dataArr.length(); i++) {
                             JSONObject dataObj = dataArr.getJSONObject(i);
-                            ComplaintsModel model = new ComplaintsModel();
+                            AllComplaintsModel model = new AllComplaintsModel();
 
                             model.setId(dataObj.getInt("id"));
-                            model.setName(dataObj.getString("name"));
-                            model.setComment(dataObj.getString("comment"));
-                            model.setCity(dataObj.getInt("cityCode"));
                             model.setDate(dataObj.getString("saveDate"));
                             model.setTime(dataObj.getString("saveTime"));
-                            model.setStatus(dataObj.getInt("status"));
-                            model.setTell(dataObj.getString("tell"));
-                            model.setJobPosition(dataObj.getString("jobPosition"));
 
-                            complaintsModels.add(model);
+                            allComplaintsModels.add(model);
                         }
 
-                        if (complaintsModels.size() == 0) {
+                        if (allComplaintsModels.size() == 0) {
                             if (vfAllComplaint != null)
                                 vfAllComplaint.setDisplayedChild(3);
                         } else {
                             if (vfAllComplaint != null) {
                                 vfAllComplaint.setDisplayedChild(1);
-                                mAdapter = new AllComplaintAdapter(MyApplication.currentActivity, complaintsModels);
+                                mAdapter = new AllComplaintAdapter(MyApplication.currentActivity, allComplaintsModels);
                                 complaintsList.setAdapter(mAdapter);
                             }
                         }
 
                         broadcaster = LocalBroadcastManager.getInstance(MyApplication.context);
                         Intent broadcastIntent = new Intent(KEY_COUNT_ALL_COMPLAINT);
-                        broadcastIntent.putExtra(KEY_COUNT_ALL_COMPLAINT, complaintsModels.size());
+                        broadcastIntent.putExtra(KEY_COUNT_ALL_COMPLAINT, allComplaintsModels.size());
                         broadcaster.sendBroadcast(broadcastIntent);
 
                     } else {

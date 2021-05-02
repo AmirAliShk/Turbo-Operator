@@ -26,9 +26,10 @@ import butterknife.OnClick;
 import butterknife.Unbinder;
 import ir.taxi1880.operatormanagement.R;
 import ir.taxi1880.operatormanagement.adapter.PendingComplaintAdapter;
+import ir.taxi1880.operatormanagement.app.EndPoints;
 import ir.taxi1880.operatormanagement.app.MyApplication;
 import ir.taxi1880.operatormanagement.helper.TypefaceUtil;
-import ir.taxi1880.operatormanagement.model.ComplaintsModel;
+import ir.taxi1880.operatormanagement.model.PendingComplaintsModel;
 import ir.taxi1880.operatormanagement.okHttp.RequestHelper;
 
 import static ir.taxi1880.operatormanagement.app.Keys.KEY_COUNT_PENDING_COMPLAINT;
@@ -37,6 +38,9 @@ import static ir.taxi1880.operatormanagement.app.Keys.VALUE_COUNT_PENDING_COMPLA
 public class PendingComplaintFragment extends Fragment {
     Unbinder unbinder;
     LocalBroadcastManager broadcaster;
+
+    PendingComplaintAdapter mAdapter;
+    ArrayList<PendingComplaintsModel> pendingComplaintsModels;
 
     @BindView(R.id.refreshPage)
     RecyclerRefreshLayout refreshPage;
@@ -57,9 +61,6 @@ public class PendingComplaintFragment extends Fragment {
         getPendingRequests();
     }
 
-    PendingComplaintAdapter mAdapter;
-    ArrayList<ComplaintsModel> complaintsModels;
-
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -75,9 +76,9 @@ public class PendingComplaintFragment extends Fragment {
     private void getPendingRequests() {
         if (vfPendingComplaint != null)
             vfPendingComplaint.setDisplayedChild(0);
-//        RequestHelper.builder(EndPoints.)//todo
-//                .listener(PendingRequestsCallBack)
-//                .get();
+        RequestHelper.builder(EndPoints.COMPLAINT_WEBSERVICE_PATH + 1)//todo Status = New 0 , admission 1
+                .listener(PendingRequestsCallBack)
+                .get();
     }
 
     RequestHelper.Callback PendingRequestsCallBack = new RequestHelper.Callback() {
@@ -87,7 +88,7 @@ public class PendingComplaintFragment extends Fragment {
                 try {
                     if (refreshPage != null)
                         refreshPage.setRefreshing(false);
-                    complaintsModels = new ArrayList<>();
+                    pendingComplaintsModels = new ArrayList<>();
                     JSONObject listenObj = new JSONObject(args[0].toString());
                     boolean success = listenObj.getBoolean("success");
                     String message = listenObj.getString("message");
@@ -95,36 +96,30 @@ public class PendingComplaintFragment extends Fragment {
                         JSONArray dataArr = listenObj.getJSONArray("data");
                         for (int i = 0; i < dataArr.length(); i++) {
                             JSONObject dataObj = dataArr.getJSONObject(i);
-                            ComplaintsModel model = new ComplaintsModel();
+                            PendingComplaintsModel model = new PendingComplaintsModel();
                             if (dataObj.getInt("status") == 5 || dataObj.getInt("status") == 6)
                                 continue;
 
-                            model.setId(dataObj.getInt("id"));
-                            model.setName(dataObj.getString("name"));
-                            model.setTell(dataObj.getString("tell"));
-                            model.setComment(dataObj.getString("comment"));
+                            model.setId(dataObj.getInt("id"));//todo it should be more
                             model.setDate(dataObj.getString("saveDate"));
                             model.setTime(dataObj.getString("saveTime"));
-                            model.setCity(dataObj.getInt("cityCode"));
-                            model.setJobPosition(dataObj.getString("jobPosition"));
-                            model.setStatus(dataObj.getInt("status"));
-                            complaintsModels.add(model);
+                            pendingComplaintsModels.add(model);
                         }
 
-                        if (complaintsModels.size() == 0) {
+                        if (pendingComplaintsModels.size() == 0) {
                             if (vfPendingComplaint != null)
                                 vfPendingComplaint.setDisplayedChild(3);
                         } else {
                             if (vfPendingComplaint != null) {
                                 vfPendingComplaint.setDisplayedChild(1);
-                                mAdapter = new PendingComplaintAdapter(MyApplication.currentActivity, complaintsModels);
+                                mAdapter = new PendingComplaintAdapter(MyApplication.currentActivity, pendingComplaintsModels);
                                 complaintsList.setAdapter(mAdapter);
                             }
                         }
 
                         broadcaster = LocalBroadcastManager.getInstance(MyApplication.context);
                         Intent broadcastIntent = new Intent(KEY_COUNT_PENDING_COMPLAINT);
-                        broadcastIntent.putExtra(VALUE_COUNT_PENDING_COMPLAINT, complaintsModels.size());
+                        broadcastIntent.putExtra(VALUE_COUNT_PENDING_COMPLAINT, pendingComplaintsModels.size());
                         broadcaster.sendBroadcast(broadcastIntent);
 
                     } else {

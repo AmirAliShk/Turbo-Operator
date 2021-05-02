@@ -1,10 +1,8 @@
 package ir.taxi1880.operatormanagement.fragment;
 
 import android.annotation.SuppressLint;
-import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.Drawable;
-import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -34,13 +32,13 @@ import ir.taxi1880.operatormanagement.app.EndPoints;
 import ir.taxi1880.operatormanagement.app.MyApplication;
 import ir.taxi1880.operatormanagement.dialog.GeneralDialog;
 import ir.taxi1880.operatormanagement.helper.TypefaceUtil;
-import ir.taxi1880.operatormanagement.model.ComplaintsModel;
+import ir.taxi1880.operatormanagement.model.ComplaintDetailsModel;
 import ir.taxi1880.operatormanagement.okHttp.RequestHelper;
 
 public class ComplaintDetailFragment extends Fragment {
     Unbinder unbinder;
     int statusModel;
-    ComplaintsModel complaintsModel;
+    ComplaintDetailsModel complaintDetailsModel;
 
     @BindView(R.id.indicator)
     StepperIndicator indicator;
@@ -69,9 +67,6 @@ public class ComplaintDetailFragment extends Fragment {
     @BindView(R.id.txtName)
     TextView txtName;
 
-    @BindView(R.id.txtTell)
-    TextView txtTell;
-
     @BindView(R.id.txtCity)
     TextView txtCity;
 
@@ -83,17 +78,6 @@ public class ComplaintDetailFragment extends Fragment {
 
     @BindView(R.id.txtTime)
     TextView txtTime;
-
-    @OnClick(R.id.imgCall)
-    void onCall() {
-        if (vfCall != null)
-            vfCall.setDisplayedChild(1);
-        Intent intent = new Intent(Intent.ACTION_DIAL);
-        intent.setData(Uri.parse("tel:0" + complaintsModel.getTell()));
-        startActivity(intent);
-        if (vfCall != null)
-            vfCall.setDisplayedChild(0);
-    }
 
     @OnClick(R.id.btnNext)
     void onNext() {
@@ -144,24 +128,8 @@ public class ComplaintDetailFragment extends Fragment {
 
     }
 
-    @OnClick(R.id.btnDelete)
-    void onDeleteRequest() {
-        if (vfDelete != null)
-            vfDelete.setDisplayedChild(1);
-        new GeneralDialog()
-                .message("در صورت عدم تمایل شخص برای پذیرش یا پاسخگو نبودن شما مجاز به حذف وی از فرآیند پذیرش میباشید.\n آیا از قطع فرآیند اطمینان دارید؟")
-                .cancelable(false)
-                .firstButton("بله", () -> deleteRequest())
-                .secondButton("خیر", () -> {
-                    if (vfDelete != null) {
-                        vfDelete.setDisplayedChild(0);
-                    }
-                })
-                .show();
-    }
-
-    public ComplaintDetailFragment(ComplaintsModel complaintsModel) {
-        this.complaintsModel = complaintsModel;
+    public ComplaintDetailFragment(ComplaintDetailsModel complaintsModel) {
+        this.complaintDetailsModel = complaintsModel;
     }
 
     @SuppressLint("ClickableViewAccessibility")
@@ -172,7 +140,7 @@ public class ComplaintDetailFragment extends Fragment {
         unbinder = ButterKnife.bind(this, view);
         TypefaceUtil.overrideFonts(view);
 
-        if (complaintsModel.getStatus() == 3) {
+        if (complaintDetailsModel.getStatus() == 3) {
             if (vfButtons != null) {
                 vfButtons.setDisplayedChild(1);
             }
@@ -182,29 +150,14 @@ public class ComplaintDetailFragment extends Fragment {
             }
         }
 
-        txtName.setText(complaintsModel.getName());
-        txtTell.setText(complaintsModel.getTell());
-        try {
-            JSONArray cityArr = new JSONArray(MyApplication.prefManager.getCity());
-            for (int i = 0; i < cityArr.length(); i++) {
-                JSONObject cityObj = cityArr.getJSONObject(i);
-                if (complaintsModel.getCity() == cityObj.getInt("CityId")) {
-                    txtCity.setText(cityObj.getString("CityName"));
-                    break;
-                }
-            }
+        txtName.setText(complaintDetailsModel.getPassengerName());
+        txtDate.setText(complaintDetailsModel.getSaveDate());
+        txtTime.setText(complaintDetailsModel.getSaveTime());
+        statusModel = complaintDetailsModel.getStatus();
 
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-        txtJobPosition.setText(complaintsModel.getJobPosition());
-        txtDate.setText(complaintsModel.getDate());
-        txtTime.setText(complaintsModel.getTime());
-        statusModel = complaintsModel.getStatus();
+        indicator.setCurrentStep(complaintDetailsModel.getStatus());
 
-        indicator.setCurrentStep(complaintsModel.getStatus());
-
-        refreshStep(complaintsModel.getStatus());
+        refreshStep(complaintDetailsModel.getStatus());
 
         return view;
     }
@@ -249,19 +202,18 @@ public class ComplaintDetailFragment extends Fragment {
     }
 
     private void updateStatus() {
-//        RequestHelper.builder(EndPoints. ) //todo
-//                .addParam("id", complaintsModel.getId())
-//                .addParam("status", statusParam)
-//                .listener(updateStatus)
-//                .put();
+        RequestHelper.builder(EndPoints.COMPLAINT_UPDATE_STATUS) //todo
+                .addParam("id", complaintDetailsModel.getId())
+                .addParam("status", statusParam)
+                .listener(updateStatus)
+                .put();
     }
 
     RequestHelper.Callback updateStatus = new RequestHelper.Callback() {
         @Override
         public void onResponse(Runnable reCall, Object... args) {
             MyApplication.handler.post(() -> {
-//                {"success":true,"message":"","data":{"status":true}}
-//                {"success":true,"message":"راننده ای با این شماره موبایل ثبت نشده است","data":{"status":false}}
+//               {"status":true,"message":"عملیات با موفقیت انجام شد", data}
                 try {
                     JSONObject object = new JSONObject(args[0].toString());
                     boolean success = object.getBoolean("success");
@@ -269,14 +221,6 @@ public class ComplaintDetailFragment extends Fragment {
                     if (success) {
                         JSONObject JSONObj = object.getJSONObject("data");
                         boolean status = JSONObj.getBoolean("status");
-
-//                         JSONObject obj = new JSONObject(args[0].toString());
-//                    boolean success = obj.getBoolean("success");
-//                    String message = obj.getString("message");
-//                    if (success) {
-//                        JSONObject data = obj.getJSONObject("data");
-//                        boolean status = data.getBoolean("status");
-
                         if (!status) {
                             new GeneralDialog()
                                     .message(message)
@@ -303,7 +247,6 @@ public class ComplaintDetailFragment extends Fragment {
                                 refreshStep(statusParam);
 
                                 statusModel = statusModel + 1;
-
                             }
                         }
 
@@ -343,30 +286,24 @@ public class ComplaintDetailFragment extends Fragment {
     };
 
     private void missCall() {
-//        RequestHelper.builder(EndPoints. )
-//                .listener(missCall)
-//                .addParam("id", complaintsModel.getId())
-//                .addParam("status", statusParam - 1)
-//                .addParam("comment", "")
-//                .post();
+        RequestHelper.builder(EndPoints.COMPLAINT_MISSED_CALL) //todo 1 then call driver if 2 then call customer
+                .listener(missCall)
+                .addParam("id", complaintDetailsModel.getId())
+                .addParam("status", statusParam - 1)
+                .addParam("comment", "")
+                .addParam("type", "")//todo
+                .post();
     }
 
     RequestHelper.Callback missCall = new RequestHelper.Callback() {
         @Override
         public void onResponse(Runnable reCall, Object... args) {
             MyApplication.handler.post(() -> {
-//                {"success":true,"message":"","data":{"status":true}}
+//               {"status":true,"message":"عملیات با موفقیت انجام شد", data}
                 try {
                     JSONObject object = new JSONObject(args[0].toString());
                     boolean success = object.getBoolean("success");
                     String message = object.getString("message");
-
-//                         JSONObject obj = new JSONObject(args[0].toString());
-//                    boolean success = obj.getBoolean("success");
-//                    String message = obj.getString("message");
-//                    if (success) {
-//                        JSONObject data = obj.getJSONObject("data");
-//                        boolean status = data.getBoolean("status");
 
                     if (success) {
                         JSONObject data = object.getJSONObject("data");
@@ -382,10 +319,6 @@ public class ComplaintDetailFragment extends Fragment {
                             new GeneralDialog()
                                     .message("پیامک تماس از دست رفته ارسال شد.")
                                     .cancelable(true)
-//                                    .onDismissListener(() -> {
-//                                        if (vfMissedCall != null)
-//                                            vfMissedCall.setDisplayedChild(0);
-//                                    })
                                     .firstButton("تایید", null)
                                     .show();
                         }
@@ -405,70 +338,6 @@ public class ComplaintDetailFragment extends Fragment {
             MyApplication.handler.post(() -> {
                 if (vfMissedCall != null)
                     vfMissedCall.setDisplayedChild(0);
-            });
-        }
-    };
-
-    private void deleteRequest() {
-        RequestHelper.builder(EndPoints.HIRE + "status")
-                .listener(deleteRequest)
-                .addParam("id", complaintsModel.getId())
-                .addParam("status", 5)
-                .put();
-    }
-
-    RequestHelper.Callback deleteRequest = new RequestHelper.Callback() {
-        @Override
-        public void onResponse(Runnable reCall, Object... args) {
-            MyApplication.handler.post(() -> {
-//                {"success":true,"message":"","data":{"status":true}}
-//                 {"success":true,"message":"فعلا امکان حذف وجود ندارد","data":{"status":false}}
-                try {
-                    JSONObject object = new JSONObject(args[0].toString());
-                    boolean success = object.getBoolean("success");
-                    String message = object.getString("message");
-                    if (success) {
-                        JSONObject JSONObj = object.getJSONObject("data");
-                        boolean status = JSONObj.getBoolean("status");
-
-//                         JSONObject obj = new JSONObject(args[0].toString());
-//                    boolean success = obj.getBoolean("success");
-//                    String message = obj.getString("message");
-//                    if (success) {
-//                        JSONObject data = obj.getJSONObject("data");
-//                        boolean status = data.getBoolean("status");
-
-                        if (!status) {
-                            new GeneralDialog()
-                                    .message(message)
-                                    .cancelable(false)
-                                    .firstButton("تلاش مجدد", () -> deleteRequest())
-                                    .secondButton("برگشت", null)
-                                    .show();
-                        } else {
-                            new GeneralDialog()
-                                    .message("فرد از صف پذیرش توربوتاکسی خارج شد.")
-                                    .cancelable(false)
-                                    .firstButton("تایید", () -> MyApplication.currentActivity.onBackPressed())
-                                    .show();
-                        }
-
-                        if (vfDelete != null)
-                            vfDelete.setDisplayedChild(0);
-                    }
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                    if (vfDelete != null)
-                        vfDelete.setDisplayedChild(0);
-                }
-            });
-        }
-
-        @Override
-        public void onFailure(Runnable reCall, Exception e) {
-            MyApplication.handler.post(() -> {
-                if (vfDelete != null)
-                    vfDelete.setDisplayedChild(0);
             });
         }
     };

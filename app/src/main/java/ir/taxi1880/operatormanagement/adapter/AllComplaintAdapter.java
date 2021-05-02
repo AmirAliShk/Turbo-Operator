@@ -18,12 +18,13 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 
 import ir.taxi1880.operatormanagement.R;
+import ir.taxi1880.operatormanagement.app.EndPoints;
 import ir.taxi1880.operatormanagement.app.MyApplication;
 import ir.taxi1880.operatormanagement.dialog.GeneralDialog;
 import ir.taxi1880.operatormanagement.helper.DateHelper;
 import ir.taxi1880.operatormanagement.helper.StringHelper;
 import ir.taxi1880.operatormanagement.helper.TypefaceUtil;
-import ir.taxi1880.operatormanagement.model.ComplaintsModel;
+import ir.taxi1880.operatormanagement.model.AllComplaintsModel;
 import ir.taxi1880.operatormanagement.okHttp.RequestHelper;
 
 import static ir.taxi1880.operatormanagement.app.Keys.KEY_COUNT_ALL_COMPLAINT;
@@ -32,13 +33,13 @@ import static ir.taxi1880.operatormanagement.app.Keys.VALUE_COUNT_ALL_COMPLAINT;
 public class AllComplaintAdapter extends RecyclerView.Adapter<AllComplaintAdapter.ViewHolder> {
     private Context mContext;
     LocalBroadcastManager broadcaster;
-    private ArrayList<ComplaintsModel> complaintsModels;
+    private ArrayList<AllComplaintsModel> allComplaintsModels;
     ViewFlipper viewFlipper;
     int position;
 
-    public AllComplaintAdapter(Context mContext, ArrayList<ComplaintsModel> complaintsModels) {
+    public AllComplaintAdapter(Context mContext, ArrayList<AllComplaintsModel> allComplaintsModels) {
         this.mContext = mContext;
-        this.complaintsModels = complaintsModels;
+        this.allComplaintsModels = allComplaintsModels;
     }
 
     @Override
@@ -50,7 +51,7 @@ public class AllComplaintAdapter extends RecyclerView.Adapter<AllComplaintAdapte
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-        ComplaintsModel model = complaintsModels.get(position);
+        AllComplaintsModel model = allComplaintsModels.get(position);
 
         String date = DateHelper.strPersianTree(DateHelper.parseDate(model.getDate()));
         holder.txtComplaintDate.setText(StringHelper.toPersianDigits(date) + " ساعت " + model.getTime());
@@ -67,7 +68,7 @@ public class AllComplaintAdapter extends RecyclerView.Adapter<AllComplaintAdapte
 
     @Override
     public int getItemCount() {
-        return complaintsModels.size();
+        return allComplaintsModels.size();
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {
@@ -85,10 +86,10 @@ public class AllComplaintAdapter extends RecyclerView.Adapter<AllComplaintAdapte
     }
 
     private void getAccept(int id) {
-//        RequestHelper.builder(EndPoints.)//todo
-//                .addParam("id", id)
-//                .listener(getAccept)
-//                .put();
+        RequestHelper.builder(EndPoints.COMPLAINT_ACCEPT)//todo
+                .addParam("id", id)
+                .listener(getAccept)
+                .put();
     }
 
     RequestHelper.Callback getAccept = new RequestHelper.Callback() {
@@ -106,14 +107,14 @@ public class AllComplaintAdapter extends RecyclerView.Adapter<AllComplaintAdapte
                                 .cancelable(false)
                                 .firstButton("باشه", () -> {
                                     if (position != -1)
-                                        complaintsModels.remove(position);
+                                        allComplaintsModels.remove(position);
 
                                     notifyDataSetChanged();
 
                                     broadcaster = LocalBroadcastManager.getInstance(MyApplication.context);
 
                                     Intent broadcastIntent1 = new Intent(KEY_COUNT_ALL_COMPLAINT);
-                                    broadcastIntent1.putExtra(VALUE_COUNT_ALL_COMPLAINT, complaintsModels.size());
+                                    broadcastIntent1.putExtra(VALUE_COUNT_ALL_COMPLAINT, allComplaintsModels.size());
                                     broadcaster.sendBroadcast(broadcastIntent1);
 
 //                                        Intent broadcastIntent2 = new Intent(KEY_COUNT_PENDING_HIRE);
