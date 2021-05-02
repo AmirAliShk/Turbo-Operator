@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/colorPrimary"
+    android:background="@color/colorWhite"
     android:clickable="true"
     android:layoutDirection="rtl"
     android:orientation="vertical">
@@ -13,24 +13,24 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="40dp"
-        android:paddingStart="36dp"
-        android:paddingLeft="34dp">
+        android:paddingRight="17dp"
+        android:paddingLeft="20dp">
 
         <TextView
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
             android:gravity="right"
-            android:text="ثبت"
+            android:text="نتیجه‌گیری"
             android:textColor="@color/grayLight"
             android:textSize="@dimen/_12ssp" />
 
         <TextView
             android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:layout_weight="2.1"
+            android:layout_weight="2.4"
             android:gravity="center"
-            android:text="مدارک"
+            android:text="تماس"
             android:textColor="@color/grayLight"
             android:textSize="@dimen/_12ssp" />
 
@@ -39,7 +39,7 @@
             android:layout_height="match_parent"
             android:layout_weight="1"
             android:gravity="left"
-            android:text="تماس"
+            android:text="اطلاعات سفر"
             android:textColor="@color/grayLight"
             android:textSize="@dimen/_12ssp" />
 
@@ -50,7 +50,6 @@
         android:layout_height="match_parent"
         android:layout_marginTop="20dp"
         android:padding="35dp">
-
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -70,25 +69,26 @@
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="horizontal">
+                    android:orientation="vertical">
 
                     <TextView
-                        android:layout_width="0dp"
+                        android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:layout_weight="1"
                         android:gravity="center_vertical"
-                        android:text="نام"
+                        android:text="عنوان شکایت"
                         android:textColor="@color/colorBlack"
                         android:textSize="@dimen/text_title" />
 
                     <TextView
-                        android:id="@+id/txtName"
-                        android:layout_width="0dp"
+                        android:id="@+id/txtSubject"
+                        android:layout_width="match_parent"
                         android:layout_height="match_parent"
-                        android:layout_weight="1.5"
+                        android:layout_weight="1.4"
                         android:gravity="center_vertical"
                         android:textColor="@color/colorWhite"
-                        android:textSize="@dimen/_18ssp" />
+                        android:textSize="@dimen/_18ssp"
+                        android:textStyle="bold" />
 
                 </LinearLayout>
 
@@ -102,41 +102,18 @@
                         android:layout_height="match_parent"
                         android:layout_weight="1"
                         android:gravity="center_vertical"
-                        android:text="شماره"
+                        android:text="تاریخ سفر"
                         android:textColor="@color/colorBlack"
                         android:textSize="@dimen/text_title" />
 
                     <TextView
-                        android:id="@+id/txtTell"
+                        android:id="@+id/txtDate"
                         android:layout_width="0dp"
                         android:layout_height="match_parent"
-                        android:layout_weight="1"
+                        android:layout_weight="1.5"
                         android:gravity="center_vertical"
                         android:textColor="@color/colorWhite"
                         android:textSize="@dimen/_18ssp" />
-
-                    <ViewFlipper
-                        android:id="@+id/vfCall"
-                        android:layout_width="0dp"
-                        android:layout_height="50dp"
-                        android:layout_gravity="center"
-                        android:layout_weight="0.5"
-                        tools:ignore="NestedWeights">
-
-                        <ImageView
-                            android:id="@+id/imgCall"
-                            android:layout_width="match_parent"
-                            android:layout_height="match_parent"
-                            android:padding="10dp"
-                            android:src="@drawable/ic_call" />
-
-                        <com.wang.avi.AVLoadingIndicatorView
-                            android:layout_width="wrap_content"
-                            android:layout_height="match_parent"
-                            android:layout_gravity="center" />
-
-                    </ViewFlipper>
-
 
                 </LinearLayout>
 
@@ -181,31 +158,6 @@
 
                     <TextView
                         android:id="@+id/txtJobPosition"
-                        android:layout_width="0dp"
-                        android:layout_height="match_parent"
-                        android:layout_weight="1.5"
-                        android:gravity="center_vertical"
-                        android:textColor="@color/colorWhite"
-                        android:textSize="@dimen/_18ssp" />
-
-                </LinearLayout>
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal">
-
-                    <TextView
-                        android:layout_width="0dp"
-                        android:layout_height="match_parent"
-                        android:layout_weight="1"
-                        android:gravity="center_vertical"
-                        android:text="تاریخ درخواست"
-                        android:textColor="@color/colorBlack"
-                        android:textSize="@dimen/text_title" />
-
-                    <TextView
-                        android:id="@+id/txtDate"
                         android:layout_width="0dp"
                         android:layout_height="match_parent"
                         android:layout_weight="1.5"
@@ -293,7 +245,7 @@
             <ViewFlipper
                 android:id="@+id/vfNextStep"
                 android:layout_width="0dp"
-                android:layout_height="match_parent"
+                android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:layout_weight="1"
                 android:background="@drawable/bg_circle_green">
@@ -302,7 +254,7 @@
                     android:id="@+id/btnNext"
                     style="@style/button"
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"
+                    android:layout_height="wrap_content"
                     android:background="@drawable/bg_circle_green"
                     android:text="بعدی"
                     android:textColor="@color/colorWhite"
@@ -310,7 +262,7 @@
 
                 <com.wang.avi.AVLoadingIndicatorView
                     android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
+                    android:layout_height="wrap_content"
                     android:layout_gravity="center" />
 
             </ViewFlipper>

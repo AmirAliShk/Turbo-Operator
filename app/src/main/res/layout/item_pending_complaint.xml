@@ -15,9 +15,9 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="25dp"
-        android:background="@drawable/bg_white"
+        android:background="@drawable/bg_gray_lite_edge"
         android:paddingLeft="30dp"
-        android:paddingTop="40dp"
+        android:paddingTop="30dp"
         android:paddingRight="35dp"
         android:paddingBottom="20dp">
 
@@ -27,6 +27,32 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:orientation="vertical">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1.0"
+                    android:gravity="center_vertical"
+                    android:text="نام مسافر"
+                    android:textColor="@color/colorBlack"
+                    android:textSize="@dimen/text_title" />
+
+                <TextView
+                    android:id="@+id/txtName"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1.4"
+                    android:gravity="center_vertical"
+                    android:textColor="@color/colorWhite"
+                    android:textSize="@dimen/_18ssp"
+                    android:textStyle="bold" />
+
+            </LinearLayout>
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -57,46 +83,20 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal">
+                android:orientation="vertical">
 
                 <TextView
-                    android:layout_width="0dp"
-                    android:layout_height="match_parent"
-                    android:layout_weight="1.0"
-                    android:gravity="center_vertical"
-                    android:text="نام"
-                    android:textColor="@color/colorBlack"
-                    android:textSize="@dimen/text_title" />
-
-                <TextView
-                    android:id="@+id/txtName"
-                    android:layout_width="0dp"
-                    android:layout_height="match_parent"
-                    android:layout_weight="1.4"
-                    android:gravity="center_vertical"
-                    android:textColor="@color/colorWhite"
-                    android:textSize="@dimen/_18ssp"
-                    android:textStyle="bold" />
-
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal">
-
-                <TextView
-                    android:layout_width="0dp"
+                    android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:layout_weight="1"
                     android:gravity="center_vertical"
-                    android:text="شماره"
+                    android:text="عنوان شکایت"
                     android:textColor="@color/colorBlack"
                     android:textSize="@dimen/text_title" />
 
                 <TextView
-                    android:id="@+id/txtTell"
-                    android:layout_width="0dp"
+                    android:id="@+id/txtSubject"
+                    android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:layout_weight="1.4"
                     android:gravity="center_vertical"

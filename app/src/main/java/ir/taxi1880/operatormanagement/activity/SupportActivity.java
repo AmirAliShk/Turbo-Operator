@@ -103,12 +103,9 @@ public class SupportActivity extends AppCompatActivity {
                 .title("هشدار")
                 .cancelable(false)
                 .message("مطمئنی میخوای وارد صف بشی؟")
-                .firstButton("مطمئنم", new Runnable() {
-                    @Override
-                    public void run() {
-                        setActivate(MyApplication.prefManager.getSipNumber());
+                .firstButton("مطمئنم", () -> {
+                    setActivate(MyApplication.prefManager.getSipNumber());
 //                MyApplication.Toast("activated",Toast.LENGTH_SHORT);
-                    }
                 })
                 .secondButton("نیستم", null)
                 .show();
@@ -172,7 +169,6 @@ public class SupportActivity extends AppCompatActivity {
             calls[0].accept();
         }
 
-
         ClipboardManager clipboard = (ClipboardManager) getSystemService(Context.CLIPBOARD_SERVICE);
         ClipData clip = ClipData.newPlainText("passengerTell", txtCallerNum.getText().toString());
         clipboard.setPrimaryClip(clip);
@@ -213,7 +209,7 @@ public class SupportActivity extends AppCompatActivity {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             Window window = getWindow();
             window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
-            window.setNavigationBarColor(getResources().getColor(R.color.colorPrimary));
+            window.setNavigationBarColor(getResources().getColor(R.color.colorPrimaryLighter));
             window.setStatusBarColor(getResources().getColor(R.color.colorPrimaryDark));
             window.getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LIGHT_NAVIGATION_BAR);
             window.addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
@@ -266,7 +262,6 @@ public class SupportActivity extends AppCompatActivity {
     }
 
     private void setActivate(int sipNumber) {
-
         LoadingDialog.makeCancelableLoader();
         RequestHelper.builder(EndPoints.ACTIVATE_SUPPORT)
                 .addParam("sipNumber", sipNumber)

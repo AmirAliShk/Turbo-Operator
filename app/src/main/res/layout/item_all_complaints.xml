@@ -14,7 +14,7 @@
         android:layout_marginTop="20dp"
         android:layout_marginRight="20dp"
         android:layout_marginBottom="5dp"
-        android:background="@drawable/bg_white_edge"
+        android:background="@drawable/bg_gray_lite_edge"
         android:gravity="center"
         android:orientation="vertical">
 
@@ -25,61 +25,13 @@
             android:layout_weight="0.5"
             android:orientation="horizontal">
 
-            <LinearLayout
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:gravity="center_vertical"
-                android:orientation="horizontal"
-                android:padding="@dimen/_8sdp">
-
-                <ImageView
-                    android:layout_width="20dp"
-                    android:layout_height="20dp"
-                    android:layout_marginLeft="@dimen/_10sdp"
-                    android:src="@drawable/ic_date" />
-
                 <TextView
                     android:id="@+id/txtComplaintDate"
-                    android:layout_width="wrap_content"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginEnd="10dp"
-                    android:layout_marginRight="10dp"
-                    android:layout_weight="1"
-                    android:gravity="center|right"
+                    android:gravity="right|center_vertical"
                     android:textColor="@color/colorBlack"
-                    android:textSize="@dimen/text_title"
-                    android:textStyle="bold" />
-
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:gravity="center_vertical"
-                android:orientation="horizontal"
-                android:padding="@dimen/_8sdp">
-
-                <ImageView
-                    android:layout_width="20dp"
-                    android:layout_height="20dp"
-                    android:layout_marginLeft="@dimen/_10sdp"
-                    android:src="@drawable/ic_timer" />
-
-                <TextView
-                    android:id="@+id/txtComplaintTime"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginEnd="10dp"
-                    android:layout_marginRight="10dp"
-                    android:layout_weight="1"
-                    android:gravity="center|right"
-                    android:textColor="@color/colorBlack"
-                    android:textSize="@dimen/text_title"
-                    android:textStyle="bold" />
-
-            </LinearLayout>
+                    android:textSize="@dimen/text_title" />
 
         </LinearLayout>
 

@@ -6,6 +6,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.TextView;
 import android.widget.ViewFlipper;
 
 import androidx.annotation.NonNull;
@@ -19,11 +20,14 @@ import java.util.ArrayList;
 import ir.taxi1880.operatormanagement.R;
 import ir.taxi1880.operatormanagement.app.MyApplication;
 import ir.taxi1880.operatormanagement.dialog.GeneralDialog;
+import ir.taxi1880.operatormanagement.helper.DateHelper;
+import ir.taxi1880.operatormanagement.helper.StringHelper;
 import ir.taxi1880.operatormanagement.helper.TypefaceUtil;
 import ir.taxi1880.operatormanagement.model.ComplaintsModel;
 import ir.taxi1880.operatormanagement.okHttp.RequestHelper;
 
 import static ir.taxi1880.operatormanagement.app.Keys.KEY_COUNT_ALL_COMPLAINT;
+import static ir.taxi1880.operatormanagement.app.Keys.VALUE_COUNT_ALL_COMPLAINT;
 
 public class AllComplaintAdapter extends RecyclerView.Adapter<AllComplaintAdapter.ViewHolder> {
     private Context mContext;
@@ -48,6 +52,9 @@ public class AllComplaintAdapter extends RecyclerView.Adapter<AllComplaintAdapte
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         ComplaintsModel model = complaintsModels.get(position);
 
+        String date = DateHelper.strPersianTree(DateHelper.parseDate(model.getDate()));
+        holder.txtComplaintDate.setText(StringHelper.toPersianDigits(date) + " ساعت " + model.getTime());
+
         holder.btn.setOnClickListener(view1 -> {
             this.viewFlipper = holder.viewFlipper;
             this.position = position;
@@ -66,11 +73,13 @@ public class AllComplaintAdapter extends RecyclerView.Adapter<AllComplaintAdapte
     public class ViewHolder extends RecyclerView.ViewHolder {
         ViewFlipper viewFlipper;
         Button btn;
+        TextView txtComplaintDate;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
             viewFlipper = itemView.findViewById(R.id.vfAccept);
             btn = itemView.findViewById(R.id.btnAccept);
+            txtComplaintDate = itemView.findViewById(R.id.txtComplaintDate);
 
         }
     }
@@ -92,10 +101,6 @@ public class AllComplaintAdapter extends RecyclerView.Adapter<AllComplaintAdapte
                     String message = obj.getString("message");
 
                     if (success) {
-//                        JSONObject data = obj.getJSONObject("data");
-//                        boolean status = data.getBoolean("status");
-
-//                        if (status) {
                         new GeneralDialog()
                                 .message(message)
                                 .cancelable(false)
@@ -108,7 +113,7 @@ public class AllComplaintAdapter extends RecyclerView.Adapter<AllComplaintAdapte
                                     broadcaster = LocalBroadcastManager.getInstance(MyApplication.context);
 
                                     Intent broadcastIntent1 = new Intent(KEY_COUNT_ALL_COMPLAINT);
-                                    broadcastIntent1.putExtra(KEY_COUNT_ALL_COMPLAINT, complaintsModels.size());
+                                    broadcastIntent1.putExtra(VALUE_COUNT_ALL_COMPLAINT, complaintsModels.size());
                                     broadcaster.sendBroadcast(broadcastIntent1);
 
 //                                        Intent broadcastIntent2 = new Intent(KEY_COUNT_PENDING_HIRE);
@@ -117,14 +122,6 @@ public class AllComplaintAdapter extends RecyclerView.Adapter<AllComplaintAdapte
 
                                 })
                                 .show();
-//                        } else {
-//                            new GeneralDialog()
-//                                    .message(message)
-//                                    .cancelable(false)
-//                                    .type(3)
-//                                    .firstButton("باشه", null)
-//                                    .show();
-//                        }
                     } else {
                         new GeneralDialog()
                                 .message(message)

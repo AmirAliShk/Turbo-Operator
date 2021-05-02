@@ -53,7 +53,7 @@ public class PendingComplaintAdapter extends RecyclerView.Adapter<PendingComplai
         ComplaintsModel model = complaintsModels.get(position);
 
         String date = DateHelper.strPersianTree(DateHelper.parseDate(model.getDate()));
-        holder.txtSendDate.setText(StringHelper.toPersianDigits(date));
+        holder.txtSendDate.setText(StringHelper.toPersianDigits(date) + " ساعت " + model.getTime());
         holder.txtName.setText(StringHelper.toPersianDigits(model.getName()));
         holder.txtTell.setText(StringHelper.toPersianDigits(model.getTell()));
 
@@ -64,13 +64,6 @@ public class PendingComplaintAdapter extends RecyclerView.Adapter<PendingComplai
             }
             getAccept(model.getId());
         });
-
-//        0 'جدید'
-//        1 'پذیرش شده'
-//        2 'منتظر مدارک'
-//        3 'در انتظار تایید'
-//        4 'تایید شده'
-//        5 'حذف یا رد شده'
 
         String status = "#f09a37";
 //        int res = R.drawable.ic_call_hire;//todo
@@ -148,23 +141,6 @@ public class PendingComplaintAdapter extends RecyclerView.Adapter<PendingComplai
                         JSONObject dataObj = listenObj.getJSONObject("data");
                         ComplaintsModel model = new ComplaintsModel();
 
-//                        {
-//                            "id":4207,
-//                                "name":"بهبودي فر ",
-//                                "comment":"فرهاد بهروزي",
-//                                "admissionUser":329,
-//                                "cityCode":4,
-//                                "saveDate":"1400/02/06",
-//                                "saveTime":"11:59:31",
-//                                "status":1,
-//                                "tell":"9106960852",
-//                                "type":6,
-//                                "userId":340,
-//                                "jobPosition":"راننده",
-//                                "admissionPersianDate":"1400/02/06",
-//                                "CityName":"کاشمر"
-//                        }
-
                         model.setId(dataObj.getInt("id"));
                         model.setName(dataObj.getString("name"));
                         model.setComment(dataObj.getString("comment"));
@@ -178,7 +154,7 @@ public class PendingComplaintAdapter extends RecyclerView.Adapter<PendingComplai
                         if (vfDetail != null)
                             vfDetail.setDisplayedChild(0);
 
-                        FragmentHelper.toFragment(MyApplication.currentActivity, new ComplaintDetailFragment(model)).setNavigationBarColor(MyApplication.currentActivity.getResources().getColor(R.color.colorPrimary)).replace();
+                        FragmentHelper.toFragment(MyApplication.currentActivity, new ComplaintDetailFragment(model)).setNavigationBarColor(MyApplication.currentActivity.getResources().getColor(R.color.colorPrimaryLighter)).replace();
                     }
 
                 } catch (Exception e) {

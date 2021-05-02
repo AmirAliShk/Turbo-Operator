@@ -209,12 +209,6 @@ public class ComplaintDetailFragment extends Fragment {
         return view;
     }
 
-    //        0 'جدید'
-//        1 'پذیرش شده'
-//        2 'منتظر مدارک'
-//        3 'در انتظار تایید'
-//        4 'تایید شده'
-//        5 'حذف یا رد شده'
     int statusParam;
 
     private void refreshStep(int statusId) {

@@ -98,23 +98,6 @@ public class AllComplaintFragment extends Fragment {
                             JSONObject dataObj = dataArr.getJSONObject(i);
                             ComplaintsModel model = new ComplaintsModel();
 
-//                            {
-//                                "id":4160,
-//                                    "name":"اعظم محجوب",
-//                                    "comment":"",
-//                                    "admissionUser":123,
-//                                    "cityCode":1,
-//                                    "saveDate":"1400/02/05",
-//                                    "saveTime":"12:07:22",
-//                                    "status":0,
-//                                    "tell":"9015251322",
-//                                    "type":6,
-//                                    "userId":451,
-//                                    "jobPosition":"راننده",
-//                                    "admissionPersianDate":"1400/02/06",
-//                                    "CityName":"مشهد"
-//                            }
-
                             model.setId(dataObj.getInt("id"));
                             model.setName(dataObj.getString("name"));
                             model.setComment(dataObj.getString("comment"));

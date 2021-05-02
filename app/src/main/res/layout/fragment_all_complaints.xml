@@ -59,6 +59,7 @@
                 android:textAppearance="?android:attr/textAppearanceMedium"
                 android:textColor="@color/colorBlack"
                 android:textStyle="bold" />
+
         </LinearLayout>
 
         <LinearLayout
@@ -84,23 +85,6 @@
                 android:background="@drawable/bg_light_pink_edge"
                 android:padding="15dp"
                 android:src="@drawable/ic_refresh_black" />
-
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:gravity="center"
-            android:orientation="vertical">
-
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:gravity="center"
-                android:text="برای مشاهده موارد بیشتر فعال شوید"
-                android:textAppearance="?android:attr/textAppearanceMedium"
-                android:textColor="@color/colorBlack"
-                android:textStyle="bold" />
 
         </LinearLayout>
 
