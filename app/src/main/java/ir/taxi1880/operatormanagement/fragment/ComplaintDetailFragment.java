@@ -19,7 +19,6 @@ import androidx.fragment.app.Fragment;
 
 import com.rakshakhegde.stepperindicator.StepperIndicator;
 
-import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -28,8 +27,10 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import butterknife.Unbinder;
 import ir.taxi1880.operatormanagement.R;
+import ir.taxi1880.operatormanagement.adapter.ComplaintPagerAdapter;
 import ir.taxi1880.operatormanagement.app.EndPoints;
 import ir.taxi1880.operatormanagement.app.MyApplication;
+import ir.taxi1880.operatormanagement.customView.NonSwipeableViewPager;
 import ir.taxi1880.operatormanagement.dialog.GeneralDialog;
 import ir.taxi1880.operatormanagement.helper.TypefaceUtil;
 import ir.taxi1880.operatormanagement.model.ComplaintDetailsModel;
@@ -39,6 +40,7 @@ public class ComplaintDetailFragment extends Fragment {
     Unbinder unbinder;
     int statusModel;
     ComplaintDetailsModel complaintDetailsModel;
+    public static NonSwipeableViewPager vpRegisterDriver;
 
     @BindView(R.id.indicator)
     StepperIndicator indicator;
@@ -52,9 +54,6 @@ public class ComplaintDetailFragment extends Fragment {
     @BindView(R.id.vfDelete)
     ViewFlipper vfDelete;
 
-    @BindView(R.id.vfCall)
-    ViewFlipper vfCall;
-
     @BindView(R.id.vfButtons)
     ViewFlipper vfButtons;
 
@@ -63,21 +62,6 @@ public class ComplaintDetailFragment extends Fragment {
 
     @BindView(R.id.imgStatus)
     ImageView imgStatus;
-
-    @BindView(R.id.txtName)
-    TextView txtName;
-
-    @BindView(R.id.txtCity)
-    TextView txtCity;
-
-    @BindView(R.id.txtJobPosition)
-    TextView txtJobPosition;
-
-    @BindView(R.id.txtDate)
-    TextView txtDate;
-
-    @BindView(R.id.txtTime)
-    TextView txtTime;
 
     @OnClick(R.id.btnNext)
     void onNext() {
@@ -140,6 +124,8 @@ public class ComplaintDetailFragment extends Fragment {
         unbinder = ButterKnife.bind(this, view);
         TypefaceUtil.overrideFonts(view);
 
+        vpRegisterDriver = view.findViewById(R.id.vpRegisterDriver);
+
         if (complaintDetailsModel.getStatus() == 3) {
             if (vfButtons != null) {
                 vfButtons.setDisplayedChild(1);
@@ -150,10 +136,9 @@ public class ComplaintDetailFragment extends Fragment {
             }
         }
 
-        txtName.setText(complaintDetailsModel.getPassengerName());
-        txtDate.setText(complaintDetailsModel.getSaveDate());
-        txtTime.setText(complaintDetailsModel.getSaveTime());
         statusModel = complaintDetailsModel.getStatus();
+
+        setupViewPager(vpRegisterDriver);
 
         indicator.setCurrentStep(complaintDetailsModel.getStatus());
 
@@ -180,7 +165,7 @@ public class ComplaintDetailFragment extends Fragment {
                 status = "#3478f6";
                 statusParam = 3;
                 break;
-            case 3: //waiting for confirm
+            case 3: //waiting for saveResult
 //                imgStatus.setImageResource(R.drawable.ic_registration);
                 indicator.setCurrentStep(statusId - 1);
                 status = "#10ad79";
@@ -201,9 +186,27 @@ public class ComplaintDetailFragment extends Fragment {
 
     }
 
+    public static void swipeRight() {
+        if (vpRegisterDriver.getCurrentItem() - 1 > vpRegisterDriver.getChildCount()) return;
+        vpRegisterDriver.setCurrentItem(vpRegisterDriver.getCurrentItem() + 1, true);
+    }
+
+    public static void swipeLeft() {
+        if (vpRegisterDriver.getCurrentItem() - 1 < 0) return;
+        vpRegisterDriver.setCurrentItem(vpRegisterDriver.getCurrentItem() - 1, true);
+    }
+
+    private void setupViewPager(NonSwipeableViewPager viewPager) {
+        ComplaintPagerAdapter adapter = new ComplaintPagerAdapter(getChildFragmentManager());
+        adapter.addFragment(new ComplaintTripDetailsFragment());
+        adapter.addFragment(new ComplaintCallFragment());
+        adapter.addFragment(new ComplaintSaveResultFragment());
+        viewPager.setAdapter(adapter);
+    }
+
     private void updateStatus() {
         RequestHelper.builder(EndPoints.COMPLAINT_UPDATE_STATUS) //todo
-                .addParam("id", complaintDetailsModel.getId())
+                .addParam("id", complaintDetailsModel.getComplaintId())
                 .addParam("status", statusParam)
                 .listener(updateStatus)
                 .put();
@@ -288,7 +291,7 @@ public class ComplaintDetailFragment extends Fragment {
     private void missCall() {
         RequestHelper.builder(EndPoints.COMPLAINT_MISSED_CALL) //todo 1 then call driver if 2 then call customer
                 .listener(missCall)
-                .addParam("id", complaintDetailsModel.getId())
+                .addParam("id", complaintDetailsModel.getComplaintId())
                 .addParam("status", statusParam - 1)
                 .addParam("comment", "")
                 .addParam("type", "")//todo

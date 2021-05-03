@@ -15,7 +15,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="25dp"
-        android:background="@drawable/bg_gray_lite_edge"
+        android:background="@drawable/bg_edit_text"
         android:paddingLeft="30dp"
         android:paddingTop="30dp"
         android:paddingRight="35dp"
@@ -46,9 +46,9 @@
                     android:id="@+id/txtName"
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
-                    android:layout_weight="1.4"
+                    android:layout_weight="2"
                     android:gravity="center_vertical"
-                    android:textColor="@color/colorWhite"
+                    android:textColor="@color/colorBlack"
                     android:textSize="@dimen/_18ssp"
                     android:textStyle="bold" />
 
@@ -72,9 +72,9 @@
                     android:id="@+id/txtSendDate"
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
-                    android:layout_weight="1.4"
+                    android:layout_weight="2"
                     android:gravity="center_vertical"
-                    android:textColor="@color/colorWhite"
+                    android:textColor="@color/colorBlack"
                     android:textSize="@dimen/_18ssp"
                     android:textStyle="bold" />
 
@@ -95,12 +95,12 @@
                     android:textSize="@dimen/text_title" />
 
                 <TextView
-                    android:id="@+id/txtSubject"
+                    android:id="@+id/txtComplaintType"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:layout_weight="1.4"
                     android:gravity="center_vertical"
-                    android:textColor="@color/colorWhite"
+                    android:textColor="@color/colorBlack"
                     android:textSize="@dimen/_18ssp"
                     android:textStyle="bold" />
 
@@ -112,7 +112,7 @@
             android:layout_width="25dp"
             android:layout_height="25dp"
             android:layout_gravity="center"
-            app:indicatorColor="@color/colorWhite" />
+            app:indicatorColor="@color/colorBlack" />
 
     </ViewFlipper>
 

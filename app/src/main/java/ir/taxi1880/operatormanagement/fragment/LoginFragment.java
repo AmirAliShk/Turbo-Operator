@@ -85,7 +85,7 @@ public class LoginFragment extends Fragment {
             return;
         }
         if (!cbRules.isChecked()) {
-            MyApplication.ErrorToast("لطفا قوانین و مقررات را قبول نمایید.", Toast.LENGTH_SHORT);
+            MyApplication.Toast("لطفا قوانین و مقررات را قبول نمایید.", Toast.LENGTH_SHORT);
             return;
         }
         logIn(userName, password);
@@ -140,7 +140,10 @@ public class LoginFragment extends Fragment {
                     MyApplication.Toast("لطفا رمز عبور خود را وارد نمایید", Toast.LENGTH_SHORT);
                     return false;
                 }
-
+                if (!cbRules.isChecked()) {
+                    MyApplication.Toast("لطفا قوانین و مقررات را قبول نمایید.", Toast.LENGTH_SHORT);
+                    return false;
+                }
                 logIn(userName, password);
                 KeyBoardHelper.hideKeyboard();
                 return true;

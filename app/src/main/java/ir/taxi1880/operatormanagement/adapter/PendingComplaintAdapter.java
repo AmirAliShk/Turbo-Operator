@@ -55,40 +55,40 @@ public class PendingComplaintAdapter extends RecyclerView.Adapter<PendingComplai
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         PendingComplaintsModel model = pendingComplaintsModels.get(position);
 
-        String date = DateHelper.strPersianTree(DateHelper.parseDate(model.getDate()));
-        holder.txtSendDate.setText(StringHelper.toPersianDigits(date) + " ساعت " + model.getTime());
-//        holder.txtName.setText(StringHelper.toPersianDigits(model.getName()));
-//        holder.txtTell.setText(StringHelper.toPersianDigits(model.getTell()));
+        String date = DateHelper.strPersianTree(DateHelper.parseDate(model.getSaveDate()));
+        holder.txtSendDate.setText(StringHelper.toPersianDigits(date) + " ساعت " + model.getSaveTime());
+        holder.txtName.setText(StringHelper.toPersianDigits(model.getCustomerName()));
+        holder.txtComplaintType.setText(StringHelper.toPersianDigits(model.getComplaintType()));
 
         holder.vfDetail.setOnClickListener(view1 -> {
             this.vfDetail = holder.vfDetail;
             if (holder.vfDetail != null) {
                 holder.vfDetail.setDisplayedChild(1);
             }
-            getAccept(model.getId());
+            getAccept(model.getComplaintId());
         });
 
         String status = "#f09a37";
 //        int res = R.drawable.ic_call_hire;//todo
-//        switch (model.getStatus()) {
-//            case 1: //accepted request
-//                holder.imgStatus.setVisibility(View.VISIBLE);
-////                res = R.drawable.ic_call_hire;
-//                status = "#f09a37";
-//                break;
-//
-//            case 2: //waiting for docs
-//                holder.imgStatus.setVisibility(View.VISIBLE);
-////                res = R.drawable.ic_documents;
-//                status = "#3478f6";
-//                break;
-//
-//            case 3: // waiting for confirm
-//                holder.imgStatus.setVisibility(View.VISIBLE);
-////                res = R.drawable.ic_registration;
-//                status = "#10ad79";
-//                break;
-//        }
+        switch (model.getStatus()) {
+            case 1: //accepted request
+                holder.imgStatus.setVisibility(View.VISIBLE);
+//                res = R.drawable.ic_call_hire;
+                status = "#f09a37";
+                break;
+
+            case 2: //waiting for docs
+                holder.imgStatus.setVisibility(View.VISIBLE);
+//                res = R.drawable.ic_documents;
+                status = "#3478f6";
+                break;
+
+            case 3: // waiting for saveResult
+                holder.imgStatus.setVisibility(View.VISIBLE);
+//                res = R.drawable.ic_registration;
+                status = "#10ad79";
+                break;
+        }
 //        holder.imgStatus.setImageResource(res);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             Drawable bg_btn_disable = AppCompatResources.getDrawable(mContext, R.drawable.bg_btn_disable);
@@ -108,7 +108,7 @@ public class PendingComplaintAdapter extends RecyclerView.Adapter<PendingComplai
 
         TextView txtSendDate;
         TextView txtName;
-        TextView txtTell;
+        TextView txtComplaintType;
         LinearLayout llPendingComplaint;
         ImageView imgStatus;
         ViewFlipper vfDetail;
@@ -119,7 +119,7 @@ public class PendingComplaintAdapter extends RecyclerView.Adapter<PendingComplai
             imgStatus = itemView.findViewById(R.id.imgStatus);
             txtSendDate = itemView.findViewById(R.id.txtSendDate);
             txtName = itemView.findViewById(R.id.txtName);
-//            txtTell = itemView.findViewById(R.id.txtTell);
+            txtComplaintType = itemView.findViewById(R.id.txtComplaintType);
             vfDetail = itemView.findViewById(R.id.vfDetail);
 
         }
@@ -136,28 +136,11 @@ public class PendingComplaintAdapter extends RecyclerView.Adapter<PendingComplai
         public void onResponse(Runnable reCall, Object... args) {
             MyApplication.handler.post(() -> {
                 try {
-//                        "status":true, "message":"عملیات با موفقیت انجام شد", data:{
-//                        {
-//                                saveDate:'1400/02/12'///
-//                                saveTime:'15:54   ',///
-//                                complaintId:104,///
-//                                MoshName:'فاطمه نوري',
-//                                ShektypeSharh:'عدم تخفيف به مسافر',
-//                                status:2,///
-//                                description:' عع',
-//                                statusDes:null,
-//                                price:50000,
-//                                serviceDate:'1400/02/12',
-//                                customerPhoneNumber:'9015693808',
-//                                Mobile:'9015693808 ',
-//                                driverName:null,
-//                                driverLastName:null,
-//                                driverMobile:'09015693808',
-//                                customerAddress:'تست واحد برنامه نويسي ايستگاه 199 ثبت کنيد',
-//                                serviceId:28536998,
-//                                taxicode:7650
-//                        }
-//                    }
+
+//{"saveDate":"1400/02/12","saveTime":"15:54   ","complaintId":104,"customerName":"فاطمه نوري","complaintType":"عدم تخفيف به مسافر","status":1,"statusDes":"در حال بررسی","price":50000,"serviceDate":"1400/02/12","customerPhoneNumber":"9015693808",
+// "Mobile":"9015693808 ","driverName":"فاطمه","driverLastName":"نوري","driverMobile":"09015693808","driverMobile2":"09015693808","customerAddress":"تست واحد برنامه نويسي ايستگاه 199 ثبت کنيد",
+// "serviceId":28536998,"taxicode":7650,"serviceVoipId":"0","complaintVoipId":"0"}}
+
                     complaintDetailsModel = new ArrayList<ComplaintDetailsModel>();
                     JSONObject listenObj = new JSONObject(args[0].toString());
                     boolean success = listenObj.getBoolean("success");
@@ -166,11 +149,25 @@ public class PendingComplaintAdapter extends RecyclerView.Adapter<PendingComplai
                         JSONObject dataObj = listenObj.getJSONObject("data");
                         ComplaintDetailsModel model = new ComplaintDetailsModel();
 
-                        model.setId(dataObj.getInt("id"));//todo it's not complete
-                        model.setPassengerName(dataObj.getString("name"));
                         model.setSaveDate(dataObj.getString("saveDate"));
                         model.setSaveTime(dataObj.getString("saveTime"));
+                        model.setComplaintId(dataObj.getInt("complaintId"));//todo it's not complete
+                        model.setCustomerName(dataObj.getString("customerName"));
+                        model.setComplaintType(dataObj.getString("complaintType"));
                         model.setStatus(dataObj.getInt("status"));
+                        model.setPrice(dataObj.getInt("price"));
+                        model.setServiceDate(dataObj.getString("serviceDate"));
+                        model.setCustomerPhoneNumber(dataObj.getString("customerPhoneNumber"));
+                        model.setCustomerMobileNumber(dataObj.getString("Mobile"));
+                        model.setDriverName(dataObj.getString("driverName"));
+                        model.setDriverLastName(dataObj.getString("driverLastName"));
+                        model.setDriverMobile(dataObj.getString("driverMobile"));
+                        model.setDriverMobile2(dataObj.getString("driverMobile2"));
+                        model.setAddress(dataObj.getString("customerAddress"));
+                        model.setServiceId(dataObj.getInt("serviceId"));
+                        model.setTaxicode(dataObj.getInt("taxicode"));
+                        model.setServiceVoipId(dataObj.getString("serviceVoipId"));
+                        model.setComplaintVoipId(dataObj.getString("complaintVoipId"));
 
                         if (vfDetail != null)
                             vfDetail.setDisplayedChild(0);

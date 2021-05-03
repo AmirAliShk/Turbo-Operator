@@ -45,169 +45,21 @@
 
     </LinearLayout>
 
-    <RelativeLayout
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginTop="20dp"
-        android:padding="35dp">
+        android:background="@drawable/bg_edit_text"
+        android:paddingRight="20dp"
+        android:paddingLeft="20dp"
+        android:paddingTop="20dp">
 
-        <LinearLayout
+        <ir.taxi1880.operatormanagement.customView.NonSwipeableViewPager
+            android:id="@+id/vpRegisterDriver"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:paddingTop="40dp">
+            android:layout_height="wrap_content"
+            android:background="@android:color/transparent" />
 
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:background="@drawable/bg_gray_lite_edge"
-                android:orientation="vertical"
-                android:paddingLeft="20dp"
-                android:paddingTop="30dp"
-                android:paddingRight="20dp"
-                android:paddingBottom="20dp">
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical">
-
-                    <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:layout_weight="1"
-                        android:gravity="center_vertical"
-                        android:text="عنوان شکایت"
-                        android:textColor="@color/colorBlack"
-                        android:textSize="@dimen/text_title" />
-
-                    <TextView
-                        android:id="@+id/txtSubject"
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:layout_weight="1.4"
-                        android:gravity="center_vertical"
-                        android:textColor="@color/colorWhite"
-                        android:textSize="@dimen/_18ssp"
-                        android:textStyle="bold" />
-
-                </LinearLayout>
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal">
-
-                    <TextView
-                        android:layout_width="0dp"
-                        android:layout_height="match_parent"
-                        android:layout_weight="1"
-                        android:gravity="center_vertical"
-                        android:text="تاریخ سفر"
-                        android:textColor="@color/colorBlack"
-                        android:textSize="@dimen/text_title" />
-
-                    <TextView
-                        android:id="@+id/txtDate"
-                        android:layout_width="0dp"
-                        android:layout_height="match_parent"
-                        android:layout_weight="1.5"
-                        android:gravity="center_vertical"
-                        android:textColor="@color/colorWhite"
-                        android:textSize="@dimen/_18ssp" />
-
-                </LinearLayout>
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal">
-
-                    <TextView
-                        android:layout_width="0dp"
-                        android:layout_height="match_parent"
-                        android:layout_weight="1"
-                        android:gravity="center_vertical"
-                        android:text="شهر"
-                        android:textColor="@color/colorBlack"
-                        android:textSize="@dimen/text_title" />
-
-                    <TextView
-                        android:id="@+id/txtCity"
-                        android:layout_width="0dp"
-                        android:layout_height="match_parent"
-                        android:layout_weight="1.5"
-                        android:gravity="center_vertical"
-                        android:textColor="@color/colorWhite"
-                        android:textSize="@dimen/_18ssp" />
-
-                </LinearLayout>
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal">
-
-                    <TextView
-                        android:layout_width="0dp"
-                        android:layout_height="match_parent"
-                        android:layout_weight="1"
-                        android:gravity="center_vertical"
-                        android:text="عنوان پذیرش"
-                        android:textColor="@color/colorBlack"
-                        android:textSize="@dimen/text_title" />
-
-                    <TextView
-                        android:id="@+id/txtJobPosition"
-                        android:layout_width="0dp"
-                        android:layout_height="match_parent"
-                        android:layout_weight="1.5"
-                        android:gravity="center_vertical"
-                        android:textColor="@color/colorWhite"
-                        android:textSize="@dimen/_18ssp" />
-
-                </LinearLayout>
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal">
-
-                    <TextView
-                        android:layout_width="0dp"
-                        android:layout_height="match_parent"
-                        android:layout_weight="1"
-                        android:gravity="center_vertical"
-                        android:text="ساعت درخواست"
-                        android:textColor="@color/colorBlack"
-                        android:textSize="@dimen/text_title" />
-
-                    <TextView
-                        android:id="@+id/txtTime"
-                        android:layout_width="0dp"
-                        android:layout_height="match_parent"
-                        android:layout_weight="1.5"
-                        android:gravity="center_vertical"
-                        android:textColor="@color/colorWhite"
-                        android:textSize="@dimen/_18ssp"
-                        android:textStyle="bold" />
-
-                </LinearLayout>
-
-            </LinearLayout>
-
-        </LinearLayout>
-
-        <ImageView
-            android:id="@+id/imgStatus"
-            android:layout_width="50dp"
-            android:layout_height="50dp"
-            android:layout_marginTop="15dp"
-            android:layout_marginRight="40dp"
-            android:background="@drawable/bg_btn_disable"
-            android:padding="8dp"
-            android:src="@drawable/ic_refresh" />
-
-    </RelativeLayout>
+    </LinearLayout>
 
     <com.rakshakhegde.stepperindicator.StepperIndicator
         android:id="@+id/indicator"

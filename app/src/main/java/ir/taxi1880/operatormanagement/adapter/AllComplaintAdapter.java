@@ -54,7 +54,7 @@ public class AllComplaintAdapter extends RecyclerView.Adapter<AllComplaintAdapte
         AllComplaintsModel model = allComplaintsModels.get(position);
 
         String date = DateHelper.strPersianTree(DateHelper.parseDate(model.getDate()));
-        holder.txtComplaintDate.setText(StringHelper.toPersianDigits(date) + " ساعت " + model.getTime());
+        holder.txtComplaintDate.setText("تاریخ " + StringHelper.toPersianDigits(date) + " ساعت " + model.getTime());
 
         holder.btn.setOnClickListener(view1 -> {
             this.viewFlipper = holder.viewFlipper;
@@ -87,7 +87,7 @@ public class AllComplaintAdapter extends RecyclerView.Adapter<AllComplaintAdapte
 
     private void getAccept(int id) {
         RequestHelper.builder(EndPoints.COMPLAINT_ACCEPT)//todo
-                .addParam("id", id)
+                .addParam("complaintId", id)
                 .listener(getAccept)
                 .put();
     }
@@ -99,11 +99,11 @@ public class AllComplaintAdapter extends RecyclerView.Adapter<AllComplaintAdapte
                 try {
                     JSONObject obj = new JSONObject(args[0].toString());
                     boolean success = obj.getBoolean("success");
-                    String message = obj.getString("message");
+//                    String message = obj.getString("message");
 
                     if (success) {
                         new GeneralDialog()
-                                .message(message)
+                                .message("با موفقیت به لیست شما اضافه شد.")
                                 .cancelable(false)
                                 .firstButton("باشه", () -> {
                                     if (position != -1)
@@ -125,7 +125,7 @@ public class AllComplaintAdapter extends RecyclerView.Adapter<AllComplaintAdapte
                                 .show();
                     } else {
                         new GeneralDialog()
-                                .message(message)
+                                .message("message")//todo
                                 .cancelable(false)
                                 .secondButton("باشه", null)
                                 .show();

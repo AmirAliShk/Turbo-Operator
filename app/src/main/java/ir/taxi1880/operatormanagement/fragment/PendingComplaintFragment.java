@@ -99,10 +99,16 @@ public class PendingComplaintFragment extends Fragment {
                             PendingComplaintsModel model = new PendingComplaintsModel();
                             if (dataObj.getInt("status") == 5 || dataObj.getInt("status") == 6)
                                 continue;
+//{"saveDate":"1400/02/12","saveTime":"15:54   ","complaintId":104,"customerName":"فاطمه نوري","complaintType":"عدم تخفيف به مسافر","status":1,"customerId":25098783,"serviceId":28536998}]}
 
-                            model.setId(dataObj.getInt("id"));//todo it should be more
-                            model.setDate(dataObj.getString("saveDate"));
-                            model.setTime(dataObj.getString("saveTime"));
+                            model.setSaveDate(dataObj.getString("saveDate"));
+                            model.setSaveTime(dataObj.getString("saveTime"));
+                            model.setComplaintId(dataObj.getInt("complaintId"));
+                            model.setCustomerName(dataObj.getString("customerName"));
+                            model.setComplaintType(dataObj.getString("complaintType"));
+                            model.setStatus(dataObj.getInt("status"));
+                            model.setServiceId(dataObj.getInt("serviceId"));
+
                             pendingComplaintsModels.add(model);
                         }
 

@@ -68,7 +68,7 @@ public class VerificationFragment extends Fragment {
             return;
         }
         if (!cbRules.isChecked()) {
-            MyApplication.ErrorToast("لطفا قوانین و مقررات را قبول نمایید.", Toast.LENGTH_SHORT);
+            MyApplication.Toast("لطفا قوانین و مقررات را قبول نمایید.", Toast.LENGTH_SHORT);
             return;
         }
         mobileNumber = mobileNumber.startsWith("0") ? mobileNumber : "0" + mobileNumber;

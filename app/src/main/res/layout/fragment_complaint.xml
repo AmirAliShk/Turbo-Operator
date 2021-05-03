@@ -4,17 +4,31 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/colorPrimaryLighter"
     android:orientation="vertical"
-    tools:context=".activity.SupportActivity"
-    android:background="@color/colorPrimaryLighter">
+    tools:context=".activity.SupportActivity">
 
     <LinearLayout
         android:id="@+id/llActionBar"
         android:layout_width="match_parent"
-        android:gravity="left"
         android:layout_height="?android:attr/actionBarSize"
         android:background="@drawable/bg_action_bar_purple"
+        android:gravity="left"
         android:layoutDirection="rtl">
+
+        <ImageView
+            android:layout_width="50dp"
+            android:layout_height="match_parent"
+            android:padding="12dp" />
+
+        <TextView
+            android:id="@+id/txtTitle"
+            style="@style/pageTitle"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:text="شکایات" />
 
         <ImageView
             android:id="@+id/imgBack"

@@ -129,7 +129,7 @@ public class EndPoints {
 
     /******************************** complaint Api *********************************/
 
-    public static final String COMPLAINT_DETAIL = COMPLAINT_WEBSERVICE_PATH + "detail";// :complaintId
+    public static final String COMPLAINT_DETAIL = COMPLAINT_WEBSERVICE_PATH + "detail/";// :complaintId
     public static final String COMPLAINT_ACCEPT = COMPLAINT_WEBSERVICE_PATH + "accept";
     public static final String COMPLAINT_UPDATE_STATUS = COMPLAINT_WEBSERVICE_PATH + "updateStatus";
     public static final String COMPLAINT_MISSED_CALL = COMPLAINT_WEBSERVICE_PATH + "misscall";

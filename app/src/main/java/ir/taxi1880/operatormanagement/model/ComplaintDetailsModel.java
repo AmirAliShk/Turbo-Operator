@@ -3,19 +3,23 @@ package ir.taxi1880.operatormanagement.model;
 public class ComplaintDetailsModel {
     private String saveDate;
     private String saveTime;
-    private int id;
-    private String passengerName;
-    private String complaintTitle;
+    private int complaintId;
+    private String customerName;
+    private String complaintType;
     private int status;
     private int price;
     private String serviceDate;
-    private String passengerTell;
-    private String passengerPhone;
+    private String customerPhoneNumber;
+    private String customerMobileNumber;
     private String driverName;
     private String driverLastName;
     private String driverMobile;
+    private String driverMobile2;
     private String address;
     private int serviceId;
+    private int taxicode;
+    private String serviceVoipId;
+    private String complaintVoipId;
 
     public String getSaveDate() {
         return saveDate;
@@ -33,28 +37,28 @@ public class ComplaintDetailsModel {
         this.saveTime = saveTime;
     }
 
-    public int getId() {
-        return id;
+    public int getComplaintId() {
+        return complaintId;
     }
 
-    public void setId(int id) {
-        this.id = id;
+    public void setComplaintId(int complaintId) {
+        this.complaintId = complaintId;
     }
 
-    public String getPassengerName() {
-        return passengerName;
+    public String getCustomerName() {
+        return customerName;
     }
 
-    public void setPassengerName(String passengerName) {
-        this.passengerName = passengerName;
+    public void setCustomerName(String customerName) {
+        this.customerName = customerName;
     }
 
-    public String getComplaintTitle() {
-        return complaintTitle;
+    public String getComplaintType() {
+        return complaintType;
     }
 
-    public void setComplaintTitle(String complaintTitle) {
-        this.complaintTitle = complaintTitle;
+    public void setComplaintType(String complaintType) {
+        this.complaintType = complaintType;
     }
 
     public int getStatus() {
@@ -81,20 +85,20 @@ public class ComplaintDetailsModel {
         this.serviceDate = serviceDate;
     }
 
-    public String getPassengerTell() {
-        return passengerTell;
+    public String getCustomerPhoneNumber() {
+        return customerPhoneNumber;
     }
 
-    public void setPassengerTell(String passengerTell) {
-        this.passengerTell = passengerTell;
+    public void setCustomerPhoneNumber(String customerPhoneNumber) {
+        this.customerPhoneNumber = customerPhoneNumber;
     }
 
-    public String getPassengerPhone() {
-        return passengerPhone;
+    public String getCustomerMobileNumber() {
+        return customerMobileNumber;
     }
 
-    public void setPassengerPhone(String passengerPhone) {
-        this.passengerPhone = passengerPhone;
+    public void setCustomerMobileNumber(String customerMobileNumber) {
+        this.customerMobileNumber = customerMobileNumber;
     }
 
     public String getDriverName() {
@@ -135,5 +139,37 @@ public class ComplaintDetailsModel {
 
     public void setServiceId(int serviceId) {
         this.serviceId = serviceId;
+    }
+
+    public String getDriverMobile2() {
+        return driverMobile2;
+    }
+
+    public void setDriverMobile2(String driverMobile2) {
+        this.driverMobile2 = driverMobile2;
+    }
+
+    public int getTaxicode() {
+        return taxicode;
+    }
+
+    public void setTaxicode(int taxicode) {
+        this.taxicode = taxicode;
+    }
+
+    public String getServiceVoipId() {
+        return serviceVoipId;
+    }
+
+    public void setServiceVoipId(String serviceVoipId) {
+        this.serviceVoipId = serviceVoipId;
+    }
+
+    public String getComplaintVoipId() {
+        return complaintVoipId;
+    }
+
+    public void setComplaintVoipId(String complaintVoipId) {
+        this.complaintVoipId = complaintVoipId;
     }
 }
