@@ -514,7 +514,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="25dp"
                     android:paddingRight="5dp"
-                    android:text="آدرس"
+                    android:text="مبدا"
                     android:textAppearance="?android:attr/textAppearanceSmall"
                     android:textColor="@color/grayMedium" />
 
