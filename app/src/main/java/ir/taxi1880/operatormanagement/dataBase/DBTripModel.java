@@ -12,6 +12,24 @@ public class DBTripModel {
   String mobile;
   String customerName;
   String voipId;
+  int destinationStation;
+  String destination;
+
+  public int getDestinationStation() {
+    return destinationStation;
+  }
+
+  public void setDestinationStation(int destinationStation) {
+    this.destinationStation = destinationStation;
+  }
+
+  public String getDestination() {
+    return destination;
+  }
+
+  public void setDestination(String destination) {
+    this.destination = destination;
+  }
 
   public int getOperatorId() {
     return operatorId;

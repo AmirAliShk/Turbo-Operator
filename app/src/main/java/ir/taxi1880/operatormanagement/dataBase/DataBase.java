@@ -15,7 +15,7 @@ import ir.taxi1880.operatormanagement.model.CityModel;
 
 public class DataBase extends SQLiteOpenHelper {
     // TODO when you change the entitys structure, please increase the version of dataBase.
-    private static int VERSION = 4;
+    private static int VERSION = 5;
     //TODO Do not change names any way
     private static String DB_NAME = "operators";
     private static String TRIP_TABLE = "Trip";
@@ -35,6 +35,8 @@ public class DataBase extends SQLiteOpenHelper {
     private static String COLUMN_CUSTOMER_NAME = "customerName";
     private static String COLUMN_VOIP_ID = "voipId";
     private static String COLUMN_NEXT_RECORD = "nextRecord";
+    private static String COLUMN_DESTINATION = "destination";
+    private static String COLUMN_DESTINATION_STATION = "destinationStation";
 
     //***************************** City Column ***************************
     private static String COLUMN_CITY_ID = "cityId";
@@ -88,6 +90,8 @@ public class DataBase extends SQLiteOpenHelper {
                 COLUMN_OPERATOR_ID + " INTEGER," +
                 COLUMN_ORIGIN_TEXT + " TEXT," +
                 COLUMN_ORIGIN_STATION + " INTEGER," +
+                COLUMN_DESTINATION + " TEXT," +
+                COLUMN_DESTINATION_STATION + " INTEGER," +
                 COLUMN_SAVE_DATE + " TEXT," +
                 COLUMN_SEND_DATE + " TEXT," +
                 COLUMN_CITY + " TEXT," +
@@ -106,6 +110,8 @@ public class DataBase extends SQLiteOpenHelper {
             contentValues.put(COLUMN_OPERATOR_ID, DBTripModel.getOperatorId());
             contentValues.put(COLUMN_ORIGIN_TEXT, DBTripModel.getOriginText());
             contentValues.put(COLUMN_ORIGIN_STATION, DBTripModel.getOriginStation());
+            contentValues.put(COLUMN_DESTINATION, DBTripModel.getDestination());
+            contentValues.put(COLUMN_DESTINATION_STATION, DBTripModel.getDestinationStation());
             contentValues.put(COLUMN_SAVE_DATE, DBTripModel.getSaveDate());
             contentValues.put(COLUMN_SEND_DATE, DBTripModel.getSendDate());
             contentValues.put(COLUMN_CITY, DBTripModel.getCity());
@@ -132,6 +138,8 @@ public class DataBase extends SQLiteOpenHelper {
                 DBTripModel.setOperatorId(cursor.getInt(cursor.getColumnIndex(COLUMN_OPERATOR_ID)));
                 DBTripModel.setOriginText(cursor.getString(cursor.getColumnIndex(COLUMN_ORIGIN_TEXT)));
                 DBTripModel.setOriginStation(cursor.getInt(cursor.getColumnIndex(COLUMN_ORIGIN_STATION)));
+                DBTripModel.setDestination(cursor.getString(cursor.getColumnIndex(COLUMN_DESTINATION)));
+                DBTripModel.setDestinationStation(cursor.getInt(cursor.getColumnIndex(COLUMN_DESTINATION_STATION)));
                 DBTripModel.setSaveDate(cursor.getString(cursor.getColumnIndex(COLUMN_SAVE_DATE)));
                 DBTripModel.setSendDate(cursor.getString(cursor.getColumnIndex(COLUMN_SEND_DATE)));
                 DBTripModel.setCity(cursor.getInt(cursor.getColumnIndex(COLUMN_CITY)));
@@ -162,6 +170,8 @@ public class DataBase extends SQLiteOpenHelper {
                     DBTripModel.setOperatorId(cursor.getInt(cursor.getColumnIndex(COLUMN_OPERATOR_ID)));
                     DBTripModel.setOriginText(cursor.getString(cursor.getColumnIndex(COLUMN_ORIGIN_TEXT)));
                     DBTripModel.setOriginStation(cursor.getInt(cursor.getColumnIndex(COLUMN_ORIGIN_STATION)));
+                    DBTripModel.setDestination(cursor.getString(cursor.getColumnIndex(COLUMN_DESTINATION)));
+                    DBTripModel.setDestinationStation(cursor.getInt(cursor.getColumnIndex(COLUMN_DESTINATION_STATION)));
                     DBTripModel.setSaveDate(cursor.getString(cursor.getColumnIndex(COLUMN_SAVE_DATE)));
                     DBTripModel.setSendDate(cursor.getString(cursor.getColumnIndex(COLUMN_SEND_DATE)));
                     DBTripModel.setCity(cursor.getInt(cursor.getColumnIndex(COLUMN_CITY)));

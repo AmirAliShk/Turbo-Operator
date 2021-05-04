@@ -316,20 +316,22 @@ public class DeterminationPageFragment extends Fragment {
                             for (int i = 0; i < dataArr.length(); i++) {
                                 try {
                                     JSONObject dataObj = dataArr.getJSONObject(i);
-                                    DBTripModel DBTripModel = new DBTripModel();
-                                    DBTripModel.setId(dataObj.getInt("Id")); // the unique id for each trip
-                                    DBTripModel.setOriginStation(dataObj.getInt("OriginStation"));
+                                    DBTripModel tripModel = new DBTripModel();
+                                    tripModel.setId(dataObj.getInt("Id")); // the unique id for each trip
+                                    tripModel.setOriginStation(dataObj.getInt("OriginStation"));
                                     String content = dataObj.getString("Content");
                                     JSONObject contentObj = new JSONObject(content);
-                                    DBTripModel.setOperatorId(contentObj.getInt("userId")); // ID of the person who registered the service
-                                    DBTripModel.setCity(contentObj.getInt("cityCode"));
-                                    DBTripModel.setCustomerName(contentObj.getString("callerName"));
-                                    DBTripModel.setTell(contentObj.getString("phoneNumber"));
-                                    DBTripModel.setMobile(contentObj.getString("mobile"));
-                                    DBTripModel.setVoipId(contentObj.getString("voipId"));
-                                    DBTripModel.setOriginText(contentObj.getString("address"));
-                                    DBTripModel.setSaveDate(dataObj.getString("SaveDate"));//date and time of service registered by Tehran timeZone,"SaveDate":"2021-03-01T12:24:42.820Z"
-                                    dataBase.insertTripRow(DBTripModel);
+                                    tripModel.setOperatorId(contentObj.getInt("userId")); // ID of the person who registered the service
+                                    tripModel.setCity(contentObj.getInt("cityCode"));
+                                    tripModel.setCustomerName(contentObj.getString("callerName"));
+                                    tripModel.setTell(contentObj.getString("phoneNumber"));
+                                    tripModel.setMobile(contentObj.getString("mobile"));
+                                    tripModel.setVoipId(contentObj.getString("voipId"));
+                                    tripModel.setOriginText(contentObj.getString("address"));
+                                    tripModel.setDestinationStation(contentObj.getInt("destinationStation"));
+                                    tripModel.setDestination(contentObj.getString("destination"));
+                                    tripModel.setSaveDate(dataObj.getString("SaveDate"));//date and time of service registered by Tehran timeZone,"SaveDate":"2021-03-01T12:24:42.820Z"
+                                    dataBase.insertTripRow(tripModel);
                                 } catch (Exception e) {
                                     e.printStackTrace();
                                 }
