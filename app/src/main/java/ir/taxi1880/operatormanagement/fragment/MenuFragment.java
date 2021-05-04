@@ -61,7 +61,7 @@ public class MenuFragment extends Fragment {
         if (MyApplication.prefManager.getAccessDriverSupport() == 1) {
             startActivity(new Intent(MyApplication.currentActivity, SupportActivity.class));
             MyApplication.currentActivity.finish();
-        }else {
+        } else {
             new GeneralDialog()
                     .title("هشدار")
                     .message("شما اجازه دسترسی به این بخش از برنامه را ندارید")
@@ -80,8 +80,14 @@ public class MenuFragment extends Fragment {
     @OnClick(R.id.llBest)
     void onBest() {
         FragmentHelper
-                .toFragment(MyApplication.currentActivity, new ComplaintFragment())//todo
-//                .toFragment(MyApplication.currentActivity, new BestsFragment())
+                .toFragment(MyApplication.currentActivity, new BestsFragment())
+                .replace();
+    }
+
+    @OnClick(R.id.llComplaint)
+    void onComplaint() {
+        FragmentHelper
+                .toFragment(MyApplication.currentActivity, new ComplaintFragment())
                 .replace();
     }
 

@@ -10,6 +10,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.ViewFlipper;
 
@@ -32,6 +33,7 @@ import ir.taxi1880.operatormanagement.app.EndPoints;
 import ir.taxi1880.operatormanagement.app.MyApplication;
 import ir.taxi1880.operatormanagement.customView.NonSwipeableViewPager;
 import ir.taxi1880.operatormanagement.dialog.GeneralDialog;
+import ir.taxi1880.operatormanagement.helper.FragmentHelper;
 import ir.taxi1880.operatormanagement.helper.TypefaceUtil;
 import ir.taxi1880.operatormanagement.model.ComplaintDetailsModel;
 import ir.taxi1880.operatormanagement.okHttp.RequestHelper;
@@ -48,20 +50,14 @@ public class ComplaintDetailFragment extends Fragment {
     @BindView(R.id.vfNextStep)
     ViewFlipper vfNextStep;
 
-    @BindView(R.id.vfMissedCall)
-    ViewFlipper vfMissedCall;
+    @BindView(R.id.vfTripDetails)
+    ViewFlipper vfTripDetails;
 
-    @BindView(R.id.vfDelete)
-    ViewFlipper vfDelete;
+    @BindView(R.id.vfOptions)
+    ViewFlipper vfOptions;
 
-    @BindView(R.id.vfButtons)
-    ViewFlipper vfButtons;
-
-    @BindView(R.id.vfConfirm)
-    ViewFlipper vfConfirm;
-
-    @BindView(R.id.imgStatus)
-    ImageView imgStatus;
+    @BindView(R.id.llButtons)
+    LinearLayout llButtons;
 
     @OnClick(R.id.btnNext)
     void onNext() {
@@ -77,39 +73,34 @@ public class ComplaintDetailFragment extends Fragment {
                     }
                 })
                 .show();
+        swipeRight();
     }
 
-    @OnClick(R.id.btnConfirm)
+    @OnClick(R.id.btnSaveResult)
     void onConfirm() {
-        if (vfConfirm != null)
-            vfConfirm.setDisplayedChild(1);
+        if (vfNextStep != null)
+            vfNextStep.setDisplayedChild(1);
         new GeneralDialog()
                 .message("اتمام مراحل پذیرش؟")
                 .cancelable(false)
                 .firstButton("بله", () -> updateStatus())
                 .secondButton("خیر", () -> {
-                    if (vfConfirm != null) {
-                        vfConfirm.setDisplayedChild(0);
+                    if (vfNextStep != null) {
+                        vfNextStep.setDisplayedChild(2);
                     }
                 })
                 .show();
+        swipeRight();
     }
 
-    @OnClick(R.id.btnMissedCall)
+    @OnClick(R.id.btnTripDetails)
     void onMissCall() {
-        if (vfMissedCall != null)
-            vfMissedCall.setDisplayedChild(1);
-        new GeneralDialog()
-                .message("آیا فرد پاسخگو نبود؟")
-                .cancelable(false)
-                .firstButton("بله", () -> missCall())
-                .secondButton("خیر", () -> {
-                    if (vfMissedCall != null) {
-                        vfMissedCall.setDisplayedChild(0);
-                    }
-                })
-                .show();
+        if (vfTripDetails != null)
+            vfTripDetails.setDisplayedChild(1);
 
+        Bundle bundle = new Bundle();
+        bundle.putString("tellNumber", complaintDetailsModel.getCustomerMobileNumber());
+        FragmentHelper.toFragment(MyApplication.currentActivity, new TripSupportFragment()).setArguments(bundle).replace();
     }
 
     public ComplaintDetailFragment(ComplaintDetailsModel complaintsModel) {
@@ -125,16 +116,6 @@ public class ComplaintDetailFragment extends Fragment {
         TypefaceUtil.overrideFonts(view);
 
         vpRegisterDriver = view.findViewById(R.id.vpRegisterDriver);
-
-        if (complaintDetailsModel.getStatus() == 3) {
-            if (vfButtons != null) {
-                vfButtons.setDisplayedChild(1);
-            }
-        } else {
-            if (vfButtons != null) {
-                vfButtons.setDisplayedChild(0);
-            }
-        }
 
         statusModel = complaintDetailsModel.getStatus();
 
@@ -169,8 +150,8 @@ public class ComplaintDetailFragment extends Fragment {
 //                imgStatus.setImageResource(R.drawable.ic_registration);
                 indicator.setCurrentStep(statusId - 1);
                 status = "#10ad79";
-                if (vfButtons != null) {
-                    vfButtons.setDisplayedChild(1);
+                if (vfNextStep != null) {
+                    vfNextStep.setDisplayedChild(1);
                 }
                 statusParam = 4;
                 break;
@@ -178,10 +159,10 @@ public class ComplaintDetailFragment extends Fragment {
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             Drawable bg_btn_disable = AppCompatResources.getDrawable(MyApplication.context, R.drawable.bg_btn_disable);
-            DrawableCompat.setTint(bg_btn_disable, Color.parseColor(status));
-            imgStatus.setBackground(bg_btn_disable);
+//            DrawableCompat.setTint(bg_btn_disable, Color.parseColor(status));
+//            imgStatus.setBackground(bg_btn_disable);
         } else {
-            imgStatus.setBackgroundColor(Color.parseColor(status));
+//            imgStatus.setBackgroundColor(Color.parseColor(status));
         }
 
     }
@@ -206,7 +187,7 @@ public class ComplaintDetailFragment extends Fragment {
 
     private void updateStatus() {
         RequestHelper.builder(EndPoints.COMPLAINT_UPDATE_STATUS) //todo
-                .addParam("id", complaintDetailsModel.getComplaintId())
+                .addParam("complaintId", complaintDetailsModel.getComplaintId())
                 .addParam("status", statusParam)
                 .listener(updateStatus)
                 .put();
@@ -233,8 +214,8 @@ public class ComplaintDetailFragment extends Fragment {
                                     .show();
 
                             if (statusModel == 3) {
-                                if (vfButtons != null)
-                                    vfButtons.setDisplayedChild(1);
+                                if (vfNextStep != null)
+                                    vfNextStep.setDisplayedChild(2);
                             } else {
                                 if (vfNextStep != null)
                                     vfNextStep.setDisplayedChild(0);
@@ -254,10 +235,8 @@ public class ComplaintDetailFragment extends Fragment {
                         }
 
                         if (statusModel == 3) {
-                            if (vfButtons != null)
-                                vfButtons.setDisplayedChild(1);
-                            if (vfConfirm != null)
-                                vfConfirm.setDisplayedChild(0);
+                            if (vfNextStep != null)
+                                vfNextStep.setDisplayedChild(2);
                         } else {
                             if (vfNextStep != null)
                                 vfNextStep.setDisplayedChild(0);
@@ -276,10 +255,8 @@ public class ComplaintDetailFragment extends Fragment {
             MyApplication.handler.post(() ->
             {
                 if (statusModel == 3) {
-                    if (vfButtons != null)
-                        vfButtons.setDisplayedChild(1);
-                    if (vfConfirm != null)
-                        vfConfirm.setDisplayedChild(0);
+                    if (vfNextStep != null)
+                        vfNextStep.setDisplayedChild(2);
                 } else {
                     if (vfNextStep != null)
                         vfNextStep.setDisplayedChild(0);
@@ -291,7 +268,7 @@ public class ComplaintDetailFragment extends Fragment {
     private void missCall() {
         RequestHelper.builder(EndPoints.COMPLAINT_MISSED_CALL) //todo 1 then call driver if 2 then call customer
                 .listener(missCall)
-                .addParam("id", complaintDetailsModel.getComplaintId())
+                .addParam("complaintId", complaintDetailsModel.getComplaintId())
                 .addParam("status", statusParam - 1)
                 .addParam("comment", "")
                 .addParam("type", "")//todo
@@ -325,13 +302,13 @@ public class ComplaintDetailFragment extends Fragment {
                                     .firstButton("تایید", null)
                                     .show();
                         }
-                        if (vfMissedCall != null)
-                            vfMissedCall.setDisplayedChild(0);
+                        if (vfTripDetails != null)
+                            vfTripDetails.setDisplayedChild(0);
                     }
                 } catch (JSONException e) {
                     e.printStackTrace();
-                    if (vfMissedCall != null)
-                        vfMissedCall.setDisplayedChild(0);
+                    if (vfTripDetails != null)
+                        vfTripDetails.setDisplayedChild(0);
                 }
             });
         }
@@ -339,8 +316,8 @@ public class ComplaintDetailFragment extends Fragment {
         @Override
         public void onFailure(Runnable reCall, Exception e) {
             MyApplication.handler.post(() -> {
-                if (vfMissedCall != null)
-                    vfMissedCall.setDisplayedChild(0);
+                if (vfTripDetails != null)
+                    vfTripDetails.setDisplayedChild(0);
             });
         }
     };

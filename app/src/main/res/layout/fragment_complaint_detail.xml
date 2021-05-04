@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/colorWhite"
@@ -9,12 +8,28 @@
     android:layoutDirection="rtl"
     android:orientation="vertical">
 
+    <com.rakshakhegde.stepperindicator.StepperIndicator
+        android:id="@+id/indicator"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="30dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginRight="30dp"
+        app:stpi_circleColor="#9c9797"
+        app:stpi_circleStrokeWidth="10dp"
+        app:stpi_indicatorColor="@color/colorPurple"
+        app:stpi_indicatorRadius="10dp"
+        app:stpi_lineColor="#9c9797"
+        app:stpi_lineDoneColor="@color/colorPurple"
+        app:stpi_lineMargin="4dp"
+        app:stpi_lineStrokeWidth="8dp"
+        app:stpi_stepCount="3" />
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="40dp"
-        android:paddingRight="17dp"
-        android:paddingLeft="20dp">
+        android:paddingLeft="20dp"
+        android:paddingRight="17dp">
 
         <TextView
             android:layout_width="0dp"
@@ -47,173 +62,119 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="0dp"
         android:background="@drawable/bg_edit_text"
-        android:paddingRight="20dp"
-        android:paddingLeft="20dp"
-        android:paddingTop="20dp">
+        android:layout_weight="1">
 
         <ir.taxi1880.operatormanagement.customView.NonSwipeableViewPager
             android:id="@+id/vpRegisterDriver"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="0dp"
             android:background="@android:color/transparent" />
 
     </LinearLayout>
 
-    <com.rakshakhegde.stepperindicator.StepperIndicator
-        android:id="@+id/indicator"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="30dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginRight="30dp"
-        app:stpi_circleColor="#9c9797"
-        app:stpi_circleStrokeWidth="10dp"
-        app:stpi_indicatorColor="@color/colorPurple"
-        app:stpi_indicatorRadius="10dp"
-        app:stpi_lineColor="#9c9797"
-        app:stpi_lineDoneColor="@color/colorPurple"
-        app:stpi_lineMargin="4dp"
-        app:stpi_lineStrokeWidth="8dp"
-        app:stpi_stepCount="3" />
-
-    <ViewFlipper
-        android:id="@+id/vfButtons"
+    <LinearLayout
+        android:id="@+id/llButtons"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:layout_marginLeft="25dp"
-        android:layout_marginTop="10dp"
         android:layout_marginRight="25dp"
         android:layout_marginBottom="20dp"
         android:gravity="center_vertical"
         android:layoutDirection="rtl">
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent">
+        <ViewFlipper
+            android:id="@+id/vfNextStep"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_weight="1"
+            android:background="@drawable/bg_circle_green">
 
-            <ViewFlipper
-                android:id="@+id/vfNextStep"
-                android:layout_width="0dp"
+            <Button
+                android:id="@+id/btnNext"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="#00ffffff"
+                android:text="بعدی"
+                android:textColor="@color/colorWhite"
+                android:textSize="@dimen/_16sdp" />
+
+            <com.wang.avi.AVLoadingIndicatorView
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:layout_weight="1"
-                android:background="@drawable/bg_circle_green">
+                android:layout_gravity="center" />
 
-                <Button
-                    android:id="@+id/btnNext"
-                    style="@style/button"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:background="@drawable/bg_circle_green"
-                    android:text="بعدی"
-                    android:textColor="@color/colorWhite"
-                    android:textSize="@dimen/_16sdp" />
-
-                <com.wang.avi.AVLoadingIndicatorView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center" />
-
-            </ViewFlipper>
-
-            <ImageView
-                android:id="@+id/view2"
-                android:layout_width="10dp"
-                android:layout_height="match_parent" />
-
-            <ViewFlipper
-                android:id="@+id/vfMissedCall"
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_gravity="center"
-                android:layout_weight="1"
-                android:background="@drawable/bg_circle_yellow"
-                tools:ignore="NestedWeights">
-
-                <Button
-                    android:id="@+id/btnMissedCall"
-                    style="@style/button"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:background="@drawable/bg_circle_yellow"
-                    android:text="جواب نداد"
-                    android:textColor="@color/colorWhite"
-                    android:textSize="@dimen/_15sdp" />
-
-                <com.wang.avi.AVLoadingIndicatorView
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:layout_gravity="center" />
-
-            </ViewFlipper>
-
-            <ImageView
-                android:id="@+id/view"
-                android:layout_width="10dp"
-                android:layout_height="match_parent" />
-
-            <ViewFlipper
-                android:id="@+id/vfDelete"
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_gravity="center"
-                android:layout_weight="1"
-                android:background="@drawable/bg_circle_red"
-                tools:ignore="NestedWeights">
-
-                <Button
-                    android:id="@+id/btnDelete"
-                    style="@style/button"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:background="@drawable/bg_circle_red"
-                    android:text="حذف"
-                    android:textColor="@color/colorWhite"
-                    android:textSize="@dimen/_16sdp" />
-
-                <com.wang.avi.AVLoadingIndicatorView
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:layout_gravity="center" />
-
-            </ViewFlipper>
-
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent">
-
-            <ViewFlipper
-                android:id="@+id/vfConfirm"
+            <Button
+                android:id="@+id/btnSaveResult"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_alignParentBottom="true"
-                android:layout_gravity="center"
-                android:background="@drawable/bg_circle_green">
+                android:background="@drawable/bg_circle_green"
+                android:text="ثبت"
+                android:textColor="@color/colorWhite"
+                android:textSize="@dimen/_16sdp" />
+        </ViewFlipper>
 
-                <Button
-                    android:id="@+id/btnConfirm"
-                    style="@style/button"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:background="@drawable/bg_circle_green"
-                    android:text="اتمام پذیرش"
-                    android:textColor="@color/colorWhite"
-                    android:textSize="@dimen/_16sdp" />
+        <ImageView
+            android:id="@+id/view2"
+            android:layout_width="10dp"
+            android:layout_height="match_parent" />
 
-                <com.wang.avi.AVLoadingIndicatorView
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:layout_gravity="center" />
+        <ViewFlipper
+            android:id="@+id/vfTripDetails"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_gravity="center"
+            android:layout_weight="1"
+            android:background="@drawable/bg_circle_yellow">
 
-            </ViewFlipper>
+            <Button
+                android:id="@+id/btnTripDetails"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@drawable/bg_circle_yellow"
+                android:text="جزئیات سفر"
+                android:textColor="@color/colorWhite"
+                android:textSize="@dimen/_15sdp" />
 
-        </LinearLayout>
+            <com.wang.avi.AVLoadingIndicatorView
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_gravity="center" />
 
-    </ViewFlipper>
+        </ViewFlipper>
 
-</RelativeLayout>
+        <ImageView
+            android:id="@+id/view"
+            android:layout_width="10dp"
+            android:layout_height="match_parent" />
+
+        <ViewFlipper
+            android:id="@+id/vfOptions"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_gravity="center"
+            android:layout_weight="1"
+            android:background="@drawable/bg_circle_red">
+
+            <Button
+                android:id="@+id/btnOptions"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@drawable/bg_circle_red"
+                android:text="گزینه‌ها"
+                android:textColor="@color/colorWhite"
+                android:textSize="@dimen/_16sdp" />
+
+            <com.wang.avi.AVLoadingIndicatorView
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_gravity="center" />
+
+        </ViewFlipper>
+
+    </LinearLayout>
+
+</LinearLayout>

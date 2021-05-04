@@ -54,7 +54,7 @@ public class AllComplaintAdapter extends RecyclerView.Adapter<AllComplaintAdapte
         AllComplaintsModel model = allComplaintsModels.get(position);
 
         String date = DateHelper.strPersianTree(DateHelper.parseDate(model.getDate()));
-        holder.txtComplaintDate.setText("تاریخ " + StringHelper.toPersianDigits(date) + " ساعت " + model.getTime());
+        holder.txtComplaintDate.setText(StringHelper.toPersianDigits(date) + " ساعت " + model.getTime());
 
         holder.btn.setOnClickListener(view1 -> {
             this.viewFlipper = holder.viewFlipper;

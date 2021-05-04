@@ -34,25 +34,25 @@
                 android:id="@+id/llTripRegister"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
-                android:layout_weight="1"
                 android:layout_margin="10dp"
+                android:layout_weight="1"
+                android:background="@drawable/bg_menu_item"
                 android:elevation="5dp"
-                android:orientation="vertical"
                 android:gravity="center"
-                android:background="@drawable/bg_menu_item">
+                android:orientation="vertical">
 
                 <ImageView
                     android:layout_width="@dimen/_20sdp"
                     android:layout_height="@dimen/_20sdp"
-                    android:src="@drawable/ic_car"/>
+                    android:src="@drawable/ic_car" />
 
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="@string/trip_register"
                     android:gravity="center"
-                    android:textSize="@dimen/_15ssp"
-                    android:textColor="@color/colorBlack"/>
+                    android:text="@string/trip_register"
+                    android:textColor="@color/colorBlack"
+                    android:textSize="@dimen/_15ssp" />
 
             </LinearLayout>
 
@@ -65,12 +65,12 @@
                 android:id="@+id/llSupport"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
-                android:layout_weight="1"
                 android:layout_margin="10dp"
+                android:layout_weight="1"
+                android:background="@drawable/bg_menu_item"
                 android:elevation="5dp"
-                android:orientation="vertical"
                 android:gravity="center"
-                android:background="@drawable/bg_menu_item">
+                android:orientation="vertical">
 
                 <ImageView
                     android:layout_width="@dimen/_20sdp"
@@ -100,25 +100,25 @@
                 android:id="@+id/llDetermination"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
-                android:layout_weight="1"
                 android:layout_margin="10dp"
+                android:layout_weight="1"
+                android:background="@drawable/bg_menu_item"
                 android:elevation="5dp"
-                android:orientation="vertical"
                 android:gravity="center"
-                android:background="@drawable/bg_menu_item">
+                android:orientation="vertical">
 
                 <ImageView
                     android:layout_width="@dimen/_20sdp"
                     android:layout_height="@dimen/_20sdp"
-                    android:src="@drawable/ic_map"/>
+                    android:src="@drawable/ic_map" />
 
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="@string/determination"
                     android:gravity="center"
-                    android:textSize="@dimen/_15ssp"
-                    android:textColor="@color/colorBlack"/>
+                    android:text="@string/determination"
+                    android:textColor="@color/colorBlack"
+                    android:textSize="@dimen/_15ssp" />
 
             </LinearLayout>
 
@@ -128,28 +128,28 @@
                 android:layout_weight="0.10" />
 
             <LinearLayout
-                android:id="@+id/llShift"
+                android:id="@+id/llComplaint"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
-                android:layout_weight="1"
                 android:layout_margin="10dp"
+                android:layout_weight="1"
+                android:background="@drawable/bg_menu_item"
                 android:elevation="5dp"
-                android:orientation="vertical"
                 android:gravity="center"
-                android:background="@drawable/bg_menu_item">
+                android:orientation="vertical">
 
                 <ImageView
                     android:layout_width="@dimen/_20sdp"
                     android:layout_height="@dimen/_20sdp"
-                    android:src="@drawable/ic_shift"/>
+                    android:src="@drawable/ic_complaint" />
 
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="@string/shifts"
                     android:gravity="center"
-                    android:textSize="@dimen/_15ssp"
-                    android:textColor="@color/colorBlack"/>
+                    android:text="@string/complaint"
+                    android:textColor="@color/colorBlack"
+                    android:textSize="@dimen/_15ssp" />
 
             </LinearLayout>
 
@@ -214,7 +214,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:gravity="center"
-                    android:text="@string/complaint"
+                    android:text="@string/best"
                     android:textColor="@color/colorBlack"
                     android:textSize="@dimen/_15ssp" /> <!-- todo -->
 
@@ -230,27 +230,28 @@
             android:orientation="horizontal">
 
             <LinearLayout
-                android:id="@+id/llRewards"
+                android:id="@+id/llShift"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
-                android:layout_weight="1" android:layout_margin="10dp"
+                android:layout_margin="10dp"
+                android:layout_weight="1"
+                android:background="@drawable/bg_menu_item"
                 android:elevation="5dp"
-                android:orientation="vertical"
                 android:gravity="center"
-                android:background="@drawable/bg_menu_item">
+                android:orientation="vertical">
 
                 <ImageView
                     android:layout_width="@dimen/_20sdp"
                     android:layout_height="@dimen/_20sdp"
-                    android:src="@drawable/ic_gift"/>
+                    android:src="@drawable/ic_shift" />
 
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="@string/reward"
                     android:gravity="center"
-                    android:textSize="@dimen/_15ssp"
-                    android:textColor="@color/colorBlack"/>
+                    android:text="@string/shifts"
+                    android:textColor="@color/colorBlack"
+                    android:textSize="@dimen/_15ssp" />
 
             </LinearLayout>
 
@@ -263,26 +264,73 @@
                 android:id="@+id/llScores"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
-                android:layout_weight="1" android:layout_margin="10dp"
+                android:layout_margin="10dp"
+                android:layout_weight="1"
+                android:background="@drawable/bg_menu_item"
                 android:elevation="5dp"
-                android:orientation="vertical"
                 android:gravity="center"
-                android:background="@drawable/bg_menu_item">
+                android:orientation="vertical">
 
                 <ImageView
                     android:layout_width="@dimen/_20sdp"
                     android:layout_height="@dimen/_20sdp"
-                    android:src="@drawable/ic_scores"/>
+                    android:src="@drawable/ic_scores" />
 
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="@string/scoreList"
                     android:gravity="center"
-                    android:textSize="@dimen/_15ssp"
-                    android:textColor="@color/colorBlack"/>
+                    android:text="@string/scoreList"
+                    android:textColor="@color/colorBlack"
+                    android:textSize="@dimen/_15ssp" />
 
             </LinearLayout>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:orientation="horizontal">
+
+            <View
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="0.5" />
+
+            <LinearLayout
+                android:id="@+id/llRewards"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_margin="10dp"
+                android:layout_weight="1"
+                android:background="@drawable/bg_menu_item"
+                android:elevation="5dp"
+                android:gravity="center"
+                android:orientation="vertical">
+
+                <ImageView
+                    android:layout_width="@dimen/_20sdp"
+                    android:layout_height="@dimen/_20sdp"
+                    android:src="@drawable/ic_gift" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:text="@string/reward"
+                    android:textColor="@color/colorBlack"
+                    android:textSize="@dimen/_15ssp" />
+
+            </LinearLayout>
+
+            <View
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="0.5" />
+
 
         </LinearLayout>
 

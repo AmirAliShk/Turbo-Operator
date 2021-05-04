@@ -1,9 +1,6 @@
 package ir.taxi1880.operatormanagement.adapter;
 
 import android.content.Context;
-import android.graphics.Color;
-import android.graphics.drawable.Drawable;
-import android.os.Build;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,8 +10,6 @@ import android.widget.TextView;
 import android.widget.ViewFlipper;
 
 import androidx.annotation.NonNull;
-import androidx.appcompat.content.res.AppCompatResources;
-import androidx.core.graphics.drawable.DrawableCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
 import org.json.JSONObject;
@@ -56,9 +51,32 @@ public class PendingComplaintAdapter extends RecyclerView.Adapter<PendingComplai
         PendingComplaintsModel model = pendingComplaintsModels.get(position);
 
         String date = DateHelper.strPersianTree(DateHelper.parseDate(model.getSaveDate()));
-        holder.txtSendDate.setText(StringHelper.toPersianDigits(date) + " ساعت " + model.getSaveTime());
-        holder.txtName.setText(StringHelper.toPersianDigits(model.getCustomerName()));
+        holder.txtComplaintDate.setText(StringHelper.toPersianDigits(date) + " ساعت " + model.getSaveTime());
+        holder.txtCustomerName.setText(StringHelper.toPersianDigits(model.getCustomerName()));
         holder.txtComplaintType.setText(StringHelper.toPersianDigits(model.getComplaintType()));
+
+        int res = R.drawable.ic_info_status;
+        switch (model.getStatus()) {
+            case 1: //accepted request
+                holder.imgStatus.setVisibility(View.VISIBLE);
+                holder.txtComplaintStatus.setText("اطلاعات سفر");
+                res = R.drawable.ic_info_status;
+                break;
+
+            case 2: //waiting for docs
+                holder.imgStatus.setVisibility(View.VISIBLE);
+                holder.txtComplaintStatus.setText("تماس");
+                res = R.drawable.ic_call_status;
+                break;
+
+            case 3: // waiting for saveResult
+                holder.imgStatus.setVisibility(View.VISIBLE);
+                holder.txtComplaintStatus.setText("نتیجه‌گیری");
+                res = R.drawable.ic_conclusion_status;
+                break;
+        }
+        holder.imgStatus.setImageResource(res);
+
 
         holder.vfDetail.setOnClickListener(view1 -> {
             this.vfDetail = holder.vfDetail;
@@ -68,35 +86,6 @@ public class PendingComplaintAdapter extends RecyclerView.Adapter<PendingComplai
             getAccept(model.getComplaintId());
         });
 
-        String status = "#f09a37";
-//        int res = R.drawable.ic_call_hire;//todo
-        switch (model.getStatus()) {
-            case 1: //accepted request
-                holder.imgStatus.setVisibility(View.VISIBLE);
-//                res = R.drawable.ic_call_hire;
-                status = "#f09a37";
-                break;
-
-            case 2: //waiting for docs
-                holder.imgStatus.setVisibility(View.VISIBLE);
-//                res = R.drawable.ic_documents;
-                status = "#3478f6";
-                break;
-
-            case 3: // waiting for saveResult
-                holder.imgStatus.setVisibility(View.VISIBLE);
-//                res = R.drawable.ic_registration;
-                status = "#10ad79";
-                break;
-        }
-//        holder.imgStatus.setImageResource(res);
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            Drawable bg_btn_disable = AppCompatResources.getDrawable(mContext, R.drawable.bg_btn_disable);
-            DrawableCompat.setTint(bg_btn_disable, Color.parseColor(status));
-            holder.imgStatus.setBackground(bg_btn_disable);
-        } else {
-            holder.imgStatus.setBackgroundColor(Color.parseColor(status));
-        }
     }
 
     @Override
@@ -106,19 +95,19 @@ public class PendingComplaintAdapter extends RecyclerView.Adapter<PendingComplai
 
     public class ViewHolder extends RecyclerView.ViewHolder {
 
-        TextView txtSendDate;
-        TextView txtName;
+        TextView txtComplaintDate;
+        TextView txtCustomerName;
         TextView txtComplaintType;
-        LinearLayout llPendingComplaint;
+        TextView txtComplaintStatus;
         ImageView imgStatus;
         ViewFlipper vfDetail;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
-            llPendingComplaint = itemView.findViewById(R.id.llPendingComplaint);
             imgStatus = itemView.findViewById(R.id.imgStatus);
-            txtSendDate = itemView.findViewById(R.id.txtSendDate);
-            txtName = itemView.findViewById(R.id.txtName);
+            txtComplaintStatus = itemView.findViewById(R.id.txtComplaintStatus);
+            txtComplaintDate = itemView.findViewById(R.id.txtComplaintDate);
+            txtCustomerName = itemView.findViewById(R.id.txtCustomerName);
             txtComplaintType = itemView.findViewById(R.id.txtComplaintType);
             vfDetail = itemView.findViewById(R.id.vfDetail);
 
@@ -126,7 +115,7 @@ public class PendingComplaintAdapter extends RecyclerView.Adapter<PendingComplai
     }
 
     private void getAccept(int id) {
-        RequestHelper.builder(EndPoints.COMPLAINT_DETAIL + id )//todo
+        RequestHelper.builder(EndPoints.COMPLAINT_DETAIL + id)//todo
                 .listener(getAccept)
                 .get();
     }
@@ -151,7 +140,7 @@ public class PendingComplaintAdapter extends RecyclerView.Adapter<PendingComplai
 
                         model.setSaveDate(dataObj.getString("saveDate"));
                         model.setSaveTime(dataObj.getString("saveTime"));
-                        model.setComplaintId(dataObj.getInt("complaintId"));//todo it's not complete
+                        model.setComplaintId(dataObj.getInt("complaintId"));
                         model.setCustomerName(dataObj.getString("customerName"));
                         model.setComplaintType(dataObj.getString("complaintType"));
                         model.setStatus(dataObj.getInt("status"));
