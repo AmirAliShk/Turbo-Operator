@@ -10,7 +10,6 @@ import android.view.Window;
 import android.view.WindowManager;
 import android.widget.AdapterView;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.ViewFlipper;
@@ -59,7 +58,6 @@ public class ComplaintRegistrationDialog {
 
         ImageView imgClose = dialog.findViewById(R.id.imgClose);
         Button btnSubmit = dialog.findViewById(R.id.btnSubmit);
-        EditText edtComment = dialog.findViewById(R.id.edtComment);
         spComplaintType = dialog.findViewById(R.id.spComplaintType);
         vfLoader = dialog.findViewById(R.id.vfLoader);
 
@@ -72,21 +70,15 @@ public class ComplaintRegistrationDialog {
 
         btnSubmit.setOnClickListener(view -> {
             KeyBoardHelper.hideKeyboard();
-            String description = edtComment.getText().toString();
 
-            if (description.isEmpty()) {
-                edtComment.setError("لطفا توضیحات را وارد کنید");
-                return;
-            }
-
-            setComplaint(serviceId, description, voipId);
+            setComplaint(serviceId, voipId);
             dismiss();
         });
 
         dialog.show();
     }
 
-    private void setComplaint(String serviceId, String description, String voipId) {
+    private void setComplaint(String serviceId, String voipId) {
         if (vfLoader != null) {
             vfLoader.setDisplayedChild(1);
         }
@@ -94,7 +86,6 @@ public class ComplaintRegistrationDialog {
         RequestHelper.builder(EndPoints.INSERT_COMPLAINT)
                 .addParam("serviceId", serviceId)
                 .addParam("complaintType", complaintType)
-                .addParam("description", description)
                 .addParam("voipId", voipId)
                 .listener(onSetComplaint)
                 .post();

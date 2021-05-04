@@ -1,0 +1,180 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/colorWhite"
+    android:clickable="true"
+    android:layoutDirection="rtl"
+    android:orientation="vertical">
+
+    <com.rakshakhegde.stepperindicator.StepperIndicator
+        android:id="@+id/indicator"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="30dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginRight="30dp"
+        app:stpi_circleColor="#9c9797"
+        app:stpi_circleStrokeWidth="10dp"
+        app:stpi_indicatorColor="@color/colorPurple"
+        app:stpi_indicatorRadius="10dp"
+        app:stpi_lineColor="#9c9797"
+        app:stpi_lineDoneColor="@color/colorPurple"
+        app:stpi_lineMargin="4dp"
+        app:stpi_lineStrokeWidth="8dp"
+        app:stpi_stepCount="3" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingLeft="20dp"
+        android:paddingRight="17dp">
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:gravity="right"
+            android:text="نتیجه‌گیری"
+            android:textColor="@color/grayLight"
+            android:textSize="@dimen/_12ssp" />
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="2.4"
+            android:gravity="center"
+            android:text="تماس"
+            android:textColor="@color/grayLight"
+            android:textSize="@dimen/_12ssp" />
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:gravity="left"
+            android:text="اطلاعات سفر"
+            android:textColor="@color/grayLight"
+            android:textSize="@dimen/_12ssp" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:background="@drawable/bg_edit_text"
+        android:layout_weight="1">
+
+        <ir.taxi1880.operatormanagement.customView.NonSwipeableViewPager
+            android:id="@+id/vpRegisterDriver"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:background="@android:color/transparent" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/llButtons"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_marginLeft="25dp"
+        android:layout_marginRight="25dp"
+        android:layout_marginBottom="20dp"
+        android:gravity="center_vertical"
+        android:layoutDirection="rtl">
+
+        <ViewFlipper
+            android:id="@+id/vfNextStep"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_weight="1"
+            android:background="@drawable/bg_circle_green">
+
+            <Button
+                android:id="@+id/btnNext"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="#00ffffff"
+                android:text="بعدی"
+                android:textColor="@color/colorWhite"
+                android:textSize="@dimen/_16sdp" />
+
+            <com.wang.avi.AVLoadingIndicatorView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center" />
+
+            <Button
+                android:id="@+id/btnSaveResult"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/bg_circle_green"
+                android:text="ثبت"
+                android:textColor="@color/colorWhite"
+                android:textSize="@dimen/_16sdp" />
+        </ViewFlipper>
+
+        <ImageView
+            android:id="@+id/view2"
+            android:layout_width="10dp"
+            android:layout_height="match_parent" />
+
+        <ViewFlipper
+            android:id="@+id/vfTripDetails"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_gravity="center"
+            android:layout_weight="1"
+            android:background="@drawable/bg_circle_yellow">
+
+            <Button
+                android:id="@+id/btnTripDetails"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@drawable/bg_circle_yellow"
+                android:text="جزئیات سفر"
+                android:textColor="@color/colorWhite"
+                android:textSize="@dimen/_15sdp" />
+
+            <com.wang.avi.AVLoadingIndicatorView
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_gravity="center" />
+
+        </ViewFlipper>
+
+        <ImageView
+            android:id="@+id/view"
+            android:layout_width="10dp"
+            android:layout_height="match_parent" />
+
+        <ViewFlipper
+            android:id="@+id/vfOptions"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_gravity="center"
+            android:layout_weight="1"
+            android:background="@drawable/bg_circle_red">
+
+            <Button
+                android:id="@+id/btnOptions"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@drawable/bg_circle_red"
+                android:text="گزینه‌ها"
+                android:textColor="@color/colorWhite"
+                android:textSize="@dimen/_16sdp" />
+
+            <com.wang.avi.AVLoadingIndicatorView
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_gravity="center" />
+
+        </ViewFlipper>
+
+    </LinearLayout>
+
+</LinearLayout>

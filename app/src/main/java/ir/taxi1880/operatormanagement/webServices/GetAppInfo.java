@@ -13,15 +13,12 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import ir.taxi1880.operatormanagement.R;
-import ir.taxi1880.operatormanagement.activity.SplashActivity;
 import ir.taxi1880.operatormanagement.app.Constant;
 import ir.taxi1880.operatormanagement.app.EndPoints;
 import ir.taxi1880.operatormanagement.app.MyApplication;
 import ir.taxi1880.operatormanagement.dataBase.DataBase;
 import ir.taxi1880.operatormanagement.dialog.GeneralDialog;
-import ir.taxi1880.operatormanagement.fragment.ContractFragment;
 import ir.taxi1880.operatormanagement.fragment.LoginFragment;
-import ir.taxi1880.operatormanagement.fragment.SignatureFragment;
 import ir.taxi1880.operatormanagement.helper.AppVersionHelper;
 import ir.taxi1880.operatormanagement.helper.ContinueProcessing;
 import ir.taxi1880.operatormanagement.helper.FragmentHelper;
@@ -35,7 +32,6 @@ import ir.taxi1880.operatormanagement.services.LinphoneService;
 import static ir.taxi1880.operatormanagement.app.MyApplication.context;
 
 public class GetAppInfo {
-    int isFinishContract;
     DataBase dataBase;
 
     public void callAppInfoAPI() {
@@ -109,8 +105,6 @@ public class GetAppInfo {
                     String serviceCountToday = object.getString("serviceCountToday");
                     String serviceCountMonth = object.getString("serviceCountMonth");
                     int activeInQueue = object.getInt("activeInQueue");
-                    isFinishContract = object.getInt("isFinishContract");
-//                    isFinishContract = 1;
                     int customerSupport = object.getInt("customerSupport");
                     String name = object.getString("name");
                     String family = object.getString("family");
@@ -256,18 +250,13 @@ public class GetAppInfo {
             }
             // As we're in a thread, we can't do UI stuff in it, must post a runnable in UI thread
             MyApplication.handler.post(
-                    new Runnable() {
-                        @Override
-                        public void run() {
-                            continueProcessing();
-                        }
-                    });
+                    () -> ContinueProcessing.runMainActivity());
         }
     }
 
     public void startVoipService() {
         if (LinphoneService.isReady()) {
-            continueProcessing();
+            ContinueProcessing.runMainActivity();
         } else {
             // If it's not, let's start it
             ServiceHelper.start(context, LinphoneService.class);
@@ -275,33 +264,4 @@ public class GetAppInfo {
             new ServiceWaitThread().start();
         }
     }
-
-    public void continueProcessing() {
-        if (isFinishContract == 1) {
-            MyApplication.currentActivity.runOnUiThread(() -> new GeneralDialog()
-                    .title("اتمام قرار داد")
-                    .message("مدت قرار داد شما به اتمام رسیده است. لطفا برای تمدید آن اقدام کنید.")
-                    .cancelable(false)
-                    .firstButton("مشاهده قرارداد", () -> {
-                        FragmentHelper
-                                .toFragment(MyApplication.currentActivity, new ContractFragment())
-                                .setStatusBarColor(MyApplication.currentActivity.getResources().getColor(R.color.colorPrimaryDark))
-                                .setAddToBackStack(false)
-                                .replace();
-                    })
-
-                    .secondButton("امضا قرارداد", () -> {
-                        FragmentHelper
-                                .toFragment(MyApplication.currentActivity, new SignatureFragment())
-                                .setStatusBarColor(MyApplication.currentActivity.getResources().getColor(R.color.colorPrimaryDark))
-                                .setAddToBackStack(false)
-                                .replace();
-                    })
-                    .show());
-            return;
-        }
-        ContinueProcessing.runMainActivity();
-    }
-
-
 }

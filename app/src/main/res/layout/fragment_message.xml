@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/colorPrimary"
+    android:background="@color/colorPrimaryLighter"
     android:clickable="true"
     android:layoutDirection="rtl"
     tools:context="ir.taxi1880.operatormanagement.fragment.MessageFragment">
@@ -117,7 +117,7 @@
                 android:layout_height="match_parent"
                 android:alpha="0.08"
                 android:background="@drawable/bg_login"
-                app:tint="@color/colorPrimary" />
+                app:tint="@color/colorPrimaryLighter" />
 
             <ViewFlipper
                 android:id="@+id/vfMessage"
@@ -199,7 +199,7 @@
                     android:layout_height="?android:attr/actionBarSize"
                     android:layout_gravity="center"
                     android:padding="10dp"
-                    android:progressTint="@color/colorPrimary" />
+                    android:progressTint="@color/colorPrimaryLighter" />
 
             </ViewFlipper>
 

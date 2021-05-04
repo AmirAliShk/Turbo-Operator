@@ -43,6 +43,7 @@ public class EndPoints {
     public static final String SUPPORT_TRIP_WEBSERVICE_PATH = IP + ":" + TRIP_APIPort + "/api/operator/v3/support/trip/";
     public static final String SHIFT_WEBSERVICE_PATH = IP + ":" + TRIP_APIPort + "/api/operator/v3/shift/";
     public static final String TRIP_WEBSERVICE_PATH = IP + ":" + TRIP_APIPort + "/api/operator/v3/trip/";
+    public static final String COMPLAINT_WEBSERVICE_PATH = IP + ":" + TRIP_APIPort + "/api/operator/v3/complaint/";
     public static final String DRIVER_WEBSERVICE_PATH = IP + ":" + TRIP_APIPort + "/api/operator/v3/support/driver/";
     public static final String DRIVER_STATION_WEBSERVICE_PATH = IP + ":" + TRIP_APIPort + "/api/operator/v3/support/driver/station/";
     public static final String CALL_VOICE_PATH = IP + ":" + CALL_VOICE_APIPort + "/api/v1/"; //  http://turbotaxi.ir:1884/api/v1/
@@ -51,7 +52,7 @@ public class EndPoints {
     public static final String HAWKEYE_LOGIN_PATH = HAKWEYE_IP + ":" + HAWKEYE_APIPort + "/api/user/v1/login/phone/";
 
     /******************************** Base Api *********************************/
-    /******************************** Base Api *********************************/
+
     public static final String GET_APP_INFO = WEBSERVICE_PATH + "getAppInfo";
     public static final String GET_MESSAGES = WEBSERVICE_PATH + "getMessages";
     public static final String GET_NEWS = WEBSERVICE_PATH + "getNews";
@@ -91,11 +92,6 @@ public class EndPoints {
     public static final String REWARDS = SCORE_WEBSERVICE_PATH + "rewards";
     public static final String SINGLE = SCORE_WEBSERVICE_PATH + "single";
 
-    /******************************** Contract Api *********************************/
-
-    public static final String CONTRACT = WEBSERVICE_PATH + "getContractText";
-    public static final String UPLOAD_NATIONAL_CARD = IP + ":" + PIC_APIPort + "/api/v1/setContract";
-
     /******************************** Support Api *********************************/
 
     public static final String SEARCH_SERVICE = SUPPORT_TRIP_WEBSERVICE_PATH + "search";
@@ -130,4 +126,13 @@ public class EndPoints {
     public static final String LOGIN = HAWKEYE_PATH + "login";
     public static final String VERIFICATION = HAWKEYE_LOGIN_PATH + "verification";
     public static final String CHECK = HAWKEYE_LOGIN_PATH + "check";
+
+    /******************************** complaint Api *********************************/
+
+    public static final String COMPLAINT_DETAIL = COMPLAINT_WEBSERVICE_PATH + "detail/";// :complaintId
+    public static final String COMPLAINT_ACCEPT = COMPLAINT_WEBSERVICE_PATH + "accept";
+    public static final String COMPLAINT_UPDATE_STATUS = COMPLAINT_WEBSERVICE_PATH + "updateStatus";
+    public static final String COMPLAINT_MISSED_CALL = COMPLAINT_WEBSERVICE_PATH + "misscall";
+    public static final String COMPLAINT_FINISH = COMPLAINT_WEBSERVICE_PATH + "finish";
+
 }

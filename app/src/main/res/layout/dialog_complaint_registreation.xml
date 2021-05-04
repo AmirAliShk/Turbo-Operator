@@ -74,33 +74,6 @@
 
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical">
-
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="10dp"
-                    android:paddingRight="10dp"
-                    android:text="توضیحات"
-                    android:textAppearance="?android:attr/textAppearanceMedium"
-                    android:textColor="@color/grayMedium" />
-
-                <EditText
-                    android:id="@+id/edtComment"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_marginTop="10dp"
-                    android:background="@drawable/edit_text_style"
-                    android:gravity="top|right"
-                    android:maxLines="3"
-                    android:minHeight="100dp"
-                    android:padding="10dp" />
-
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
                 android:layout_height="@dimen/_40sdp"
                 android:layout_marginTop="10dp"
                 android:layout_weight="1"

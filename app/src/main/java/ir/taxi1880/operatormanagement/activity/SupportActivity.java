@@ -1,7 +1,6 @@
 package ir.taxi1880.operatormanagement.activity;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.content.ContextCompat;
 import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 import androidx.viewpager2.widget.ViewPager2;
 
@@ -46,7 +45,6 @@ import ir.taxi1880.operatormanagement.app.EndPoints;
 import ir.taxi1880.operatormanagement.app.Keys;
 import ir.taxi1880.operatormanagement.app.MyApplication;
 import ir.taxi1880.operatormanagement.dataBase.DataBase;
-import ir.taxi1880.operatormanagement.dialog.CallDialog;
 import ir.taxi1880.operatormanagement.dialog.GeneralDialog;
 import ir.taxi1880.operatormanagement.dialog.LoadingDialog;
 import ir.taxi1880.operatormanagement.fragment.PendingMistakesFragment;
@@ -58,7 +56,6 @@ import ir.taxi1880.operatormanagement.okHttp.RequestHelper;
 import ir.taxi1880.operatormanagement.push.AvaCrashReporter;
 import ir.taxi1880.operatormanagement.services.LinphoneService;
 
-import static ir.taxi1880.operatormanagement.adapter.RecentCallsAdapter.pauseVoice;
 import static ir.taxi1880.operatormanagement.app.Keys.ACTIVE_IN_DRIVER_SUPPORT;
 import static ir.taxi1880.operatormanagement.app.Keys.KEY_ACTIVE_IN_DRIVER_SUPPORT;
 import static ir.taxi1880.operatormanagement.app.Keys.KEY_NEW_MISTAKE_COUNT;
@@ -106,12 +103,9 @@ public class SupportActivity extends AppCompatActivity {
                 .title("هشدار")
                 .cancelable(false)
                 .message("مطمئنی میخوای وارد صف بشی؟")
-                .firstButton("مطمئنم", new Runnable() {
-                    @Override
-                    public void run() {
-                        setActivate(MyApplication.prefManager.getSipNumber());
+                .firstButton("مطمئنم", () -> {
+                    setActivate(MyApplication.prefManager.getSipNumber());
 //                MyApplication.Toast("activated",Toast.LENGTH_SHORT);
-                    }
                 })
                 .secondButton("نیستم", null)
                 .show();
@@ -175,7 +169,6 @@ public class SupportActivity extends AppCompatActivity {
             calls[0].accept();
         }
 
-
         ClipboardManager clipboard = (ClipboardManager) getSystemService(Context.CLIPBOARD_SERVICE);
         ClipData clip = ClipData.newPlainText("passengerTell", txtCallerNum.getText().toString());
         clipboard.setPrimaryClip(clip);
@@ -216,7 +209,7 @@ public class SupportActivity extends AppCompatActivity {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             Window window = getWindow();
             window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
-            window.setNavigationBarColor(getResources().getColor(R.color.colorPrimary));
+            window.setNavigationBarColor(getResources().getColor(R.color.colorPrimaryLighter));
             window.setStatusBarColor(getResources().getColor(R.color.colorPrimaryDark));
             window.getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LIGHT_NAVIGATION_BAR);
             window.addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
@@ -269,7 +262,6 @@ public class SupportActivity extends AppCompatActivity {
     }
 
     private void setActivate(int sipNumber) {
-
         LoadingDialog.makeCancelableLoader();
         RequestHelper.builder(EndPoints.ACTIVATE_SUPPORT)
                 .addParam("sipNumber", sipNumber)
@@ -290,7 +282,7 @@ public class SupportActivity extends AppCompatActivity {
 
                     if (success) {
                         Intent broadcastIntent = new Intent(KEY_ACTIVE_IN_DRIVER_SUPPORT);
-                        broadcastIntent.putExtra(ACTIVE_IN_DRIVER_SUPPORT,"active");
+                        broadcastIntent.putExtra(ACTIVE_IN_DRIVER_SUPPORT, "active");
                         broadcaster.sendBroadcast(broadcastIntent);
 
                         MyApplication.prefManager.activeInSupport(true);
@@ -359,7 +351,7 @@ public class SupportActivity extends AppCompatActivity {
 
                     if (success) {
                         Intent broadcastIntent = new Intent(KEY_ACTIVE_IN_DRIVER_SUPPORT);
-                        broadcastIntent.putExtra(ACTIVE_IN_DRIVER_SUPPORT,"deActive");
+                        broadcastIntent.putExtra(ACTIVE_IN_DRIVER_SUPPORT, "deActive");
                         broadcaster.sendBroadcast(broadcastIntent);
 
                         Intent broadcastIntent2 = new Intent(KEY_NEW_MISTAKE_COUNT);
