@@ -603,6 +603,105 @@
             </LinearLayout>
 
             <LinearLayout
+
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="25dp"
+                    android:paddingRight="5dp"
+                    android:text="مقصد"
+                    android:textAppearance="?android:attr/textAppearanceSmall"
+                    android:textColor="@color/grayMedium" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="40dp"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal">
+
+                    <LinearLayout
+
+                        android:layout_width="50dp"
+                        android:layout_height="match_parent"
+                        android:background="@drawable/edit_text_style">
+
+                        <ViewFlipper
+
+                            android:layout_width="match_parent"
+                            android:layout_height="40dp"
+                            android:background="@drawable/bg_ripple">
+
+                            <TextView
+
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                android:layout_gravity="center"
+                                android:gravity="center"
+                                android:text="بیشتر"
+                                android:textColor="@color/colorAccent"
+                                android:textStyle="bold" />
+
+                            <com.wang.avi.AVLoadingIndicatorView
+                                android:layout_width="35dp"
+                                android:layout_height="35dp"
+                                android:layout_gravity="center"
+                                android:padding="5dp"
+                                app:indicatorColor="@color/colorPrimaryDark" />
+
+                        </ViewFlipper>
+
+                    </LinearLayout>
+
+                    <ImageView
+                        android:layout_width="5dp"
+                        android:layout_height="match_parent" />
+
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
+
+                        <EditText
+
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:layout_weight="1"
+                            android:background="@drawable/edit_text_style"
+                            android:enabled="false"
+                            android:nextFocusDown="@id/edtFamily"
+                            android:paddingLeft="35dp"
+                            android:paddingRight="5dp"
+                            android:singleLine="true"
+                            android:textAppearance="?android:attr/textAppearanceMedium"
+                            android:textColor="@color/colorBlack" />
+
+                        <ImageView
+
+                            android:layout_width="40dp"
+                            android:layout_height="match_parent"
+                            android:layout_alignParentLeft="true"
+                            android:layout_gravity="center"
+                            android:gravity="left"
+                            android:padding="5dp"
+                            android:src="@drawable/ic_reject"
+                            app:tint="#000" />
+
+                    </RelativeLayout>
+
+                    <ImageView
+                        android:layout_width="5dp"
+                        android:layout_height="match_parent" />
+
+                </LinearLayout>
+
+            </LinearLayout>
+
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
