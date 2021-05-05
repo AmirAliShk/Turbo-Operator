@@ -153,6 +153,9 @@ public class TripRegisterActivity extends AppCompatActivity {
     @BindView(R.id.edtAddress)
     EditText edtAddress;
 
+    @BindView(R.id.edtDestinationAddress)
+    EditText edtDestinationAddress;
+
     @BindView(R.id.llTrafficBg)
     LinearLayout llTrafficBg;
 
@@ -244,6 +247,9 @@ public class TripRegisterActivity extends AppCompatActivity {
     @BindView(R.id.txtPassengerAddress)
     TextView txtPassengerAddress;
 
+    @BindView(R.id.txtPassengerDestAddress)
+    TextView txtPassengerDestAddress;
+
     @OnClick(R.id.llDescriptionDetail)
     void onPressLlDescriptionDetail() {
         new DescriptionDialog().show(new DescriptionDialog.Listener() {
@@ -267,6 +273,16 @@ public class TripRegisterActivity extends AppCompatActivity {
         }
         KeyBoardHelper.hideKeyboard();
         getPassengerAddress(StringHelper.toEnglishDigits(getTellNumber()));
+    }
+
+    @OnClick(R.id.txtPassengerDestAddress)
+    void txtPassengerDestAddress() {
+        if (getTellNumber().isEmpty()) {
+            MyApplication.Toast("ابتدا شماره تلفن را وارد کنید", Toast.LENGTH_SHORT);
+            return;
+        }
+        KeyBoardHelper.hideKeyboard();
+        getPassengerAddress(StringHelper.toEnglishDigits(getTellNumber())); // TODO‌ put destination API here
     }
 
     private String getTellNumber() {
@@ -367,8 +383,14 @@ public class TripRegisterActivity extends AppCompatActivity {
             return;
         }
         if (edtAddress.getText().toString().isEmpty()) {
-            edtAddress.setError("آدرس را مشخص کنید");
+            edtAddress.setError("آدرس مبدا را مشخص کنید");
             edtAddress.requestFocus();
+            return;
+        }
+
+        if (edtDestinationAddress.getText().toString().isEmpty()) {
+            edtDestinationAddress.setError("آدرس مقصد را مشخص کنید");
+            edtDestinationAddress.requestFocus();
             return;
         }
 
@@ -517,6 +539,15 @@ public class TripRegisterActivity extends AppCompatActivity {
     @OnClick(R.id.clearAddress)
     void onCLearAddress() {
         edtAddress.getText().clear();
+        originStation = 0;
+        addressLength = 0;
+        addressChangeCounter = 0;
+    }
+
+    @OnClick(R.id.clearDestinationAddress)
+    void onClearDestinationAddress() {
+        edtDestinationAddress.getText().clear();
+        // TODO‌ check below params
         originStation = 0;
         addressLength = 0;
         addressChangeCounter = 0;
@@ -1425,6 +1456,7 @@ public class TripRegisterActivity extends AppCompatActivity {
         edtFamily.setEnabled(true);
 //    edtDiscount.setEnabled(true);
         edtAddress.setEnabled(true);
+        edtDestinationAddress.setEnabled(true);
         txtDescription.setEnabled(true);
         chbTraffic.setEnabled(true);
         llTrafficBg.setEnabled(true);
@@ -1449,6 +1481,7 @@ public class TripRegisterActivity extends AppCompatActivity {
         edtFamily.setEnabled(false);
 //    edtDiscount.setEnabled(false);
         edtAddress.setEnabled(false);
+        edtDestinationAddress.setEnabled(false);
         txtDescription.setEnabled(false);
         chbTraffic.setEnabled(false);
         llTrafficBg.setEnabled(false);

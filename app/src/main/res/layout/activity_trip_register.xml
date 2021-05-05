@@ -631,30 +631,38 @@
                         android:layout_height="match_parent"
                         android:background="@drawable/edit_text_style">
 
-                        <ViewFlipper
+                        <LinearLayout
+                            android:id="@+id/llSearchDestAddress"
+                            android:layout_width="50dp"
+                            android:layout_height="match_parent"
+                            android:background="@drawable/edit_text_style">
 
-                            android:layout_width="match_parent"
-                            android:layout_height="40dp"
-                            android:background="@drawable/bg_ripple">
-
-                            <TextView
-
+                            <ViewFlipper
+                                android:id="@+id/vfPassengerDestAddress"
                                 android:layout_width="match_parent"
-                                android:layout_height="match_parent"
-                                android:layout_gravity="center"
-                                android:gravity="center"
-                                android:text="بیشتر"
-                                android:textColor="@color/colorAccent"
-                                android:textStyle="bold" />
+                                android:layout_height="40dp"
+                                android:background="@drawable/bg_ripple">
 
-                            <com.wang.avi.AVLoadingIndicatorView
-                                android:layout_width="35dp"
-                                android:layout_height="35dp"
-                                android:layout_gravity="center"
-                                android:padding="5dp"
-                                app:indicatorColor="@color/colorPrimaryDark" />
+                                <TextView
+                                    android:id="@+id/txtPassengerDestAddress"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="match_parent"
+                                    android:layout_gravity="center"
+                                    android:gravity="center"
+                                    android:text="بیشتر"
+                                    android:textColor="@color/colorAccent"
+                                    android:textStyle="bold" />
 
-                        </ViewFlipper>
+                                <com.wang.avi.AVLoadingIndicatorView
+                                    android:layout_width="35dp"
+                                    android:layout_height="35dp"
+                                    android:layout_gravity="center"
+                                    android:padding="5dp"
+                                    app:indicatorColor="@color/colorPrimaryDark" />
+
+                            </ViewFlipper>
+
+                        </LinearLayout>
 
                     </LinearLayout>
 
@@ -667,7 +675,7 @@
                         android:layout_height="wrap_content">
 
                         <EditText
-
+                            android:id="@+id/edtDestinationAddress"
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
                             android:layout_weight="1"
@@ -681,7 +689,7 @@
                             android:textColor="@color/colorBlack" />
 
                         <ImageView
-
+                            android:id="@+id/clearDestinationAddress"
                             android:layout_width="40dp"
                             android:layout_height="match_parent"
                             android:layout_alignParentLeft="true"

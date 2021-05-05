@@ -226,6 +226,22 @@ public class DataBase extends SQLiteOpenHelper {
         //    update Trip set sendDate='12345' where tripId='39403'
     }
 
+    public void updateOriginStation(int tripId, int originStation) {
+        SQLiteDatabase db = this.getReadableDatabase();
+        ContentValues cv = new ContentValues();
+        cv.put(COLUMN_ORIGIN_STATION,originStation);
+        db.update(TRIP_TABLE, cv, COLUMN_TRIP_ID + " = " + tripId, null);
+        //    update Trip set originStation='199' where tripId='39403'
+    }
+
+    public void updateDestinationStation(int tripId, int destinationStation) {
+        SQLiteDatabase db = this.getReadableDatabase();
+        ContentValues cv = new ContentValues();
+        cv.put(COLUMN_DESTINATION_STATION,destinationStation);
+        db.update(TRIP_TABLE, cv, COLUMN_TRIP_ID + " = " + tripId, null);
+        //    update Trip set destinationStation='199' where tripId='39403'
+    }
+
     public void deleteRow(int tripId) {
 
         SQLiteDatabase sqLiteDatabase = this.getWritableDatabase();
