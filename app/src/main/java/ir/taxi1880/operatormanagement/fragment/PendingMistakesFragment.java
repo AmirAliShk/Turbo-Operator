@@ -74,7 +74,7 @@ public class PendingMistakesFragment extends Fragment {
                 .show(model.getId(), new SaveResultDialog.MistakesResult() {
                     @Override
                     public void onSuccess(boolean success) {
-                        MyApplication.handler.postDelayed(() ->{
+                        MyApplication.handler.postDelayed(() -> {
                             getMistakesFromDB();
                             if (vfVoiceStatus != null)
                                 vfVoiceStatus.setDisplayedChild(0);
@@ -133,7 +133,8 @@ public class PendingMistakesFragment extends Fragment {
 
     @OnClick(R.id.imgPlay)
     void onPlay() {
-        vfPlayPause.setDisplayedChild(1);
+        if (vfPlayPause != null)
+            vfPlayPause.setDisplayedChild(1);
         Log.i("URL", "show: " + EndPoints.CALL_VOICE + dataBase.getMistakesRow().getVoipId());
         String voiceName = dataBase.getMistakesRow().getId() + ".mp3";
         File file = new File(MyApplication.DIR_ROOT + MyApplication.VOICE_FOLDER_NAME + "/" + voiceName);
@@ -142,8 +143,10 @@ public class PendingMistakesFragment extends Fragment {
             initVoice(Uri.fromFile(file));
             playVoice();
         } else if (voipId.equals("0")) {
-            vfVoiceStatus.setDisplayedChild(1);
-            vfPlayPause.setDisplayedChild(0);
+            if (vfVoiceStatus != null)
+                vfVoiceStatus.setDisplayedChild(1);
+            if (vfPlayPause != null)
+                vfPlayPause.setDisplayedChild(0);
         } else {
             startDownload(EndPoints.CALL_VOICE + dataBase.getMistakesRow().getVoipId(), voiceName);
         }
@@ -347,7 +350,7 @@ public class PendingMistakesFragment extends Fragment {
             });
             if (vfPending != null)
                 vfPending.setDisplayedChild(1);
-        }else {
+        } else {
             if (vfPending != null)
                 vfPending.setDisplayedChild(2);
         }

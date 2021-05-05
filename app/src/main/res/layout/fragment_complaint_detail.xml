@@ -3,31 +3,44 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/colorWhite"
+    android:background="@color/colorPrimaryDark"
     android:clickable="true"
     android:layoutDirection="rtl"
     android:orientation="vertical">
 
-    <com.rakshakhegde.stepperindicator.StepperIndicator
-        android:id="@+id/indicator"
+    <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="30dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginRight="30dp"
-        app:stpi_circleColor="#9c9797"
-        app:stpi_circleStrokeWidth="10dp"
-        app:stpi_indicatorColor="@color/colorPurple"
-        app:stpi_indicatorRadius="10dp"
-        app:stpi_lineColor="#9c9797"
-        app:stpi_lineDoneColor="@color/colorPurple"
-        app:stpi_lineMargin="4dp"
-        app:stpi_lineStrokeWidth="8dp"
-        app:stpi_stepCount="3" />
+        android:layout_height="wrap_content">
+
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="20dp"
+            android:layout_alignBottom="@+id/indicator"
+            android:background="@drawable/header_main" />
+
+        <com.rakshakhegde.stepperindicator.StepperIndicator
+            android:id="@+id/indicator"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="30dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginRight="30dp"
+            app:stpi_circleColor="#9c9797"
+            app:stpi_circleStrokeWidth="10dp"
+            app:stpi_indicatorColor="@color/colorAccent"
+            app:stpi_indicatorRadius="10dp"
+            app:stpi_lineColor="#9c9797"
+            app:stpi_lineDoneColor="@color/colorAccent"
+            app:stpi_lineMargin="4dp"
+            app:stpi_lineStrokeWidth="8dp"
+            app:stpi_stepCount="3" />
+
+    </RelativeLayout>
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:background="@color/colorPrimaryLighter"
         android:paddingLeft="20dp"
         android:paddingRight="17dp">
 
@@ -60,30 +73,24 @@
 
     </LinearLayout>
 
-    <LinearLayout
+    <ir.taxi1880.operatormanagement.customView.NonSwipeableViewPager
+        android:id="@+id/vpRegisterDriver"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:background="@drawable/bg_edit_text"
-        android:layout_weight="1">
-
-        <ir.taxi1880.operatormanagement.customView.NonSwipeableViewPager
-            android:id="@+id/vpRegisterDriver"
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:background="@android:color/transparent" />
-
-    </LinearLayout>
+        android:layout_weight="1"
+        android:background="@color/colorPrimaryLighter" />
 
     <LinearLayout
         android:id="@+id/llButtons"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
-        android:layout_marginLeft="25dp"
-        android:layout_marginRight="25dp"
-        android:layout_marginBottom="20dp"
+        android:background="@color/colorPrimaryLighter"
         android:gravity="center_vertical"
-        android:layoutDirection="rtl">
+        android:layoutDirection="rtl"
+        android:paddingLeft="25dp"
+        android:paddingRight="25dp"
+        android:paddingBottom="20dp">
 
         <ViewFlipper
             android:id="@+id/vfNextStep"
@@ -128,13 +135,13 @@
             android:layout_height="match_parent"
             android:layout_gravity="center"
             android:layout_weight="1"
-            android:background="@drawable/bg_circle_yellow">
+            android:background="@drawable/bg_dark_pink_edge">
 
             <Button
                 android:id="@+id/btnTripDetails"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:background="@drawable/bg_circle_yellow"
+                android:background="@drawable/bg_dark_pink_edge"
                 android:text="جزئیات سفر"
                 android:textColor="@color/colorWhite"
                 android:textSize="@dimen/_15sdp" />
@@ -157,15 +164,15 @@
             android:layout_height="match_parent"
             android:layout_gravity="center"
             android:layout_weight="1"
-            android:background="@drawable/bg_circle_red">
+            android:background="@drawable/bg_gray_lite_edge">
 
             <Button
                 android:id="@+id/btnOptions"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:background="@drawable/bg_circle_red"
+                android:background="@drawable/bg_edit_text"
                 android:text="گزینه‌ها"
-                android:textColor="@color/colorWhite"
+                android:textColor="@color/colorBlack"
                 android:textSize="@dimen/_16sdp" />
 
             <com.wang.avi.AVLoadingIndicatorView

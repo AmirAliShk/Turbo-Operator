@@ -114,8 +114,8 @@ public class PendingComplaintAdapter extends RecyclerView.Adapter<PendingComplai
         }
     }
 
-    private void getAccept(int id) {
-        RequestHelper.builder(EndPoints.COMPLAINT_DETAIL + id)//todo
+    private void getAccept(int complaintId) {
+        RequestHelper.builder(EndPoints.COMPLAINT_DETAIL + complaintId)
                 .listener(getAccept)
                 .get();
     }

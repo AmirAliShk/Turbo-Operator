@@ -29,6 +29,7 @@ import butterknife.OnClick;
 import butterknife.Unbinder;
 import ir.taxi1880.operatormanagement.R;
 import ir.taxi1880.operatormanagement.adapter.ComplaintPagerAdapter;
+import ir.taxi1880.operatormanagement.app.DataHolder;
 import ir.taxi1880.operatormanagement.app.EndPoints;
 import ir.taxi1880.operatormanagement.app.MyApplication;
 import ir.taxi1880.operatormanagement.customView.NonSwipeableViewPager;
@@ -38,10 +39,12 @@ import ir.taxi1880.operatormanagement.helper.TypefaceUtil;
 import ir.taxi1880.operatormanagement.model.ComplaintDetailsModel;
 import ir.taxi1880.operatormanagement.okHttp.RequestHelper;
 
+import static ir.taxi1880.operatormanagement.fragment.ComplaintSaveResultFragment.rgBlameComplaint;
+
 public class ComplaintDetailFragment extends Fragment {
     Unbinder unbinder;
     int statusModel;
-    ComplaintDetailsModel complaintDetailsModel;
+    public static ComplaintDetailsModel complaintDetailsModel;
     public static NonSwipeableViewPager vpRegisterDriver;
 
     @BindView(R.id.indicator)
@@ -73,24 +76,32 @@ public class ComplaintDetailFragment extends Fragment {
                     }
                 })
                 .show();
-        swipeRight();
     }
 
     @OnClick(R.id.btnSaveResult)
     void onConfirm() {
         if (vfNextStep != null)
             vfNextStep.setDisplayedChild(1);
+
+//        complaintId	int
+//        typeResult	tinyint
+//        lockDriver	tinyint
+//        lockDay	tinyint
+//        unlockDriver	tinyint
+//        fined	tinyint
+//        customerLock	tinyint
+//        outDriver	tinyint
+
         new GeneralDialog()
-                .message("اتمام مراحل پذیرش؟")
+                .message("ثبت نتیجه‌ی شکایت؟")
                 .cancelable(false)
-                .firstButton("بله", () -> updateStatus())
+                .firstButton("بله", () -> complaintSaveResult(blameStatus,))
                 .secondButton("خیر", () -> {
                     if (vfNextStep != null) {
                         vfNextStep.setDisplayedChild(2);
                     }
                 })
                 .show();
-        swipeRight();
     }
 
     @OnClick(R.id.btnTripDetails)
@@ -132,49 +143,26 @@ public class ComplaintDetailFragment extends Fragment {
 
     private void refreshStep(int statusId) {
 
-        String status = "#f09a37";
         switch (statusId) {
             case 1: //accepted request
-//                imgStatus.setImageResource(R.drawable.ic_call_hire);
                 indicator.setCurrentStep(statusId - 1);
-                status = "#f09a37";
+                vpRegisterDriver.setCurrentItem(statusId - 1);
                 statusParam = 2;
                 break;
             case 2: //waiting for docs
-//                imgStatus.setImageResource(R.drawable.ic_documents);
                 indicator.setCurrentStep(statusId - 1);
-                status = "#3478f6";
+                vpRegisterDriver.setCurrentItem(statusId - 1);
                 statusParam = 3;
                 break;
             case 3: //waiting for saveResult
-//                imgStatus.setImageResource(R.drawable.ic_registration);
                 indicator.setCurrentStep(statusId - 1);
-                status = "#10ad79";
                 if (vfNextStep != null) {
                     vfNextStep.setDisplayedChild(1);
                 }
+                vpRegisterDriver.setCurrentItem(statusId - 1);
                 statusParam = 4;
                 break;
         }
-
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            Drawable bg_btn_disable = AppCompatResources.getDrawable(MyApplication.context, R.drawable.bg_btn_disable);
-//            DrawableCompat.setTint(bg_btn_disable, Color.parseColor(status));
-//            imgStatus.setBackground(bg_btn_disable);
-        } else {
-//            imgStatus.setBackgroundColor(Color.parseColor(status));
-        }
-
-    }
-
-    public static void swipeRight() {
-        if (vpRegisterDriver.getCurrentItem() - 1 > vpRegisterDriver.getChildCount()) return;
-        vpRegisterDriver.setCurrentItem(vpRegisterDriver.getCurrentItem() + 1, true);
-    }
-
-    public static void swipeLeft() {
-        if (vpRegisterDriver.getCurrentItem() - 1 < 0) return;
-        vpRegisterDriver.setCurrentItem(vpRegisterDriver.getCurrentItem() - 1, true);
     }
 
     private void setupViewPager(NonSwipeableViewPager viewPager) {
@@ -186,7 +174,7 @@ public class ComplaintDetailFragment extends Fragment {
     }
 
     private void updateStatus() {
-        RequestHelper.builder(EndPoints.COMPLAINT_UPDATE_STATUS) //todo
+        RequestHelper.builder(EndPoints.COMPLAINT_UPDATE_STATUS)
                 .addParam("complaintId", complaintDetailsModel.getComplaintId())
                 .addParam("status", statusParam)
                 .listener(updateStatus)
@@ -203,7 +191,7 @@ public class ComplaintDetailFragment extends Fragment {
                     boolean success = object.getBoolean("success");
                     String message = object.getString("message");
                     if (success) {
-                        JSONObject JSONObj = object.getJSONObject("data");
+                        JSONObject JSONObj = object.getJSONObject("result");
                         boolean status = JSONObj.getBoolean("status");
                         if (!status) {
                             new GeneralDialog()
@@ -223,14 +211,14 @@ public class ComplaintDetailFragment extends Fragment {
                         } else {
                             if (statusParam == 4) {
                                 new GeneralDialog()
-                                        .message("پذیرش با موفقیت انجام شد.")
+                                        .message(message)
                                         .cancelable(false)
                                         .firstButton("تایید", () -> MyApplication.currentActivity.onBackPressed())
                                         .show();
                             } else {
                                 refreshStep(statusParam);
-
                                 statusModel = statusModel + 1;
+                                vpRegisterDriver.setCurrentItem(statusParam - 2);
                             }
                         }
 
@@ -265,50 +253,53 @@ public class ComplaintDetailFragment extends Fragment {
         }
     };
 
-    private void missCall() {
-        RequestHelper.builder(EndPoints.COMPLAINT_MISSED_CALL) //todo 1 then call driver if 2 then call customer
-                .listener(missCall)
+    private void complaintSaveResult(int blameStatus, int lockDriver, int lockDay, int unlockDriver, int fined, int customerLock, int outDriver) {
+        RequestHelper.builder(EndPoints.COMPLAINT_FINISH)
                 .addParam("complaintId", complaintDetailsModel.getComplaintId())
-                .addParam("status", statusParam - 1)
-                .addParam("comment", "")
-                .addParam("type", "")//todo
+                .addParam("typeResult", blameStatus)
+                .addParam("lockDriver", lockDriver)
+                .addParam("lockDay", lockDay)
+                .addParam("unlockDriver", unlockDriver)
+                .addParam("fined", fined)
+                .addParam("customerLock", customerLock)
+                .addParam("outDriver", outDriver)
+                .listener(saveResultCallBack)
                 .post();
     }
 
-    RequestHelper.Callback missCall = new RequestHelper.Callback() {
+    RequestHelper.Callback saveResultCallBack = new RequestHelper.Callback() {
         @Override
         public void onResponse(Runnable reCall, Object... args) {
             MyApplication.handler.post(() -> {
-//               {"status":true,"message":"عملیات با موفقیت انجام شد", data}
                 try {
                     JSONObject object = new JSONObject(args[0].toString());
                     boolean success = object.getBoolean("success");
                     String message = object.getString("message");
-
                     if (success) {
-                        JSONObject data = object.getJSONObject("data");
-                        boolean status = data.getBoolean("status");
+                        JSONObject JSONObj = object.getJSONObject("result");
+                        boolean status = JSONObj.getBoolean("status");
                         if (!status) {
                             new GeneralDialog()
                                     .message(message)
                                     .cancelable(false)
-                                    .firstButton("تلاش مجدد", () -> missCall())
+//                                    .firstButton("تلاش مجدد", () -> complaintSaveResult())//todo
                                     .secondButton("برگشت", null)
                                     .show();
+
+                            if (vfNextStep != null)
+                                vfNextStep.setDisplayedChild(0);
                         } else {
                             new GeneralDialog()
-                                    .message("پیامک تماس از دست رفته ارسال شد.")
-                                    .cancelable(true)
-                                    .firstButton("تایید", null)
+                                    .message(message)
+                                    .cancelable(false)
+                                    .firstButton("تایید", () -> MyApplication.currentActivity.onBackPressed())
                                     .show();
                         }
-                        if (vfTripDetails != null)
-                            vfTripDetails.setDisplayedChild(0);
+                        if (vfNextStep != null)
+                            vfNextStep.setDisplayedChild(2);
                     }
-                } catch (JSONException e) {
+                } catch (Exception e) {
                     e.printStackTrace();
-                    if (vfTripDetails != null)
-                        vfTripDetails.setDisplayedChild(0);
                 }
             });
         }
@@ -316,8 +307,8 @@ public class ComplaintDetailFragment extends Fragment {
         @Override
         public void onFailure(Runnable reCall, Exception e) {
             MyApplication.handler.post(() -> {
-                if (vfTripDetails != null)
-                    vfTripDetails.setDisplayedChild(0);
+                if (vfNextStep != null)
+                    vfNextStep.setDisplayedChild(2);
             });
         }
     };

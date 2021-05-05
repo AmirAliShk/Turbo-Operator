@@ -1,0 +1,208 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_gravity="center"
+    android:background="@color/colorPrimaryLighter"
+    android:clickable="true"
+    android:layoutDirection="rtl"
+    android:orientation="vertical"
+    android:padding="20dp">
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:scrollbars="none">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/bg_blue_border_edge"
+                android:gravity="right"
+                android:orientation="vertical"
+                android:padding="10dp">
+
+                <RadioGroup
+                    android:id="@+id/rgBlameComplaint"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <View
+                        android:layout_width="wrap_content"
+                        android:layout_height="10dp" />
+
+                    <RadioButton
+                        android:id="@+id/rbBlameDriver"
+                        style="@style/tripItemValue"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center_vertical"
+                        android:text="حق با راننده بود."
+                        android:textSize="@dimen/_18ssp" />
+
+                    <View
+                        android:layout_width="wrap_content"
+                        android:layout_height="10dp" />
+
+                    <RadioButton
+                        android:id="@+id/rbBlameCustomer"
+                        style="@style/tripItemValue"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center_vertical"
+                        android:text="حق با مسافر بود."
+                        android:textSize="@dimen/_18ssp" />
+
+                    <View
+                        android:layout_width="wrap_content"
+                        android:layout_height="10dp" />
+
+                    <RadioButton
+                        android:id="@+id/rbUnnecessaryComplaint"
+                        style="@style/tripItemValue"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center_vertical"
+                        android:text="شکایت بی‌مورد"
+                        android:textSize="@dimen/_18ssp" />
+
+                    <View
+                        android:layout_width="wrap_content"
+                        android:layout_height="10dp" />
+
+                    <RadioButton
+                        android:id="@+id/rbSomethingElse"
+                        style="@style/tripItemValue"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center_vertical"
+                        android:text="سایر موارد"
+                        android:textSize="@dimen/_18ssp" />
+
+                    <View
+                        android:layout_width="wrap_content"
+                        android:layout_height="10dp" />
+                </RadioGroup>
+
+            </LinearLayout>
+
+            <View
+                android:layout_width="wrap_content"
+                android:layout_height="15dp" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/bg_blue_border_edge"
+                android:gravity="right"
+                android:orientation="vertical"
+                android:padding="10dp">
+
+                <View
+                    android:layout_width="wrap_content"
+                    android:layout_height="10dp" />
+
+                <CheckBox
+                    android:id="@+id/chbLockDriver"
+                    style="@style/tripItemValue"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center_vertical"
+                    android:text="راننده قفل شود"
+                    android:textSize="@dimen/_18ssp" />
+
+                <View
+                    android:layout_width="wrap_content"
+                    android:layout_height="10dp" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_marginRight="7dp"
+                        android:text="مدت قفل"
+                        android:textSize="@dimen/_15ssp" />
+
+                    <EditText
+                        android:id="@+id/edtLockTime"
+                        android:layout_width="100dp"
+                        android:layout_height="match_parent"
+                        android:layout_marginRight="5dp"
+                        android:background="@drawable/bg_light_gray_strock"
+                        android:gravity="center"
+                        android:textSize="@dimen/_18ssp" />
+
+                </LinearLayout>
+
+                <View
+                    android:layout_width="wrap_content"
+                    android:layout_height="10dp" />
+
+                <CheckBox
+                    android:id="@+id/chbUnlockDriver"
+                    style="@style/tripItemValue"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center_vertical"
+                    android:text="قفل راننده باز شود"
+                    android:textSize="@dimen/_18ssp" />
+
+                <View
+                    android:layout_width="wrap_content"
+                    android:layout_height="10dp" />
+
+                <CheckBox
+                    android:id="@+id/chbFined"
+                    style="@style/tripItemValue"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center_vertical"
+                    android:text="جریمه"
+                    android:textSize="@dimen/_18ssp" />
+
+                <View
+                    android:layout_width="wrap_content"
+                    android:layout_height="10dp" />
+
+                <CheckBox
+                    android:id="@+id/chbOutDriver"
+                    style="@style/tripItemValue"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center_vertical"
+                    android:text="غیرفعال سازی راننده"
+                    android:textSize="@dimen/_18ssp" />
+
+                <View
+                    android:layout_width="wrap_content"
+                    android:layout_height="10dp" />
+
+                <CheckBox
+                    android:id="@+id/chbLockCustomer"
+                    style="@style/tripItemValue"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center_vertical"
+                    android:text="قفل مشترک"
+                    android:textSize="@dimen/_18ssp" />
+
+                <View
+                    android:layout_width="wrap_content"
+                    android:layout_height="10dp" />
+            </LinearLayout>
+
+        </LinearLayout>
+
+    </ScrollView>
+
+</LinearLayout>

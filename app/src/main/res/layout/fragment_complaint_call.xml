@@ -88,7 +88,8 @@
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:layout_weight="1"
-                    android:text="مبدأ"  android:gravity="center_vertical"/>
+                    android:gravity="center_vertical"
+                    android:text="مبدأ" />
 
                 <TextView
                     android:id="@+id/txtOrigin"
@@ -139,7 +140,7 @@
                             app:isb_seek_smoothly="true"
                             app:isb_show_indicator="none"
                             app:isb_thumb_color="@color/colorPrimaryDark"
-                            app:isb_thumb_size="15dp"
+                            app:isb_thumb_size="13dp"
                             app:isb_track_background_color="@color/grayLight"
                             app:isb_track_background_size="3dp"
                             app:isb_track_progress_color="@color/colorPrimaryDark"
@@ -217,6 +218,183 @@
                     android:layout_weight="3.5"
                     android:gravity="center_vertical"
                     android:textSize="@dimen/_18ssp" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:orientation="horizontal"
+                android:padding="@dimen/_5sdp">
+
+                <TextView
+                    style="@style/tripItemTitle"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:gravity="center_vertical"
+                    android:text="نام مسافر" />
+
+                <TextView
+                    android:id="@+id/txtCustomerName"
+                    style="@style/tripItemValue"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="2"
+                    android:gravity="center_vertical"
+                    android:textSize="@dimen/_18ssp" />
+
+                <ViewFlipper
+                    android:id="@+id/vfCallCustomer"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:layout_below="@id/skbTimer"
+                    android:layout_centerHorizontal="true"
+                    android:layout_gravity="center"
+                    android:elevation="3dp">
+
+                    <ImageView
+                        android:id="@+id/imgCallCustomer"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_gravity="center"
+                        android:background="@drawable/bg_circle_green"
+                        android:padding="8dp"
+                        android:src="@drawable/ic_call_complaint" />
+
+                    <com.wang.avi.AVLoadingIndicatorView
+                        android:layout_width="17dp"
+                        android:layout_height="17dp"
+                        android:layout_gravity="center"
+                        app:indicatorColor="@color/colorPrimaryDark"
+                        app:indicatorName="BallBeatIndicator" />
+
+                </ViewFlipper>
+
+                <View
+                    android:layout_width="20dp"
+                    android:layout_height="0dp" />
+
+                <ViewFlipper
+                    android:id="@+id/vfMissedCallCustomer"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:layout_below="@id/skbTimer"
+                    android:layout_centerHorizontal="true"
+                    android:layout_gravity="center"
+                    android:elevation="3dp">
+
+                    <ImageView
+                        android:id="@+id/imgMissedCallCustomer"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_gravity="center"
+                        android:background="@drawable/bg_circle_red"
+                        android:padding="8dp"
+                        android:src="@drawable/ic_missed_call_complaint" />
+
+                    <com.wang.avi.AVLoadingIndicatorView
+                        android:layout_width="17dp"
+                        android:layout_height="17dp"
+                        android:layout_gravity="center"
+                        app:indicatorColor="@color/colorPrimaryDark"
+                        app:indicatorName="BallBeatIndicator" />
+
+                </ViewFlipper>
+
+                <View
+                    android:layout_width="12dp"
+                    android:layout_height="0dp" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:orientation="horizontal"
+                android:padding="@dimen/_5sdp">
+
+                <TextView
+                    style="@style/tripItemTitle"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:gravity="center_vertical"
+                    android:text="نام راننده" />
+
+                <TextView
+                    android:id="@+id/txtDriverName"
+                    style="@style/tripItemValue"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="2"
+                    android:gravity="center_vertical"
+                    android:textSize="@dimen/_18ssp" />
+
+                <ViewFlipper
+                    android:id="@+id/vfCallDriver"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:layout_below="@id/skbTimer"
+                    android:layout_centerHorizontal="true"
+                    android:layout_gravity="center"
+                    android:elevation="3dp">
+
+                    <ImageView
+                        android:id="@+id/imgCallDriver"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_gravity="center"
+                        android:background="@drawable/bg_circle_green"
+                        android:padding="8dp"
+                        android:src="@drawable/ic_call_complaint" />
+
+                    <com.wang.avi.AVLoadingIndicatorView
+                        android:layout_width="17dp"
+                        android:layout_height="17dp"
+                        android:layout_gravity="center"
+                        app:indicatorColor="@color/colorPrimaryDark"
+                        app:indicatorName="BallBeatIndicator" />
+
+                </ViewFlipper>
+
+                <View
+                    android:layout_width="20dp"
+                    android:layout_height="0dp" />
+
+                <ViewFlipper
+                    android:id="@+id/vfMissedCallDriver"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:layout_below="@id/skbTimer"
+                    android:layout_centerHorizontal="true"
+                    android:layout_gravity="center"
+                    android:elevation="3dp">
+
+                    <ImageView
+                        android:id="@+id/imgMissedCallDriver"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_gravity="center"
+                        android:background="@drawable/bg_circle_red"
+                        android:padding="8dp"
+                        android:src="@drawable/ic_missed_call_complaint" />
+
+                    <com.wang.avi.AVLoadingIndicatorView
+                        android:layout_width="17dp"
+                        android:layout_height="17dp"
+                        android:layout_gravity="center"
+                        app:indicatorColor="@color/colorPrimaryDark"
+                        app:indicatorName="BallBeatIndicator" />
+
+
+                </ViewFlipper>
+
+                <View
+                    android:layout_width="12dp"
+                    android:layout_height="0dp" />
 
             </LinearLayout>
 
