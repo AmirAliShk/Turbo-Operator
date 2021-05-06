@@ -9,6 +9,7 @@ import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -18,20 +19,15 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
 import ir.taxi1880.operatormanagement.R;
-import ir.taxi1880.operatormanagement.helper.StringHelper;
+import ir.taxi1880.operatormanagement.app.DataHolder;
+import ir.taxi1880.operatormanagement.app.MyApplication;
 import ir.taxi1880.operatormanagement.helper.TypefaceUtil;
 
 public class ComplaintSaveResultFragment extends Fragment {
     Unbinder unbinder;
 
-    public static RadioGroup rgBlameComplaint;
-    int blameStatus;
-    int lockDriver;
-    String lockDay;
-    int unlockDriver;
-    int fined;
-    int customerLock;
-    int outDriver;
+    @BindView(R.id.rgBlameComplaint)
+    RadioGroup rgBlameComplaint;
 
     @BindView(R.id.rbBlameDriver)
     RadioButton rbBlameDriver;
@@ -71,58 +67,57 @@ public class ComplaintSaveResultFragment extends Fragment {
         unbinder = ButterKnife.bind(this, view);
         TypefaceUtil.overrideFonts(view);
 
-        rgBlameComplaint = view.findViewById(R.id.rgBlameComplaint);
+        edtLockTime.setEnabled(false);
 
         return view;
     }
 
-//        complaintId	int
-//        typeResult	tinyint
-//        lockDriver	tinyint
-//        lockDay	    tinyint
-//        unlockDriver	tinyint
-//        fined	        tinyint
-//        customerLock	tinyint
-//        outDriver	    tinyint
-
     public void result() {
-        switch (rgBlameComplaint.getCheckedRadioButtonId()) {
-            case R.id.rbBlameDriver:
-                blameStatus = 1;
-                break;
-            case R.id.rbBlameCustomer:
-                blameStatus = 2;
-                break;
-            case R.id.rbUnnecessaryComplaint:
-                blameStatus = 3;
-                break;
-            case R.id.rbSomethingElse:
-                blameStatus = 4;
-                break;
-        }
-        if (chbLockDriver.isChecked())
-            lockDriver = 1;
-        else lockDriver = 0;
 
-        lockDay = edtLockTime.getText().toString();
+        rgBlameComplaint.setOnCheckedChangeListener((radioGroup, i) -> {
+            switch (radioGroup.getCheckedRadioButtonId()) {
+                case R.id.rbBlameDriver:
+                    DataHolder.getInstance().setComplaintResult((byte) 1);
+                    break;
+                case R.id.rbBlameCustomer:
+                    DataHolder.getInstance().setComplaintResult((byte) 2);
+                    break;
+                case R.id.rbUnnecessaryComplaint:
+                    DataHolder.getInstance().setComplaintResult((byte) 3);
+                    break;
+                case R.id.rbSomethingElse:
+                    DataHolder.getInstance().setComplaintResult((byte) 4);
+                    break;
+            }
+        });
+
+        if (chbLockDriver.isChecked()) {
+            edtLockTime.setEnabled(true);
+            DataHolder.getInstance().setLockDriver(true);
+        } else DataHolder.getInstance().setLockDriver(false);
+
+        if (chbLockDriver.isChecked() && edtLockTime.getText().toString() == null) {
+            MyApplication.Toast("لطفا تعداد روزهای قفل راننده را انتخاب کنید", Toast.LENGTH_SHORT);
+        } else {
+            DataHolder.getInstance().setLockDay(edtLockTime.getText().toString());
+        }
 
         if (chbUnlockDriver.isChecked())
-            unlockDriver = 1;
-        else unlockDriver = 0;
+            DataHolder.getInstance().setUnlockDriver(true);
+        else DataHolder.getInstance().setUnlockDriver(false);
 
         if (chbFined.isChecked())
-            fined = 1;
-        else fined = 0;
+            DataHolder.getInstance().setFined(true);
+        else DataHolder.getInstance().setFined(false);
 
         if (chbOutDriver.isChecked())
-            outDriver = 1;
-        else outDriver = 0;
+            DataHolder.getInstance().setOutDriver(true);
+        else DataHolder.getInstance().setOutDriver(false);
 
         if (chbLockCustomer.isChecked())
-            customerLock = 1;
-        else customerLock = 0;
+            DataHolder.getInstance().setCustomerLock(true);
+        else DataHolder.getInstance().setCustomerLock(false);
 
-        return blameStatus,lockDriver, lockDay, unlockDriver, fined, customerLock, outDriver;
     }
 
     @Override

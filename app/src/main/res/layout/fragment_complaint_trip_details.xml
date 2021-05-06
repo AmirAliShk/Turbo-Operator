@@ -88,7 +88,8 @@
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:layout_weight="1"
-                    android:text="مبدأ"  android:gravity="center_vertical"/>
+                    android:gravity="center_vertical"
+                    android:text="مبدأ" />
 
                 <TextView
                     android:id="@+id/txtOrigin"
@@ -186,9 +187,10 @@
                         style="@style/tripItemValue"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
-                        android:gravity="center|right|center_vertical"
+                        android:gravity="center_vertical"
                         android:text="صوتی برای این تماس وجود ندارد."
-                        android:textAppearance="@style/TextAppearance.AppCompat.Small" />
+                        android:textAppearance="@style/TextAppearance.AppCompat.Small"
+                        android:textSize="@dimen/_18ssp" />
 
                 </ViewFlipper>
 

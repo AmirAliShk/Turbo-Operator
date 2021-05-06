@@ -1,21 +1,14 @@
 package ir.taxi1880.operatormanagement.fragment;
 
 import android.annotation.SuppressLint;
-import android.graphics.Color;
-import android.graphics.drawable.Drawable;
-import android.os.Build;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.TextView;
 import android.widget.ViewFlipper;
 
-import androidx.appcompat.content.res.AppCompatResources;
-import androidx.core.graphics.drawable.DrawableCompat;
 import androidx.fragment.app.Fragment;
 
 import com.rakshakhegde.stepperindicator.StepperIndicator;
@@ -39,7 +32,6 @@ import ir.taxi1880.operatormanagement.helper.TypefaceUtil;
 import ir.taxi1880.operatormanagement.model.ComplaintDetailsModel;
 import ir.taxi1880.operatormanagement.okHttp.RequestHelper;
 
-import static ir.taxi1880.operatormanagement.fragment.ComplaintSaveResultFragment.rgBlameComplaint;
 
 public class ComplaintDetailFragment extends Fragment {
     Unbinder unbinder;
@@ -86,16 +78,16 @@ public class ComplaintDetailFragment extends Fragment {
 //        complaintId	int
 //        typeResult	tinyint
 //        lockDriver	tinyint
-//        lockDay	tinyint
+//        lockDay	    tinyint
 //        unlockDriver	tinyint
-//        fined	tinyint
+//        fined	        tinyint
 //        customerLock	tinyint
-//        outDriver	tinyint
+//        outDriver	    tinyint
 
         new GeneralDialog()
                 .message("ثبت نتیجه‌ی شکایت؟")
                 .cancelable(false)
-                .firstButton("بله", () -> complaintSaveResult(blameStatus,))
+                .firstButton("بله", () -> complaintSaveResult())
                 .secondButton("خیر", () -> {
                     if (vfNextStep != null) {
                         vfNextStep.setDisplayedChild(2);
@@ -110,8 +102,8 @@ public class ComplaintDetailFragment extends Fragment {
             vfTripDetails.setDisplayedChild(1);
 
         Bundle bundle = new Bundle();
-        bundle.putString("tellNumber", complaintDetailsModel.getCustomerMobileNumber());
-        FragmentHelper.toFragment(MyApplication.currentActivity, new TripSupportFragment()).setArguments(bundle).replace();
+        bundle.putString("id", complaintDetailsModel.getServiceId() + "");
+        FragmentHelper.toFragment(MyApplication.currentActivity, new TripDetailsFragment()).setArguments(bundle).replace();
     }
 
     public ComplaintDetailFragment(ComplaintDetailsModel complaintsModel) {
@@ -149,7 +141,7 @@ public class ComplaintDetailFragment extends Fragment {
                 vpRegisterDriver.setCurrentItem(statusId - 1);
                 statusParam = 2;
                 break;
-            case 2: //waiting for docs
+            case 2: //waiting for call
                 indicator.setCurrentStep(statusId - 1);
                 vpRegisterDriver.setCurrentItem(statusId - 1);
                 statusParam = 3;
@@ -185,17 +177,19 @@ public class ComplaintDetailFragment extends Fragment {
         @Override
         public void onResponse(Runnable reCall, Object... args) {
             MyApplication.handler.post(() -> {
-//               {"status":true,"message":"عملیات با موفقیت انجام شد", data}
+//                {"success":true,"message":"عملیات با موفقیت انجام شد","data":{"result":"true","resultDes":"تکميل شد"}}
+//                {"success":true,"message":"عملیات با موفقیت انجام شد","data":{"result":"false","resultDes":"اين مرحله تکميل نشده است"}}
                 try {
                     JSONObject object = new JSONObject(args[0].toString());
                     boolean success = object.getBoolean("success");
                     String message = object.getString("message");
                     if (success) {
-                        JSONObject JSONObj = object.getJSONObject("result");
-                        boolean status = JSONObj.getBoolean("status");
+                        JSONObject JSONObj = object.getJSONObject("data");
+                        boolean status = JSONObj.getBoolean("result");
+                        String resultDes = JSONObj.getString("resultDes");
                         if (!status) {
                             new GeneralDialog()
-                                    .message(message)
+                                    .message(resultDes)
                                     .cancelable(false)
                                     .firstButton("تلاش مجدد", () -> updateStatus())
                                     .secondButton("برگشت", null)
@@ -253,16 +247,16 @@ public class ComplaintDetailFragment extends Fragment {
         }
     };
 
-    private void complaintSaveResult(int blameStatus, int lockDriver, int lockDay, int unlockDriver, int fined, int customerLock, int outDriver) {
+    private void complaintSaveResult() {
         RequestHelper.builder(EndPoints.COMPLAINT_FINISH)
                 .addParam("complaintId", complaintDetailsModel.getComplaintId())
-                .addParam("typeResult", blameStatus)
-                .addParam("lockDriver", lockDriver)
-                .addParam("lockDay", lockDay)
-                .addParam("unlockDriver", unlockDriver)
-                .addParam("fined", fined)
-                .addParam("customerLock", customerLock)
-                .addParam("outDriver", outDriver)
+                .addParam("typeResult", DataHolder.getInstance().getComplaintResult())
+                .addParam("lockDriver", DataHolder.getInstance().isLockDriver() ? 1 : 0)
+                .addParam("lockDay", DataHolder.getInstance().getLockDay())
+                .addParam("unlockDriver", DataHolder.getInstance().isUnlockDriver() ? 1 : 0)
+                .addParam("fined", DataHolder.getInstance().isFined() ? 1 : 0)
+                .addParam("customerLock", DataHolder.getInstance().isCustomerLock() ? 1 : 0)
+                .addParam("outDriver", DataHolder.getInstance().isOutDriver() ? 1 : 0)
                 .listener(saveResultCallBack)
                 .post();
     }
@@ -276,13 +270,13 @@ public class ComplaintDetailFragment extends Fragment {
                     boolean success = object.getBoolean("success");
                     String message = object.getString("message");
                     if (success) {
-                        JSONObject JSONObj = object.getJSONObject("result");
+                        JSONObject JSONObj = object.getJSONObject("data");
                         boolean status = JSONObj.getBoolean("status");
                         if (!status) {
                             new GeneralDialog()
                                     .message(message)
                                     .cancelable(false)
-//                                    .firstButton("تلاش مجدد", () -> complaintSaveResult())//todo
+                                    .firstButton("تلاش مجدد", () -> complaintSaveResult())//todo
                                     .secondButton("برگشت", null)
                                     .show();
 
