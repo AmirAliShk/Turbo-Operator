@@ -88,7 +88,7 @@ public class TripRegisterActivity extends AppCompatActivity {
     private String normalDescription = " ";
     private int originStation = 0;
     private int addressLength = 0;
-    private String stationName = " ";// It must have a value otherwise it will get an error of 422
+    private String destinationAddress = " ";// It must have a value otherwise it will get an error of 422
     private int serviceType;
     private int serviceCount;
     private boolean isEnableView = false;
@@ -1152,9 +1152,10 @@ public class TripRegisterActivity extends AppCompatActivity {
     private void callInsertService() {
         String mobile = isTellValidable && getMobileNumber().isEmpty() ? "0" : getMobileNumber();
         String tell = getTellNumber();
-        String name = edtFamily.getText().toString();
-        String address = edtAddress.getText().toString();
-        String fixedComment = txtDescription.getText().toString();
+        String name = edtFamily.getText().toString().trim();
+        String address = edtAddress.getText().toString().trim();
+        String fixedComment = txtDescription.getText().toString().trim();
+        destinationAddress=edtDestinationAddress.getText().toString().trim();
 
         if (chbTraffic.isChecked())
             traffic = 1;
@@ -1190,7 +1191,7 @@ public class TripRegisterActivity extends AppCompatActivity {
                 .message("آیا از ثبت اطلاعات اطمینان دارید؟")
                 .firstButton("بله", () ->
                         insertService(serviceCount, tell, mobile, cityCode,
-                                name, address, fixedComment, stationName, serviceType, carClass, normalDescription, traffic, defaultClass))
+                                name, address, fixedComment, destinationAddress, serviceType, carClass, normalDescription, traffic, defaultClass))
                 .secondButton("خیر", () -> {
                     if (vfSubmit != null)
                         vfSubmit.setDisplayedChild(0);
@@ -1441,6 +1442,7 @@ public class TripRegisterActivity extends AppCompatActivity {
         edtDiscount.setText("");
         edtFamily.setText("");
         edtAddress.setText("");
+        edtDestinationAddress.setText("");
         addressChangeCounter = 0;
         chbTraffic.setChecked(false);
         txtDescription.setText("");
