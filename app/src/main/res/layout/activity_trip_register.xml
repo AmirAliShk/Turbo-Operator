@@ -574,7 +574,7 @@
                             android:layout_weight="1"
                             android:background="@drawable/edit_text_style"
                             android:enabled="false"
-                            android:nextFocusDown="@id/edtFamily"
+                            android:nextFocusDown="@id/edtDestinationAddress"
                             android:paddingLeft="35dp"
                             android:paddingRight="5dp"
                             android:singleLine="true"

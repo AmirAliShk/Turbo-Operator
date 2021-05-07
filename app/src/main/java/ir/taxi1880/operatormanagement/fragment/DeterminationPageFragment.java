@@ -111,28 +111,15 @@ public class DeterminationPageFragment extends Fragment {
         if (pressSubmit) {
             if (bothStationAreZero) {
                 dataBase.updateOriginStation(dataBase.getTopAddress().getId(), Integer.parseInt(station));
-                txtStation.setText("");
-                txtAddress.setText(showAddress());
             } else if (isOriginZero) {
-                Log.i(TAG, "onSubmit: destinationStation before update = " + dataBase.getTopAddress().getDestinationStation());
                 dataBase.updateOriginStation(dataBase.getTopAddress().getId(), Integer.parseInt(station));
-                Log.i(TAG, "onSubmit: destinationStation after update = " + dataBase.getTopAddress().getDestinationStation());
-                txtStation.setText("");
-                txtAddress.setText(showAddress());
+                setStationCode(dataBase.getTopAddress().getOriginStation() + "", dataBase.getTopAddress().getDestinationStation() + "");
             } else if (isDestinationZero) {
-                Log.i(TAG, "onSubmit: originStation before update = " + dataBase.getTopAddress().getOriginStation());
                 dataBase.updateDestinationStation(dataBase.getTopAddress().getId(), Integer.parseInt(station));
-                Log.i(TAG, "onSubmit: originStation after update = " + dataBase.getTopAddress().getOriginStation());
-                // check origin and station are 0 or not?
-                txtStation.setText("");
-                txtAddress.setText(showAddress());
+                setStationCode(dataBase.getTopAddress().getOriginStation() + "", dataBase.getTopAddress().getDestinationStation() + "");
             }
-
-            Log.i(TAG, "onSubmit: originStation = " + dataBase.getTopAddress().getOriginStation());
-            Log.i(TAG, "onSubmit: destinationStation = " + dataBase.getTopAddress().getDestinationStation());
-//            txtAddress.setText(showAddress());
-            setStationCode(dataBase.getTopAddress().getOriginStation() + "", dataBase.getTopAddress().getDestinationStation() + "");
-
+            txtStation.setText("");
+            txtAddress.setText(showAddress());
         } else {
             this.pressSubmit = true;
             MyApplication.handler.postDelayed(() -> pressSubmit = false, 300);
@@ -231,7 +218,18 @@ public class DeterminationPageFragment extends Fragment {
             txtStation.setText("");
             return;
         }
-        new EditPassengerAddressDialog().show(dataBase.getTopAddress().getCity(), dataBase.getTopAddress().getOriginText(), dataBase.getTopAddress().getId(), (success, message) -> {
+        String address = "";
+        if (bothStationAreZero) {
+            address = dataBase.getTopAddress().getOriginText();
+        } else if (isOriginZero) {
+            address = dataBase.getTopAddress().getOriginText();
+        } else if (isDestinationZero) {
+            address = dataBase.getTopAddress().getDestination();
+        }
+        new EditPassengerAddressDialog().show(dataBase.getTopAddress().getCity(), address,
+                dataBase.getTopAddress().getId(),dataBase.getTopAddress().getPriceable(),
+                dataBase.getTopAddress().getOperatorId(),
+                (success, message) -> {
             if (success) {
                 if (dataBase.getRemainingAddress() > 0)
                     dataBase.deleteRow(dataBase.getTopAddress().getId());
@@ -295,13 +293,13 @@ public class DeterminationPageFragment extends Fragment {
     }
 
     private void getAddressList() {
-        RequestHelper.builder(EndPoints.GET_TRIP_WITH_ZERO_STATION)
-                .listener(getAddressList)
+        RequestHelper.builder(EndPoints.WITHOUT_STATION)
+                .listener(withoutStationCallBack)
                 .hideNetworkError(true)
                 .get();
     }
 
-    RequestHelper.Callback getAddressList = new RequestHelper.Callback() {
+    RequestHelper.Callback withoutStationCallBack = new RequestHelper.Callback() {
         @Override
         public void onResponse(Runnable reCall, Object... args) {
             MyApplication.handler.post(() -> {
@@ -343,8 +341,8 @@ public class DeterminationPageFragment extends Fragment {
                                     JSONObject dataObj = dataArr.getJSONObject(i);
                                     DBTripModel tripModel = new DBTripModel();
                                     tripModel.setId(dataObj.getInt("Id")); // the unique id for each trip
-                                    tripModel.setOriginStation(dataObj.getInt("OriginStation"));
-                                    priceable = dataObj.getInt("priceable"); // if this value was 0, no need to set destination.
+                                    tripModel.setPriceable(dataObj.getInt("priceable")); // if this value was 0, no need to set destination. // TODO‌ uncomment
+//                                    priceable = 1; // if this value was 0, no need to set destination.
                                     String content = dataObj.getString("Content");
                                     JSONObject contentObj = new JSONObject(content);
                                     tripModel.setOperatorId(contentObj.getInt("userId")); // ID of the person who registered the service
@@ -354,6 +352,7 @@ public class DeterminationPageFragment extends Fragment {
                                     tripModel.setMobile(contentObj.getString("mobile"));
                                     tripModel.setVoipId(contentObj.getString("voipId"));
                                     tripModel.setOriginText(contentObj.getString("address"));
+                                    tripModel.setOriginStation(contentObj.getInt("stationCode"));
                                     tripModel.setDestinationStation(contentObj.getInt("destinationStation"));
                                     tripModel.setDestination(contentObj.getString("destination"));
                                     tripModel.setSaveDate(dataObj.getString("SaveDate"));//date and time of service registered by Tehran timeZone,"SaveDate":"2021-03-01T12:24:42.820Z"
@@ -451,11 +450,13 @@ public class DeterminationPageFragment extends Fragment {
 
     private void setStationCode(String stationCode, String destinationCode) {
 
-        RequestHelper.builder(EndPoints.UPDATE_TRIP_STATION)
+        RequestHelper.builder(EndPoints.STATION)
                 .addParam("tripId", StringHelper.toEnglishDigits(dataBase.getTopAddress().getId() + ""))
-                .addParam("stationCode", StringHelper.toEnglishDigits(stationCode + ""))
-                .addParam("destinationCode", StringHelper.toEnglishDigits(destinationCode + ""))
+                .addParam("originStation", StringHelper.toEnglishDigits(stationCode + ""))
+                .addParam("destStation", StringHelper.toEnglishDigits(destinationCode + ""))
                 .addParam("cityCode", StringHelper.toEnglishDigits(dataBase.getTopAddress().getCity() + ""))
+                .addParam("address", StringHelper.toEnglishDigits(dataBase.getTopAddress().getOriginText() + ""))
+                .addParam("priceable", StringHelper.toEnglishDigits(dataBase.getTopAddress().getPriceable() + ""))
                 .addParam("tripOperatorId", StringHelper.toEnglishDigits(dataBase.getTopAddress().getOperatorId() + ""))
                 .listener(setStationCode)
                 .put();
@@ -484,11 +485,15 @@ public class DeterminationPageFragment extends Fragment {
                         } else {
                             dataBase.insertSendDate(dataBase.getTopAddress().getId(), DateHelper.getCurrentGregorianDate().toString());
                         }
+                    } else {
+                        onPressRefresh();
+                        MyApplication.Toast(message, Toast.LENGTH_SHORT);
                     }
 
-                    txtAddress.setText(showAddress());
-                    if (txtStation != null)
+                    if (txtStation != null) {
+                        txtAddress.setText(showAddress());
                         txtStation.setText("");
+                    }
 
                 } catch (JSONException e) {
                     e.printStackTrace();
@@ -648,7 +653,7 @@ public class DeterminationPageFragment extends Fragment {
             txtRemainingAddress.setText(dataBase.getRemainingAddress() + "");
             String cityName = dataBase.getCityName2(dataBase.getTopAddress().getCity());
 
-            if (dataBase.getTopAddress().getOriginStation() == 0 && dataBase.getTopAddress().getDestinationStation() == 0) {
+            if (dataBase.getTopAddress().getOriginStation() == 0 && dataBase.getTopAddress().getDestinationStation() == 0 && priceable != 0) {
                 bothStationAreZero = true;
                 return cityName + " , " + dataBase.getTopAddress().getOriginText();
             }
@@ -662,14 +667,13 @@ public class DeterminationPageFragment extends Fragment {
                 if (priceable == 0) {
                     onPressRefresh();
                     return "";
-                }else {
+                } else {
                     isDestinationZero = true;
                     return cityName + " , " + dataBase.getTopAddress().getDestination();
                 }
             }
 
         }
-        onPressRefresh();
         return "";
     }
 

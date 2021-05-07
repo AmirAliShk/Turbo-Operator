@@ -37,6 +37,7 @@ public class DataBase extends SQLiteOpenHelper {
     private static String COLUMN_NEXT_RECORD = "nextRecord";
     private static String COLUMN_DESTINATION = "destination";
     private static String COLUMN_DESTINATION_STATION = "destinationStation";
+    private static String PRICEABLE = "priceable";
 
     //***************************** City Column ***************************
     private static String COLUMN_CITY_ID = "cityId";
@@ -92,6 +93,7 @@ public class DataBase extends SQLiteOpenHelper {
                 COLUMN_ORIGIN_STATION + " INTEGER," +
                 COLUMN_DESTINATION + " TEXT," +
                 COLUMN_DESTINATION_STATION + " INTEGER," +
+                PRICEABLE + " INTEGER," +
                 COLUMN_SAVE_DATE + " TEXT," +
                 COLUMN_SEND_DATE + " TEXT," +
                 COLUMN_CITY + " TEXT," +
@@ -112,6 +114,7 @@ public class DataBase extends SQLiteOpenHelper {
             contentValues.put(COLUMN_ORIGIN_STATION, DBTripModel.getOriginStation());
             contentValues.put(COLUMN_DESTINATION, DBTripModel.getDestination());
             contentValues.put(COLUMN_DESTINATION_STATION, DBTripModel.getDestinationStation());
+            contentValues.put(PRICEABLE, DBTripModel.getPriceable());
             contentValues.put(COLUMN_SAVE_DATE, DBTripModel.getSaveDate());
             contentValues.put(COLUMN_SEND_DATE, DBTripModel.getSendDate());
             contentValues.put(COLUMN_CITY, DBTripModel.getCity());
@@ -140,6 +143,7 @@ public class DataBase extends SQLiteOpenHelper {
                 DBTripModel.setOriginStation(cursor.getInt(cursor.getColumnIndex(COLUMN_ORIGIN_STATION)));
                 DBTripModel.setDestination(cursor.getString(cursor.getColumnIndex(COLUMN_DESTINATION)));
                 DBTripModel.setDestinationStation(cursor.getInt(cursor.getColumnIndex(COLUMN_DESTINATION_STATION)));
+                DBTripModel.setPriceable(cursor.getInt(cursor.getColumnIndex(PRICEABLE)));
                 DBTripModel.setSaveDate(cursor.getString(cursor.getColumnIndex(COLUMN_SAVE_DATE)));
                 DBTripModel.setSendDate(cursor.getString(cursor.getColumnIndex(COLUMN_SEND_DATE)));
                 DBTripModel.setCity(cursor.getInt(cursor.getColumnIndex(COLUMN_CITY)));
@@ -172,6 +176,7 @@ public class DataBase extends SQLiteOpenHelper {
                     DBTripModel.setOriginStation(cursor.getInt(cursor.getColumnIndex(COLUMN_ORIGIN_STATION)));
                     DBTripModel.setDestination(cursor.getString(cursor.getColumnIndex(COLUMN_DESTINATION)));
                     DBTripModel.setDestinationStation(cursor.getInt(cursor.getColumnIndex(COLUMN_DESTINATION_STATION)));
+                    DBTripModel.setPriceable(cursor.getInt(cursor.getColumnIndex(PRICEABLE)));
                     DBTripModel.setSaveDate(cursor.getString(cursor.getColumnIndex(COLUMN_SAVE_DATE)));
                     DBTripModel.setSendDate(cursor.getString(cursor.getColumnIndex(COLUMN_SEND_DATE)));
                     DBTripModel.setCity(cursor.getInt(cursor.getColumnIndex(COLUMN_CITY)));

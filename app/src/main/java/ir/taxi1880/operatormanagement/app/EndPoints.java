@@ -75,7 +75,9 @@ public class EndPoints {
     public static final String HIRETYPES = TRIP_WEBSERVICE_PATH + "hireTypes";
     public static final String HIRE = TRIP_WEBSERVICE_PATH + "hire";
     public static final String GET_TRIP_WITH_ZERO_STATION = TRIP_WEBSERVICE_PATH + "getTripWithZeroStation";
+    public static final String WITHOUT_STATION = TRIP_WEBSERVICE_PATH + "withoutStation";
     public static final String UPDATE_TRIP_STATION = TRIP_WEBSERVICE_PATH + "updateTripStation";
+    public static final String STATION = TRIP_WEBSERVICE_PATH + "station";
     public static final String EDIT_STATION = TRIP_WEBSERVICE_PATH + "editStation";
     public static final String CALL_VOICE = CALL_VOICE_PATH + "voice/"; // http://turbotaxi.ir:1884/api/v1/voice/1604130536.10343290
 

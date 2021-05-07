@@ -14,6 +14,15 @@ public class DBTripModel {
   String voipId;
   int destinationStation;
   String destination;
+  int priceable;
+
+  public int getPriceable() {
+    return priceable;
+  }
+
+  public void setPriceable(int priceable) {
+    this.priceable = priceable;
+  }
 
   public int getDestinationStation() {
     return destinationStation;

@@ -28,6 +28,7 @@ import ir.taxi1880.operatormanagement.R;
 import ir.taxi1880.operatormanagement.adapter.SpinnerAdapter;
 import ir.taxi1880.operatormanagement.app.EndPoints;
 import ir.taxi1880.operatormanagement.app.MyApplication;
+import ir.taxi1880.operatormanagement.dataBase.DBTripModel;
 import ir.taxi1880.operatormanagement.helper.KeyBoardHelper;
 import ir.taxi1880.operatormanagement.helper.StringHelper;
 import ir.taxi1880.operatormanagement.helper.TypefaceUtil;
@@ -41,7 +42,7 @@ public class EditPassengerAddressDialog {
     private static final String TAG = EditPassengerAddressDialog.class.getSimpleName();
 
     public interface EditationCallBack {
-        void onEdited(boolean success,String message);
+        void onEdited(boolean success, String message);
     }
 
     EditationCallBack editationCallBack;
@@ -55,7 +56,7 @@ public class EditPassengerAddressDialog {
 
     static Dialog dialog;
 
-    public void show(int cityId, String address, int tripId, EditationCallBack callBack) {
+    public void show(int cityCode, String address, int serviceId, int priceable, int operatorId, EditationCallBack callBack) {
         if (MyApplication.currentActivity == null || MyApplication.currentActivity.isFinishing())
             return;
         dialog = new Dialog(MyApplication.currentActivity);
@@ -80,7 +81,7 @@ public class EditPassengerAddressDialog {
         spCity = dialog.findViewById(R.id.spCity);
         vfLoader = dialog.findViewById(R.id.vfLoader);
 
-        initSpinner(cityId);
+        initSpinner(cityCode);
 
         edtAddress.setText(address);
 
@@ -89,7 +90,7 @@ public class EditPassengerAddressDialog {
         llParent.setOnClickListener(view -> KeyBoardHelper.hideKeyboard());
 
         btnSubmit.setOnClickListener(view -> {
-            String stationCode = edtStation.getText().toString();
+            String stCode = edtStation.getText().toString();
             String addressText = edtAddress.getText().toString();
 
             if (cityCode == -1) {
@@ -102,7 +103,7 @@ public class EditPassengerAddressDialog {
                 return;
             }
 
-            if (stationCode.isEmpty()) {
+            if (stCode.isEmpty()) {
                 MyApplication.Toast("لطفا ایستگاه را وارد کنید.", Toast.LENGTH_SHORT);
                 return;
             }
@@ -111,11 +112,11 @@ public class EditPassengerAddressDialog {
                     .title("هشدار")
                     .message("ایا از انجام عملیات فوق اطمینان دارید؟")
                     .firstButton("بله", () -> {
-                        Log.i(TAG, "onEdit:tripId " + tripId);
-                        Log.i(TAG, "onEdit:stationCode " + stationCode);
+                        Log.i(TAG, "onEdit:tripId " + serviceId);
+                        Log.i(TAG, "onEdit:stationCode " + stCode);
                         Log.i(TAG, "onEdit:cityCode " + cityCode);
                         Log.i(TAG, "onEdit:addressText " + addressText);
-                        editStation(cityCode, addressText, tripId + "", stationCode);
+                        editStation(cityCode, addressText, serviceId + "", stCode, priceable, operatorId, 199);// TODO check dest station
                     })
                     .secondButton("خیر", null)
                     .cancelable(false)
@@ -169,18 +170,21 @@ public class EditPassengerAddressDialog {
         }
     }
 
-    private void editStation(int cityCode, String address, String serviceId, String stationCode) {
+    private void editStation(int cityCode, String address, String serviceId, String stationCode, int priceable, int operatorId, int destStation) {
 
         if (vfLoader != null) {
             vfLoader.setDisplayedChild(1);
         }
 
         LoadingDialog.makeCancelableLoader();
-        RequestHelper.builder(EndPoints.EDIT_STATION)
-                .addParam("cityCode", cityCode)
-                .addParam("adrs", address)
-                .addParam("tripId", serviceId)
-                .addParam("stationCode", stationCode)
+        RequestHelper.builder(EndPoints.STATION)
+                .addParam("tripId", StringHelper.toEnglishDigits(serviceId))
+                .addParam("originStation", StringHelper.toEnglishDigits(stationCode + ""))
+                .addParam("destStation", StringHelper.toEnglishDigits(destStation + ""))
+                .addParam("cityCode", StringHelper.toEnglishDigits(cityCode + ""))
+                .addParam("address", StringHelper.toEnglishDigits(address))
+                .addParam("priceable", StringHelper.toEnglishDigits(priceable + ""))
+                .addParam("tripOperatorId", StringHelper.toEnglishDigits(operatorId + ""))
                 .listener(onEditStation)
                 .put();
     }
@@ -199,12 +203,12 @@ public class EditPassengerAddressDialog {
                     boolean status = dataArr.getBoolean("status");
 
                     if (success) {
-                        editationCallBack.onEdited(true,"");
+                        editationCallBack.onEdited(true, "");
 //                        if (status) {
                         dismiss();
 //                        }
                     } else {
-                        editationCallBack.onEdited(false,message);
+                        editationCallBack.onEdited(false, message);
                     }
 
                     if (vfLoader != null) {

@@ -73,16 +73,18 @@
             </LinearLayout>
 
             <LinearLayout
+                android:id="@+id/llOriginAddress"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical">
 
                 <TextView
+                    android:id="@+id/txtOriginTitle"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="10dp"
                     android:paddingRight="10dp"
-                    android:text="آدرس"
+                    android:text="آدرس مبدا"
                     android:textAppearance="?android:attr/textAppearanceMedium"
                     android:textColor="@color/grayMedium" />
 
@@ -96,18 +98,83 @@
                     android:maxLines="2"
                     android:padding="10dp" />
 
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/llOriginStation"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="10dp"
                     android:maxLines="2"
                     android:paddingRight="10dp"
-                    android:text="ایستگاه"
+                    android:text="ایستگاه مبدا"
                     android:textAppearance="?android:attr/textAppearanceMedium"
                     android:textColor="@color/grayMedium" />
 
                 <EditText
-                    android:id="@+id/edtStation"
+                    android:id="@+id/edtOriginStation"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:background="@drawable/edit_text_style"
+                    android:gravity="top|right"
+                    android:inputType="number"
+                    android:maxLength="3"
+                    android:padding="10dp" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/llDestinationAddress"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/txtDestinationAddress"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:paddingRight="10dp"
+                    android:text="آدرس مقصد"
+                    android:textAppearance="?android:attr/textAppearanceMedium"
+                    android:textColor="@color/grayMedium" />
+
+                <EditText
+                    android:id="@+id/edtDestinationAddress"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:background="@drawable/edit_text_style"
+                    android:gravity="top|right"
+                    android:maxLines="2"
+                    android:padding="10dp" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/llDestinationStation"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:maxLines="2"
+                    android:paddingRight="10dp"
+                    android:text="ایستگاه مقصد"
+                    android:textAppearance="?android:attr/textAppearanceMedium"
+                    android:textColor="@color/grayMedium" />
+
+                <EditText
+                    android:id="@+id/edtDestinationStation"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="10dp"
@@ -163,5 +230,7 @@
             android:layout_height="80dp"
             android:padding="20dp"
             android:src="@drawable/ic_close_black_24dp" />
+
     </LinearLayout>
+
 </RelativeLayout>
