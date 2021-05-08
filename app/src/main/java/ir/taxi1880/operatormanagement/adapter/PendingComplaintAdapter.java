@@ -7,6 +7,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 import android.widget.ViewFlipper;
 
 import androidx.annotation.NonNull;
@@ -162,12 +163,17 @@ public class PendingComplaintAdapter extends RecyclerView.Adapter<PendingComplai
                             vfDetail.setDisplayedChild(0);
 
                         FragmentHelper.toFragment(MyApplication.currentActivity, new ComplaintDetailFragment(model)).setNavigationBarColor(MyApplication.currentActivity.getResources().getColor(R.color.colorPrimaryLighter)).replace();
+                    } else {
+                        MyApplication.Toast("لطفا دوباره امتحان کنید", Toast.LENGTH_SHORT);
                     }
+
 
                 } catch (Exception e) {
                     e.printStackTrace();
                     if (vfDetail != null)
                         vfDetail.setDisplayedChild(0);
+                    MyApplication.Toast("لطفا دوباره امتحان کنید", Toast.LENGTH_SHORT);
+
                 }
             });
         }
@@ -177,6 +183,8 @@ public class PendingComplaintAdapter extends RecyclerView.Adapter<PendingComplai
             MyApplication.handler.post(() -> {
                 if (vfDetail != null)
                     vfDetail.setDisplayedChild(0);
+
+                MyApplication.Toast("لطفا دوباره امتحان کنید", Toast.LENGTH_SHORT);
             });
         }
     };

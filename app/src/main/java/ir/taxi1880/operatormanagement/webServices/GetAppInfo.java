@@ -106,11 +106,13 @@ public class GetAppInfo {
                     String serviceCountMonth = object.getString("serviceCountMonth");
                     int activeInQueue = object.getInt("activeInQueue");
                     int customerSupport = object.getInt("customerSupport");
+                    int accessComplaint = object.getInt("accessComplaint");
                     String name = object.getString("name");
                     String family = object.getString("family");
 
                     MyApplication.prefManager.setOperatorName(name + " " + family);
                     MyApplication.prefManager.setCustomerSupport(customerSupport);
+                    MyApplication.prefManager.setAccessComplaint(accessComplaint);
 
                     MyApplication.prefManager.setAccessDriverSupport(accessDriverSupport);
                     MyApplication.prefManager.setUserCode(userId);

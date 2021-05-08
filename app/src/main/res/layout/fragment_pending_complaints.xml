@@ -47,6 +47,7 @@
                 android:id="@+id/imgRefreshFail"
                 android:layout_width="?android:attr/actionBarSize"
                 android:layout_height="wrap_content"
+                android:background="@drawable/bg_light_pink_edge"
                 android:padding="15dp"
                 android:src="@drawable/ic_refresh_black" />
 

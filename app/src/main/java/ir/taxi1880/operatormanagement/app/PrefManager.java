@@ -59,6 +59,7 @@ public class PrefManager {
     private static final String LAST_CALL_NUMBER = "lastCallNumber";
     private static final String KEY_APP_STATUS = "AppStatus";
     private static final String CUSTOMER_SUPPORT = "customerSupport";
+    private static final String ACCESS_COMPLAINT = "accessComplaint";
     private static final String COMPLAINT_TYPE = "ComplaintType";
     private static final String OBJECTS_TYPE = "objectsType";
     private static final String REASONS_LOCK = "ReasonsLock";
@@ -103,6 +104,7 @@ public class PrefManager {
     /**
      * 1 = register trip ,
      * 2 = support driver
+     *
      * @return
      */
     public int getActivityStatus() {
@@ -112,6 +114,7 @@ public class PrefManager {
     /**
      * 1 = register trip ,
      * 2 = support driver
+     *
      * @param status
      */
     public void setActivityStatus(int status) {
@@ -288,6 +291,15 @@ public class PrefManager {
 
     public boolean getActivateStatus() {
         return pref.getBoolean(ACTIVATE_STATUS, false);
+    }
+
+    public void setAccessComplaint(int accessComplaint) {
+        editor.putInt(ACCESS_COMPLAINT, accessComplaint);
+        editor.commit();
+    }
+
+    public int getAccessComplaint() {
+        return pref.getInt(ACCESS_COMPLAINT, 0);
     }
 
     public void setCustomerSupport(int customerSupport) {
