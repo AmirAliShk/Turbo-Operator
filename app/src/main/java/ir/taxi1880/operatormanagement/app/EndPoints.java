@@ -69,6 +69,7 @@ public class EndPoints {
 
     public static final String PASSENGER_ADDRESS = TRIP_WEBSERVICE_PATH + "passengerAddress";
     public static final String STATION_INFO = TRIP_WEBSERVICE_PATH + "stationInfo";
+    public static final String PASSENGER_DESTINATION = TRIP_WEBSERVICE_PATH + "passengerDestination";
     public static final String INSERT_TRIP_SENDING_QUEUE = TRIP_WEBSERVICE_PATH + "insertTripSendingQueue";
     public static final String ACTIVATE = TRIP_WEBSERVICE_PATH + "activate";
     public static final String DEACTIVATE = TRIP_WEBSERVICE_PATH + "deActivate";
@@ -136,6 +137,5 @@ public class EndPoints {
     public static final String COMPLAINT_UPDATE_STATUS = COMPLAINT_WEBSERVICE_PATH + "updateStatus";
     public static final String COMPLAINT_MISSED_CALL = COMPLAINT_WEBSERVICE_PATH + "misscall";
     public static final String COMPLAINT_FINISH = COMPLAINT_WEBSERVICE_PATH + "finish";
-    public static final String COMPLAINT_DRIVER_HISTORY = COMPLAINT_WEBSERVICE_PATH + "complaintsOfDriver/";//:driverCode
 
 }
