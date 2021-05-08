@@ -136,5 +136,6 @@ public class EndPoints {
     public static final String COMPLAINT_UPDATE_STATUS = COMPLAINT_WEBSERVICE_PATH + "updateStatus";
     public static final String COMPLAINT_MISSED_CALL = COMPLAINT_WEBSERVICE_PATH + "misscall";
     public static final String COMPLAINT_FINISH = COMPLAINT_WEBSERVICE_PATH + "finish";
+    public static final String COMPLAINT_DRIVER_HISTORY = COMPLAINT_WEBSERVICE_PATH + "complaintsOfDriver/";//:driverCode
 
 }

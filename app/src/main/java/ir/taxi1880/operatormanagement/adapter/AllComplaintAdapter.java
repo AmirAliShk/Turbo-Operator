@@ -7,6 +7,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 import android.widget.ViewFlipper;
 
 import androidx.annotation.NonNull;
@@ -86,7 +87,7 @@ public class AllComplaintAdapter extends RecyclerView.Adapter<AllComplaintAdapte
     }
 
     private void getAccept(int id) {
-        RequestHelper.builder(EndPoints.COMPLAINT_ACCEPT)//todo
+        RequestHelper.builder(EndPoints.COMPLAINT_ACCEPT)
                 .addParam("complaintId", id)
                 .listener(getAccept)
                 .put();
@@ -125,13 +126,16 @@ public class AllComplaintAdapter extends RecyclerView.Adapter<AllComplaintAdapte
                                 .show();
                     } else {
                         new GeneralDialog()
-                                .message("message")//todo
+                                .message("message")//todo error accept more than 4 case
                                 .cancelable(false)
                                 .secondButton("باشه", null)
                                 .show();
+                        MyApplication.Toast("لطفا دوباره امتحان کنید", Toast.LENGTH_SHORT);
                     }
                 } catch (Exception e) {
                     e.printStackTrace();
+                    MyApplication.Toast("لطفا دوباره امتحان کنید", Toast.LENGTH_SHORT);
+
                 }
                 if (viewFlipper != null) {
                     viewFlipper.setDisplayedChild(0);
@@ -146,6 +150,7 @@ public class AllComplaintAdapter extends RecyclerView.Adapter<AllComplaintAdapte
                 if (viewFlipper != null) {
                     viewFlipper.setDisplayedChild(0);
                 }
+                MyApplication.Toast("لطفا دوباره امتحان کنید", Toast.LENGTH_SHORT);
             });
         }
     };

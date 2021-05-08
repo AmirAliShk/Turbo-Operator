@@ -86,9 +86,17 @@ public class MenuFragment extends Fragment {
 
     @OnClick(R.id.llComplaint)
     void onComplaint() {
-        FragmentHelper
-                .toFragment(MyApplication.currentActivity, new ComplaintFragment())
-                .replace();
+        if (MyApplication.prefManager.getAccessComplaint() == 0) {
+            new GeneralDialog()
+                    .title("هشدار")
+                    .message("شما اجازه دسترسی به این بخش از برنامه را ندارید")
+                    .firstButton("باشه", null)
+                    .show();
+        } else {
+            FragmentHelper
+                    .toFragment(MyApplication.currentActivity, new ComplaintFragment())
+                    .replace();
+        }
     }
 
     @OnClick(R.id.llRequest)

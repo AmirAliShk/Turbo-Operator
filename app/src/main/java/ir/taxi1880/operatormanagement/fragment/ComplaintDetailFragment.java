@@ -26,6 +26,7 @@ import ir.taxi1880.operatormanagement.app.DataHolder;
 import ir.taxi1880.operatormanagement.app.EndPoints;
 import ir.taxi1880.operatormanagement.app.MyApplication;
 import ir.taxi1880.operatormanagement.customView.NonSwipeableViewPager;
+import ir.taxi1880.operatormanagement.dialog.ComplaintOptionsDialog;
 import ir.taxi1880.operatormanagement.dialog.GeneralDialog;
 import ir.taxi1880.operatormanagement.helper.FragmentHelper;
 import ir.taxi1880.operatormanagement.helper.TypefaceUtil;
@@ -106,6 +107,12 @@ public class ComplaintDetailFragment extends Fragment {
         FragmentHelper.toFragment(MyApplication.currentActivity, new TripDetailsFragment()).setArguments(bundle).replace();
     }
 
+    @OnClick(R.id.btnOptions)
+    void onOptions(){
+        new ComplaintOptionsDialog()
+                .show(complaintDetailsModel.getCustomerPhoneNumber(),complaintDetailsModel.getCustomerMobileNumber(),complaintDetailsModel.getTaxicode());
+    }
+
     public ComplaintDetailFragment(ComplaintDetailsModel complaintsModel) {
         this.complaintDetailsModel = complaintsModel;
     }
@@ -149,7 +156,7 @@ public class ComplaintDetailFragment extends Fragment {
             case 3: //waiting for saveResult
                 indicator.setCurrentStep(statusId - 1);
                 if (vfNextStep != null) {
-                    vfNextStep.setDisplayedChild(1);
+                    vfNextStep.setDisplayedChild(2);
                 }
                 vpRegisterDriver.setCurrentItem(statusId - 1);
                 statusParam = 4;
@@ -226,8 +233,13 @@ public class ComplaintDetailFragment extends Fragment {
                     }
                 } catch (JSONException e) {
                     e.printStackTrace();
-                    if (vfNextStep != null)
-                        vfNextStep.setDisplayedChild(0);
+                    if (statusModel == 3) {
+                        if (vfNextStep != null)
+                            vfNextStep.setDisplayedChild(2);
+                    } else {
+                        if (vfNextStep != null)
+                            vfNextStep.setDisplayedChild(0);
+                    }
                 }
             });
         }
@@ -276,12 +288,12 @@ public class ComplaintDetailFragment extends Fragment {
                             new GeneralDialog()
                                     .message(message)
                                     .cancelable(false)
-                                    .firstButton("تلاش مجدد", () -> complaintSaveResult())//todo
+                                    .firstButton("تلاش مجدد", () -> complaintSaveResult())
                                     .secondButton("برگشت", null)
                                     .show();
 
                             if (vfNextStep != null)
-                                vfNextStep.setDisplayedChild(0);
+                                vfNextStep.setDisplayedChild(2);
                         } else {
                             new GeneralDialog()
                                     .message(message)
