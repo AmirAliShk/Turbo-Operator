@@ -56,7 +56,7 @@ public class EditPassengerAddressDialog {
 
     static Dialog dialog;
 
-    public void show(int cityCode, String address, int serviceId, int priceable, int operatorId, EditationCallBack callBack) {
+    public void show(int cityCode, String originAddress, String destinationAddress, int serviceId, int priceable, int operatorId, EditationCallBack callBack) {
         if (MyApplication.currentActivity == null || MyApplication.currentActivity.isFinishing())
             return;
         dialog = new Dialog(MyApplication.currentActivity);
@@ -75,15 +75,26 @@ public class EditPassengerAddressDialog {
 
         ImageView imgClose = dialog.findViewById(R.id.imgClose);
         Button btnSubmit = dialog.findViewById(R.id.btnSubmit);
-        EditText edtStation = dialog.findViewById(R.id.edtStation);
+        EditText edtStation = dialog.findViewById(R.id.edtOriginStation);
         EditText edtAddress = dialog.findViewById(R.id.edtAddress);
         RelativeLayout llParent = dialog.findViewById(R.id.llParent);
+        LinearLayout llOriginAddress = dialog.findViewById(R.id.llOriginAddress);
+        LinearLayout llOriginStation = dialog.findViewById(R.id.llOriginStation);
+        LinearLayout llDestinationAddress = dialog.findViewById(R.id.llDestinationAddress);
+        LinearLayout llDestinationStation = dialog.findViewById(R.id.llDestinationStation);
         spCity = dialog.findViewById(R.id.spCity);
         vfLoader = dialog.findViewById(R.id.vfLoader);
 
         initSpinner(cityCode);
 
-        edtAddress.setText(address);
+        if (originAddress.isEmpty()){
+            llOriginAddress.setVisibility(View.GONE);
+            llOriginStation.setVisibility(View.GONE);
+
+        }else if (destinationAddress.isEmpty()){
+            llDestinationAddress.setVisibility(View.GONE);
+            llDestinationStation.setVisibility(View.GONE);
+        }
 
         imgClose.setOnClickListener(view -> dismiss());
 

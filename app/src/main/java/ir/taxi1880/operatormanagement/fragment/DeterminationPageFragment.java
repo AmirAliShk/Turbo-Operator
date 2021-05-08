@@ -218,33 +218,35 @@ public class DeterminationPageFragment extends Fragment {
             txtStation.setText("");
             return;
         }
-        String address = "";
+        String originAddress = "";
+        String destinationAddress = "";
         if (bothStationAreZero) {
-            address = dataBase.getTopAddress().getOriginText();
+            originAddress = dataBase.getTopAddress().getOriginText();
+            destinationAddress = dataBase.getTopAddress().getOriginText();
         } else if (isOriginZero) {
-            address = dataBase.getTopAddress().getOriginText();
+            originAddress = dataBase.getTopAddress().getOriginText();
         } else if (isDestinationZero) {
-            address = dataBase.getTopAddress().getDestination();
+            destinationAddress = dataBase.getTopAddress().getDestination();
         }
-        new EditPassengerAddressDialog().show(dataBase.getTopAddress().getCity(), address,
-                dataBase.getTopAddress().getId(),dataBase.getTopAddress().getPriceable(),
+        new EditPassengerAddressDialog().show(dataBase.getTopAddress().getCity(), originAddress, destinationAddress,
+                dataBase.getTopAddress().getId(), dataBase.getTopAddress().getPriceable(),
                 dataBase.getTopAddress().getOperatorId(),
                 (success, message) -> {
-            if (success) {
-                if (dataBase.getRemainingAddress() > 0)
-                    dataBase.deleteRow(dataBase.getTopAddress().getId());
-                txtAddress.setText(showAddress());
-                if (txtStation != null)
-                    txtStation.setText("");
-            } else {
-                new GeneralDialog()
-                        .title("هشدار")
-                        .message(message)
-                        .secondButton("باشه", null)
-                        .cancelable(false)
-                        .show();
-            }
-        });
+                    if (success) {
+                        if (dataBase.getRemainingAddress() > 0)
+                            dataBase.deleteRow(dataBase.getTopAddress().getId());
+                        txtAddress.setText(showAddress());
+                        if (txtStation != null)
+                            txtStation.setText("");
+                    } else {
+                        new GeneralDialog()
+                                .title("هشدار")
+                                .message(message)
+                                .secondButton("باشه", null)
+                                .cancelable(false)
+                                .show();
+                    }
+                });
     }
 
     @Override
@@ -342,6 +344,7 @@ public class DeterminationPageFragment extends Fragment {
                                     DBTripModel tripModel = new DBTripModel();
                                     tripModel.setId(dataObj.getInt("Id")); // the unique id for each trip
                                     tripModel.setPriceable(dataObj.getInt("priceable")); // if this value was 0, no need to set destination. // TODO‌ uncomment
+                                    priceable = dataObj.getInt("priceable");
 //                                    priceable = 1; // if this value was 0, no need to set destination.
                                     String content = dataObj.getString("Content");
                                     JSONObject contentObj = new JSONObject(content);

@@ -1155,7 +1155,7 @@ public class TripRegisterActivity extends AppCompatActivity {
         String name = edtFamily.getText().toString().trim();
         String address = edtAddress.getText().toString().trim();
         String fixedComment = txtDescription.getText().toString().trim();
-        destinationAddress=edtDestinationAddress.getText().toString().trim();
+        destinationAddress = edtDestinationAddress.getText().toString().trim();
 
         if (chbTraffic.isChecked())
             traffic = 1;
@@ -1345,6 +1345,8 @@ public class TripRegisterActivity extends AppCompatActivity {
                 .addParam("defaultClass", defaultClass)
                 .addParam("count", count)
                 .addParam("queue", queue)
+                .addParam("percentDiscount", 0) //TODO‌ check this value
+                .addParam("maxDiscount", 0) //TODO‌ check this value
                 .addParam("senderClient", 0)
                 .listener(insertService)
                 .post();
