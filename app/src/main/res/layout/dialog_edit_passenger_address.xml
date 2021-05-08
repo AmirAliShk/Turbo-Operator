@@ -13,224 +13,236 @@
         app:realtimeBlurRadius="20dp"
         app:realtimeOverlayColor="#8000" />
 
-    <LinearLayout
+    <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_centerInParent="true"
+        android:scrollbars="none"
         android:layout_marginLeft="15dp"
         android:layout_marginRight="15dp"
-        android:gravity="center"
-        android:orientation="vertical">
-
-        <TextView
-            style="@style/dialogTitle"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="80dp"
-            android:background="@drawable/bg_dialog_header"
-            android:gravity="center"
-            android:padding="@dimen/_8sdp"
-            android:text="ویرایش" />
+        android:fillViewport="true">
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_gravity="top|center_horizontal"
-            android:background="@drawable/bg_dialog_body"
-            android:gravity="top"
-            android:orientation="vertical"
-            android:padding="10dp">
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:orientation="vertical">
+
+            <TextView
+                style="@style/dialogTitle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="80dp"
+                android:background="@drawable/bg_dialog_header"
+                android:gravity="center"
+                android:padding="@dimen/_8sdp"
+                android:text="ویرایش" />
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="vertical">
-
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:paddingRight="10dp"
-                    android:text="شهر"
-                    android:textAppearance="?android:attr/textAppearanceMedium"
-                    android:textColor="@color/grayMedium" />
+                android:layout_gravity="top|center_horizontal"
+                android:background="@drawable/bg_dialog_body"
+                android:gravity="top"
+                android:orientation="vertical"
+                android:padding="10dp">
 
                 <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="@dimen/_35sdp"
-                    android:layout_marginTop="10dp"
-                    android:background="@drawable/bg_strock_corner">
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
 
-                    <Spinner
-                        android:id="@+id/spCity"
+                    <TextView
                         android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:paddingRight="10dp"
+                        android:text="شهر"
+                        android:textAppearance="?android:attr/textAppearanceMedium"
+                        android:textColor="@color/grayMedium" />
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/_35sdp"
+                        android:layout_marginTop="10dp"
+                        android:background="@drawable/bg_strock_corner">
+
+                        <Spinner
+                            android:id="@+id/spCity"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:backgroundTint="@color/colorPurple"
+                            android:dropDownWidth="match_parent"
+                            android:gravity="right" />
+
+                    </LinearLayout>
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/llOriginAddress"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:id="@+id/txtOriginTitle"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="10dp"
+                        android:paddingRight="10dp"
+                        android:text="آدرس مبدا"
+                        android:textAppearance="?android:attr/textAppearanceMedium"
+                        android:textColor="@color/grayMedium" />
+
+                    <EditText
+                        android:id="@+id/edtOriginAddress"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="10dp"
+                        android:background="@drawable/edit_text_style"
+                        android:gravity="top|right"
+                        android:maxLines="2"
+                        android:padding="10dp" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/llOriginStation"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:id="@+id/txtOriginStTitle"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="10dp"
+                        android:maxLines="2"
+                        android:paddingRight="10dp"
+                        android:text="ایستگاه مبدا"
+                        android:textAppearance="?android:attr/textAppearanceMedium"
+                        android:textColor="@color/grayMedium" />
+
+                    <EditText
+                        android:id="@+id/edtOriginStation"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="10dp"
+                        android:background="@drawable/edit_text_style"
+                        android:gravity="top|right"
+                        android:inputType="number"
+                        android:maxLength="3"
+                        android:padding="10dp" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/llDestinationAddress"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:id="@+id/txtDestinationTitle"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="10dp"
+                        android:paddingRight="10dp"
+                        android:text="آدرس مقصد"
+                        android:textAppearance="?android:attr/textAppearanceMedium"
+                        android:textColor="@color/grayMedium" />
+
+                    <EditText
+                        android:id="@+id/edtDestinationAddress"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="10dp"
+                        android:background="@drawable/edit_text_style"
+                        android:gravity="top|right"
+                        android:maxLines="2"
+                        android:nextFocusDown="@id/edtDestinationStation"
+                        android:padding="10dp" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/llDestinationStation"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:id="@+id/txtDestinationStTitle"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="10dp"
+                        android:maxLines="2"
+                        android:paddingRight="10dp"
+                        android:text="ایستگاه مقصد"
+                        android:textAppearance="?android:attr/textAppearanceMedium"
+                        android:textColor="@color/grayMedium" />
+
+                    <EditText
+                        android:id="@+id/edtDestinationStation"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="10dp"
+                        android:background="@drawable/edit_text_style"
+                        android:gravity="top|right"
+                        android:inputType="number"
+                        android:maxLength="3"
+                        android:padding="10dp" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/_40sdp"
+                    android:layout_marginTop="10dp"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:orientation="vertical">
+
+                    <ViewFlipper
+                        android:id="@+id/vfLoader"
+                        android:layout_width="wrap_content"
                         android:layout_height="match_parent"
-                        android:backgroundTint="@color/colorPurple"
-                        android:dropDownWidth="match_parent"
-                        android:gravity="right" />
+                        android:background="@drawable/green_shadow">
+
+                        <Button
+                            android:id="@+id/btnSubmit"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="40dp"
+                            android:layout_marginRight="40dp"
+                            android:background="@color/transparent"
+                            android:text="ثبت"
+                            android:textAppearance="?android:attr/textAppearanceLarge"
+                            android:textColor="@color/colorWhite"
+                            android:textStyle="bold" />
+
+                        <com.wang.avi.AVLoadingIndicatorView
+                            android:layout_width="30dp"
+                            android:layout_height="30dp"
+                            android:layout_gravity="center"
+                            app:indicatorColor="@color/colorWhite" />
+
+                    </ViewFlipper>
 
                 </LinearLayout>
 
             </LinearLayout>
 
-            <LinearLayout
-                android:id="@+id/llOriginAddress"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical">
-
-                <TextView
-                    android:id="@+id/txtOriginTitle"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="10dp"
-                    android:paddingRight="10dp"
-                    android:text="آدرس مبدا"
-                    android:textAppearance="?android:attr/textAppearanceMedium"
-                    android:textColor="@color/grayMedium" />
-
-                <EditText
-                    android:id="@+id/edtAddress"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="10dp"
-                    android:background="@drawable/edit_text_style"
-                    android:gravity="top|right"
-                    android:maxLines="2"
-                    android:padding="10dp" />
-
-            </LinearLayout>
-
-            <LinearLayout
-                android:id="@+id/llOriginStation"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical">
-
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="10dp"
-                    android:maxLines="2"
-                    android:paddingRight="10dp"
-                    android:text="ایستگاه مبدا"
-                    android:textAppearance="?android:attr/textAppearanceMedium"
-                    android:textColor="@color/grayMedium" />
-
-                <EditText
-                    android:id="@+id/edtOriginStation"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="10dp"
-                    android:background="@drawable/edit_text_style"
-                    android:gravity="top|right"
-                    android:inputType="number"
-                    android:maxLength="3"
-                    android:padding="10dp" />
-
-            </LinearLayout>
-
-            <LinearLayout
-                android:id="@+id/llDestinationAddress"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical">
-
-                <TextView
-                    android:id="@+id/txtDestinationAddress"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="10dp"
-                    android:paddingRight="10dp"
-                    android:text="آدرس مقصد"
-                    android:textAppearance="?android:attr/textAppearanceMedium"
-                    android:textColor="@color/grayMedium" />
-
-                <EditText
-                    android:id="@+id/edtDestinationAddress"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="10dp"
-                    android:background="@drawable/edit_text_style"
-                    android:gravity="top|right"
-                    android:maxLines="2"
-                    android:padding="10dp" />
-
-            </LinearLayout>
-
-            <LinearLayout
-                android:id="@+id/llDestinationStation"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical">
-
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="10dp"
-                    android:maxLines="2"
-                    android:paddingRight="10dp"
-                    android:text="ایستگاه مقصد"
-                    android:textAppearance="?android:attr/textAppearanceMedium"
-                    android:textColor="@color/grayMedium" />
-
-                <EditText
-                    android:id="@+id/edtDestinationStation"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="10dp"
-                    android:background="@drawable/edit_text_style"
-                    android:gravity="top|right"
-                    android:inputType="number"
-                    android:maxLength="3"
-                    android:padding="10dp" />
-
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="@dimen/_40sdp"
-                android:layout_marginTop="10dp"
-                android:layout_weight="1"
-                android:gravity="center"
-                android:orientation="vertical">
-
-                <ViewFlipper
-                    android:id="@+id/vfLoader"
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:background="@drawable/green_shadow">
-
-                    <Button
-                        android:id="@+id/btnSubmit"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginLeft="40dp"
-                        android:layout_marginRight="40dp"
-                        android:background="@color/transparent"
-                        android:text="ثبت"
-                        android:textAppearance="?android:attr/textAppearanceLarge"
-                        android:textColor="@color/colorWhite"
-                        android:textStyle="bold" />
-
-                    <com.wang.avi.AVLoadingIndicatorView
-                        android:layout_width="30dp"
-                        android:layout_height="30dp"
-                        android:layout_gravity="center"
-                        app:indicatorColor="@color/colorWhite" />
-
-                </ViewFlipper>
-
-            </LinearLayout>
+            <ImageView
+                android:id="@+id/imgClose"
+                android:layout_width="80dp"
+                android:layout_height="80dp"
+                android:padding="20dp"
+                android:src="@drawable/ic_close_black_24dp" />
 
         </LinearLayout>
 
-        <ImageView
-            android:id="@+id/imgClose"
-            android:layout_width="80dp"
-            android:layout_height="80dp"
-            android:padding="20dp"
-            android:src="@drawable/ic_close_black_24dp" />
-
-    </LinearLayout>
+    </ScrollView>
 
 </RelativeLayout>
+

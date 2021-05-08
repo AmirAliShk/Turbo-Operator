@@ -42,7 +42,7 @@ public class AddressListDialog {
     private Listener listener;
     private static Dialog dialog;
 
-    public void show(Listener listener, ArrayList<PassengerAddressModel> passengerAddressModels) {
+    public void show(boolean isFromOrigin,Listener listener, ArrayList<PassengerAddressModel> passengerAddressModels) {
         if (MyApplication.currentActivity == null || MyApplication.currentActivity.isFinishing())
             return;
         dialog = new Dialog(MyApplication.currentActivity);
@@ -63,7 +63,7 @@ public class AddressListDialog {
         vfLastAddress = dialog.findViewById(R.id.vfLastAddress);
         blrView = dialog.findViewById(R.id.blrView);
 
-        lastAddressAdapter = new LastAddressAdapter(passengerAddressModels, MyApplication.context);
+        lastAddressAdapter = new LastAddressAdapter(isFromOrigin, passengerAddressModels, MyApplication.context);
         listLastAddress.setAdapter(lastAddressAdapter);
 
         blrView.setOnClickListener(view -> dismiss());

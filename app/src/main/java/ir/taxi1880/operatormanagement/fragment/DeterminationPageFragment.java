@@ -222,37 +222,33 @@ public class DeterminationPageFragment extends Fragment {
         String destinationAddress = "";
         if (bothStationAreZero) {
             originAddress = dataBase.getTopAddress().getOriginText();
-            destinationAddress = dataBase.getTopAddress().getOriginText();
+            destinationAddress = dataBase.getTopAddress().getDestination();
         } else if (isOriginZero) {
             originAddress = dataBase.getTopAddress().getOriginText();
         } else if (isDestinationZero) {
             destinationAddress = dataBase.getTopAddress().getDestination();
         }
-        new EditPassengerAddressDialog().show(dataBase.getTopAddress().getCity(), originAddress, destinationAddress,
-                dataBase.getTopAddress().getId(), dataBase.getTopAddress().getPriceable(),
-                dataBase.getTopAddress().getOperatorId(),
-                (success, message) -> {
-                    if (success) {
-                        if (dataBase.getRemainingAddress() > 0)
-                            dataBase.deleteRow(dataBase.getTopAddress().getId());
-                        txtAddress.setText(showAddress());
-                        if (txtStation != null)
-                            txtStation.setText("");
-                    } else {
-                        new GeneralDialog()
-                                .title("هشدار")
-                                .message(message)
-                                .secondButton("باشه", null)
-                                .cancelable(false)
-                                .show();
-                    }
-                });
+        new EditPassengerAddressDialog().show(dataBase.getTopAddress(), (success, message) -> {
+            if (success) {
+                if (dataBase.getRemainingAddress() > 0)
+                    dataBase.deleteRow(dataBase.getTopAddress().getId());
+                txtAddress.setText(showAddress());
+                if (txtStation != null)
+                    txtStation.setText("");
+            } else {
+                new GeneralDialog()
+                        .title("هشدار")
+                        .message(message)
+                        .secondButton("باشه", null)
+                        .cancelable(false)
+                        .show();
+            }
+        });
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_determination_page, container, false);
-        getActivity().getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_NOTHING);
         unbinder = ButterKnife.bind(this, view);
         TypefaceUtil.overrideFonts(view);
 
@@ -306,7 +302,6 @@ public class DeterminationPageFragment extends Fragment {
         public void onResponse(Runnable reCall, Object... args) {
             MyApplication.handler.post(() -> {
                 try {
-                    Log.i(TAG, "onResponse: " + args[0].toString());
                     JSONObject obj = new JSONObject(args[0].toString());
                     boolean success = obj.getBoolean("success");
                     String message = obj.getString("message");
@@ -343,7 +338,7 @@ public class DeterminationPageFragment extends Fragment {
                                     JSONObject dataObj = dataArr.getJSONObject(i);
                                     DBTripModel tripModel = new DBTripModel();
                                     tripModel.setId(dataObj.getInt("Id")); // the unique id for each trip
-                                    tripModel.setPriceable(dataObj.getInt("priceable")); // if this value was 0, no need to set destination. // TODO‌ uncomment
+                                    tripModel.setPriceable(dataObj.getInt("priceable")); // if this value was 0, no need to set destination.
                                     priceable = dataObj.getInt("priceable");
 //                                    priceable = 1; // if this value was 0, no need to set destination.
                                     String content = dataObj.getString("Content");
@@ -399,6 +394,8 @@ public class DeterminationPageFragment extends Fragment {
                     }
                 } catch (JSONException e) {
                     e.printStackTrace();
+                    if (imgRefresh != null)
+                        imgRefresh.clearAnimation();
                 }
             });
         }
@@ -459,6 +456,7 @@ public class DeterminationPageFragment extends Fragment {
                 .addParam("destStation", StringHelper.toEnglishDigits(destinationCode + ""))
                 .addParam("cityCode", StringHelper.toEnglishDigits(dataBase.getTopAddress().getCity() + ""))
                 .addParam("address", StringHelper.toEnglishDigits(dataBase.getTopAddress().getOriginText() + ""))
+                .addParam("destAddress", StringHelper.toEnglishDigits(dataBase.getTopAddress().getDestination() + ""))
                 .addParam("priceable", StringHelper.toEnglishDigits(dataBase.getTopAddress().getPriceable() + ""))
                 .addParam("tripOperatorId", StringHelper.toEnglishDigits(dataBase.getTopAddress().getOperatorId() + ""))
                 .listener(setStationCode)

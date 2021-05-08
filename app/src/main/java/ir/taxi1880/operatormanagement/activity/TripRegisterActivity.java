@@ -84,10 +84,16 @@ public class TripRegisterActivity extends AppCompatActivity {
     Unbinder unbinder;
     private String cityName = "";
     private String cityLatinName = "";
+    private String maxDiscount = "";
+    private String percentDiscount = "";
     private int cityCode;
     private String normalDescription = " ";
     private int originStation = 0;
+    private int destinationStation = 0;
     private int addressLength = 0;
+    int addressChangeCounter = 0; // this variable count the last edition of edtAddress
+    private int destAddressLength = 0;
+    int destAddressChangeCounter = 0; // this variable count the last edition of edtAddress
     private String destinationAddress = " ";// It must have a value otherwise it will get an error of 422
     private int serviceType;
     private int serviceCount;
@@ -107,7 +113,6 @@ public class TripRegisterActivity extends AppCompatActivity {
     private String[] countService = new String[6];
     private Runnable mCallQualityUpdater = null;
     private int mDisplayedQuality = -1;
-    int addressChangeCounter = 0; // this variable count the last edition of edtAddress
 
     @OnClick(R.id.imgBack)
     void onBack() {
@@ -282,7 +287,7 @@ public class TripRegisterActivity extends AppCompatActivity {
             return;
         }
         KeyBoardHelper.hideKeyboard();
-        getPassengerAddress(StringHelper.toEnglishDigits(getTellNumber())); // TODO‌ put destination API here
+        getPassengerDestAddress(StringHelper.toEnglishDigits("0" + getTellNumber()));
     }
 
     private String getTellNumber() {
@@ -351,16 +356,20 @@ public class TripRegisterActivity extends AppCompatActivity {
 
     @OnClick(R.id.btnSubmit)
     void onPressSubmit() {
-
         int addressPercent = addressLength * 50 / 100;
         if (addressChangeCounter >= addressPercent) {
             originStation = 0;
         }
 
-        Log.i(TAG, "onPressSubmit: address length " + addressLength);
-        Log.i(TAG, "onPressSubmit: address percent " + addressPercent);
-        Log.i(TAG, "onPressSubmit: address change counter " + addressChangeCounter);
-        Log.i(TAG, "onPressSubmit: originStation " + originStation);
+        int destAddressPercent = destAddressLength * 50 / 100;
+        if (destAddressChangeCounter >= destAddressPercent) {
+            destinationStation = 0;
+        }
+
+        Log.i(TAG, "onPressSubmit: address length " + destAddressLength);
+        Log.i(TAG, "onPressSubmit: address percent " + destAddressPercent);
+        Log.i(TAG, "onPressSubmit: address change counter " + destAddressChangeCounter);
+        Log.i(TAG, "onPressSubmit: originStation " + destAddressPercent);
 
         if (cityCode == -1) {
             MyApplication.Toast("شهر را وارد نمایید", Toast.LENGTH_SHORT);
@@ -413,6 +422,9 @@ public class TripRegisterActivity extends AppCompatActivity {
 
     @BindView(R.id.vfPassengerAddress)
     ViewFlipper vfPassengerAddress;
+
+    @BindView(R.id.vfPassengerDestAddress)
+    ViewFlipper vfPassengerDestAddress;
 
     @BindView(R.id.vfPassengerInfo)
     ViewFlipper vfPassengerInfo;
@@ -542,15 +554,17 @@ public class TripRegisterActivity extends AppCompatActivity {
         originStation = 0;
         addressLength = 0;
         addressChangeCounter = 0;
+        destAddressLength = 0;
+        destAddressChangeCounter = 0;
     }
 
     @OnClick(R.id.clearDestinationAddress)
     void onClearDestinationAddress() {
         edtDestinationAddress.getText().clear();
         // TODO‌ check below params
-        originStation = 0;
-        addressLength = 0;
-        addressChangeCounter = 0;
+        destinationStation = 0;
+        destAddressLength = 0;
+        destAddressChangeCounter = 0;
     }
 
     @OnClick(R.id.btnDeActivate)
@@ -645,6 +659,8 @@ public class TripRegisterActivity extends AppCompatActivity {
         edtMobile.addTextChangedListener(edtMobileTW);
 
         edtAddress.addTextChangedListener(addressTW);
+
+        edtDestinationAddress.addTextChangedListener(destAddressTW);
 
         rgCarClass.setOnCheckedChangeListener((group, i) -> {
             chbAlways.setChecked(false);
@@ -760,6 +776,27 @@ public class TripRegisterActivity extends AppCompatActivity {
                 originStation = 0;
                 addressLength = 0;
                 edtAddress.getText().clear();
+            }
+        }
+    };
+
+    TextWatcher destAddressTW = new TextWatcher() {
+        @Override
+        public void beforeTextChanged(CharSequence charSequence, int start, int count, int after) {
+        }
+
+        @Override
+        public void onTextChanged(CharSequence charSequence, int start, int before, int count) {
+            destAddressChangeCounter = destAddressChangeCounter + 1;
+            Log.i(TAG, "onTextChanged: destAddressChangeCounter " + destAddressChangeCounter);
+        }
+
+        @Override
+        public void afterTextChanged(Editable editable) {
+            if (editable.toString().isEmpty()) {
+                destinationStation = 0;
+                destAddressLength = 0;
+                edtDestinationAddress.getText().clear();
             }
         }
     };
@@ -934,6 +971,8 @@ public class TripRegisterActivity extends AppCompatActivity {
                     int discountId = passengerInfoObj.getInt("discountId");
                     int carType = passengerInfoObj.getInt("carType");
                     int cityCode = passengerInfoObj.getInt("cityCode");
+                    maxDiscount = passengerInfoObj.getString("maxDiscount");
+                    percentDiscount = passengerInfoObj.getString("percentDiscount");
 
                     ClipboardManager clipboard = (ClipboardManager) getSystemService(Context.CLIPBOARD_SERVICE);
                     ClipData clip = ClipData.newPlainText("passengerTell", getTellNumber());
@@ -1063,6 +1102,85 @@ public class TripRegisterActivity extends AppCompatActivity {
         }
     };
 
+    private void getPassengerDestAddress(String phoneNumber) {
+        if (vfPassengerDestAddress != null)
+            vfPassengerDestAddress.setDisplayedChild(1);
+        RequestHelper.builder(EndPoints.PASSENGER_DESTINATION)
+                .addPath(phoneNumber)
+                .listener(getPassengerDestAddress)
+                .get();
+
+    }
+
+    RequestHelper.Callback getPassengerDestAddress = new RequestHelper.Callback() {
+        @Override
+        public void onResponse(Runnable reCall, Object... args) {
+            MyApplication.handler.post(() -> {
+                try {
+                    passengerAddressModels = new ArrayList<>();
+                    JSONObject obj = new JSONObject(args[0].toString());
+                    boolean success = obj.getBoolean("success");
+                    String message = obj.getString("message");
+
+                    if (success) {
+                        JSONArray dataArr = obj.getJSONArray("data");
+                        for (int i = 0; i < dataArr.length(); i++) {
+                            JSONObject dataObj = dataArr.getJSONObject(i);
+                            PassengerAddressModel addressModel = new PassengerAddressModel();
+                            addressModel.setPhoneNumber(dataObj.getString("phoneNumber"));
+                            addressModel.setMobile(dataObj.getString("mobile"));
+                            addressModel.setAddress(dataObj.getString("destination"));
+                            addressModel.setStation(dataObj.getInt("destinationStation"));
+                            addressModel.setStatus(dataObj.getInt("status"));
+                            passengerAddressModels.add(addressModel);
+                        }
+                        if (passengerAddressModels.size() == 0) {
+                            MyApplication.Toast("آدرسی موجود نیست", Toast.LENGTH_SHORT);
+                        } else {
+                            new AddressListDialog().show(false, (address, stationCode) -> {
+                                if (edtDestinationAddress != null) {
+                                    edtDestinationAddress.setText(address);
+                                    destAddressLength = address.length();
+                                    destAddressChangeCounter = 0;
+                                }
+                                destinationStation = stationCode;
+
+                            }, passengerAddressModels);
+                        }
+                    } else {
+                        new GeneralDialog()
+                                .title("هشدار")
+                                .message(message)
+                                .secondButton("باشه", null)
+                                .cancelable(false)
+                                .show();
+                    }
+
+                    MyApplication.handler.postDelayed(() -> {
+                        if (vfPassengerDestAddress != null)
+                            vfPassengerDestAddress.setDisplayedChild(0);
+                    }, 500);
+
+                } catch (JSONException e) {
+                    MyApplication.handler.postDelayed(() -> {
+                        if (vfPassengerDestAddress != null)
+                            vfPassengerDestAddress.setDisplayedChild(0);
+                    }, 500);
+                    e.printStackTrace();
+                    AvaCrashReporter.send(e, "TripRegisterActivity class, getPassengerAddress onResponse method");
+                }
+            });
+        }
+
+        @Override
+        public void onFailure(Runnable reCall, Exception e) {
+            MyApplication.handler.post(() -> MyApplication.handler.postDelayed(() -> {
+                if (vfPassengerDestAddress != null)
+                    vfPassengerDestAddress.setDisplayedChild(0);
+            }, 500));
+        }
+    };
+
     private void getPassengerAddress(String phoneNumber) {
         if (vfPassengerAddress != null)
             vfPassengerAddress.setDisplayedChild(1);
@@ -1099,7 +1217,7 @@ public class TripRegisterActivity extends AppCompatActivity {
                         if (passengerAddressModels.size() == 0) {
                             MyApplication.Toast("آدرسی موجود نیست", Toast.LENGTH_SHORT);
                         } else {
-                            new AddressListDialog().show((address, stationCode) -> {
+                            new AddressListDialog().show(true, (address, stationCode) -> {
                                 if (edtAddress != null) {
                                     edtAddress.setText(address);
                                     addressLength = address.length();
@@ -1334,7 +1452,7 @@ public class TripRegisterActivity extends AppCompatActivity {
                 .addParam("fixedComment", fixedComment)
                 .addParam("address", address)
                 .addParam("stationCode", originStation)
-                .addParam("destinationStation", 0)
+                .addParam("destinationStation", destinationStation)
                 .addParam("destination", destination)
                 .addParam("cityCode", cityCode)
                 .addParam("typeService", typeService)
@@ -1345,8 +1463,8 @@ public class TripRegisterActivity extends AppCompatActivity {
                 .addParam("defaultClass", defaultClass)
                 .addParam("count", count)
                 .addParam("queue", queue)
-                .addParam("percentDiscount", 0) //TODO‌ check this value
-                .addParam("maxDiscount", 0) //TODO‌ check this value
+                .addParam("percentDiscount", percentDiscount)
+                .addParam("maxDiscount", maxDiscount)
                 .addParam("senderClient", 0)
                 .listener(insertService)
                 .post();
@@ -1433,7 +1551,9 @@ public class TripRegisterActivity extends AppCompatActivity {
     private void clearData() {
         if (edtTell == null) return;
         originStation = 0;
+        destinationStation = 0;
         addressLength = 0;
+        destAddressLength = 0;
         isEnableView = false;
         isTellValidable = false;
         edtTell.requestFocus();
@@ -1446,6 +1566,7 @@ public class TripRegisterActivity extends AppCompatActivity {
         edtAddress.setText("");
         edtDestinationAddress.setText("");
         addressChangeCounter = 0;
+        destAddressChangeCounter = 0;
         chbTraffic.setChecked(false);
         txtDescription.setText("");
         chbAlways.setChecked(false);
