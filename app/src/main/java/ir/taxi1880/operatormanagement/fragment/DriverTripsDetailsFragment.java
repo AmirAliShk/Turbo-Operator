@@ -158,6 +158,12 @@ public class DriverTripsDetailsFragment extends Fragment {
     @BindView(R.id.txtNull)
     TextView txtNull;
 
+    @BindView(R.id.txtDestStation)
+    TextView txtDestStation;
+
+    @BindView(R.id.txtDestAddress)
+    TextView txtDestAddress;
+
     @BindView(R.id.txtServiceFixedComment)
     TextView txtServiceFixedComment;
 
@@ -346,6 +352,8 @@ public class DriverTripsDetailsFragment extends Fragment {
                         String customerFixedDes = data.getString("customerFixedDes");
                         String serviceComment = data.getString("serviceComment");
                         voipId = data.getString("VoipId");
+                        String destinationStation = data.getString("destinationStation");
+                        String destination = data.getString("destinationAddress");
 
                         if (status == 0) { // waiting
                             disableControllerButtonWaitingState();
@@ -388,6 +396,8 @@ public class DriverTripsDetailsFragment extends Fragment {
                         txtEndTime.setText(finishTime.equals("null") ? " " : StringHelper.toPersianDigits(finishTime));
                         txtPlaque.setText(plak.equals("null") ? " " : StringHelper.toPersianDigits(plak));
                         txtServiceFixedComment.setText(customerFixedDes.equals("null") ? " " : StringHelper.toPersianDigits(customerFixedDes));
+                        txtDestAddress.setText(StringHelper.toPersianDigits(destination));
+                        txtDestStation.setText(StringHelper.toPersianDigits(destinationStation));
 
                         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
                             Drawable bg_blue_border_edge = AppCompatResources.getDrawable(context, R.drawable.bg_blue_border_edge);
