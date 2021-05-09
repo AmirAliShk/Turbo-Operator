@@ -443,6 +443,9 @@ public class SupportDriverTripsFragment extends Fragment {
                                 tripModel.setFinished(dataObj.getInt("Finished"));
                                 tripModel.setStatusText(dataObj.getString("statusDes"));
                                 tripModel.setStatusColor(dataObj.getString("statusColor"));
+                                tripModel.setPrice(dataObj.getString("servicePrice"));
+                                tripModel.setDestStation(dataObj.getString("destinationStation"));
+                                tripModel.setDestination(dataObj.getString("destinationAddress"));
                                 tripModels.add(tripModel);
                             } catch (Exception ignored) {
                             }

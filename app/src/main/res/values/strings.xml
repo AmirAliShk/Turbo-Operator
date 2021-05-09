@@ -92,7 +92,7 @@
     <string name="sendTime2">ساعت اعزام</string>
     <string name="driverCode">کد راننده</string>
     <string name="driverName">نام راننده</string>
-    <string name="price">مبلغ راننده</string>
+    <string name="price">مبلغ</string>
     <string name="endTime">ساعت پایان</string>
     <string name="plaque">پلاک خودرو</string>
     <string name="sendCall">ساعت تماس</string>

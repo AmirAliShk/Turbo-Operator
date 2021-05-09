@@ -58,6 +58,7 @@ public class TripAdapter extends RecyclerView.Adapter<TripAdapter.TripViewHolder
         holder.txtDriverMobile.setText(tripModel.getDriverMobile().equals("null") ? " " : StringHelper.toPersianDigits(tripModel.getDriverMobile()));
         holder.txtCallDate.setText(tripModel.getCallDate().equals("null") ? " " : StringHelper.toPersianDigits(tripModel.getCallDate()));
         holder.txtStationCode.setText(StringHelper.toPersianDigits(tripModel.getStationCode() + ""));
+        holder.txtPrice.setText(StringHelper.toPersianDigits(StringHelper.setComma(tripModel.getPrice() + "")));
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             Drawable bg_dialog_header = AppCompatResources.getDrawable(context, R.drawable.bg_dialog_header);
@@ -95,6 +96,7 @@ public class TripAdapter extends RecyclerView.Adapter<TripAdapter.TripViewHolder
         TextView txtDriverMobile;
         TextView txtCallDate;
         TextView txtStationCode;
+        TextView txtPrice;
         LinearLayout llHeaderStatus;
 
         public TripViewHolder(@NonNull View itemView) {
@@ -111,6 +113,7 @@ public class TripAdapter extends RecyclerView.Adapter<TripAdapter.TripViewHolder
             txtDriverMobile = itemView.findViewById(R.id.txtDriverMobile);
             txtCallDate = itemView.findViewById(R.id.txtCallDate);
             txtStationCode = itemView.findViewById(R.id.txtStationCode);
+            txtPrice = itemView.findViewById(R.id.txtPrice);
             llHeaderStatus = itemView.findViewById(R.id.llHeaderStatus);
         }
     }

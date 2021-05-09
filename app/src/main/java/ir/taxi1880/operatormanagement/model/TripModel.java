@@ -18,6 +18,33 @@ public class TripModel {
   int status;
   String statusColor;
   String statusText;
+  String price;
+  String destination;
+  String destStation;
+
+  public String getDestination() {
+    return destination;
+  }
+
+  public void setDestination(String destination) {
+    this.destination = destination;
+  }
+
+  public String getDestStation() {
+    return destStation;
+  }
+
+  public void setDestStation(String destStation) {
+    this.destStation = destStation;
+  }
+
+  public String getPrice() {
+    return price;
+  }
+
+  public void setPrice(String price) {
+    this.price = price;
+  }
 
   public String getStatusColor() {
     return statusColor;
