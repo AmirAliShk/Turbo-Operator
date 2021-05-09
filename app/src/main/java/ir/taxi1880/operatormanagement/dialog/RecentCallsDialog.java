@@ -124,7 +124,8 @@ public class RecentCallsDialog {
         this.dismissInterface = dismissInterface;
 
         if (fromPassengerCalls) {
-            vfHeader.setDisplayedChild(1);
+            if (vfHeader != null)
+                vfHeader.setDisplayedChild(1);
             if (rgSearchType.getCheckedRadioButtonId() == R.id.rbTell) {
                 if (tell.length() == 10 && !tell.startsWith("0")) {
                     tell = "0" + tell;
@@ -140,7 +141,8 @@ public class RecentCallsDialog {
                 getRecentCalls("/src", mobile.startsWith("0") ? mobile : "0" + mobile, "/4");
             }
         } else {
-            vfHeader.setDisplayedChild(0);
+            if (vfHeader != null)
+                vfHeader.setDisplayedChild(0);
             getRecentCalls("/dst", sip + "", "/1");
         }
 
@@ -150,7 +152,7 @@ public class RecentCallsDialog {
     public void getRecentCalls(String type, String num, String dateInterval) {
         if (vfDownload != null)
             vfDownload.setDisplayedChild(0);
-        RequestHelper.builder(EndPoints.RECENT_CALLS + num + type + dateInterval)
+        RequestHelper.builder(EndPoints.RECENT_CALLS + num.trim() + type + dateInterval)
                 .listener(recentCallsCallBack)
                 .get();
     }

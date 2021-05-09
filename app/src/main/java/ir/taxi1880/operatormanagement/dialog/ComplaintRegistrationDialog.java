@@ -87,6 +87,7 @@ public class ComplaintRegistrationDialog {
                 .addParam("serviceId", serviceId)
                 .addParam("complaintType", complaintType)
                 .addParam("voipId", voipId)
+                .addParam("description", " ")
                 .listener(onSetComplaint)
                 .post();
     }

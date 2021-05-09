@@ -1,21 +1,23 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layoutDirection="ltr"
-    android:orientation="vertical">
+    android:padding="15dp">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:layout_marginLeft="15dp"
-        android:layout_marginTop="15dp"
+        android:layout_marginTop="20dp"
         android:layout_marginRight="15dp"
-        android:layout_marginBottom="5dp"
         android:background="@drawable/bg_white_edge"
         android:orientation="vertical"
-        android:padding="10dp">
+        android:paddingLeft="10dp"
+        android:paddingTop="15dp"
+        android:paddingRight="10dp"
+        android:paddingBottom="10dp">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -36,21 +38,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginRight="@dimen/_10sdp"
                 android:layout_weight="1"
-                android:textSize="18sp" />
-
-            <ImageView
-                android:layout_width="20dp"
-                android:layout_height="20dp"
-                android:src="@drawable/ic_timer" />
-
-            <TextView
-                android:id="@+id/txtTime"
-                style="@style/tripItemValue"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginRight="@dimen/_10sdp"
-                android:layout_weight="1"
-                android:textSize="18sp" />
+                android:textSize="20sp" />
 
         </LinearLayout>
 
@@ -62,21 +50,22 @@
             android:layoutDirection="rtl">
 
             <TextView
-                style="@style/tripItemValue"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginRight="@dimen/_10sdp"
+                style="@style/tripItemTitle"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:gravity="center_vertical"
                 android:text="عنوان شکایت"
-                android:textSize="18sp" />
+                android:textSize="@dimen/_16sdp" />
 
             <TextView
                 android:id="@+id/txtComplaintType"
                 style="@style/tripItemValue"
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginRight="@dimen/_10sdp"
-                android:layout_weight="1"
-                android:textSize="18sp" />
+                android:layout_weight="2"
+                android:gravity="center_vertical"
+                android:textSize="20sp" />
 
         </LinearLayout>
 
@@ -88,21 +77,22 @@
             android:layoutDirection="rtl">
 
             <TextView
-                style="@style/tripItemValue"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginRight="@dimen/_10sdp"
-                android:text="نام"
-                android:textSize="18sp" />
+                style="@style/tripItemTitle"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:gravity="center_vertical"
+                android:text="نام مهمان"
+                android:textSize="@dimen/_16sdp" />
 
             <TextView
                 android:id="@+id/txtName"
                 style="@style/tripItemValue"
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginRight="@dimen/_10sdp"
-                android:layout_weight="1"
-                android:textSize="18sp" />
+                android:layout_weight="2"
+                android:gravity="center_vertical"
+                android:textSize="20sp" />
 
         </LinearLayout>
 
@@ -113,25 +103,38 @@
             android:gravity="center_vertical"
             android:layoutDirection="rtl">
 
-            <TextView
-                style="@style/tripItemValue"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginRight="@dimen/_10sdp"
-                android:text="وضعیت شکایت"
-                android:textSize="18sp" />
 
             <TextView
-                android:id="@+id/txtComplaintStatus"
-                style="@style/tripItemValue"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginRight="@dimen/_10sdp"
+                style="@style/tripItemTitle"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
                 android:layout_weight="1"
-                android:textSize="18sp" />
+                android:gravity="center_vertical"
+                android:text="مقصر"
+                android:textColor="@color/colorAccent"
+                android:textSize="@dimen/_16sdp" />
+
+            <TextView
+                android:id="@+id/txtCulprit"
+                style="@style/tripItemValue"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="2"
+                android:gravity="center_vertical"
+                android:textSize="20sp" />
 
         </LinearLayout>
 
     </LinearLayout>
 
-</LinearLayout>
+    <ImageView
+        android:id="@+id/imgStatus"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:layout_marginLeft="40dp"
+        android:layout_alignParentLeft="true"
+        android:background="@drawable/bg_item_icon"
+        android:padding="8dp"
+        android:src="@drawable/ic_info_status" />
+
+</RelativeLayout>

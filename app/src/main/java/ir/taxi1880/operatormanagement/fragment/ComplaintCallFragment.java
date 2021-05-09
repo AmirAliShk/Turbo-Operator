@@ -38,6 +38,7 @@ import ir.taxi1880.operatormanagement.R;
 import ir.taxi1880.operatormanagement.app.EndPoints;
 import ir.taxi1880.operatormanagement.app.MyApplication;
 import ir.taxi1880.operatormanagement.dialog.GeneralDialog;
+import ir.taxi1880.operatormanagement.dialog.NumbersDialog;
 import ir.taxi1880.operatormanagement.helper.DateHelper;
 import ir.taxi1880.operatormanagement.helper.FileHelper;
 import ir.taxi1880.operatormanagement.helper.StringHelper;
@@ -123,6 +124,18 @@ public class ComplaintCallFragment extends Fragment {
         if (vfMissedCallCustomer != null)
             vfMissedCallCustomer.setDisplayedChild(1);
         missedCall(2);
+    }
+
+    @OnClick({R.id.vfCallCustomer})
+    void onCallCustomer() {
+        new NumbersDialog()
+                .show(complaintDetailsModel.getCustomerMobileNumber(), complaintDetailsModel.getCustomerPhoneNumber());
+    }
+
+    @OnClick({R.id.vfCallDriver})
+    void onCallDriver() {
+        new NumbersDialog()
+                .show(complaintDetailsModel.getDriverMobile(), complaintDetailsModel.getDriverMobile2());
     }
 
     @Nullable
@@ -279,7 +292,7 @@ public class ComplaintCallFragment extends Fragment {
         } catch (Exception e) {
         }
         super.onDestroyView();
-         unbinder.unbind();
+        unbinder.unbind();
     }
 
     private void cancelTimer() {

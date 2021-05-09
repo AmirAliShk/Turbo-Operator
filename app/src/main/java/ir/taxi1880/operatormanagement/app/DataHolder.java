@@ -10,45 +10,54 @@ public class DataHolder {
     boolean fined = false;
     boolean customerLock = false;
     boolean outDriver = false;
+    String voipId = "0";
+
+    public String getVoipId() {
+        return ourInstance.voipId;
+    }
+
+    public void setVoipId(String voipId) {
+        ourInstance.voipId = voipId;
+    }
 
     public String getLockDay() {
-        return lockDay;
+        return ourInstance.lockDay;
     }
 
     public void setLockDay(String lockDay) {
-        this.lockDay = lockDay;
+        ourInstance.lockDay = lockDay;
     }
 
     public boolean isUnlockDriver() {
-        return unlockDriver;
+        return ourInstance.unlockDriver;
     }
 
     public void setUnlockDriver(boolean unlockDriver) {
-        this.unlockDriver = unlockDriver;
+        ourInstance.unlockDriver = unlockDriver;
     }
 
     public boolean isFined() {
-        return fined;
+        return ourInstance.fined;
     }
 
     public void setFined(boolean fined) {
-        this.fined = fined;
+        ourInstance.fined = fined;
     }
 
     public boolean isCustomerLock() {
-        return customerLock;
+        return ourInstance.customerLock;
     }
 
     public void setCustomerLock(boolean customerLock) {
-        this.customerLock = customerLock;
+        ourInstance.customerLock = customerLock;
     }
 
     public boolean isOutDriver() {
-        return outDriver;
+        return ourInstance.outDriver;
     }
 
     public void setOutDriver(boolean outDriver) {
-        this.outDriver = outDriver;
+        ourInstance.outDriver = outDriver;
     }
 
     public boolean isLockDriver() {

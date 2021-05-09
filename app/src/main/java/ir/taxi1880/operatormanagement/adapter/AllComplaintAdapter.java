@@ -101,35 +101,42 @@ public class AllComplaintAdapter extends RecyclerView.Adapter<AllComplaintAdapte
                     JSONObject obj = new JSONObject(args[0].toString());
                     boolean success = obj.getBoolean("success");
 //                    String message = obj.getString("message");
-
+//                    {"success":true,"message":"عملیات با موفقیت انجام شد","data":{"message":"اجازه پذيرش بيشتر از 4 مورد را نداريد","status":0}}
+//                     {"success":true,"message":"عملیات با موفقیت انجام شد","data":{"message":"با موفقيت به شما تعلق گرفت","status":1}}
                     if (success) {
-                        new GeneralDialog()
-                                .message("با موفقیت به لیست شما اضافه شد.")
-                                .cancelable(false)
-                                .firstButton("باشه", () -> {
-                                    if (position != -1)
-                                        allComplaintsModels.remove(position);
+                        JSONObject data = obj.getJSONObject("data");
+                        int status = data.getInt("status");
+                        String message = data.getString("message");
+                        if (status == 1) {
+                            new GeneralDialog()
+                                    .message("با موفقیت به لیست شما اضافه شد.")
+                                    .cancelable(false)
+                                    .firstButton("باشه", () -> {
+                                        if (position != -1)
+                                            allComplaintsModels.remove(position);
 
-                                    notifyDataSetChanged();
+                                        notifyDataSetChanged();
 
-                                    broadcaster = LocalBroadcastManager.getInstance(MyApplication.context);
+                                        broadcaster = LocalBroadcastManager.getInstance(MyApplication.context);
 
-                                    Intent broadcastIntent1 = new Intent(KEY_COUNT_ALL_COMPLAINT);
-                                    broadcastIntent1.putExtra(VALUE_COUNT_ALL_COMPLAINT, allComplaintsModels.size());
-                                    broadcaster.sendBroadcast(broadcastIntent1);
+                                        Intent broadcastIntent1 = new Intent(KEY_COUNT_ALL_COMPLAINT);
+                                        broadcastIntent1.putExtra(VALUE_COUNT_ALL_COMPLAINT, allComplaintsModels.size());
+                                        broadcaster.sendBroadcast(broadcastIntent1);
 
 //                                        Intent broadcastIntent2 = new Intent(KEY_COUNT_PENDING_HIRE);
 //                                        broadcastIntent2.putExtra(KEY_COUNT_PENDING_HIRE, hiresModels.size());
 //                                        broadcaster.sendBroadcast(broadcastIntent2);
 
-                                })
-                                .show();
+                                    })
+                                    .show();
+                        } else {
+                            new GeneralDialog()
+                                    .message(message)//todo error accept more than 4 case
+                                    .cancelable(false)
+                                    .secondButton("باشه", null)
+                                    .show();
+                        }
                     } else {
-                        new GeneralDialog()
-                                .message("message")//todo error accept more than 4 case
-                                .cancelable(false)
-                                .secondButton("باشه", null)
-                                .show();
                         MyApplication.Toast("لطفا دوباره امتحان کنید", Toast.LENGTH_SHORT);
                     }
                 } catch (Exception e) {

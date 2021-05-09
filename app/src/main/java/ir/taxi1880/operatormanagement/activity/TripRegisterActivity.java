@@ -52,6 +52,7 @@ import butterknife.OnFocusChange;
 import butterknife.Unbinder;
 import ir.taxi1880.operatormanagement.R;
 import ir.taxi1880.operatormanagement.adapter.SpinnerAdapter;
+import ir.taxi1880.operatormanagement.app.DataHolder;
 import ir.taxi1880.operatormanagement.app.EndPoints;
 import ir.taxi1880.operatormanagement.app.Keys;
 import ir.taxi1880.operatormanagement.app.MyApplication;
@@ -1669,6 +1670,7 @@ public class TripRegisterActivity extends AppCompatActivity {
                 String participant = PhoneNumberValidation.removePrefix(callModel.getParticipant());
                 queue = callModel.getQueue();
                 voipId = callModel.getVoipId();
+                DataHolder.getInstance().setVoipId(voipId);
                 if (edtTell == null) return;
                 if (participant == null) return;
                 edtTell.setText(participant);

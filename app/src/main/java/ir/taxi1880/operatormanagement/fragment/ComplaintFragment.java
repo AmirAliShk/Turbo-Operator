@@ -111,12 +111,14 @@ public class ComplaintFragment extends Fragment {
     @Override
     public void onStart() {
         super.onStart();
-
-        MyApplication.currentActivity.registerReceiver(counterReceiverNew, new IntentFilter());
-        LocalBroadcastManager.getInstance(MyApplication.currentActivity).registerReceiver((counterReceiverNew), new IntentFilter(KEY_COUNT_ALL_COMPLAINT));
-
-        MyApplication.currentActivity.registerReceiver(counterReceiverPending, new IntentFilter());
-        LocalBroadcastManager.getInstance(MyApplication.currentActivity).registerReceiver((counterReceiverPending), new IntentFilter(KEY_COUNT_PENDING_COMPLAINT));
+        if (counterReceiverNew != null) {
+            MyApplication.currentActivity.registerReceiver(counterReceiverNew, new IntentFilter());
+            LocalBroadcastManager.getInstance(MyApplication.currentActivity).registerReceiver((counterReceiverNew), new IntentFilter(KEY_COUNT_ALL_COMPLAINT));
+        }
+        if (counterReceiverPending != null) {
+            MyApplication.currentActivity.registerReceiver(counterReceiverPending, new IntentFilter());
+            LocalBroadcastManager.getInstance(MyApplication.currentActivity).registerReceiver((counterReceiverPending), new IntentFilter(KEY_COUNT_PENDING_COMPLAINT));
+        }
     }
 
     @Override

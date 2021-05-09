@@ -87,6 +87,7 @@
                             android:text="موبایل"
                             android:textColor="@color/colorWhite"
                             android:textStyle="bold" />
+
                     </RadioGroup>
 
                 </LinearLayout>
@@ -124,47 +125,58 @@
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_gravity="center_vertical">
+                        android:layout_gravity="center_vertical"
+                        android:background="@color/colorWhite"
+                        android:padding="10dp"
+                        android:paddingTop="10dp"
+                        android:paddingBottom="10dp">
 
                         <TextView
-                            style="@style/tripItemValue"
+                            style="@style/tripItemTitle"
                             android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginRight="@dimen/_10sdp"
-                            android:text="تعداد شکایت‌ها"
-                            android:textSize="18sp" />
+                            android:layout_height="match_parent"
+                            android:gravity="center_vertical"
+                            android:text="تعداد شکایات : "
+                            android:textSize="20sp" />
 
                         <TextView
                             android:id="@+id/txtCountComplaint"
                             style="@style/tripItemValue"
                             android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginRight="@dimen/_10sdp"
+                            android:layout_height="match_parent"
+                            android:layout_marginRight="@dimen/_5sdp"
                             android:layout_weight="1"
-                            android:textSize="18sp" />
+                            android:gravity="center_vertical"
+                            android:textColor="@color/colorPrimaryDark"
+                            android:textSize="22sp" />
 
                         <TextView
-                            style="@style/tripItemValue"
+                            style="@style/tripItemTitle"
                             android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
+                            android:layout_height="match_parent"
                             android:layout_marginRight="@dimen/_10sdp"
-                            android:text="تعداد مقصر بودن"
-                            android:textSize="18sp" />
+                            android:gravity="center_vertical"
+                            android:text="تعداد مقصر بودن : "
+                            android:textSize="20sp" />
 
                         <TextView
                             android:id="@+id/txtCountCulprit"
                             style="@style/tripItemValue"
                             android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginRight="@dimen/_10sdp"
+                            android:layout_height="match_parent"
+                            android:layout_marginRight="@dimen/_5sdp"
                             android:layout_weight="1"
-                            android:textSize="18sp" />
+                            android:gravity="center_vertical"
+                            android:textColor="@color/colorAccent"
+                            android:textSize="22sp" />
+
                     </LinearLayout>
 
                     <androidx.recyclerview.widget.RecyclerView
                         android:id="@+id/listComplaintsHistory"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:background="@color/colorPrimaryLighter"
                         android:divider="@null"
                         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
 

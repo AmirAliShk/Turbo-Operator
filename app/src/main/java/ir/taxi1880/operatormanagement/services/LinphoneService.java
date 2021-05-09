@@ -54,6 +54,7 @@ import ir.taxi1880.operatormanagement.R;
 import ir.taxi1880.operatormanagement.activity.CallIncomingActivity;
 import ir.taxi1880.operatormanagement.activity.SupportActivity;
 import ir.taxi1880.operatormanagement.activity.TripRegisterActivity;
+import ir.taxi1880.operatormanagement.app.DataHolder;
 import ir.taxi1880.operatormanagement.app.MyApplication;
 import ir.taxi1880.operatormanagement.helper.ServiceHelper;
 import ir.taxi1880.operatormanagement.push.AvaCrashReporter;
@@ -217,6 +218,7 @@ public class LinphoneService extends Service {
                         }
                     }
                 }
+
                 if (state == Call.State.OutgoingInit) {
                     // Enter the MODE_IN_COMMUNICATION mode as soon as possible, so that
                     // ringback is heard normally in earpiece or bluetooth receiver.
@@ -237,6 +239,7 @@ public class LinphoneService extends Service {
                 if (state == Call.State.End) {
                     MyApplication.prefManager.setCallIncoming(false);
                     MyApplication.prefManager.setConnectedCall(false);
+                    DataHolder.getInstance().setVoipId("0");
                     NotificationManager notificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
                     notificationManager.cancel(0);
                 }

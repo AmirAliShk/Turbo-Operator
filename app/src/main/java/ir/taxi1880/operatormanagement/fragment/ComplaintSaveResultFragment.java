@@ -68,7 +68,7 @@ public class ComplaintSaveResultFragment extends Fragment {
         TypefaceUtil.overrideFonts(view);
 
         edtLockTime.setEnabled(false);
-
+        result();
         return view;
     }
 

@@ -7,6 +7,7 @@ import android.util.Log;
 import android.view.Gravity;
 import android.view.Window;
 import android.view.WindowManager;
+import android.widget.RadioGroup;
 import android.widget.TextView;
 import android.widget.ViewFlipper;
 
@@ -39,7 +40,6 @@ public class ComplaintsHistoryDialog {
     String customerMobile;
     ComplaintsHistoryAdapter mAdapter;
     ArrayList<ComplaintsHistoryModel> complaintsHistoryModels;
-    ComplaintsHistoryModel mComplaintsHistoryModel;
 
     @BindView(R.id.txtCountCulprit)
     TextView txtCountCulprit;
@@ -55,6 +55,29 @@ public class ComplaintsHistoryDialog {
 
     @BindView(R.id.listComplaintsHistory)
     RecyclerView listComplaintsHistory;
+
+    @BindView(R.id.rgSearchType)
+    RadioGroup rgSearchType;
+
+    @OnClick(R.id.rbTell)
+    void onTell() {
+        if (customerTell.length() == 10 && customerTell.startsWith("0")) {
+            customerTell.replaceFirst("0", "");
+            complaintCustomerHistory(customerTell);
+        } else if (customerTell.length() == 8) {
+            customerTell = "51" + customerTell;
+            complaintCustomerHistory(customerTell);
+        }else {
+            complaintCustomerHistory(customerTell);
+        }
+    }
+
+    @OnClick(R.id.rbMobile)
+    void onMobile() {
+        if (rgSearchType.getCheckedRadioButtonId() == R.id.rbMobile) {
+            complaintCustomerHistory(customerMobile.startsWith("0") ? customerMobile.replaceFirst("0", "") : customerMobile);
+        }
+    }
 
     @OnClick(R.id.imgClose)
     void onClose() {
@@ -83,15 +106,46 @@ public class ComplaintsHistoryDialog {
         this.customerTell = customerTell;
         this.customerMobile = customerMobile;
 
-        if (historyOfWho == "driver") {
-            complaintHistory();
-        } else if (historyOfWho == "customer") {
-//todo
+        if (historyOfWho.equals("driver")) {
+
+            if (vfHeader != null)
+                vfHeader.setDisplayedChild(0);
+
+            complaintDriverHistory();
+
+        } else if (historyOfWho.equals("customer")) {
+
+            if (vfHeader != null)
+                vfHeader.setDisplayedChild(1);
+
+            if (rgSearchType.getCheckedRadioButtonId() == R.id.rbTell) {
+
+                if (customerTell.length() == 10 && customerTell.startsWith("0")) {
+                    customerTell.replaceFirst("0", "");
+                    complaintCustomerHistory(customerTell);
+                } else if (customerTell.length() == 8) {
+                    customerTell = "51" + customerTell;
+                    complaintCustomerHistory(customerTell);
+                } else {
+                    complaintCustomerHistory(customerTell);
+                }
+            } else if (rgSearchType.getCheckedRadioButtonId() == R.id.rbMobile) {
+                complaintCustomerHistory(customerMobile.startsWith("0") ? customerMobile.replaceFirst("0", "") : customerMobile);
+            }
+
         }
         dialog.show();
     }
 
-    private void complaintHistory() {
+    private void complaintCustomerHistory(String phone) {
+        if (vfComplaintHistory != null)
+            vfComplaintHistory.setDisplayedChild(0);
+        RequestHelper.builder(EndPoints.COMPLAINT_CUSTOMER_HISTORY + phone)
+                .listener(historyCallBack)
+                .get();
+    }
+
+    private void complaintDriverHistory() {
         if (vfComplaintHistory != null)
             vfComplaintHistory.setDisplayedChild(0);
         RequestHelper.builder(EndPoints.COMPLAINT_DRIVER_HISTORY + taxiCode)
@@ -103,19 +157,6 @@ public class ComplaintsHistoryDialog {
         @Override
         public void onResponse(Runnable reCall, Object... args) {
             MyApplication.handler.post(() -> {
-
-//                        "countCulprit":0,
-//                        "countComplaint":2,
-//                        "saveDate":"1400/02/11",
-//                        "saveTime":"18:35 ",
-//                        "voipId":"0",
-//                        "complaintType":"تعرفه بيش از حد مجاز",
-//                        "serviceId":28520689,
-//                        "customerId":25083573,
-//                        "complaintId":17,
-//                        "typeResultDes":null,
-//                        "statusDes":"جدید",
-//                        "customerName":"حاتمي"
                 try {
                     complaintsHistoryModels = new ArrayList<>();
                     JSONObject listenObj = new JSONObject(args[0].toString());
@@ -125,27 +166,30 @@ public class ComplaintsHistoryDialog {
                         if (vfComplaintHistory != null)
                             vfComplaintHistory.setDisplayedChild(1);
                         JSONArray dataArr = listenObj.getJSONArray("data");
-                        for (int i = 0; i < dataArr.length(); i++) {
-                            JSONObject dataObj = dataArr.getJSONObject(i);
+                        JSONObject dataObj = dataArr.getJSONObject(0);
+                        txtCountCulprit.setText(dataObj.getInt("countCulprit") + "");
+                        txtCountComplaint.setText(dataObj.getInt("countComplaint") + "");
+
+                        String content = dataObj.getString("list");
+                        JSONArray contentArr = new JSONArray(content);
+                        for (int j = 0; j < contentArr.length(); j++) {
+                            JSONObject contentObj = contentArr.getJSONObject(j);
                             ComplaintsHistoryModel model = new ComplaintsHistoryModel();
-
-                            model.setSaveDate(dataObj.getString("saveDate"));
-                            model.setSaveTime(dataObj.getString("saveTime"));
-                            model.setComplaintType(dataObj.getString("complaintType"));
-                            model.setCustomerName(dataObj.getString("customerName"));
-                            model.setTypeResultDes(dataObj.getString("typeResultDes"));
-                            model.setCountComplaint(dataObj.getInt("countComplaint"));
-                            model.setCountCulprit(dataObj.getInt("countCulprit"));
-
-                            if (historyOfWho == "driver") {
-                                if (vfHeader != null)
-                                    vfHeader.setDisplayedChild(0);
-                            } else {
-                                if (vfHeader != null)
-                                    vfHeader.setDisplayedChild(1);
-                            }
+                            model.setSaveDate(contentObj.getString("saveDate"));
+                            model.setSaveTime(contentObj.getString("saveTime"));
+                            model.setComplaintType(contentObj.getString("complaintType"));
+                            model.setCustomerName(contentObj.getString("customerName"));
+                            model.setTypeResultDes(contentObj.getString("typeResultDes"));
+//                            model.setStatusDes(contentObj.getInt("statusDes"));//todo
 
                             complaintsHistoryModels.add(model);
+                        }
+                        if (historyOfWho.equals("driver")) {
+                            if (vfHeader != null)
+                                vfHeader.setDisplayedChild(0);
+                        } else if (historyOfWho.equals("customer")) {
+                            if (vfHeader != null)
+                                vfHeader.setDisplayedChild(1);
                         }
 
                         if (complaintsHistoryModels.size() == 0) {
@@ -157,8 +201,6 @@ public class ComplaintsHistoryDialog {
 
                             mAdapter = new ComplaintsHistoryAdapter(MyApplication.currentActivity, complaintsHistoryModels);
                             listComplaintsHistory.setAdapter(mAdapter);
-//                            txtCountCulprit.setText(mComplaintsHistoryModel.getCountCulprit());
-//                            txtCountComplaint.setText(mComplaintsHistoryModel.getCountComplaint());
                         }
                     } else {
                         if (vfComplaintHistory != null)

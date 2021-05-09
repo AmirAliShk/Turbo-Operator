@@ -60,19 +60,16 @@ public class PendingComplaintAdapter extends RecyclerView.Adapter<PendingComplai
         switch (model.getStatus()) {
             case 1: //accepted request
                 holder.imgStatus.setVisibility(View.VISIBLE);
-                holder.txtComplaintStatus.setText("اطلاعات سفر");
                 res = R.drawable.ic_info_status;
                 break;
 
             case 2: //waiting for docs
                 holder.imgStatus.setVisibility(View.VISIBLE);
-                holder.txtComplaintStatus.setText("تماس");
                 res = R.drawable.ic_call_status;
                 break;
 
             case 3: // waiting for saveResult
                 holder.imgStatus.setVisibility(View.VISIBLE);
-                holder.txtComplaintStatus.setText("نتیجه‌گیری");
                 res = R.drawable.ic_conclusion_status;
                 break;
         }
@@ -99,14 +96,12 @@ public class PendingComplaintAdapter extends RecyclerView.Adapter<PendingComplai
         TextView txtComplaintDate;
         TextView txtCustomerName;
         TextView txtComplaintType;
-        TextView txtComplaintStatus;
         ImageView imgStatus;
         ViewFlipper vfDetail;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
             imgStatus = itemView.findViewById(R.id.imgStatus);
-            txtComplaintStatus = itemView.findViewById(R.id.txtComplaintStatus);
             txtComplaintDate = itemView.findViewById(R.id.txtComplaintDate);
             txtCustomerName = itemView.findViewById(R.id.txtCustomerName);
             txtComplaintType = itemView.findViewById(R.id.txtComplaintType);

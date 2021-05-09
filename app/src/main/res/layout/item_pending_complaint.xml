@@ -4,21 +4,23 @@
     android:id="@+id/rlParent"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:gravity="bottom"
-    android:layoutDirection="rtl">
+    android:gravity="center"
+    android:layoutDirection="rtl"
+    android:paddingLeft="25dp"
+    android:paddingTop="15dp"
+    android:paddingRight="25dp"
+    android:paddingBottom="15dp">
 
     <ViewFlipper
         android:id="@+id/vfDetail"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="20dp"
-        android:layout_marginTop="20dp"
-        android:layout_marginRight="20dp"
+        android:layout_marginTop="30dp"
         android:layout_marginBottom="5dp"
         android:background="@drawable/bg_edit_text"
-        android:paddingLeft="10dp"
+        android:paddingLeft="15dp"
         android:paddingTop="15dp"
-        android:paddingRight="15dp"
+        android:paddingRight="20dp"
         android:paddingBottom="15dp">
 
         <LinearLayout
@@ -43,9 +45,9 @@
                     android:id="@+id/txtComplaintDate"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:gravity="right|center_vertical"
+                    android:gravity="center_vertical"
                     android:textColor="@color/colorBlack"
-                    android:textSize="20sp" />
+                    android:textSize="@dimen/_17ssp" />
 
             </LinearLayout>
 
@@ -65,13 +67,14 @@
                     android:layout_weight="1"
                     android:gravity="center_vertical"
                     android:text="نام مهمان"
-                    android:textColor="@color/grayDark" />
+                    android:textColor="@color/grayDark"
+                    android:textSize="@dimen/_16sdp" />
 
                 <TextView
                     android:id="@+id/txtCustomerName"
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
-                    android:layout_weight="3"
+                    android:layout_weight="2"
                     android:gravity="center_vertical"
                     android:textColor="@color/colorBlack"
                     android:textSize="@dimen/_18ssp"
@@ -89,50 +92,24 @@
                 android:orientation="horizontal">
 
                 <TextView
+                    style="@style/tripItemTitle"
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:layout_weight="1"
                     android:gravity="center_vertical"
                     android:text="عنوان شکایت"
                     android:textColor="@color/grayDark"
-                    style="@style/tripItemTitle"/>
+                    android:textSize="@dimen/_16sdp" />
 
                 <TextView
                     android:id="@+id/txtComplaintType"
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
-                    android:layout_weight="3"
+                    android:layout_weight="2"
                     android:gravity="center_vertical"
                     android:textColor="@color/colorBlack"
                     android:textSize="@dimen/_18ssp"
                     android:textStyle="bold" />
-
-            </LinearLayout>
-
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="10dp" />
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:gravity="center_vertical"
-                android:orientation="horizontal">
-
-                <ImageView
-                    android:id="@+id/imgStatus"
-                    android:layout_width="30dp"
-                    android:layout_height="20dp"
-                    android:gravity="center_vertical"
-                    android:src="@drawable/ic_info_status" />
-
-                <TextView
-                    android:id="@+id/txtComplaintStatus"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:gravity="center_vertical"
-                    android:textColor="@color/colorBlack"
-                    android:textSize="20sp" />
 
             </LinearLayout>
 
@@ -145,5 +122,15 @@
             app:indicatorColor="@color/colorBlack" />
 
     </ViewFlipper>
+
+    <ImageView
+        android:id="@+id/imgStatus"
+        android:layout_width="47dp"
+        android:layout_height="47dp"
+        android:layout_alignParentLeft="true"
+        android:layout_marginLeft="25dp"
+        android:background="@drawable/bg_item_icon"
+        android:padding="10dp"
+        android:src="@drawable/ic_info_status" />
 
 </RelativeLayout>

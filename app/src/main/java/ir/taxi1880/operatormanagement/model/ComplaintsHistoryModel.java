@@ -12,7 +12,7 @@ public class ComplaintsHistoryModel {
     int customerId;
     int complaintId;
     String typeResultDes;
-    String statusDes;
+    int statusDes;
     String customerName;
 
     public String getTypeResultDes() {
@@ -95,11 +95,11 @@ public class ComplaintsHistoryModel {
         this.complaintId = complaintId;
     }
 
-    public String getStatusDes() {
+    public int getStatusDes() {
         return statusDes;
     }
 
-    public void setStatusDes(String statusDes) {
+    public void setStatusDes(int statusDes) {
         this.statusDes = statusDes;
     }
 
