@@ -561,7 +561,6 @@ public class TripRegisterActivity extends AppCompatActivity {
     @OnClick(R.id.clearDestinationAddress)
     void onClearDestinationAddress() {
         edtDestinationAddress.getText().clear();
-        // TODO‌ check below params
         destinationStation = 0;
         destAddressLength = 0;
         destAddressChangeCounter = 0;

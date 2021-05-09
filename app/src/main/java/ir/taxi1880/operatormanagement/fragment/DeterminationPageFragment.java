@@ -308,7 +308,6 @@ public class DeterminationPageFragment extends Fragment {
                     JSONArray dataArr = obj.getJSONArray("data");
 
                     if (success) {
-
                         if (pressedRefresh) {
                             if (imgRefresh != null)
                                 imgRefresh.clearAnimation();
@@ -340,7 +339,6 @@ public class DeterminationPageFragment extends Fragment {
                                     tripModel.setId(dataObj.getInt("Id")); // the unique id for each trip
                                     tripModel.setPriceable(dataObj.getInt("priceable")); // if this value was 0, no need to set destination.
                                     priceable = dataObj.getInt("priceable");
-//                                    priceable = 1; // if this value was 0, no need to set destination.
                                     String content = dataObj.getString("Content");
                                     JSONObject contentObj = new JSONObject(content);
                                     tripModel.setOperatorId(contentObj.getInt("userId")); // ID of the person who registered the service
@@ -357,6 +355,8 @@ public class DeterminationPageFragment extends Fragment {
                                     dataBase.insertTripRow(tripModel);
                                 } catch (Exception e) {
                                     e.printStackTrace();
+                                    if (imgRefresh != null)
+                                        imgRefresh.clearAnimation();
                                 }
                             }
 
