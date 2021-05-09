@@ -145,6 +145,9 @@ public class AllMistakesFragment extends Fragment {
                             model.setVoipId(dataObj.getString("VoipId"));
                             model.setStationCode(dataObj.getInt("stationCode"));
                             model.setCity(dataObj.getInt("cityId"));
+                            model.setDestStation(dataObj.getString("destinationStation"));
+                            model.setDestination(dataObj.getString("destinationAddress"));
+                            model.setPrice(dataObj.getString("servicePrice"));
 
                             allMistakesModels.add(model);
                         }

@@ -13,11 +13,38 @@ public class AllMistakesModel {
     private String mobile;
     private int userCodeContact;
     private String address;
+    private String destination;
+    private String destStation;
     private String customerName;
     private String conDate;
     private String conTime;
     private String sendTime;
     private String VoipId;
+    private String price;
+
+    public String getPrice() {
+        return price;
+    }
+
+    public void setPrice(String price) {
+        this.price = price;
+    }
+
+    public String getDestination() {
+        return destination;
+    }
+
+    public void setDestination(String destination) {
+        this.destination = destination;
+    }
+
+    public String getDestStation() {
+        return destStation;
+    }
+
+    public void setDestStation(String destStation) {
+        this.destStation = destStation;
+    }
 
     public int getCity() {
         return city;

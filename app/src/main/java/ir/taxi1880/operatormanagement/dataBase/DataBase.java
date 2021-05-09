@@ -63,6 +63,9 @@ public class DataBase extends SQLiteOpenHelper {
     private static String COLUMN_MISTAKES_CON_DATE = "mistakesConDate";
     private static String COLUMN_MISTAKES_CON_TIME = "mistakesConTime";
     private static String COLUMN_MISTAKES_SEND_TIME = "mistakesSendTime";
+    private static String COLUMN_MISTAKE_DESTINATION = "destination";
+    private static String COLUMN_MISTAKES_DESTINATION_CODE = "destStation";
+    private static String COLUMN_MISTAKES_PRICE = "price";
 
     //******************************************************************************************
 
@@ -350,6 +353,9 @@ public class DataBase extends SQLiteOpenHelper {
                 COLUMN_MISTAKES_CON_DATE + " TEXT," +
                 COLUMN_MISTAKES_CON_TIME + " TEXT," +
                 COLUMN_MISTAKES_SEND_TIME + " TEXT," +
+                COLUMN_MISTAKE_DESTINATION + " TEXT," +
+                COLUMN_MISTAKES_DESTINATION_CODE + " TEXT," +
+                COLUMN_MISTAKES_PRICE + " TEXT," +
                 COLUMN_MISTAKES_STATION_CODE + " INTEGER," +
                 COLUMN_MISTAKES_PASSENGER_VOICE + " TEXT )"
         );
@@ -375,6 +381,9 @@ public class DataBase extends SQLiteOpenHelper {
             contentValues.put(COLUMN_MISTAKES_CON_DATE, mistakesModel.getConDate());
             contentValues.put(COLUMN_MISTAKES_CON_TIME, mistakesModel.getConTime());
             contentValues.put(COLUMN_MISTAKES_SEND_TIME, mistakesModel.getSendTime());
+            contentValues.put(COLUMN_MISTAKES_DESTINATION_CODE, mistakesModel.getDestStation());
+            contentValues.put(COLUMN_MISTAKE_DESTINATION, mistakesModel.getDestination());
+            contentValues.put(COLUMN_MISTAKES_PRICE, mistakesModel.getPrice());
             contentValues.put(COLUMN_MISTAKES_PASSENGER_VOICE, mistakesModel.getVoipId());
             sqLiteDatabase.insertWithOnConflict(MISTAKES_TABLE, COLUMN_MISTAKES_ID, contentValues, SQLiteDatabase.CONFLICT_REPLACE);
         } catch (Exception e) {
@@ -405,6 +414,9 @@ public class DataBase extends SQLiteOpenHelper {
         pendingMistakesModel.setConDate(res.getString(res.getColumnIndex(COLUMN_MISTAKES_CON_DATE)));
         pendingMistakesModel.setConTime(res.getString(res.getColumnIndex(COLUMN_MISTAKES_CON_TIME)));
         pendingMistakesModel.setSendTime(res.getString(res.getColumnIndex(COLUMN_MISTAKES_SEND_TIME)));
+        pendingMistakesModel.setDestination(res.getString(res.getColumnIndex(COLUMN_MISTAKE_DESTINATION)));
+        pendingMistakesModel.setDestStation(res.getString(res.getColumnIndex(COLUMN_MISTAKES_DESTINATION_CODE)));
+        pendingMistakesModel.setPrice(res.getString(res.getColumnIndex(COLUMN_MISTAKES_PRICE)));
         pendingMistakesModel.setStationCode(res.getInt(res.getColumnIndex(COLUMN_MISTAKES_STATION_CODE)));
         pendingMistakesModel.setVoipId(res.getString(res.getColumnIndex(COLUMN_MISTAKES_PASSENGER_VOICE)));
 
@@ -433,6 +445,9 @@ public class DataBase extends SQLiteOpenHelper {
         pendingMistakesModel.setConDate(res.getString(res.getColumnIndex(COLUMN_MISTAKES_CON_DATE)));
         pendingMistakesModel.setConTime(res.getString(res.getColumnIndex(COLUMN_MISTAKES_CON_TIME)));
         pendingMistakesModel.setSendTime(res.getString(res.getColumnIndex(COLUMN_MISTAKES_SEND_TIME)));
+        pendingMistakesModel.setDestination(res.getString(res.getColumnIndex(COLUMN_MISTAKE_DESTINATION)));
+        pendingMistakesModel.setDestStation(res.getString(res.getColumnIndex(COLUMN_MISTAKES_DESTINATION_CODE)));
+        pendingMistakesModel.setPrice(res.getString(res.getColumnIndex(COLUMN_MISTAKES_PRICE)));
         pendingMistakesModel.setStationCode(res.getInt(res.getColumnIndex(COLUMN_MISTAKES_STATION_CODE)));
         pendingMistakesModel.setVoipId(res.getString(res.getColumnIndex(COLUMN_MISTAKES_PASSENGER_VOICE)));
 

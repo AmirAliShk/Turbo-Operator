@@ -125,11 +125,20 @@ public class PendingMistakesFragment extends Fragment {
     @BindView(R.id.txtCity)
     TextView txtCity;
 
-    @BindView(R.id.txtAddress)
-    TextView txtAddress;
+    @BindView(R.id.txtOriginAddress)
+    TextView txtOriginAddress;
 
-    @BindView(R.id.txtStationCode)
-    TextView txtStationCode;
+    @BindView(R.id.txtOriginStation)
+    TextView txtOriginStation;
+
+    @BindView(R.id.txtPrice)
+    TextView txtPrice;
+
+    @BindView(R.id.txtDestAddress)
+    TextView txtDestAddress;
+
+    @BindView(R.id.txtDestStation)
+    TextView txtDestStation;
 
     @OnClick(R.id.imgPlay)
     void onPlay() {
@@ -316,14 +325,17 @@ public class PendingMistakesFragment extends Fragment {
     void getMistakesFromDB() {
         if (dataBase.getMistakesCount() > 0) {
             model = dataBase.getMistakesRow();
-            txtAddress.setText(StringHelper.toPersianDigits(model.getAddress()));
+            txtOriginAddress.setText(StringHelper.toPersianDigits(model.getAddress()));
             txtPassengerName.setText(StringHelper.toPersianDigits(model.getCustomerName()));
             txtPassengerPhone.setText(StringHelper.toPersianDigits(model.getTell()));
-            txtStationCode.setText(StringHelper.toPersianDigits(model.getStationCode() + ""));
+            txtOriginStation.setText(StringHelper.toPersianDigits(model.getStationCode() + ""));
             txtCity.setText(StringHelper.toPersianDigits(dataBase.getCityName(model.getCity())));
             txtDescription.setText(StringHelper.toPersianDigits(model.getDescription()));
             txtTripTime.setText(StringHelper.toPersianDigits(model.getTime()));
             txtTripDate.setText(StringHelper.toPersianDigits(model.getDate()));
+            txtDestAddress.setText(StringHelper.toPersianDigits(model.getDestination()));
+            txtDestStation.setText(StringHelper.toPersianDigits(model.getDestStation()));
+            txtPrice.setText(StringHelper.toPersianDigits(model.getPrice()));
 
             skbTimer.setProgress(0);
 
@@ -440,6 +452,9 @@ public class PendingMistakesFragment extends Fragment {
                             model.setVoipId(dataObj.getString("VoipId"));
                             model.setStationCode(dataObj.getInt("stationCode"));
                             model.setCity(dataObj.getInt("cityId"));
+                            model.setDestStation(dataObj.getString("destinationStation"));
+                            model.setDestination(dataObj.getString("destinationAddress"));
+                            model.setPrice(dataObj.getString("servicePrice"));
 
                             dataBase.insertMistakes(model);
                         }
