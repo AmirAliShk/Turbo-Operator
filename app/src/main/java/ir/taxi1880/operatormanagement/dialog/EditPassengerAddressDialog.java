@@ -96,7 +96,7 @@ public class EditPassengerAddressDialog {
 
         initSpinner(cityCode);
 
-        if (tripModel.getOriginStation() == 0 && tripModel.getDestinationStation() == 0) {
+        if (tripModel.getOriginStation() == 0 && tripModel.getDestinationStation() == 0 && tripModel.getPriceable() != 0) {
             edtDestinationAddress.setText(tripModel.getDestination());
             edtOriginAddress.setText(tripModel.getOriginText());
         } else if (tripModel.getOriginStation() == 0) {
@@ -106,15 +106,21 @@ public class EditPassengerAddressDialog {
             txtOriginStTitle.setText("ایستگاه");
             edtOriginAddress.setText(tripModel.getOriginText());
         } else if (tripModel.getDestinationStation() == 0) {
-            llOriginAddress.setVisibility(View.GONE);
-            llOriginStation.setVisibility(View.GONE);
-            txtDestinationTitle.setText("آدرس");
-            txtDestinationStTitle.setText("ایستگاه");
-            edtDestinationAddress.setText(tripModel.getDestination());
+            if (tripModel.getPriceable() == 0) {
+                llDestinationAddress.setVisibility(View.GONE);
+                llDestinationStation.setVisibility(View.GONE);
+                txtOriginTitle.setText("آدرس");
+                txtOriginStTitle.setText("ایستگاه");
+            } else {
+                llOriginAddress.setVisibility(View.GONE);
+                llOriginStation.setVisibility(View.GONE);
+                txtDestinationTitle.setText("آدرس");
+                txtDestinationStTitle.setText("ایستگاه");
+                edtDestinationAddress.setText(tripModel.getDestination());
+            }
         }
 
         imgClose.setOnClickListener(view -> dismiss());
-
         llParent.setOnClickListener(view -> KeyBoardHelper.hideKeyboard());
 
         btnSubmit.setOnClickListener(view -> {
@@ -130,7 +136,7 @@ public class EditPassengerAddressDialog {
                 MyApplication.Toast("لطفا شهر را انتخاب کنید.", Toast.LENGTH_SHORT);
                 return;
             }
-            if (tripModel.getOriginStation() == 0 && tripModel.getDestinationStation() == 0) {
+            if (tripModel.getOriginStation() == 0 && tripModel.getDestinationStation() == 0 && tripModel.getPriceable() != 0) {
                 destAddress = edtDestinationAddress.getText().toString();
                 destStationCode = edtDestinationStation.getText().toString();
                 originAddress = edtOriginAddress.getText().toString();

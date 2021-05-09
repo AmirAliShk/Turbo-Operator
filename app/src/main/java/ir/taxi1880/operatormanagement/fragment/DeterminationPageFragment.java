@@ -63,7 +63,6 @@ public class DeterminationPageFragment extends Fragment {
     boolean isOriginZero = false;
     boolean isDestinationZero = false;
     boolean bothStationAreZero = false;
-    int priceable;
     Timer timer;
 
     @OnClick(R.id.imgBack)
@@ -338,7 +337,6 @@ public class DeterminationPageFragment extends Fragment {
                                     DBTripModel tripModel = new DBTripModel();
                                     tripModel.setId(dataObj.getInt("Id")); // the unique id for each trip
                                     tripModel.setPriceable(dataObj.getInt("priceable")); // if this value was 0, no need to set destination.
-                                    priceable = dataObj.getInt("priceable");
                                     String content = dataObj.getString("Content");
                                     JSONObject contentObj = new JSONObject(content);
                                     tripModel.setOperatorId(contentObj.getInt("userId")); // ID of the person who registered the service
@@ -394,6 +392,8 @@ public class DeterminationPageFragment extends Fragment {
                     }
                 } catch (JSONException e) {
                     e.printStackTrace();
+                    isFinished = false;
+                    pressedRefresh = false;
                     if (imgRefresh != null)
                         imgRefresh.clearAnimation();
                 }
@@ -637,88 +637,49 @@ public class DeterminationPageFragment extends Fragment {
     };
 
     private String showAddress() {
-        isDestinationZero = false;
-        isOriginZero = false;
-        bothStationAreZero = false;
-        if (txtAddress == null) return "";
-        if (txtRemainingAddress == null) return "";
+        try {
+            isDestinationZero = false;
+            isOriginZero = false;
+            bothStationAreZero = false;
+            if (txtAddress == null) return "";
+            if (txtRemainingAddress == null) return "";
 
-        if (dataBase.getRemainingAddress() == 0) {
-            txtRemainingAddress.setText("");
-            if (!MyApplication.prefManager.isStartGettingAddress()) {
-                return "برای مشاهده آدرس ها فعال شوید";
-            } else {
-                return "آدرسی موجود نیست...";
-            }
-        } else {
-            txtRemainingAddress.setText(dataBase.getRemainingAddress() + "");
-            String cityName = dataBase.getCityName2(dataBase.getTopAddress().getCity());
-
-            if (dataBase.getTopAddress().getOriginStation() == 0 && dataBase.getTopAddress().getDestinationStation() == 0 && priceable != 0) {
-                bothStationAreZero = true;
-                return cityName + " , " + dataBase.getTopAddress().getOriginText();
-            }
-
-            if (dataBase.getTopAddress().getOriginStation() == 0) {
-                isOriginZero = true;
-                return cityName + " , " + dataBase.getTopAddress().getOriginText();
-            }
-
-            if (dataBase.getTopAddress().getDestinationStation() == 0) {
-                if (priceable == 0) {
-                    onPressRefresh();
-                    return "";
+            if (dataBase.getRemainingAddress() == 0) {
+                txtRemainingAddress.setText("");
+                if (!MyApplication.prefManager.isStartGettingAddress()) {
+                    return "برای مشاهده آدرس ها فعال شوید";
                 } else {
-                    isDestinationZero = true;
-                    return cityName + " , " + dataBase.getTopAddress().getDestination();
+                    return "آدرسی موجود نیست...";
                 }
-            }
+            } else {
+                txtRemainingAddress.setText(dataBase.getRemainingAddress() + "");
+                String cityName = dataBase.getCityName2(dataBase.getTopAddress().getCity());
 
+                if (dataBase.getTopAddress().getOriginStation() == 0 && dataBase.getTopAddress().getDestinationStation() == 0 && dataBase.getTopAddress().getPriceable() != 0) {
+                    bothStationAreZero = true;
+                    return cityName + " , " + dataBase.getTopAddress().getOriginText();
+                }
+
+                if (dataBase.getTopAddress().getOriginStation() == 0) {
+                    isOriginZero = true;
+                    return cityName + " , " + dataBase.getTopAddress().getOriginText();
+                }
+
+                if (dataBase.getTopAddress().getDestinationStation() == 0) {
+                    if (dataBase.getTopAddress().getPriceable() == 0) {
+                        onPressRefresh();
+                        return "";
+                    } else {
+                        isDestinationZero = true;
+                        return cityName + " , " + dataBase.getTopAddress().getDestination();
+                    }
+                }
+
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
         }
         return "";
-    }
-
-    @SuppressLint("SetTextI18n")
-    private void setAddress() {
-        isDestinationZero = false;
-        isOriginZero = false;
-        bothStationAreZero = false;
-        if (txtAddress == null) return;
-        if (txtRemainingAddress == null) return;
-        if (dataBase.getRemainingAddress() > 0) {
-            String cityName = dataBase.getCityName2(dataBase.getTopAddress().getCity());
-            Log.i(TAG, "setAddress: originStation = " + dataBase.getTopAddress().getOriginStation());
-            Log.i(TAG, "setAddress: destinationStation = " + dataBase.getTopAddress().getDestinationStation());
-            txtRemainingAddress.setText("" + dataBase.getRemainingAddress());
-
-            if (dataBase.getTopAddress().getOriginStation() == 0 && dataBase.getTopAddress().getDestinationStation() == 0) {
-                Log.i(TAG, "setAddress: hey i'm here both of them are 0 & ‌" + dataBase.getTopAddress().getOriginText() + " & " + dataBase.getTopAddress().getDestination());
-                bothStationAreZero = true;
-                txtAddress.setText(cityName + " , " + dataBase.getTopAddress().getOriginText());
-                return;
-            }
-
-            if (dataBase.getTopAddress().getOriginStation() == 0) {
-                Log.i(TAG, "setAddress: hey i'm here origin is 0 & ‌" + dataBase.getTopAddress().getOriginText() + " & " + dataBase.getTopAddress().getDestination());
-                isOriginZero = true;
-                txtAddress.setText(cityName + " , " + dataBase.getTopAddress().getOriginText());
-                return;
-            }
-
-            if (dataBase.getTopAddress().getDestinationStation() == 0 && priceable != 0) {
-                Log.i(TAG, "setAddress: hey i'm here destination is 0 & ‌" + dataBase.getTopAddress().getOriginText() + " & " + dataBase.getTopAddress().getDestination());
-                isDestinationZero = true;
-                txtAddress.setText(cityName + " , " + dataBase.getTopAddress().getDestination());
-            }
-
-        } else {
-            if (!MyApplication.prefManager.isStartGettingAddress()) {
-                txtAddress.setText("برای مشاهده آدرس ها فعال شوید");
-            } else {
-                txtAddress.setText("آدرسی موجود نیست...");
-            }
-            txtRemainingAddress.setText("");
-        }
     }
 
     private void startGetAddressTimer() {
