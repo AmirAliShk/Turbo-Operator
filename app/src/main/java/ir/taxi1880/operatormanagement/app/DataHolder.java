@@ -5,7 +5,7 @@ public class DataHolder {
     public String pushType = null;
     byte complaintResult = 0;
     boolean lockDriver = false;
-    String lockDay = "0";
+    String lockDay = "";
     boolean unlockDriver = false;
     boolean fined = false;
     boolean customerLock = false;

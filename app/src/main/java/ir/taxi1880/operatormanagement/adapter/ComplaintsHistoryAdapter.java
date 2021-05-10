@@ -1,32 +1,20 @@
 package ir.taxi1880.operatormanagement.adapter;
 
-import android.app.Activity;
 import android.content.Context;
-import android.graphics.Color;
-import android.graphics.drawable.Drawable;
-import android.os.Build;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.ViewFlipper;
 
 import androidx.annotation.NonNull;
-import androidx.appcompat.content.res.AppCompatResources;
-import androidx.core.graphics.drawable.DrawableCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.warkiz.widget.IndicatorSeekBar;
-
 import java.util.ArrayList;
-import java.util.Date;
-
 import ir.taxi1880.operatormanagement.R;
 import ir.taxi1880.operatormanagement.helper.DateHelper;
 import ir.taxi1880.operatormanagement.helper.TypefaceUtil;
 import ir.taxi1880.operatormanagement.model.ComplaintsHistoryModel;
-import ir.taxi1880.operatormanagement.model.RecentCallsModel;
 
 import static ir.taxi1880.operatormanagement.app.MyApplication.context;
 
@@ -74,34 +62,34 @@ public class ComplaintsHistoryAdapter extends RecyclerView.Adapter<ComplaintsHis
         holder.txtName.setText(model.getCustomerName());
         holder.txtCulprit.setText(model.getTypeResultDes());
 
-//        int res = R.drawable.ic_info_status;//todo
-//        switch (model.getStatusDes()) {
-//            case 0: //new complaint
-//                holder.imgStatus.setVisibility(View.VISIBLE);
-//                res = R.drawable.ic_info_status;
-//                break;
-//
-//            case 1: //accepted complaint
-//                holder.imgStatus.setVisibility(View.VISIBLE);
-//                res = R.drawable.ic_info_status;
-//                break;
-//
-//            case 2: //waiting for call
-//                holder.imgStatus.setVisibility(View.VISIBLE);
-//                res = R.drawable.ic_call_status;
-//                break;
-//
-//            case 3: // waiting for result
-//                holder.imgStatus.setVisibility(View.VISIBLE);
-//                res = R.drawable.ic_conclusion_status;
-//                break;
-//
-//            case 4: // ended
-//                holder.imgStatus.setVisibility(View.VISIBLE);
-//                res = R.drawable.ic_conclusion_status;
-//                break;
-//        }
-//        holder.imgStatus.setImageResource(res);
+        int res = R.drawable.ic_new_complaint;
+        switch (model.getStatus()) {
+            case 0: //new complaint
+                holder.imgStatus.setVisibility(View.VISIBLE);
+                res = R.drawable.ic_new_complaint;
+                break;
+
+            case 1: //accepted complaint
+                holder.imgStatus.setVisibility(View.VISIBLE);
+                res = R.drawable.ic_info_status;
+                break;
+
+            case 2: //waiting for call
+                holder.imgStatus.setVisibility(View.VISIBLE);
+                res = R.drawable.ic_call_status;
+                break;
+
+            case 3: // waiting for result
+                holder.imgStatus.setVisibility(View.VISIBLE);
+                res = R.drawable.ic_conclusion_status;
+                break;
+
+            case 4: // ended
+                holder.imgStatus.setVisibility(View.VISIBLE);
+                res = R.drawable.ic_finished_complaint;
+                break;
+        }
+        holder.imgStatus.setImageResource(res);
     }
 
     @Override

@@ -76,7 +76,7 @@ public class PendingComplaintFragment extends Fragment {
     private void getPendingRequests() {
         if (vfPendingComplaint != null)
             vfPendingComplaint.setDisplayedChild(0);
-        RequestHelper.builder(EndPoints.COMPLAINT_WEBSERVICE_PATH + 1)//todo Status = New 0 , admission 1
+        RequestHelper.builder(EndPoints.COMPLAINT_WEBSERVICE_PATH + 1)// Status = New 0 , admission 1
                 .listener(PendingRequestsCallBack)
                 .get();
     }

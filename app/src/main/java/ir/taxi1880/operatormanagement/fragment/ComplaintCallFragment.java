@@ -356,7 +356,6 @@ public class ComplaintCallFragment extends Fragment {
                             new GeneralDialog()
                                     .message(message)
                                     .cancelable(false)
-                                    .firstButton("تلاش مجدد", null) //todo
                                     .secondButton("برگشت", null)
                                     .show();
                         } else {

@@ -7,6 +7,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.widget.LinearLayout;
+import android.widget.Toast;
 import android.widget.ViewFlipper;
 
 import androidx.fragment.app.Fragment;
@@ -73,9 +74,6 @@ public class ComplaintDetailFragment extends Fragment {
 
     @OnClick(R.id.btnSaveResult)
     void onConfirm() {
-        if (vfNextStep != null)
-            vfNextStep.setDisplayedChild(1);
-
 //        complaintId	int
 //        typeResult	tinyint
 //        lockDriver	tinyint
@@ -85,16 +83,22 @@ public class ComplaintDetailFragment extends Fragment {
 //        customerLock	tinyint
 //        outDriver	    tinyint
 
-        new GeneralDialog()
-                .message("ثبت نتیجه‌ی شکایت؟")
-                .cancelable(false)
-                .firstButton("بله", () -> complaintSaveResult())
-                .secondButton("خیر", () -> {
-                    if (vfNextStep != null) {
-                        vfNextStep.setDisplayedChild(2);
-                    }
-                })
-                .show();
+        if (DataHolder.getInstance().getComplaintResult() == 0) {
+            MyApplication.Toast("لطفا مقصر را مشخص کنید", Toast.LENGTH_SHORT);
+        } else if (DataHolder.getInstance().isLockDriver() && DataHolder.getInstance().getLockDay().isEmpty()) {
+            MyApplication.Toast("لطفا تعداد روزهای قفل راننده را انتخاب کنید", Toast.LENGTH_SHORT);
+        } else {
+            new GeneralDialog()
+                    .message("ثبت نتیجه‌ی شکایت؟")
+                    .cancelable(false)
+                    .firstButton("بله", () -> complaintSaveResult())
+                    .secondButton("خیر", () -> {
+                        if (vfNextStep != null) {
+                            vfNextStep.setDisplayedChild(2);
+                        }
+                    })
+                    .show();
+        }
     }
 
     @OnClick(R.id.btnTripDetails)
@@ -108,9 +112,9 @@ public class ComplaintDetailFragment extends Fragment {
     }
 
     @OnClick(R.id.btnOptions)
-    void onOptions(){
+    void onOptions() {
         new ComplaintOptionsDialog()
-                .show(complaintDetailsModel.getCustomerPhoneNumber(),complaintDetailsModel.getCustomerMobileNumber(),complaintDetailsModel.getTaxicode());
+                .show(complaintDetailsModel.getCustomerPhoneNumber(), complaintDetailsModel.getCustomerMobileNumber(), complaintDetailsModel.getTaxicode());
     }
 
     public ComplaintDetailFragment(ComplaintDetailsModel complaintsModel) {
@@ -260,6 +264,8 @@ public class ComplaintDetailFragment extends Fragment {
     };
 
     private void complaintSaveResult() {
+        if (vfNextStep != null)
+            vfNextStep.setDisplayedChild(1);
         RequestHelper.builder(EndPoints.COMPLAINT_FINISH)
                 .addParam("complaintId", complaintDetailsModel.getComplaintId())
                 .addParam("typeResult", DataHolder.getInstance().getComplaintResult())

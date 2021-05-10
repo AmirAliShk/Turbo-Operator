@@ -131,7 +131,7 @@ public class AllComplaintAdapter extends RecyclerView.Adapter<AllComplaintAdapte
                                     .show();
                         } else {
                             new GeneralDialog()
-                                    .message(message)//todo error accept more than 4 case
+                                    .message(message)
                                     .cancelable(false)
                                     .secondButton("باشه", null)
                                     .show();

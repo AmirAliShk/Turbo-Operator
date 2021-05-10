@@ -75,7 +75,7 @@ public class AllComplaintFragment extends Fragment {
     private void getAllComplaints() {
         if (vfAllComplaint != null)
             vfAllComplaint.setDisplayedChild(0);
-        RequestHelper.builder(EndPoints.COMPLAINT_WEBSERVICE_PATH + 0)//todo Status = New 0 , admission 1
+        RequestHelper.builder(EndPoints.COMPLAINT_WEBSERVICE_PATH + 0)// Status = New 0 , admission 1
                 .listener(allComplaintsRequestCallBack)
                 .get();
     }

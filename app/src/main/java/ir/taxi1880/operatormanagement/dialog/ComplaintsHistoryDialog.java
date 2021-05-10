@@ -180,7 +180,7 @@ public class ComplaintsHistoryDialog {
                             model.setComplaintType(contentObj.getString("complaintType"));
                             model.setCustomerName(contentObj.getString("customerName"));
                             model.setTypeResultDes(contentObj.getString("typeResultDes"));
-//                            model.setStatusDes(contentObj.getInt("statusDes"));//todo
+                            model.setStatus(contentObj.getInt("status"));
 
                             complaintsHistoryModels.add(model);
                         }

@@ -111,9 +111,10 @@
                 <CheckBox
                     android:id="@+id/chbLockDriver"
                     style="@style/tripItemValue"
-                    android:layout_width="match_parent"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:gravity="center_vertical"
+                    android:layoutDirection="ltr"
                     android:text="راننده قفل شود"
                     android:textSize="@dimen/_18ssp" />
 
@@ -153,8 +154,8 @@
                 <CheckBox
                     android:id="@+id/chbUnlockDriver"
                     style="@style/tripItemValue"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" android:layoutDirection="ltr"
                     android:gravity="center_vertical"
                     android:text="قفل راننده باز شود"
                     android:textSize="@dimen/_18ssp" />
@@ -166,10 +167,10 @@
                 <CheckBox
                     android:id="@+id/chbFined"
                     style="@style/tripItemValue"
-                    android:layout_width="match_parent"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:gravity="center_vertical"
-                    android:text="جریمه"
+                    android:text="جریمه" android:layoutDirection="ltr"
                     android:textSize="@dimen/_18ssp" />
 
                 <View
@@ -179,9 +180,9 @@
                 <CheckBox
                     android:id="@+id/chbOutDriver"
                     style="@style/tripItemValue"
-                    android:layout_width="match_parent"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:gravity="center_vertical"
+                    android:gravity="center_vertical" android:layoutDirection="ltr"
                     android:text="غیرفعال سازی راننده"
                     android:textSize="@dimen/_18ssp" />
 
@@ -192,9 +193,9 @@
                 <CheckBox
                     android:id="@+id/chbLockCustomer"
                     style="@style/tripItemValue"
-                    android:layout_width="match_parent"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:gravity="center_vertical"
+                    android:gravity="center_vertical" android:layoutDirection="ltr"
                     android:text="قفل مشترک"
                     android:textSize="@dimen/_18ssp" />
 

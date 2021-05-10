@@ -1,6 +1,6 @@
 package ir.taxi1880.operatormanagement.model;
 
-public class PendingComplaintsModel {//todo it should be more
+public class PendingComplaintsModel {
     private String saveDate;
     private String saveTime;
     private String complaintType;

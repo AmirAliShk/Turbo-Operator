@@ -1,6 +1,8 @@
 package ir.taxi1880.operatormanagement.fragment;
 
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -62,15 +64,33 @@ public class ComplaintSaveResultFragment extends Fragment {
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_complaint_save_result, container, false);//todo
+        View view = inflater.inflate(R.layout.fragment_complaint_save_result, container, false);
         getActivity().getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE);
         unbinder = ButterKnife.bind(this, view);
         TypefaceUtil.overrideFonts(view);
 
         edtLockTime.setEnabled(false);
+        edtLockTime.addTextChangedListener(edtLockTimeTextWatcher);
         result();
         return view;
     }
+
+    TextWatcher edtLockTimeTextWatcher = new TextWatcher() {
+        @Override
+        public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+        }
+
+        @Override
+        public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+            DataHolder.getInstance().setLockDay(edtLockTime.getText().toString());
+        }
+
+        @Override
+        public void afterTextChanged(Editable editable) {
+            DataHolder.getInstance().setLockDay(edtLockTime.getText().toString());
+        }
+    };
 
     public void result() {
 
@@ -91,32 +111,47 @@ public class ComplaintSaveResultFragment extends Fragment {
             }
         });
 
-        if (chbLockDriver.isChecked()) {
-            edtLockTime.setEnabled(true);
-            DataHolder.getInstance().setLockDriver(true);
-        } else DataHolder.getInstance().setLockDriver(false);
+        chbLockDriver.setOnCheckedChangeListener((compoundButton, b) -> {
+            if (chbLockDriver.isChecked()) {
+                DataHolder.getInstance().setLockDriver(true);
+                edtLockTime.setEnabled(true);
+                chbUnlockDriver.setEnabled(false);
+            } else if (!chbLockDriver.isChecked()) {
+                DataHolder.getInstance().setLockDriver(false);
+                edtLockTime.setText(null);
+                edtLockTime.setEnabled(false);
+                chbUnlockDriver.setEnabled(true);
+            }
+        });
 
-        if (chbLockDriver.isChecked() && edtLockTime.getText().toString() == null) {
-            MyApplication.Toast("لطفا تعداد روزهای قفل راننده را انتخاب کنید", Toast.LENGTH_SHORT);
-        } else {
-            DataHolder.getInstance().setLockDay(edtLockTime.getText().toString());
-        }
 
-        if (chbUnlockDriver.isChecked())
-            DataHolder.getInstance().setUnlockDriver(true);
-        else DataHolder.getInstance().setUnlockDriver(false);
+        chbUnlockDriver.setOnCheckedChangeListener((compoundButton, b) -> {
+            if (chbUnlockDriver.isChecked()) {
+                DataHolder.getInstance().setUnlockDriver(true);
+                chbLockDriver.setEnabled(false);
+            } else {
+                DataHolder.getInstance().setUnlockDriver(false);
+                chbLockDriver.setEnabled(true);
+            }
+        });
 
-        if (chbFined.isChecked())
-            DataHolder.getInstance().setFined(true);
-        else DataHolder.getInstance().setFined(false);
+        chbFined.setOnCheckedChangeListener((compoundButton, b) -> {
+            if (chbFined.isChecked()) {
+                DataHolder.getInstance().setFined(true);
+            } else DataHolder.getInstance().setFined(false);
+        });
 
-        if (chbOutDriver.isChecked())
-            DataHolder.getInstance().setOutDriver(true);
-        else DataHolder.getInstance().setOutDriver(false);
+        chbOutDriver.setOnCheckedChangeListener((compoundButton, b) -> {
+            if (chbOutDriver.isChecked()) {
+                DataHolder.getInstance().setOutDriver(true);
+            } else DataHolder.getInstance().setOutDriver(false);
+        });
 
-        if (chbLockCustomer.isChecked())
-            DataHolder.getInstance().setCustomerLock(true);
-        else DataHolder.getInstance().setCustomerLock(false);
+        chbLockCustomer.setOnCheckedChangeListener((compoundButton, b) -> {
+            if (chbLockCustomer.isChecked()) {
+                DataHolder.getInstance().setCustomerLock(true);
+            } else DataHolder.getInstance().setCustomerLock(false);
+        });
 
     }
 

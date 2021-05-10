@@ -59,6 +59,7 @@ public class NumbersDialog {
 
         txtMobileNumber.setOnClickListener(view -> {
             Intent intent = new Intent(Intent.ACTION_DIAL);
+            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
             intent.setData(Uri.parse("tel:0" + mobile));
             MyApplication.context.startActivity(intent);
             dismiss();
@@ -66,6 +67,7 @@ public class NumbersDialog {
 
         txtTellNumber.setOnClickListener(view -> {
             Intent intent = new Intent(Intent.ACTION_DIAL);
+            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
             intent.setData(Uri.parse("tel:0" + tell));
             MyApplication.context.startActivity(intent);
             dismiss();
