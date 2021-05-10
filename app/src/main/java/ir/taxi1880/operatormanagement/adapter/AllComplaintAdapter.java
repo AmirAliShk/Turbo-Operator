@@ -29,7 +29,9 @@ import ir.taxi1880.operatormanagement.model.AllComplaintsModel;
 import ir.taxi1880.operatormanagement.okHttp.RequestHelper;
 
 import static ir.taxi1880.operatormanagement.app.Keys.KEY_COUNT_ALL_COMPLAINT;
+import static ir.taxi1880.operatormanagement.app.Keys.KEY_COUNT_PENDING_COMPLAINT;
 import static ir.taxi1880.operatormanagement.app.Keys.VALUE_COUNT_ALL_COMPLAINT;
+import static ir.taxi1880.operatormanagement.app.Keys.VALUE_COUNT_PENDING_COMPLAINT;
 
 public class AllComplaintAdapter extends RecyclerView.Adapter<AllComplaintAdapter.ViewHolder> {
     private Context mContext;
@@ -123,8 +125,8 @@ public class AllComplaintAdapter extends RecyclerView.Adapter<AllComplaintAdapte
                                         broadcastIntent1.putExtra(VALUE_COUNT_ALL_COMPLAINT, allComplaintsModels.size());
                                         broadcaster.sendBroadcast(broadcastIntent1);
 
-//                                        Intent broadcastIntent2 = new Intent(KEY_COUNT_PENDING_HIRE);
-//                                        broadcastIntent2.putExtra(KEY_COUNT_PENDING_HIRE, hiresModels.size());
+//                                        Intent broadcastIntent2 = new Intent(KEY_COUNT_PENDING_COMPLAINT);
+//                                        broadcastIntent2.putExtra(VALUE_COUNT_PENDING_COMPLAINT, allComplaintsModels.size());
 //                                        broadcaster.sendBroadcast(broadcastIntent2);
 
                                     })

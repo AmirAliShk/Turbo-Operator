@@ -10,7 +10,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
-import android.widget.Toast;
 import android.widget.ViewFlipper;
 
 import androidx.annotation.NonNull;
@@ -31,7 +30,6 @@ import org.json.JSONObject;
 import java.io.File;
 import java.net.MalformedURLException;
 import java.net.URL;
-import java.util.ArrayList;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -40,7 +38,6 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import butterknife.Unbinder;
 import ir.taxi1880.operatormanagement.R;
-import ir.taxi1880.operatormanagement.adapter.AllMistakesAdapter;
 import ir.taxi1880.operatormanagement.app.EndPoints;
 import ir.taxi1880.operatormanagement.app.MyApplication;
 import ir.taxi1880.operatormanagement.dataBase.DataBase;
@@ -53,9 +50,7 @@ import ir.taxi1880.operatormanagement.model.AllMistakesModel;
 import ir.taxi1880.operatormanagement.okHttp.AuthenticationInterceptor;
 import ir.taxi1880.operatormanagement.okHttp.RequestHelper;
 
-import static ir.taxi1880.operatormanagement.app.Keys.KEY_NEW_MISTAKE_COUNT;
 import static ir.taxi1880.operatormanagement.app.Keys.KEY_PENDING_MISTAKE_COUNT;
-import static ir.taxi1880.operatormanagement.app.Keys.NEW_MISTAKE_COUNT;
 import static ir.taxi1880.operatormanagement.app.Keys.PENDING_MISTAKE_COUNT;
 
 public class PendingMistakesFragment extends Fragment {

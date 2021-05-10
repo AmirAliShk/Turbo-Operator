@@ -1,6 +1,7 @@
 package ir.taxi1880.operatormanagement.adapter;
 
 import android.content.Context;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,6 +12,7 @@ import android.widget.Toast;
 import android.widget.ViewFlipper;
 
 import androidx.annotation.NonNull;
+import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import org.json.JSONObject;
@@ -29,11 +31,17 @@ import ir.taxi1880.operatormanagement.model.ComplaintDetailsModel;
 import ir.taxi1880.operatormanagement.model.PendingComplaintsModel;
 import ir.taxi1880.operatormanagement.okHttp.RequestHelper;
 
+import static ir.taxi1880.operatormanagement.app.Keys.KEY_COUNT_ALL_COMPLAINT;
+import static ir.taxi1880.operatormanagement.app.Keys.KEY_COUNT_PENDING_COMPLAINT;
+import static ir.taxi1880.operatormanagement.app.Keys.VALUE_COUNT_ALL_COMPLAINT;
+import static ir.taxi1880.operatormanagement.app.Keys.VALUE_COUNT_PENDING_COMPLAINT;
+
 public class PendingComplaintAdapter extends RecyclerView.Adapter<PendingComplaintAdapter.ViewHolder> {
     private Context mContext;
     private ArrayList<PendingComplaintsModel> pendingComplaintsModels;
     private ArrayList<ComplaintDetailsModel> complaintDetailsModel;
     ViewFlipper vfDetail;
+    LocalBroadcastManager broadcaster;
 
     public PendingComplaintAdapter(Context mContext, ArrayList<PendingComplaintsModel> pendingComplaintsModels) {
         this.mContext = mContext;
@@ -161,6 +169,16 @@ public class PendingComplaintAdapter extends RecyclerView.Adapter<PendingComplai
                     } else {
                         MyApplication.Toast("لطفا دوباره امتحان کنید", Toast.LENGTH_SHORT);
                     }
+
+                    broadcaster = LocalBroadcastManager.getInstance(MyApplication.context);
+
+                    Intent broadcastIntent1 = new Intent(KEY_COUNT_ALL_COMPLAINT);
+                    broadcastIntent1.putExtra(VALUE_COUNT_ALL_COMPLAINT, pendingComplaintsModels.size());
+                    broadcaster.sendBroadcast(broadcastIntent1);
+
+                    Intent broadcastIntent2 = new Intent(KEY_COUNT_PENDING_COMPLAINT);
+                    broadcastIntent2.putExtra(VALUE_COUNT_PENDING_COMPLAINT, pendingComplaintsModels.size());
+                    broadcaster.sendBroadcast(broadcastIntent2);
 
 
                 } catch (Exception e) {

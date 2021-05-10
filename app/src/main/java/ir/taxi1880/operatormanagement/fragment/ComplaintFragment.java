@@ -27,6 +27,8 @@ import ir.taxi1880.operatormanagement.helper.TypefaceUtil;
 
 import static ir.taxi1880.operatormanagement.app.Keys.KEY_COUNT_ALL_COMPLAINT;
 import static ir.taxi1880.operatormanagement.app.Keys.KEY_COUNT_PENDING_COMPLAINT;
+import static ir.taxi1880.operatormanagement.app.Keys.VALUE_COUNT_ALL_COMPLAINT;
+import static ir.taxi1880.operatormanagement.app.Keys.VALUE_COUNT_PENDING_COMPLAINT;
 
 public class ComplaintFragment extends Fragment {
     public static final String TAG = ComplaintFragment.class.getSimpleName();
@@ -90,7 +92,7 @@ public class ComplaintFragment extends Fragment {
             complaintCountNew = intent.getIntExtra(KEY_COUNT_ALL_COMPLAINT, 0);
             if (vpSupport != null) {
                 new TabLayoutMediator(tbLayout, vpSupport, (tab, position) -> {
-                    tab.setCustomView(complaintViewPagerAdapter.getTabView(position, complaintCountNew, complaintCountPending));
+                    tab.setCustomView(complaintViewPagerAdapter.getTabView(position, complaintCountNew, 0));
                 }).attach();
             }
         }
@@ -99,7 +101,7 @@ public class ComplaintFragment extends Fragment {
     BroadcastReceiver counterReceiverPending = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
-            complaintCountPending = intent.getIntExtra(KEY_COUNT_PENDING_COMPLAINT, 0);
+            complaintCountPending = intent.getIntExtra(VALUE_COUNT_PENDING_COMPLAINT, 0);
             if (vpSupport != null) {
                 new TabLayoutMediator(tbLayout, vpSupport, (tab, position) -> {
                     tab.setCustomView(complaintViewPagerAdapter.getTabView(position, complaintCountNew, complaintCountPending));
@@ -121,17 +123,4 @@ public class ComplaintFragment extends Fragment {
         }
     }
 
-    @Override
-    public void onStop() {
-        super.onStop();
-
-        if (counterReceiverNew != null) {
-            MyApplication.currentActivity.unregisterReceiver(counterReceiverNew);
-            LocalBroadcastManager.getInstance(MyApplication.currentActivity).unregisterReceiver(counterReceiverNew);
-        }
-        if (counterReceiverPending != null) {
-            MyApplication.currentActivity.unregisterReceiver(counterReceiverPending);
-            LocalBroadcastManager.getInstance(MyApplication.currentActivity).unregisterReceiver(counterReceiverPending);
-        }
-    }
 }
