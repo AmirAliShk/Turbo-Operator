@@ -33,6 +33,7 @@ import ir.taxi1880.operatormanagement.model.AllComplaintsModel;
 import ir.taxi1880.operatormanagement.okHttp.RequestHelper;
 
 import static ir.taxi1880.operatormanagement.app.Keys.KEY_COUNT_ALL_COMPLAINT;
+import static ir.taxi1880.operatormanagement.app.Keys.VALUE_COUNT_ALL_COMPLAINT;
 
 public class AllComplaintFragment extends Fragment {
     Unbinder unbinder;
@@ -121,7 +122,7 @@ public class AllComplaintFragment extends Fragment {
 
                         broadcaster = LocalBroadcastManager.getInstance(MyApplication.context);
                         Intent broadcastIntent = new Intent(KEY_COUNT_ALL_COMPLAINT);
-                        broadcastIntent.putExtra(KEY_COUNT_ALL_COMPLAINT, allComplaintsModels.size());
+                        broadcastIntent.putExtra(VALUE_COUNT_ALL_COMPLAINT, allComplaintsModels.size());
                         broadcaster.sendBroadcast(broadcastIntent);
 
                     } else {

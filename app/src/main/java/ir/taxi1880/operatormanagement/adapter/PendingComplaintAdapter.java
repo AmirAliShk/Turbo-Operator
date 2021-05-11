@@ -172,10 +172,6 @@ public class PendingComplaintAdapter extends RecyclerView.Adapter<PendingComplai
 
                     broadcaster = LocalBroadcastManager.getInstance(MyApplication.context);
 
-                    Intent broadcastIntent1 = new Intent(KEY_COUNT_ALL_COMPLAINT);
-                    broadcastIntent1.putExtra(VALUE_COUNT_ALL_COMPLAINT, pendingComplaintsModels.size());
-                    broadcaster.sendBroadcast(broadcastIntent1);
-
                     Intent broadcastIntent2 = new Intent(KEY_COUNT_PENDING_COMPLAINT);
                     broadcastIntent2.putExtra(VALUE_COUNT_PENDING_COMPLAINT, pendingComplaintsModels.size());
                     broadcaster.sendBroadcast(broadcastIntent2);

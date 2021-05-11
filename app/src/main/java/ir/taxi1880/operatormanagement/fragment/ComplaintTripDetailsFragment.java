@@ -42,7 +42,9 @@ import ir.taxi1880.operatormanagement.okHttp.AuthenticationInterceptor;
 
 public class ComplaintTripDetailsFragment extends Fragment {
     Unbinder unbinder;
-    MediaPlayer mediaPlayer;
+    static MediaPlayer mediaPlayer;
+    static IndicatorSeekBar skbTimer;
+    static ViewFlipper vfPlayPause;
 
     @BindView(R.id.txtComplaintType)
     TextView txtComplaintType;
@@ -56,14 +58,8 @@ public class ComplaintTripDetailsFragment extends Fragment {
     @BindView(R.id.txtPrice)
     TextView txtPrice;
 
-    @BindView(R.id.vfPlayPause)
-    ViewFlipper vfPlayPause;
-
     @BindView(R.id.vfVoiceStatus)
     ViewFlipper vfVoiceStatus;
-
-    @BindView(R.id.skbTimer)
-    IndicatorSeekBar skbTimer;
 
     @OnClick(R.id.imgPlay)
     void onPlay() {
@@ -99,6 +95,9 @@ public class ComplaintTripDetailsFragment extends Fragment {
         getActivity().getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE);
         unbinder = ButterKnife.bind(this, view);
         TypefaceUtil.overrideFonts(view);
+
+        skbTimer = view.findViewById(R.id.skbTimer);
+        vfPlayPause = view.findViewById(R.id.vfPlayPause);
 
         txtComplaintType.setText(StringHelper.toPersianDigits(ComplaintDetailFragment.complaintDetailsModel.getComplaintType()));
 
@@ -207,7 +206,7 @@ public class ComplaintTripDetailsFragment extends Fragment {
         startTimer();
     }
 
-    public void pauseVoice() {
+    public static void pauseVoice() {
         try {
             if (mediaPlayer != null)
                 mediaPlayer.pause();
@@ -223,7 +222,7 @@ public class ComplaintTripDetailsFragment extends Fragment {
 
     private int TOTAL_VOICE_DURATION;
 
-    private Timer timer;
+    private static Timer timer;
 
     private void startTimer() {
         Log.i("PlayConversationDialog", "startTimer: ");
@@ -244,10 +243,10 @@ public class ComplaintTripDetailsFragment extends Fragment {
         } catch (Exception e) {
         }
         super.onDestroyView();
-         unbinder.unbind();
+        unbinder.unbind();
     }
 
-    private void cancelTimer() {
+    private static void cancelTimer() {
         try {
             if (timer == null) return;
             timer.cancel();

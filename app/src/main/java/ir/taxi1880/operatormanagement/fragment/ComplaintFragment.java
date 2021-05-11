@@ -89,10 +89,10 @@ public class ComplaintFragment extends Fragment {
     BroadcastReceiver counterReceiverNew = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
-            complaintCountNew = intent.getIntExtra(KEY_COUNT_ALL_COMPLAINT, 0);
+            complaintCountNew = intent.getIntExtra(VALUE_COUNT_ALL_COMPLAINT, 0);
             if (vpSupport != null) {
                 new TabLayoutMediator(tbLayout, vpSupport, (tab, position) -> {
-                    tab.setCustomView(complaintViewPagerAdapter.getTabView(position, complaintCountNew, 0));
+                    tab.setCustomView(complaintViewPagerAdapter.getTabView(position, complaintCountNew, complaintCountPending));
                 }).attach();
             }
         }

@@ -34,6 +34,8 @@ import ir.taxi1880.operatormanagement.helper.TypefaceUtil;
 import ir.taxi1880.operatormanagement.model.ComplaintDetailsModel;
 import ir.taxi1880.operatormanagement.okHttp.RequestHelper;
 
+import static ir.taxi1880.operatormanagement.fragment.ComplaintTripDetailsFragment.pauseVoice;
+
 
 public class ComplaintDetailFragment extends Fragment {
     Unbinder unbinder;
@@ -60,6 +62,7 @@ public class ComplaintDetailFragment extends Fragment {
     void onNext() {
         if (vfNextStep != null)
             vfNextStep.setDisplayedChild(1);
+        pauseVoice();
         new GeneralDialog()
                 .message("آیا میخواهید به مرحله بعد بروید؟")
                 .cancelable(false)

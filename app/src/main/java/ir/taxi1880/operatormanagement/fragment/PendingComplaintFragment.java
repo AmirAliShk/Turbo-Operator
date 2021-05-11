@@ -29,16 +29,19 @@ import ir.taxi1880.operatormanagement.adapter.PendingComplaintAdapter;
 import ir.taxi1880.operatormanagement.app.EndPoints;
 import ir.taxi1880.operatormanagement.app.MyApplication;
 import ir.taxi1880.operatormanagement.helper.TypefaceUtil;
+import ir.taxi1880.operatormanagement.model.AllComplaintsModel;
 import ir.taxi1880.operatormanagement.model.PendingComplaintsModel;
 import ir.taxi1880.operatormanagement.okHttp.RequestHelper;
 
+import static ir.taxi1880.operatormanagement.app.Keys.KEY_COUNT_ALL_COMPLAINT;
 import static ir.taxi1880.operatormanagement.app.Keys.KEY_COUNT_PENDING_COMPLAINT;
+import static ir.taxi1880.operatormanagement.app.Keys.VALUE_COUNT_ALL_COMPLAINT;
 import static ir.taxi1880.operatormanagement.app.Keys.VALUE_COUNT_PENDING_COMPLAINT;
 
 public class PendingComplaintFragment extends Fragment {
     Unbinder unbinder;
     LocalBroadcastManager broadcaster;
-
+    private ArrayList<AllComplaintsModel> allComplaintsModels;
     PendingComplaintAdapter mAdapter;
     ArrayList<PendingComplaintsModel> pendingComplaintsModels;
 
@@ -124,9 +127,10 @@ public class PendingComplaintFragment extends Fragment {
                         }
 
                         broadcaster = LocalBroadcastManager.getInstance(MyApplication.context);
-                        Intent broadcastIntent = new Intent(KEY_COUNT_PENDING_COMPLAINT);
-                        broadcastIntent.putExtra(VALUE_COUNT_PENDING_COMPLAINT, pendingComplaintsModels.size());
-                        broadcaster.sendBroadcast(broadcastIntent);
+
+                        Intent broadcastIntent2 = new Intent(KEY_COUNT_PENDING_COMPLAINT);
+                        broadcastIntent2.putExtra(VALUE_COUNT_PENDING_COMPLAINT, pendingComplaintsModels.size());
+                        broadcaster.sendBroadcast(broadcastIntent2);
 
                     } else {
                         if (vfPendingComplaint != null)

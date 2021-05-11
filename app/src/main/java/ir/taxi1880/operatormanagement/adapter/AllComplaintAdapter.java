@@ -125,10 +125,6 @@ public class AllComplaintAdapter extends RecyclerView.Adapter<AllComplaintAdapte
                                         broadcastIntent1.putExtra(VALUE_COUNT_ALL_COMPLAINT, allComplaintsModels.size());
                                         broadcaster.sendBroadcast(broadcastIntent1);
 
-//                                        Intent broadcastIntent2 = new Intent(KEY_COUNT_PENDING_COMPLAINT);
-//                                        broadcastIntent2.putExtra(VALUE_COUNT_PENDING_COMPLAINT, allComplaintsModels.size());
-//                                        broadcaster.sendBroadcast(broadcastIntent2);
-
                                     })
                                     .show();
                         } else {
