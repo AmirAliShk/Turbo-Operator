@@ -10,6 +10,7 @@ import android.view.Window;
 import android.view.WindowManager;
 import android.widget.AdapterView;
 import android.widget.ListView;
+import android.widget.TextView;
 import android.widget.ViewFlipper;
 
 import com.github.mmin18.widget.RealtimeBlurView;
@@ -62,6 +63,13 @@ public class AddressListDialog {
         listLastAddress = dialog.findViewById(R.id.listLastAddress);
         vfLastAddress = dialog.findViewById(R.id.vfLastAddress);
         blrView = dialog.findViewById(R.id.blrView);
+        TextView txtTitle =dialog.findViewById(R.id.txtTitle);
+
+        if (isFromOrigin){
+            txtTitle.setText("آدرس های مبدا");
+        }else {
+             txtTitle.setText("آدرس های مقصد");
+        }
 
         lastAddressAdapter = new LastAddressAdapter(isFromOrigin, passengerAddressModels, MyApplication.context);
         listLastAddress.setAdapter(lastAddressAdapter);
