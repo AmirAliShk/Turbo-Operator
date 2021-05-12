@@ -452,7 +452,6 @@ public class DeterminationPageFragment extends Fragment {
     }
 
     private void setStationCode(String stationCode, String destinationCode) {
-
         RequestHelper.builder(EndPoints.STATION)
                 .addParam("tripId", StringHelper.toEnglishDigits(dataBase.getTopAddress().getId() + ""))
                 .addParam("originStation", StringHelper.toEnglishDigits(stationCode + ""))
@@ -464,7 +463,12 @@ public class DeterminationPageFragment extends Fragment {
                 .addParam("tripOperatorId", StringHelper.toEnglishDigits(dataBase.getTopAddress().getOperatorId() + ""))
                 .listener(setStationCode)
                 .put();
-
+        if (dataBase.getRemainingAddress() > 0)
+            dataBase.deleteRow(dataBase.getTopAddress().getId());
+        if (txtStation != null) {
+            txtAddress.setText(showAddress());
+            txtStation.setText("");
+        }
     }
 
     RequestHelper.Callback setStationCode = new RequestHelper.Callback() {
@@ -483,20 +487,9 @@ public class DeterminationPageFragment extends Fragment {
                     if (success) {
                         JSONObject dataArr = obj.getJSONObject("data");
                         boolean status = dataArr.getBoolean("status");
-                        if (status) {
-                            if (dataBase.getRemainingAddress() > 0)
-                                dataBase.deleteRow(dataBase.getTopAddress().getId());
-                        } else {
-                            dataBase.insertSendDate(dataBase.getTopAddress().getId(), DateHelper.getCurrentGregorianDate().toString());
-                        }
                     } else {
                         onPressRefresh();
                         MyApplication.Toast(message, Toast.LENGTH_SHORT);
-                    }
-
-                    if (txtStation != null) {
-                        txtAddress.setText(showAddress());
-                        txtStation.setText("");
                     }
 
                 } catch (JSONException e) {
@@ -658,7 +651,7 @@ public class DeterminationPageFragment extends Fragment {
                 txtRemainingAddress.setText(dataBase.getRemainingAddress() + "");
                 String cityName = dataBase.getCityName2(dataBase.getTopAddress().getCity());
 
-                if (dataBase.getTopAddress().getOriginStation() == 0 && dataBase.getTopAddress().getDestinationStation() == 0 && dataBase.getTopAddress().getPriceable() != 0) {
+                if (dataBase.getTopAddress().getOriginStation() == 0 && dataBase.getTopAddress().getDestinationStation() == 0 && dataBase.getTopAddress().getPriceable() == 1) {
                     bothStationAreZero = true;
                     return cityName + " , " + dataBase.getTopAddress().getOriginText();
                 }
@@ -668,15 +661,22 @@ public class DeterminationPageFragment extends Fragment {
                     return cityName + " , " + dataBase.getTopAddress().getOriginText();
                 }
 
-                if (dataBase.getTopAddress().getDestinationStation() == 0) {
-                    if (dataBase.getTopAddress().getPriceable() == 0) {
-                        onPressRefresh();
-                        return "";
-                    } else {
-                        isDestinationZero = true;
-                        return cityName + " , " + dataBase.getTopAddress().getDestination();
-                    }
+                if (dataBase.getTopAddress().getDestinationStation() == 0 && dataBase.getTopAddress().getPriceable() == 1) {
+                    isDestinationZero = true;
+                    return cityName + " , " + dataBase.getTopAddress().getDestination();
                 }
+//                else {
+//                    MyApplication.Toast("errrror", Toast.LENGTH_SHORT);
+//                }
+
+//                if (dataBase.getTopAddress().getDestinationStation() == 0) {
+//                    if (dataBase.getTopAddress().getPriceable() == 0) {
+//                        onPressRefresh();
+//                        return "";
+//                    } else {
+//
+//                    }
+//                }
 
             }
         } catch (Exception e) {

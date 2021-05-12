@@ -372,7 +372,7 @@ public class TripRegisterActivity extends AppCompatActivity {
         Log.i(TAG, "onPressSubmit: address change counter " + destAddressChangeCounter);
         Log.i(TAG, "onPressSubmit: originStation " + destAddressPercent);
 
-        if (cityCode == -1) {
+        if (cityCode == -1 || cityCode == 0) {
             MyApplication.Toast("شهر را وارد نمایید", Toast.LENGTH_SHORT);
             spCity.performClick();
             return;
