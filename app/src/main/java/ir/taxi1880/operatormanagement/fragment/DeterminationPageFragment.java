@@ -365,17 +365,20 @@ public class DeterminationPageFragment extends Fragment {
                             // Do you think it never crossed my mind?! ;)
 
                             if (isEnable) {
-                                txtAddress.setText(showAddress());
+                                if (txtAddress != null)
+                                    txtAddress.setText(showAddress());
                                 isEnable = false;
                             }
 
                             if (isFinished) {
-                                txtAddress.setText(showAddress());
+                                if (txtAddress != null)
+                                    txtAddress.setText(showAddress());
                                 isFinished = false;
                             }
 
                             if (pressedRefresh) {
-                                txtAddress.setText(showAddress());
+                                if (txtAddress != null)
+                                    txtAddress.setText(showAddress());
                                 pressedRefresh = false;
                             }
 
