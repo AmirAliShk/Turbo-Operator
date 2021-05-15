@@ -50,7 +50,7 @@ public class PendingMistakesOptionsDialog {
         dismiss();
         new RecentCallsDialog()
                 .show(tell, mobile, 0, true, (b) -> {
-                    if (b){
+                    if (b) {
                         MyApplication.handler.postDelayed(() -> {
                             PRDownloader.cancelAll();
                             PRDownloader.shutDown();
@@ -73,6 +73,12 @@ public class PendingMistakesOptionsDialog {
     void onPressNestFollowUp() {
         dismiss();
         MyApplication.Toast("llNestFollowUp", Toast.LENGTH_SHORT);
+    }
+
+    @OnClick(R.id.llStationGuide)
+    void onStationInfo() {
+        new SearchStationInfoDialog().show();
+        dismiss();
     }
 
     public void show(String tell, String mobile) {
