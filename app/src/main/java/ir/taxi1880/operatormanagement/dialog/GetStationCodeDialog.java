@@ -202,12 +202,7 @@ public class GetStationCodeDialog {
                                 .title("ثبت شد")
                                 .message(message)
                                 .cancelable(false)
-                                .firstButton("باشه", new Runnable() {
-                                    @Override
-                                    public void run() {
-                                        dismiss();
-                                    }
-                                })
+                                .firstButton("باشه", () -> dismiss())
                                 .show();
                     } else {
                         new GeneralDialog()

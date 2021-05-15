@@ -4,14 +4,12 @@ import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 import android.widget.ViewFlipper;
 
 import org.json.JSONException;
@@ -28,7 +26,6 @@ import butterknife.Unbinder;
 import ir.taxi1880.operatormanagement.R;
 import ir.taxi1880.operatormanagement.app.EndPoints;
 import ir.taxi1880.operatormanagement.app.MyApplication;
-import ir.taxi1880.operatormanagement.dataBase.DataBase;
 import ir.taxi1880.operatormanagement.dialog.ComplaintRegistrationDialog;
 import ir.taxi1880.operatormanagement.dialog.DriverLockDialog;
 import ir.taxi1880.operatormanagement.dialog.ErrorAddressDialog;
@@ -39,8 +36,8 @@ import ir.taxi1880.operatormanagement.dialog.LostDialog;
 import ir.taxi1880.operatormanagement.helper.FragmentHelper;
 import ir.taxi1880.operatormanagement.helper.StringHelper;
 import ir.taxi1880.operatormanagement.helper.TypefaceUtil;
-import ir.taxi1880.operatormanagement.model.PassengerAddressModel;
 import ir.taxi1880.operatormanagement.okHttp.RequestHelper;
+import ir.taxi1880.operatormanagement.push.AvaCrashReporter;
 
 import static ir.taxi1880.operatormanagement.app.MyApplication.context;
 
@@ -68,6 +65,7 @@ public class TripDetailsFragment extends Fragment {
     int cityCode;
     String price;
     String destinationStation;
+    String serviceDetails;
 
     @OnClick(R.id.imgBack)
     void onBackPress() {
@@ -256,6 +254,15 @@ public class TripDetailsFragment extends Fragment {
         new DriverLockDialog().show(taxiCode);
     }
 
+    @OnClick(R.id.btnResendService)
+    void onResendService() {
+        new GeneralDialog()
+                .message("آیا میخواهید سرویس را مجدد ارسال کنید؟")
+                .firstButton("بله", this::resendCancelService)
+                .secondButton("خیر ", null)
+                .show();
+    }
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_trip_details, container, false);
@@ -293,9 +300,11 @@ public class TripDetailsFragment extends Fragment {
                     JSONObject tripObject = new JSONObject(args[0].toString());
                     Boolean success = tripObject.getBoolean("success");
                     String message = tripObject.getString("message");
-                    JSONObject data = tripObject.getJSONObject("data");
+//                    JSONObject data = tripObject.getJSONObject("data");
 
                     if (success) {
+                        JSONObject data = tripObject.getJSONObject("data");
+                        serviceDetails = tripObject.getJSONObject("data").toString();
                         serviceId = data.getString("serviceId");
                         int status = data.getInt("Status");
                         callDate = data.getString("callDate");
@@ -655,6 +664,136 @@ public class TripDetailsFragment extends Fragment {
             MyApplication.handler.post(() -> {
                 LoadingDialog.dismissCancelableDialog();
             });
+        }
+    };
+
+    private void resendCancelService() {
+        try {
+            LoadingDialog.makeCancelableLoader();
+            RequestHelper.builder(EndPoints.CANCEL)
+                    .addParam("serviceId", serviceId)
+                    .addParam("scope", "driver")
+                    .listener(onResendCancelService)
+                    .post();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    RequestHelper.Callback onResendCancelService = new RequestHelper.Callback() {
+        @Override
+        public void onResponse(Runnable reCall, Object... args) {
+            MyApplication.handler.post(() -> {
+                try {
+//            {"success":true,"message":"","data":{"status":true}}
+                    JSONObject object = new JSONObject(args[0].toString());
+                    boolean success = object.getBoolean("success");
+                    String message = object.getString("message");
+
+                    if (success) {
+                        JSONObject dataObj = object.getJSONObject("data");
+                        boolean status = dataObj.getBoolean("status");
+                        if (status) {
+
+                            insertService(new JSONObject(serviceDetails));// register service again...
+
+                        } else {
+                            //TODO  what to do? show error dialog?
+                        }
+                    } else {
+                        new GeneralDialog()
+                                .title("هشدار")
+                                .message(message)
+                                .cancelable(false)
+                                .firstButton("باشه", null)
+                                .show();
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
+                    LoadingDialog.dismissCancelableDialog();
+                }
+            });
+        }
+
+        @Override
+        public void onFailure(Runnable reCall, Exception e) {
+            //TODO  what to do? show error dialog?
+            MyApplication.handler.post(LoadingDialog::dismissCancelableDialog);
+        }
+    };
+
+    private void insertService(JSONObject objServiceDetails) {
+        try {
+            RequestHelper.builder(EndPoints.INSERT_TRIP_SENDING_QUEUE)
+                    .addParam("phoneNumber", objServiceDetails.getString("customerTel").trim())
+                    .addParam("mobile", objServiceDetails.getString("customerMobile").trim())
+                    .addParam("callerName", objServiceDetails.getString("customerName"))
+                    .addParam("fixedComment", objServiceDetails.getString("customerFixedDes"))
+                    .addParam("address", objServiceDetails.getString("customerAddress"))
+                    .addParam("stationCode", 0)
+                    .addParam("destinationStation", 0)
+                    .addParam("destination", objServiceDetails.getString("destinationAddress"))
+                    .addParam("cityCode", objServiceDetails.getInt("cityCode"))
+                    .addParam("typeService", objServiceDetails.getInt("ServiceTypeId"))
+                    .addParam("description", objServiceDetails.getString("serviceComment"))
+                    .addParam("TrafficPlan", objServiceDetails.getInt("TrafficPlan"))
+                    .addParam("voipId", objServiceDetails.getString("VoipId"))
+                    .addParam("classType", objServiceDetails.getInt("classType"))
+                    .addParam("defaultClass", 0)
+                    .addParam("count", 1)
+                    .addParam("queue", objServiceDetails.getString("queue"))
+                    .addParam("senderClient", 0)
+                    .listener(insertService)
+                    .post();
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+    }
+
+    RequestHelper.Callback insertService = new RequestHelper.Callback() {
+        @Override
+        public void onResponse(Runnable reCall, Object... args) {
+            MyApplication.handler.post(() -> {
+                try {
+                    LoadingDialog.dismissCancelableDialog();
+                    JSONObject obj = new JSONObject(args[0].toString());
+                    boolean success = obj.getBoolean("success");
+                    String message = obj.getString("message");
+
+                    if (success) {
+                        new GeneralDialog()
+                                .title("ثبت شد")
+                                .message(message)
+                                .cancelable(false)
+                                .firstButton("باشه", null)
+                                .show();
+                    } else {
+                        new GeneralDialog()
+                                .title("خطا")
+                                .message(message)
+                                .secondButton("بستن", null)
+                                .show();
+                    }
+                } catch (JSONException e) {
+                    //TODO  what to do? show error dialog?
+                    LoadingDialog.dismissCancelableDialog();
+                    e.printStackTrace();
+                    AvaCrashReporter.send(e, "TripRegisterActivity class, insertService onResponse method");
+                }
+            });
+        }
+
+        @Override
+        public void onFailure(Runnable reCall, Exception e) {
+            MyApplication.handler.post(() -> {
+                LoadingDialog.dismissCancelableDialog();
+                //TODO  what to do? show error dialog?
+            });
+        }
+
+        @Override
+        public void onReloadPress(boolean v) {
+            super.onReloadPress(v);
         }
     };
 

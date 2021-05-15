@@ -790,12 +790,28 @@
 
                 </LinearLayout>
 
-                <Button
-                    android:id="@+id/btnDriverLock"
-                    style="@style/button"
+                <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="@string/lockDriver" />
+                    android:orientation="horizontal">
+
+                    <Button
+                        android:id="@+id/btnDriverLock"
+                        style="@style/button"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="@string/lockDriver" />
+
+                    <Button
+                        android:id="@+id/btnResendService"
+                        style="@style/button"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="@string/reSendService" />
+
+                </LinearLayout>
 
             </LinearLayout>
 
