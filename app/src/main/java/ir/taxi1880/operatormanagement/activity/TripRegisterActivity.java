@@ -41,6 +41,7 @@ import org.linphone.core.Core;
 import org.linphone.core.CoreListenerStub;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.localbroadcastmanager.content.LocalBroadcastManager;
@@ -108,6 +109,7 @@ public class TripRegisterActivity extends AppCompatActivity {
     public static boolean isRunning = false;
     byte traffic = 0;
     byte defaultClass = 0;
+    byte stopTime = 0;//todo
     String queue = "0";
     String voipId = "0";
     String permanentDesc = "";
@@ -137,6 +139,9 @@ public class TripRegisterActivity extends AppCompatActivity {
 
     @BindView(R.id.imgCallQuality)
     ImageView imgCallQuality;
+
+    @BindView(R.id.spWaitingTime)
+    Spinner spWaitingTime;
 
     @BindView(R.id.spServiceType)
     Spinner spServiceType;
@@ -173,10 +178,18 @@ public class TripRegisterActivity extends AppCompatActivity {
         spCity.performClick();
     }
 
+    @OnClick(R.id.llWaitingTime)
+    void onPressllWaitingTime() {
+        spWaitingTime.performClick();
+    }
+
     @OnClick(R.id.llServiceType)
     void onPressllServiceType() {
         spServiceType.performClick();
     }
+
+    @BindView(R.id.llWaitingTime)
+    LinearLayout llWaitingTime;
 
     @BindView(R.id.llServiceType)
     LinearLayout llServiceType;
@@ -403,7 +416,11 @@ public class TripRegisterActivity extends AppCompatActivity {
             edtDestinationAddress.requestFocus();
             return;
         }
-
+        if (serviceType == 1 && stopTime == 0) {
+            MyApplication.Toast("لطفا مقدار توقف را مشخص کنید.", Toast.LENGTH_SHORT);
+            spWaitingTime.requestFocus();
+            return;
+        }
         if (vfSubmit != null)
             vfSubmit.setDisplayedChild(1);
 
@@ -650,6 +667,7 @@ public class TripRegisterActivity extends AppCompatActivity {
             initCitySpinner();
             initServiceTypeSpinner();
             initServiceCountSpinner();
+            initWaitingTimeSpinner();
         }, 200);
 
         edtTell.requestFocus();
@@ -728,6 +746,7 @@ public class TripRegisterActivity extends AppCompatActivity {
             spCity.setSelection(0);
             initServiceCountSpinner();
             initServiceTypeSpinner();
+            initWaitingTimeSpinner();
 //        }
         }
 
@@ -863,6 +882,9 @@ public class TripRegisterActivity extends AppCompatActivity {
                 @Override
                 public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                     serviceType = typeServiceModels.get(position).getId();
+                    if (serviceType == 1) {
+                        spWaitingTime.performClick();
+                    }
                 }
 
                 @Override
@@ -872,6 +894,35 @@ public class TripRegisterActivity extends AppCompatActivity {
         } catch (JSONException e) {
             e.printStackTrace();
             AvaCrashReporter.send(e, "TripRegisterActivity class, initServiceTypeSpinner method");
+        }
+    }
+
+    private void initWaitingTimeSpinner() {
+        ArrayList<String> waitingTime = new ArrayList<String>(Arrays.asList("بدون توقف", "۵ دقیقه", "۱۰ دقیقه", "۲۰ دقیقه", "۳۰ دقیقه", "۴۰ دقیقه", "۵۰ دقیقه", "۱ ساعت", "۲ ساعت", "۳ ساعت"));
+        try {
+
+            if (spWaitingTime == null)
+                return;
+
+            if (isEnableView) {
+                spWaitingTime.setEnabled(true);
+            } else {
+                spWaitingTime.setEnabled(false);
+            }
+            spWaitingTime.setAdapter(new SpinnerAdapter(MyApplication.currentActivity, R.layout.item_spinner, waitingTime));
+
+            spWaitingTime.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                @Override
+                public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                    stopTime = (byte) position;
+                }
+
+                @Override
+                public void onNothingSelected(AdapterView<?> parent) {
+                }
+            });
+        } catch (Exception e) {
+            e.printStackTrace();
         }
     }
 
@@ -1001,6 +1052,7 @@ public class TripRegisterActivity extends AppCompatActivity {
                         isEnableView = true;
                         initServiceCountSpinner();
                         initServiceTypeSpinner();
+                        initWaitingTimeSpinner();
                         enableViews();
                         for (int i = 0; i < cityModels.size(); i++) {
                             if (cityModels.get(i).getId() == cityCode)
@@ -1309,7 +1361,7 @@ public class TripRegisterActivity extends AppCompatActivity {
                 .message("آیا از ثبت اطلاعات اطمینان دارید؟")
                 .firstButton("بله", () ->
                         insertService(serviceCount, tell, mobile, cityCode,
-                                name, address, fixedComment, destinationAddress, serviceType, carClass, normalDescription, traffic, defaultClass))
+                                name, address, fixedComment, destinationAddress, serviceType, carClass, normalDescription, traffic, defaultClass, stopTime))
                 .secondButton("خیر", () -> {
                     if (vfSubmit != null)
                         vfSubmit.setDisplayedChild(0);
@@ -1442,7 +1494,7 @@ public class TripRegisterActivity extends AppCompatActivity {
 
     private void insertService(int count, String phoneNumber, String mobile, int cityCode, String callerName,
                                String address, String fixedComment, String destination, int typeService,
-                               int classType, String description, int TrafficPlan, int defaultClass) {
+                               int classType, String description, int TrafficPlan, int defaultClass, int stopTime) {
 
         LoadingDialog.makeCancelableLoader();
         RequestHelper.builder(EndPoints.INSERT_TRIP_SENDING_QUEUE)
@@ -1466,6 +1518,7 @@ public class TripRegisterActivity extends AppCompatActivity {
                 .addParam("percentDiscount", percentDiscount)
                 .addParam("maxDiscount", maxDiscount)
                 .addParam("senderClient", 0)
+                .addParam("stopTime", stopTime)//todo
                 .listener(insertService)
                 .post();
 
@@ -1589,6 +1642,7 @@ public class TripRegisterActivity extends AppCompatActivity {
         txtPassengerAddress.setEnabled(true);
         llDescriptionDetail.setEnabled(true);
         llServiceType.setEnabled(true);
+        llWaitingTime.setEnabled(true);
         llTraffic.setEnabled(true);
         llAlwaysBg.setEnabled(true);
         llAlways.setEnabled(true);
@@ -1614,6 +1668,7 @@ public class TripRegisterActivity extends AppCompatActivity {
         txtPassengerAddress.setEnabled(false);
         llDescriptionDetail.setEnabled(false);
         llServiceType.setEnabled(false);
+        llWaitingTime.setEnabled(false);
         llTraffic.setEnabled(false);
         llAlwaysBg.setEnabled(false);
         llAlways.setEnabled(false);

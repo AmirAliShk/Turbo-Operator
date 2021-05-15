@@ -318,12 +318,12 @@
                             android:gravity="left|center_vertical"
                             android:inputType="number"
                             android:maxLength="11"
-                            android:textDirection="ltr"
                             android:nextFocusDown="@id/edtMobile"
                             android:padding="5dp"
                             android:singleLine="true"
                             android:textAppearance="?android:attr/textAppearanceMedium"
-                            android:textColor="@color/colorBlack" />
+                            android:textColor="@color/colorBlack"
+                            android:textDirection="ltr" />
 
                     </LinearLayout>
 
@@ -446,12 +446,12 @@
                                 android:gravity="left|center_vertical"
                                 android:inputType="number"
                                 android:maxLength="11"
-                                android:textDirection="ltr"
                                 android:nextFocusDown="@id/edtAddress"
                                 android:padding="5dp"
                                 android:singleLine="true"
                                 android:textAppearance="?android:attr/textAppearanceMedium"
-                                android:textColor="@color/colorBlack" />
+                                android:textColor="@color/colorBlack"
+                                android:textDirection="ltr" />
 
                             <ImageView
                                 android:layout_width="5dp"
@@ -992,7 +992,7 @@
 
                 <LinearLayout
                     android:layout_width="0dp"
-                    android:layout_height="wrap_content"
+                    android:layout_height="match_parent"
                     android:layout_weight="1"
                     android:orientation="vertical">
 
@@ -1007,7 +1007,7 @@
                     <ir.taxi1880.operatormanagement.customView.MultiRowsRadioGroup xmlns:multi_line_radio_group="http://schemas.android.com/apk/res-auto"
                         android:id="@+id/rgCarClass"
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
+                        android:layout_height="match_parent"
                         android:background="@drawable/edit_text_style"
                         android:gravity="center"
                         android:padding="5dp"
@@ -1016,13 +1016,14 @@
 
                         <LinearLayout
                             android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
+                            android:layout_height="0dp"
+                            android:layout_weight="1"
                             android:orientation="horizontal">
 
                             <RadioButton
                                 android:id="@+id/rbUnknow"
                                 android:layout_width="0dp"
-                                android:layout_height="wrap_content"
+                                android:layout_height="match_parent"
                                 android:layout_weight="1"
                                 android:buttonTint="@color/colorAccent"
                                 android:checked="true"
@@ -1032,7 +1033,7 @@
                             <RadioButton
                                 android:id="@+id/rbEconomical"
                                 android:layout_width="0dp"
-                                android:layout_height="wrap_content"
+                                android:layout_height="match_parent"
                                 android:layout_weight="1"
                                 android:buttonTint="@color/colorAccent"
                                 android:text="@string/economically"
@@ -1041,7 +1042,7 @@
                             <RadioButton
                                 android:id="@+id/rbPrivilage"
                                 android:layout_width="0dp"
-                                android:layout_height="wrap_content"
+                                android:layout_height="match_parent"
                                 android:layout_weight="1"
                                 android:buttonTint="@color/colorAccent"
                                 android:text="@string/privilege"
@@ -1051,13 +1052,14 @@
 
                         <LinearLayout
                             android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
+                            android:layout_height="0dp"
+                            android:layout_weight="1"
                             android:orientation="horizontal">
 
                             <RadioButton
                                 android:id="@+id/rbTaxi"
                                 android:layout_width="0dp"
-                                android:layout_height="wrap_content"
+                                android:layout_height="match_parent"
                                 android:layout_weight="1"
                                 android:buttonTint="@color/colorAccent"
                                 android:text="@string/taxi"
@@ -1066,7 +1068,7 @@
                             <RadioButton
                                 android:id="@+id/rbFormality"
                                 android:layout_width="0dp"
-                                android:layout_height="wrap_content"
+                                android:layout_height="match_parent"
                                 android:layout_weight="2"
                                 android:buttonTint="@color/colorAccent"
                                 android:text="@string/formality"
@@ -1083,34 +1085,89 @@
                     android:layout_height="match_parent" />
 
                 <LinearLayout
-                    android:id="@+id/llAlways"
-                    android:layout_width="50dp"
-                    android:layout_height="wrap_content"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
                     android:orientation="vertical">
 
-                    <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="25dp"
-                        android:gravity="center"
-                        android:text="دائم"
-                        android:textAppearance="?android:attr/textAppearanceSmall"
-                        android:textColor="@color/grayMedium" />
+                    <LinearLayout
+                        android:id="@+id/llWaitingTime"
+                        android:layout_width="wrap_content"
+                        android:layout_height="0dp"
+                        android:layout_weight="1"
+                        android:orientation="vertical">
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="25dp"
+                            android:orientation="horizontal">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="match_parent"
+                                android:layout_weight="1"
+                                android:paddingRight="5dp"
+                                android:text="زمان توقف"
+                                android:textAppearance="?android:attr/textAppearanceSmall"
+                                android:textColor="@color/grayMedium" />
+
+                            <ImageView
+                                android:layout_width="20dp"
+                                android:layout_height="match_parent"
+                                android:src="@drawable/ic_drop_down" />
+
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="40dp"
+                            android:gravity="center">
+
+                            <Spinner
+                                android:id="@+id/spWaitingTime"
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                android:background="@drawable/edit_text_style"
+                                android:dropDownWidth="match_parent"
+                                android:gravity="center"
+                                android:paddingTop="5dp"
+                                android:paddingBottom="5dp" />
+
+                        </LinearLayout>
+
+                    </LinearLayout>
 
                     <LinearLayout
-                        android:id="@+id/llAlwaysBg"
+                        android:id="@+id/llAlways"
                         android:layout_width="match_parent"
-                        android:layout_height="40dp"
-                        android:background="@drawable/edit_text_style"
-                        android:gravity="center"
-                        android:padding="3dp">
+                        android:layout_height="0dp"
+                        android:layout_weight="1"
+                        android:orientation="vertical">
 
-                        <CheckBox
-                            android:id="@+id/chbAlways"
-                            android:layout_width="40dp"
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="25dp"
+                            android:gravity="center"
+                            android:text="دائم"
+                            android:textAppearance="?android:attr/textAppearanceSmall"
+                            android:textColor="@color/grayMedium" />
+
+                        <LinearLayout
+                            android:id="@+id/llAlwaysBg"
+                            android:layout_width="match_parent"
                             android:layout_height="40dp"
-                            android:background="@drawable/traffic"
-                            android:button="@null"
-                            android:checked="false" />
+                            android:background="@drawable/edit_text_style"
+                            android:gravity="center"
+                            android:padding="3dp">
+
+                            <CheckBox
+                                android:id="@+id/chbAlways"
+                                android:layout_width="40dp"
+                                android:layout_height="40dp"
+                                android:background="@drawable/traffic"
+                                android:button="@null"
+                                android:checked="false" />
+
+                        </LinearLayout>
 
                     </LinearLayout>
 
