@@ -1,16 +1,10 @@
 package ir.taxi1880.operatormanagement.fragment;
 
-import android.content.BroadcastReceiver;
-import android.content.Context;
 import android.content.Intent;
-import android.content.IntentFilter;
-import android.graphics.Color;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
 import android.widget.ViewFlipper;
 
 import androidx.annotation.NonNull;
@@ -20,7 +14,6 @@ import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.dinuscxj.refresh.RecyclerRefreshLayout;
-import com.google.android.material.tabs.TabLayoutMediator;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -40,8 +33,6 @@ import ir.taxi1880.operatormanagement.helper.TypefaceUtil;
 import ir.taxi1880.operatormanagement.model.AllMistakesModel;
 import ir.taxi1880.operatormanagement.okHttp.RequestHelper;
 
-import static ir.taxi1880.operatormanagement.app.Keys.ACTIVE_IN_DRIVER_SUPPORT;
-import static ir.taxi1880.operatormanagement.app.Keys.KEY_ACTIVE_IN_DRIVER_SUPPORT;
 import static ir.taxi1880.operatormanagement.app.Keys.KEY_NEW_MISTAKE_COUNT;
 import static ir.taxi1880.operatormanagement.app.Keys.NEW_MISTAKE_COUNT;
 
@@ -78,12 +69,7 @@ public class AllMistakesFragment extends Fragment {
         unbinder = ButterKnife.bind(this, view);
         TypefaceUtil.overrideFonts(view);
 
-        if (!MyApplication.prefManager.isActiveInSupport()) {
-            if (vfAllMistake != null)
-                vfAllMistake.setDisplayedChild(4);
-        }else {
-            getListen();
-        }
+        getListen();
 
         refreshPage.setOnRefreshListener(() -> getListen());
 
@@ -91,17 +77,6 @@ public class AllMistakesFragment extends Fragment {
     }
 
     private void getListen() {
-        if (!MyApplication.prefManager.isActiveInSupport()) {
-            if (vfAllMistake != null)
-                vfAllMistake.setDisplayedChild(3);
-            new GeneralDialog()
-                    .title("هشدار")
-                    .message("لطفا فعال شوید")
-                    .firstButton("باشه", null)
-                    .cancelable(false)
-                    .show();
-            return;
-        }
         if (vfAllMistake != null)
             vfAllMistake.setDisplayedChild(0);
         RequestHelper.builder(EndPoints.LISTEN)
@@ -193,35 +168,6 @@ public class AllMistakesFragment extends Fragment {
             });
         }
     };
-
-    BroadcastReceiver counterReceiverNew = new BroadcastReceiver() {
-        @Override
-        public void onReceive(Context context, Intent intent) {
-            String state = intent.getStringExtra(ACTIVE_IN_DRIVER_SUPPORT);
-            if (state.equals("active")) {
-                getListen();
-            } else {
-                if (vfAllMistake != null)
-                    vfAllMistake.setDisplayedChild(4);
-            }
-
-        }
-    };
-
-    @Override
-    public void onStop() {
-        super.onStop();
-        if (counterReceiverNew != null) {
-            LocalBroadcastManager.getInstance(MyApplication.currentActivity).unregisterReceiver(counterReceiverNew);
-        }
-    }
-
-    @Override
-    public void onStart() {
-        super.onStart();
-        MyApplication.currentActivity.registerReceiver(counterReceiverNew, new IntentFilter());
-        LocalBroadcastManager.getInstance(MyApplication.currentActivity).registerReceiver((counterReceiverNew), new IntentFilter(KEY_ACTIVE_IN_DRIVER_SUPPORT));
-    }
 
     @Override
     public void onDestroyView() {

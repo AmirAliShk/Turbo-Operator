@@ -13,9 +13,6 @@ public class Keys {
     public static final String KEY_PENDING_MISTAKE_COUNT = "pendingMistakeCount";
     public static final String PENDING_MISTAKE_COUNT = "pendingCount";
 
-    public static final String KEY_ACTIVE_IN_DRIVER_SUPPORT = "keyActiveInDriverSupport";
-    public static final String ACTIVE_IN_DRIVER_SUPPORT = "activeInDriverSupport";
-
     public static final String KEY_COUNT_ALL_COMPLAINT = "allComplaintCount";
     public static final String VALUE_COUNT_ALL_COMPLAINT = "valueAllComplaintCount";
 

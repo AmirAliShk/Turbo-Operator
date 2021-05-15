@@ -56,8 +56,6 @@ import ir.taxi1880.operatormanagement.okHttp.RequestHelper;
 import ir.taxi1880.operatormanagement.push.AvaCrashReporter;
 import ir.taxi1880.operatormanagement.services.LinphoneService;
 
-import static ir.taxi1880.operatormanagement.app.Keys.ACTIVE_IN_DRIVER_SUPPORT;
-import static ir.taxi1880.operatormanagement.app.Keys.KEY_ACTIVE_IN_DRIVER_SUPPORT;
 import static ir.taxi1880.operatormanagement.app.Keys.KEY_NEW_MISTAKE_COUNT;
 import static ir.taxi1880.operatormanagement.app.Keys.KEY_PENDING_MISTAKE_COUNT;
 import static ir.taxi1880.operatormanagement.app.Keys.NEW_MISTAKE_COUNT;
@@ -267,7 +265,6 @@ public class SupportActivity extends AppCompatActivity {
                 .addParam("sipNumber", sipNumber)
                 .listener(setActivate)
                 .post();
-
     }
 
     RequestHelper.Callback setActivate = new RequestHelper.Callback() {
@@ -281,10 +278,6 @@ public class SupportActivity extends AppCompatActivity {
                     String message = obj.getString("message");
 
                     if (success) {
-                        Intent broadcastIntent = new Intent(KEY_ACTIVE_IN_DRIVER_SUPPORT);
-                        broadcastIntent.putExtra(ACTIVE_IN_DRIVER_SUPPORT, "active");
-                        broadcaster.sendBroadcast(broadcastIntent);
-
                         MyApplication.prefManager.activeInSupport(true);
                         MyApplication.prefManager.setActivityStatus(2);
                         MyApplication.Toast("شما باموفقیت وارد صف شدید", Toast.LENGTH_SHORT);
@@ -350,10 +343,6 @@ public class SupportActivity extends AppCompatActivity {
                     String message = obj.getString("message");
 
                     if (success) {
-                        Intent broadcastIntent = new Intent(KEY_ACTIVE_IN_DRIVER_SUPPORT);
-                        broadcastIntent.putExtra(ACTIVE_IN_DRIVER_SUPPORT, "deActive");
-                        broadcaster.sendBroadcast(broadcastIntent);
-
                         Intent broadcastIntent2 = new Intent(KEY_NEW_MISTAKE_COUNT);
                         broadcastIntent2.putExtra(NEW_MISTAKE_COUNT, 0);
                         broadcaster.sendBroadcast(broadcastIntent2);
