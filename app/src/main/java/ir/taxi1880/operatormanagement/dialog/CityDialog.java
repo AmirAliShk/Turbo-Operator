@@ -9,8 +9,11 @@ import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.TextView;
+import android.widget.Toast;
 
 import com.github.mmin18.widget.RealtimeBlurView;
 
@@ -19,6 +22,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 
 import ir.taxi1880.operatormanagement.R;
 import ir.taxi1880.operatormanagement.adapter.CityAdapter;
@@ -42,8 +46,10 @@ public class CityDialog {
     private Listener listener;
     private static Dialog dialog;
     LinearLayout llSelectCity;
+    TextView txtTitle;
+    String title;
 
-    public void show(Listener listener) {
+    public void show(Listener listener, boolean isCity) {
         if (MyApplication.currentActivity == null || MyApplication.currentActivity.isFinishing())
             return;
         dialog = new Dialog(MyApplication.currentActivity);
@@ -63,36 +69,54 @@ public class CityDialog {
         listCity = dialog.findViewById(R.id.listCity);
         blrView = dialog.findViewById(R.id.blrView);
         llSelectCity = dialog.findViewById(R.id.llSelectCity);
-
+        txtTitle = dialog.findViewById(R.id.txtTitle);
+        txtTitle.setText(title);
         llSelectCity.setOnClickListener(view -> {
             return;
         });
         blrView.setOnClickListener(view -> dismiss());
 
-        ArrayList<CityModel> cityModels = new ArrayList<>();
-        try {
-            JSONArray cityArr = new JSONArray(MyApplication.prefManager.getCity());
-            for (int i = 0; i < cityArr.length(); i++) {
-                JSONObject cityObj = cityArr.getJSONObject(i);
-                CityModel cityModel = new CityModel();
-                cityModel.setCity(cityObj.getString("cityname"));
-                cityModel.setId(cityObj.getInt("cityid"));
-                cityModel.setCityLatin(cityObj.getString("latinName"));
-                cityModels.add(cityModel);
+        if (isCity) {
+            ArrayList<CityModel> cityModels = new ArrayList<>();
+            try {
+                JSONArray cityArr = new JSONArray(MyApplication.prefManager.getCity());
+                for (int i = 0; i < cityArr.length(); i++) {
+                    JSONObject cityObj = cityArr.getJSONObject(i);
+                    CityModel cityModel = new CityModel();
+                    cityModel.setCity(cityObj.getString("cityname"));
+                    cityModel.setId(cityObj.getInt("cityid"));
+                    cityModel.setCityLatin(cityObj.getString("latinName"));
+                    cityModels.add(cityModel);
+                }
+            } catch (JSONException e) {
+                e.printStackTrace();
+                AvaCrashReporter.send(e, "CityDialog class, show method");
+
             }
-        } catch (JSONException e) {
-            e.printStackTrace();
-            AvaCrashReporter.send(e, "CityDialog class, show method");
+
+            cityAdapter = new CityAdapter(cityModels, MyApplication.context);
+            listCity.setAdapter(cityAdapter);
+
+        } else {
+            ArrayList<String> waitingTime = new ArrayList<>(Arrays.asList("بدون توقف", "۵ دقیقه", "۱۰ دقیقه", "۲۰ دقیقه", "۳۰ دقیقه", "۴۰ دقیقه", "۵۰ دقیقه", "۱ ساعت", "۱.۵ ساعت", "۲ ساعت", "۲.۵ ساعت", "۳ ساعت"));
+
+            final ArrayAdapter<String> adapter = new ArrayAdapter<>(MyApplication.currentActivity, R.layout.item_city, R.id.txtCity, waitingTime);
+            listCity.setAdapter(adapter);
+
+            listCity.setOnItemClickListener((adapterView, view, position, l) -> {
+                // TODO Auto-generated method stub
+                String value=adapter.getItem(position);
+                Toast.makeText(MyApplication.context,value,Toast.LENGTH_SHORT).show();
+
+            });
 
         }
-
-        cityAdapter = new CityAdapter(cityModels, MyApplication.context);
-        listCity.setAdapter(cityAdapter);
 
         listCity.setOnItemClickListener((parent, view, position, id) -> {
             listener.selectedCity(position);
             dismiss();
         });
+
         try {
             dialog.show();
         } catch (Exception e) {
@@ -101,6 +125,11 @@ public class CityDialog {
 
         }
 
+    }
+
+    public CityDialog setTitle(String title) {
+        this.title = title;
+        return this;
     }
 
     private static void dismiss() {

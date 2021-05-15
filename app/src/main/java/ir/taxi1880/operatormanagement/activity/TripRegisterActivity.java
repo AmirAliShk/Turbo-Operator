@@ -109,7 +109,7 @@ public class TripRegisterActivity extends AppCompatActivity {
     public static boolean isRunning = false;
     byte traffic = 0;
     byte defaultClass = 0;
-    byte stopTime = 0;//todo
+    int stopTime = 0;//todo
     String queue = "0";
     String voipId = "0";
     String permanentDesc = "";
@@ -883,7 +883,12 @@ public class TripRegisterActivity extends AppCompatActivity {
                 public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                     serviceType = typeServiceModels.get(position).getId();
                     if (serviceType == 1) {
-                        spWaitingTime.performClick();
+                        new CityDialog()
+                                .setTitle("مدت زمان توقف")
+                                .show(pos -> {
+                                    if (spWaitingTime != null)
+                                        spWaitingTime.setSelection(position + 1);
+                                }, false);
                     }
                 }
 
@@ -898,7 +903,7 @@ public class TripRegisterActivity extends AppCompatActivity {
     }
 
     private void initWaitingTimeSpinner() {
-        ArrayList<String> waitingTime = new ArrayList<String>(Arrays.asList("بدون توقف", "۵ دقیقه", "۱۰ دقیقه", "۲۰ دقیقه", "۳۰ دقیقه", "۴۰ دقیقه", "۵۰ دقیقه", "۱ ساعت", "۲ ساعت", "۳ ساعت"));
+        ArrayList<String> waitingTime = new ArrayList<String>(Arrays.asList("بدون توقف", "۵ دقیقه", "۱۰ دقیقه", "۲۰ دقیقه", "۳۰ دقیقه", "۴۰ دقیقه", "۵۰ دقیقه", "۱ ساعت", "۱.۵ ساعت", "۲ ساعت", "۲.۵ ساعت", "۳ ساعت"));
         try {
 
             if (spWaitingTime == null)
@@ -914,7 +919,47 @@ public class TripRegisterActivity extends AppCompatActivity {
             spWaitingTime.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
                 @Override
                 public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                    stopTime = (byte) position;
+                    switch (position) {
+                        case 0:
+                            stopTime = 0;
+                            break;
+                        case 1:
+                            stopTime = 5;
+                            break;
+                        case 2:
+                            stopTime = 10;
+                            break;
+                        case 3:
+                            stopTime = 15;
+                            break;
+                        case 4:
+                            stopTime = 20;
+                            break;
+                        case 5:
+                            stopTime = 30;
+                            break;
+                        case 6:
+                            stopTime = 40;
+                            break;
+                        case 7:
+                            stopTime = 50;
+                            break;
+                        case 8:
+                            stopTime = 60;
+                            break;
+                        case 9:
+                            stopTime = 90;
+                            break;
+                        case 10:
+                            stopTime = 120;
+                            break;
+                        case 11:
+                            stopTime = 150;
+                            break;
+                        case 12:
+                            stopTime = 180;
+                            break;
+                    }
                 }
 
                 @Override
@@ -1064,7 +1109,7 @@ public class TripRegisterActivity extends AppCompatActivity {
                             new CityDialog().show(position -> {
                                 if (spCity != null)
                                     spCity.setSelection(position + 1);
-                            });
+                            }, true);
                         }
                         if (callerCode == 0) {
                             if (txtNewPassenger != null)
