@@ -29,8 +29,8 @@ public class ErrorRegistrationDialog {
     static Dialog dialog;
     ViewFlipper vfLoader;
 
-    public void show(String ServiceId, String phone, String mobile,String address, String customerName, String voipId,
-                     int cityCode, String stationCode, int userCodeContact, String conTime, String conDate) {
+    public void show(String ServiceId, String phone, String mobile, String address, String customerName, String voipId,
+                     int cityCode, String stationCode, int userCodeContact, String conTime, String conDate, String price, String destinationStation) {
         if (MyApplication.currentActivity == null || MyApplication.currentActivity.isFinishing())
             return;
         dialog = new Dialog(MyApplication.currentActivity);
@@ -62,7 +62,7 @@ public class ErrorRegistrationDialog {
                 return;
             }
 
-            setMistake(ServiceId, phone, mobile, address, customerName, voipId, description, cityCode, stationCode, userCodeContact, conTime, conDate);
+            setMistake(ServiceId, phone, mobile, address, customerName, voipId, description, cityCode, stationCode, userCodeContact, conTime, conDate, price, destinationStation);
             dismiss();
         });
 
@@ -70,7 +70,7 @@ public class ErrorRegistrationDialog {
     }
 
     private void setMistake(String ServiceId, String phone, String mobile, String address, String customerName, String voipId, String desc,
-                            int cityCode, String stationCode, int userCodeContact, String conTime, String conDate) {
+                            int cityCode, String stationCode, int userCodeContact, String conTime, String conDate, String price, String destinationStation) {
         if (vfLoader != null) {
             vfLoader.setDisplayedChild(1);
         }
@@ -82,6 +82,9 @@ public class ErrorRegistrationDialog {
                 .addParam("tripUser", userCodeContact)//
                 .addParam("cityId", cityCode)//
                 .addParam("tripStation", stationCode)//
+//                .addParam("stationCode", originStation)//todo
+                .addParam("destinationStation", destinationStation)
+                .addParam("Price", price)//
                 .addParam("tripDate", conDate)//
                 .addParam("tripTime", conTime)//
                 .addParam("adrs", address)

@@ -66,6 +66,8 @@ public class TripDetailsFragment extends Fragment {
     String callTime;
     String cityName;
     int cityCode;
+    String price;
+    String destinationStation;
 
     @OnClick(R.id.imgBack)
     void onBackPress() {
@@ -236,7 +238,7 @@ public class TripDetailsFragment extends Fragment {
     void onError() {
 //        String cityName= new DataBase(MyApplication.context).getCityName2(cityCode);
         new ErrorRegistrationDialog()
-                .show(serviceId, passengerPhone, customerMobile, passengerAddress, passengerName, voipId, cityCode, stationCode, userId, callTime, callDate);
+                .show(serviceId, passengerPhone, customerMobile, passengerAddress, passengerName, voipId, cityCode, stationCode, userId, callTime, callDate, price, destinationStation);
     }
 
     @OnClick(R.id.btnComplaintRegistration)
@@ -301,7 +303,7 @@ public class TripDetailsFragment extends Fragment {
                         String sendDate = data.getString("SendDate");
                         String sendTime = data.getString("SendTime");
                         stationCode = data.getString("stationCode");
-                        String price = data.getString("Price");
+                        price = data.getString("Price");
                         String finishdate = data.getString("Finishdate");
                         String finishTime = data.getString("FinishTime");
                         taxiCode = data.getString("taxicode");
@@ -337,7 +339,7 @@ public class TripDetailsFragment extends Fragment {
                         String customerFixedDes = data.getString("customerFixedDes");
                         String serviceComment = data.getString("serviceComment");
                         voipId = data.getString("VoipId");
-                        String destinationStation = data.getString("destinationStation");
+                        destinationStation = data.getString("destinationStation");
                         String destination = data.getString("destinationAddress");
 
                         if (status == 0) { // waiting
