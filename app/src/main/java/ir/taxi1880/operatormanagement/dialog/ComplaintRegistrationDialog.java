@@ -22,6 +22,7 @@ import java.util.ArrayList;
 
 import ir.taxi1880.operatormanagement.R;
 import ir.taxi1880.operatormanagement.adapter.SpinnerAdapter;
+import ir.taxi1880.operatormanagement.app.DataHolder;
 import ir.taxi1880.operatormanagement.app.EndPoints;
 import ir.taxi1880.operatormanagement.app.MyApplication;
 import ir.taxi1880.operatormanagement.helper.KeyBoardHelper;
@@ -86,7 +87,7 @@ public class ComplaintRegistrationDialog {
         RequestHelper.builder(EndPoints.INSERT_COMPLAINT)
                 .addParam("serviceId", serviceId)
                 .addParam("complaintType", complaintType)
-                .addParam("voipId", voipId)
+                .addParam("voipId", DataHolder.getInstance().getVoipId())
                 .addParam("description", " ")
                 .listener(onSetComplaint)
                 .post();
@@ -111,6 +112,7 @@ public class ComplaintRegistrationDialog {
                                     .cancelable(false)
                                     .firstButton("باشه", null)
                                     .show();
+                            DataHolder.getInstance().setVoipId("0");
                         } else {
                             new GeneralDialog()
                                     .title("خطا")

@@ -2,10 +2,10 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/llParent"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/colorPrimaryDark"
-    android:id="@+id/llParent"
     android:clickable="true"
     android:layoutDirection="rtl"
     android:orientation="vertical"
@@ -39,8 +39,8 @@
                 android:id="@+id/imgProfile"
                 android:layout_width="100dp"
                 android:layout_height="100dp"
-                android:padding="8dp"
                 android:background="@drawable/bg_circle"
+                android:padding="8dp"
                 android:src="@drawable/ic_operator_user" />
 
         </LinearLayout>
@@ -98,13 +98,13 @@
                     android:background="@drawable/edit_text_style"
                     android:elevation="@dimen/_5sdp"
                     android:gravity="left|center_vertical"
-                    android:textDirection="ltr"
                     android:inputType="number"
                     android:maxLength="11"
                     android:padding="5dp"
                     android:singleLine="true"
                     android:textAppearance="?android:attr/textAppearanceMedium"
-                    android:textColor="@color/colorBlack" />
+                    android:textColor="@color/colorBlack"
+                    android:textDirection="ltr" />
 
             </LinearLayout>
 
@@ -136,18 +136,18 @@
                     android:gravity="left|center_vertical"
                     android:inputType="number"
                     android:maxLength="11"
-                    android:textDirection="ltr"
                     android:padding="5dp"
                     android:singleLine="true"
                     android:textAppearance="?android:attr/textAppearanceMedium"
-                    android:textColor="@color/colorBlack" />
+                    android:textColor="@color/colorBlack"
+                    android:textDirection="ltr" />
 
             </LinearLayout>
 
             <LinearLayout
-                android:id="@+id/llRules"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
                 android:orientation="horizontal">
 
                 <CheckBox
@@ -155,22 +155,32 @@
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent" />
 
-                <TextView
-                    android:id="@+id/txtRules"
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:gravity="center_vertical"
-                    android:text="شرایط و قوانین توربوتاکسی"
-                    android:textColor="@color/colorPrimaryDark"
-                    android:textSize="18sp" />
+                <LinearLayout
+                    android:id="@+id/llRules"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginRight="5dp"
+                    android:orientation="vertical">
 
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:gravity="center_vertical"
-                    android:text=" را مطالعه و قبول کردم."
-                    android:textColor="@color/colorBlack"
-                    android:textSize="15sp" />
+                    <TextView
+                        android:id="@+id/txtRules"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_marginBottom="2dp"
+                        android:gravity="center_vertical"
+                        android:text="شرایط و قوانین توربوتاکسی"
+                        android:textColor="@color/colorPrimaryDark"
+                        android:textSize="20sp" />
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:gravity="center_vertical"
+                        android:text=" را مطالعه و قبول کردم."
+                        android:textColor="@color/colorBlack"
+                        android:textSize="18sp" />
+
+                </LinearLayout>
 
             </LinearLayout>
 
@@ -189,9 +199,9 @@
                     android:id="@+id/btnLogin"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:background="@color/transparent"
                     android:paddingLeft="@dimen/_50sdp"
                     android:paddingRight="@dimen/_50sdp"
-                    android:background="@color/transparent"
                     android:text="@string/enter"
                     android:textColor="@color/colorWhite"
                     android:textSize="@dimen/_20ssp"
@@ -214,10 +224,10 @@
                 android:id="@+id/llEnterWithMobile"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:gravity="center"
-                android:padding="@dimen/_10sdp"
                 android:background="@drawable/bg_ripple"
-                android:orientation="horizontal">
+                android:gravity="center"
+                android:orientation="horizontal"
+                android:padding="@dimen/_10sdp">
 
                 <ImageView
                     android:layout_width="@dimen/_15sdp"
@@ -229,10 +239,10 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="ورود با شماره همراه"
+                    android:shadowColor="@color/grayLighter"
                     android:shadowDy="3"
                     android:shadowRadius="3"
-                    android:shadowColor="@color/grayLighter"
+                    android:text="ورود با شماره همراه"
                     android:textColor="@color/colorPrimaryDark"
                     android:textSize="@dimen/_14ssp" />
 

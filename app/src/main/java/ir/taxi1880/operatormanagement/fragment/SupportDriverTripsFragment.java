@@ -16,7 +16,6 @@ import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.ViewFlipper;
 
-import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -35,10 +34,7 @@ import butterknife.OnClick;
 import butterknife.OnLongClick;
 import butterknife.Unbinder;
 import ir.taxi1880.operatormanagement.R;
-import ir.taxi1880.operatormanagement.adapter.DriverStationRegistrationAdapter;
 import ir.taxi1880.operatormanagement.adapter.DriverTripsAdapter;
-import ir.taxi1880.operatormanagement.adapter.DriverTurnoverAdapter;
-import ir.taxi1880.operatormanagement.adapter.TripAdapter;
 import ir.taxi1880.operatormanagement.app.EndPoints;
 import ir.taxi1880.operatormanagement.app.MyApplication;
 import ir.taxi1880.operatormanagement.dialog.CallDialog;
@@ -54,8 +50,6 @@ import ir.taxi1880.operatormanagement.helper.KeyBoardHelper;
 import ir.taxi1880.operatormanagement.helper.PhoneNumberValidation;
 import ir.taxi1880.operatormanagement.helper.StringHelper;
 import ir.taxi1880.operatormanagement.helper.TypefaceUtil;
-import ir.taxi1880.operatormanagement.model.DriverStationRegistrationModel;
-import ir.taxi1880.operatormanagement.model.DriverTurnoverModel;
 import ir.taxi1880.operatormanagement.model.TripModel;
 import ir.taxi1880.operatormanagement.okHttp.RequestHelper;
 import ir.taxi1880.operatormanagement.services.LinphoneService;
@@ -210,7 +204,8 @@ public class SupportDriverTripsFragment extends Fragment {
             vfTrip.setDisplayedChild(0);
             llDriverInfo.setVisibility(View.GONE);
         }
-        edtSearchTrip.setText("");
+        if (edtSearchTrip != null)
+            edtSearchTrip.setText("");
         return true;
     }
 
@@ -242,7 +237,8 @@ public class SupportDriverTripsFragment extends Fragment {
                     break;
             }
             imgSearchType.setImageResource(imageType);
-            edtSearchTrip.setText("");
+            if (edtSearchTrip != null)
+                edtSearchTrip.setText("");
             this.searchCase = searchCase;
         });
     }
@@ -780,7 +776,7 @@ public class SupportDriverTripsFragment extends Fragment {
                             return;
                         }
                         new DriverTurnoverDialog().show(dataArr);
-                    }else {
+                    } else {
                         new GeneralDialog()
                                 .title("هشدار")
                                 .message(message)

@@ -93,6 +93,9 @@ public class PendingMistakesFragment extends Fragment {
                 .show(tell, mobile);
     }
 
+    @BindView(R.id.txtUserCode)
+    TextView txtUserCode;
+
     @BindView(R.id.txtTripDate)
     TextView txtTripDate;
 
@@ -330,7 +333,8 @@ public class PendingMistakesFragment extends Fragment {
             txtTripDate.setText(StringHelper.toPersianDigits(model.getDate()));
             txtDestAddress.setText(StringHelper.toPersianDigits(model.getDestination()));
             txtDestStation.setText(StringHelper.toPersianDigits(model.getDestStation()));
-            txtPrice.setText(StringHelper.toPersianDigits(model.getPrice()));
+            txtPrice.setText(StringHelper.toPersianDigits(StringHelper.setComma(model.getPrice())));
+            txtUserCode.setText(StringHelper.toPersianDigits(model.getUserCode() + ""));
 
             skbTimer.setProgress(0);
 

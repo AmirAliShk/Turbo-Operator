@@ -3,7 +3,6 @@ package ir.taxi1880.operatormanagement.dialog;
 import android.app.Dialog;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
-import android.util.Log;
 import android.view.Gravity;
 import android.view.Window;
 import android.view.WindowManager;
@@ -82,7 +81,6 @@ public class ErrorRegistrationDialog {
                 .addParam("tripUser", userCodeContact)//
                 .addParam("cityId", cityCode)//
                 .addParam("tripStation", stationCode)//
-//                .addParam("stationCode", originStation)//todo
                 .addParam("destinationStation", destinationStation)
                 .addParam("Price", price)//
                 .addParam("tripDate", conDate)//

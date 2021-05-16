@@ -887,7 +887,7 @@ public class TripRegisterActivity extends AppCompatActivity {
                                 .setTitle("مدت زمان توقف")
                                 .show(pos -> {
                                     if (spWaitingTime != null)
-                                        spWaitingTime.setSelection(position + 1);
+                                        spWaitingTime.setSelection(pos);
                                 }, false);
                     }
                 }
@@ -896,6 +896,7 @@ public class TripRegisterActivity extends AppCompatActivity {
                 public void onNothingSelected(AdapterView<?> parent) {
                 }
             });
+
         } catch (JSONException e) {
             e.printStackTrace();
             AvaCrashReporter.send(e, "TripRegisterActivity class, initServiceTypeSpinner method");
@@ -930,33 +931,30 @@ public class TripRegisterActivity extends AppCompatActivity {
                             stopTime = 10;
                             break;
                         case 3:
-                            stopTime = 15;
-                            break;
-                        case 4:
                             stopTime = 20;
                             break;
-                        case 5:
+                        case 4:
                             stopTime = 30;
                             break;
-                        case 6:
+                        case 5:
                             stopTime = 40;
                             break;
-                        case 7:
+                        case 6:
                             stopTime = 50;
                             break;
-                        case 8:
+                        case 7:
                             stopTime = 60;
                             break;
-                        case 9:
+                        case 8:
                             stopTime = 90;
                             break;
-                        case 10:
+                        case 9:
                             stopTime = 120;
                             break;
-                        case 11:
+                        case 10:
                             stopTime = 150;
                             break;
-                        case 12:
+                        case 11:
                             stopTime = 180;
                             break;
                     }

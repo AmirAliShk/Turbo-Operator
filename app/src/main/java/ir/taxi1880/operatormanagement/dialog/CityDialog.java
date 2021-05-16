@@ -91,31 +91,23 @@ public class CityDialog {
             } catch (JSONException e) {
                 e.printStackTrace();
                 AvaCrashReporter.send(e, "CityDialog class, show method");
-
             }
-
             cityAdapter = new CityAdapter(cityModels, MyApplication.context);
             listCity.setAdapter(cityAdapter);
+            listCity.setOnItemClickListener((parent, view, position, id) -> {
+                listener.selectedCity(position);
+                dismiss();
+            });
 
         } else {
             ArrayList<String> waitingTime = new ArrayList<>(Arrays.asList("بدون توقف", "۵ دقیقه", "۱۰ دقیقه", "۲۰ دقیقه", "۳۰ دقیقه", "۴۰ دقیقه", "۵۰ دقیقه", "۱ ساعت", "۱.۵ ساعت", "۲ ساعت", "۲.۵ ساعت", "۳ ساعت"));
-
             final ArrayAdapter<String> adapter = new ArrayAdapter<>(MyApplication.currentActivity, R.layout.item_city, R.id.txtCity, waitingTime);
             listCity.setAdapter(adapter);
-
             listCity.setOnItemClickListener((adapterView, view, position, l) -> {
-                // TODO Auto-generated method stub
-                String value=adapter.getItem(position);
-                Toast.makeText(MyApplication.context,value,Toast.LENGTH_SHORT).show();
-
+                listener.selectedCity(position);
+                dismiss();
             });
-
         }
-
-        listCity.setOnItemClickListener((parent, view, position, id) -> {
-            listener.selectedCity(position);
-            dismiss();
-        });
 
         try {
             dialog.show();

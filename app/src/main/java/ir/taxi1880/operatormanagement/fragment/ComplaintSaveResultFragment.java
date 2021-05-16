@@ -124,7 +124,6 @@ public class ComplaintSaveResultFragment extends Fragment {
             }
         });
 
-
         chbUnlockDriver.setOnCheckedChangeListener((compoundButton, b) -> {
             if (chbUnlockDriver.isChecked()) {
                 DataHolder.getInstance().setUnlockDriver(true);
@@ -153,6 +152,44 @@ public class ComplaintSaveResultFragment extends Fragment {
             } else DataHolder.getInstance().setCustomerLock(false);
         });
 
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        DataHolder.getInstance().setComplaintResult((byte) 0);
+        DataHolder.getInstance().setLockDriver(false);
+        DataHolder.getInstance().setLockDay("");
+        DataHolder.getInstance().setUnlockDriver(false);
+        DataHolder.getInstance().setFined(false);
+        DataHolder.getInstance().setCustomerLock(false);
+        DataHolder.getInstance().setOutDriver(false);
+
+        rgBlameComplaint.clearCheck();
+        chbLockDriver.setSelected(false);
+        chbUnlockDriver.setSelected(false);
+        chbFined.setSelected(false);
+        chbOutDriver.setSelected(false);
+        chbLockCustomer.setSelected(false);
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        DataHolder.getInstance().setComplaintResult((byte) 0);
+        DataHolder.getInstance().setLockDriver(false);
+        DataHolder.getInstance().setLockDay("");
+        DataHolder.getInstance().setUnlockDriver(false);
+        DataHolder.getInstance().setFined(false);
+        DataHolder.getInstance().setCustomerLock(false);
+        DataHolder.getInstance().setOutDriver(false);
+
+        rgBlameComplaint.clearCheck();
+        chbLockDriver.setSelected(false);
+        chbUnlockDriver.setSelected(false);
+        chbFined.setSelected(false);
+        chbOutDriver.setSelected(false);
+        chbLockCustomer.setSelected(false);
     }
 
     @Override

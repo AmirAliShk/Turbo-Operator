@@ -194,6 +194,14 @@ public class ComplaintDetailFragment extends Fragment {
 //                {"success":true,"message":"عملیات با موفقیت انجام شد","data":{"result":"true","resultDes":"تکميل شد"}}
 //                {"success":true,"message":"عملیات با موفقیت انجام شد","data":{"result":"false","resultDes":"اين مرحله تکميل نشده است"}}
                 try {
+                    DataHolder.getInstance().setComplaintResult((byte) 0);
+                    DataHolder.getInstance().setLockDriver(false);
+                    DataHolder.getInstance().setLockDay("");
+                    DataHolder.getInstance().setUnlockDriver(false);
+                    DataHolder.getInstance().setFined(false);
+                    DataHolder.getInstance().setCustomerLock(false);
+                    DataHolder.getInstance().setOutDriver(false);
+
                     JSONObject object = new JSONObject(args[0].toString());
                     boolean success = object.getBoolean("success");
                     String message = object.getString("message");
@@ -287,6 +295,14 @@ public class ComplaintDetailFragment extends Fragment {
         public void onResponse(Runnable reCall, Object... args) {
             MyApplication.handler.post(() -> {
                 try {
+                    DataHolder.getInstance().setComplaintResult((byte) 0);
+                    DataHolder.getInstance().setLockDriver(false);
+                    DataHolder.getInstance().setLockDay("");
+                    DataHolder.getInstance().setUnlockDriver(false);
+                    DataHolder.getInstance().setFined(false);
+                    DataHolder.getInstance().setCustomerLock(false);
+                    DataHolder.getInstance().setOutDriver(false);
+
                     JSONObject object = new JSONObject(args[0].toString());
                     boolean success = object.getBoolean("success");
                     String message = object.getString("message");

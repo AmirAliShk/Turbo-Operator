@@ -317,16 +317,20 @@ public class DeterminationPageFragment extends Fragment {
                             isFinished = true;
                             if (dataBase.getRemainingAddress() > 0) {
                                 dataBase.deleteRemainingRecord(dataBase.getTopAddress().getId());
-                                txtAddress.setText(showAddress());
+                                if (txtAddress != null)
+                                    txtAddress.setText(showAddress());
                             } else {
                                 dataBase.deleteAllData();
                                 if (txtAddress == null) return;
                                 if (!MyApplication.prefManager.isStartGettingAddress()) {
-                                    txtAddress.setText("برای مشاهده آدرس ها فعال شوید");
+                                    if (txtAddress != null)
+                                        txtAddress.setText("برای مشاهده آدرس ها فعال شوید");
                                 } else {
-                                    txtAddress.setText("آدرسی موجود نیست...");
+                                    if (txtAddress != null)
+                                        txtAddress.setText("آدرسی موجود نیست...");
                                 }
-                                txtRemainingAddress.setText("");
+                                if (txtRemainingAddress != null)
+                                    txtRemainingAddress.setText("");
                             }
                         } else {
                             if (dataBase.getRemainingAddress() > 1)
@@ -428,7 +432,7 @@ public class DeterminationPageFragment extends Fragment {
                 btnActivate.setBackgroundResource(R.drawable.bg_green_edge);
             if (btnDeActivate != null) {
                 btnDeActivate.setBackgroundColor(Color.parseColor("#00FFB2B2"));
-                btnDeActivate.setTextColor(Color.parseColor("#ffffff"));
+                btnDeActivate.setTextColor(Color.parseColor("#ffffff"));//todo
             }
         } else {
             dataBase.deleteAllData();
@@ -465,7 +469,7 @@ public class DeterminationPageFragment extends Fragment {
                 .put();
         if (dataBase.getRemainingAddress() > 0)
             dataBase.deleteRow(dataBase.getTopAddress().getId());
-        if (txtStation != null) {
+        if (txtStation != null && txtAddress != null) {
             txtAddress.setText(showAddress());
             txtStation.setText("");
         }
@@ -641,14 +645,16 @@ public class DeterminationPageFragment extends Fragment {
             if (txtRemainingAddress == null) return "";
 
             if (dataBase.getRemainingAddress() == 0) {
-                txtRemainingAddress.setText("");
+                if (txtRemainingAddress != null)
+                    txtRemainingAddress.setText("");
                 if (!MyApplication.prefManager.isStartGettingAddress()) {
                     return "برای مشاهده آدرس ها فعال شوید";
                 } else {
                     return "آدرسی موجود نیست...";
                 }
             } else {
-                txtRemainingAddress.setText(dataBase.getRemainingAddress() + "");
+                if (txtRemainingAddress != null)
+                    txtRemainingAddress.setText(dataBase.getRemainingAddress() + "");
                 String cityName = dataBase.getCityName2(dataBase.getTopAddress().getCity());
 
                 if (dataBase.getTopAddress().getOriginStation() == 0 && dataBase.getTopAddress().getDestinationStation() == 0 && dataBase.getTopAddress().getPriceable() == 1) {
