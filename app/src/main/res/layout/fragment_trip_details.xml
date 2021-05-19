@@ -26,11 +26,11 @@
 
         <TextView
             android:id="@+id/txtTitle"
+            style="@style/pageTitle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
-            android:text="@string/tripDetails"
-            style="@style/pageTitle"/>
+            android:text="@string/tripDetails" />
 
     </RelativeLayout>
 
@@ -810,6 +810,21 @@
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
                         android:text="@string/reSendService" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <Button
+                        android:id="@+id/btnDisposal"
+                        style="@style/button"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="@string/disposal" />
 
                 </LinearLayout>
 

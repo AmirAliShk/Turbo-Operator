@@ -525,7 +525,8 @@ public class SupportDriverTripsFragment extends Fragment {
 
                     if (success) {
                         if (view != null) {
-                            llDriverInfo.setVisibility(View.VISIBLE);
+                            if (llDriverInfo != null)
+                                llDriverInfo.setVisibility(View.VISIBLE);
                         }
 
                         JSONObject dataObj = object.getJSONObject("data");
@@ -567,8 +568,10 @@ public class SupportDriverTripsFragment extends Fragment {
                         String statusMessage = "";
 
                         if (view != null) {
-                            txtDriverName.setText(driverName);
-                            txtDriverCode.setText(StringHelper.toPersianDigits(taxiCode + ""));
+                            if (txtDriverName != null)
+                                txtDriverName.setText(driverName);
+                            if (txtDriverCode != null)
+                                txtDriverCode.setText(StringHelper.toPersianDigits(taxiCode + ""));
 
                             if (isLock == 1) {
                                 statusMessage = "راننده قفل میباشد.";
@@ -595,11 +598,13 @@ public class SupportDriverTripsFragment extends Fragment {
                                         break;
                                 }
                             }
-                            txtDriverQueue.setText(statusMessage);
+                            if (txtDriverQueue != null)
+                                txtDriverQueue.setText(statusMessage);
                         }
                     } else {
                         if (view != null) {
-                            llDriverInfo.setVisibility(View.GONE);
+                            if (llDriverInfo != null)
+                                llDriverInfo.setVisibility(View.GONE);
                         }
                         new GeneralDialog()
                                 .title("هشدار")
@@ -611,7 +616,8 @@ public class SupportDriverTripsFragment extends Fragment {
                 } catch (JSONException e) {
                     e.printStackTrace();
                     if (view != null) {
-                        llDriverInfo.setVisibility(View.GONE);
+                        if (llDriverInfo != null)
+                            llDriverInfo.setVisibility(View.GONE);
                         MyApplication.Toast("خطا در دریافت اطلاعات راننده", Toast.LENGTH_SHORT);
                     }
                 }
@@ -622,7 +628,8 @@ public class SupportDriverTripsFragment extends Fragment {
         public void onFailure(Runnable reCall, Exception e) {
             MyApplication.handler.post(() -> {
                 if (view != null) {
-                    llDriverInfo.setVisibility(View.GONE);
+                    if (llDriverInfo != null)
+                        llDriverInfo.setVisibility(View.GONE);
                     MyApplication.Toast("خطا در دریافت اطلاعات راننده", Toast.LENGTH_SHORT);
                 }
             });

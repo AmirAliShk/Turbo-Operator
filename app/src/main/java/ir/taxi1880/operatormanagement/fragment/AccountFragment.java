@@ -123,35 +123,32 @@ public class AccountFragment extends Fragment {
     RequestHelper.Callback getBalance = new RequestHelper.Callback() {
         @Override
         public void onResponse(Runnable reCall, Object... args) {
-            MyApplication.handler.post(new Runnable() {
-                @Override
-                public void run() {
-                    try {
+            MyApplication.handler.post(() -> {
+                try {
 //                        {"success":true,"message":"","data":{"accountBalance":230037}}
-                        JSONObject obj = new JSONObject(args[0].toString());
-                        boolean success = obj.getBoolean("success");
-                        String message = obj.getString("message");
+                    JSONObject obj = new JSONObject(args[0].toString());
+                    boolean success = obj.getBoolean("success");
+                    String message = obj.getString("message");
 
-                        if (success) {
-                            JSONObject dataObj = obj.getJSONObject("data");
-                            String accountBalance = dataObj.getString("accountBalance");
-                            String balance = StringHelper.setComma(accountBalance);
-                            if (txtCharge != null)
-                                txtCharge.setText(StringHelper.toPersianDigits(balance + ""));
-                            if (vfBalance != null)
-                                vfBalance.setDisplayedChild(1);
-                        } else {
-                            new GeneralDialog()
-                                    .title("هشدار")
-                                    .message(message)
-                                    .secondButton("باشه", null)
-                                    .cancelable(false)
-                                    .show();
-                        }
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                        AvaCrashReporter.send(e, "AccountFragment class, getBalance onResponse method");
+                    if (success) {
+                        JSONObject dataObj = obj.getJSONObject("data");
+                        String accountBalance = dataObj.getString("accountBalance");
+                        String balance = StringHelper.setComma(accountBalance);
+                        if (txtCharge != null)
+                            txtCharge.setText(StringHelper.toPersianDigits(balance + ""));
+                        if (vfBalance != null)
+                            vfBalance.setDisplayedChild(1);
+                    } else {
+                        new GeneralDialog()
+                                .title("هشدار")
+                                .message(message)
+                                .secondButton("باشه", null)
+                                .cancelable(false)
+                                .show();
                     }
+                } catch (Exception e) {
+                    e.printStackTrace();
+                    AvaCrashReporter.send(e, "AccountFragment class, getBalance onResponse method");
                 }
             });
         }

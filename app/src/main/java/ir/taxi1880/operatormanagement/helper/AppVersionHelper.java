@@ -11,31 +11,31 @@ import ir.taxi1880.operatormanagement.push.AvaCrashReporter;
  */
 public class AppVersionHelper {
 
-  private static final String TAG = AppVersionHelper.class.getSimpleName();
-  Context context;
-  PackageInfo pInfo = null;
+    private static final String TAG = AppVersionHelper.class.getSimpleName();
+    Context context;
+    PackageInfo pInfo = null;
 
-  public AppVersionHelper(Context context) {
-    this.context = context;
-    initiate();
-  }
-
-  private void initiate() {
-    try {
-      pInfo = context.getPackageManager().getPackageInfo(context.getPackageName(), 0);
-    } catch (PackageManager.NameNotFoundException e) {
-      e.printStackTrace();
-      AvaCrashReporter.send(e,"AppVersionHelper class, initiate method");
+    public AppVersionHelper(Context context) {
+        this.context = context;
+        initiate();
     }
-  }
 
-  public int getVerionCode() {
-    return pInfo.versionCode;
-  }
+    private void initiate() {
+        try {
+            pInfo = context.getPackageManager().getPackageInfo(context.getPackageName(), 0);
+        } catch (PackageManager.NameNotFoundException e) {
+            e.printStackTrace();
+            AvaCrashReporter.send(e, "AppVersionHelper class, initiate method");
+        }
+    }
 
-  public String getVerionName() {
-    return pInfo.versionName;
-  }
+    public int getVerionCode() {
+        return pInfo.versionCode;
+    }
+
+    public String getVerionName() {
+        return pInfo.versionName;
+    }
 
 
 }

@@ -416,11 +416,11 @@ public class TripRegisterActivity extends AppCompatActivity {
             edtDestinationAddress.requestFocus();
             return;
         }
-        if (serviceType == 1 && stopTime == 0) {
-            MyApplication.Toast("لطفا مقدار توقف را مشخص کنید.", Toast.LENGTH_SHORT);
-            spWaitingTime.requestFocus();
-            return;
-        }
+//        if (serviceType == 1 && stopTime == 0) {
+//            MyApplication.Toast("لطفا مقدار توقف را مشخص کنید.", Toast.LENGTH_SHORT);
+//            spWaitingTime.requestFocus();
+//            return;
+//        }
         if (vfSubmit != null)
             vfSubmit.setDisplayedChild(1);
 
@@ -882,14 +882,14 @@ public class TripRegisterActivity extends AppCompatActivity {
                 @Override
                 public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                     serviceType = typeServiceModels.get(position).getId();
-                    if (serviceType == 1) {
-                        new CityDialog()
-                                .setTitle("مدت زمان توقف")
-                                .show(pos -> {
-                                    if (spWaitingTime != null)
-                                        spWaitingTime.setSelection(pos);
-                                }, false);
-                    }
+//                    if (serviceType == 1) {
+//                        new CityDialog()
+//                                .setTitle("مدت زمان توقف")
+//                                .show(pos -> {
+//                                    if (spWaitingTime != null)
+//                                        spWaitingTime.setSelection(pos);
+//                                }, false);
+//                    }
                 }
 
                 @Override

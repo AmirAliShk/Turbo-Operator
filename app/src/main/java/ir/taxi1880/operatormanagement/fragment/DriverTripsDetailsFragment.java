@@ -183,6 +183,17 @@ public class DriverTripsDetailsFragment extends Fragment {
     @BindView(R.id.btnDriverLocation)
     Button btnDriverLocation;
 
+    @OnClick(R.id.btnDisposal)
+    void onDisposal(){
+        new GeneralDialog()
+                .title("تبدیل به در اختیار")
+                .message("آیا از در اختیار کردن این سفر اطمینان دارید؟")//todo
+                .cancelable(false)
+                .firstButton("بله", () -> makeDisposal())
+                .secondButton("خیر", null)
+                .show();
+    }
+
     @OnClick(R.id.btnCancelTrip)
     void onCancel() {
         new GeneralDialog()
@@ -777,6 +788,65 @@ public class DriverTripsDetailsFragment extends Fragment {
         @Override
         public void onReloadPress(boolean v) {
             super.onReloadPress(v);
+        }
+    };
+
+    private void makeDisposal() {
+        LoadingDialog.makeCancelableLoader();
+        RequestHelper.builder(EndPoints.MAKE_DISPOSAL)
+                .addParam("tripId", serviceId)
+                .listener(makeDisposalCallBack)
+                .put();
+    }
+
+    RequestHelper.Callback makeDisposalCallBack = new RequestHelper.Callback() {
+        @Override
+        public void onResponse(Runnable reCall, Object... args) {
+            MyApplication.handler.post(() -> {
+                try {
+//            {"success":true,"message":"","data":{"status":true}}
+                    JSONObject object = new JSONObject(args[0].toString());
+                    boolean success = object.getBoolean("success");
+                    String message = object.getString("message");
+
+                    if (success) {
+                        JSONObject dataObj = object.getJSONObject("data");
+                        boolean status = dataObj.getBoolean("status");
+                        if (status) {
+                            new GeneralDialog()
+                                    .title("تایید شد")
+                                    .message(message)
+                                    .cancelable(false)
+                                    .firstButton("باشه", null)
+                                    .show();
+                        } else {
+                            new GeneralDialog()
+                                    .title("خطا")
+                                    .message(message)
+                                    .cancelable(false)
+                                    .firstButton("باشه", null)
+                                    .show();
+                        }
+                    } else {
+                        new GeneralDialog()
+                                .title("خطا")
+                                .message(message)
+                                .cancelable(false)
+                                .firstButton("باشه", null)
+                                .show();
+                    }
+                    LoadingDialog.dismissCancelableDialog();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            });
+        }
+
+        @Override
+        public void onFailure(Runnable reCall, Exception e) {
+            MyApplication.handler.post(() -> {
+                LoadingDialog.dismissCancelableDialog();
+            });
         }
     };
 

@@ -34,6 +34,7 @@
     <string name="complaintRegistration">ثبت شکایت</string>
     <string name="lost">ثبت اشیا گمشده</string>
     <string name="lockDriver">قفل راننده</string>
+    <string name="disposal">در اختیار</string>
     <string name="reFollow">پیگیری مجدد</string>
     <string name="reSendService">ارسال مجدد سرویس</string>
 
