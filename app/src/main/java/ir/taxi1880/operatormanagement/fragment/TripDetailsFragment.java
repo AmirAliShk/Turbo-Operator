@@ -265,14 +265,14 @@ public class TripDetailsFragment extends Fragment {
         new DriverLockDialog().show(taxiCode);
     }
 
-    @OnClick(R.id.btnResendService)
-    void onResendService() {
-        new GeneralDialog()
-                .message("آیا میخواهید سرویس را مجدد ارسال کنید؟")
-                .firstButton("بله", this::resendCancelService)
-                .secondButton("خیر ", null)
-                .show();
-    }
+//    @OnClick(R.id.btnResendService)
+//    void onResendService() {
+//        new GeneralDialog()
+//                .message("آیا میخواهید سرویس را مجدد ارسال کنید؟")
+//                .firstButton("بله", this::resendCancelService)
+//                .secondButton("خیر ", null)
+//                .show();
+//    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -807,7 +807,7 @@ public class TripDetailsFragment extends Fragment {
     private void makeDisposal() {
         LoadingDialog.makeCancelableLoader();
         RequestHelper.builder(EndPoints.MAKE_DISPOSAL)
-                .addParam("tripId",serviceId)
+                .addParam("tripId", serviceId)
                 .listener(makeDisposalCallBack)
                 .put();
     }
