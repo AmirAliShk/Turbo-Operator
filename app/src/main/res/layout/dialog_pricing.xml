@@ -94,7 +94,7 @@
                         android:textColor="@color/grayMedium" />
 
                     <EditText
-                        android:id="@+id/txtStationDestination"
+                        android:id="@+id/edtStationDestination"
                         android:layout_width="match_parent"
                         android:layout_height="0dp"
                         android:layout_weight="1"
@@ -124,7 +124,7 @@
                     android:textColor="@color/grayMedium" />
 
                 <EditText
-                    android:id="@+id/txtTime"
+                    android:id="@+id/edtTime"
                     android:layout_width="match_parent"
                     android:layout_height="0dp"
                     android:layout_weight="1"
