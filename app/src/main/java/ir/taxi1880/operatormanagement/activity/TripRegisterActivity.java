@@ -109,7 +109,7 @@ public class TripRegisterActivity extends AppCompatActivity {
     public static boolean isRunning = false;
     byte traffic = 0;
     byte defaultClass = 0;
-    int stopTime = 0;//todo
+    int stopTime = 0;
     String queue = "0";
     String voipId = "0";
     String permanentDesc = "";
@@ -1561,7 +1561,7 @@ public class TripRegisterActivity extends AppCompatActivity {
                 .addParam("percentDiscount", percentDiscount)
                 .addParam("maxDiscount", maxDiscount)
                 .addParam("senderClient", 0)
-                .addParam("stopTime", stopTime)//todo
+                .addParam("stopTime", stopTime)
                 .listener(insertService)
                 .post();
 
@@ -1725,8 +1725,6 @@ public class TripRegisterActivity extends AppCompatActivity {
         for (int i = 0; i < rgCarClass.getChildCount(); i++) {
             rgCarClass.getChildAt(i).setEnabled(false);
         }
-
-
     }
 
     //receive push notification from local broadcast

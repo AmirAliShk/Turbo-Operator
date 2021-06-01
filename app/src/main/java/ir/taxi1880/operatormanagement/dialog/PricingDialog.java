@@ -5,9 +5,14 @@ import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.util.Log;
 import android.view.Gravity;
+import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
+import android.widget.CompoundButton;
 import android.widget.EditText;
+import android.widget.LinearLayout;
+import android.widget.RadioButton;
+import android.widget.Toast;
 import android.widget.ViewFlipper;
 
 import butterknife.BindView;
@@ -20,6 +25,8 @@ import ir.taxi1880.operatormanagement.app.MyApplication;
 import ir.taxi1880.operatormanagement.helper.TypefaceUtil;
 import ir.taxi1880.operatormanagement.okHttp.RequestHelper;
 import ir.taxi1880.operatormanagement.push.AvaCrashReporter;
+
+import static ir.taxi1880.operatormanagement.fragment.ComplaintDetailFragment.complaintDetailsModel;
 
 public class PricingDialog {
 
@@ -38,14 +45,35 @@ public class PricingDialog {
     @BindView(R.id.vfLoader)
     ViewFlipper vfLoader;
 
+    @BindView(R.id.rbByStation)
+    RadioButton rbByStation;
+
+    @BindView(R.id.rbByTime)
+    RadioButton rbByTime;
+
+    @BindView(R.id.llPrice)
+    LinearLayout llPrice;
+
     @OnClick(R.id.btnSubmit)
     void onSubmit() {
-        if (edtStationOrigin.getText().toString().equals("") || edtStationDestination.getText().toString().equals("")){
-
-        }
-            if (vfLoader != null) {
-                vfLoader.setDisplayedChild(1);
+        if (rbByStation.isChecked()) {
+            if (edtStationOrigin.getText().toString().equals("") || edtStationDestination.getText().toString().equals("")) {
+                MyApplication.Toast("لطفا ایستگاه را وارد نمایید.", Toast.LENGTH_SHORT);
             }
+        }
+
+        if (rbByTime.isChecked()) {
+            if (edtTime.getText().toString().equals("")) {
+                MyApplication.Toast("لطفا زمان را به دقیقه وارد کنید.", Toast.LENGTH_SHORT);
+            }
+        }
+
+        if (!rbByTime.isChecked() && !rbByStation.isChecked()) {
+            MyApplication.Toast("لطفا یکی از حالت‌ها را انتخاب کنید.", Toast.LENGTH_SHORT);
+        }
+        if (vfLoader != null) {
+            vfLoader.setDisplayedChild(1);
+        }
         getPricing();
     }
 
@@ -71,11 +99,57 @@ public class PricingDialog {
         dialog.getWindow().setAttributes(wlp);
         dialog.setCancelable(true);
 
+        edtStationDestination.setEnabled(false);
+        edtStationOrigin.setEnabled(false);
+        edtTime.setEnabled(false);
+
+        llPrice.setVisibility(View.GONE);
+
+//        edtStationDestination.setFocusable(false);
+//        edtStationOrigin.setFocusable(false);
+//        edtTime.setFocusable(false);
+
+        rbByStation.setOnCheckedChangeListener((compoundButton, b) -> {
+            if (rbByStation.isChecked()) {
+                rbByTime.setChecked(false);
+                edtStationDestination.setEnabled(true);
+                edtStationOrigin.setEnabled(true);
+                edtTime.setEnabled(false);
+                edtStationDestination.setFocusable(true);
+                edtStationOrigin.setFocusable(true);
+            }
+        });
+
+        rbByTime.setOnCheckedChangeListener((compoundButton, b) -> {
+            if (rbByTime.isChecked()) {
+                rbByStation.setChecked(false);
+                edtStationDestination.setEnabled(false);
+                edtStationOrigin.setEnabled(false);
+                edtTime.setEnabled(true);
+                edtTime.setFocusable(true);
+            }
+        });
+
         dialog.show();
     }
 
     private void getPricing() {
-        RequestHelper.builder(EndPoints.COMPLAINT_GET_PRICE + edtStationOrigin.getText() + "/" + edtStationDestination.getText() + "/" + edtTime.getText())
+        String StationOrigin;
+        String StationDestination;
+        String time;
+        if (rbByTime.isChecked()) {
+            StationOrigin = "0";
+            StationDestination = "0";
+        } else {
+            StationOrigin = edtStationOrigin.getText().toString();
+            StationDestination = edtStationDestination.getText().toString();
+        }
+        if (rbByStation.isChecked()) {
+            time = "0";
+        } else {
+            time = edtTime.getText().toString();
+        }
+        RequestHelper.builder(EndPoints.COMPLAINT_GET_PRICE + complaintDetailsModel.getCityCode() + "/" + complaintDetailsModel.getCarClass() + "/" + StationOrigin + "/" + StationDestination + "/" + time)
                 .listener(pricingCallBack)
                 .get();
     }
@@ -102,9 +176,11 @@ public class PricingDialog {
         @Override
         public void onFailure(Runnable reCall, Exception e) {
             super.onFailure(reCall, e);
-            if (vfLoader != null) {
-                vfLoader.setDisplayedChild(0);
-            }
+            MyApplication.handler.post(() -> {
+                if (vfLoader != null) {
+                    vfLoader.setDisplayedChild(0);
+                }
+            });
         }
     };
 

@@ -20,6 +20,24 @@ public class ComplaintDetailsModel {
     private int taxicode;
     private String serviceVoipId;
     private String complaintVoipId;
+    int cityCode;
+    int CarClass;
+
+    public int getCityCode() {
+        return cityCode;
+    }
+
+    public void setCityCode(int cityCode) {
+        this.cityCode = cityCode;
+    }
+
+    public int getCarClass() {
+        return CarClass;
+    }
+
+    public void setCarClass(int carClass) {
+        CarClass = carClass;
+    }
 
     public String getSaveDate() {
         return saveDate;

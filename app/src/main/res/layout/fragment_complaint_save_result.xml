@@ -108,15 +108,44 @@
                     android:layout_width="wrap_content"
                     android:layout_height="10dp" />
 
-                <CheckBox
-                    android:id="@+id/chbLockDriver"
-                    style="@style/tripItemValue"
-                    android:layout_width="wrap_content"
+                <LinearLayout
+                    android:id="@+id/llComplaintType"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:gravity="center_vertical"
-                    android:layoutDirection="ltr"
-                    android:text="راننده قفل شود"
-                    android:textSize="@dimen/_18ssp" />
+                    android:layout_gravity="center_vertical"
+                    android:orientation="horizontal">
+
+                    <CheckBox
+                        android:id="@+id/chbLockDriver"
+                        style="@style/tripItemValue"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:gravity="center_vertical"
+                        android:layoutDirection="ltr"
+                        android:text="راننده قفل شود"
+                        android:textSize="@dimen/_18ssp" />
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:background="@drawable/edit_text_style"
+                        android:enabled="false"
+                        android:gravity="center_vertical"
+                        android:padding="10dp">
+
+                        <Spinner
+                            android:id="@+id/spComplaintType"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:backgroundTint="@color/colorPurple"
+                            android:dropDownWidth="match_parent"
+                            android:enabled="false"
+                            android:gravity="right" />
+
+                    </LinearLayout>
+
+                </LinearLayout>
+
 
                 <View
                     android:layout_width="wrap_content"
@@ -155,8 +184,9 @@
                     android:id="@+id/chbUnlockDriver"
                     style="@style/tripItemValue"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content" android:layoutDirection="ltr"
+                    android:layout_height="wrap_content"
                     android:gravity="center_vertical"
+                    android:layoutDirection="ltr"
                     android:text="قفل راننده باز شود"
                     android:textSize="@dimen/_18ssp" />
 
@@ -170,7 +200,8 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:gravity="center_vertical"
-                    android:text="جریمه" android:layoutDirection="ltr"
+                    android:layoutDirection="ltr"
+                    android:text="جریمه"
                     android:textSize="@dimen/_18ssp" />
 
                 <View
@@ -182,7 +213,8 @@
                     style="@style/tripItemValue"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:gravity="center_vertical" android:layoutDirection="ltr"
+                    android:gravity="center_vertical"
+                    android:layoutDirection="ltr"
                     android:text="غیرفعال سازی راننده"
                     android:textSize="@dimen/_18ssp" />
 
@@ -195,7 +227,8 @@
                     style="@style/tripItemValue"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:gravity="center_vertical" android:layoutDirection="ltr"
+                    android:gravity="center_vertical"
+                    android:layoutDirection="ltr"
                     android:text="قفل مشترک"
                     android:textSize="@dimen/_18ssp" />
 

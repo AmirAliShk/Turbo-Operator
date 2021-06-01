@@ -7,26 +7,44 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
+import android.widget.AdapterView;
 import android.widget.CheckBox;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
+import android.widget.Spinner;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.util.ArrayList;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
 import ir.taxi1880.operatormanagement.R;
+import ir.taxi1880.operatormanagement.adapter.SpinnerAdapter;
 import ir.taxi1880.operatormanagement.app.DataHolder;
 import ir.taxi1880.operatormanagement.app.MyApplication;
 import ir.taxi1880.operatormanagement.helper.TypefaceUtil;
+import ir.taxi1880.operatormanagement.model.TypeServiceModel;
 
 public class ComplaintSaveResultFragment extends Fragment {
     Unbinder unbinder;
+    private int complaintType;
+
+    @BindView(R.id.spComplaintType)
+    Spinner spComplaintType;
+
+    @BindView(R.id.llComplaintType)
+    LinearLayout llComplaintType;
 
     @BindView(R.id.rgBlameComplaint)
     RadioGroup rgBlameComplaint;
@@ -69,6 +87,9 @@ public class ComplaintSaveResultFragment extends Fragment {
         unbinder = ButterKnife.bind(this, view);
         TypefaceUtil.overrideFonts(view);
 
+        initSpinner();
+
+        llComplaintType.setEnabled(false);
         edtLockTime.setEnabled(false);
         edtLockTime.addTextChangedListener(edtLockTimeTextWatcher);
         result();
@@ -91,6 +112,41 @@ public class ComplaintSaveResultFragment extends Fragment {
             DataHolder.getInstance().setLockDay(edtLockTime.getText().toString());
         }
     };
+
+    private void initSpinner() {
+        ArrayList<TypeServiceModel> typeServiceModels = new ArrayList<>();
+        ArrayList<String> serviceList = new ArrayList<String>();
+        try {
+            JSONArray serviceArr = new JSONArray(MyApplication.prefManager.getComplaint());
+            for (int i = 0; i < serviceArr.length(); i++) {
+                JSONObject serviceObj = serviceArr.getJSONObject(i);
+                TypeServiceModel typeServiceModel = new TypeServiceModel();
+                typeServiceModel.setName(serviceObj.getString("ShektypeSharh"));
+                typeServiceModel.setId(serviceObj.getInt("sheKtypeId"));
+                typeServiceModels.add(typeServiceModel);
+                serviceList.add(serviceObj.getString("ShektypeSharh"));
+            }
+            if (spComplaintType == null)
+                return;
+
+            spComplaintType.setEnabled(true);
+
+            spComplaintType.setAdapter(new SpinnerAdapter(MyApplication.currentActivity, R.layout.item_spinner, serviceList));
+
+            spComplaintType.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                @Override
+                public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                    complaintType = typeServiceModels.get(position).getId();
+                }
+
+                @Override
+                public void onNothingSelected(AdapterView<?> parent) {
+                }
+            });
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+    }
 
     public void result() {
 
@@ -116,6 +172,7 @@ public class ComplaintSaveResultFragment extends Fragment {
                 DataHolder.getInstance().setLockDriver(true);
                 edtLockTime.setEnabled(true);
                 chbUnlockDriver.setEnabled(false);
+                llComplaintType.setEnabled(true);
             } else if (!chbLockDriver.isChecked()) {
                 DataHolder.getInstance().setLockDriver(false);
                 edtLockTime.setText(null);

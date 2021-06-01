@@ -161,6 +161,8 @@ public class PendingComplaintAdapter extends RecyclerView.Adapter<PendingComplai
                         model.setTaxicode(dataObj.getInt("taxicode"));
                         model.setServiceVoipId(dataObj.getString("serviceVoipId"));
                         model.setComplaintVoipId(dataObj.getString("complaintVoipId"));
+                        model.setCarClass(dataObj.getInt("cartype"));//todo
+                        model.setCityCode(dataObj.getInt("cityCode"));//todo
 
                         if (vfDetail != null)
                             vfDetail.setDisplayedChild(0);

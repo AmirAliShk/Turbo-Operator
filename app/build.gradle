@@ -18,7 +18,9 @@ android {
             keyPassword "47421parsian47421"
         }
     }
-
+//    buildFeatures {
+//        viewBinding true
+//
     dataBinding {
         enabled = true
     }
@@ -43,7 +45,6 @@ android {
         targetCompatibility JavaVersion.VERSION_1_8
     }
     ndkVersion '20.1.5948944'
-
 }
 
 dependencies {

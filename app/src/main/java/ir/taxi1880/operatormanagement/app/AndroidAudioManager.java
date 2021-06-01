@@ -55,6 +55,7 @@ import java.io.InputStreamReader;
 import java.util.List;
 
 import androidx.annotation.RequiresApi;
+
 import ir.taxi1880.operatormanagement.R;
 import ir.taxi1880.operatormanagement.receiver.BluetoothReceiver;
 import ir.taxi1880.operatormanagement.receiver.HeadsetReceiver;
@@ -105,9 +106,9 @@ public class AndroidAudioManager {
                             final String message) {
                         if (state == Call.State.IncomingReceived
                                 || (state == Call.State.IncomingEarlyMedia
-                                        && mContext.getResources()
-                                                .getBoolean(
-                                                        R.bool.allow_ringing_while_early_media))) {
+                                && mContext.getResources()
+                                .getBoolean(
+                                        R.bool.allow_ringing_while_early_media))) {
                             // Brighten screen for at least 10 seconds
                             if (core.getCallsNb() == 1) {
                                 requestAudioFocus(STREAM_RING);
@@ -154,10 +155,10 @@ public class AndroidAudioManager {
                                     Log.d(
                                             "[Audio Manager] Audio focus released a bit later: "
                                                     + (res
-                                                                    == AudioManager
-                                                                            .AUDIOFOCUS_REQUEST_GRANTED
-                                                            ? "Granted"
-                                                            : "Denied"));
+                                                    == AudioManager
+                                                    .AUDIOFOCUS_REQUEST_GRANTED
+                                                    ? "Granted"
+                                                    : "Denied"));
                                     mAudioFocused = false;
                                 }
 
@@ -341,11 +342,12 @@ public class AndroidAudioManager {
             Log.d(
                     "[Audio Manager] Audio focus requested: "
                             + (res == AudioManager.AUDIOFOCUS_REQUEST_GRANTED
-                                    ? "Granted"
-                                    : "Denied"));
+                            ? "Granted"
+                            : "Denied"));
             if (res == AudioManager.AUDIOFOCUS_REQUEST_GRANTED) mAudioFocused = true;
         }
     }
+
     public boolean isDeviceRingtoneEnabled() {
         int readExternalStorage =
                 mContext.getPackageManager()
@@ -362,6 +364,7 @@ public class AndroidAudioManager {
 
         return LinphoneService.getCore();
     }
+
     private String mBasePath;
     private static final String LINPHONE_DEFAULT_RC = "/.linphonerc";
 
@@ -407,6 +410,7 @@ public class AndroidAudioManager {
         if (getConfig() == null) return true;
         return getConfig().getBool("app", "incoming_call_vibration", true);
     }
+
     public String getRingtone(String defaultRingtone) {
         String ringtone = getConfig().getString("app", "ringtone", defaultRingtone);
         if (ringtone == null || ringtone.isEmpty()) ringtone = defaultRingtone;
@@ -432,7 +436,7 @@ public class AndroidAudioManager {
 
         try {
             if ((mAudioManager.getRingerMode() == AudioManager.RINGER_MODE_VIBRATE
-                            || mAudioManager.getRingerMode() == AudioManager.RINGER_MODE_NORMAL)
+                    || mAudioManager.getRingerMode() == AudioManager.RINGER_MODE_NORMAL)
                     && mVibrator != null
                     && isIncomingCallVibrationEnabled()) {
                 long[] patern = {0, 1000, 1000};

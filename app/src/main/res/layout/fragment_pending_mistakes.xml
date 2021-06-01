@@ -306,16 +306,59 @@
 
                         <TextView
                             style="@style/tripItemTitle"
-                            android:layout_width="wrap_content"
+                            android:layout_width="0dp"
                             android:layout_height="match_parent"
+                            android:layout_weight="1"
                             android:gravity="center_vertical"
-                            android:text="ثبت شده توسط اپراتور کد" />
+                            android:text="اپراتور ثبت سفر" />
 
                         <TextView
                             android:id="@+id/txtUserCode"
                             style="@style/tripItemValue"
-                            android:layout_width="wrap_content"
+                            android:layout_width="0dp"
                             android:layout_height="match_parent"
+                            android:layout_weight="3"
+                            android:gravity="center_vertical" />
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center_vertical"
+                        android:orientation="horizontal"
+                        android:padding="5dp">
+
+                        <TextView
+                            style="@style/tripItemTitle"
+                            android:layout_width="0dp"
+                            android:layout_height="match_parent"
+                            android:layout_weight="1"
+                            android:gravity="center_vertical"
+                            android:text="اپراتور ایستگاه مبدا" />
+
+                        <TextView
+                            android:id="@+id/txtUserCodeOrigin"
+                            style="@style/tripItemValue"
+                            android:layout_width="0dp"
+                            android:layout_height="match_parent"
+                            android:layout_weight="0.5"
+                            android:gravity="center_vertical" />
+
+                        <TextView
+                            style="@style/tripItemTitle"
+                            android:layout_width="0dp"
+                            android:layout_height="match_parent"
+                            android:layout_weight="1"
+                            android:gravity="center_vertical"
+                            android:text="اپراتور ایستگاه مقصد" />
+
+                        <TextView
+                            android:id="@+id/txtUserCodeDestination"
+                            style="@style/tripItemValue"
+                            android:layout_width="0dp"
+                            android:layout_height="match_parent"
+                            android:layout_weight="0.5"
                             android:gravity="center_vertical" />
 
                     </LinearLayout>
