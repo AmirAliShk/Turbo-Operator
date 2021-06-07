@@ -11,6 +11,15 @@ public class DataHolder {
     boolean customerLock = false;
     boolean outDriver = false;
     String voipId = "0";
+    byte complaintType = 0;
+
+    public int getComplaintType() {
+        return ourInstance.complaintType;
+    }
+
+    public void setComplaintType(byte complaintType) {
+        ourInstance.complaintType = complaintType;
+    }
 
     public String getVoipId() {
         return ourInstance.voipId;

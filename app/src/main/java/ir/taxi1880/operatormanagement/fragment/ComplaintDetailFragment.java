@@ -88,20 +88,30 @@ public class ComplaintDetailFragment extends Fragment {
 
         if (DataHolder.getInstance().getComplaintResult() == 0) {
             MyApplication.Toast("لطفا مقصر را مشخص کنید", Toast.LENGTH_SHORT);
-        } else if (DataHolder.getInstance().isLockDriver() && DataHolder.getInstance().getLockDay().isEmpty()) {
-            MyApplication.Toast("لطفا تعداد روزهای قفل راننده را انتخاب کنید", Toast.LENGTH_SHORT);
-        } else {
-            new GeneralDialog()
-                    .message("ثبت نتیجه‌ی شکایت؟")
-                    .cancelable(false)
-                    .firstButton("بله", () -> complaintSaveResult())
-                    .secondButton("خیر", () -> {
-                        if (vfNextStep != null) {
-                            vfNextStep.setDisplayedChild(2);
-                        }
-                    })
-                    .show();
+            return;
         }
+
+        if (DataHolder.getInstance().isLockDriver() && DataHolder.getInstance().getLockDay().isEmpty()) {
+            MyApplication.Toast("لطفا تعداد روزهای قفل راننده را انتخاب کنید", Toast.LENGTH_SHORT);
+            return;
+        }
+
+        if (DataHolder.getInstance().isLockDriver() && DataHolder.getInstance().getComplaintType() == 0) {
+            MyApplication.Toast("لطفا دلیل قفل را انتخاب نمایید.", Toast.LENGTH_SHORT);//todo
+            return;
+        }
+
+        new GeneralDialog()
+                .message("ثبت نتیجه‌ی شکایت؟")
+                .cancelable(false)
+                .firstButton("بله", () -> complaintSaveResult())
+                .secondButton("خیر", () -> {
+                    if (vfNextStep != null) {
+                        vfNextStep.setDisplayedChild(2);
+                    }
+                })
+                .show();
+
     }
 
     @OnClick(R.id.btnTripDetails)

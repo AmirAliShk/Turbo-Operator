@@ -18,11 +18,8 @@ android {
             keyPassword "47421parsian47421"
         }
     }
-//    buildFeatures {
-//        viewBinding true
-//
-    dataBinding {
-        enabled = true
+    buildFeatures {
+        viewBinding true
     }
 
     buildTypes {

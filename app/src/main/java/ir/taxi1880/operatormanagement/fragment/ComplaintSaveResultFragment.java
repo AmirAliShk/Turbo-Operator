@@ -8,13 +8,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.widget.AdapterView;
-import android.widget.CheckBox;
-import android.widget.EditText;
-import android.widget.LinearLayout;
-import android.widget.RadioButton;
-import android.widget.RadioGroup;
-import android.widget.Spinner;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -26,74 +19,36 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 
-import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
 import ir.taxi1880.operatormanagement.R;
 import ir.taxi1880.operatormanagement.adapter.SpinnerAdapter;
 import ir.taxi1880.operatormanagement.app.DataHolder;
 import ir.taxi1880.operatormanagement.app.MyApplication;
+import ir.taxi1880.operatormanagement.databinding.FragmentComplaintSaveResultBinding;
 import ir.taxi1880.operatormanagement.helper.TypefaceUtil;
 import ir.taxi1880.operatormanagement.model.TypeServiceModel;
 
 public class ComplaintSaveResultFragment extends Fragment {
     Unbinder unbinder;
+    FragmentComplaintSaveResultBinding binding;
     private int complaintType;
-
-    @BindView(R.id.spComplaintType)
-    Spinner spComplaintType;
-
-    @BindView(R.id.llComplaintType)
-    LinearLayout llComplaintType;
-
-    @BindView(R.id.rgBlameComplaint)
-    RadioGroup rgBlameComplaint;
-
-    @BindView(R.id.rbBlameDriver)
-    RadioButton rbBlameDriver;
-
-    @BindView(R.id.rbBlameCustomer)
-    RadioButton rbBlameCustomer;
-
-    @BindView(R.id.rbUnnecessaryComplaint)
-    RadioButton rbUnnecessaryComplaint;
-
-    @BindView(R.id.rbSomethingElse)
-    RadioButton rbSomethingElse;
-
-    @BindView(R.id.chbLockDriver)
-    CheckBox chbLockDriver;
-
-    @BindView(R.id.edtLockTime)
-    EditText edtLockTime;
-
-    @BindView(R.id.chbUnlockDriver)
-    CheckBox chbUnlockDriver;
-
-    @BindView(R.id.chbFined)
-    CheckBox chbFined;
-
-    @BindView(R.id.chbOutDriver)
-    CheckBox chbOutDriver;
-
-    @BindView(R.id.chbLockCustomer)
-    CheckBox chbLockCustomer;
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_complaint_save_result, container, false);
+        binding = FragmentComplaintSaveResultBinding.inflate(getLayoutInflater());
         getActivity().getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE);
-        unbinder = ButterKnife.bind(this, view);
-        TypefaceUtil.overrideFonts(view);
+        unbinder = ButterKnife.bind(this, binding.getRoot());
+        TypefaceUtil.overrideFonts(binding.getRoot());
 
         initSpinner();
-
-        llComplaintType.setEnabled(false);
-        edtLockTime.setEnabled(false);
-        edtLockTime.addTextChangedListener(edtLockTimeTextWatcher);
+        binding.spComplaintType.setEnabled(false);
+        binding.llComplaintType.setEnabled(false);
+        binding.edtLockTime.setEnabled(false);
+        binding.edtLockTime.addTextChangedListener(edtLockTimeTextWatcher);
         result();
-        return view;
+        return binding.getRoot();
     }
 
     TextWatcher edtLockTimeTextWatcher = new TextWatcher() {
@@ -104,12 +59,12 @@ public class ComplaintSaveResultFragment extends Fragment {
 
         @Override
         public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-            DataHolder.getInstance().setLockDay(edtLockTime.getText().toString());
+            DataHolder.getInstance().setLockDay(binding.edtLockTime.getText().toString());
         }
 
         @Override
         public void afterTextChanged(Editable editable) {
-            DataHolder.getInstance().setLockDay(edtLockTime.getText().toString());
+            DataHolder.getInstance().setLockDay(binding.edtLockTime.getText().toString());
         }
     };
 
@@ -118,6 +73,7 @@ public class ComplaintSaveResultFragment extends Fragment {
         ArrayList<String> serviceList = new ArrayList<String>();
         try {
             JSONArray serviceArr = new JSONArray(MyApplication.prefManager.getComplaint());
+            serviceList.add(0, "انتخاب نشده");
             for (int i = 0; i < serviceArr.length(); i++) {
                 JSONObject serviceObj = serviceArr.getJSONObject(i);
                 TypeServiceModel typeServiceModel = new TypeServiceModel();
@@ -126,17 +82,17 @@ public class ComplaintSaveResultFragment extends Fragment {
                 typeServiceModels.add(typeServiceModel);
                 serviceList.add(serviceObj.getString("ShektypeSharh"));
             }
-            if (spComplaintType == null)
+            if (binding.spComplaintType == null)
                 return;
 
-            spComplaintType.setEnabled(true);
+            binding.spComplaintType.setEnabled(true);
 
-            spComplaintType.setAdapter(new SpinnerAdapter(MyApplication.currentActivity, R.layout.item_spinner, serviceList));
+            binding.spComplaintType.setAdapter(new SpinnerAdapter(MyApplication.currentActivity, R.layout.item_spinner, serviceList));
 
-            spComplaintType.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            binding.spComplaintType.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
                 @Override
                 public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                    complaintType = typeServiceModels.get(position).getId();
+                    DataHolder.getInstance().setComplaintType((byte) typeServiceModels.get(position).getId());
                 }
 
                 @Override
@@ -150,7 +106,7 @@ public class ComplaintSaveResultFragment extends Fragment {
 
     public void result() {
 
-        rgBlameComplaint.setOnCheckedChangeListener((radioGroup, i) -> {
+        binding.rgBlameComplaint.setOnCheckedChangeListener((radioGroup, i) -> {
             switch (radioGroup.getCheckedRadioButtonId()) {
                 case R.id.rbBlameDriver:
                     DataHolder.getInstance().setComplaintResult((byte) 1);
@@ -167,44 +123,47 @@ public class ComplaintSaveResultFragment extends Fragment {
             }
         });
 
-        chbLockDriver.setOnCheckedChangeListener((compoundButton, b) -> {
-            if (chbLockDriver.isChecked()) {
+        binding.chbLockDriver.setOnCheckedChangeListener((compoundButton, b) -> {
+            if (binding.chbLockDriver.isChecked()) {
                 DataHolder.getInstance().setLockDriver(true);
-                edtLockTime.setEnabled(true);
-                chbUnlockDriver.setEnabled(false);
-                llComplaintType.setEnabled(true);
-            } else if (!chbLockDriver.isChecked()) {
+                binding.edtLockTime.setEnabled(true);
+                binding.chbUnlockDriver.setEnabled(false);
+                binding.llComplaintType.setEnabled(true);
+                binding.spComplaintType.setEnabled(true);
+            } else if (!binding.chbLockDriver.isChecked()) {
                 DataHolder.getInstance().setLockDriver(false);
-                edtLockTime.setText(null);
-                edtLockTime.setEnabled(false);
-                chbUnlockDriver.setEnabled(true);
+                binding.edtLockTime.setText(null);
+                binding.edtLockTime.setEnabled(false);
+                binding.chbUnlockDriver.setEnabled(true);
+                binding.spComplaintType.setEnabled(false);
+                binding.llComplaintType.setEnabled(false);
             }
         });
 
-        chbUnlockDriver.setOnCheckedChangeListener((compoundButton, b) -> {
-            if (chbUnlockDriver.isChecked()) {
+        binding.chbUnlockDriver.setOnCheckedChangeListener((compoundButton, b) -> {
+            if (binding.chbUnlockDriver.isChecked()) {
                 DataHolder.getInstance().setUnlockDriver(true);
-                chbLockDriver.setEnabled(false);
+                binding.chbLockDriver.setEnabled(false);
             } else {
                 DataHolder.getInstance().setUnlockDriver(false);
-                chbLockDriver.setEnabled(true);
+                binding.chbLockDriver.setEnabled(true);
             }
         });
 
-        chbFined.setOnCheckedChangeListener((compoundButton, b) -> {
-            if (chbFined.isChecked()) {
+        binding.chbFined.setOnCheckedChangeListener((compoundButton, b) -> {
+            if (binding.chbFined.isChecked()) {
                 DataHolder.getInstance().setFined(true);
             } else DataHolder.getInstance().setFined(false);
         });
 
-        chbOutDriver.setOnCheckedChangeListener((compoundButton, b) -> {
-            if (chbOutDriver.isChecked()) {
+        binding.chbOutDriver.setOnCheckedChangeListener((compoundButton, b) -> {
+            if (binding.chbOutDriver.isChecked()) {
                 DataHolder.getInstance().setOutDriver(true);
             } else DataHolder.getInstance().setOutDriver(false);
         });
 
-        chbLockCustomer.setOnCheckedChangeListener((compoundButton, b) -> {
-            if (chbLockCustomer.isChecked()) {
+        binding.chbLockCustomer.setOnCheckedChangeListener((compoundButton, b) -> {
+            if (binding.chbLockCustomer.isChecked()) {
                 DataHolder.getInstance().setCustomerLock(true);
             } else DataHolder.getInstance().setCustomerLock(false);
         });
@@ -215,6 +174,7 @@ public class ComplaintSaveResultFragment extends Fragment {
     public void onPause() {
         super.onPause();
         DataHolder.getInstance().setComplaintResult((byte) 0);
+        DataHolder.getInstance().setComplaintType((byte) 0);
         DataHolder.getInstance().setLockDriver(false);
         DataHolder.getInstance().setLockDay("");
         DataHolder.getInstance().setUnlockDriver(false);
@@ -222,18 +182,19 @@ public class ComplaintSaveResultFragment extends Fragment {
         DataHolder.getInstance().setCustomerLock(false);
         DataHolder.getInstance().setOutDriver(false);
 
-        rgBlameComplaint.clearCheck();
-        chbLockDriver.setSelected(false);
-        chbUnlockDriver.setSelected(false);
-        chbFined.setSelected(false);
-        chbOutDriver.setSelected(false);
-        chbLockCustomer.setSelected(false);
+        binding.rgBlameComplaint.clearCheck();
+        binding.chbLockDriver.setSelected(false);
+        binding.chbUnlockDriver.setSelected(false);
+        binding.chbFined.setSelected(false);
+        binding.chbOutDriver.setSelected(false);
+        binding.chbLockCustomer.setSelected(false);
     }
 
     @Override
     public void onStop() {
         super.onStop();
         DataHolder.getInstance().setComplaintResult((byte) 0);
+        DataHolder.getInstance().setComplaintType((byte) 0);
         DataHolder.getInstance().setLockDriver(false);
         DataHolder.getInstance().setLockDay("");
         DataHolder.getInstance().setUnlockDriver(false);
@@ -241,17 +202,12 @@ public class ComplaintSaveResultFragment extends Fragment {
         DataHolder.getInstance().setCustomerLock(false);
         DataHolder.getInstance().setOutDriver(false);
 
-        rgBlameComplaint.clearCheck();
-        chbLockDriver.setSelected(false);
-        chbUnlockDriver.setSelected(false);
-        chbFined.setSelected(false);
-        chbOutDriver.setSelected(false);
-        chbLockCustomer.setSelected(false);
+        binding.rgBlameComplaint.clearCheck();
+        binding.chbLockDriver.setSelected(false);
+        binding.chbUnlockDriver.setSelected(false);
+        binding.chbFined.setSelected(false);
+        binding.chbOutDriver.setSelected(false);
+        binding.chbLockCustomer.setSelected(false);
     }
 
-    @Override
-    public void onDestroyView() {
-        super.onDestroyView();
-        unbinder.unbind();
-    }
 }

@@ -140,7 +140,7 @@ public class EndPoints {
     public static final String COMPLAINT_FINISH = COMPLAINT_WEBSERVICE_PATH + "finish";
     public static final String COMPLAINT_DRIVER_HISTORY = COMPLAINT_WEBSERVICE_PATH + "complaintsOfDriver/";//:driverCode
     public static final String COMPLAINT_CUSTOMER_HISTORY = COMPLAINT_WEBSERVICE_PATH + "complaintsOfCustomer/";//:phoneNumber
-    public static final String COMPLAINT_GET_PRICE = COMPLAINT_WEBSERVICE_PATH + "getPrice/";//:cityCode/:carClass/:origin/:destination/:time
+    public static final String COMPLAINT_GET_PRICE = TRIP_WEBSERVICE_PATH + "price/";//:cityCode/:carClass/:origin/:destination/:time
 
 
 }

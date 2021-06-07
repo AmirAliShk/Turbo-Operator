@@ -109,7 +109,7 @@
                     android:layout_height="10dp" />
 
                 <LinearLayout
-                    android:id="@+id/llComplaintType"
+
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_vertical"
@@ -126,12 +126,13 @@
                         android:textSize="@dimen/_18ssp" />
 
                     <LinearLayout
+                        android:id="@+id/llComplaintType"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:background="@drawable/edit_text_style"
-                        android:enabled="false"
                         android:gravity="center_vertical"
-                        android:padding="10dp">
+                        android:padding="10dp"
+                        android:layout_marginRight="10dp">
 
                         <Spinner
                             android:id="@+id/spComplaintType"
@@ -139,13 +140,11 @@
                             android:layout_height="wrap_content"
                             android:backgroundTint="@color/colorPurple"
                             android:dropDownWidth="match_parent"
-                            android:enabled="false"
                             android:gravity="right" />
 
                     </LinearLayout>
 
                 </LinearLayout>
-
 
                 <View
                     android:layout_width="wrap_content"
@@ -169,7 +168,6 @@
                         android:layout_height="match_parent"
                         android:layout_marginRight="5dp"
                         android:background="@drawable/edit_text_style"
-                        android:enabled="false"
                         android:gravity="center"
                         android:inputType="numberDecimal"
                         android:textSize="@dimen/_18ssp" />
@@ -235,6 +233,7 @@
                 <View
                     android:layout_width="wrap_content"
                     android:layout_height="10dp" />
+
             </LinearLayout>
 
         </LinearLayout>
