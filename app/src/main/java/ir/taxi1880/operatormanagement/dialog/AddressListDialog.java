@@ -43,7 +43,7 @@ public class AddressListDialog {
     private Listener listener;
     private static Dialog dialog;
 
-    public void show(boolean isFromOrigin,Listener listener, ArrayList<PassengerAddressModel> passengerAddressModels) {
+    public void show(Listener listener, ArrayList<PassengerAddressModel> passengerAddressModels) {
         if (MyApplication.currentActivity == null || MyApplication.currentActivity.isFinishing())
             return;
         dialog = new Dialog(MyApplication.currentActivity);
@@ -65,13 +65,7 @@ public class AddressListDialog {
         blrView = dialog.findViewById(R.id.blrView);
         TextView txtTitle =dialog.findViewById(R.id.txtTitle);
 
-        if (isFromOrigin){
-            txtTitle.setText("آدرس های مبدا");
-        }else {
-             txtTitle.setText("آدرس های مقصد");
-        }
-
-        lastAddressAdapter = new LastAddressAdapter(isFromOrigin, passengerAddressModels, MyApplication.context);
+        lastAddressAdapter = new LastAddressAdapter(passengerAddressModels, MyApplication.context);
         listLastAddress.setAdapter(lastAddressAdapter);
 
         blrView.setOnClickListener(view -> dismiss());

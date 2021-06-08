@@ -47,7 +47,9 @@
             <ImageView
                 android:id="@+id/imgRefreshFail"
                 android:layout_width="?android:attr/actionBarSize"
-                android:layout_height="wrap_content"
+                android:layout_height="?android:attr/actionBarSize"
+                android:layout_marginTop="@dimen/_10sdp"
+                android:background="@drawable/bg_light_pink_edge"
                 android:padding="15dp"
                 android:src="@drawable/ic_refresh_black" />
 

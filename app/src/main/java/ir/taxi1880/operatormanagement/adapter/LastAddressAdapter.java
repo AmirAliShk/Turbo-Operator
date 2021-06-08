@@ -31,11 +31,9 @@ public class LastAddressAdapter extends BaseAdapter {
 
     private ArrayList<PassengerAddressModel> addressModels;
     private LayoutInflater layoutInflater;
-    boolean isFromOrigin;
 
-    public LastAddressAdapter(boolean isFromOrigin, ArrayList<PassengerAddressModel> addressModels, Context context) {
+    public LastAddressAdapter(ArrayList<PassengerAddressModel> addressModels, Context context) {
         this.addressModels = addressModels;
-        this.isFromOrigin = isFromOrigin;
         this.layoutInflater = LayoutInflater.from(context);
     }
 
@@ -69,12 +67,6 @@ public class LastAddressAdapter extends BaseAdapter {
             TextView txtStation = myView.findViewById(R.id.txtStation);
             LinearLayout llStation = myView.findViewById(R.id.llStation);
             ImageView imgArchive = myView.findViewById(R.id.imgArchive);
-
-            if (isFromOrigin) {
-                imgArchive.setVisibility(View.VISIBLE);
-            } else {
-                imgArchive.setVisibility(View.GONE);
-            }
 
             txtAddress.setText(addressModel.getAddress());
             txtStation.setText(addressModel.getStation() + "");

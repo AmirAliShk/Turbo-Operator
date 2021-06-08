@@ -112,6 +112,8 @@ public class AllMistakesFragment extends Fragment {
                             model.setTell(dataObj.getString("tell"));
                             model.setMobile(dataObj.getString("mobile"));
                             model.setUserCodeContact(dataObj.getInt("userCodeContact"));
+                            model.setStationRegisterUser(dataObj.getInt("stationRegisterUser"));
+                            model.setDestStationRegisterUser(dataObj.getInt("destStationRegisterUser"));
                             model.setAddress(dataObj.getString("address"));
                             model.setCustomerName(dataObj.getString("customerName"));
                             model.setConDate(dataObj.getString("conDate"));

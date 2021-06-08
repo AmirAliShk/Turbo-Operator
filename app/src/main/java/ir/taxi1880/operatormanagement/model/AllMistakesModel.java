@@ -12,6 +12,8 @@ public class AllMistakesModel {
     private String tell;
     private String mobile;
     private int userCodeContact;
+    private int destStationRegisterUser;
+    private int stationRegisterUser;
     private String address;
     private String destination;
     private String destStation;
@@ -21,6 +23,22 @@ public class AllMistakesModel {
     private String sendTime;
     private String VoipId;
     private String price;
+
+    public int getDestStationRegisterUser() {
+        return destStationRegisterUser;
+    }
+
+    public void setDestStationRegisterUser(int destStationRegisterUser) {
+        this.destStationRegisterUser = destStationRegisterUser;
+    }
+
+    public int getStationRegisterUser() {
+        return stationRegisterUser;
+    }
+
+    public void setStationRegisterUser(int stationRegisterUser) {
+        this.stationRegisterUser = stationRegisterUser;
+    }
 
     public String getPrice() {
         return price;

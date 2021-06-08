@@ -1232,7 +1232,7 @@ public class TripRegisterActivity extends AppCompatActivity {
                         if (passengerAddressModels.size() == 0) {
                             MyApplication.Toast("آدرسی موجود نیست", Toast.LENGTH_SHORT);
                         } else {
-                            new AddressListDialog().show(false, (address, stationCode) -> {
+                            new AddressListDialog().show((address, stationCode) -> {
                                 if (edtDestinationAddress != null) {
                                     edtDestinationAddress.setText(address);
                                     destAddressLength = address.length();
@@ -1312,7 +1312,7 @@ public class TripRegisterActivity extends AppCompatActivity {
                         if (passengerAddressModels.size() == 0) {
                             MyApplication.Toast("آدرسی موجود نیست", Toast.LENGTH_SHORT);
                         } else {
-                            new AddressListDialog().show(true, (address, stationCode) -> {
+                            new AddressListDialog().show( (address, stationCode) -> {
                                 if (edtAddress != null) {
                                     edtAddress.setText(address);
                                     addressLength = address.length();

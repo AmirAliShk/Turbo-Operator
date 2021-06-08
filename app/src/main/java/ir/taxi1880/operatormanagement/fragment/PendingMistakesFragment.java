@@ -96,6 +96,11 @@ public class PendingMistakesFragment extends Fragment {
     @BindView(R.id.txtUserCode)
     TextView txtUserCode;
 
+    @BindView(R.id.txtUserCodeOrigin)
+    TextView txtUserCodeOrigin;
+    @BindView(R.id.txtUserCodeDestination)
+    TextView txtUserCodeDestination;
+
     @BindView(R.id.txtTripDate)
     TextView txtTripDate;
 
@@ -335,6 +340,8 @@ public class PendingMistakesFragment extends Fragment {
             txtDestStation.setText(StringHelper.toPersianDigits(model.getDestStation()));
             txtPrice.setText(StringHelper.toPersianDigits(StringHelper.setComma(model.getPrice())));
             txtUserCode.setText(StringHelper.toPersianDigits(model.getUserCode() + ""));
+            txtUserCodeOrigin.setText(StringHelper.toPersianDigits(model.getStationRegisterUser() + ""));
+            txtUserCodeDestination.setText(StringHelper.toPersianDigits(model.getDestStationRegisterUser() + ""));
 
             skbTimer.setProgress(0);
 
@@ -443,6 +450,8 @@ public class PendingMistakesFragment extends Fragment {
                             model.setTell(dataObj.getString("tell"));
                             model.setMobile(dataObj.getString("mobile"));
                             model.setUserCodeContact(dataObj.getInt("userCodeContact"));
+                            model.setStationRegisterUser(dataObj.getInt("stationRegisterUser"));
+                            model.setDestStationRegisterUser(dataObj.getInt("destStationRegisterUser"));
                             model.setAddress(dataObj.getString("address"));
                             model.setCustomerName(dataObj.getString("customerName"));
                             model.setConDate(dataObj.getString("conDate"));
