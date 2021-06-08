@@ -75,6 +75,11 @@ public class DriverTripsDetailsFragment extends Fragment {
     @BindView(R.id.txtStatus)
     TextView txtStatus;
 
+    @BindView(R.id.txtUserCodeDestination)
+    TextView txtUserCodeDestination;
+
+    @BindView(R.id.txtUserCodeOrigin)
+    TextView txtUserCodeOrigin;
     @BindView(R.id.llHeaderStatus)
     LinearLayout llHeaderStatus;
 
@@ -184,7 +189,7 @@ public class DriverTripsDetailsFragment extends Fragment {
     Button btnDriverLocation;
 
     @OnClick(R.id.btnDisposal)
-    void onDisposal(){
+    void onDisposal() {
         new GeneralDialog()
                 .title("تبدیل به در اختیار")
                 .message("آیا از در اختیار کردن این سفر اطمینان دارید؟")//todo
@@ -361,6 +366,8 @@ public class DriverTripsDetailsFragment extends Fragment {
                         voipId = data.getString("VoipId");
                         destinationStation = data.getString("destinationStation");
                         String destination = data.getString("destinationAddress");
+                        int stationRegisterUser = data.getInt("stationRegisterUser");
+                        int destStationRegisterUser = data.getInt("destStationRegisterUser");
 
                         if (status == 0) { // waiting
                             disableControllerButtonWaitingState();
@@ -380,6 +387,8 @@ public class DriverTripsDetailsFragment extends Fragment {
 
                         if (txtCustomerName == null) return;
 
+                        txtUserCodeDestination.setText(StringHelper.toPersianDigits(stationRegisterUser + ""));
+                        txtUserCodeOrigin.setText(StringHelper.toPersianDigits(destStationRegisterUser + ""));
                         txtCustomerName.setText(StringHelper.toPersianDigits(passengerName));
                         txtDate.setText(StringHelper.toPersianDigits(callDate));
                         txtTime.setText(StringHelper.toPersianDigits(callTime));

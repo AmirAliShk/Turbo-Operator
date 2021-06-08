@@ -81,6 +81,12 @@ public class TripDetailsFragment extends Fragment {
     @BindView(R.id.txtCustomerName)
     TextView txtCustomerName;
 
+    @BindView(R.id.txtUserCodeDestination)
+    TextView txtUserCodeDestination;
+
+    @BindView(R.id.txtUserCodeOrigin)
+    TextView txtUserCodeOrigin;
+
     @BindView(R.id.txtDate)
     TextView txtDate;
 
@@ -361,6 +367,8 @@ public class TripDetailsFragment extends Fragment {
                         voipId = data.getString("VoipId");
                         destinationStation = data.getString("destinationStation");
                         String destination = data.getString("destinationAddress");
+                        int stationRegisterUser = data.getInt("stationRegisterUser");
+                        int destStationRegisterUser = data.getInt("destStationRegisterUser");
 
                         if (status == 0) { // waiting
                             disableControllerButtonWaitingState();
@@ -380,6 +388,8 @@ public class TripDetailsFragment extends Fragment {
 
                         if (txtCustomerName == null) return;
 
+                        txtUserCodeDestination.setText(StringHelper.toPersianDigits(stationRegisterUser + ""));
+                        txtUserCodeOrigin.setText(StringHelper.toPersianDigits(destStationRegisterUser + ""));
                         txtCustomerName.setText(StringHelper.toPersianDigits(passengerName));
                         txtDate.setText(StringHelper.toPersianDigits(callDate));
                         txtTime.setText(StringHelper.toPersianDigits(callTime));
