@@ -483,7 +483,7 @@ public class DeterminationPageFragment extends Fragment {
 //                    {"success":true,"message":"عملیات با موفقیت انجام شد","data":{"status":true}}
 //                    {"success":true,"message":"کد ایستگاه در این شهر وجود ندارد","data":{"status":false}}
 
-//                    JSONObject obj = new JSONObject(args[0].toString());
+                    JSONObject obj = new JSONObject(args[0].toString());
 //                    boolean success = obj.getBoolean("success");
 //                    String message = obj.getString("message");
 //
