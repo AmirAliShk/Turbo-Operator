@@ -42,7 +42,7 @@ import ir.taxi1880.operatormanagement.app.EndPoints;
 import ir.taxi1880.operatormanagement.app.MyApplication;
 import ir.taxi1880.operatormanagement.dataBase.DataBase;
 import ir.taxi1880.operatormanagement.dialog.PendingMistakesOptionsDialog;
-import ir.taxi1880.operatormanagement.dialog.SaveResultDialog;
+import ir.taxi1880.operatormanagement.dialog.SaveMistakeResultDialog;
 import ir.taxi1880.operatormanagement.helper.FileHelper;
 import ir.taxi1880.operatormanagement.helper.StringHelper;
 import ir.taxi1880.operatormanagement.helper.TypefaceUtil;
@@ -65,8 +65,8 @@ public class PendingMistakesFragment extends Fragment {
         if (vfSaveResult != null)
             vfSaveResult.setDisplayedChild(1);
         pauseVoice();
-        new SaveResultDialog()
-                .show(model.getId(), new SaveResultDialog.MistakesResult() {
+        new SaveMistakeResultDialog()
+                .show(model.getId(), new SaveMistakeResultDialog.MistakesResult() {
                     @Override
                     public void onSuccess(boolean success) {
                         MyApplication.handler.postDelayed(() -> {

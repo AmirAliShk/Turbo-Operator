@@ -74,16 +74,23 @@
                             android:text="اپراتور ثبت سفر مقصر است." />
 
                         <RadioButton
-                            android:id="@+id/rbStationRegistrationOperatorBlame"
+                            android:id="@+id/rbStationRegistrationOriginOperatorBlame"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:text="اپراتور ثبت ایستگاه مقصر است." />
+                            android:text="اپراتور ثبت ایستگاه مبدا مقصر است." />
+
+                        <RadioButton
+                            android:id="@+id/rbStationRegistrationDestinationOperatorBlame"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="اپراتور ثبت ایستگاه مقصد مقصر است." />
 
                         <RadioButton
                             android:id="@+id/rbUnknown"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:text="نامشخص" />
+
                     </RadioGroup>
 
                     <RadioGroup
@@ -96,16 +103,28 @@
                         android:padding="10dp">
 
                         <RadioButton
-                            android:id="@+id/rbDeleteAddress"
+                            android:id="@+id/rbDeleteOriginAddress"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:text="حذف آدرس" />
+                            android:text="حذف آدرس مبدا" />
 
                         <RadioButton
-                            android:id="@+id/rbDeleteStation"
+                            android:id="@+id/rbDeleteDestinationAddress"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:text="حذف ایستگاه" />
+                            android:text="حذف آدرس مقصد" />
+
+                        <RadioButton
+                            android:id="@+id/rbDeleteOriginStation"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="حذف ایستگاه مبدا" />
+
+                        <RadioButton
+                            android:id="@+id/rbDeleteDestinationStation"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="حذف ایستگاه مقصد" />
 
                         <RadioButton
                             android:id="@+id/rbDeleteCity"

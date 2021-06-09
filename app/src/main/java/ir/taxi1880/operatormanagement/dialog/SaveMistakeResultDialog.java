@@ -4,7 +4,6 @@ import android.app.Dialog;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
-import android.util.Log;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
@@ -29,12 +28,10 @@ import ir.taxi1880.operatormanagement.helper.TypefaceUtil;
 import ir.taxi1880.operatormanagement.okHttp.RequestHelper;
 import ir.taxi1880.operatormanagement.push.AvaCrashReporter;
 
-import static ir.taxi1880.operatormanagement.app.Keys.KEY_NEW_MISTAKE_COUNT;
 import static ir.taxi1880.operatormanagement.app.Keys.KEY_PENDING_MISTAKE_COUNT;
-import static ir.taxi1880.operatormanagement.app.Keys.NEW_MISTAKE_COUNT;
 import static ir.taxi1880.operatormanagement.app.Keys.PENDING_MISTAKE_COUNT;
 
-public class SaveResultDialog {
+public class SaveMistakeResultDialog {
     static Dialog dialog;
     private Dialog staticDialog = null;
     Unbinder unbinder;
@@ -79,26 +76,35 @@ public class SaveResultDialog {
             case R.id.rbTripRegistrationOperatorBlame:
                 culprit = "1";
                 break;
-            case R.id.rbStationRegistrationOperatorBlame:
+            case R.id.rbStationRegistrationOriginOperatorBlame:
                 culprit = "2";
                 break;
-            case R.id.rbUnknown:
+            case R.id.rbStationRegistrationDestinationOperatorBlame:
                 culprit = "3";
+                break;
+            case R.id.rbUnknown:
+                culprit = "4";
                 break;
         }
 
         switch (rgResult.getCheckedRadioButtonId()) {
-            case R.id.rbDeleteAddress:
+            case R.id.rbDeleteOriginAddress:
                 result = "1";
                 break;
-            case R.id.rbDeleteStation:
+            case R.id.rbDeleteDestinationAddress:
                 result = "2";
                 break;
-            case R.id.rbDeleteCity:
+            case R.id.rbDeleteOriginStation:
                 result = "3";
                 break;
-            case R.id.rbOtherCases:
+            case R.id.rbDeleteDestinationStation:
                 result = "4";
+                break;
+            case R.id.rbDeleteCity:
+                result = "5";
+                break;
+            case R.id.rbOtherCases:
+                result = "6";
                 break;
         }
 
@@ -131,7 +137,7 @@ public class SaveResultDialog {
             tempDialog = dialog;
         }
         tempDialog.getWindow().requestFeature(Window.FEATURE_NO_TITLE);
-        tempDialog.setContentView(R.layout.dialog_save_result);
+        tempDialog.setContentView(R.layout.dialog_save_mistake_result);
         tempDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         tempDialog.setCancelable(false);
         unbinder = ButterKnife.bind(this, tempDialog);
