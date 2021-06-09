@@ -1232,7 +1232,7 @@ public class TripRegisterActivity extends AppCompatActivity {
                         if (passengerAddressModels.size() == 0) {
                             MyApplication.Toast("آدرسی موجود نیست", Toast.LENGTH_SHORT);
                         } else {
-                            new AddressListDialog().show((address, stationCode) -> {
+                            new AddressListDialog().show(false,(address, stationCode) -> {
                                 if (edtDestinationAddress != null) {
                                     edtDestinationAddress.setText(address);
                                     destAddressLength = address.length();
@@ -1279,14 +1279,14 @@ public class TripRegisterActivity extends AppCompatActivity {
     private void getPassengerAddress(String phoneNumber) {
         if (vfPassengerAddress != null)
             vfPassengerAddress.setDisplayedChild(1);
-        RequestHelper.builder(EndPoints.PASSENGER_ADDRESS)
+        RequestHelper.builder(EndPoints.PASSENGER_ORIGIN)
                 .addPath(phoneNumber)
-                .listener(getPassengerAddress)
+                .listener(getPassengerOrigin)
                 .get();
 
     }
 
-    RequestHelper.Callback getPassengerAddress = new RequestHelper.Callback() {
+    RequestHelper.Callback getPassengerOrigin = new RequestHelper.Callback() {
         @Override
         public void onResponse(Runnable reCall, Object... args) {
             MyApplication.handler.post(() -> {
@@ -1312,7 +1312,7 @@ public class TripRegisterActivity extends AppCompatActivity {
                         if (passengerAddressModels.size() == 0) {
                             MyApplication.Toast("آدرسی موجود نیست", Toast.LENGTH_SHORT);
                         } else {
-                            new AddressListDialog().show( (address, stationCode) -> {
+                            new AddressListDialog().show( true, (address, stationCode) -> {
                                 if (edtAddress != null) {
                                     edtAddress.setText(address);
                                     addressLength = address.length();

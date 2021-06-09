@@ -186,7 +186,7 @@ public class HireDialog {
     };
 
     private void getHireType() {
-        RequestHelper.builder(EndPoints.HIRETYPES)
+        RequestHelper.builder(EndPoints.HIRE_TYPES)
                 .listener(getHireType)
                 .get();
     }

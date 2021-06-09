@@ -647,7 +647,7 @@ public class TripDetailsFragment extends Fragment {
 
     private void archiveAddress() {
         LoadingDialog.makeCancelableLoader();
-        RequestHelper.builder(EndPoints.ARCHIVE_ADDRESS)
+        RequestHelper.builder(EndPoints.ARCHIVE_ORIGIN)
                 .addParam("phoneNumber", passengerPhone)
                 .addParam("adrs", passengerAddress)
                 .addParam("mobile", customerMobile)
