@@ -33,6 +33,7 @@ import ir.taxi1880.operatormanagement.dialog.ErrorRegistrationDialog;
 import ir.taxi1880.operatormanagement.dialog.GeneralDialog;
 import ir.taxi1880.operatormanagement.dialog.LoadingDialog;
 import ir.taxi1880.operatormanagement.dialog.LostDialog;
+import ir.taxi1880.operatormanagement.helper.DateHelper;
 import ir.taxi1880.operatormanagement.helper.FragmentHelper;
 import ir.taxi1880.operatormanagement.helper.StringHelper;
 import ir.taxi1880.operatormanagement.helper.TypefaceUtil;
@@ -72,6 +73,8 @@ public class TripDetailsFragment extends Fragment {
         MyApplication.currentActivity.onBackPressed();
     }
 
+    @BindView(R.id.txtTimeToCome)
+    TextView txtTimeToCome;
     @BindView(R.id.txtStatus)
     TextView txtStatus;
 
@@ -369,6 +372,8 @@ public class TripDetailsFragment extends Fragment {
                         String destination = data.getString("destinationAddress");
                         int stationRegisterUser = data.getInt("stationRegisterUser");
                         int destStationRegisterUser = data.getInt("destStationRegisterUser");
+                        String timeToCome = data.getString("PUGTime");
+                        String dateToCome = data.getString("PUGDate");
 
                         if (status == 0) { // waiting
                             disableControllerButtonWaitingState();
@@ -415,6 +420,9 @@ public class TripDetailsFragment extends Fragment {
                         txtServiceFixedComment.setText(customerFixedDes.equals("null") ? " " : StringHelper.toPersianDigits(customerFixedDes));
                         txtDestAddress.setText(StringHelper.toPersianDigits(destination));
                         txtDestStation.setText(StringHelper.toPersianDigits(destinationStation));
+
+                        String date = DateHelper.strPersianTree(DateHelper.parseDate(dateToCome));
+                        txtTimeToCome.setText(StringHelper.toPersianDigits(date) + " ساعت " + StringHelper.toPersianDigits(timeToCome.substring(0, 5)));
 
                         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
                             Drawable bg_blue_border_edge = AppCompatResources.getDrawable(context, R.drawable.bg_blue_border_edge);

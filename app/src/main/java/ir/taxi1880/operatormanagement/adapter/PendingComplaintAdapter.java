@@ -60,7 +60,7 @@ public class PendingComplaintAdapter extends RecyclerView.Adapter<PendingComplai
         PendingComplaintsModel model = pendingComplaintsModels.get(position);
 
         String date = DateHelper.strPersianTree(DateHelper.parseDate(model.getSaveDate()));
-        holder.txtComplaintDate.setText(StringHelper.toPersianDigits(date) + " ساعت " + model.getSaveTime());
+        holder.txtComplaintDate.setText(StringHelper.toPersianDigits(date) + " ساعت " + model.getSaveTime().substring(0, 5));
         holder.txtCustomerName.setText(StringHelper.toPersianDigits(model.getCustomerName()));
         holder.txtComplaintType.setText(StringHelper.toPersianDigits(model.getComplaintType()));
 
