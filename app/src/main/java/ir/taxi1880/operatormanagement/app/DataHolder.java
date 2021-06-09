@@ -11,14 +11,14 @@ public class DataHolder {
     boolean customerLock = false;
     boolean outDriver = false;
     String voipId = "0";
-    byte complaintType = 0;
+    byte lockReason = 0;
 
-    public int getComplaintType() {
-        return ourInstance.complaintType;
+    public int getLockReason() {
+        return ourInstance.lockReason;
     }
 
-    public void setComplaintType(byte complaintType) {
-        ourInstance.complaintType = complaintType;
+    public void setLockReason(byte lockReason) {
+        ourInstance.lockReason = lockReason;
     }
 
     public String getVoipId() {

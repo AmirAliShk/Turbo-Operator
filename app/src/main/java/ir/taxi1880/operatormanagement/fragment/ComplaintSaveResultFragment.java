@@ -32,7 +32,6 @@ import ir.taxi1880.operatormanagement.model.TypeServiceModel;
 public class ComplaintSaveResultFragment extends Fragment {
     Unbinder unbinder;
     FragmentComplaintSaveResultBinding binding;
-    private int complaintType;
 
     @Nullable
     @Override
@@ -92,7 +91,11 @@ public class ComplaintSaveResultFragment extends Fragment {
             binding.spComplaintType.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
                 @Override
                 public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                    DataHolder.getInstance().setComplaintType((byte) typeServiceModels.get(position).getId());
+                    if (position == 0) {
+                        DataHolder.getInstance().setLockReason((byte) 0);
+                        return;
+                    }
+                    DataHolder.getInstance().setLockReason((byte) typeServiceModels.get(position - 1).getId());
                 }
 
                 @Override
@@ -174,7 +177,7 @@ public class ComplaintSaveResultFragment extends Fragment {
     public void onPause() {
         super.onPause();
         DataHolder.getInstance().setComplaintResult((byte) 0);
-        DataHolder.getInstance().setComplaintType((byte) 0);
+        DataHolder.getInstance().setLockReason((byte) 0);
         DataHolder.getInstance().setLockDriver(false);
         DataHolder.getInstance().setLockDay("");
         DataHolder.getInstance().setUnlockDriver(false);
@@ -194,7 +197,7 @@ public class ComplaintSaveResultFragment extends Fragment {
     public void onStop() {
         super.onStop();
         DataHolder.getInstance().setComplaintResult((byte) 0);
-        DataHolder.getInstance().setComplaintType((byte) 0);
+        DataHolder.getInstance().setLockReason((byte) 0);
         DataHolder.getInstance().setLockDriver(false);
         DataHolder.getInstance().setLockDay("");
         DataHolder.getInstance().setUnlockDriver(false);

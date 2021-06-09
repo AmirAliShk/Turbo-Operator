@@ -96,7 +96,7 @@ public class ComplaintDetailFragment extends Fragment {
             return;
         }
 
-        if (DataHolder.getInstance().isLockDriver() && DataHolder.getInstance().getComplaintType() == 0) {
+        if (DataHolder.getInstance().isLockDriver() && DataHolder.getInstance().getLockReason() == 0) {
             MyApplication.Toast("لطفا دلیل قفل را انتخاب نمایید.", Toast.LENGTH_SHORT);//todo
             return;
         }
@@ -296,6 +296,7 @@ public class ComplaintDetailFragment extends Fragment {
                 .addParam("fined", DataHolder.getInstance().isFined() ? 1 : 0)
                 .addParam("customerLock", DataHolder.getInstance().isCustomerLock() ? 1 : 0)
                 .addParam("outDriver", DataHolder.getInstance().isOutDriver() ? 1 : 0)
+                .addParam("lockReason", DataHolder.getInstance().getLockReason())
                 .listener(saveResultCallBack)
                 .post();
     }
