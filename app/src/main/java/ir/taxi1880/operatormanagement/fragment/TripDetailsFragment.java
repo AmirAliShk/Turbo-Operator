@@ -419,11 +419,12 @@ public class TripDetailsFragment extends Fragment {
                         txtPlaque.setText(plak.equals("null") ? " " : StringHelper.toPersianDigits(plak));
                         txtServiceFixedComment.setText(customerFixedDes.equals("null") ? " " : StringHelper.toPersianDigits(customerFixedDes));
                         txtDestAddress.setText(StringHelper.toPersianDigits(destination));
+
                         txtDestStation.setText(StringHelper.toPersianDigits(destinationStation));
-
-                        String date = DateHelper.strPersianTree(DateHelper.parseDate(dateToCome));
-                        txtTimeToCome.setText(StringHelper.toPersianDigits(date) + " ساعت " + StringHelper.toPersianDigits(timeToCome.substring(0, 5)));
-
+                        if (!dateToCome.isEmpty()) {
+                            String date = DateHelper.strPersianTree(DateHelper.parseDate(dateToCome));
+                            txtTimeToCome.setText(StringHelper.toPersianDigits(date) + " ساعت " + StringHelper.toPersianDigits(timeToCome.substring(0, 5)));
+                        }
                         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
                             Drawable bg_blue_border_edge = AppCompatResources.getDrawable(context, R.drawable.bg_blue_border_edge);
                             llHeaderStatus.setBackground(bg_blue_border_edge);
@@ -446,6 +447,11 @@ public class TripDetailsFragment extends Fragment {
 
                 } catch (JSONException e) {
                     e.printStackTrace();
+                    MyApplication.handler.post(() -> {
+                        if (vfTripDetails != null) {
+                            vfTripDetails.setDisplayedChild(2);
+                        }
+                    });
                 }
             });
         }
