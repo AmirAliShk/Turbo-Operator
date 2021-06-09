@@ -483,18 +483,10 @@ public class DeterminationPageFragment extends Fragment {
 //                    {"success":true,"message":"عملیات با موفقیت انجام شد","data":{"status":true}}
 //                    {"success":true,"message":"کد ایستگاه در این شهر وجود ندارد","data":{"status":false}}
 
-                    Log.i(TAG, "onResponse: " + args[0].toString());
-                    JSONObject obj = new JSONObject(args[0].toString());
-                    boolean success = obj.getBoolean("success");
-                    String message = obj.getString("message");
-
-                    if (success) {
-                        JSONObject dataArr = obj.getJSONObject("data");
-                        boolean status = dataArr.getBoolean("status");
-                    } else {
-                        onPressRefresh();
-                        MyApplication.Toast(message, Toast.LENGTH_SHORT);
-                    }
+//                    JSONObject obj = new JSONObject(args[0].toString());
+//                    boolean success = obj.getBoolean("success");
+//                    String message = obj.getString("message");
+//
 
                 } catch (JSONException e) {
                     e.printStackTrace();
