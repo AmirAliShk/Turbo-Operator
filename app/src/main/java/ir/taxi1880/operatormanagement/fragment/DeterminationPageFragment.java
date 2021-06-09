@@ -663,19 +663,6 @@ public class DeterminationPageFragment extends Fragment {
                     isDestinationZero = true;
                     return cityName + " , " + dataBase.getTopAddress().getDestination();
                 }
-//                else {
-//                    MyApplication.Toast("errrror", Toast.LENGTH_SHORT);
-//                }
-
-//                if (dataBase.getTopAddress().getDestinationStation() == 0) {
-//                    if (dataBase.getTopAddress().getPriceable() == 0) {
-//                        onPressRefresh();
-//                        return "";
-//                    } else {
-//
-//                    }
-//                }
-
             }
         } catch (Exception e) {
             e.printStackTrace();
