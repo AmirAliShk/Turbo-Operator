@@ -103,27 +103,32 @@ public class PricingDialog {
         edtStationOrigin.setEnabled(false);
         edtTime.setEnabled(false);
 
-        llPrice.setVisibility(View.GONE);
+//        edtStationDestination.setFocusable(false);
+//        edtStationOrigin.setFocusable(false);
+//        edtTime.setFocusable(false);
 
-        edtStationDestination.setEnabled(false);
-        edtStationOrigin.setEnabled(false);
-        edtTime.setEnabled(false);
+        llPrice.setVisibility(View.GONE);
 
         rbByStation.setOnCheckedChangeListener((compoundButton, b) -> {
             if (rbByStation.isChecked()) {
                 rbByTime.setChecked(false);
                 edtStationDestination.setEnabled(true);
                 edtStationOrigin.setEnabled(true);
-                edtTime.setEnabled(false);
+                edtStationDestination.setFocusable(true);
+                edtStationOrigin.setFocusable(true);
+                edtStationDestination.requestFocus();
+                edtStationOrigin.requestFocus();
+            }else {
+                edtStationOrigin.clearFocus();
             }
         });
 
         rbByTime.setOnCheckedChangeListener((compoundButton, b) -> {
             if (rbByTime.isChecked()) {
                 rbByStation.setChecked(false);
-                edtStationDestination.setEnabled(false);
-                edtStationOrigin.setEnabled(false);
                 edtTime.setEnabled(true);
+                edtTime.setFocusable(true);
+                edtTime.requestFocus();
             }
         });
 

@@ -196,7 +196,7 @@ public class TripDetailsFragment extends Fragment {
     void onDisposal() {
         new GeneralDialog()
                 .title("تبدیل به در اختیار")
-                .message("آیا از در اختیار کردن این سفر اطمینان دارید؟")//todo
+                .message("آیا از در اختیار کردن این سفر اطمینان دارید؟")
                 .cancelable(false)
                 .firstButton("بله", () -> makeDisposal())
                 .secondButton("خیر", null)

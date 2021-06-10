@@ -123,7 +123,7 @@ public class LastAddressAdapter extends BaseAdapter {
     private void archiveDestination(PassengerAddressModel passengerAddressModel) {
         RequestHelper.builder(EndPoints.ARCHIVE_DESTINATION)
                 .addParam("phoneNumber", passengerAddressModel.getPhoneNumber())
-                .addParam("adrs", passengerAddressModel.getAddress())
+                .addParam("destination", passengerAddressModel.getAddress())
                 .addParam("mobile", passengerAddressModel.getMobile())
                 .listener(onArchiveAddress)
                 .put();
