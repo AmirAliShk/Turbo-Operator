@@ -80,10 +80,10 @@ public class SaveMistakeResultDialog {
                 culprit = "2";
                 break;
             case R.id.rbStationRegistrationDestinationOperatorBlame:
-                culprit = "3";
+                culprit = "4";
                 break;
             case R.id.rbUnknown:
-                culprit = "4";
+                culprit = "3";
                 break;
         }
 
@@ -92,19 +92,19 @@ public class SaveMistakeResultDialog {
                 result = "1";
                 break;
             case R.id.rbDeleteDestinationAddress:
-                result = "2";
+                result = "6";
                 break;
             case R.id.rbDeleteOriginStation:
-                result = "3";
+                result = "2";
                 break;
             case R.id.rbDeleteDestinationStation:
-                result = "4";
-                break;
-            case R.id.rbDeleteCity:
                 result = "5";
                 break;
+            case R.id.rbDeleteCity:
+                result = "3";
+                break;
             case R.id.rbOtherCases:
-                result = "6";
+                result = "4";
                 break;
         }
 
