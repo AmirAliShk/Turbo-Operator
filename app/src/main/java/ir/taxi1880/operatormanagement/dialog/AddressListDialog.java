@@ -30,7 +30,7 @@ public class AddressListDialog {
     private static final String TAG = AddressListDialog.class.getSimpleName();
 
     public interface Listener {
-        void description(String address, int stationCode);
+        void description(String address, int stationCode, int addressId);
 
 //    void selectedAddress(boolean b);
     }
@@ -77,7 +77,7 @@ public class AddressListDialog {
         blrView.setOnClickListener(view -> dismiss());
 
         listLastAddress.setOnItemClickListener((parent, view, position, id) -> {
-            listener.description(passengerAddressModels.get(position).getAddress(), passengerAddressModels.get(position).getStation());
+            listener.description(passengerAddressModels.get(position).getAddress(), passengerAddressModels.get(position).getStation(),passengerAddressModels.get(position).getAddressId());
 //        listener.selectedAddress(true);
             dismiss();
         });

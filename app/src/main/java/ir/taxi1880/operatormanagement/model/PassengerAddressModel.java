@@ -6,6 +6,15 @@ public class PassengerAddressModel {
   private String address;
   private int station;
   private int status;
+  private int addressId;
+
+  public int getAddressId() {
+    return addressId;
+  }
+
+  public void setAddressId(int addressId) {
+    this.addressId = addressId;
+  }
 
   public String getMobile() {
     return mobile;

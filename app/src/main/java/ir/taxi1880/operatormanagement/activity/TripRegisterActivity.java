@@ -116,6 +116,7 @@ public class TripRegisterActivity extends AppCompatActivity {
     private String[] countService = new String[6];
     private Runnable mCallQualityUpdater = null;
     private int mDisplayedQuality = -1;
+    int addressId;
 
     @OnClick(R.id.imgBack)
     void onBack() {
@@ -1067,6 +1068,7 @@ public class TripRegisterActivity extends AppCompatActivity {
                     int cityCode = passengerInfoObj.getInt("cityCode");
                     maxDiscount = passengerInfoObj.getString("maxDiscount");
                     percentDiscount = passengerInfoObj.getString("percentDiscount");
+                    addressId = passengerInfoObj.getInt("callerCode");
 
                     ClipboardManager clipboard = (ClipboardManager) getSystemService(Context.CLIPBOARD_SERVICE);
                     ClipData clip = ClipData.newPlainText("passengerTell", getTellNumber());
@@ -1227,12 +1229,13 @@ public class TripRegisterActivity extends AppCompatActivity {
                             addressModel.setAddress(dataObj.getString("destination"));
                             addressModel.setStation(dataObj.getInt("destinationStation"));
                             addressModel.setStatus(dataObj.getInt("status"));
+                            addressModel.setAddressId(dataObj.getInt("moshId"));
                             passengerAddressModels.add(addressModel);
                         }
                         if (passengerAddressModels.size() == 0) {
                             MyApplication.Toast("آدرسی موجود نیست", Toast.LENGTH_SHORT);
                         } else {
-                            new AddressListDialog().show(false,(address, stationCode) -> {
+                            new AddressListDialog().show(false, (address, stationCode, addressId) -> {
                                 if (edtDestinationAddress != null) {
                                     edtDestinationAddress.setText(address);
                                     destAddressLength = address.length();
@@ -1307,12 +1310,13 @@ public class TripRegisterActivity extends AppCompatActivity {
                             addressModel.setAddress(dataObj.getString("address"));
                             addressModel.setStation(dataObj.getInt("station"));
                             addressModel.setStatus(dataObj.getInt("status"));
+                            addressModel.setAddressId(dataObj.getInt("moshid"));
                             passengerAddressModels.add(addressModel);
                         }
                         if (passengerAddressModels.size() == 0) {
                             MyApplication.Toast("آدرسی موجود نیست", Toast.LENGTH_SHORT);
                         } else {
-                            new AddressListDialog().show( true, (address, stationCode) -> {
+                            new AddressListDialog().show(true, (address, stationCode, addressId) -> {
                                 if (edtAddress != null) {
                                     edtAddress.setText(address);
                                     addressLength = address.length();
