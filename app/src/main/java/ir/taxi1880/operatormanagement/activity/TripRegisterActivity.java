@@ -301,7 +301,7 @@ public class TripRegisterActivity extends AppCompatActivity {
             return;
         }
         KeyBoardHelper.hideKeyboard();
-        getPassengerDestAddress(StringHelper.toEnglishDigits("0" + getTellNumber()));
+        getPassengerDestAddress(StringHelper.toEnglishDigits(getTellNumber()));
     }
 
     private String getTellNumber() {
