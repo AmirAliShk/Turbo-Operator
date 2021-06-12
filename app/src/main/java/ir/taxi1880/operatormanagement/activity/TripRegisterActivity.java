@@ -116,7 +116,8 @@ public class TripRegisterActivity extends AppCompatActivity {
     private String[] countService = new String[6];
     private Runnable mCallQualityUpdater = null;
     private int mDisplayedQuality = -1;
-    int addressId;
+    int addressIdOrigin;
+    int addressIdDestination;
 
     @OnClick(R.id.imgBack)
     void onBack() {
@@ -1068,7 +1069,7 @@ public class TripRegisterActivity extends AppCompatActivity {
                     int cityCode = passengerInfoObj.getInt("cityCode");
                     maxDiscount = passengerInfoObj.getString("maxDiscount");
                     percentDiscount = passengerInfoObj.getString("percentDiscount");
-                    addressId = passengerInfoObj.getInt("callerCode");
+                    addressIdOrigin = passengerInfoObj.getInt("callerCode");
 
                     ClipboardManager clipboard = (ClipboardManager) getSystemService(Context.CLIPBOARD_SERVICE);
                     ClipData clip = ClipData.newPlainText("passengerTell", getTellNumber());
@@ -1242,7 +1243,7 @@ public class TripRegisterActivity extends AppCompatActivity {
                                     destAddressChangeCounter = 0;
                                 }
                                 destinationStation = stationCode;
-
+                                addressIdDestination = addressId;
                             }, passengerAddressModels);
                         }
                     } else {
@@ -1323,6 +1324,7 @@ public class TripRegisterActivity extends AppCompatActivity {
                                     addressChangeCounter = 0;
                                 }
                                 originStation = stationCode;
+                                addressIdOrigin = addressId;
                                 Log.i(TAG, "run: " + originStation);
 
                             }, passengerAddressModels);
@@ -1566,6 +1568,8 @@ public class TripRegisterActivity extends AppCompatActivity {
                 .addParam("maxDiscount", maxDiscount)
                 .addParam("senderClient", 0)
                 .addParam("stopTime", stopTime)
+                .addParam("addressIdOrigin", addressIdOrigin)
+                .addParam("addressIdDestination", addressIdDestination)
                 .listener(insertService)
                 .post();
 
