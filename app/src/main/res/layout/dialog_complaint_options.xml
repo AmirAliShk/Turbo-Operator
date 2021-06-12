@@ -55,7 +55,7 @@
                         android:layout_width="30dp"
                         android:layout_height="30dp"
                         android:layout_gravity="center"
-                        android:src="@drawable/ic_passenger_dialog" />
+                        android:src="@drawable/ic_pricing" />
 
                     <TextView
                         android:layout_width="match_parent"
