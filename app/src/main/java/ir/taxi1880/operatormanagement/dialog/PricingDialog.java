@@ -12,8 +12,11 @@ import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.RadioButton;
+import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.ViewFlipper;
+
+import org.json.JSONObject;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -53,6 +56,9 @@ public class PricingDialog {
 
     @BindView(R.id.llPrice)
     LinearLayout llPrice;
+
+    @BindView(R.id.txtPrice)
+    TextView txtPrice;
 
     @OnClick(R.id.btnSubmit)
     void onSubmit() {
@@ -103,10 +109,6 @@ public class PricingDialog {
         edtStationOrigin.setEnabled(false);
         edtTime.setEnabled(false);
 
-//        edtStationDestination.setFocusable(false);
-//        edtStationOrigin.setFocusable(false);
-//        edtTime.setFocusable(false);
-
         llPrice.setVisibility(View.GONE);
 
         rbByStation.setOnCheckedChangeListener((compoundButton, b) -> {
@@ -114,12 +116,7 @@ public class PricingDialog {
                 rbByTime.setChecked(false);
                 edtStationDestination.setEnabled(true);
                 edtStationOrigin.setEnabled(true);
-                edtStationDestination.setFocusable(true);
-                edtStationOrigin.setFocusable(true);
-                edtStationDestination.requestFocus();
-                edtStationOrigin.requestFocus();
-            }else {
-                edtStationOrigin.clearFocus();
+                edtTime.setText("");
             }
         });
 
@@ -127,8 +124,8 @@ public class PricingDialog {
             if (rbByTime.isChecked()) {
                 rbByStation.setChecked(false);
                 edtTime.setEnabled(true);
-                edtTime.setFocusable(true);
-                edtTime.requestFocus();
+                edtStationDestination.setText("");
+                edtStationOrigin.setText("");
             }
         });
 
@@ -164,7 +161,15 @@ public class PricingDialog {
                     if (vfLoader != null) {
                         vfLoader.setDisplayedChild(0);
                     }
-//                    {"success":true,"message":"عملیات با موفقیت انجام شد","data":"ok"}
+//{"success":true,"message":"عملیات با موفقیت انجام شد","data":{"duration":20.25,"distance":8542,"stopTime":0,"tripPrice":21000,"finalPrice":21000,"discount":0,"distancePrice":11958.8,"stopTimePrice":2025,"incomePrice":7000}}
+                    JSONObject obj = new JSONObject(args[0].toString());
+                    boolean success = obj.getBoolean("success");
+                    String message = obj.getString("message");
+                    if (success) {
+                        JSONObject dataObj = obj.getJSONObject("data");
+                        txtPrice.setText(dataObj.getInt("finalPrice"));
+                        llPrice.setVisibility(View.VISIBLE);
+                    }
 
                 } catch (Exception e) {
                     e.printStackTrace();

@@ -116,8 +116,9 @@ public class TripRegisterActivity extends AppCompatActivity {
     private String[] countService = new String[6];
     private Runnable mCallQualityUpdater = null;
     private int mDisplayedQuality = -1;
-    int addressIdOrigin;
-    int addressIdDestination;
+    int callerCode;
+    int addressIdDestination = 0;
+    String address;
 
     @OnClick(R.id.imgBack)
     void onBack() {
@@ -788,6 +789,7 @@ public class TripRegisterActivity extends AppCompatActivity {
         @Override
         public void onTextChanged(CharSequence charSequence, int start, int before, int count) {
             addressChangeCounter = addressChangeCounter + 1;
+            callerCode = 0;
             Log.i(TAG, "onTextChanged: counter " + addressChangeCounter);
         }
 
@@ -809,6 +811,7 @@ public class TripRegisterActivity extends AppCompatActivity {
         @Override
         public void onTextChanged(CharSequence charSequence, int start, int before, int count) {
             destAddressChangeCounter = destAddressChangeCounter + 1;
+            addressIdDestination = 0;
             Log.i(TAG, "onTextChanged: destAddressChangeCounter " + destAddressChangeCounter);
         }
 
@@ -1058,8 +1061,8 @@ public class TripRegisterActivity extends AppCompatActivity {
                     int callTimeInterval = statusObj.getInt("callTimeInterval");
 
                     JSONObject passengerInfoObj = dataObj.getJSONObject("passengerInfo");
-                    int callerCode = passengerInfoObj.getInt("callerCode");
-                    String address = passengerInfoObj.getString("address");
+                    callerCode = passengerInfoObj.getInt("callerCode");
+                    address = passengerInfoObj.getString("address");
                     String name = passengerInfoObj.getString("name");
                     int staion = passengerInfoObj.getInt("staion");
                     permanentDesc = passengerInfoObj.getString("description");
@@ -1069,7 +1072,6 @@ public class TripRegisterActivity extends AppCompatActivity {
                     int cityCode = passengerInfoObj.getInt("cityCode");
                     maxDiscount = passengerInfoObj.getString("maxDiscount");
                     percentDiscount = passengerInfoObj.getString("percentDiscount");
-                    addressIdOrigin = passengerInfoObj.getInt("callerCode");
 
                     ClipboardManager clipboard = (ClipboardManager) getSystemService(Context.CLIPBOARD_SERVICE);
                     ClipData clip = ClipData.newPlainText("passengerTell", getTellNumber());
@@ -1324,7 +1326,7 @@ public class TripRegisterActivity extends AppCompatActivity {
                                     addressChangeCounter = 0;
                                 }
                                 originStation = stationCode;
-                                addressIdOrigin = addressId;
+                                callerCode = addressId;
                                 Log.i(TAG, "run: " + originStation);
 
                             }, passengerAddressModels);
@@ -1568,7 +1570,7 @@ public class TripRegisterActivity extends AppCompatActivity {
                 .addParam("maxDiscount", maxDiscount)
                 .addParam("senderClient", 0)
                 .addParam("stopTime", stopTime)
-                .addParam("addressIdOrigin", addressIdOrigin)
+                .addParam("addressIdOrigin", callerCode)
                 .addParam("addressIdDestination", addressIdDestination)
                 .listener(insertService)
                 .post();
