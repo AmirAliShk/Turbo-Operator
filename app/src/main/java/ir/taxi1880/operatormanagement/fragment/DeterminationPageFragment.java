@@ -52,6 +52,8 @@ import ir.taxi1880.operatormanagement.okHttp.RequestHelper;
 
 public class DeterminationPageFragment extends Fragment {
     String TAG = DeterminationPageFragment.class.getSimpleName();
+    String LOG = "STATION_REGISTER --> ";
+
     Unbinder unbinder;
     boolean pressedRefresh = false;
     boolean isEnable = false;
@@ -112,10 +114,14 @@ public class DeterminationPageFragment extends Fragment {
                 dataBase.updateOriginStation(dataBase.getTopAddress().getId(), Integer.parseInt(station));
             } else if (isOriginZero) {
                 dataBase.updateOriginStation(dataBase.getTopAddress().getId(), Integer.parseInt(station));
+                Log.i(LOG, "onSubmit1: "+dataBase.getTopAddress().getOriginStation() + "/:"+ dataBase.getTopAddress().getDestinationStation() + "/:"+ dataBase.getTopAddress().getId() );
                 setStationCode(dataBase.getTopAddress().getOriginStation() + "", dataBase.getTopAddress().getDestinationStation() + "");
             } else if (isDestinationZero) {
-                dataBase.updateDestinationStation(dataBase.getTopAddress().getId(), Integer.parseInt(station));
-                setStationCode(dataBase.getTopAddress().getOriginStation() + "", dataBase.getTopAddress().getDestinationStation() + "");
+                Log.i(LOG, "onSubmit:2 origin:"+txtAddress.getText());
+                Log.i(LOG, "onSubmit:2 DB: origin"+dataBase.getTopAddress().getOriginText()+" DEst:"+dataBase.getTopAddress().getDestination());
+                    dataBase.updateDestinationStation(dataBase.getTopAddress().getId(), Integer.parseInt(station));
+                    Log.i(LOG, "onSubmit:2 "+dataBase.getTopAddress().getOriginStation() + "/: "+ dataBase.getTopAddress().getDestinationStation() + "/:"+ dataBase.getTopAddress().getId()+""+isOriginZero);
+                    setStationCode(dataBase.getTopAddress().getOriginStation() + "", dataBase.getTopAddress().getDestinationStation() + "");
             }
             txtStation.setText("");
             txtAddress.setText(showAddress());
@@ -196,7 +202,8 @@ public class DeterminationPageFragment extends Fragment {
         pressedRefresh = true;
         txtStation.setText("");
         imgRefresh.startAnimation(AnimationUtils.loadAnimation(MyApplication.context, R.anim.rotate));
-        MyApplication.handler.postDelayed(() -> getAddressList(), 500);
+        getAddressList();
+//        MyApplication.handler.postDelayed(() -> getAddressList(), 500);
 
     }
 
@@ -253,7 +260,7 @@ public class DeterminationPageFragment extends Fragment {
 
         dataBase = new DataBase(MyApplication.context);
 
-        onPressRefresh();
+        dataBase.deleteAllData();
         changeStatus(MyApplication.prefManager.isStartGettingAddress());
 
         for (int numberCount = 0; numberCount < 10; numberCount++) {
@@ -368,6 +375,12 @@ public class DeterminationPageFragment extends Fragment {
                             // I can't put setAddress() function here! because I want set address just when the user is enable and is disable and press refresh.
                             // Do you think it never crossed my mind?! ;)
 
+                            Log.i(LOG, "withoutStation:OriginStation = " +
+                                    dataBase.getTopAddress().getOriginStation() +
+                                    " DestinationStation= " + dataBase.getTopAddress().getDestinationStation() +
+                                    " Priceable= " + dataBase.getTopAddress().getPriceable() +
+                                    " serviceId= " + dataBase.getTopAddress().getId());
+
                             if (isEnable) {
                                 if (txtAddress != null)
                                     txtAddress.setText(showAddress());
@@ -426,7 +439,7 @@ public class DeterminationPageFragment extends Fragment {
             callLastTime = true;
             txtRemainingAddress.setText("");
             txtAddress.setText("آدرسی موجود نیست...");
-            startGetAddressTimer();
+//            startGetAddressTimer();
             MyApplication.prefManager.setStartGettingAddress(true);
             if (btnActivate != null)
                 btnActivate.setBackgroundResource(R.drawable.bg_green_edge);
@@ -456,6 +469,11 @@ public class DeterminationPageFragment extends Fragment {
     }
 
     private void setStationCode(String stationCode, String destinationCode) {
+        Log.i(LOG, "setStationCode:OriginStation = " +
+                stationCode +
+                " DestinationStation= " + destinationCode +
+                " Priceable= " + dataBase.getTopAddress().getPriceable() +
+                " serviceId= " + dataBase.getTopAddress().getId());
         RequestHelper.builder(EndPoints.STATION)
                 .addParam("tripId", StringHelper.toEnglishDigits(dataBase.getTopAddress().getId() + ""))
                 .addParam("originStation", StringHelper.toEnglishDigits(stationCode + ""))
@@ -467,31 +485,34 @@ public class DeterminationPageFragment extends Fragment {
                 .addParam("tripOperatorId", StringHelper.toEnglishDigits(dataBase.getTopAddress().getOperatorId() + ""))
                 .listener(setStationCode)
                 .put();
+
+
         if (dataBase.getRemainingAddress() > 0)
             dataBase.deleteRow(dataBase.getTopAddress().getId());
-        if (txtStation != null && txtAddress != null) {
+
             txtAddress.setText(showAddress());
             txtStation.setText("");
-        }
     }
 
     RequestHelper.Callback setStationCode = new RequestHelper.Callback() {
         @Override
         public void onResponse(Runnable reCall, Object... args) {
             MyApplication.handler.post(() -> {
-                try {
+//                try {
 //                    {"success":true,"message":"عملیات با موفقیت انجام شد","data":{"status":true}}
 //                    {"success":true,"message":"کد ایستگاه در این شهر وجود ندارد","data":{"status":false}}
 
-                    JSONObject obj = new JSONObject(args[0].toString());
+//                    Log.i(LOG, "onResponse: " + args[0].toString());
+//                    JSONObject obj = new JSONObject(args[0].toString());
+
 //                    boolean success = obj.getBoolean("success");
 //                    String message = obj.getString("message");
 //
 
-                } catch (JSONException e) {
-                    e.printStackTrace();
-
-                }
+//                } catch (JSONException e) {
+//                    e.printStackTrace();
+//
+//                }
             });
         }
 
@@ -651,18 +672,28 @@ public class DeterminationPageFragment extends Fragment {
 
                 if (dataBase.getTopAddress().getOriginStation() == 0 && dataBase.getTopAddress().getDestinationStation() == 0 && dataBase.getTopAddress().getPriceable() == 1) {
                     bothStationAreZero = true;
+                    Log.i(LOG, "showAddress: bothStationAreZero " + dataBase.getTopAddress().getOriginText() + " destination = " + dataBase.getTopAddress().getDestination());
                     return cityName + " , " + dataBase.getTopAddress().getOriginText();
                 }
 
                 if (dataBase.getTopAddress().getOriginStation() == 0) {
                     isOriginZero = true;
+                    Log.i(LOG, "showAddress: isOriginZero "+ dataBase.getTopAddress().getOriginText());
                     return cityName + " , " + dataBase.getTopAddress().getOriginText();
                 }
 
                 if (dataBase.getTopAddress().getDestinationStation() == 0 && dataBase.getTopAddress().getPriceable() == 1) {
                     isDestinationZero = true;
+                    Log.i(LOG, "showAddress: isDestinationZero "+ dataBase.getTopAddress().getDestination());
                     return cityName + " , " + dataBase.getTopAddress().getDestination();
                 }
+
+                Log.i(LOG, "showAddress:OriginStation = " +
+                        dataBase.getTopAddress().getOriginStation() +
+                        " DestinationStation= " + dataBase.getTopAddress().getDestinationStation() +
+                        " Priceable= " + dataBase.getTopAddress().getPriceable() +
+                        " serviceId= " + dataBase.getTopAddress().getId());
+
             }
         } catch (Exception e) {
             e.printStackTrace();

@@ -38,11 +38,13 @@
                 android:orientation="horizontal">
 
                 <View
+                    android:visibility="gone"
                     android:layout_width="0dp"
                     android:layout_height="0dp"
                     android:layout_weight="1" />
 
                 <LinearLayout
+                    android:visibility="gone"
                     android:id="@+id/llPricing"
                     android:layout_width="100dp"
                     android:layout_height="100dp"
