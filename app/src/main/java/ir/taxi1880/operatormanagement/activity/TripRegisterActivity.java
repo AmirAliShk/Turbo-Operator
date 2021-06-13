@@ -577,6 +577,7 @@ public class TripRegisterActivity extends AppCompatActivity {
         addressChangeCounter = 0;
         destAddressLength = 0;
         destAddressChangeCounter = 0;
+        callerCode = 0;
     }
 
     @OnClick(R.id.clearDestinationAddress)
@@ -585,6 +586,7 @@ public class TripRegisterActivity extends AppCompatActivity {
         destinationStation = 0;
         destAddressLength = 0;
         destAddressChangeCounter = 0;
+        addressIdDestination = 0;
     }
 
     @OnClick(R.id.btnDeActivate)
@@ -1209,7 +1211,6 @@ public class TripRegisterActivity extends AppCompatActivity {
                 .addPath(phoneNumber)
                 .listener(getPassengerDestAddress)
                 .get();
-
     }
 
     RequestHelper.Callback getPassengerDestAddress = new RequestHelper.Callback() {

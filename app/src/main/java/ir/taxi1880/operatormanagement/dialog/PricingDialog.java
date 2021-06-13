@@ -116,6 +116,7 @@ public class PricingDialog {
                 rbByTime.setChecked(false);
                 edtStationDestination.setEnabled(true);
                 edtStationOrigin.setEnabled(true);
+                edtTime.setEnabled(false);
                 edtTime.setText("");
             }
         });
@@ -126,6 +127,8 @@ public class PricingDialog {
                 edtTime.setEnabled(true);
                 edtStationDestination.setText("");
                 edtStationOrigin.setText("");
+                edtStationDestination.setEnabled(false);
+                edtStationOrigin.setEnabled(false);
             }
         });
 
@@ -167,7 +170,7 @@ public class PricingDialog {
                     String message = obj.getString("message");
                     if (success) {
                         JSONObject dataObj = obj.getJSONObject("data");
-                        txtPrice.setText(dataObj.getInt("finalPrice"));
+                        txtPrice.setText(dataObj.getInt("finalPrice") + "");
                         llPrice.setVisibility(View.VISIBLE);
                     }
 

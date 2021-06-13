@@ -30,6 +30,7 @@ public class LastAddressAdapter extends BaseAdapter {
 
     public LastAddressAdapter(boolean isFromOrigin, ArrayList<PassengerAddressModel> addressModels, Context context) {
         this.addressModels = addressModels;
+        this.isFromOrigin = isFromOrigin;
         this.layoutInflater = LayoutInflater.from(context);
     }
 
