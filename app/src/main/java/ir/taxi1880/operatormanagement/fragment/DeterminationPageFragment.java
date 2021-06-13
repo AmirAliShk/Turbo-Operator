@@ -439,7 +439,7 @@ public class DeterminationPageFragment extends Fragment {
             callLastTime = true;
             txtRemainingAddress.setText("");
             txtAddress.setText("آدرسی موجود نیست...");
-//            startGetAddressTimer();
+            startGetAddressTimer();
             MyApplication.prefManager.setStartGettingAddress(true);
             if (btnActivate != null)
                 btnActivate.setBackgroundResource(R.drawable.bg_green_edge);
@@ -498,7 +498,7 @@ public class DeterminationPageFragment extends Fragment {
         @Override
         public void onResponse(Runnable reCall, Object... args) {
             MyApplication.handler.post(() -> {
-//                try {
+                try {
 //                    {"success":true,"message":"عملیات با موفقیت انجام شد","data":{"status":true}}
 //                    {"success":true,"message":"کد ایستگاه در این شهر وجود ندارد","data":{"status":false}}
 
@@ -507,12 +507,13 @@ public class DeterminationPageFragment extends Fragment {
 
 //                    boolean success = obj.getBoolean("success");
 //                    String message = obj.getString("message");
-//
+                        if(dataBase.getRemainingAddress()<1)
+                            getAddressList();
 
-//                } catch (JSONException e) {
-//                    e.printStackTrace();
-//
-//                }
+                } catch (Exception e) {
+                    e.printStackTrace();
+
+                }
             });
         }
 
@@ -710,7 +711,8 @@ public class DeterminationPageFragment extends Fragment {
             timer.scheduleAtFixedRate(new TimerTask() {
                 @Override
                 public void run() {
-                    getAddressList();
+                    if(dataBase.getRemainingAddress()<1)
+                      getAddressList();
                 }
             }, 0, 10000);
         } catch (Exception e) {
