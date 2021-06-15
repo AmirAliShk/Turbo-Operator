@@ -3,15 +3,17 @@ package ir.taxi1880.operatormanagement.dialog;
 import android.app.Dialog;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
-import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
+import android.widget.AdapterView;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.RelativeLayout;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.ViewFlipper;
@@ -21,8 +23,10 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 
 import ir.taxi1880.operatormanagement.R;
+import ir.taxi1880.operatormanagement.adapter.SpinnerAdapter;
 import ir.taxi1880.operatormanagement.adapter.StationInfoAdapter;
 import ir.taxi1880.operatormanagement.app.EndPoints;
 import ir.taxi1880.operatormanagement.app.MyApplication;
@@ -48,14 +52,21 @@ public class SearchStationInfoDialog {
     ImageView imgClear;
     ImageView imgSearch;
 
-    public void show() {
+    Spinner spSearchType;
+    int city;
+    RelativeLayout rlSearchType;
+
+    String stationCode = "0";
+    String address = "0";
+
+    public void show(int city) {
         if (MyApplication.currentActivity == null || MyApplication.currentActivity.isFinishing())
             return;
         dialog = new Dialog(MyApplication.currentActivity);
         dialog.getWindow().requestFeature(Window.FEATURE_NO_TITLE);
         dialog.getWindow().getAttributes().windowAnimations = R.style.ExpandAnimation;
         dialog.setContentView(R.layout.dialog_search_station_info);
-        TypefaceUtil.overrideFonts(dialog.getWindow().getDecorView(),MyApplication.IraSanSMedume);
+        TypefaceUtil.overrideFonts(dialog.getWindow().getDecorView(), MyApplication.IraSanSMedume);
         dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         WindowManager.LayoutParams wlp = dialog.getWindow().getAttributes();
         wlp.gravity = Gravity.CENTER;
@@ -63,7 +74,7 @@ public class SearchStationInfoDialog {
         wlp.windowAnimations = R.style.ExpandAnimation;
         dialog.getWindow().setAttributes(wlp);
         dialog.setCancelable(false);
-
+        this.city = city;
         listStationInfo = dialog.findViewById(R.id.listStationInfo);
         llSearchStation = dialog.findViewById(R.id.llSearchStation);
         txtStationName = dialog.findViewById(R.id.txtStationName);
@@ -74,14 +85,16 @@ public class SearchStationInfoDialog {
         imgSearch = dialog.findViewById(R.id.imgSearch);
         imgClear = dialog.findViewById(R.id.imgClear);
         vfStationInfo = dialog.findViewById(R.id.vfStationInfo);
+        spSearchType = dialog.findViewById(R.id.spSearchType);
+        rlSearchType = dialog.findViewById(R.id.rlSearchType);
 
         imgSearch.setOnClickListener(view -> {
             String origin = edtStationCode.getText().toString();
             if (origin.isEmpty()) {
-                MyApplication.Toast("لطفا شماره ایستگاه را وارد کنید", Toast.LENGTH_SHORT);
+                MyApplication.Toast("لطفا آدرس یا شماره ایستگاه را وارد کنید.", Toast.LENGTH_SHORT);
                 return;
             }
-            getStationInfo(origin);
+            getStationInfo();
         });
 
         imgClear.setOnClickListener(view -> {
@@ -92,15 +105,51 @@ public class SearchStationInfoDialog {
 
         llCLose.setOnClickListener(view -> dismiss());
 
+        rlSearchType.setOnClickListener(view -> {
+            spSearchType.performClick();
+        });
+
+        initWaitingTimeSpinner();
+
         dialog.show();
 
     }
 
-    private void getStationInfo(String stationCode) {
+    private void initWaitingTimeSpinner() {
+        ArrayList<String> searchType = new ArrayList<String>(Arrays.asList("کد ایستگاه", "آدرس"));
+        try {
+
+            if (spSearchType == null)
+                return;
+
+            spSearchType.setAdapter(new SpinnerAdapter(MyApplication.currentActivity, R.layout.item_spinner, searchType));
+
+            spSearchType.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                @Override
+                public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                    if (position == 0) {
+                        stationCode = StringHelper.toEnglishDigits(edtStationCode.getText().toString());
+                        address = "0";
+                    } else if (position == 1) {
+                        stationCode = "0";
+                        address = edtStationCode.getText().toString();
+                    }
+                }
+
+                @Override
+                public void onNothingSelected(AdapterView<?> parent) {
+                }
+            });
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void getStationInfo() {
         if (vfStationInfo != null)
             vfStationInfo.setDisplayedChild(1);
-        RequestHelper.builder(EndPoints.STATION_INFO)
-                .addPath(StringHelper.toEnglishDigits(stationCode) + "")
+        RequestHelper.builder(EndPoints.STATION_INFO + "/" + city + "/" + stationCode + "/" + address)
+//                .addPath(StringHelper.toEnglishDigits(stationCode) + "")
                 .listener(getStationInfo)
                 .get();
     }
@@ -160,7 +209,7 @@ public class SearchStationInfoDialog {
 
                             if (isCountrySide) {
                                 llSuburbs.setVisibility(View.VISIBLE);
-                            }else {
+                            } else {
                                 llSuburbs.setVisibility(View.GONE);
                             }
                         }
@@ -176,7 +225,7 @@ public class SearchStationInfoDialog {
                 } catch (JSONException e) {
                     e.printStackTrace();
                     if (vfStationInfo != null)
-                    vfStationInfo.setDisplayedChild(3);
+                        vfStationInfo.setDisplayedChild(3);
                 }
             });
         }

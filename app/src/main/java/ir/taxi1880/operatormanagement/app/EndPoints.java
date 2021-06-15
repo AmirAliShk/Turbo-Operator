@@ -68,7 +68,7 @@ public class EndPoints {
     /******************************** Trip Register Api *********************************/
 
     public static final String PASSENGER_ORIGIN = TRIP_WEBSERVICE_PATH + "passengerAddress";
-    public static final String STATION_INFO = TRIP_WEBSERVICE_PATH + "stationInfo";
+    public static final String STATION_INFO = TRIP_WEBSERVICE_PATH + "stationInfo";//api/operator/v3/trip/stationInfo/:city/:code/:name
     public static final String PASSENGER_DESTINATION = TRIP_WEBSERVICE_PATH + "passengerDestination";
     public static final String INSERT_TRIP_SENDING_QUEUE = TRIP_WEBSERVICE_PATH + "insertTripSendingQueue";
     public static final String ACTIVATE = TRIP_WEBSERVICE_PATH + "activate";

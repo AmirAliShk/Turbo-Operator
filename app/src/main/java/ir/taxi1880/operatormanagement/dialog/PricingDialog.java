@@ -170,7 +170,7 @@ public class PricingDialog {
                     String message = obj.getString("message");
                     if (success) {
                         JSONObject dataObj = obj.getJSONObject("data");
-                        txtPrice.setText(dataObj.getInt("finalPrice") + "");
+                        txtPrice.setText(dataObj.getInt("tripPrice") + "");
                         llPrice.setVisibility(View.VISIBLE);
                     }
 
@@ -178,6 +178,7 @@ public class PricingDialog {
                     e.printStackTrace();
                     if (vfLoader != null) {
                         vfLoader.setDisplayedChild(0);
+                        llPrice.setVisibility(View.GONE);
                     }
                 }
             });
@@ -189,6 +190,7 @@ public class PricingDialog {
             MyApplication.handler.post(() -> {
                 if (vfLoader != null) {
                     vfLoader.setDisplayedChild(0);
+                    llPrice.setVisibility(View.GONE);
                 }
             });
         }

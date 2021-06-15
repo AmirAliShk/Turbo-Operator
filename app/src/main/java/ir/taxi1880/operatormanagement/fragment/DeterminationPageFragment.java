@@ -42,6 +42,7 @@ import ir.taxi1880.operatormanagement.dialog.EditPassengerAddressDialog;
 import ir.taxi1880.operatormanagement.dialog.GeneralDialog;
 import ir.taxi1880.operatormanagement.dialog.LoadingDialog;
 import ir.taxi1880.operatormanagement.dialog.PlayLastConversationDialog;
+import ir.taxi1880.operatormanagement.dialog.SearchStationInfoDialog;
 import ir.taxi1880.operatormanagement.dialog.StationInfoDialog;
 import ir.taxi1880.operatormanagement.helper.DateHelper;
 import ir.taxi1880.operatormanagement.helper.KeyBoardHelper;
@@ -66,6 +67,7 @@ public class DeterminationPageFragment extends Fragment {
     boolean isDestinationZero = false;
     boolean bothStationAreZero = false;
     Timer timer;
+    DBTripModel tripModel;
 
     @OnClick(R.id.imgBack)
     void onBack() {
@@ -114,14 +116,14 @@ public class DeterminationPageFragment extends Fragment {
                 dataBase.updateOriginStation(dataBase.getTopAddress().getId(), Integer.parseInt(station));
             } else if (isOriginZero) {
                 dataBase.updateOriginStation(dataBase.getTopAddress().getId(), Integer.parseInt(station));
-                Log.i(LOG, "onSubmit1: "+dataBase.getTopAddress().getOriginStation() + "/:"+ dataBase.getTopAddress().getDestinationStation() + "/:"+ dataBase.getTopAddress().getId() );
+                Log.i(LOG, "onSubmit1: " + dataBase.getTopAddress().getOriginStation() + "/:" + dataBase.getTopAddress().getDestinationStation() + "/:" + dataBase.getTopAddress().getId());
                 setStationCode(dataBase.getTopAddress().getOriginStation() + "", dataBase.getTopAddress().getDestinationStation() + "");
             } else if (isDestinationZero) {
-                Log.i(LOG, "onSubmit:2 origin:"+txtAddress.getText());
-                Log.i(LOG, "onSubmit:2 DB: origin"+dataBase.getTopAddress().getOriginText()+" DEst:"+dataBase.getTopAddress().getDestination());
-                    dataBase.updateDestinationStation(dataBase.getTopAddress().getId(), Integer.parseInt(station));
-                    Log.i(LOG, "onSubmit:2 "+dataBase.getTopAddress().getOriginStation() + "/: "+ dataBase.getTopAddress().getDestinationStation() + "/:"+ dataBase.getTopAddress().getId()+""+isOriginZero);
-                    setStationCode(dataBase.getTopAddress().getOriginStation() + "", dataBase.getTopAddress().getDestinationStation() + "");
+                Log.i(LOG, "onSubmit:2 origin:" + txtAddress.getText());
+                Log.i(LOG, "onSubmit:2 DB: origin" + dataBase.getTopAddress().getOriginText() + " DEst:" + dataBase.getTopAddress().getDestination());
+                dataBase.updateDestinationStation(dataBase.getTopAddress().getId(), Integer.parseInt(station));
+                Log.i(LOG, "onSubmit:2 " + dataBase.getTopAddress().getOriginStation() + "/: " + dataBase.getTopAddress().getDestinationStation() + "/:" + dataBase.getTopAddress().getId() + "" + isOriginZero);
+                setStationCode(dataBase.getTopAddress().getOriginStation() + "", dataBase.getTopAddress().getDestinationStation() + "");
             }
             txtStation.setText("");
             txtAddress.setText(showAddress());
@@ -131,14 +133,20 @@ public class DeterminationPageFragment extends Fragment {
         }
     }
 
-    @OnClick(R.id.imgHelp)
-    void onHelp() {
-        String origin = txtStation.getText().toString();
-        if (origin.isEmpty()) {
-            MyApplication.Toast("لطفا شماره ایستگاه را وارد کنید", Toast.LENGTH_SHORT);
-            return;
+    @OnClick(R.id.imgSearch)
+    void onSearch() {
+        if (dataBase.getRemainingAddress() == 0) {
+            new SearchStationInfoDialog().show(0);
+        } else {
+            new SearchStationInfoDialog().show(dataBase.getTopAddress().getCity());
         }
-        getStationInfo(origin);
+
+//        String origin = txtStation.getText().toString();
+//        if (origin.isEmpty()) {
+//            MyApplication.Toast("لطفا شماره ایستگاه را وارد کنید", Toast.LENGTH_SHORT);
+//            return;
+//        }
+//        getStationInfo(origin);
     }
 
     @OnClick(R.id.imgSetMistake)
@@ -345,7 +353,7 @@ public class DeterminationPageFragment extends Fragment {
                             for (int i = 0; i < dataArr.length(); i++) {
                                 try {
                                     JSONObject dataObj = dataArr.getJSONObject(i);
-                                    DBTripModel tripModel = new DBTripModel();
+                                    tripModel = new DBTripModel();
                                     tripModel.setId(dataObj.getInt("Id")); // the unique id for each trip
                                     tripModel.setPriceable(dataObj.getInt("priceable")); // if this value was 0, no need to set destination.
                                     String content = dataObj.getString("Content");
@@ -490,8 +498,8 @@ public class DeterminationPageFragment extends Fragment {
         if (dataBase.getRemainingAddress() > 0)
             dataBase.deleteRow(dataBase.getTopAddress().getId());
 
-            txtAddress.setText(showAddress());
-            txtStation.setText("");
+        txtAddress.setText(showAddress());
+        txtStation.setText("");
     }
 
     RequestHelper.Callback setStationCode = new RequestHelper.Callback() {
@@ -507,8 +515,8 @@ public class DeterminationPageFragment extends Fragment {
 
 //                    boolean success = obj.getBoolean("success");
 //                    String message = obj.getString("message");
-                        if(dataBase.getRemainingAddress()<1)
-                            getAddressList();
+                    if (dataBase.getRemainingAddress() < 1)
+                        getAddressList();
 
                 } catch (Exception e) {
                     e.printStackTrace();
@@ -679,13 +687,13 @@ public class DeterminationPageFragment extends Fragment {
 
                 if (dataBase.getTopAddress().getOriginStation() == 0) {
                     isOriginZero = true;
-                    Log.i(LOG, "showAddress: isOriginZero "+ dataBase.getTopAddress().getOriginText());
+                    Log.i(LOG, "showAddress: isOriginZero " + dataBase.getTopAddress().getOriginText());
                     return cityName + " , " + dataBase.getTopAddress().getOriginText();
                 }
 
                 if (dataBase.getTopAddress().getDestinationStation() == 0 && dataBase.getTopAddress().getPriceable() == 1) {
                     isDestinationZero = true;
-                    Log.i(LOG, "showAddress: isDestinationZero "+ dataBase.getTopAddress().getDestination());
+                    Log.i(LOG, "showAddress: isDestinationZero " + dataBase.getTopAddress().getDestination());
                     return cityName + " , " + dataBase.getTopAddress().getDestination();
                 }
 
@@ -711,8 +719,8 @@ public class DeterminationPageFragment extends Fragment {
             timer.scheduleAtFixedRate(new TimerTask() {
                 @Override
                 public void run() {
-                    if(dataBase.getRemainingAddress()<1)
-                      getAddressList();
+                    if (dataBase.getRemainingAddress() < 1)
+                        getAddressList();
                 }
             }, 0, 10000);
         } catch (Exception e) {

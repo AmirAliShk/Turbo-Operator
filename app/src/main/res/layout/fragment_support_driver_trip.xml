@@ -219,6 +219,7 @@
                     android:layout_weight="1"
                     android:background="@drawable/bg_button_gray_edge"
                     android:padding="@dimen/_5sdp"
+                    android:visibility="gone"
                     android:src="@drawable/ic_change" />
 
                 <LinearLayout

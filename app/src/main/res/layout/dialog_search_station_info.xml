@@ -68,11 +68,35 @@
                     android:layout_weight="1"
                     android:background="@color/transparent"
                     android:gravity="right|center_vertical"
-                    android:hint="کد ایستگاه"
-                    android:inputType="number"
                     android:padding="10dp"
                     android:singleLine="true"
                     android:textColorHint="@color/grayMedium" />
+
+                <RelativeLayout
+                    android:id="@+id/rlSearchType"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="0.7"
+                    android:gravity="center"
+                    android:orientation="vertical"
+                    android:padding="3dp">
+
+                    <Spinner
+                        android:id="@+id/spSearchType"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:background="@drawable/edit_text_style"
+                        android:dropDownWidth="match_parent"
+                        android:gravity="center"
+                        android:padding="8dp" />
+
+                    <ImageView
+                        android:layout_width="20dp"
+                        android:layout_height="match_parent"
+                        android:layout_alignParentLeft="true"
+                        android:src="@drawable/ic_drop_down" />
+
+                </RelativeLayout>
 
             </LinearLayout>
 
@@ -178,8 +202,8 @@
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:divider="@null"
-                        android:scrollbars="none"
                         android:listSelector="@color/transparent"
+                        android:scrollbars="none"
                         tools:listitem="@layout/item_station_info" />
 
                 </LinearLayout>

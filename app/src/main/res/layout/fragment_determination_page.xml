@@ -54,15 +54,15 @@
             android:id="@+id/txtRemainingAddress"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
+            android:layout_toStartOf="@id/imgBack"
+            android:layout_toLeftOf="@id/llStatus"
+            android:layout_toEndOf="@id/llStatus"
+            android:layout_toRightOf="@id/imgBack"
             android:gravity="center"
             android:padding="10dp"
             android:textColor="@color/colorWhite"
             android:textSize="@dimen/_16ssp"
-            android:textStyle="bold"
-            android:layout_toRightOf="@id/imgBack"
-            android:layout_toLeftOf="@id/llStatus"
-            android:layout_toEndOf="@id/llStatus"
-            android:layout_toStartOf="@id/imgBack"/>
+            android:textStyle="bold" />
 
         <ImageView
             android:id="@+id/imgBack"
@@ -98,18 +98,18 @@
             android:layout_width="match_parent"
             android:layout_height="0sp"
             android:layout_weight="1"
-            android:paddingLeft="5dp"
-            android:paddingRight="5dp"
             android:gravity="center"
-            android:orientation="horizontal">
+            android:orientation="horizontal"
+            android:paddingLeft="5dp"
+            android:paddingRight="5dp">
 
             <TextView
                 android:id="@+id/txtAddress"
                 android:layout_width="wrap_content"
-                android:layout_weight="1"
                 android:layout_height="wrap_content"
-                android:gravity="center"
                 android:layout_margin="3dp"
+                android:layout_weight="1"
+                android:gravity="center"
                 android:padding="10dp"
                 android:textColor="@color/colorBlack"
                 android:textSize="@dimen/_16ssp" />
@@ -183,12 +183,12 @@
                 android:elevation="5dp">
 
                 <ImageView
-                    android:id="@+id/imgHelp"
+                    android:id="@+id/imgSearch"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:padding="15dp"
                     android:background="@drawable/bg_menu_item"
-                    android:src="@drawable/ic_info"
+                    android:padding="15dp"
+                    android:src="@drawable/ic_search"
                     android:text="help" />
 
                 <com.wang.avi.AVLoadingIndicatorView
@@ -223,47 +223,47 @@
             <View
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
-                android:layout_weight="1"/>
+                android:layout_weight="1" />
 
             <ImageView
                 android:id="@+id/imgEdit"
                 android:layout_width="65dp"
                 android:layout_height="60dp"
                 android:layout_margin="5dp"
-                android:visibility="visible"
                 android:background="@drawable/bg_menu_item"
                 android:elevation="5dp"
                 android:padding="10dp"
                 android:src="@drawable/ic_edit"
+                android:visibility="visible"
                 app:tint="@color/colorPrimaryDark" />
 
             <ImageView
                 android:id="@+id/imgNextAddress"
                 android:layout_width="65dp"
                 android:layout_height="60dp"
-                android:visibility="gone"
                 android:layout_margin="5dp"
                 android:background="@drawable/bg_white_edge"
                 android:elevation="5dp"
                 android:padding="8dp"
                 android:src="@drawable/ic_baseline_navigate_next_24"
-                android:text="del" />
+                android:text="del"
+                android:visibility="gone" />
 
             <View
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
-                android:layout_weight="1"/>
+                android:layout_weight="1" />
 
             <ImageView
                 android:id="@+id/imgPlayVoice"
                 android:layout_width="65dp"
                 android:layout_height="60dp"
                 android:layout_margin="5dp"
-                android:visibility="visible"
                 android:background="@drawable/bg_menu_item"
                 android:elevation="5dp"
                 android:padding="15dp"
                 android:src="@drawable/ic_play"
+                android:visibility="visible"
                 app:tint="@color/colorPrimaryDark" />
 
         </LinearLayout>

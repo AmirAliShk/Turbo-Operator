@@ -77,7 +77,7 @@ public class PendingMistakesOptionsDialog {
 
     @OnClick(R.id.llStationGuide)
     void onStationInfo() {
-        new SearchStationInfoDialog().show();
+        new SearchStationInfoDialog().show(0);
         dismiss();
     }
 

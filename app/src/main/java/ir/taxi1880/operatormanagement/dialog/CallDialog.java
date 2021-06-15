@@ -4,7 +4,6 @@ import android.app.Dialog;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.util.Log;
-import android.view.Gravity;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
@@ -15,16 +14,11 @@ import android.widget.ViewFlipper;
 
 import com.downloader.PRDownloader;
 
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
 import org.linphone.core.Address;
 import org.linphone.core.Call;
 import org.linphone.core.CallParams;
 import org.linphone.core.Core;
 import org.linphone.core.CoreListenerStub;
-
-import java.util.ArrayList;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -32,13 +26,9 @@ import butterknife.OnClick;
 import butterknife.Optional;
 import butterknife.Unbinder;
 import ir.taxi1880.operatormanagement.R;
-import ir.taxi1880.operatormanagement.app.EndPoints;
 import ir.taxi1880.operatormanagement.app.MyApplication;
 import ir.taxi1880.operatormanagement.helper.KeyBoardHelper;
-import ir.taxi1880.operatormanagement.helper.StringHelper;
 import ir.taxi1880.operatormanagement.helper.TypefaceUtil;
-import ir.taxi1880.operatormanagement.model.StationInfoModel;
-import ir.taxi1880.operatormanagement.okHttp.RequestHelper;
 import ir.taxi1880.operatormanagement.push.AvaCrashReporter;
 import ir.taxi1880.operatormanagement.services.LinphoneService;
 
@@ -108,7 +98,7 @@ public class CallDialog {
 
     @OnClick(R.id.llStationGuide)
     void onStationInfo() {
-        new SearchStationInfoDialog().show();
+        new SearchStationInfoDialog().show(0);
         dismiss();
     }
 
