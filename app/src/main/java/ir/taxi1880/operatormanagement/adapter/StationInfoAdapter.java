@@ -19,74 +19,87 @@ import ir.taxi1880.operatormanagement.push.AvaCrashReporter;
 
 public class StationInfoAdapter extends BaseAdapter {
 
-  private ArrayList<StationInfoModel> stationInfoModels;
-  private LayoutInflater layoutInflater;
+    private ArrayList<StationInfoModel> stationInfoModels;
+    private LayoutInflater layoutInflater;
 
-  public StationInfoAdapter(ArrayList<StationInfoModel> stationInfoModels, Context context) {
-    this.stationInfoModels = stationInfoModels;
-    this.layoutInflater = LayoutInflater.from(context);
-  }
-
-  @Override
-  public int getCount() {
-    return stationInfoModels.size();
-  }
-
-  @Override
-  public Object getItem(int position) {
-    return stationInfoModels.get(position);
-  }
-
-  @Override
-  public long getItemId(int position) {
-    return position;
-  }
-
-  @Override
-  public View getView(int position, View convertView, ViewGroup parent) {
-    View myView = convertView;
-
-    try {
-      final StationInfoModel stationInfoModel = stationInfoModels.get(position);
-      if (myView == null) {
-        myView = layoutInflater.inflate(R.layout.item_station_info, null);
-        TypefaceUtil.overrideFonts(myView, MyApplication.IraSanSMedume);
-      }
-
-      TextView txtStreet = myView.findViewById(R.id.txtStreet);
-      TextView txtEven = myView.findViewById(R.id.txtEven);
-      TextView txtOdd = myView.findViewById(R.id.txtOdd);
-      LinearLayout llEven = myView.findViewById(R.id.llEven);
-      LinearLayout llOdd = myView.findViewById(R.id.llOdd);
-      LinearLayout llStreet = myView.findViewById(R.id.llStreet);
-
-      txtStreet.setText(stationInfoModel.getStreet());
-      txtEven.setText(StringHelper.toPersianDigits(stationInfoModel.getEven()));
-      txtOdd.setText(StringHelper.toPersianDigits(stationInfoModel.getOdd()));
-
-      if (stationInfoModel.getOdd().equals("")){
-        llOdd.setVisibility(View.GONE);
-      }else {
-        llOdd.setVisibility(View.VISIBLE);
-      }
-
-      if (stationInfoModel.getStreet().equals("")){
-        llStreet.setVisibility(View.GONE);
-      }else {
-        llStreet.setVisibility(View.VISIBLE);
-      }
-
-      if (stationInfoModel.getEven().equals("")){
-        llEven.setVisibility(View.GONE);
-      }else {
-        llEven.setVisibility(View.VISIBLE);
-      }
-
-    } catch (Exception e) {
-      e.printStackTrace();
-      AvaCrashReporter.send(e,"StationInfoAdapter class,getView method");
+    public StationInfoAdapter(ArrayList<StationInfoModel> stationInfoModels, Context context) {
+        this.stationInfoModels = stationInfoModels;
+        this.layoutInflater = LayoutInflater.from(context);
     }
 
-    return myView;
-  }
+    @Override
+    public int getCount() {
+        return stationInfoModels.size();
+    }
+
+    @Override
+    public Object getItem(int position) {
+        return stationInfoModels.get(position);
+    }
+
+    @Override
+    public long getItemId(int position) {
+        return position;
+    }
+
+    @Override
+    public View getView(int position, View convertView, ViewGroup parent) {
+        View myView = convertView;
+
+        try {
+            final StationInfoModel stationInfoModel = stationInfoModels.get(position);
+            if (myView == null) {
+                myView = layoutInflater.inflate(R.layout.item_station_info, null);
+                TypefaceUtil.overrideFonts(myView, MyApplication.IraSanSMedume);
+            }
+
+            TextView txtStreet = myView.findViewById(R.id.txtStreet);
+            TextView txtEven = myView.findViewById(R.id.txtEven);
+            TextView txtOdd = myView.findViewById(R.id.txtOdd);
+            TextView txtStationCode = myView.findViewById(R.id.txtStationCode);
+            LinearLayout llEven = myView.findViewById(R.id.llEven);
+            LinearLayout llOdd = myView.findViewById(R.id.llOdd);
+            LinearLayout llStreet = myView.findViewById(R.id.llStreet);
+            LinearLayout llStationCode = myView.findViewById(R.id.llStationCode);
+
+            txtStreet.setText(stationInfoModel.getStreet());
+            txtEven.setText(StringHelper.toPersianDigits(stationInfoModel.getEven()));
+            txtOdd.setText(StringHelper.toPersianDigits(stationInfoModel.getOdd()));
+            txtStationCode.setText(StringHelper.toPersianDigits(stationInfoModel.getStcode() + ""));
+
+            if (stationInfoModel.getOdd().equals("")) {
+                llOdd.setVisibility(View.GONE);
+            } else {
+                llOdd.setVisibility(View.VISIBLE);
+            }
+
+            if (String.valueOf(stationInfoModel.getStcode()).equals("")) {
+                llStationCode.setVisibility(View.GONE);
+            } else {
+                llStationCode.setVisibility(View.VISIBLE);
+            }
+
+            if (stationInfoModel.getStreet().equals("")) {
+                llStreet.setVisibility(View.GONE);
+            } else {
+                llStreet.setVisibility(View.VISIBLE);
+            }
+
+            if (stationInfoModel.getEven().equals("")) {
+                llEven.setVisibility(View.GONE);
+            } else {
+                llEven.setVisibility(View.VISIBLE);
+            }
+
+            if (stationInfoModel.getAddressOrNot().equals("stationCode")){
+                llStationCode.setVisibility(View.GONE);
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            AvaCrashReporter.send(e, "StationInfoAdapter class,getView method");
+        }
+
+        return myView;
+    }
 }

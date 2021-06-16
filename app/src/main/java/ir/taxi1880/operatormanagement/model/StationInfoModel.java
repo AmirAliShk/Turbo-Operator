@@ -2,67 +2,77 @@ package ir.taxi1880.operatormanagement.model;
 
 public class StationInfoModel {
 
-  private String street;
-  private String odd;
-  private String even;
-  private String stationName;
-  private int cityCode;
-  private int countrySide;
-  private int stcode;
+    private String street;
+    private String odd;
+    private String even;
+    private String stationName;
+    private int cityCode;
+    private int countrySide;
+    private int stcode;
 
-  public String getStreet() {
-    return street;
-  }
+    String addressOrNot;
 
-  public void setStreet(String street) {
-    this.street = street;
-  }
+    public String getAddressOrNot() {
+        return addressOrNot;
+    }
 
-  public String getOdd() {
-    return odd;
-  }
+    public void setAddressOrNot(String addressOrNot) {
+        this.addressOrNot = addressOrNot;
+    }
 
-  public void setOdd(String odd) {
-    this.odd = odd;
-  }
+    public String getStreet() {
+        return street;
+    }
 
-  public String getEven() {
-    return even;
-  }
+    public void setStreet(String street) {
+        this.street = street;
+    }
 
-  public void setEven(String even) {
-    this.even = even;
-  }
+    public String getOdd() {
+        return odd;
+    }
 
-  public String getStationName() {
-    return stationName;
-  }
+    public void setOdd(String odd) {
+        this.odd = odd;
+    }
 
-  public void setStationName(String stationName) {
-    this.stationName = stationName;
-  }
+    public String getEven() {
+        return even;
+    }
 
-  public int getCityCode() {
-    return cityCode;
-  }
+    public void setEven(String even) {
+        this.even = even;
+    }
 
-  public void setCityCode(int cityCode) {
-    this.cityCode = cityCode;
-  }
+    public String getStationName() {
+        return stationName;
+    }
 
-  public int getCountrySide() {
-    return countrySide;
-  }
+    public void setStationName(String stationName) {
+        this.stationName = stationName;
+    }
 
-  public void setCountrySide(int countrySide) {
-    this.countrySide = countrySide;
-  }
+    public int getCityCode() {
+        return cityCode;
+    }
 
-  public int getStcode() {
-    return stcode;
-  }
+    public void setCityCode(int cityCode) {
+        this.cityCode = cityCode;
+    }
 
-  public void setStcode(int stcode) {
-    this.stcode = stcode;
-  }
+    public int getCountrySide() {
+        return countrySide;
+    }
+
+    public void setCountrySide(int countrySide) {
+        this.countrySide = countrySide;
+    }
+
+    public int getStcode() {
+        return stcode;
+    }
+
+    public void setStcode(int stcode) {
+        this.stcode = stcode;
+    }
 }

@@ -76,7 +76,7 @@
                     android:id="@+id/rlSearchType"
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
-                    android:layout_weight="0.7"
+                    android:layout_weight="1"
                     android:gravity="center"
                     android:orientation="vertical"
                     android:padding="3dp">
@@ -110,7 +110,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:gravity="center"
-                    android:text="لطفا کد ایستگاه را وارد کنید"
+                    android:text="لطفا نام یا کد ایستگاه را وارد کنید."
                     android:textAppearance="?android:attr/textAppearanceSmall"
                     android:textColor="@color/colorBlack" />
 
@@ -121,79 +121,88 @@
                     app:indicatorColor="@color/colorPrimaryDark" />
 
                 <LinearLayout
+
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:orientation="vertical">
 
                     <LinearLayout
+                        android:id="@+id/llStationHeader"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:orientation="horizontal"
-                        android:paddingTop="@dimen/_10sdp"
-                        android:paddingRight="@dimen/_10sdp">
+                        android:orientation="vertical">
 
-                        <TextView
-                            style="@style/tripItemTitle"
-                            android:layout_width="wrap_content"
+                        <LinearLayout
+                            android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:minWidth="60dp"
-                            android:text="@string/stationName" />
+                            android:orientation="horizontal"
+                            android:paddingTop="@dimen/_10sdp"
+                            android:paddingRight="@dimen/_10sdp">
 
-                        <TextView
-                            android:id="@+id/txtStationName"
-                            style="@style/tripItemValue"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content" />
+                            <TextView
+                                style="@style/tripItemTitle"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:minWidth="60dp"
+                                android:text="@string/stationName" />
 
-                    </LinearLayout>
+                            <TextView
+                                android:id="@+id/txtStationName"
+                                style="@style/tripItemValue"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content" />
 
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:orientation="horizontal"
-                        android:padding="@dimen/_10sdp">
+                        </LinearLayout>
 
-                        <TextView
-                            style="@style/tripItemTitle"
-                            android:layout_width="wrap_content"
+                        <LinearLayout
+                            android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:minWidth="60dp"
-                            android:text="@string/stationCode" />
+                            android:orientation="horizontal"
+                            android:padding="@dimen/_10sdp">
 
-                        <TextView
-                            android:id="@+id/txtStationCode"
-                            style="@style/tripItemValue"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content" />
+                            <TextView
+                                style="@style/tripItemTitle"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:minWidth="60dp"
+                                android:text="@string/stationCode" />
 
-                    </LinearLayout>
+                            <TextView
+                                android:id="@+id/txtStationCode"
+                                style="@style/tripItemValue"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content" />
 
-                    <LinearLayout
-                        android:id="@+id/llSuburbs"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginLeft="@dimen/_10sdp"
-                        android:layout_marginRight="@dimen/_10sdp"
-                        android:layout_marginBottom="@dimen/_10sdp"
-                        android:background="@drawable/bg_warning"
-                        android:gravity="center"
-                        android:orientation="horizontal"
-                        android:padding="@dimen/_5sdp"
-                        android:visibility="gone">
+                        </LinearLayout>
 
-                        <ImageView
-                            android:layout_width="@dimen/_15sdp"
-                            android:layout_height="@dimen/_15sdp"
+                        <LinearLayout
+                            android:id="@+id/llSuburbs"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
                             android:layout_marginLeft="@dimen/_10sdp"
-                            android:src="@drawable/ic_error" />
+                            android:layout_marginRight="@dimen/_10sdp"
+                            android:layout_marginBottom="@dimen/_10sdp"
+                            android:background="@drawable/bg_warning"
+                            android:gravity="center"
+                            android:orientation="horizontal"
+                            android:padding="@dimen/_5sdp"
+                            android:visibility="gone">
 
-                        <TextView
-                            android:id="@+id/txtSuburbs"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="ایستگاه واقع در حومه شهر است"
-                            android:textAppearance="?android:attr/textAppearanceMedium"
-                            android:textColor="@color/colorRed" />
+                            <ImageView
+                                android:layout_width="@dimen/_15sdp"
+                                android:layout_height="@dimen/_15sdp"
+                                android:layout_marginLeft="@dimen/_10sdp"
+                                android:src="@drawable/ic_error" />
+
+                            <TextView
+                                android:id="@+id/txtSuburbs"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="ایستگاه واقع در حومه شهر است"
+                                android:textAppearance="?android:attr/textAppearanceMedium"
+                                android:textColor="@color/colorRed" />
+
+                        </LinearLayout>
 
                     </LinearLayout>
 

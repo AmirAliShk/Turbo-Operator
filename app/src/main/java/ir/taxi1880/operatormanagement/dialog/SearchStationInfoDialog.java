@@ -7,6 +7,7 @@ import android.view.Gravity;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
+import android.view.inputmethod.EditorInfo;
 import android.widget.AdapterView;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -48,6 +49,7 @@ public class SearchStationInfoDialog {
     EditText edtStationCode;
     LinearLayout llSuburbs;
     LinearLayout llSearchStation;
+    LinearLayout llStationHeader;
     ViewFlipper vfStationInfo;
     ImageView imgClear;
     ImageView imgSearch;
@@ -87,6 +89,7 @@ public class SearchStationInfoDialog {
         vfStationInfo = dialog.findViewById(R.id.vfStationInfo);
         spSearchType = dialog.findViewById(R.id.spSearchType);
         rlSearchType = dialog.findViewById(R.id.rlSearchType);
+        llStationHeader = dialog.findViewById(R.id.llStationHeader);
 
         imgSearch.setOnClickListener(view -> {
             String origin = edtStationCode.getText().toString();
@@ -94,7 +97,16 @@ public class SearchStationInfoDialog {
                 MyApplication.Toast("لطفا آدرس یا شماره ایستگاه را وارد کنید.", Toast.LENGTH_SHORT);
                 return;
             }
-            getStationInfo();
+            if (spSearchType.getSelectedItemPosition() == 0) {
+                stationCode = StringHelper.toEnglishDigits(edtStationCode.getText().toString());
+                address = "0";
+            } else if (spSearchType.getSelectedItemPosition() == 1) {
+                stationCode = "0";
+                address = edtStationCode.getText().toString() + "";
+            }
+
+            getStationInfo(city, stationCode, address);
+            KeyBoardHelper.hideKeyboard();
         });
 
         imgClear.setOnClickListener(view -> {
@@ -107,6 +119,28 @@ public class SearchStationInfoDialog {
 
         rlSearchType.setOnClickListener(view -> {
             spSearchType.performClick();
+        });
+
+        edtStationCode.setOnEditorActionListener((v, actionId, event) -> {
+            if (actionId == EditorInfo.IME_ACTION_DONE) {
+                String origin = edtStationCode.getText().toString();
+                if (origin.isEmpty()) {
+                    MyApplication.Toast("لطفا نام یا شماره ایستگاه را وارد کنید.", Toast.LENGTH_SHORT);
+                    return false;
+                }
+                if (spSearchType.getSelectedItemPosition() == 0) {
+                    stationCode = StringHelper.toEnglishDigits(edtStationCode.getText().toString());
+                    address = "0";
+                } else if (spSearchType.getSelectedItemPosition() == 1) {
+                    stationCode = "0";
+                    address = edtStationCode.getText().toString() + "";
+                }
+
+                getStationInfo(city, stationCode, address);
+
+                return true;
+            }
+            return false;
         });
 
         initWaitingTimeSpinner();
@@ -127,12 +161,8 @@ public class SearchStationInfoDialog {
             spSearchType.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
                 @Override
                 public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                    if (position == 0) {
-                        stationCode = StringHelper.toEnglishDigits(edtStationCode.getText().toString());
-                        address = "0";
-                    } else if (position == 1) {
-                        stationCode = "0";
-                        address = edtStationCode.getText().toString();
+                    if (spSearchType.getSelectedItemPosition() == 0 || spSearchType.getSelectedItemPosition() == 1) {
+                        edtStationCode.setText("");
                     }
                 }
 
@@ -145,11 +175,14 @@ public class SearchStationInfoDialog {
         }
     }
 
-    private void getStationInfo() {
+    private void getStationInfo(int city, String stationCode, String address) {
         if (vfStationInfo != null)
             vfStationInfo.setDisplayedChild(1);
-        RequestHelper.builder(EndPoints.STATION_INFO + "/" + city + "/" + stationCode + "/" + address)
+        RequestHelper.builder(EndPoints.STATION_INFO)
 //                .addPath(StringHelper.toEnglishDigits(stationCode) + "")
+                .addPath(city + "")
+                .addPath(stationCode + "")
+                .addPath(address + "")
                 .listener(getStationInfo)
                 .get();
     }
@@ -189,6 +222,14 @@ public class SearchStationInfoDialog {
                             txtStationCode.setText(StringHelper.toPersianDigits(dataObj.getString("stcode") + ""));
 
                             if (stationInfoModel.getStreet().isEmpty()) continue;
+
+                            if (stationCode.equals("0")) {
+                                llStationHeader.setVisibility(View.GONE);
+                                stationInfoModel.setAddressOrNot("address");
+                            } else {
+                                llStationHeader.setVisibility(View.VISIBLE);
+                                stationInfoModel.setAddressOrNot("stationCode");
+                            }
 
                             stationInfoModels.add(stationInfoModel);
                         }
