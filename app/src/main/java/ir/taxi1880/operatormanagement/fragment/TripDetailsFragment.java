@@ -8,12 +8,18 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 import android.widget.ViewFlipper;
 
 import org.json.JSONException;
 import org.json.JSONObject;
+import org.linphone.core.Address;
+import org.linphone.core.Call;
+import org.linphone.core.Core;
+import org.linphone.core.CoreListenerStub;
 
 import androidx.appcompat.content.res.AppCompatResources;
 import androidx.core.graphics.drawable.DrawableCompat;
@@ -24,8 +30,10 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import butterknife.Unbinder;
 import ir.taxi1880.operatormanagement.R;
+import ir.taxi1880.operatormanagement.activity.TripRegisterActivity;
 import ir.taxi1880.operatormanagement.app.EndPoints;
 import ir.taxi1880.operatormanagement.app.MyApplication;
+import ir.taxi1880.operatormanagement.dialog.CallDialog;
 import ir.taxi1880.operatormanagement.dialog.ComplaintRegistrationDialog;
 import ir.taxi1880.operatormanagement.dialog.DriverLockDialog;
 import ir.taxi1880.operatormanagement.dialog.ErrorAddressDialog;
@@ -35,10 +43,13 @@ import ir.taxi1880.operatormanagement.dialog.LoadingDialog;
 import ir.taxi1880.operatormanagement.dialog.LostDialog;
 import ir.taxi1880.operatormanagement.helper.DateHelper;
 import ir.taxi1880.operatormanagement.helper.FragmentHelper;
+import ir.taxi1880.operatormanagement.helper.KeyBoardHelper;
+import ir.taxi1880.operatormanagement.helper.PhoneNumberValidation;
 import ir.taxi1880.operatormanagement.helper.StringHelper;
 import ir.taxi1880.operatormanagement.helper.TypefaceUtil;
 import ir.taxi1880.operatormanagement.okHttp.RequestHelper;
 import ir.taxi1880.operatormanagement.push.AvaCrashReporter;
+import ir.taxi1880.operatormanagement.services.LinphoneService;
 
 import static ir.taxi1880.operatormanagement.app.MyApplication.context;
 
@@ -192,6 +203,9 @@ public class TripDetailsFragment extends Fragment {
     @BindView(R.id.btnDriverLocation)
     Button btnDriverLocation;
 
+    @BindView(R.id.imgEndCall)
+    ImageView imgEndCall;
+
     @OnClick(R.id.btnDisposal)
     void onDisposal() {
         new GeneralDialog()
@@ -282,6 +296,53 @@ public class TripDetailsFragment extends Fragment {
 //                .secondButton("خیر ", null)
 //                .show();
 //    }
+
+    @OnClick(R.id.rlEndCall)
+    void onPressEndCall() {
+
+        KeyBoardHelper.hideKeyboard();
+        if (MyApplication.prefManager.getConnectedCall()) {
+            new CallDialog().show(new CallDialog.CallBack() {
+                @Override
+                public void onDismiss() {
+                }
+
+                @Override
+                public void onCallReceived() {
+                }
+
+                @Override
+                public void onCallTransferred() {
+                }
+
+                @Override
+                public void onCallEnded() {
+                    if (imgEndCall != null)
+                        imgEndCall.setBackgroundResource(0);
+                }
+            }, true);
+        } else {
+            new CallDialog().show(new CallDialog.CallBack() {
+                @Override
+                public void onDismiss() {
+                }
+
+                @Override
+                public void onCallReceived() {
+                }
+
+                @Override
+                public void onCallTransferred() {
+                }
+
+                @Override
+                public void onCallEnded() {
+                }
+            }, false);
+        }
+//    Call call = LinphoneService.getCore().getCurrentCall();
+//    call.terminate();
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {

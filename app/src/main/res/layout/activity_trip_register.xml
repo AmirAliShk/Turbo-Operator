@@ -161,7 +161,6 @@
             android:src="@drawable/ic_quality_0"
             android:visibility="invisible" />
 
-
         <LinearLayout
             android:id="@+id/llEndCall"
             android:layout_width="80dp"
