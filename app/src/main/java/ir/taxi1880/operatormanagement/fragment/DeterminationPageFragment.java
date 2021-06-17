@@ -3,11 +3,11 @@ package ir.taxi1880.operatormanagement.fragment;
 import android.annotation.SuppressLint;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.os.Handler;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.WindowManager;
 import android.view.animation.AnimationUtils;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -19,8 +19,6 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.util.ArrayList;
-import java.util.Date;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -32,7 +30,6 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import butterknife.Unbinder;
 import ir.taxi1880.operatormanagement.R;
-import ir.taxi1880.operatormanagement.adapter.StationInfoAdapter;
 import ir.taxi1880.operatormanagement.app.EndPoints;
 import ir.taxi1880.operatormanagement.app.MyApplication;
 import ir.taxi1880.operatormanagement.customView.PinEntryEditText;
@@ -48,13 +45,12 @@ import ir.taxi1880.operatormanagement.helper.DateHelper;
 import ir.taxi1880.operatormanagement.helper.KeyBoardHelper;
 import ir.taxi1880.operatormanagement.helper.StringHelper;
 import ir.taxi1880.operatormanagement.helper.TypefaceUtil;
-import ir.taxi1880.operatormanagement.model.StationInfoModel;
 import ir.taxi1880.operatormanagement.okHttp.RequestHelper;
 
 public class DeterminationPageFragment extends Fragment {
     String TAG = DeterminationPageFragment.class.getSimpleName();
     String LOG = "STATION_REGISTER --> ";
-
+    boolean doubleBackPressedOnce = false;
     Unbinder unbinder;
     boolean pressedRefresh = false;
     boolean isEnable = false;
@@ -68,6 +64,7 @@ public class DeterminationPageFragment extends Fragment {
     boolean bothStationAreZero = false;
     Timer timer;
     DBTripModel tripModel;
+    String address = "";
 
     @OnClick(R.id.imgBack)
     void onBack() {
@@ -91,6 +88,15 @@ public class DeterminationPageFragment extends Fragment {
 
     @BindView(R.id.txtRemainingAddress)
     TextView txtRemainingAddress;
+
+    @BindView(R.id.btnActivate)
+    Button btnActivate;
+
+    @BindView(R.id.btnDeActivate)
+    Button btnDeActivate;
+
+    @BindView(R.id.imgNextAddress)
+    ImageView imgNextAddress;
 
     @OnClick(R.id.imgDelete)
     void onDelete() {
@@ -136,9 +142,10 @@ public class DeterminationPageFragment extends Fragment {
     @OnClick(R.id.imgSearch)
     void onSearch() {
         if (dataBase.getRemainingAddress() == 0) {
-            new SearchStationInfoDialog().show(0);
+            new SearchStationInfoDialog().show(0, "");
         } else {
-            new SearchStationInfoDialog().show(dataBase.getTopAddress().getCity());
+            new SearchStationInfoDialog().show(dataBase.getTopAddress().getCity(), address);
+            address = "";
         }
 
 //        String origin = txtStation.getText().toString();
@@ -170,9 +177,6 @@ public class DeterminationPageFragment extends Fragment {
 
     }
 
-    @BindView(R.id.btnActivate)
-    Button btnActivate;
-
     @OnClick(R.id.imgPlayVoice)
     void onPressPlayVoice() {
         if (dataBase.getRemainingAddress() == 0) {
@@ -183,12 +187,6 @@ public class DeterminationPageFragment extends Fragment {
 
         new PlayLastConversationDialog().show(dataBase.getTopAddress().getId(), EndPoints.CALL_VOICE + dataBase.getTopAddress().getVoipId());
     }
-
-    @BindView(R.id.btnDeActivate)
-    Button btnDeActivate;
-
-    @BindView(R.id.imgNextAddress)
-    ImageView imgNextAddress;
 
     @OnClick(R.id.imgNextAddress)
     void onNextAddress() {
@@ -258,6 +256,16 @@ public class DeterminationPageFragment extends Fragment {
                         .show();
             }
         });
+    }
+
+    @OnClick(R.id.txtAddress)
+    void onAddress() {
+        if (doubleBackPressedOnce) {
+            address = txtAddress.getText().toString().substring(txtAddress.getText().toString().indexOf(" , ") + 3, txtAddress.length());
+        } else {
+            doubleBackPressedOnce = true;
+            new Handler().postDelayed(() -> doubleBackPressedOnce = false, 1500);
+        }
     }
 
     @Override

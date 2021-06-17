@@ -199,8 +199,5 @@ public class MyApplication extends Application {
             e.printStackTrace();
             AvaCrashReporter.send(e, "MyApplication class, configureAccount method");
         }
-
-
     }
-
 }

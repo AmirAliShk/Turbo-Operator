@@ -454,8 +454,8 @@ public class TripDetailsFragment extends Fragment {
 
                         if (txtCustomerName == null) return;
 
-                        txtUserCodeDestination.setText(StringHelper.toPersianDigits(stationRegisterUser + ""));
-                        txtUserCodeOrigin.setText(StringHelper.toPersianDigits(destStationRegisterUser + ""));
+                        txtUserCodeOrigin.setText(StringHelper.toPersianDigits(stationRegisterUser + ""));
+                        txtUserCodeDestination.setText(StringHelper.toPersianDigits(destStationRegisterUser + ""));
                         txtCustomerName.setText(StringHelper.toPersianDigits(passengerName));
                         txtDate.setText(StringHelper.toPersianDigits(callDate));
                         txtTime.setText(StringHelper.toPersianDigits(callTime));

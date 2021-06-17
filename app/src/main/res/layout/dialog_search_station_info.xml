@@ -56,27 +56,27 @@
 
                 <ImageView
                     android:id="@+id/imgClear"
-                    android:layout_width="?android:attr/actionBarSize"
+                    android:layout_width="40dp"
                     android:layout_height="match_parent"
-                    android:padding="8dp"
+                    android:padding="5dp"
                     android:src="@drawable/ic_reject" />
 
                 <EditText
                     android:id="@+id/edtStationCode"
                     android:layout_width="0dp"
-                    android:layout_height="wrap_content"
+                    android:layout_height="match_parent"
                     android:layout_weight="1"
                     android:background="@color/transparent"
                     android:gravity="right|center_vertical"
-                    android:padding="10dp"
-                    android:singleLine="true"
-                    android:textColorHint="@color/grayMedium" />
+                    android:padding="5dp"
+                    android:textSize="15sp"
+                    android:singleLine="true" />
 
                 <RelativeLayout
                     android:id="@+id/rlSearchType"
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
-                    android:layout_weight="1"
+                    android:layout_weight="0.7"
                     android:gravity="center"
                     android:orientation="vertical"
                     android:padding="3dp">
@@ -88,6 +88,7 @@
                         android:background="@drawable/edit_text_style"
                         android:dropDownWidth="match_parent"
                         android:gravity="center"
+                        android:layout_alignParentRight="true"
                         android:padding="8dp" />
 
                     <ImageView

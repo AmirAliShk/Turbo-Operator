@@ -60,8 +60,9 @@ public class SearchStationInfoDialog {
 
     String stationCode = "0";
     String address = "0";
+    boolean firstTime = false;
 
-    public void show(int city) {
+    public void show(int city, String addressCopy) {
         if (MyApplication.currentActivity == null || MyApplication.currentActivity.isFinishing())
             return;
         dialog = new Dialog(MyApplication.currentActivity);
@@ -90,6 +91,7 @@ public class SearchStationInfoDialog {
         spSearchType = dialog.findViewById(R.id.spSearchType);
         rlSearchType = dialog.findViewById(R.id.rlSearchType);
         llStationHeader = dialog.findViewById(R.id.llStationHeader);
+
 
         imgSearch.setOnClickListener(view -> {
             String origin = edtStationCode.getText().toString();
@@ -145,6 +147,12 @@ public class SearchStationInfoDialog {
 
         initWaitingTimeSpinner();
 
+        if (!addressCopy.equals("")) {
+            edtStationCode.setText(addressCopy);
+            spSearchType.setSelection(1);
+
+        }
+
         dialog.show();
 
     }
@@ -161,9 +169,10 @@ public class SearchStationInfoDialog {
             spSearchType.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
                 @Override
                 public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                    if (spSearchType.getSelectedItemPosition() == 0 || spSearchType.getSelectedItemPosition() == 1) {
+                    if (firstTime) {
                         edtStationCode.setText("");
-                    }
+
+                    }firstTime = true;
                 }
 
                 @Override
