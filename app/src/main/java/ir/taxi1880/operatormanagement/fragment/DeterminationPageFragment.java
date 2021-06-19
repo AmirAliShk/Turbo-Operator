@@ -64,7 +64,6 @@ public class DeterminationPageFragment extends Fragment {
     boolean bothStationAreZero = false;
     Timer timer;
     DBTripModel tripModel;
-    String address = "";
 
     @OnClick(R.id.imgBack)
     void onBack() {
@@ -142,10 +141,17 @@ public class DeterminationPageFragment extends Fragment {
     @OnClick(R.id.imgSearch)
     void onSearch() {
         if (dataBase.getRemainingAddress() == 0) {
-            new SearchStationInfoDialog().show(0, "");
+            if (txtStation.getText().toString().isEmpty()) {
+                new SearchStationInfoDialog().show(0, false, "");
+            } else {
+                new SearchStationInfoDialog().show(0, false, StringHelper.toEnglishDigits(txtStation.getText().toString()));
+            }
         } else {
-            new SearchStationInfoDialog().show(dataBase.getTopAddress().getCity(), address);
-            address = "";
+            if (txtStation.getText().toString().isEmpty()) {
+                new SearchStationInfoDialog().show(dataBase.getTopAddress().getCity(), false, "");
+            } else {
+                new SearchStationInfoDialog().show(dataBase.getTopAddress().getCity(), false, StringHelper.toEnglishDigits(txtStation.getText().toString()));
+            }
         }
 
 //        String origin = txtStation.getText().toString();
@@ -261,7 +267,11 @@ public class DeterminationPageFragment extends Fragment {
     @OnClick(R.id.txtAddress)
     void onAddress() {
         if (doubleBackPressedOnce) {
-            address = txtAddress.getText().toString().substring(txtAddress.getText().toString().indexOf(" , ") + 3, txtAddress.length());
+            if (dataBase.getRemainingAddress() == 0) {
+                new SearchStationInfoDialog().show(0, true, "");
+            } else {
+                new SearchStationInfoDialog().show(dataBase.getTopAddress().getCity(), true, "");
+            }
         } else {
             doubleBackPressedOnce = true;
             new Handler().postDelayed(() -> doubleBackPressedOnce = false, 1500);

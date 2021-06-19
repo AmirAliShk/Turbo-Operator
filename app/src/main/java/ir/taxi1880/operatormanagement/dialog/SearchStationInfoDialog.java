@@ -3,6 +3,7 @@ package ir.taxi1880.operatormanagement.dialog;
 import android.app.Dialog;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
+import android.text.InputType;
 import android.view.Gravity;
 import android.view.View;
 import android.view.Window;
@@ -53,7 +54,6 @@ public class SearchStationInfoDialog {
     ViewFlipper vfStationInfo;
     ImageView imgClear;
     ImageView imgSearch;
-
     Spinner spSearchType;
     int city;
     RelativeLayout rlSearchType;
@@ -62,7 +62,7 @@ public class SearchStationInfoDialog {
     String address = "0";
     boolean firstTime = false;
 
-    public void show(int city, String addressCopy) {
+    public void show(int city, boolean isFromAddress, String station) {
         if (MyApplication.currentActivity == null || MyApplication.currentActivity.isFinishing())
             return;
         dialog = new Dialog(MyApplication.currentActivity);
@@ -91,7 +91,6 @@ public class SearchStationInfoDialog {
         spSearchType = dialog.findViewById(R.id.spSearchType);
         rlSearchType = dialog.findViewById(R.id.rlSearchType);
         llStationHeader = dialog.findViewById(R.id.llStationHeader);
-
 
         imgSearch.setOnClickListener(view -> {
             String origin = edtStationCode.getText().toString();
@@ -147,10 +146,16 @@ public class SearchStationInfoDialog {
 
         initWaitingTimeSpinner();
 
-        if (!addressCopy.equals("")) {
-            edtStationCode.setText(addressCopy);
+        if (isFromAddress) {
             spSearchType.setSelection(1);
+        }
 
+        if (!station.equals("")) {
+            stationCode = station;
+            edtStationCode.setText(station);
+            spSearchType.setSelection(0);
+            getStationInfo(city, station, address);
+            KeyBoardHelper.hideKeyboard();
         }
 
         dialog.show();
@@ -171,8 +176,15 @@ public class SearchStationInfoDialog {
                 public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                     if (firstTime) {
                         edtStationCode.setText("");
+                    }
+                    firstTime = true;
 
-                    }firstTime = true;
+                    if (spSearchType.getSelectedItemPosition() == 0){
+                        edtStationCode.setInputType(InputType.TYPE_CLASS_NUMBER);
+                    }
+                    if (spSearchType.getSelectedItemPosition() == 1){
+                        edtStationCode.setInputType(InputType.TYPE_CLASS_TEXT);
+                    }
                 }
 
                 @Override
@@ -187,6 +199,7 @@ public class SearchStationInfoDialog {
     private void getStationInfo(int city, String stationCode, String address) {
         if (vfStationInfo != null)
             vfStationInfo.setDisplayedChild(1);
+        KeyBoardHelper.hideKeyboard();
         RequestHelper.builder(EndPoints.STATION_INFO)
 //                .addPath(StringHelper.toEnglishDigits(stationCode) + "")
                 .addPath(city + "")
