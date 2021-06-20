@@ -235,6 +235,10 @@ public class SupportDriverTripsFragment extends Fragment {
                     imageType = R.drawable.ic_station_search;
                     edtSearchTrip.setInputType(InputType.TYPE_CLASS_NUMBER);
                     break;
+                case 10: // driver address
+                    imageType = R.drawable.ic_gps;
+                    edtSearchTrip.setInputType(InputType.TYPE_CLASS_TEXT);
+                    break;
             }
             imgSearchType.setImageResource(imageType);
             if (edtSearchTrip != null)
@@ -353,6 +357,7 @@ public class SupportDriverTripsFragment extends Fragment {
                         .addParam("address", 0)
                         .addParam("taxiCode", 0)
                         .addParam("stationCode", 0)
+                        .addParam("destinationAdress", 0)
                         .addParam("searchInterval", extendedTime)
                         .listener(onGetTripList)
                         .post();
@@ -367,6 +372,7 @@ public class SupportDriverTripsFragment extends Fragment {
                         .addParam("address", 0)
                         .addParam("taxiCode", searchText)
                         .addParam("stationCode", 0)
+                        .addParam("destinationAdress", 0)
                         .addParam("searchInterval", extendedTime)
                         .listener(onGetTripList)
                         .post();
@@ -381,6 +387,7 @@ public class SupportDriverTripsFragment extends Fragment {
                         .addParam("address", searchText)
                         .addParam("taxiCode", 0)
                         .addParam("stationCode", 0)
+                        .addParam("destinationAdress", 0)
                         .addParam("searchInterval", extendedTime)
                         .listener(onGetTripList)
                         .post();
@@ -395,6 +402,22 @@ public class SupportDriverTripsFragment extends Fragment {
                         .addParam("address", 0)
                         .addParam("taxiCode", 0)
                         .addParam("stationCode", searchText)
+                        .addParam("destinationAdress", 0)
+                        .addParam("searchInterval", extendedTime)
+                        .listener(onGetTripList)
+                        .post();
+                break;
+
+            case 10: //search by destination address
+                RequestHelper.builder(EndPoints.SEARCH_SERVICE)
+                        .ignore422Error(true)
+                        .addParam("phonenumber", 0)
+                        .addParam("driverPhone", 0)
+                        .addParam("name", 0)
+                        .addParam("address", 0)
+                        .addParam("taxiCode", 0)
+                        .addParam("stationCode", 0)
+                        .addParam("destinationAdress", searchText)
                         .addParam("searchInterval", extendedTime)
                         .listener(onGetTripList)
                         .post();
