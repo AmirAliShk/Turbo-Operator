@@ -79,6 +79,30 @@
 
         </LinearLayout>
 
+        <LinearLayout
+            android:id="@+id/llDestinationOperator"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="10dp"
+            android:gravity="center_vertical"
+            android:layoutDirection="rtl">
+
+            <ImageView
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:src="@drawable/ic_mobile_purple" />
+
+            <TextView
+                android:id="@+id/txtDestinationOperator"
+                style="@style/tripItemValue"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="@dimen/_10sdp"
+                android:layout_weight="1"
+                android:textSize="18sp" />
+
+        </LinearLayout>
+
         <ViewFlipper
             android:id="@+id/vfVoiceStatus"
             android:layout_width="match_parent"

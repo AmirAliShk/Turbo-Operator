@@ -182,6 +182,8 @@ public class RecentCallsDialog {
 
                             if (!fromPassengerCalls) {
                                 model.setPhone(dataObj.getString("src"));
+                            } else {
+                                model.setDestinationOperator(dataObj.getString("dst"));
                             }
 
                             recentCallsModels.add(model);

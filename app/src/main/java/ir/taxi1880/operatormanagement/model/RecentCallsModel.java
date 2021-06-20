@@ -6,7 +6,16 @@ public class RecentCallsModel {
     String txtTime;
     String voipId;
     String phone;
+    String destinationOperator;
     int txtTimeRemaining;
+
+    public String getDestinationOperator() {
+        return destinationOperator;
+    }
+
+    public void setDestinationOperator(String destinationOperator) {
+        this.destinationOperator = destinationOperator;
+    }
 
     public String getTxtDate() {
         return txtDate;

@@ -60,6 +60,7 @@ public class RecentCallsAdapter extends RecyclerView.Adapter<RecentCallsAdapter.
     ImageView imgPause;
     int position;
     LinearLayout llPhone;
+    LinearLayout llDestinationOperator;
     boolean isDownloading = false;
     View view;
 
@@ -83,6 +84,7 @@ public class RecentCallsAdapter extends RecyclerView.Adapter<RecentCallsAdapter.
         IndicatorSeekBar skbTimer;
         TextView txtTimeRemaining;
         TextView phone;
+        TextView txtDestinationOperator;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -95,7 +97,9 @@ public class RecentCallsAdapter extends RecyclerView.Adapter<RecentCallsAdapter.
             vfVoiceStatus = itemView.findViewById(R.id.vfVoiceStatus);
             skbTimer = itemView.findViewById(R.id.skbTimer);
             phone = itemView.findViewById(R.id.txtPassengerTell);
+            txtDestinationOperator = itemView.findViewById(R.id.txtDestinationOperator);
             llPhone = itemView.findViewById(R.id.llPhone);
+            llDestinationOperator = itemView.findViewById(R.id.llDestinationOperator);
         }
     }
 
@@ -109,6 +113,11 @@ public class RecentCallsAdapter extends RecyclerView.Adapter<RecentCallsAdapter.
             llPhone.setVisibility(View.GONE);
         } else {
             holder.phone.setText(model.getPhone());
+        }
+        if (model.getDestinationOperator() == null) {
+            llDestinationOperator.setVisibility(View.GONE);
+        } else {
+            holder.txtDestinationOperator.setText(model.getDestinationOperator());
         }
 
         imgPlay.setOnClickListener(view -> {
