@@ -8,6 +8,8 @@ import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.Button;
+import android.widget.EditText;
+import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.Toast;
 import android.widget.ViewFlipper;
@@ -37,6 +39,7 @@ public class SaveMistakeResultDialog {
     Unbinder unbinder;
     String culprit;
     String result;
+    String sipNumber = "0";
     DataBase dataBase;
     int mistakesId;
     LocalBroadcastManager broadcaster;
@@ -53,6 +56,8 @@ public class SaveMistakeResultDialog {
 
     @BindView(R.id.rgResult)
     RadioGroup rgResult;
+    @BindView(R.id.rbAnotherOperator)
+    RadioButton rbAnotherOperator;
 
     @BindView(R.id.rgCulprit)
     RadioGroup rgCulprit;
@@ -60,9 +65,12 @@ public class SaveMistakeResultDialog {
     @BindView(R.id.vfLoader)
     ViewFlipper vfLoader;
 
+    @BindView(R.id.edtAnotherOperator)
+    EditText edtAnotherOperator;
+
     @OnClick(R.id.btnSubmit)
     void onSubmit() {
-        if (rgCulprit.getCheckedRadioButtonId() == -1) {
+        if (rgCulprit.getCheckedRadioButtonId() == -1 && !rbAnotherOperator.isChecked()) {
             MyApplication.Toast("لطفا مقصر را مشخص کنید.", Toast.LENGTH_SHORT);
             return;
         }
@@ -110,7 +118,7 @@ public class SaveMistakeResultDialog {
 
         int listenId = dataBase.getMistakesRow().getId();
 
-        sendResult(culprit, result, listenId);
+        sendResult(culprit, result, listenId, sipNumber);
     }
 
     @BindView(R.id.btnSubmit)
@@ -152,10 +160,18 @@ public class SaveMistakeResultDialog {
         this.mistakesId = complaintId;
         this.mistakesResult = mistakesResult;
 
+        rbAnotherOperator.setOnCheckedChangeListener((compoundButton, b) -> {
+            if (rbAnotherOperator.isChecked()) {
+                if (!edtAnotherOperator.getText().toString().isEmpty()) {
+                    sipNumber = edtAnotherOperator.getText().toString();
+                }
+            }
+        });
+
         tempDialog.show();
     }
 
-    private void sendResult(String culprit, String result, int listenId) {
+    private void sendResult(String culprit, String result, int listenId, String sipNumber) {
         LoadingDialog.makeCancelableLoader();
         if (vfLoader != null)
             vfLoader.setDisplayedChild(1);
@@ -163,6 +179,7 @@ public class SaveMistakeResultDialog {
                 .addParam("culprit", culprit)
                 .addParam("result", result)
                 .addParam("listenId", listenId)
+                .addParam("sipNumber", sipNumber)
                 .listener(sendResult)
                 .put();
     }
