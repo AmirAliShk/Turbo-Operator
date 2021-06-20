@@ -123,6 +123,9 @@ public class ComplaintSaveResultFragment extends Fragment {
                 case R.id.rbSomethingElse:
                     DataHolder.getInstance().setComplaintResult((byte) 4);
                     break;
+                case R.id.rbCustomerNotAnswer:
+                    DataHolder.getInstance().setComplaintResult((byte) 5);
+                    break;
             }
         });
 

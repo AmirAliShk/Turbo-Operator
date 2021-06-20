@@ -64,6 +64,19 @@
                         android:layout_height="10dp" />
 
                     <RadioButton
+                        android:id="@+id/rbCustomerNotAnswer"
+                        style="@style/tripItemValue"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center_vertical"
+                        android:text="مهمان پاسخگو نبود."
+                        android:textSize="@dimen/_18ssp" />
+
+                    <View
+                        android:layout_width="wrap_content"
+                        android:layout_height="10dp" />
+
+                    <RadioButton
                         android:id="@+id/rbUnnecessaryComplaint"
                         style="@style/tripItemValue"
                         android:layout_width="match_parent"
