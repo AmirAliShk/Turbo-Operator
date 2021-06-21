@@ -228,7 +228,7 @@ public class SupportDriverTripsFragment extends Fragment {
                     edtSearchTrip.setInputType(InputType.TYPE_CLASS_NUMBER);
                     break;
                 case 8: // driver address
-                    imageType = R.drawable.ic_gps;
+                    imageType = R.drawable.ic_origin;
                     edtSearchTrip.setInputType(InputType.TYPE_CLASS_TEXT);
                     break;
                 case 9: // station code
@@ -236,7 +236,7 @@ public class SupportDriverTripsFragment extends Fragment {
                     edtSearchTrip.setInputType(InputType.TYPE_CLASS_NUMBER);
                     break;
                 case 10: // driver address
-                    imageType = R.drawable.ic_gps;
+                    imageType = R.drawable.ic_destination;
                     edtSearchTrip.setInputType(InputType.TYPE_CLASS_TEXT);
                     break;
             }

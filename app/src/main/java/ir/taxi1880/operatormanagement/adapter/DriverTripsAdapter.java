@@ -52,12 +52,14 @@ public class DriverTripsAdapter extends RecyclerView.Adapter<DriverTripsAdapter.
         holder.txtCarType.setText(tripModel.getCarType().equals("null") ? " " : StringHelper.toPersianDigits(tripModel.getCarType()));
         holder.txtCity.setText(StringHelper.toPersianDigits(tripModel.getCity()));
         holder.txtCustomerAddress.setText(StringHelper.toPersianDigits(tripModel.getAddress()));
+        holder.txtCustomerDestAddress.setText(StringHelper.toPersianDigits(tripModel.getDestination()));
         holder.txtCustomerMobile.setText(StringHelper.toPersianDigits(tripModel.getCustomerMob()));
         holder.txtCustomerName.setText(StringHelper.toPersianDigits(tripModel.getCustomerName()));
         holder.txtCustomerTell.setText(StringHelper.toPersianDigits(tripModel.getCustomerTell()));
         holder.txtDriverMobile.setText(tripModel.getDriverMobile().equals("null") ? " " : StringHelper.toPersianDigits(tripModel.getDriverMobile()));
         holder.txtCallDate.setText(tripModel.getCallDate().equals("null") ? " " : StringHelper.toPersianDigits(tripModel.getCallDate()));
         holder.txtStationCode.setText(StringHelper.toPersianDigits(tripModel.getStationCode() + ""));
+        holder.txtDestStationCode.setText(StringHelper.toPersianDigits(tripModel.getDestStation() + ""));
         holder.txtPrice.setText(StringHelper.toPersianDigits(StringHelper.setComma(tripModel.getPrice() + "")));
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
@@ -96,6 +98,8 @@ public class DriverTripsAdapter extends RecyclerView.Adapter<DriverTripsAdapter.
         TextView txtCallDate;
         TextView txtStationCode;
         TextView txtPrice;
+        TextView txtCustomerDestAddress;
+        TextView txtDestStationCode;
         LinearLayout llHeaderStatus;
 
         public TripViewHolder(@NonNull View itemView) {
@@ -114,6 +118,8 @@ public class DriverTripsAdapter extends RecyclerView.Adapter<DriverTripsAdapter.
             txtStationCode = itemView.findViewById(R.id.txtStationCode);
             txtPrice = itemView.findViewById(R.id.txtPrice);
             llHeaderStatus = itemView.findViewById(R.id.llHeaderStatus);
+            txtDestStationCode = itemView.findViewById(R.id.txtDestStationCode);
+            txtCustomerDestAddress = itemView.findViewById(R.id.txtCustomerDestAddress);
         }
     }
 }

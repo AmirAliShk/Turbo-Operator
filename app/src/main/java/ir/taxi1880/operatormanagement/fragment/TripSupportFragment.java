@@ -152,7 +152,7 @@ public class TripSupportFragment extends Fragment {
                     edtSearchTrip.setInputType(InputType.TYPE_CLASS_NUMBER);
                     break;
                 case 3: //search by address
-                    imageType = R.drawable.ic_gps;
+                    imageType = R.drawable.ic_origin;
                     edtSearchTrip.setInputType(InputType.TYPE_CLASS_TEXT);
                     break;
                 case 4: //search by taxi code
@@ -164,7 +164,7 @@ public class TripSupportFragment extends Fragment {
                     edtSearchTrip.setInputType(InputType.TYPE_CLASS_NUMBER);
                     break;
                 case 11: //search by address
-                    imageType = R.drawable.ic_gps;
+                    imageType = R.drawable.ic_destination;
                     edtSearchTrip.setInputType(InputType.TYPE_CLASS_TEXT);
                     break;
             }
@@ -254,7 +254,17 @@ public class TripSupportFragment extends Fragment {
         if (vfTrip != null) {
             vfTrip.setDisplayedChild(1);
         }
-
+//        {post} /api/operator/v3/support/trip/v1/search
+//
+//        params:
+//        {varchar(11)} phonenumber
+//        {varchar(11)} driverPhone
+//        {varchar(100)} name
+//        {varchar(150)} address
+//        {int} taxiCode
+//        {int} stationCode
+//        {tinyint} searchInterval 1= today , 2 = last day, 3 = last 2 day
+//        {varchar(150)} destinationAddress
         switch (searchCase) {
 
             case 0:
