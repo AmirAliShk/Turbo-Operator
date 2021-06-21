@@ -179,13 +179,16 @@ public class SaveMistakeResultDialog {
         dataBase = new DataBase(MyApplication.context);
         this.mistakesId = complaintId;
         this.mistakesResult = mistakesResult;
-
+        edtAnotherOperator.setEnabled(false);
         rbAnotherOperator.setOnCheckedChangeListener((compoundButton, b) -> {
             if (rbAnotherOperator.isChecked()) {
                 rgCulprit.clearCheck();
+                edtAnotherOperator.setEnabled(true);
                 if (!edtAnotherOperator.getText().toString().isEmpty()) {
                     sipNumber = edtAnotherOperator.getText().toString();
                 }
+            } else {
+                edtAnotherOperator.setEnabled(false);
             }
         });
 
@@ -220,7 +223,7 @@ public class SaveMistakeResultDialog {
         LoadingDialog.makeCancelableLoader();
         if (vfLoader != null)
             vfLoader.setDisplayedChild(1);
-        RequestHelper.builder(EndPoints.LISTEN)
+        RequestHelper.builder(EndPoints.V1_LISTEN)
                 .addParam("culprit", culprit)
                 .addParam("result", result)
                 .addParam("listenId", listenId)

@@ -103,7 +103,8 @@
                                 android:layout_width="0dp"
                                 android:layout_height="match_parent"
                                 android:layout_weight="0.4"
-                                android:background="@drawable/edit_text_style"
+                                android:paddingRight="10dp"
+                                android:background="@drawable/bg_light_gray_strock"
                                 android:inputType="numberDecimal" />
 
                             <View

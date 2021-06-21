@@ -111,7 +111,8 @@ public class EndPoints {
     public static final String EDIT_ADDRESS = SUPPORT_WEBSERVICE_PATH + "editAddress";
     public static final String ARCHIVE_ORIGIN = SUPPORT_WEBSERVICE_PATH + "archiveAddress";
     public static final String ARCHIVE_DESTINATION = SUPPORT_WEBSERVICE_PATH + "archiveDestination";
-    public static final String LISTEN = SUPPORT_WEBSERVICE_PATH + "v1/listen";
+    public static final String LISTEN = SUPPORT_WEBSERVICE_PATH + "listen";
+    public static final String V1_LISTEN = SUPPORT_WEBSERVICE_PATH + "v1/listen";
     public static final String ACCEPT_LISTEN = LISTEN_WEBSERVICE_PATH + "accept";
     public static final String ACTIVATE_SUPPORT = SUPPORT_WEBSERVICE_PATH + "activate";
     public static final String DEACTIVATE_SUPPORT = SUPPORT_WEBSERVICE_PATH + "deActivate";
