@@ -137,7 +137,12 @@ public class SaveMistakeResultDialog {
         }
 
         int listenId = dataBase.getMistakesRow().getId();
-        sipNumber = edtAnotherOperator.getText().toString();
+        if ( edtAnotherOperator.getText().toString().isEmpty()){
+            sipNumber = "0";
+        }else {
+            sipNumber = edtAnotherOperator.getText().toString();
+        }
+
         sendResult(culprit, result, listenId, sipNumber);
     }
 

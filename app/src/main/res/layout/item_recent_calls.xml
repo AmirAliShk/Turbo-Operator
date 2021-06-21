@@ -35,8 +35,8 @@
                 style="@style/tripItemValue"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
                 android:layout_marginRight="@dimen/_10sdp"
+                android:layout_weight="1"
                 android:textSize="18sp" />
 
             <ImageView
@@ -90,7 +90,7 @@
             <ImageView
                 android:layout_width="20dp"
                 android:layout_height="20dp"
-                android:src="@drawable/ic_mobile_purple" />
+                android:src="@drawable/ic_sip" />
 
             <TextView
                 android:id="@+id/txtDestinationOperator"
@@ -175,14 +175,13 @@
 
             <TextView
                 style="@style/tripItemValue"
-                android:gravity="center"
-                android:textAppearance="@style/TextAppearance.AppCompat.Medium"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="صوتی برای این تماس وجود ندارد."/>
+                android:gravity="center"
+                android:text="صوتی برای این تماس وجود ندارد."
+                android:textAppearance="@style/TextAppearance.AppCompat.Medium" />
 
         </ViewFlipper>
-
 
 
     </LinearLayout>
