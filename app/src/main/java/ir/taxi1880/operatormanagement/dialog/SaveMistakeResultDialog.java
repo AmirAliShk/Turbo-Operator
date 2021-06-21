@@ -56,8 +56,21 @@ public class SaveMistakeResultDialog {
 
     @BindView(R.id.rgResult)
     RadioGroup rgResult;
+
     @BindView(R.id.rbAnotherOperator)
     RadioButton rbAnotherOperator;
+
+    @BindView(R.id.rbUnknown)
+    RadioButton rbUnknown;
+
+    @BindView(R.id.rbStationRegistrationDestinationOperatorBlame)
+    RadioButton rbStationRegistrationDestinationOperatorBlame;
+
+    @BindView(R.id.rbStationRegistrationOriginOperatorBlame)
+    RadioButton rbStationRegistrationOriginOperatorBlame;
+
+    @BindView(R.id.rbTripRegistrationOperatorBlame)
+    RadioButton rbTripRegistrationOperatorBlame;
 
     @BindView(R.id.rgCulprit)
     RadioGroup rgCulprit;
@@ -94,6 +107,13 @@ public class SaveMistakeResultDialog {
                 culprit = "3";
                 break;
         }
+        if (rbAnotherOperator.isChecked()) {
+            culprit = "5";
+        }
+        if (rbAnotherOperator.isChecked() && (edtAnotherOperator.getText().toString().isEmpty() || edtAnotherOperator.getText().toString().equals("0"))) {
+            MyApplication.Toast("لطفا سیپ اپراتور را وارد کنید.", Toast.LENGTH_SHORT);
+            return;
+        }
 
         switch (rgResult.getCheckedRadioButtonId()) {
             case R.id.rbDeleteOriginAddress:
@@ -117,7 +137,7 @@ public class SaveMistakeResultDialog {
         }
 
         int listenId = dataBase.getMistakesRow().getId();
-
+        sipNumber = edtAnotherOperator.getText().toString();
         sendResult(culprit, result, listenId, sipNumber);
     }
 
@@ -162,9 +182,34 @@ public class SaveMistakeResultDialog {
 
         rbAnotherOperator.setOnCheckedChangeListener((compoundButton, b) -> {
             if (rbAnotherOperator.isChecked()) {
+                rgCulprit.clearCheck();
                 if (!edtAnotherOperator.getText().toString().isEmpty()) {
                     sipNumber = edtAnotherOperator.getText().toString();
                 }
+            }
+        });
+
+        rbStationRegistrationDestinationOperatorBlame.setOnCheckedChangeListener((compoundButton, b) -> {
+            if (rbStationRegistrationDestinationOperatorBlame.isChecked()) {
+                rbAnotherOperator.setChecked(false);
+            }
+        });
+
+        rbStationRegistrationOriginOperatorBlame.setOnCheckedChangeListener((compoundButton, b) -> {
+            if (rbStationRegistrationOriginOperatorBlame.isChecked()) {
+                rbAnotherOperator.setChecked(false);
+            }
+        });
+
+        rbTripRegistrationOperatorBlame.setOnCheckedChangeListener((compoundButton, b) -> {
+            if (rbTripRegistrationOperatorBlame.isChecked()) {
+                rbAnotherOperator.setChecked(false);
+            }
+        });
+
+        rbUnknown.setOnCheckedChangeListener((compoundButton, b) -> {
+            if (rbUnknown.isChecked()) {
+                rbAnotherOperator.setChecked(false);
             }
         });
 

@@ -41,6 +41,7 @@ import ir.taxi1880.operatormanagement.R;
 import ir.taxi1880.operatormanagement.app.EndPoints;
 import ir.taxi1880.operatormanagement.app.MyApplication;
 import ir.taxi1880.operatormanagement.dataBase.DataBase;
+import ir.taxi1880.operatormanagement.dialog.GeneralDialog;
 import ir.taxi1880.operatormanagement.dialog.PendingMistakesOptionsDialog;
 import ir.taxi1880.operatormanagement.dialog.SaveMistakeResultDialog;
 import ir.taxi1880.operatormanagement.helper.FileHelper;
@@ -164,6 +165,7 @@ public class PendingMistakesFragment extends Fragment {
         }
     }
 
+    // {"success":true,"message":"عملیات با موفقیت انجام شد","data":{"status":true}}
     @OnClick(R.id.imgPause)
     void onImgPause() {
         pauseVoice();
@@ -175,8 +177,17 @@ public class PendingMistakesFragment extends Fragment {
     @BindView(R.id.vfPlayPause)
     ViewFlipper vfPlayPause;
 
+    @BindView(R.id.vfMissedCall)
+    ViewFlipper vfMissedCall;
+
     @BindView(R.id.txtEmpty)
     TextView txtEmpty;
+
+    @OnClick(R.id.imgMissedCall)
+    void onMissCall() {
+        missCall();
+    }
+
 
     @Nullable
     @Override
@@ -479,6 +490,60 @@ public class PendingMistakesFragment extends Fragment {
                         broadcaster.sendBroadcast(broadcastIntent);
                     }
                 } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            });
+        }
+
+        @Override
+        public void onFailure(Runnable reCall, Exception e) {
+            super.onFailure(reCall, e);
+        }
+    };
+
+    public void missCall() {
+        if (vfMissedCall != null) {
+            vfMissedCall.setDisplayedChild(1);
+        }
+        RequestHelper.builder(EndPoints.MISSED_CALL)
+                .addParam("listenId", model.getId())
+                .listener(sendMissCall)
+                .post();
+    }
+
+    RequestHelper.Callback sendMissCall = new RequestHelper.Callback() {
+        @Override
+        public void onResponse(Runnable reCall, Object... args) {
+            MyApplication.handler.post(() -> {
+                try {// {"success":true,"message":"عملیات با موفقیت انجام شد","data":{"status":true}}
+                    JSONObject object = new JSONObject(args[0].toString());
+                    boolean success = object.getBoolean("success");
+                    String message = object.getString("message");
+
+                    if (success) {
+                        JSONObject data = object.getJSONObject("data");
+                        boolean status = data.getBoolean("status");
+                        if (!status) {
+                            new GeneralDialog()
+                                    .message(message)
+                                    .cancelable(false)
+                                    .secondButton("برگشت", null)
+                                    .show();
+                        } else {
+                            new GeneralDialog()
+                                    .message("پیامک تماس از دست رفته ارسال شد.")
+                                    .cancelable(true)
+                                    .firstButton("تایید", null)
+                                    .show();
+                        }
+                        if (vfMissedCall != null) {
+                            vfMissedCall.setDisplayedChild(0);
+                        }
+                    }
+                } catch (Exception e) {
+                    if (vfMissedCall != null) {
+                        vfMissedCall.setDisplayedChild(0);
+                    }
                     e.printStackTrace();
                 }
             });
