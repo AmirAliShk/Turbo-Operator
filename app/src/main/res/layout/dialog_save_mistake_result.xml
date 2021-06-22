@@ -104,7 +104,9 @@
                                 android:layout_height="match_parent"
                                 android:layout_weight="0.4"
                                 android:paddingRight="10dp"
-                                android:background="@drawable/bg_light_gray_strock"
+                                android:paddingLeft="10dp"
+                                android:background="@drawable/bg_edt"
+                                android:hint="SIP"
                                 android:inputType="numberDecimal" />
 
                             <View

@@ -276,7 +276,7 @@ public class TripSupportFragment extends Fragment {
                         .addParam("address", 0)
                         .addParam("taxiCode", 0)
                         .addParam("stationCode", 0)
-                        .addParam("destinationAdress", 0)
+                        .addParam("destinationAddress", 0)
                         .addParam("searchInterval", extendedTime)
                         .listener(onGetTripList)
                         .post();
@@ -291,7 +291,7 @@ public class TripSupportFragment extends Fragment {
                         .addParam("address", 0)
                         .addParam("taxiCode", 0)
                         .addParam("stationCode", 0)
-                        .addParam("destinationAdress", 0)
+                        .addParam("destinationAddress", 0)
                         .addParam("searchInterval", extendedTime)
                         .listener(onGetTripList)
                         .post();
@@ -306,7 +306,7 @@ public class TripSupportFragment extends Fragment {
                         .addParam("address", 0)
                         .addParam("taxiCode", 0)
                         .addParam("stationCode", 0)
-                        .addParam("destinationAdress", 0)
+                        .addParam("destinationAddress", 0)
                         .addParam("searchInterval", extendedTime)
                         .listener(onGetTripList)
                         .post();
@@ -321,7 +321,7 @@ public class TripSupportFragment extends Fragment {
                         .addParam("address", searchText)
                         .addParam("taxiCode", 0)
                         .addParam("stationCode", 0)
-                        .addParam("destinationAdress", 0)
+                        .addParam("destinationAddress", 0)
                         .addParam("searchInterval", extendedTime)
                         .listener(onGetTripList)
                         .post();
@@ -336,7 +336,7 @@ public class TripSupportFragment extends Fragment {
                         .addParam("address", 0)
                         .addParam("taxiCode", searchText)
                         .addParam("stationCode", 0)
-                        .addParam("destinationAdress", 0)
+                        .addParam("destinationAddress", 0)
                         .addParam("searchInterval", extendedTime)
                         .listener(onGetTripList)
                         .post();
@@ -351,7 +351,7 @@ public class TripSupportFragment extends Fragment {
                         .addParam("address", 0)
                         .addParam("taxiCode", 0)
                         .addParam("stationCode", searchText)
-                        .addParam("destinationAdress", 0)
+                        .addParam("destinationAddress", 0)
                         .addParam("searchInterval", extendedTime)
                         .listener(onGetTripList)
                         .post();
@@ -366,7 +366,7 @@ public class TripSupportFragment extends Fragment {
                         .addParam("address", 0)
                         .addParam("taxiCode", 0)
                         .addParam("stationCode", 0)
-                        .addParam("destinationAdress", searchText)
+                        .addParam("destinationAddress", searchText)
                         .addParam("searchInterval", extendedTime)
                         .listener(onGetTripList)
                         .post();

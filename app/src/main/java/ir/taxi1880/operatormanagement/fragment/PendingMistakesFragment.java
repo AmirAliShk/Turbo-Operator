@@ -183,7 +183,7 @@ public class PendingMistakesFragment extends Fragment {
     @BindView(R.id.txtEmpty)
     TextView txtEmpty;
 
-    @OnClick(R.id.imgMissedCall)
+    @OnClick(R.id.llMissedCall)
     void onMissCall() {
         missCall();
     }
