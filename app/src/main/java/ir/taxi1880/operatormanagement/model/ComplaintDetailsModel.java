@@ -22,6 +22,15 @@ public class ComplaintDetailsModel {
     private String complaintVoipId;
     int cityCode;
     int CarClass;
+    int countCallCustomer;
+
+    public int getCountCallCustomer() {
+        return countCallCustomer;
+    }
+
+    public void setCountCallCustomer(int countCallCustomer) {
+        this.countCallCustomer = countCallCustomer;
+    }
 
     public int getCityCode() {
         return cityCode;

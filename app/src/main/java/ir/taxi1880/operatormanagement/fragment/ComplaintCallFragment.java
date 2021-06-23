@@ -85,6 +85,9 @@ public class ComplaintCallFragment extends Fragment {
     @BindView(R.id.txtDriverName)
     TextView txtDriverName;
 
+    @BindView(R.id.txtCountCallPassenger)
+    TextView txtCountCallPassenger;
+
     @OnClick(R.id.imgPlay)
     void onPlay() {
         if (vfPlayPause != null)
@@ -154,6 +157,7 @@ public class ComplaintCallFragment extends Fragment {
         txtPrice.setText(StringHelper.toPersianDigits(StringHelper.setComma(complaintDetailsModel.getPrice() + "") + " تومان"));
         txtCustomerName.setText(StringHelper.toPersianDigits(complaintDetailsModel.getCustomerName()));
         txtDriverName.setText(StringHelper.toPersianDigits(complaintDetailsModel.getDriverName() + " " + complaintDetailsModel.getDriverLastName()));
+        txtCountCallPassenger.setText(StringHelper.toPersianDigits(complaintDetailsModel.getCountCallCustomer() + " بار"));
 
         return view;
     }
