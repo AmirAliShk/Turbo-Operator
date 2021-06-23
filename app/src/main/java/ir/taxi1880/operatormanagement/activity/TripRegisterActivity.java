@@ -408,13 +408,13 @@ public class TripRegisterActivity extends AppCompatActivity {
             edtFamily.requestFocus();
             return;
         }
-        if (edtAddress.getText().toString().isEmpty()) {
+        if (edtAddress.getText().toString().trim().isEmpty()) {
             edtAddress.setError("آدرس مبدا را مشخص کنید");
             edtAddress.requestFocus();
             return;
         }
 
-        if (edtDestinationAddress.getText().toString().isEmpty()) {
+        if (edtDestinationAddress.getText().toString().trim().isEmpty()) {
             edtDestinationAddress.setError("آدرس مقصد را مشخص کنید");
             edtDestinationAddress.requestFocus();
             return;
