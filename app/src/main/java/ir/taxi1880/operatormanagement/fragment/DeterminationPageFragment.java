@@ -142,15 +142,15 @@ public class DeterminationPageFragment extends Fragment {
     void onSearch() {
         if (dataBase.getRemainingAddress() == 0) {
             if (txtStation.getText().toString().isEmpty()) {
-                new SearchStationInfoDialog().show(0, false, "");
+                new SearchStationInfoDialog().show(stationCode -> txtStation.setText(stationCode), 0, false, "", true);
             } else {
-                new SearchStationInfoDialog().show(0, false, StringHelper.toEnglishDigits(txtStation.getText().toString()));
+                new SearchStationInfoDialog().show(stationCode -> txtStation.setText(stationCode), 0, false, StringHelper.toEnglishDigits(txtStation.getText().toString()), true);
             }
         } else {
             if (txtStation.getText().toString().isEmpty()) {
-                new SearchStationInfoDialog().show(dataBase.getTopAddress().getCity(), false, "");
+                new SearchStationInfoDialog().show(stationCode -> txtStation.setText(stationCode), dataBase.getTopAddress().getCity(), false, "", true);
             } else {
-                new SearchStationInfoDialog().show(dataBase.getTopAddress().getCity(), false, StringHelper.toEnglishDigits(txtStation.getText().toString()));
+                new SearchStationInfoDialog().show(stationCode -> txtStation.setText(stationCode), dataBase.getTopAddress().getCity(), false, StringHelper.toEnglishDigits(txtStation.getText().toString()), true);
             }
         }
 
@@ -268,9 +268,9 @@ public class DeterminationPageFragment extends Fragment {
     void onAddress() {
         if (doubleBackPressedOnce) {
             if (dataBase.getRemainingAddress() == 0) {
-                new SearchStationInfoDialog().show(0, true, "");
+                new SearchStationInfoDialog().show(stationCode -> txtStation.setText(stationCode), 0, true, "", true);
             } else {
-                new SearchStationInfoDialog().show(dataBase.getTopAddress().getCity(), true, "");
+                new SearchStationInfoDialog().show(stationCode -> txtStation.setText(stationCode), dataBase.getTopAddress().getCity(), true, "", true);
             }
         } else {
             doubleBackPressedOnce = true;

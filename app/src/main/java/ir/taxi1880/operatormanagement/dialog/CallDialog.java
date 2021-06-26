@@ -98,7 +98,7 @@ public class CallDialog {
 
     @OnClick(R.id.llStationGuide)
     void onStationInfo() {
-        new SearchStationInfoDialog().show(0,false,"");
+        new SearchStationInfoDialog().show(stationCode -> {},0,false,"",false);
         dismiss();
     }
 

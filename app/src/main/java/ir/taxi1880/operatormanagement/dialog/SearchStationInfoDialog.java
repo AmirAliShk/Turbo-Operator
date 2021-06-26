@@ -4,6 +4,7 @@ import android.app.Dialog;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.text.InputType;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
 import android.view.Window;
@@ -42,6 +43,7 @@ import ir.taxi1880.operatormanagement.push.AvaCrashReporter;
 public class SearchStationInfoDialog {
     private StationInfoAdapter stationInfoAdapter;
     ArrayList<StationInfoModel> stationInfoModels;
+    StationInfoModel stationInfoModel;
     private static final String TAG = SearchStationInfoDialog.class.getSimpleName();
     private static Dialog dialog;
     private ListView listStationInfo;
@@ -61,8 +63,13 @@ public class SearchStationInfoDialog {
     String stationCode = "0";
     String address = "0";
     boolean firstTime = false;
+    private Listener listener;
 
-    public void show(int city, boolean isFromAddress, String station) {
+    public interface Listener {
+        void stationCode(String stationCode);
+    }
+
+    public void show(Listener listener, int city, boolean isFromAddress, String station, boolean isFromDetermination) {
         if (MyApplication.currentActivity == null || MyApplication.currentActivity.isFinishing())
             return;
         dialog = new Dialog(MyApplication.currentActivity);
@@ -91,7 +98,7 @@ public class SearchStationInfoDialog {
         spSearchType = dialog.findViewById(R.id.spSearchType);
         rlSearchType = dialog.findViewById(R.id.rlSearchType);
         llStationHeader = dialog.findViewById(R.id.llStationHeader);
-
+        this.listener = listener;
         imgSearch.setOnClickListener(view -> {
             String origin = edtStationCode.getText().toString();
             if (origin.isEmpty()) {
@@ -157,6 +164,13 @@ public class SearchStationInfoDialog {
             getStationInfo(city, station, address);
             KeyBoardHelper.hideKeyboard();
         }
+        if (isFromDetermination) {
+            listStationInfo.setOnItemClickListener((adapterView, view, i, l) -> {
+                listener.stationCode(stationInfoModels.get(i).getStcode() + "");
+                Log.i(TAG, "show: " + stationInfoModels.get(i).getStcode() + "");
+                dismiss();
+            });
+        }
 
         dialog.show();
 
@@ -179,10 +193,10 @@ public class SearchStationInfoDialog {
                     }
                     firstTime = true;
 
-                    if (spSearchType.getSelectedItemPosition() == 0){
+                    if (spSearchType.getSelectedItemPosition() == 0) {
                         edtStationCode.setInputType(InputType.TYPE_CLASS_NUMBER);
                     }
-                    if (spSearchType.getSelectedItemPosition() == 1){
+                    if (spSearchType.getSelectedItemPosition() == 1) {
                         edtStationCode.setInputType(InputType.TYPE_CLASS_TEXT);
                     }
                 }
@@ -228,7 +242,7 @@ public class SearchStationInfoDialog {
                         JSONArray dataArr = obj.getJSONArray("data");
                         for (int i = 0; i < dataArr.length(); i++) {
                             JSONObject dataObj = dataArr.getJSONObject(i);
-                            StationInfoModel stationInfoModel = new StationInfoModel();
+                            stationInfoModel = new StationInfoModel();
                             stationInfoModel.setStcode(dataObj.getInt("stcode"));
                             stationInfoModel.setStreet(dataObj.getString("street"));
                             stationInfoModel.setOdd(dataObj.getString("odd"));
