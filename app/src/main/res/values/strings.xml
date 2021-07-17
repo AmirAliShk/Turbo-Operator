@@ -82,7 +82,9 @@
     <string name="customerTell">تلفن </string>
     <string name="customerMobile"> همراه</string>
     <string name="customerAddress">آدرس</string>
+    <string name="origin">مبدا</string>
     <string name="originAddress">آدرس مبدا</string>
+    <string name="dest">مقصد</string>
     <string name="destAddress">آدرس مقصد</string>
     <string name="carType">نوع خودرو</string>
     <string name="driverMob">همراه راننده</string>
@@ -103,6 +105,7 @@
     <string name="call">تماس</string>
     <string name="name">نام</string>
     <string name="stationCode">کد ایستگاه</string>
+    <string name="station">ایستگاه</string>
     <string name="originStation">ایستگاه مبدا</string>
     <string name="destStation">ایستگاه مقصد</string>
     <string name="taxiCode">کد تاکسی</string>

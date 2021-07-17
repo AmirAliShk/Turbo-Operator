@@ -30,6 +30,7 @@ import org.json.JSONObject;
 import java.io.File;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.Date;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -44,6 +45,7 @@ import ir.taxi1880.operatormanagement.dataBase.DataBase;
 import ir.taxi1880.operatormanagement.dialog.GeneralDialog;
 import ir.taxi1880.operatormanagement.dialog.PendingMistakesOptionsDialog;
 import ir.taxi1880.operatormanagement.dialog.SaveMistakeResultDialog;
+import ir.taxi1880.operatormanagement.helper.DateHelper;
 import ir.taxi1880.operatormanagement.helper.FileHelper;
 import ir.taxi1880.operatormanagement.helper.StringHelper;
 import ir.taxi1880.operatormanagement.helper.TypefaceUtil;
@@ -119,9 +121,6 @@ public class PendingMistakesFragment extends Fragment {
 
     @BindView(R.id.vfVoiceStatus)
     ViewFlipper vfVoiceStatus;
-
-    @BindView(R.id.txtTripTime)
-    TextView txtTripTime;
 
     @BindView(R.id.txtDescription)
     TextView txtDescription;
@@ -345,8 +344,7 @@ public class PendingMistakesFragment extends Fragment {
             txtOriginStation.setText(StringHelper.toPersianDigits(model.getStationCode() + ""));
             txtCity.setText(StringHelper.toPersianDigits(dataBase.getCityName(model.getCity())));
             txtDescription.setText(StringHelper.toPersianDigits(model.getDescription()));
-            txtTripTime.setText(StringHelper.toPersianDigits(model.getTime()));
-            txtTripDate.setText(StringHelper.toPersianDigits(model.getDate()));
+            txtTripDate.setText(StringHelper.toPersianDigits(DateHelper.strPersianTen(DateHelper.parseDate(model.getDate())) + " " + model.getTime().substring(0, 5)));
             txtDestAddress.setText(StringHelper.toPersianDigits(model.getDestination()));
             txtDestStation.setText(StringHelper.toPersianDigits(model.getDestStation()));
             txtPrice.setText(StringHelper.toPersianDigits(StringHelper.setComma(model.getPrice())));
