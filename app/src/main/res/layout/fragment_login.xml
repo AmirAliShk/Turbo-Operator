@@ -153,7 +153,9 @@
                 <CheckBox
                     android:id="@+id/cbRules"
                     android:layout_width="wrap_content"
-                    android:layout_height="match_parent" />
+                    android:layout_height="match_parent"
+                    android:backgroundTint="@color/colorAccent"
+                    android:buttonTint="@color/colorAccent" />
 
                 <LinearLayout
                     android:id="@+id/llRules"
