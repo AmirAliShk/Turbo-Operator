@@ -148,7 +148,9 @@ public class ComplaintDetailFragment extends Fragment {
 
         setupViewPager(vpRegisterDriver);
 
-        indicator.setCurrentStep(complaintDetailsModel.getStatus());
+        if (indicator != null) {
+            indicator.setCurrentStep(complaintDetailsModel.getStatus());
+        }
 
         refreshStep(complaintDetailsModel.getStatus());
 
@@ -161,17 +163,20 @@ public class ComplaintDetailFragment extends Fragment {
 
         switch (statusId) {
             case 1: //accepted request
-                indicator.setCurrentStep(statusId - 1);
+                if (indicator != null)
+                    indicator.setCurrentStep(statusId - 1);
                 vpRegisterDriver.setCurrentItem(statusId - 1);
                 statusParam = 2;
                 break;
             case 2: //waiting for call
-                indicator.setCurrentStep(statusId - 1);
+                if (indicator != null)
+                    indicator.setCurrentStep(statusId - 1);
                 vpRegisterDriver.setCurrentItem(statusId - 1);
                 statusParam = 3;
                 break;
             case 3: //waiting for saveResult
-                indicator.setCurrentStep(statusId - 1);
+                if (indicator != null)
+                    indicator.setCurrentStep(statusId - 1);
                 if (vfNextStep != null) {
                     vfNextStep.setDisplayedChild(2);
                 }

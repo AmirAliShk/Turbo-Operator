@@ -71,15 +71,15 @@ public class ComplaintSaveResultFragment extends Fragment {
         ArrayList<TypeServiceModel> typeServiceModels = new ArrayList<>();
         ArrayList<String> serviceList = new ArrayList<String>();
         try {
-            JSONArray serviceArr = new JSONArray(MyApplication.prefManager.getComplaint());
+            JSONArray serviceArr = new JSONArray(MyApplication.prefManager.getReasonsLock());
             serviceList.add(0, "انتخاب نشده");
             for (int i = 0; i < serviceArr.length(); i++) {
                 JSONObject serviceObj = serviceArr.getJSONObject(i);
                 TypeServiceModel typeServiceModel = new TypeServiceModel();
-                typeServiceModel.setName(serviceObj.getString("ShektypeSharh"));
-                typeServiceModel.setId(serviceObj.getInt("sheKtypeId"));
+                typeServiceModel.setName(serviceObj.getString("Subject"));
+                typeServiceModel.setId(serviceObj.getInt("Id"));
                 typeServiceModels.add(typeServiceModel);
-                serviceList.add(serviceObj.getString("ShektypeSharh"));
+                serviceList.add(serviceObj.getString("Subject"));
             }
             if (binding.spComplaintType == null)
                 return;
