@@ -15,18 +15,27 @@
     <LinearLayout
         android:id="@+id/llHire"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
         android:layout_centerInParent="true"
         android:layout_marginLeft="15dp"
         android:layout_marginRight="15dp"
         android:gravity="center"
         android:orientation="vertical">
 
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:layout_marginLeft="15dp"
+        android:layout_marginRight="15dp"
+        android:gravity="center"
+        android:orientation="vertical"
+        android:background="@drawable/bg_gray_lite_edge">
+
         <TextView
             style="@style/dialogTitle"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="80dp"
             android:background="@drawable/bg_dialog_header"
             android:gravity="center"
             android:padding="@dimen/_8sdp"
@@ -39,8 +48,7 @@
             android:background="@drawable/bg_gray_lite_edge"
             android:gravity="top"
             android:orientation="vertical"
-            android:padding="10dp"
-            android:layout_marginTop="-10dp">
+            android:padding="10dp">
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -141,6 +149,8 @@
             </LinearLayout>
 
         </LinearLayout>
+
+    </LinearLayout>
 
         <ImageView
             android:id="@+id/imgClose"

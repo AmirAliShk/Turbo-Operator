@@ -16,21 +16,31 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical"
-        android:gravity="center"
         android:layout_centerInParent="true"
         android:layout_marginLeft="15dp"
-        android:layout_marginRight="15dp">
+        android:layout_marginRight="15dp"
+        android:gravity="center"
+        android:orientation="vertical">
 
-        <TextView
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:layout_marginLeft="15dp"
+        android:layout_marginRight="15dp"
+        android:gravity="center"
+        android:orientation="vertical"
+        android:background="@drawable/bg_gray_lite_edge">
+
+
+    <TextView
             style="@style/dialogTitle"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@drawable/bg_dialog_header"
             android:gravity="center"
             android:padding="@dimen/_8sdp"
-            android:text="ویرایش آدرس"
-            android:layout_marginTop="80dp"/>
+            android:text="ویرایش آدرس" />
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -107,6 +117,8 @@
 
         </LinearLayout>
 
+    </LinearLayout>
+
         <ImageView
             android:id="@+id/imgClose"
             android:layout_width="80dp"
@@ -115,6 +127,5 @@
             android:src="@drawable/ic_close_black_24dp" />
 
     </LinearLayout>
-
 
 </RelativeLayout>

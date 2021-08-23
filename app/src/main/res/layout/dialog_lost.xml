@@ -21,142 +21,153 @@
         android:gravity="center"
         android:orientation="vertical">
 
-        <TextView
-            style="@style/dialogTitle"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="80dp"
-            android:background="@drawable/bg_dialog_header"
-            android:gravity="center"
-            android:padding="@dimen/_8sdp"
-            android:text="ثبت اشیا گمشده" />
-
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_gravity="top|center_horizontal"
-            android:background="@drawable/bg_gray_lite_edge"            android:gravity="top"
-            android:orientation="vertical"
-            android:padding="10dp">
+            android:layout_centerInParent="true"
+            android:layout_marginLeft="15dp"
+            android:layout_marginRight="15dp"
+            android:background="@drawable/bg_gray_lite_edge"
+            android:gravity="center"
+            android:orientation="vertical">
+
+            <TextView
+                style="@style/dialogTitle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/bg_dialog_header"
+                android:gravity="center"
+                android:padding="@dimen/_8sdp"
+                android:text="ثبت اشیا گمشده" />
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="vertical">
-
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:paddingRight="10dp"
-                    android:text="نوع"
-                    android:textAppearance="?android:attr/textAppearanceMedium"
-                    android:textColor="?attr/colorTitle" />
+                android:layout_gravity="top|center_horizontal"
+                android:background="@drawable/bg_gray_lite_edge"
+                android:gravity="top"
+                android:orientation="vertical"
+                android:padding="10dp">
 
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="10dp"
-                    android:background="@drawable/bg_strock_corner"
-                    android:padding="10dp">
+                    android:orientation="vertical">
 
-                    <Spinner
-                        android:id="@+id/spType"
+                    <TextView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:backgroundTint="?attr/colorIcon1"
-                        android:dropDownWidth="match_parent"
-                        android:gravity="right"
-                        android:textColor="?attr/colorValue"/>
+                        android:paddingRight="10dp"
+                        android:text="نوع"
+                        android:textAppearance="?android:attr/textAppearanceMedium"
+                        android:textColor="?attr/colorTitle" />
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="10dp"
+                        android:background="@drawable/bg_strock_corner"
+                        android:padding="10dp">
+
+                        <Spinner
+                            android:id="@+id/spType"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:backgroundTint="?attr/colorIcon1"
+                            android:dropDownWidth="match_parent"
+                            android:gravity="right"
+                            android:textColor="?attr/colorValue" />
+
+                    </LinearLayout>
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="10dp"
+                        android:paddingRight="10dp"
+                        android:text="آدرس"
+                        android:textAppearance="?android:attr/textAppearanceMedium"
+                        android:textColor="?attr/colorTitle" />
+
+                    <EditText
+                        android:id="@+id/edtAddress"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="10dp"
+                        android:background="@drawable/edit_text_style"
+                        android:gravity="top|right"
+                        android:maxLines="2"
+                        android:padding="10dp"
+                        android:textColor="?attr/colorValue" />
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="10dp"
+                        android:maxLines="2"
+                        android:paddingRight="10dp"
+                        android:text="توضیحات"
+                        android:textAppearance="?android:attr/textAppearanceMedium"
+                        android:textColor="?attr/colorTitle" />
+
+                    <EditText
+                        android:id="@+id/edtComment"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="10dp"
+                        android:background="@drawable/edit_text_style"
+                        android:gravity="top|right"
+                        android:maxLines="2"
+                        android:minHeight="100dp"
+                        android:padding="10dp"
+                        android:textColor="?attr/colorValue" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/_40sdp"
+                    android:layout_marginTop="10dp"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:orientation="vertical">
+
+                    <ViewFlipper
+                        android:id="@+id/vfLoader"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:background="@drawable/green_shadow">
+
+                        <Button
+                            android:id="@+id/btnSubmit"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="40dp"
+                            android:layout_marginRight="40dp"
+                            android:background="@color/transparent"
+                            android:text="ثبت"
+                            android:textAppearance="?android:attr/textAppearanceLarge"
+                            android:textColor="?attr/colorPageTitle"
+                            android:textStyle="bold" />
+
+                        <com.wang.avi.AVLoadingIndicatorView
+                            android:layout_width="30dp"
+                            android:layout_height="30dp"
+                            android:layout_gravity="center"
+                            app:indicatorColor="@color/colorWhite" />
+
+                    </ViewFlipper>
 
                 </LinearLayout>
 
             </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical">
-
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="10dp"
-                    android:paddingRight="10dp"
-                    android:text="آدرس"
-                    android:textAppearance="?android:attr/textAppearanceMedium"
-                    android:textColor="?attr/colorTitle" />
-
-                <EditText
-                    android:id="@+id/edtAddress"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="10dp"
-                    android:background="@drawable/edit_text_style"
-                    android:gravity="top|right"
-                    android:maxLines="2"
-                    android:padding="10dp"
-                    android:textColor="?attr/colorValue"/>
-
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="10dp"
-                    android:maxLines="2"
-                    android:paddingRight="10dp"
-                    android:text="توضیحات"
-                    android:textAppearance="?android:attr/textAppearanceMedium"
-                    android:textColor="?attr/colorTitle" />
-
-                <EditText
-                    android:id="@+id/edtComment"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="10dp"
-                    android:background="@drawable/edit_text_style"
-                    android:gravity="top|right"
-                    android:maxLines="2"
-                    android:minHeight="100dp"
-                    android:padding="10dp"
-                    android:textColor="?attr/colorValue"/>
-
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="@dimen/_40sdp"
-                android:layout_marginTop="10dp"
-                android:layout_weight="1"
-                android:gravity="center"
-                android:orientation="vertical">
-
-                <ViewFlipper
-                    android:id="@+id/vfLoader"
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:background="@drawable/green_shadow">
-
-                    <Button
-                        android:id="@+id/btnSubmit"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginLeft="40dp"
-                        android:layout_marginRight="40dp"
-                        android:background="@color/transparent"
-                        android:text="ثبت"
-                        android:textAppearance="?android:attr/textAppearanceLarge"
-                        android:textColor="?attr/colorPageTitle"
-                        android:textStyle="bold" />
-
-                    <com.wang.avi.AVLoadingIndicatorView
-                        android:layout_width="30dp"
-                        android:layout_height="30dp"
-                        android:layout_gravity="center"
-                        app:indicatorColor="@color/colorWhite" />
-
-                </ViewFlipper>
-
-            </LinearLayout>
-
         </LinearLayout>
 
         <ImageView

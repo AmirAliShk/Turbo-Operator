@@ -22,11 +22,20 @@
         android:gravity="center"
         android:orientation="vertical">
 
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:layout_marginLeft="15dp"
+        android:layout_marginRight="15dp"
+        android:gravity="center"
+        android:orientation="vertical"
+        android:background="@drawable/bg_gray_lite_edge">
+
         <TextView
             style="@style/dialogTitle"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="80dp"
             android:background="@drawable/bg_dialog_header"
             android:gravity="center"
             android:padding="@dimen/_8sdp"
@@ -36,7 +45,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="top|center_horizontal"
-            android:background="@drawable/bg_gray_lite_edge"            android:gravity="top"
+            android:background="@drawable/bg_gray_lite_edge"
+            android:gravity="top"
             android:orientation="vertical"
             android:padding="10dp">
 
@@ -84,7 +94,7 @@
                             android:inputType="numberDecimal"
                             android:padding="10dp"
                             android:singleLine="true"
-                            android:textColor="?attr/colorValue"/>
+                            android:textColor="?attr/colorValue" />
 
                     </LinearLayout>
 
@@ -117,7 +127,7 @@
                             android:inputType="numberDecimal"
                             android:padding="10dp"
                             android:singleLine="true"
-                            android:textColor="?attr/colorValue"/>
+                            android:textColor="?attr/colorValue" />
 
                     </LinearLayout>
 
@@ -161,7 +171,7 @@
                             android:inputType="numberDecimal"
                             android:padding="10dp"
                             android:singleLine="true"
-                            android:textColor="?attr/colorValue"/>
+                            android:textColor="?attr/colorValue" />
 
                     </LinearLayout>
 
@@ -240,6 +250,8 @@
             </LinearLayout>
 
         </LinearLayout>
+
+    </LinearLayout>
 
         <ImageView
             android:id="@+id/imgClose"

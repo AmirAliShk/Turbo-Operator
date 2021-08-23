@@ -15,18 +15,29 @@
     <LinearLayout
         android:id="@+id/llReserveTrip"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
         android:layout_centerInParent="true"
         android:layout_marginLeft="15dp"
         android:layout_marginRight="15dp"
         android:gravity="center"
         android:orientation="vertical">
 
-        <TextView
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:layout_marginLeft="15dp"
+        android:layout_marginRight="15dp"
+        android:gravity="center"
+        android:orientation="vertical"
+        android:background="@drawable/bg_gray_lite_edge">
+
+
+    <TextView
             style="@style/dialogTitle"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="80dp"
+
             android:background="@drawable/bg_dialog_header"
             android:gravity="center"
             android:padding="@dimen/_8sdp"
@@ -138,6 +149,8 @@
             </LinearLayout>
 
         </LinearLayout>
+
+    </LinearLayout>
 
         <ImageView
             android:id="@+id/imgClose"
