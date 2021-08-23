@@ -251,8 +251,8 @@ public class PendingMistakesFragment extends Fragment {
 
                         @Override
                         public void onError(Error error) {
-                            Log.e("PlayConversationDialog", "onError: " + error.getResponseCode() + "");
-                            Log.e("PlayConversationDialog", "onError: " + error.getServerErrorMessage() + "");
+                            Log.e("pendingMistakeFragment", "onError: " + error.getResponseCode() + "");
+                            Log.e("pendingMistakeFragment", "onError: " + error.getServerErrorMessage() + "");
                             FileHelper.deleteFile(dirPathTemp, fileName);
                             if (error.getResponseCode() == 401)
                                 new RefreshTokenAsyncTask().execute();
@@ -317,7 +317,7 @@ public class PendingMistakesFragment extends Fragment {
     private Timer timer;
 
     private void startTimer() {
-        Log.i("PlayConversationDialog", "startTimer: ");
+        Log.i("pendingMistakeFragment", "startTimer: ");
         if (timer != null) {
             return;
         }
@@ -409,7 +409,7 @@ public class PendingMistakesFragment extends Fragment {
             if (mediaPlayer != null) {
                 try {
                     MyApplication.handler.post(() -> {
-                        Log.i("PlayConversationDialog", "onStopTrackingTouch run: " + mediaPlayer.getCurrentPosition());
+                        Log.i("pendingMistakeFragment", "onStopTrackingTouch run: " + mediaPlayer.getCurrentPosition());
                         skbTimer.setProgress(mediaPlayer.getCurrentPosition());
                     });
                 } catch (Exception e) {
