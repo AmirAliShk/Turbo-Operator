@@ -137,6 +137,6 @@
         android:layout_marginLeft="@dimen/_10sdp"
         android:layout_marginRight="@dimen/_10sdp"
         android:alpha="0.5"
-        android:background="@color/colorAccent" />
+        android:background="?attr/colorpinkPurple" />
 
 </LinearLayout>

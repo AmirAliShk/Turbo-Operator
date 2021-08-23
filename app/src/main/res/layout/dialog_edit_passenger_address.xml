@@ -42,7 +42,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="top|center_horizontal"
-                android:background="@drawable/bg_dialog_body"
+                android:background="@drawable/bg_gray_lite_edge"
                 android:gravity="top"
                 android:orientation="vertical"
                 android:padding="10dp">
@@ -58,7 +58,7 @@
                         android:paddingRight="10dp"
                         android:text="شهر"
                         android:textAppearance="?android:attr/textAppearanceMedium"
-                        android:textColor="@color/grayMedium" />
+                        android:textColor="?attr/colorTitle" />
 
                     <LinearLayout
                         android:layout_width="match_parent"
@@ -70,9 +70,10 @@
                             android:id="@+id/spCity"
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
-                            android:backgroundTint="@color/colorPurple"
+                            android:backgroundTint="?attr/colorIcon1"
                             android:dropDownWidth="match_parent"
-                            android:gravity="right" />
+                            android:gravity="right"
+                            android:textColor="?attr/colorValue"/>
 
                     </LinearLayout>
 
@@ -92,7 +93,7 @@
                         android:paddingRight="10dp"
                         android:text="آدرس مبدا"
                         android:textAppearance="?android:attr/textAppearanceMedium"
-                        android:textColor="@color/grayMedium" />
+                        android:textColor="?attr/colorTitle" />
 
                     <EditText
                         android:id="@+id/edtOriginAddress"
@@ -102,7 +103,8 @@
                         android:background="@drawable/edit_text_style"
                         android:gravity="top|right"
                         android:maxLines="2"
-                        android:padding="10dp" />
+                        android:padding="10dp"
+                        android:textColor="?attr/colorValue"/>
 
                 </LinearLayout>
 
@@ -121,7 +123,7 @@
                         android:paddingRight="10dp"
                         android:text="ایستگاه مبدا"
                         android:textAppearance="?android:attr/textAppearanceMedium"
-                        android:textColor="@color/grayMedium" />
+                        android:textColor="?attr/colorTitle" />
 
                     <EditText
                         android:id="@+id/edtOriginStation"
@@ -132,7 +134,8 @@
                         android:gravity="top|right"
                         android:inputType="number"
                         android:maxLength="3"
-                        android:padding="10dp" />
+                        android:padding="10dp"
+                        android:textColor="?attr/colorValue"/>
 
                 </LinearLayout>
 
@@ -150,7 +153,7 @@
                         android:paddingRight="10dp"
                         android:text="آدرس مقصد"
                         android:textAppearance="?android:attr/textAppearanceMedium"
-                        android:textColor="@color/grayMedium" />
+                        android:textColor="?attr/colorTitle" />
 
                     <EditText
                         android:id="@+id/edtDestinationAddress"
@@ -161,7 +164,8 @@
                         android:gravity="top|right"
                         android:maxLines="2"
                         android:nextFocusDown="@id/edtDestinationStation"
-                        android:padding="10dp" />
+                        android:padding="10dp"
+                        android:textColor="?attr/colorValue"/>
 
                 </LinearLayout>
 
@@ -180,7 +184,7 @@
                         android:paddingRight="10dp"
                         android:text="ایستگاه مقصد"
                         android:textAppearance="?android:attr/textAppearanceMedium"
-                        android:textColor="@color/grayMedium" />
+                        android:textColor="?attr/colorTitle" />
 
                     <EditText
                         android:id="@+id/edtDestinationStation"
@@ -191,7 +195,8 @@
                         android:gravity="top|right"
                         android:inputType="number"
                         android:maxLength="3"
-                        android:padding="10dp" />
+                        android:padding="10dp"
+                        android:textColor="?attr/colorValue"/>
 
                 </LinearLayout>
 

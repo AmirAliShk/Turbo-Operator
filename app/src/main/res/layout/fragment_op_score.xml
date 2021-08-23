@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:background="@color/colorPrimaryLighter"
+    android:background="?attr/colorPageBackground"
     android:clickable="true"
     tools:context=".fragment.OpScoreFragment">
 
@@ -12,28 +12,28 @@
         android:id="@+id/txtTotalScore"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:textColor="@color/colorBlack"
+        android:textColor="?attr/colorValue"
         android:padding="10dp"/>
 
     <TextView
         android:id="@+id/txtMonthScore"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:textColor="@color/colorBlack"
+        android:textColor="?attr/colorValue"
         android:padding="10dp"/>
 
     <TextView
         android:id="@+id/txtWeekScore"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:textColor="@color/colorBlack"
+        android:textColor="?attr/colorValue"
         android:padding="10dp"/>
 
     <TextView
         android:id="@+id/txtTodayScore"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:textColor="@color/colorBlack"
+        android:textColor="?attr/colorValue"
         android:padding="10dp"/>
 
 </LinearLayout>

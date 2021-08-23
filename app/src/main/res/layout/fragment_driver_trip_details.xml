@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/colorPrimaryLighter"
+    android:background="?attr/colorPageBackground"
     android:clickable="true"
     android:layoutDirection="rtl"
     android:orientation="vertical"
@@ -14,7 +14,7 @@
         android:id="@+id/rlActionBar"
         android:layout_width="match_parent"
         android:layout_height="?android:attr/actionBarSize"
-        android:background="@color/colorPrimaryDark"
+        android:background="?attr/colorActionBarBackground"
         android:layoutDirection="ltr">
 
         <ImageView
@@ -47,7 +47,7 @@
                 android:gravity="center"
                 app:duration="1500"
                 app:endRadius="25dp"
-                app:rippleColor="@color/colorWhite"
+                app:rippleColor="?attr/colorValue"
                 app:rippleType="stroke"
                 app:startRadius="13dp"
                 app:strokeWidth="1dp" />
@@ -71,12 +71,12 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <com.wang.avi.AVLoadingIndicatorView
-            android:layout_width="50dp"
-            android:layout_height="50dp"
-            android:layout_gravity="center"
-            app:indicatorColor="@color/colorPrimaryDark"
-            app:indicatorName="BallSpinFadeLoaderIndicator" />
+<!--        <com.wang.avi.AVLoadingIndicatorView-->
+<!--            android:layout_width="50dp"-->
+<!--            android:layout_height="50dp"-->
+<!--            android:layout_gravity="center"-->
+<!--            app:indicatorColor="?attr/colorIcon1"-->
+<!--            app:indicatorName="BallSpinFadeLoaderIndicator" />-->
 
         <ScrollView
             android:layout_width="match_parent"
@@ -114,7 +114,7 @@
                         android:layout_marginRight="10dp"
                         android:gravity="center"
                         android:textAppearance="?android:attr/textAppearanceMedium"
-                        android:textColor="@color/colorWhite" />
+                        android:textColor="?attr/colorPageTitle" />
 
                 </LinearLayout>
 
@@ -565,7 +565,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="2dp"
                         android:layout_weight="1"
-                        android:background="@color/grayMedium" />
+                        android:background="?attr/colorValue" />
 
                     <TextView
                         android:layout_width="wrap_content"
@@ -575,13 +575,13 @@
                         android:paddingRight="10dp"
                         android:text="اطلاعات راننده"
                         android:textAppearance="?android:attr/textAppearanceMedium"
-                        android:textColor="@color/colorPrimaryDark" />
+                        android:textColor="?attr/colorIcon1" />
 
                     <View
                         android:layout_width="wrap_content"
                         android:layout_height="2dp"
                         android:layout_weight="1"
-                        android:background="@color/grayMedium" />
+                        android:background="?attr/colorValue" />
 
                 </LinearLayout>
 

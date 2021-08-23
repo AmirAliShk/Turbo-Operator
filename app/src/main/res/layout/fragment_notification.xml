@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:background="@color/colorPrimaryLighter"
+    android:background="?attr/colorPageBackground"
     android:clickable="true"
     android:orientation="vertical"
     tools:context="ir.taxi1880.operatormanagement.fragment.NotificationFragment">
@@ -14,7 +14,7 @@
         android:layout_width="match_parent"
         android:layoutDirection="ltr"
         android:layout_height="?android:attr/actionBarSize"
-        android:background="@color/colorPrimaryDark">
+        android:background="?attr/colorActionBarBackground">
 
         <ImageView
             android:id="@+id/imgBack"
@@ -44,7 +44,7 @@
             android:layout_height="50dp"
             android:layout_gravity="center"
             app:indicatorName="BallSpinFadeLoaderIndicator"
-            app:indicatorColor="@color/colorPrimaryDark" />
+            app:indicatorColor="?attr/colorIcon1" />
 
         <ListView
             android:layout_below="@id/rlActionBar"
@@ -59,7 +59,7 @@
             android:layout_centerInParent="true"
             android:gravity="center"
             android:textSize="@dimen/text_title"
-            android:textColor="@color/colorBlack"
+            android:textColor="?attr/colorValue"
             android:visibility="gone"
             android:text="هیچ اطلاعیه ای موجود نیست!"
             android:layout_width="match_parent"
@@ -69,7 +69,7 @@
             android:layout_centerInParent="true"
             android:gravity="center"
             android:textSize="@dimen/text_title"
-            android:textColor="@color/colorBlack"
+            android:textColor="?attr/colorValue"
             android:visibility="gone"
             android:text="متاسفانه هنگام دریافت اطلاعات از سرور به مشکل خوردیم \n لطفا مجدد تلاش کنید!"
             android:layout_width="match_parent"

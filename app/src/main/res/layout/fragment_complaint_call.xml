@@ -139,9 +139,9 @@
                             android:layout_weight="2.5"
                             app:isb_seek_smoothly="true"
                             app:isb_show_indicator="none"
-                            app:isb_thumb_color="@color/colorPrimaryDark"
+                            app:isb_thumb_color="?attr/colorIcon1"
                             app:isb_thumb_size="13dp"
-                            app:isb_track_background_color="@color/grayLight"
+                            app:isb_track_background_color="?attr/colorValue"
                             app:isb_track_background_size="3dp"
                             app:isb_track_progress_color="@color/colorPrimaryDark"
                             app:isb_track_progress_size="5dp" />

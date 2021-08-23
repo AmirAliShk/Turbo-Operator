@@ -21,11 +21,16 @@
         android:gravity="center"
         android:orientation="vertical">
 
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/bg_gray_lite_edge"
+        android:orientation="vertical">
+
         <TextView
             style="@style/dialogTitle"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="80dp"
             android:background="@drawable/bg_dialog_header"
             android:gravity="center"
             android:padding="@dimen/_8sdp"
@@ -35,7 +40,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="top|center_horizontal"
-            android:background="@drawable/bg_dialog_body"
+            android:background="@drawable/bg_gray_lite_edge"
             android:gravity="top"
             android:orientation="vertical"
             android:padding="10dp">
@@ -51,20 +56,20 @@
                     android:paddingRight="10dp"
                     android:text="نوع شکایت"
                     android:textAppearance="?android:attr/textAppearanceMedium"
-                    android:textColor="@color/grayMedium" />
+                    android:textColor="?attr/colorTitle" />
 
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="10dp"
-                    android:background="@drawable/bg_strock_corner"
+                    android:background="@drawable/bg_edit_text"
                     android:padding="10dp">
 
                     <Spinner
                         android:id="@+id/spComplaintType"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:backgroundTint="@color/colorPurple"
+                        android:backgroundTint="?attr/colorpinkPurple"
                         android:dropDownWidth="match_parent"
                         android:gravity="right" />
 
@@ -95,7 +100,7 @@
                         android:background="@color/transparent"
                         android:text="ثبت"
                         android:textAppearance="?android:attr/textAppearanceLarge"
-                        android:textColor="@color/colorWhite"
+                        android:textColor="?attr/colorPageTitle"
                         android:textStyle="bold" />
 
                     <com.wang.avi.AVLoadingIndicatorView
@@ -109,6 +114,8 @@
             </LinearLayout>
 
         </LinearLayout>
+
+    </LinearLayout>
 
         <ImageView
             android:id="@+id/imgClose"

@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/colorPrimaryLighter"
+    android:background="?attr/colorPageBackground"
     android:layoutDirection="rtl"
     android:orientation="vertical"
     tools:context=".activity.TripRegisterActivity">
@@ -102,14 +102,14 @@
         android:id="@+id/rlActionBar"
         android:layout_width="match_parent"
         android:layout_height="?android:attr/actionBarSize"
-        android:background="@drawable/bg_action_bar_purple">
+        android:background="?attr/colorActionBarBackground">
 
         <LinearLayout
             android:id="@+id/llStatus"
             android:layout_width="160dp"
             android:layout_height="45dp"
             android:layout_centerInParent="true"
-            android:background="@drawable/bg_activate_status"
+            android:background="@drawable/bg_blue_border_edge"
             android:gravity="center"
             android:orientation="horizontal">
 
@@ -123,7 +123,7 @@
                 android:gravity="center"
                 android:text="فعال"
                 android:textAppearance="?android:attr/textAppearanceMedium"
-                android:textColor="@color/colorWhite" />
+                android:textColor="?attr/colorValue" />
 
             <Button
                 android:id="@+id/btnDeActivate"
@@ -135,7 +135,7 @@
                 android:gravity="center"
                 android:text="غیر فعال"
                 android:textAppearance="?android:attr/textAppearanceMedium"
-                android:textColor="@color/colorWhite" />
+                android:textColor="?attr/colorValue" />
 
         </LinearLayout>
 
@@ -250,7 +250,7 @@
                             android:paddingRight="5dp"
                             android:text="شهر"
                             android:textAppearance="?android:attr/textAppearanceSmall"
-                            android:textColor="@color/grayMedium" />
+                            android:textColor="?attr/colorTitle" />
 
                         <ImageView
                             android:layout_width="20dp"
@@ -276,7 +276,8 @@
                                 android:dropDownWidth="match_parent"
                                 android:gravity="center"
                                 android:paddingTop="5dp"
-                                android:paddingBottom="5dp" />
+                                android:paddingBottom="5dp"
+                                android:textColor="?attr/colorValue" />
 
                         </RelativeLayout>
 
@@ -307,7 +308,7 @@
                             android:paddingRight="5dp"
                             android:text="تلفن"
                             android:textAppearance="?android:attr/textAppearanceSmall"
-                            android:textColor="@color/grayMedium" />
+                            android:textColor="?attr/colorTitle" />
 
                         <EditText
                             android:id="@+id/edtTell"
@@ -321,7 +322,7 @@
                             android:padding="5dp"
                             android:singleLine="true"
                             android:textAppearance="?android:attr/textAppearanceMedium"
-                            android:textColor="@color/colorBlack"
+                            android:textColor="?attr/colorValue"
                             android:textDirection="ltr" />
 
                     </LinearLayout>
@@ -343,7 +344,7 @@
                             android:gravity="center"
                             android:text="حذف"
                             android:textAppearance="?android:attr/textAppearanceSmall"
-                            android:textColor="@color/grayMedium" />
+                            android:textColor="?attr/colorTitle" />
 
                         <LinearLayout
                             android:layout_width="match_parent"
@@ -385,7 +386,7 @@
                         android:paddingRight="5dp"
                         android:text="تخفیف"
                         android:textAppearance="?android:attr/textAppearanceSmall"
-                        android:textColor="@color/grayMedium" />
+                        android:textColor="?attr/colorTitle" />
 
                     <EditText
                         android:id="@+id/edtDiscount"
@@ -400,7 +401,7 @@
                         android:padding="5dp"
                         android:singleLine="true"
                         android:textAppearance="?android:attr/textAppearanceMedium"
-                        android:textColor="@color/colorBlack" />
+                        android:textColor="?attr/colorValue" />
 
                 </LinearLayout>
 
@@ -427,7 +428,7 @@
                             android:paddingRight="5dp"
                             android:text="همراه"
                             android:textAppearance="?android:attr/textAppearanceSmall"
-                            android:textColor="@color/grayMedium" />
+                            android:textColor="?attr/colorTitle" />
 
                         <LinearLayout
                             android:layout_width="match_parent"
@@ -449,7 +450,7 @@
                                 android:padding="5dp"
                                 android:singleLine="true"
                                 android:textAppearance="?android:attr/textAppearanceMedium"
-                                android:textColor="@color/colorBlack"
+                                android:textColor="?attr/colorValue"
                                 android:textDirection="ltr" />
 
                             <ImageView
@@ -515,7 +516,7 @@
                     android:paddingRight="5dp"
                     android:text="مبدا"
                     android:textAppearance="?android:attr/textAppearanceSmall"
-                    android:textColor="@color/grayMedium" />
+                    android:textColor="?attr/colorTitle" />
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -544,7 +545,7 @@
                                 android:layout_gravity="center"
                                 android:gravity="center"
                                 android:text="بیشتر"
-                                android:textColor="@color/colorAccent"
+                                android:textColor="?attr/colorpinkPurple"
                                 android:textStyle="bold" />
 
                             <com.wang.avi.AVLoadingIndicatorView
@@ -578,7 +579,7 @@
                             android:paddingRight="5dp"
                             android:singleLine="true"
                             android:textAppearance="?android:attr/textAppearanceMedium"
-                            android:textColor="@color/colorBlack" />
+                            android:textColor="?attr/colorValue" />
 
                         <ImageView
                             android:id="@+id/clearAddress"
@@ -614,7 +615,7 @@
                     android:paddingRight="5dp"
                     android:text="مقصد"
                     android:textAppearance="?android:attr/textAppearanceSmall"
-                    android:textColor="@color/grayMedium" />
+                    android:textColor="?attr/colorTitle" />
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -649,7 +650,7 @@
                                     android:layout_gravity="center"
                                     android:gravity="center"
                                     android:text="بیشتر"
-                                    android:textColor="@color/colorAccent"
+                                    android:textColor="?attr/colorpinkPurple"
                                     android:textStyle="bold" />
 
                                 <com.wang.avi.AVLoadingIndicatorView
@@ -685,7 +686,7 @@
                             android:paddingRight="5dp"
                             android:singleLine="true"
                             android:textAppearance="?android:attr/textAppearanceMedium"
-                            android:textColor="@color/colorBlack" />
+                            android:textColor="?attr/colorValue"  />
 
                         <ImageView
                             android:id="@+id/clearDestinationAddress"
@@ -733,7 +734,7 @@
                             android:paddingRight="5dp"
                             android:text="نوع سفر"
                             android:textAppearance="?android:attr/textAppearanceSmall"
-                            android:textColor="@color/grayMedium" />
+                            android:textColor="?attr/colorTitle" />
 
                         <ImageView
                             android:layout_width="20dp"
@@ -755,7 +756,8 @@
                             android:dropDownWidth="match_parent"
                             android:gravity="center"
                             android:paddingTop="5dp"
-                            android:paddingBottom="5dp" />
+                            android:paddingBottom="5dp"
+                            android:textColor="?attr/colorValue" />
 
                     </LinearLayout>
 
@@ -783,7 +785,7 @@
                             android:paddingRight="5dp"
                             android:text="نام خانوادگی"
                             android:textAppearance="?android:attr/textAppearanceSmall"
-                            android:textColor="@color/grayMedium" />
+                            android:textColor="?attr/colorTitle" />
 
                         <TextView
                             android:id="@+id/txtNewPassenger"
@@ -820,7 +822,7 @@
                         android:padding="5dp"
                         android:singleLine="true"
                         android:textAppearance="?android:attr/textAppearanceMedium"
-                        android:textColor="@color/colorBlack" />
+                        android:textColor="?attr/colorValue"  />
 
                 </LinearLayout>
 
@@ -840,7 +842,7 @@
                         android:gravity="center"
                         android:text="طرح"
                         android:textAppearance="?android:attr/textAppearanceSmall"
-                        android:textColor="@color/grayMedium" />
+                        android:textColor="?attr/colorTitle" />
 
                     <LinearLayout
                         android:id="@+id/llTrafficBg"
@@ -883,7 +885,7 @@
                         android:paddingRight="5dp"
                         android:text="توضیحات دائمی"
                         android:textAppearance="?android:attr/textAppearanceSmall"
-                        android:textColor="@color/grayMedium" />
+                        android:textColor="?attr/colorTitle" />
 
                     <RelativeLayout
                         android:layout_width="match_parent"
@@ -905,7 +907,7 @@
                             android:nextFocusDown="@id/btnSubmit"
                             android:singleLine="true"
                             android:textAppearance="?android:attr/textAppearanceMedium"
-                            android:textColor="@color/colorBlack" />
+                            android:textColor="?attr/colorValue"  />
 
                         <LinearLayout
                             android:id="@+id/llDescriptionDetail"
@@ -921,7 +923,7 @@
                                 android:layout_margin="5dp"
                                 android:gravity="left|center_vertical"
                                 android:text="جزئیات"
-                                android:textColor="@color/colorAccent"
+                                android:textColor="?attr/colorpinkPurple"
                                 android:textStyle="bold" />
 
                         </LinearLayout>
@@ -953,7 +955,7 @@
                             android:paddingRight="5dp"
                             android:text="تعداد"
                             android:textAppearance="?android:attr/textAppearanceSmall"
-                            android:textColor="@color/grayMedium" />
+                            android:textColor="?attr/colorTitle" />
 
                         <ImageView
                             android:layout_width="20dp"
@@ -975,7 +977,8 @@
                             android:dropDownWidth="match_parent"
                             android:gravity="center"
                             android:paddingTop="5dp"
-                            android:paddingBottom="5dp" />
+                            android:paddingBottom="5dp"
+                            android:textColor="?attr/colorValue" />
 
                     </LinearLayout>
 
@@ -1001,7 +1004,7 @@
                         android:paddingRight="5dp"
                         android:text="کلاس خودرو"
                         android:textAppearance="?android:attr/textAppearanceSmall"
-                        android:textColor="@color/grayMedium" />
+                        android:textColor="?attr/colorTitle" />
 
                     <ir.taxi1880.operatormanagement.customView.MultiRowsRadioGroup xmlns:multi_line_radio_group="http://schemas.android.com/apk/res-auto"
                         android:id="@+id/rgCarClass"
@@ -1024,28 +1027,31 @@
                                 android:layout_width="0dp"
                                 android:layout_height="match_parent"
                                 android:layout_weight="1"
-                                android:buttonTint="@color/colorAccent"
+                                android:buttonTint="?attr/colorpinkPurple"
                                 android:checked="true"
                                 android:text="@string/unKnow"
-                                android:textAppearance="?android:attr/textAppearanceSmall" />
+                                android:textAppearance="?android:attr/textAppearanceSmall"
+                                android:textColor="?attr/colorValue" />
 
                             <RadioButton
                                 android:id="@+id/rbEconomical"
                                 android:layout_width="0dp"
                                 android:layout_height="match_parent"
                                 android:layout_weight="1"
-                                android:buttonTint="@color/colorAccent"
+                                android:buttonTint="?attr/colorpinkPurple"
                                 android:text="@string/economically"
-                                android:textAppearance="?android:attr/textAppearanceSmall" />
+                                android:textAppearance="?android:attr/textAppearanceSmall"
+                                android:textColor="?attr/colorValue" />
 
                             <RadioButton
                                 android:id="@+id/rbPrivilage"
                                 android:layout_width="0dp"
                                 android:layout_height="match_parent"
                                 android:layout_weight="1"
-                                android:buttonTint="@color/colorAccent"
+                                android:buttonTint="?attr/colorpinkPurple"
                                 android:text="@string/privilege"
-                                android:textAppearance="?android:attr/textAppearanceSmall" />
+                                android:textAppearance="?android:attr/textAppearanceSmall"
+                                android:textColor="?attr/colorValue" />
 
                         </LinearLayout>
 
@@ -1060,18 +1066,20 @@
                                 android:layout_width="0dp"
                                 android:layout_height="match_parent"
                                 android:layout_weight="1"
-                                android:buttonTint="@color/colorAccent"
+                                android:buttonTint="?attr/colorpinkPurple"
                                 android:text="@string/taxi"
-                                android:textAppearance="?android:attr/textAppearanceSmall" />
+                                android:textAppearance="?android:attr/textAppearanceSmall"
+                                android:textColor="?attr/colorValue" />
 
                             <RadioButton
                                 android:id="@+id/rbFormality"
                                 android:layout_width="0dp"
                                 android:layout_height="match_parent"
                                 android:layout_weight="2"
-                                android:buttonTint="@color/colorAccent"
+                                android:buttonTint="?attr/colorpinkPurple"
                                 android:text="@string/formality"
-                                android:textAppearance="?android:attr/textAppearanceSmall" />
+                                android:textAppearance="?android:attr/textAppearanceSmall"
+                                android:textColor="?attr/colorValue" />
 
                         </LinearLayout>
 
@@ -1107,7 +1115,7 @@
                                 android:paddingRight="5dp"
                                 android:text="زمان توقف"
                                 android:textAppearance="?android:attr/textAppearanceSmall"
-                                android:textColor="@color/grayMedium" />
+                                android:textColor="?attr/colorTitle" />
 
                             <ImageView
                                 android:layout_width="20dp"
@@ -1129,7 +1137,8 @@
                                 android:dropDownWidth="match_parent"
                                 android:gravity="center"
                                 android:paddingTop="5dp"
-                                android:paddingBottom="5dp" />
+                                android:paddingBottom="5dp"
+                                android:textColor="?attr/colorValue" />
 
                         </LinearLayout>
 
@@ -1148,7 +1157,7 @@
                             android:gravity="center"
                             android:text="دائم"
                             android:textAppearance="?android:attr/textAppearanceSmall"
-                            android:textColor="@color/grayMedium" />
+                            android:textColor="?attr/colorTitle" />
 
                         <LinearLayout
                             android:id="@+id/llAlwaysBg"
@@ -1197,7 +1206,7 @@
                         android:background="@color/transparent"
                         android:text="ثبت سرویس "
                         android:textAppearance="?android:attr/textAppearanceLarge"
-                        android:textColor="@color/colorWhite"
+                        android:textColor="?attr/colorPageTitle"
                         android:textStyle="bold" />
 
                     <com.wang.avi.AVLoadingIndicatorView
@@ -1218,7 +1227,7 @@
                     android:layout_weight="1"
                     android:background="@drawable/bg_strock_corner"
                     android:text="گزینه ها"
-                    android:textColor="@color/colorBlack"
+                    android:textColor="?attr/colorValue"
                     android:textSize="@dimen/text_header" />
 
             </LinearLayout>

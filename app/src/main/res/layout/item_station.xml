@@ -21,13 +21,13 @@
             android:layout_weight="1.5"
             android:layout_height="match_parent"
             android:gravity="center"
-            android:textColor="@color/colorBlack"
+            android:textColor="?attr/colorText"
             android:textAppearance="?android:attr/textAppearanceSmall" />
 
         <ImageView
             android:layout_width="1dp"
             android:layout_height="match_parent"
-            android:background="@color/grayLight"/>
+            android:background="?attr/colorIcon1"/>
 
         <TextView
             android:id="@+id/txtStationCode"
@@ -35,13 +35,13 @@
             android:layout_weight="0.5"
             android:layout_height="match_parent"
             android:gravity="center"
-            android:textColor="@color/colorBlack"
+            android:textColor="?attr/colorText"
             android:textAppearance="?android:attr/textAppearanceSmall"/>
 
         <ImageView
             android:layout_width="1dp"
             android:layout_height="match_parent"
-            android:background="@color/grayLight"/>
+            android:background="?attr/colorIcon1"/>
 
         <TextView
             android:id="@+id/txtStationName"
@@ -51,7 +51,7 @@
             android:paddingRight="5dp"
             android:gravity="center"
             android:singleLine="true"
-            android:textColor="@color/colorBlack"
+            android:textColor="?attr/colorText"
             android:textAppearance="?android:attr/textAppearanceSmall"/>
 
     </LinearLayout>
@@ -61,6 +61,6 @@
         android:layout_height="0.5dp"
         android:layout_marginLeft="25dp"
         android:layout_marginRight="25dp"
-        android:background="#D6D4D4" />
+        android:background="?attr/colorpinkPurple" />
 
 </LinearLayout>

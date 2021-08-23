@@ -111,7 +111,7 @@
                         android:layout_width="30dp"
                         android:layout_height="30dp"
                         android:layout_gravity="center"
-                        app:indicatorColor="@color/colorPrimaryDark"
+                        app:indicatorColor="?attr/colorIcon1"
                         app:indicatorName="BallBeatIndicator" />
 
                     <ProgressBar
@@ -132,7 +132,7 @@
                         android:layout_centerInParent="true"
                         android:text="0%"
                         android:textAppearance="?android:attr/textAppearanceSmall"
-                        android:textColor="@color/colorAccent"
+                        android:textColor="?attr/colorpinkPurple"
                         android:textStyle="bold"
                         android:visibility="gone" />
 
@@ -154,7 +154,7 @@
                     android:padding="15dp"
                     android:text="تماسی وجود ندارد."
                     android:textAppearance="?android:attr/textAppearanceMedium"
-                    android:textColor="@color/colorBlack"
+                    android:textColor="?attr/colorValue"
                     android:textStyle="bold" />
 
                 <TextView
@@ -165,7 +165,7 @@
                     android:padding="15dp"
                     android:text="متاسفیم خطایی در هنگام دانلود رخ داد لطفا پس از چند دقیقه مجدد تلاش فرمایید."
                     android:textAppearance="?android:attr/textAppearanceMedium"
-                    android:textColor="@color/colorBlack"
+                    android:textColor="?attr/colorValue"
                     android:textStyle="bold" />
 
             </ViewFlipper>

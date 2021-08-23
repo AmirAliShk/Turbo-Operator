@@ -44,7 +44,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:gravity="center"
-                    android:textColor="@color/colorBlack"
+                    android:textColor="?attr/colorValue"
                     android:textSize="@dimen/text_title"
                     android:textStyle="bold" />
 
@@ -78,7 +78,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:gravity="center"
-                        android:textColor="@color/colorBlack"
+                        android:textColor="?attr/colorValue"
                         android:textSize="@dimen/text_title"
                         android:textStyle="bold" />
 
@@ -103,7 +103,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:gravity="center"
-                        android:textColor="@color/colorBlack"
+                        android:textColor="?attr/colorValue"
                         android:textSize="@dimen/text_title"
                         android:textStyle="bold" />
 
@@ -133,7 +133,7 @@
                     <TextView
                         android:text="قبول میکنم"
                         android:gravity="center"
-                        android:textColor="@color/colorWhite"
+                        android:textColor="?attr/colorPageTitle"
                         android:textSize="@dimen/text_title"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"/>
@@ -160,7 +160,7 @@
                     <TextView
                         android:text="قبول نمیکنم"
                         android:gravity="center"
-                        android:textColor="@color/colorWhite"
+                        android:textColor="?attr/colorPageTitle"
                         android:textSize="@dimen/text_title"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"/>

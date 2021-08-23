@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/colorPrimaryLighter"
+    android:background="?attr/colorPageBackground"
     android:clickable="true"
     android:layoutDirection="rtl"
     android:orientation="vertical">
@@ -13,14 +13,14 @@
         android:id="@+id/rlActionBar"
         android:layout_width="match_parent"
         android:layout_height="?android:attr/actionBarSize"
-        android:background="@drawable/bg_action_bar_purple">
+        android:background="?attr/colorActionBarBackground">
 
         <LinearLayout
             android:id="@+id/llStatus"
             android:layout_width="160dp"
             android:layout_height="45dp"
             android:layout_centerInParent="true"
-            android:background="@drawable/bg_activate_status"
+            android:background="@drawable/edit_text_style"
             android:gravity="center"
             android:orientation="horizontal">
 
@@ -264,7 +264,7 @@
                 android:padding="15dp"
                 android:src="@drawable/ic_play"
                 android:visibility="visible"
-                app:tint="@color/colorPrimaryDark" />
+                app:tint="?attr/colorIcon1" />
 
         </LinearLayout>
 
@@ -289,7 +289,7 @@
                 android:background="@drawable/selector_top_left"
                 android:text="@string/one"
                 android:textAppearance="?android:attr/textAppearanceLarge"
-                android:textColor="@color/colorBlack"
+                android:textColor="?attr/colorPageTitle"
                 android:textStyle="bold"
                 app:layout_columnWeight="1"
                 app:layout_rowWeight="1" />
@@ -301,7 +301,7 @@
                 android:background="@drawable/selector_normal_btn"
                 android:text="@string/two"
                 android:textAppearance="?android:attr/textAppearanceLarge"
-                android:textColor="@color/colorBlack"
+                android:textColor="?attr/colorPageTitle"
                 android:textStyle="bold"
                 app:layout_columnWeight="1"
                 app:layout_rowWeight="1" />
@@ -313,7 +313,7 @@
                 android:background="@drawable/selector_top_right"
                 android:text="@string/three"
                 android:textAppearance="?android:attr/textAppearanceLarge"
-                android:textColor="@color/colorBlack"
+                android:textColor="?attr/colorPageTitle"
                 android:textStyle="bold"
                 app:layout_columnWeight="1"
                 app:layout_rowWeight="1" />
@@ -325,7 +325,7 @@
                 android:background="@drawable/selector_normal_btn"
                 android:text="@string/four"
                 android:textAppearance="?android:attr/textAppearanceLarge"
-                android:textColor="@color/colorBlack"
+                android:textColor="?attr/colorPageTitle"
                 android:textStyle="bold"
                 app:layout_columnWeight="1"
                 app:layout_rowWeight="1" />
@@ -337,7 +337,7 @@
                 android:background="@drawable/selector_normal_btn"
                 android:text="@string/five"
                 android:textAppearance="?android:attr/textAppearanceLarge"
-                android:textColor="@color/colorBlack"
+                android:textColor="?attr/colorPageTitle"
                 android:textStyle="bold"
                 app:layout_columnWeight="1"
                 app:layout_rowWeight="1" />
@@ -349,7 +349,7 @@
                 android:background="@drawable/selector_normal_btn"
                 android:text="@string/six"
                 android:textAppearance="?android:attr/textAppearanceLarge"
-                android:textColor="@color/colorBlack"
+                android:textColor="?attr/colorPageTitle"
                 android:textStyle="bold"
                 app:layout_columnWeight="1"
                 app:layout_rowWeight="1" />
@@ -361,7 +361,7 @@
                 android:background="@drawable/selector_normal_btn"
                 android:text="@string/seven"
                 android:textAppearance="?android:attr/textAppearanceLarge"
-                android:textColor="@color/colorBlack"
+                android:textColor="?attr/colorPageTitle"
                 android:textStyle="bold"
                 app:layout_columnWeight="1"
                 app:layout_rowWeight="1" />
@@ -373,7 +373,7 @@
                 android:background="@drawable/selector_normal_btn"
                 android:text="@string/eight"
                 android:textAppearance="?android:attr/textAppearanceLarge"
-                android:textColor="@color/colorBlack"
+                android:textColor="?attr/colorPageTitle"
                 android:textStyle="bold"
                 app:layout_columnWeight="1"
                 app:layout_rowWeight="1" />
@@ -385,7 +385,7 @@
                 android:background="@drawable/selector_normal_btn"
                 android:text="@string/nine"
                 android:textAppearance="?android:attr/textAppearanceLarge"
-                android:textColor="@color/colorBlack"
+                android:textColor="?attr/colorPageTitle"
                 android:textStyle="bold"
                 app:layout_columnWeight="1"
                 app:layout_rowWeight="1" />
@@ -397,7 +397,7 @@
                 android:background="@drawable/selector_bot_left"
                 android:text="@string/zero"
                 android:textAppearance="?android:attr/textAppearanceLarge"
-                android:textColor="@color/colorBlack"
+                android:textColor="?attr/colorPageTitle"
                 android:textStyle="bold"
                 app:layout_columnWeight="1"
                 app:layout_rowWeight="1" />
@@ -408,7 +408,7 @@
                 android:background="@drawable/bg_register"
                 android:gravity="center"
                 android:text="@string/register"
-                android:textColor="@color/colorWhite"
+                android:textColor="?attr/colorPageTitle"
                 android:textSize="@dimen/text_large_header"
                 android:textStyle="bold"
                 app:layout_columnSpan="2"

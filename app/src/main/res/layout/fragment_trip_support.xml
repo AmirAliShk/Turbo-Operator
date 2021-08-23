@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/colorPrimaryLighter"
+    android:background="?attr/colorPageBackground"
     android:clickable="true"
     android:layoutDirection="rtl"
     android:orientation="vertical"
@@ -16,7 +16,7 @@
         android:layout_height="?android:attr/actionBarSize"
         android:orientation="horizontal"
         android:gravity="center_vertical"
-        android:background="@color/colorPrimaryDark"
+        android:background="?attr/colorActionBarBackground"
         android:layoutDirection="ltr">
 
         <ImageView
@@ -61,7 +61,7 @@
                 android:layout_marginRight="10dp"
                 android:text="@string/today"
                 android:textAppearance="?android:attr/textAppearanceMedium"
-                android:textColor="@color/colorWhite"
+                android:textColor="?attr/colorPageTitle"
                 android:textStyle="bold" />
 
             <ImageView
@@ -69,7 +69,7 @@
                 android:layout_width="20dp"
                 android:layout_height="20dp"
                 android:src="@drawable/ic_today"
-                app:tint="@color/colorWhite" />
+                app:tint="?attr/colorPageTitle" />
 
         </LinearLayout>
 
@@ -86,7 +86,7 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@drawable/bg_blue_border_edge"
+            android:background="@drawable/bg_white_edge"
             android:gravity="center_vertical"
             android:layoutDirection="ltr"
             android:orientation="horizontal"
@@ -96,7 +96,7 @@
                 android:id="@+id/imgSearch"
                 android:layout_width="50dp"
                 android:layout_height="50dp"
-                android:background="@drawable/bg_button_gray_edge"
+                android:background="@drawable/edit_text_style"
                 android:padding="10dp"
                 android:src="@drawable/ic_search" />
 
@@ -118,13 +118,14 @@
                 android:nextFocusDown="@id/edtSearchTrip"
                 android:padding="10dp"
                 android:singleLine="true"
-                android:textColorHint="@color/grayMedium" />
+                android:textColorHint="?attr/colorTitle"
+                android:textColor="?attr/colorValue"/>
 
             <ImageView
                 android:id="@+id/imgSearchType"
                 android:layout_width="50dp"
                 android:layout_height="50dp"
-                android:background="@drawable/bg_button_gray_edge"
+                android:background="@drawable/edit_text_style"
                 android:padding="10dp"
                 android:src="@drawable/ic_call" />
 
@@ -140,7 +141,7 @@
                 android:layout_height="match_parent"
                 android:gravity="center"
                 android:text="موردی یافت نشد!"
-                android:textColor="@color/colorBlack"
+                android:textColor="?attr/colorValue"
                 android:textSize="@dimen/text_title"/>
 
             <LinearLayout
@@ -153,7 +154,7 @@
                     android:layout_width="50dp"
                     android:layout_height="50dp"
                     android:layout_gravity="center"
-                    app:indicatorColor="@color/colorPrimaryDark"
+                    app:indicatorColor="?attr/colorIcon1"
                     app:indicatorName="BallSpinFadeLoaderIndicator" />
 
                 <Button
@@ -166,7 +167,7 @@
                     android:gravity="center"
                     android:layout_marginTop="50dp"
                     android:text="لغو جست و جو"
-                    android:textColor="@color/colorWhite"
+                    android:textColor="?attr/colorPageTitle"
                     android:textSize="@dimen/text_title" />
 
             </LinearLayout>
@@ -183,7 +184,7 @@
                 android:layout_height="match_parent"
                 android:gravity="center"
                 android:text="خطایی رخ داده! \n لطفا پس از چند لحظه مجدد تلاش کنید"
-                android:textColor="@color/colorBlack"
+                android:textColor="?attr/colorValue"
                 android:textSize="@dimen/text_title" />
 
         </ViewFlipper>

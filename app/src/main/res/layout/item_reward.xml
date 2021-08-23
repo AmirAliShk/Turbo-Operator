@@ -28,7 +28,7 @@
             android:padding="10dp"
             android:textSize="18sp"
             android:textStyle="bold"
-            android:textColor="@color/colorBlack" />
+            android:textColor="?attr/colorText" />
 
         <ImageView
             android:layout_width="25dp"
@@ -43,7 +43,7 @@
             android:gravity="right|center_vertical"
             android:padding="10dp"
             android:textSize="16sp"
-            android:textColor="@color/colorBlack" />
+            android:textColor="?attr/colorText" />
 
     </LinearLayout>
 
@@ -64,7 +64,7 @@
             android:layout_height="wrap_content"
             android:padding="10dp"
             android:textSize="16sp"
-            android:textColor="@color/colorBlack" />
+            android:textColor="?attr/colorText" />
 
     </LinearLayout>
 
@@ -86,7 +86,7 @@
             android:text="@string/expireDate"
             android:textSize="18sp"
             android:textStyle="bold"
-            android:textColor="@color/colorBlack" />
+            android:textColor="?attr/colorTitle" />
 
         <TextView
             android:id="@+id/txtExpireDate"
@@ -94,7 +94,7 @@
             android:layout_height="wrap_content"
             android:padding="10dp"
             android:textSize="16sp"
-            android:textColor="@color/colorBlack" />
+            android:textColor="?attr/colorValue" />
 
     </LinearLayout>
 

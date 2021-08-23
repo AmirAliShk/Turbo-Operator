@@ -35,7 +35,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="top|center_horizontal"
-            android:background="@drawable/bg_dialog_body"
+            android:background="@drawable/bg_gray_lite_edge"
             android:gravity="top"
             android:orientation="vertical"
             android:padding="10dp">
@@ -51,7 +51,7 @@
                     android:paddingRight="10dp"
                     android:text="دلایل ثبت خطا را وارد کنید : "
                     android:textAppearance="?android:attr/textAppearanceMedium"
-                    android:textColor="@color/grayMedium" />
+                    android:textColor="?attr/colorTitle" />
 
                 <EditText
                     android:id="@+id/edtErrorText"
@@ -62,7 +62,8 @@
                     android:gravity="top|right"
                     android:maxLines="3"
                     android:minHeight="100dp"
-                    android:padding="10dp" />
+                    android:padding="10dp"
+                    android:textColor="?attr/colorValue"/>
 
             </LinearLayout>
 
@@ -89,7 +90,7 @@
                         android:background="@color/transparent"
                         android:text="ثبت"
                         android:textAppearance="?android:attr/textAppearanceLarge"
-                        android:textColor="@color/colorWhite"
+                        android:textColor="?attr/colorPageTitle"
                         android:textStyle="bold" />
 
                     <com.wang.avi.AVLoadingIndicatorView

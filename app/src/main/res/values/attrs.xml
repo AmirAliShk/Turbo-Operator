@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+
+    <attr name="colorPageBackground" format="color" />
+    <attr name="colorActionBarBackground" format="color" />
+    <attr name="colorPageTitle" format="color" />
+    <attr name="colorWhiteBlack" format="color" />
+    <attr name="colorTitle" format="color" />
+    <attr name="colorValue" format="color" />
+    <attr name="colorIcon1" format="color" />
+    <attr name="colorIcon2" format="color" />
+    <attr name="colorIcon3" format="color" />
+    <attr name="colorText" format="color" />
+    <attr name="colorEditText" format="color" />
+    <attr name="colorEditTexts" format="color" />
+    <attr name="colorButton1" format="color" />
+    <attr name="colorButton2" format="color" />
+    <attr name="colorButton3" format="color" />
+    <attr name="colorBestTextView1" format="color" />
+    <attr name="colorBestTextView2" format="color" />
+    <attr name="colorBestTextView3" format="color" />
+    <attr name="colorIconClose" format="color" />
+    <attr name="colorCircleCloseButton" format="color" />
+    <attr name="colorCircle" format="color" />
+    <attr name="colorBackgroundTitleDialogue" format="color" />
+    <attr name="colorGreen" format="color" />
+    <attr name="colorRed" format="color" />
+    <attr name="colorYellow" format="color" />
+    <attr name="colorBlue" format="color" />
+    <attr name="colorpinkPurple" format="color" />
+    <attr name="colorDisable" format="color" />
+    <attr name="colorStrokeDisable" format="color" />
+    <attr name="colorWhiteSelected" format="color" />
+    <attr name="colorCirecleOperator" format="color" />
+    <attr name="colorHederSwitch" format="color" />
+    <attr name="iconMenuSelected" format="reference" />
+    <attr name="iconMenuUnselected" format="reference" />
+    <attr name="iconHomeSelected" format="reference" />
+    <attr name="iconHomeUnselected" format="reference" />
+    <attr name="colorDialogeBody" format="color" />
+    <attr name="colorDialogeBodyTop" format="color" />
+    <attr name="colorDialogeBodyTop1" format="color" />
+
+</resources>

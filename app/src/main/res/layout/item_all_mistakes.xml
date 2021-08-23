@@ -47,7 +47,7 @@
                     android:layout_marginRight="10dp"
                     android:layout_weight="1"
                     android:gravity="center|right"
-                    android:textColor="@color/colorBlack"
+                    android:textColor="?attr/colorText"
                     android:textSize="@dimen/text_title"
                     android:textStyle="bold" />
 
@@ -75,7 +75,7 @@
                     android:layout_marginRight="10dp"
                     android:layout_weight="1"
                     android:gravity="center|right"
-                    android:textColor="@color/colorBlack"
+                    android:textColor="?attr/colorText"
                     android:textSize="@dimen/text_title"
                     android:textStyle="bold" />
 
@@ -96,7 +96,7 @@
                 android:background="@color/transparent"
                 android:text="قبول میکنم"
                 android:textAppearance="?android:attr/textAppearanceMedium"
-                android:textColor="@color/colorWhite"
+                android:textColor="?attr/colorPageTitle"
                 android:textStyle="bold" />
 
             <com.wang.avi.AVLoadingIndicatorView

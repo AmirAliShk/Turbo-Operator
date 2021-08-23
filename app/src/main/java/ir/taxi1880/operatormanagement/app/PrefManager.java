@@ -76,6 +76,19 @@ public class PrefManager {
     private static final String ACTIVITY_STATUS = "activityStatus";
     private static final String ACCESS_DRIVER_SUPPORT = "accessDriverSupport";
     private static final String ACTIVE_IN_DRIVER_SUPPORT = "activeInDriverSupport";
+    private static final String KEY_ENABLE_DARK_MODE = "KEY_ENABLE_DARK_MODE";
+
+
+    public boolean isDarkMode() {
+        return pref.getBoolean(KEY_ENABLE_DARK_MODE, false);
+    }
+
+    public void setDarkMode(boolean v) {
+        editor.putBoolean(KEY_ENABLE_DARK_MODE, v);
+        editor.commit();
+        MyApplication.currentActivity.recreate();
+    }
+
 
     public PrefManager(Context context) {
         this._context = context;

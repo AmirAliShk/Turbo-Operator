@@ -59,7 +59,7 @@
                 android:minHeight="40dp"
                 android:padding="5dp"
                 android:textAppearance="?android:attr/textAppearanceLarge"
-                android:textColor="@color/colorBlack" />
+                android:textColor="?attr/colorValue" />
 
             <Button
                 android:id="@+id/btnSubmit"
@@ -72,7 +72,7 @@
                 android:minHeight="35dp"
                 android:text="ثبت"
                 android:textAppearance="?android:attr/textAppearanceLarge"
-                android:textColor="@color/colorWhite"
+                android:textColor="?attr/colorPageTitle"
                 android:textStyle="bold" />
 
         </LinearLayout>

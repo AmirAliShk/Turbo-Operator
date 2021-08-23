@@ -35,8 +35,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="top|center_horizontal"
-            android:background="@drawable/bg_dialog_body"
-            android:gravity="top"
+            android:background="@drawable/bg_gray_lite_edge"            android:gravity="top"
             android:orientation="vertical"
             android:padding="10dp">
 
@@ -51,7 +50,7 @@
                     android:paddingRight="10dp"
                     android:text="نوع"
                     android:textAppearance="?android:attr/textAppearanceMedium"
-                    android:textColor="@color/grayMedium" />
+                    android:textColor="?attr/colorTitle" />
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -64,9 +63,10 @@
                         android:id="@+id/spType"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:backgroundTint="@color/colorPurple"
+                        android:backgroundTint="?attr/colorIcon1"
                         android:dropDownWidth="match_parent"
-                        android:gravity="right" />
+                        android:gravity="right"
+                        android:textColor="?attr/colorValue"/>
 
                 </LinearLayout>
 
@@ -84,7 +84,7 @@
                     android:paddingRight="10dp"
                     android:text="آدرس"
                     android:textAppearance="?android:attr/textAppearanceMedium"
-                    android:textColor="@color/grayMedium" />
+                    android:textColor="?attr/colorTitle" />
 
                 <EditText
                     android:id="@+id/edtAddress"
@@ -94,7 +94,8 @@
                     android:background="@drawable/edit_text_style"
                     android:gravity="top|right"
                     android:maxLines="2"
-                    android:padding="10dp" />
+                    android:padding="10dp"
+                    android:textColor="?attr/colorValue"/>
 
                 <TextView
                     android:layout_width="match_parent"
@@ -104,7 +105,7 @@
                     android:paddingRight="10dp"
                     android:text="توضیحات"
                     android:textAppearance="?android:attr/textAppearanceMedium"
-                    android:textColor="@color/grayMedium" />
+                    android:textColor="?attr/colorTitle" />
 
                 <EditText
                     android:id="@+id/edtComment"
@@ -115,7 +116,8 @@
                     android:gravity="top|right"
                     android:maxLines="2"
                     android:minHeight="100dp"
-                    android:padding="10dp" />
+                    android:padding="10dp"
+                    android:textColor="?attr/colorValue"/>
 
             </LinearLayout>
 
@@ -142,7 +144,7 @@
                         android:background="@color/transparent"
                         android:text="ثبت"
                         android:textAppearance="?android:attr/textAppearanceLarge"
-                        android:textColor="@color/colorWhite"
+                        android:textColor="?attr/colorPageTitle"
                         android:textStyle="bold" />
 
                     <com.wang.avi.AVLoadingIndicatorView

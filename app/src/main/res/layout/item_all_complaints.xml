@@ -37,7 +37,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:gravity="right|center_vertical"
-                android:textColor="@color/colorBlack"
+                android:textColor="?attr/colorValue"
                 android:textSize="22sp" />
 
         </LinearLayout>
@@ -58,7 +58,7 @@
                 android:background="@color/transparent"
                 android:text="قبول میکنم"
                 android:textAppearance="?android:attr/textAppearanceMedium"
-                android:textColor="@color/colorWhite"
+                android:textColor="?attr/colorPageTitle"
                 android:textStyle="bold" />
 
             <com.wang.avi.AVLoadingIndicatorView

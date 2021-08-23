@@ -20,7 +20,7 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:layout_margin="15dp"
-        android:background="@drawable/bg_edit_text"
+        android:background="@drawable/bg_gray_lite_edge"
         android:gravity="top"
         android:orientation="vertical">
 
@@ -52,7 +52,8 @@
             <ImageView
                 android:layout_width="25dp"
                 android:layout_height="25dp"
-                android:src="@drawable/ic_search" />
+                android:src="@drawable/ic_search"
+                android:layout_gravity="center"/>
 
             <ImageView
                 android:layout_width="10dp"
@@ -62,10 +63,12 @@
                 android:id="@+id/edtSearchOperator"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="@color/transparent"
+                android:background="@drawable/edit_text_style"
                 android:hint="جست و جوی اپراتور"
                 android:maxLength="80"
-                android:singleLine="true" />
+                android:singleLine="true"
+                android:padding="@dimen/_8sdp"
+                android:textColorHint="?attr/colorTitle"/>
 
         </LinearLayout>
 

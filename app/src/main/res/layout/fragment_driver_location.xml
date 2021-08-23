@@ -12,7 +12,7 @@
         android:id="@+id/rlActionBar"
         android:layout_width="match_parent"
         android:layout_height="?android:attr/actionBarSize"
-        android:background="@color/colorPrimaryDark"
+        android:background="?attr/colorActionBarBackground"
         android:layoutDirection="ltr">
 
         <ImageView
@@ -57,7 +57,7 @@
             android:gravity="center"
             android:layout_marginLeft="10dp"
             android:textAppearance="?android:attr/textAppearanceLarge"
-            android:textColor="@color/colorBlack"/>
+            android:textColor="?attr/colorValue"/>
 
         <TextView
             android:layout_width="wrap_content"

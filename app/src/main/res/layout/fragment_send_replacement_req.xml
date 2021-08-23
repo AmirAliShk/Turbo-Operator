@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/colorPrimaryLighter"
+    android:background="?attr/colorPageBackground"
     android:clickable="true"
     tools:context="ir.taxi1880.operatormanagement.fragment.SendReplacementReqFragment">
 
@@ -12,7 +12,7 @@
         android:id="@+id/rlActionBar"
         android:layout_width="match_parent"
         android:layout_height="?android:attr/actionBarSize"
-        android:background="@color/colorPrimaryDark"
+        android:background="?attr/colorActionBarBackground"
         android:layoutDirection="ltr">
 
         <ImageView
@@ -43,7 +43,7 @@
             android:layout_height="50dp"
             app:indicatorName="BallSpinFadeLoaderIndicator"
             android:layout_gravity="center"
-            app:indicatorColor="@color/colorPrimaryDark" />
+            app:indicatorColor="?attr/colorIcon1" />
 
         <ListView
             android:id="@+id/listReplacement"
@@ -60,7 +60,7 @@
             android:layout_centerInParent="true"
             android:gravity="center"
             android:text="هنوز هیچ درخواستی ثبت نکردی!"
-            android:textColor="@color/colorBlack"
+            android:textColor="?attr/colorValue"
             android:textSize="@dimen/text_title"
             android:visibility="gone" />
 
@@ -68,7 +68,7 @@
             android:layout_centerInParent="true"
             android:gravity="center"
             android:textSize="@dimen/text_title"
-            android:textColor="@color/colorBlack"
+            android:textColor="?attr/colorValue"
             android:visibility="gone"
             android:text="متاسفانه هنگام دریافت اطلاعات از سرور به مشکل خوردیم \n لطفا مجدد تلاش کنید!"
             android:layout_width="match_parent"

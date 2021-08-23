@@ -1,5 +1,6 @@
 package ir.taxi1880.operatormanagement.adapter;
 
+import android.annotation.SuppressLint;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ImageView;
@@ -16,6 +17,7 @@ import ir.taxi1880.operatormanagement.R;
 import ir.taxi1880.operatormanagement.app.MyApplication;
 import ir.taxi1880.operatormanagement.fragment.AllMistakesFragment;
 import ir.taxi1880.operatormanagement.fragment.PendingMistakesFragment;
+import ir.taxi1880.operatormanagement.helper.ResourceHelper;
 import ir.taxi1880.operatormanagement.helper.TypefaceUtil;
 
 public class SupportViewPagerAdapter extends FragmentStateAdapter {
@@ -44,6 +46,7 @@ public class SupportViewPagerAdapter extends FragmentStateAdapter {
         return 2;
     }
 
+    @SuppressLint("ResourceType")
     public View getTabView(int position, int newCount, int pendingCount) {
         View v = LayoutInflater.from(MyApplication.context).inflate(R.layout.support_item_tab, null);
         TextView txtTabTitle = v.findViewById(R.id.txtTabTitle);
@@ -51,7 +54,7 @@ public class SupportViewPagerAdapter extends FragmentStateAdapter {
         txtBadgeCount.setVisibility(View.GONE);
         TypefaceUtil.overrideFonts(v);
 
-        txtTabTitle.setTextColor(MyApplication.currentActivity.getResources().getColor(R.color.grayMedium));
+        txtTabTitle.setTextColor(ResourceHelper.getAttributeColor(MyApplication.currentActivity, R.attr.colorValue));
         txtBadgeCount.setBackgroundResource(R.drawable.badge_unselected);
 
         if (position == 0) {

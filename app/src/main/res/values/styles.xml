@@ -1,5 +1,95 @@
 <resources>
 
+    <style name="AppThemeLite" parent="Theme.AppCompat.Light.NoActionBar">
+
+        <item name="colorPageBackground">#ebeff0</item>
+        <item name="colorActionBarBackground">#381f60</item>
+        <item name="colorWhiteBlack">#ffffff</item>
+        <item name="colorPageTitle">#ffffff</item>
+        <item name="colorTitle">#6f6f6f</item>
+        <item name="colorValue">#000000</item>
+        <item name="colorIcon1">#381f60</item>
+        <item name="colorIcon2">#ff5e5b</item>
+        <item name="colorIcon3">#fbfaff</item>
+        <item name="colorText">#000000</item>
+        <item name="colorEditText">#ffffff</item>
+        <item name="colorEditTexts">#f8e9ff</item>
+        <item name="colorButton1">#381f60</item>
+        <item name="colorButton2">#ff5e5b</item>
+        <item name="colorButton3">#faefff</item>
+        <item name="colorBestTextView1">#ffe45d</item>
+        <item name="colorBestTextView2">#d8c897</item>
+        <item name="colorBestTextView3">#c5c6cb</item>
+        <item name="colorIconClose">#f44336</item>
+        <item name="colorCircleCloseButton">#ffffff</item>
+        <item name="colorCircle">#381f60</item>
+        <item name="colorBackgroundTitleDialogue">#381f60</item>
+        <item name="colorGreen">#4caf50</item>
+        <item name="colorRed">#f44336</item>
+        <item name="colorYellow">#ffd600</item>
+        <item name="colorBlue">#406EF8</item>
+        <item name="colorpinkPurple">#ff6461</item>
+        <item name="colorDisable">#ebeff0</item>
+        <item name="colorStrokeDisable">#bcbfc0</item>
+        <item name="colorWhiteSelected">#4FFF6461</item>
+        <item name="colorCirecleOperator">#ffffff</item>
+        <item name="colorHederSwitch">#ffffff</item>
+        <item name="iconMenuSelected">@drawable/ic_menu_selected_light</item>
+        <item name="iconMenuUnselected">@drawable/ic_menu_unselected_light</item>
+        <item name="iconHomeSelected">@drawable/ic_home_selected_light</item>
+        <item name="iconHomeUnselected">@drawable/ic_home_unselected_light</item>
+        <item name="colorDialogeBody">#ebeff0</item>
+        <item name="colorDialogeBodyTop">#ffffff</item>
+        <item name="colorDialogeBodyTop1">#f8e9ff</item>
+    </style>
+
+    <style name="AppThemeDark" parent="Theme.AppCompat.Light.NoActionBar">
+
+        <item name="colorPageBackground">#010101</item>
+        <item name="colorActionBarBackground">#222222</item>
+        <item name="colorWhiteBlack">#000000</item>
+        <item name="colorPageTitle">#bbbbbb</item>
+        <item name="colorTitle">#787878</item>
+        <item name="colorValue">#b2b2b2</item>
+        <item name="colorIcon1">#5539c6</item>
+        <item name="colorIcon2">#b2b2b2</item>
+        <item name="colorIcon3">#b2b2b2</item>
+        <item name="colorText">#bbbbbb</item>
+        <item name="colorEditText">#222222</item>
+        <item name="colorEditTexts">#222222</item>
+        <item name="colorButton1">#5539c6</item>
+        <item name="colorButton2">#222222</item>
+        <item name="colorButton3">#323232</item>
+        <item name="colorBestTextView1">#c0b05c</item>
+        <item name="colorBestTextView2">#9a8c64</item>
+        <item name="colorBestTextView3">#7f8080</item>
+        <item name="colorIconClose">#be2a2a</item>
+        <item name="colorCircleCloseButton">#222222</item>
+        <item name="colorCircle">#5539c6</item>
+        <item name="colorBackgroundTitleDialogue">#5539c6</item>
+        <item name="colorGreen">#3b8e3f</item>
+        <item name="colorRed">#be2a2a</item>
+        <item name="colorYellow">#ffa000</item>
+        <item name="colorBlue">#467cb3</item>
+        <item name="colorpinkPurple">#5539c6</item>
+        <item name="colorDisable">#010101</item>
+        <item name="colorStrokeDisable">#222222</item>
+        <item name="colorWhiteSelected">#2b263e</item>
+        <item name="colorCirecleOperator">#5539c6</item>
+        <item name="colorHederSwitch">#4e4e4e</item>
+        <item name="iconMenuSelected">@drawable/ic_menu_selected_dark</item>
+        <item name="iconMenuUnselected">@drawable/ic_menu_unselected_dark</item>
+        <item name="iconHomeSelected">@drawable/ic_home_selected_dark</item>
+        <item name="iconHomeUnselected">@drawable/ic_home_unselected_dark</item>
+        <item name="colorDialogeBody">#010101</item>
+        <item name="colorDialogeBodyTop">#222222</item>
+        <item name="colorDialogeBodyTop1">#323232</item>
+
+
+
+    </style>
+
+
     <!-- Base application theme. -->
     <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
         <!-- Customize your theme here. -->
@@ -32,33 +122,33 @@
     </style>
 
     <style name="tripItemTitle">
-        <item name="android:textColor">@color/grayMedium</item>
+        <item name="android:textColor">?attr/colorTitle</item>
         <item name="android:layout_marginEnd">10dp</item>
         <item name="android:layout_marginRight">10dp</item>
         <item name="android:textAppearance">?android:attr/textAppearanceSmall</item>
     </style>
 
     <style name="tripItemValue">
-        <item name="android:textColor">@color/colorBlack</item>
+        <item name="android:textColor">?attr/colorValue</item>
         <item name="android:textAppearance">?android:attr/textAppearanceSmall</item>
     </style>
 
     <style name="button">
         <item name="android:background">@drawable/bg_light_pink_edge</item>
         <item name="android:textAppearance">?android:attr/textAppearanceMedium</item>
-        <item name="android:textColor">@color/colorWhite</item>
+        <item name="android:textColor">?attr/colorPageTitle</item>
         <item name="android:layout_marginRight">10dp</item>
         <item name="android:layout_marginLeft">10dp</item>
         <item name="android:layout_marginTop">10dp</item>
     </style>
 
     <style name="pageTitle">
-        <item name="android:textColor">@color/colorWhite</item>
+        <item name="android:textColor">?attr/colorPageTitle</item>
         <item name="android:textSize">@dimen/_22ssp</item>
     </style>
 
     <style name="dialogTitle">
-        <item name="android:textColor">@color/colorWhite</item>
+        <item name="android:textColor">?attr/colorPageTitle</item>
         <item name="android:textSize">@dimen/_18ssp</item>
     </style>
 

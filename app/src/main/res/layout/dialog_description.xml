@@ -67,7 +67,7 @@
                         android:paddingRight="5dp"
                         android:text="توضیحات"
                         android:textAppearance="?android:attr/textAppearanceMedium"
-                        android:textColor="@color/grayMedium" />
+                        android:textColor="?attr/colorTitle" />
 
                     <EditText
                         android:id="@+id/edtDescription"
@@ -80,7 +80,8 @@
                         android:minHeight="100dp"
                         android:minLines="3"
                         android:nextFocusDown="@id/edtAlwaysDescription"
-                        android:padding="5dp" />
+                        android:padding="5dp"
+                        android:textColor="?attr/colorValue" />
 
                 </LinearLayout>
 
@@ -98,7 +99,7 @@
                         android:paddingRight="5dp"
                         android:text="توضیحات دائمی"
                         android:textAppearance="?android:attr/textAppearanceMedium"
-                        android:textColor="@color/grayMedium" />
+                        android:textColor="?attr/colorTitle"/>
 
                     <EditText
                         android:id="@+id/edtAlwaysDescription"
@@ -111,7 +112,8 @@
                         android:minHeight="100dp"
                         android:minLines="3"
                         android:nextFocusDown="@id/btnSubmit"
-                        android:padding="5dp" />
+                        android:padding="5dp"
+                        android:textColor="?attr/colorValue" />
 
                 </LinearLayout>
 
@@ -132,7 +134,7 @@
                         android:background="@drawable/green_shadow"
                         android:text="ثبت"
                         android:textAppearance="?android:attr/textAppearanceLarge"
-                        android:textColor="@color/colorWhite"
+                        android:textColor="?attr/colorPageTitle"
                         android:textStyle="bold" />
 
                 </LinearLayout>

@@ -23,8 +23,7 @@
         android:layout_marginRight="15dp"
         android:background="@drawable/bg_gray_lite_edge"
         android:gravity="top"
-        android:orientation="vertical"
-        android:padding="5dp">
+        android:orientation="vertical">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -39,7 +38,7 @@
                 android:layout_height="wrap_content"
                 android:text="مشترک "
                 android:textAppearance="?android:attr/textAppearanceMedium"
-                android:textColor="@color/colorBlack" />
+                android:textColor="?attr/colorValue" />
 
             <TextView
                 android:id="@+id/txtTime"
@@ -53,7 +52,7 @@
                 android:layout_height="wrap_content"
                 android:text=" پیش تماس گرفته ."
                 android:textAppearance="?android:attr/textAppearanceMedium"
-                android:textColor="@color/colorBlack" />
+                android:textColor="?attr/colorValue" />
 
         </LinearLayout>
 
@@ -70,7 +69,7 @@
                 android:layout_height="wrap_content"
                 android:text="وضعیت سفر : "
                 android:textAppearance="?android:attr/textAppearanceMedium"
-                android:textColor="@color/colorBlack" />
+                android:textColor="?attr/colorValue" />
 
             <TextView
                 android:id="@+id/txtTripStatus"
@@ -99,7 +98,7 @@
                 android:background="@android:color/transparent"
                 android:text="@string/close"
                 android:textAppearance="?android:attr/textAppearanceMedium"
-                android:textColor="@color/colorBlack" />
+                android:textColor="?attr/colorValue" />
 
             <View
                 android:layout_width="0.5dp"

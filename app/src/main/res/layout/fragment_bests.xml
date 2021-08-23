@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/colorPrimaryDark"
+    android:background="?attr/colorActionBarBackground"
     android:clickable="true"
     android:layoutDirection="rtl"
     android:orientation="vertical"
@@ -14,7 +14,7 @@
         android:id="@+id/rlActionBar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/colorPrimaryDark">
+        android:background="?attr/colorActionBarBackground">
 
         <ImageView
             android:id="@+id/imgBack"
@@ -57,7 +57,7 @@
                 android:layout_height="50dp"
                 android:layout_gravity="center"
                 app:indicatorName="BallSpinFadeLoaderIndicator"
-                app:indicatorColor="@color/colorPrimaryDark" />
+                app:indicatorColor="?attr/colorIcon1" />
 
             <LinearLayout
                 android:layout_width="match_parent"

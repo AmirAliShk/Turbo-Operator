@@ -70,6 +70,7 @@ import ir.taxi1880.operatormanagement.helper.FragmentHelper;
 import ir.taxi1880.operatormanagement.helper.KeyBoardHelper;
 import ir.taxi1880.operatormanagement.helper.PhoneNumberValidation;
 import ir.taxi1880.operatormanagement.helper.StringHelper;
+import ir.taxi1880.operatormanagement.helper.ThemeHelper;
 import ir.taxi1880.operatormanagement.helper.TypefaceUtil;
 import ir.taxi1880.operatormanagement.model.CallModel;
 import ir.taxi1880.operatormanagement.model.CityModel;
@@ -642,15 +643,22 @@ public class TripRegisterActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         View view;
+        ThemeHelper.onActivityCreateSetTheme(this);
+
         setContentView(R.layout.activity_trip_register);
         view = getWindow().getDecorView();
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             Window window = getWindow();
             window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
-            window.setNavigationBarColor(getResources().getColor(R.color.colorPrimaryLighter));
-            window.setStatusBarColor(getResources().getColor(R.color.colorPrimaryDark));
             window.getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LIGHT_NAVIGATION_BAR);
             window.addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
+            if (MyApplication.prefManager.isDarkMode()){
+                window.setNavigationBarColor(getResources().getColor(R.color.dark_navigation_bar));
+                window.setStatusBarColor(getResources().getColor(R.color.dark_action_bar));
+            }else {
+                window.setNavigationBarColor(getResources().getColor(R.color.colorPrimaryLighter));
+                window.setStatusBarColor(getResources().getColor(R.color.colorPrimaryDark));
+            }
         }
         unbinder = ButterKnife.bind(this, view);
         TypefaceUtil.overrideFonts(view);

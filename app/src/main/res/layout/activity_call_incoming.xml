@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/colorPrimaryLighter"
+    android:background="?attr/colorPageBackground"
     tools:context=".activity.CallIncomingActivity">
 
         <LinearLayout
@@ -27,7 +27,7 @@
                     android:padding="10dp"
                     android:gravity="center"
                     android:textAppearance="?android:attr/textAppearanceLarge"
-                    android:textColor="@color/colorPrimaryDark"
+                    android:textColor="?attr/colorTitle"
                     android:textStyle="bold"/>
 
                 <TextView
@@ -37,7 +37,7 @@
                     android:padding="10dp"
                     android:gravity="center"
                     android:textSize="@dimen/_30sdp"
-                    android:textColor="@color/colorPrimaryDark"
+                    android:textColor="?attr/colorTitle"
                     android:textStyle="bold"/>
 
                 <TextView

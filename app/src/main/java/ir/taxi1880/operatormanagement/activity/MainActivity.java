@@ -6,6 +6,7 @@ import android.os.Handler;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -14,6 +15,11 @@ import androidx.viewpager2.widget.ViewPager2;
 
 import com.google.android.material.tabs.TabLayout;
 import com.google.android.material.tabs.TabLayoutMediator;
+
+import org.linphone.core.Core;
+import org.linphone.core.CoreListenerStub;
+import org.linphone.core.ProxyConfig;
+import org.linphone.core.RegistrationState;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -31,8 +37,10 @@ import ir.taxi1880.operatormanagement.fragment.NotificationFragment;
 import ir.taxi1880.operatormanagement.helper.FragmentHelper;
 import ir.taxi1880.operatormanagement.helper.KeyBoardHelper;
 import ir.taxi1880.operatormanagement.helper.StringHelper;
+import ir.taxi1880.operatormanagement.helper.ThemeHelper;
 import ir.taxi1880.operatormanagement.helper.TypefaceUtil;
 import ir.taxi1880.operatormanagement.push.AvaCrashReporter;
+import ir.taxi1880.operatormanagement.services.LinphoneService;
 
 public class MainActivity extends AppCompatActivity implements NotificationFragment.RefreshNotificationCount {
 
@@ -57,6 +65,24 @@ public class MainActivity extends AppCompatActivity implements NotificationFragm
                 .replace();
     }
 
+    @OnClick(R.id.imgTheme)
+    void onChangeTheme() {
+        if (MyApplication.prefManager.isDarkMode()){
+            ThemeHelper.changeToTheme(MyApplication.currentActivity, false);
+            MyApplication.prefManager.setDarkMode(false);
+        }else{
+            ThemeHelper.changeToTheme(MyApplication.currentActivity, true);
+            MyApplication.prefManager.setDarkMode(true);
+        }
+
+    }
+
+    private CoreListenerStub mListener;
+    private Core core;
+
+    @BindView(R.id.imgTheme)
+    ImageView imgTheme;
+
     @OnClick(R.id.imgMessage)
     void onMessage() {
         FragmentHelper
@@ -74,22 +100,42 @@ public class MainActivity extends AppCompatActivity implements NotificationFragm
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        ThemeHelper.onActivityCreateSetTheme(this);
         setContentView(R.layout.activity_main);
         View view = getWindow().getDecorView();
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             Window window = getWindow();
             window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
-            window.setNavigationBarColor(getResources().getColor(R.color.colorPrimaryLighter));
-            window.setStatusBarColor(getResources().getColor(R.color.colorPrimaryDark));
             window.getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LIGHT_NAVIGATION_BAR);
             window.addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
+            if (MyApplication.prefManager.isDarkMode()){
+                window.setNavigationBarColor(getResources().getColor(R.color.dark_navigation_bar));
+                window.setStatusBarColor(getResources().getColor(R.color.dark_action_bar));
+            }else {
+                window.setNavigationBarColor(getResources().getColor(R.color.colorPrimaryLighter));
+                window.setStatusBarColor(getResources().getColor(R.color.colorPrimaryDark));
+            }
+
         }
         MyApplication.configureAccount();
         unbinder = ButterKnife.bind(this, view);
         TypefaceUtil.overrideFonts(view);
+        core=LinphoneService.getCore();
 
         mainViewPagerAdapter = new MainViewPagerAdapter(this);
         vpMain.setAdapter(mainViewPagerAdapter);
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            imgTheme.setVisibility(View.VISIBLE);
+        } else {
+            imgTheme.setVisibility(View.GONE);
+        }
+
+        if (MyApplication.prefManager.isDarkMode()){
+            imgTheme.setImageResource(R.drawable.ic_dark);
+        }else {
+            imgTheme.setImageResource(R.drawable.ic_light);
+        }
 
         new TabLayoutMediator(tabLayout, vpMain, (tab, position) -> {
             tab.setCustomView(mainViewPagerAdapter.getTabView(position));
@@ -111,6 +157,48 @@ public class MainActivity extends AppCompatActivity implements NotificationFragm
 
             }
         });
+
+//        mListener = new CoreListenerStub() {
+//            @Override
+//            public void onRegistrationStateChanged(Core lc, ProxyConfig proxy, RegistrationState state, String message) {
+//                if (core.getDefaultProxyConfig() != null && core.getDefaultProxyConfig().equals(proxy)) {
+//                    imgTheme.setImageResource(getStatusIconResource(state));
+//                } else if (core.getDefaultProxyConfig() == null) {
+//                    imgTheme.setImageResource(getStatusIconResource(state));
+//                }
+
+//                try {
+//                    imgTheme.setOnClickListener( TODO uncomment these lines later
+//                            v -> {
+//                                Core core = LinphoneService.getCore();
+//                                if (core != null) {
+//                                    core.refreshRegisters();
+//                                }
+//                            });
+//                } catch (IllegalStateException ise) {
+//                    ise.printStackTrace();
+//                }
+//            }
+//        };
+
+    }
+
+    private int getStatusIconResource(RegistrationState state) {
+        try {
+            Core core = LinphoneService.getCore();
+            boolean defaultAccountConnected = (core != null && core.getDefaultProxyConfig() != null && core.getDefaultProxyConfig().getState() == RegistrationState.Ok);
+            if (state == RegistrationState.Ok && defaultAccountConnected) {
+                return R.drawable.ic_connected;
+            } else if (state == RegistrationState.Progress) {
+                return R.drawable.ic_in_progress;
+            } else if (state == RegistrationState.Failed) {
+                return R.drawable.ic_sip_error;
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return R.drawable.ic_sip_error;
     }
 
     @Override
@@ -118,6 +206,14 @@ public class MainActivity extends AppCompatActivity implements NotificationFragm
         super.onResume();
         MyApplication.currentActivity = this;
         MyApplication.prefManager.setAppRun(true);
+
+//        if (core != null) {
+//            core.addListener(mListener);
+//            ProxyConfig lpc = core.getDefaultProxyConfig();
+//            if (lpc != null) {
+//                mListener.onRegistrationStateChanged(core, lpc, lpc.getState(), null);
+//            }
+//        }
 
         if (MyApplication.prefManager.getCountNotification() == 0) {
             txtBadgeCount.setVisibility(View.GONE);
@@ -154,6 +250,9 @@ public class MainActivity extends AppCompatActivity implements NotificationFragm
 
     @Override
     protected void onPause() {
+//        if (core != null) {
+//            core.removeListener(mListener);
+//        }
         super.onPause();
         MyApplication.prefManager.setAppRun(false);
     }

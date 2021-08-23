@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/colorPrimaryLighter"
+    android:background="?attr/colorPageBackground"
     android:clickable="true"
     android:layoutDirection="rtl"
     android:orientation="vertical"
@@ -18,7 +18,7 @@
             android:layout_width="30dp"
             android:layout_height="30dp"
             android:layout_gravity="center"
-            app:indicatorColor="@color/colorPrimaryDark"
+            app:indicatorColor="?attr/colorIcon1"
             app:indicatorName="BallBeatIndicator" />
 
         <LinearLayout
@@ -35,7 +35,7 @@
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:background="@drawable/bg_blue_border_edge"
+                    android:background="@drawable/edit_text_style"
                     android:gravity="right"
                     android:orientation="vertical"
                     android:padding="10dp">
@@ -379,9 +379,9 @@
                                         android:paddingTop="10dp"
                                         app:isb_seek_smoothly="true"
                                         app:isb_show_indicator="none"
-                                        app:isb_thumb_color="@color/colorPrimaryDark"
+                                        app:isb_thumb_color="?attr/colorIcon1"
                                         app:isb_thumb_size="15dp"
-                                        app:isb_track_background_color="@color/grayLight"
+                                        app:isb_track_background_color="?attr/colorValue"
                                         app:isb_track_background_size="3dp"
                                         app:isb_track_progress_color="@color/colorPrimaryDark"
                                         app:isb_track_progress_size="5dp" />
@@ -462,7 +462,7 @@
                                     android:layout_height="match_parent"
                                     android:gravity="center"
                                     android:text="ارسال پیامک تماس بی‌پاسخ"
-                                    android:textColor="@color/colorWhite" />
+                                    android:textColor="?attr/colorPageTitle" />
 
                             </LinearLayout>
 
@@ -502,7 +502,7 @@
                         android:layout_height="match_parent"
                         android:background="@color/transparent"
                         android:text="ثبت نتیجه "
-                        android:textColor="@color/colorWhite"
+                        android:textColor="?attr/colorPageTitle"
                         android:textSize="18sp"
                         android:textStyle="bold" />
 
@@ -526,7 +526,7 @@
                     android:layout_weight="1"
                     android:background="@drawable/bg_strock_corner"
                     android:text="گزینه ها"
-                    android:textColor="@color/colorBlack"
+                    android:textColor="?attr/colorPageTitle"
                     android:textSize="@dimen/text_header"
                     android:textStyle="bold" />
 

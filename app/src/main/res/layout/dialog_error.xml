@@ -41,7 +41,7 @@
             android:gravity="center"
             android:padding="15dp"
             android:text="خطای عدم اتصال به اینترنت لطفا پس از بررسی ارتباط خود به اینترنت مجدد چک کنید"
-            android:textColor="@color/colorBlack"
+            android:textColor="?attr/colorText"
             android:textSize="18sp" />
 
         <!--        <ImageView-->
@@ -67,7 +67,7 @@
                 android:layout_weight="1"
                 android:background="@drawable/green_shadow"
                 android:text="تلاش مجدد"
-                android:textColor="@color/colorWhite"
+                android:textColor="?attr/colorPageTitle"
                 android:textSize="18dp" />
 
             <View
@@ -81,7 +81,7 @@
                 android:layout_weight="1"
                 android:background="@drawable/red_shadow"
                 android:text="بستن"
-                android:textColor="@color/colorWhite"
+                android:textColor="?attr/colorPageTitle"
                 android:textSize="18dp" />
 
         </LinearLayout>

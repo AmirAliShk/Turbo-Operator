@@ -3,6 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layoutDirection="rtl">
 
     <com.github.mmin18.widget.RealtimeBlurView
@@ -65,7 +66,7 @@
                     android:singleLine="true"
                     android:text="ایستگاه"
                     android:textAppearance="?android:attr/textAppearanceSmall"
-                    android:textColor="@color/colorBlack" />
+                    android:textColor="?attr/colorTitle" />
 
                 <TextView
                     android:id="@+id/txtAddress"
@@ -75,7 +76,7 @@
                     android:gravity="center"
                     android:text="آدرس"
                     android:textAppearance="?android:attr/textAppearanceSmall"
-                    android:textColor="@color/colorBlack" />
+                    android:textColor="?attr/colorTitle" />
 
             </LinearLayout>
 
@@ -96,6 +97,7 @@
                     android:layout_height="match_parent"
                     android:layout_gravity="center"
                     android:layout_marginBottom="10dp"
+                    tools:listitem="@layout/item_last_address"
                     android:layout_weight="1"
                     android:divider="@null"
                     android:scrollbars="none" />
@@ -112,7 +114,7 @@
                     android:layout_width="40dp"
                     android:layout_height="40dp"
                     android:layout_gravity="center"
-                    app:indicatorColor="@color/colorPrimaryDark" />
+                    app:indicatorColor="?attr/colorIcon1" />
 
             </ViewFlipper>
 

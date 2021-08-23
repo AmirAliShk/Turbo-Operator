@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/colorPrimaryLighter"
+    android:background="?attr/colorPageBackground"
     android:layoutDirection="rtl"
     android:orientation="vertical"
     tools:context=".fragment.TripSupportFragment">
@@ -13,7 +13,7 @@
         android:id="@+id/rlActionBar"
         android:layout_width="match_parent"
         android:layout_height="?android:attr/actionBarSize"
-        android:background="@color/colorPrimaryDark"
+        android:background="?attr/colorIcon1"
         android:gravity="center_vertical"
         android:layoutDirection="ltr"
         android:orientation="horizontal">
@@ -71,7 +71,7 @@
                 android:layout_marginRight="10dp"
                 android:text="@string/today"
                 android:textAppearance="?android:attr/textAppearanceMedium"
-                android:textColor="@color/colorWhite"
+                android:textColor="?attr/colorPageTitle"
                 android:textStyle="bold" />
 
             <ImageView
@@ -79,7 +79,7 @@
                 android:layout_width="20dp"
                 android:layout_height="20dp"
                 android:src="@drawable/ic_today"
-                app:tint="@color/colorWhite" />
+                app:tint="?attr/colorPageTitle" />
 
         </LinearLayout>
 
@@ -96,7 +96,7 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@drawable/bg_blue_border_edge"
+            android:background="@drawable/bg_dialog_body"
             android:gravity="center_vertical"
             android:layoutDirection="ltr"
             android:orientation="horizontal"
@@ -106,7 +106,7 @@
                 android:id="@+id/imgSearch"
                 android:layout_width="50dp"
                 android:layout_height="50dp"
-                android:background="@drawable/bg_button_gray_edge"
+                android:background="@drawable/bg_blue_border_edge"
                 android:padding="10dp"
                 android:src="@drawable/ic_search" />
 
@@ -127,13 +127,14 @@
                 android:hint="@string/search"
                 android:padding="10dp"
                 android:singleLine="true"
-                android:textColorHint="@color/grayMedium" />
+                android:textColorHint="?attr/colorTitle"
+                android:textColor="?attr/colorValue"/>
 
             <ImageView
                 android:id="@+id/imgSearchType"
                 android:layout_width="50dp"
                 android:layout_height="50dp"
-                android:background="@drawable/bg_button_gray_edge"
+                android:background="@drawable/bg_blue_border_edge"
                 android:padding="10dp"
                 android:src="@drawable/ic_call" />
 
@@ -185,7 +186,7 @@
                     android:layout_weight="0.6"
                     android:gravity="right"
                     android:textAppearance="?android:attr/textAppearanceMedium"
-                    android:textColor="@color/colorBlack" />
+                    android:textColor="?attr/colorValue" />
 
             </LinearLayout>
 
@@ -198,7 +199,7 @@
 
                 <TextView
                     android:id="@+id/txtDriverQueue"
-                    style="@style/tripItemValue"
+                     style="@style/tripItemValue"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:gravity="center" />

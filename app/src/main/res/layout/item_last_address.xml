@@ -12,7 +12,6 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_margin="5dp"
-        android:background="@color/transparent"
         android:gravity="center"
         android:orientation="horizontal"
         android:padding="10dp">
@@ -26,12 +25,12 @@
             android:paddingRight="5dp"
             android:singleLine="true"
             android:textAppearance="?android:attr/textAppearanceSmall"
-            android:textColor="@color/colorBlack" />
+            android:textColor="?attr/colorText" />
 
         <ImageView
             android:layout_width="1dp"
             android:layout_height="match_parent"
-            android:background="@color/grayLight" />
+            android:background="?attr/colorIcon1" />
 
         <TextView
             android:id="@+id/txtAddress"
@@ -41,13 +40,12 @@
             android:paddingRight="@dimen/_10sdp"
             android:gravity="right|center_vertical"
             android:textAppearance="?android:attr/textAppearanceSmall"
-            android:textColor="@color/colorBlack" />
+            android:textColor="?attr/colorText" />
 
         <ImageView
             android:id="@+id/imgArchive"
             android:layout_width="@dimen/_50sdp"
             android:layout_height="@dimen/_30sdp"
-            android:background="@drawable/bg_ripple"
             android:padding="@dimen/_8sdp"
             android:src="@drawable/ic_archive" />
 
@@ -58,6 +56,6 @@
         android:layout_height="0.5dp"
         android:layout_marginLeft="25dp"
         android:layout_marginRight="25dp"
-        android:background="#D6D4D4" />
+        android:background="?attr/colorIcon1" />
 
 </LinearLayout>

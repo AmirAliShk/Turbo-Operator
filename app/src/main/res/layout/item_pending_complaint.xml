@@ -46,7 +46,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:gravity="center_vertical"
-                    android:textColor="@color/colorBlack"
+                    android:textColor="?attr/colorValue"
                     android:textSize="@dimen/_17ssp" />
 
             </LinearLayout>
@@ -67,7 +67,7 @@
                     android:layout_weight="1"
                     android:gravity="center_vertical"
                     android:text="نام مهمان"
-                    android:textColor="@color/grayDark"
+                    android:textColor="?attr/colorTitle"
                     android:textSize="@dimen/_16sdp" />
 
                 <TextView
@@ -76,7 +76,7 @@
                     android:layout_height="match_parent"
                     android:layout_weight="2"
                     android:gravity="center_vertical"
-                    android:textColor="@color/colorBlack"
+                    android:textColor="?attr/colorValue"
                     android:textSize="@dimen/_18ssp"
                     android:textStyle="bold" />
 
@@ -98,7 +98,7 @@
                     android:layout_weight="1"
                     android:gravity="center_vertical"
                     android:text="عنوان شکایت"
-                    android:textColor="@color/grayDark"
+                    android:textColor="?attr/colorTitle"
                     android:textSize="@dimen/_16sdp" />
 
                 <TextView
@@ -107,7 +107,7 @@
                     android:layout_height="match_parent"
                     android:layout_weight="2"
                     android:gravity="center_vertical"
-                    android:textColor="@color/colorBlack"
+                    android:textColor="?attr/colorValue"
                     android:textSize="@dimen/_18ssp"
                     android:textStyle="bold" />
 

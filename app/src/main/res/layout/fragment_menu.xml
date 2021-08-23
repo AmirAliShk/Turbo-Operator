@@ -36,7 +36,7 @@
                 android:layout_height="match_parent"
                 android:layout_margin="10dp"
                 android:layout_weight="1"
-                android:background="@drawable/bg_menu_item"
+                android:background="@drawable/bg_white_edge"
                 android:elevation="5dp"
                 android:gravity="center"
                 android:orientation="vertical">
@@ -51,7 +51,7 @@
                     android:layout_height="wrap_content"
                     android:gravity="center"
                     android:text="@string/trip_register"
-                    android:textColor="@color/colorBlack"
+                    android:textColor="?attr/colorValue"
                     android:textSize="@dimen/_15ssp" />
 
             </LinearLayout>
@@ -67,7 +67,7 @@
                 android:layout_height="match_parent"
                 android:layout_margin="10dp"
                 android:layout_weight="1"
-                android:background="@drawable/bg_menu_item"
+                android:background="@drawable/bg_white_edge"
                 android:elevation="5dp"
                 android:gravity="center"
                 android:orientation="vertical">
@@ -82,7 +82,7 @@
                     android:layout_height="wrap_content"
                     android:gravity="center"
                     android:text="@string/support"
-                    android:textColor="@color/colorBlack"
+                    android:textColor="?attr/colorValue"
                     android:textSize="@dimen/_15ssp" />
 
             </LinearLayout>
@@ -102,7 +102,7 @@
                 android:layout_height="match_parent"
                 android:layout_margin="10dp"
                 android:layout_weight="1"
-                android:background="@drawable/bg_menu_item"
+                android:background="@drawable/bg_white_edge"
                 android:elevation="5dp"
                 android:gravity="center"
                 android:orientation="vertical">
@@ -117,7 +117,7 @@
                     android:layout_height="wrap_content"
                     android:gravity="center"
                     android:text="@string/determination"
-                    android:textColor="@color/colorBlack"
+                    android:textColor="?attr/colorValue"
                     android:textSize="@dimen/_15ssp" />
 
             </LinearLayout>
@@ -133,7 +133,7 @@
                 android:layout_height="match_parent"
                 android:layout_margin="10dp"
                 android:layout_weight="1"
-                android:background="@drawable/bg_menu_item"
+                android:background="@drawable/bg_white_edge"
                 android:elevation="5dp"
                 android:gravity="center"
                 android:orientation="vertical">
@@ -148,7 +148,7 @@
                     android:layout_height="wrap_content"
                     android:gravity="center"
                     android:text="@string/complaint"
-                    android:textColor="@color/colorBlack"
+                    android:textColor="?attr/colorValue"
                     android:textSize="@dimen/_15ssp" />
 
             </LinearLayout>
@@ -168,7 +168,7 @@
                 android:layout_height="match_parent"
                 android:layout_margin="10dp"
                 android:layout_weight="1"
-                android:background="@drawable/bg_menu_item"
+                android:background="@drawable/bg_white_edge"
                 android:elevation="5dp"
                 android:gravity="center"
                 android:orientation="vertical"
@@ -184,7 +184,7 @@
                     android:layout_height="wrap_content"
                     android:gravity="center"
                     android:text="@string/request"
-                    android:textColor="@color/colorBlack"
+                    android:textColor="?attr/colorValue"
                     android:textSize="@dimen/_13ssp" />
 
             </LinearLayout>
@@ -200,7 +200,7 @@
                 android:layout_height="match_parent"
                 android:layout_margin="10dp"
                 android:layout_weight="1"
-                android:background="@drawable/bg_menu_item"
+                android:background="@drawable/bg_white_edge"
                 android:elevation="5dp"
                 android:gravity="center"
                 android:orientation="vertical">
@@ -215,7 +215,7 @@
                     android:layout_height="wrap_content"
                     android:gravity="center"
                     android:text="@string/best"
-                    android:textColor="@color/colorBlack"
+                    android:textColor="?attr/colorValue"
                     android:textSize="@dimen/_15ssp" />
 
             </LinearLayout>
@@ -235,7 +235,7 @@
                 android:layout_height="match_parent"
                 android:layout_margin="10dp"
                 android:layout_weight="1"
-                android:background="@drawable/bg_menu_item"
+                android:background="@drawable/bg_white_edge"
                 android:elevation="5dp"
                 android:gravity="center"
                 android:orientation="vertical">
@@ -250,7 +250,7 @@
                     android:layout_height="wrap_content"
                     android:gravity="center"
                     android:text="@string/shifts"
-                    android:textColor="@color/colorBlack"
+                    android:textColor="?attr/colorValue"
                     android:textSize="@dimen/_15ssp" />
 
             </LinearLayout>
@@ -266,7 +266,7 @@
                 android:layout_height="match_parent"
                 android:layout_margin="10dp"
                 android:layout_weight="1"
-                android:background="@drawable/bg_menu_item"
+                android:background="@drawable/bg_white_edge"
                 android:elevation="5dp"
                 android:gravity="center"
                 android:orientation="vertical">
@@ -281,7 +281,7 @@
                     android:layout_height="wrap_content"
                     android:gravity="center"
                     android:text="@string/scoreList"
-                    android:textColor="@color/colorBlack"
+                    android:textColor="?attr/colorValue"
                     android:textSize="@dimen/_15ssp" />
 
             </LinearLayout>
@@ -306,7 +306,7 @@
                 android:layout_height="match_parent"
                 android:layout_margin="10dp"
                 android:layout_weight="1"
-                android:background="@drawable/bg_menu_item"
+                android:background="@drawable/bg_white_edge"
                 android:elevation="5dp"
                 android:gravity="center"
                 android:orientation="vertical">
@@ -321,7 +321,7 @@
                     android:layout_height="wrap_content"
                     android:gravity="center"
                     android:text="@string/reward"
-                    android:textColor="@color/colorBlack"
+                    android:textColor="?attr/colorValue"
                     android:textSize="@dimen/_15ssp" />
 
             </LinearLayout>

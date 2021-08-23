@@ -59,14 +59,14 @@
                     android:divider="@null"
                     android:listSelector="@color/transparent"
                     android:scrollbars="none"
-                    tools:listitem="@layout/item_driver_turnover" />
+                    tools:listitem="@layout/item_driver_station_registration" />
 
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:gravity="center"
                     android:text="هنوز موردی ثبت نشده!"
-                    android:textColor="@color/colorBlack"
+                    android:textColor="?attr/colorValue"
                     android:textSize="@dimen/text_title" />
 
             </ViewFlipper>

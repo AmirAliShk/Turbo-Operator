@@ -15,6 +15,7 @@ import ir.taxi1880.operatormanagement.R;
 import ir.taxi1880.operatormanagement.app.MyApplication;
 import ir.taxi1880.operatormanagement.fragment.HomeFragment;
 import ir.taxi1880.operatormanagement.fragment.MenuFragment;
+import ir.taxi1880.operatormanagement.helper.ResourceHelper;
 
 public class MainViewPagerAdapter extends FragmentStateAdapter {
 
@@ -46,9 +47,9 @@ public class MainViewPagerAdapter extends FragmentStateAdapter {
         View v = LayoutInflater.from(MyApplication.context).inflate(R.layout.main_item_tab, null);
         ImageView img = v.findViewById(R.id.imgCustomTab);
         if (position == 0) {
-            img.setImageResource(R.mipmap.home_selected);
+            img.setImageResource(ResourceHelper.getResIdFromAttribute(MyApplication.currentActivity, R.attr.iconHomeSelected));
         } else {
-            img.setImageResource(R.drawable.ic_menu_unselected);
+            img.setImageResource(ResourceHelper.getResIdFromAttribute(MyApplication.currentActivity, R.attr.iconMenuUnselected));
         }
         return v;
     }
@@ -59,15 +60,15 @@ public class MainViewPagerAdapter extends FragmentStateAdapter {
         ImageView imgCustomTab = view.findViewById(R.id.imgCustomTab);
         if (type.equals("select")) {
             if (tab.getPosition() == 0) {
-                imgCustomTab.setImageResource(R.mipmap.home_selected);
+                imgCustomTab.setImageResource(ResourceHelper.getResIdFromAttribute(MyApplication.currentActivity, R.attr.iconHomeSelected));
             } else {
-                imgCustomTab.setImageResource(R.mipmap.menu_selected);
+                imgCustomTab.setImageResource(ResourceHelper.getResIdFromAttribute(MyApplication.currentActivity, R.attr.iconMenuSelected));
             }
         } else if (type.equals("unSelect")) {
             if (tab.getPosition() == 0) {
-                imgCustomTab.setImageResource(R.drawable.ic_home_unselected);
+                imgCustomTab.setImageResource(ResourceHelper.getResIdFromAttribute(MyApplication.currentActivity, R.attr.iconHomeUnselected));
             } else {
-                imgCustomTab.setImageResource(R.drawable.ic_menu_unselected);
+                imgCustomTab.setImageResource(ResourceHelper.getResIdFromAttribute(MyApplication.currentActivity, R.attr.iconMenuUnselected));
             }
         }
     }

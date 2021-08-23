@@ -14,6 +14,7 @@ import ir.taxi1880.operatormanagement.R;
 import ir.taxi1880.operatormanagement.app.MyApplication;
 import ir.taxi1880.operatormanagement.fragment.AllComplaintFragment;
 import ir.taxi1880.operatormanagement.fragment.PendingComplaintFragment;
+import ir.taxi1880.operatormanagement.helper.ResourceHelper;
 import ir.taxi1880.operatormanagement.helper.TypefaceUtil;
 
 public class ComplaintViewPagerAdapter extends FragmentStateAdapter {
@@ -49,7 +50,7 @@ public class ComplaintViewPagerAdapter extends FragmentStateAdapter {
         txtBadgeCount.setVisibility(View.GONE);
         TypefaceUtil.overrideFonts(v);
 
-        txtTabTitle.setTextColor(MyApplication.currentActivity.getResources().getColor(R.color.colorBlack));
+        txtTabTitle.setTextColor(ResourceHelper.getAttributeColor(MyApplication.currentActivity, R.attr.colorValue));
         txtBadgeCount.setBackgroundResource(R.drawable.badge_unselected);
 
         if (position == 0) {

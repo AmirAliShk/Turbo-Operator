@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/colorPrimaryLighter"
+    android:background="?attr/colorPageBackground"
     android:clickable="true"
     android:layoutDirection="rtl"
     android:orientation="vertical"
@@ -14,7 +14,7 @@
         android:id="@+id/rlActionBar"
         android:layout_width="match_parent"
         android:layout_height="?android:attr/actionBarSize"
-        android:background="@color/colorPrimaryDark">
+        android:background="?attr/colorActionBarBackground">
 
         <ImageView
             android:id="@+id/imgBack"
@@ -76,7 +76,7 @@
                         android:gravity="center"
                         android:padding="@dimen/_10sdp"
                         android:text="اپراتور مورد نظر خود را انتخاب کنید : "
-                        android:textColor="@color/colorBlack"
+                        android:textColor="?attr/colorText"
                         android:textSize="@dimen/_14ssp" />
 
                     <LinearLayout
@@ -94,7 +94,7 @@
                             android:layout_weight="1"
                             android:gravity="right"
                             android:text="اپراتور ها"
-                            android:textColor="@color/grayMedium"
+                            android:textColor="?attr/colorTitle"
                             android:textSize="@dimen/_13ssp" />
 
                         <com.wang.avi.AVLoadingIndicatorView
@@ -103,7 +103,7 @@
                             android:layout_height="20dp"
                             android:visibility="gone"
                             android:layout_gravity="center"
-                            app:indicatorColor="@color/colorAccent" />
+                            app:indicatorColor="?attr/colorpinkPurple" />
 
                     </LinearLayout>
 
@@ -127,10 +127,10 @@
                             android:background="@android:color/transparent"
                             android:gravity="center_vertical"
                             android:hint="انتخاب نشده"
-                            android:textColorHint="@color/grayLight"
+                            android:textColorHint="?attr/colorTitle"
                             android:nextFocusDown="@id/btnSubmit"
                             android:singleLine="true"
-                            android:textColor="@color/colorBlack"
+                            android:textColor="?attr/colorValue"
                             android:textSize="@dimen/text_title" />
 
                     </LinearLayout>
@@ -164,7 +164,7 @@
                     android:layout_weight="1"
                     android:background="@drawable/bg_light_pink_edge"
                     android:text="@string/submit"
-                    android:textColor="@color/colorWhite"
+                    android:textColor="?attr/colorPageTitle"
                     android:textSize="@dimen/text_header"
                     android:textStyle="bold" />
 
