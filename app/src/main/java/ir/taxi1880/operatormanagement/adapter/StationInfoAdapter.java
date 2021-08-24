@@ -1,6 +1,5 @@
 package ir.taxi1880.operatormanagement.adapter;
 
-import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -22,9 +21,9 @@ public class StationInfoAdapter extends BaseAdapter {
     private ArrayList<StationInfoModel> stationInfoModels;
     private LayoutInflater layoutInflater;
 
-    public StationInfoAdapter(ArrayList<StationInfoModel> stationInfoModels, Context context) {
+    public StationInfoAdapter(ArrayList<StationInfoModel> stationInfoModels) {
         this.stationInfoModels = stationInfoModels;
-        this.layoutInflater = LayoutInflater.from(context);
+        this.layoutInflater = LayoutInflater.from(MyApplication.currentActivity);
     }
 
     @Override
@@ -91,7 +90,7 @@ public class StationInfoAdapter extends BaseAdapter {
                 llEven.setVisibility(View.VISIBLE);
             }
 
-            if (stationInfoModel.getAddressOrNot().equals("stationCode")){
+            if (stationInfoModel.getAddressOrNot().equals("stationCode")) {
                 llStationCode.setVisibility(View.GONE);
             }
 

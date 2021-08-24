@@ -275,7 +275,7 @@ public class SearchStationInfoDialog {
                                 vfStationInfo.setDisplayedChild(4);
                         } else {
                             if (txtStationCode == null) return;
-                            stationInfoAdapter = new StationInfoAdapter(stationInfoModels, MyApplication.context);
+                            stationInfoAdapter = new StationInfoAdapter(stationInfoModels);
                             listStationInfo.setAdapter(stationInfoAdapter);
 
                             if (stationName.equals("")) {

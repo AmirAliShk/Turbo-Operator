@@ -98,7 +98,7 @@ public class NotificationFragment extends Fragment {
                     }
                     if (vfNoti != null)
                         vfNoti.setDisplayedChild(1);
-                    notificationAdapter = new NotificationAdapter(notificationModels, MyApplication.context);
+                    notificationAdapter = new NotificationAdapter(notificationModels);
                     if (listNotification != null)
                         listNotification.setAdapter(notificationAdapter);
                     if (notificationModels.size() == 0) {

@@ -117,7 +117,7 @@ public class PendingComplaintFragment extends Fragment {
                         } else {
                             if (vfPendingComplaint != null) {
                                 vfPendingComplaint.setDisplayedChild(1);
-                                mAdapter = new PendingComplaintAdapter(MyApplication.currentActivity, pendingComplaintsModels);
+                                mAdapter = new PendingComplaintAdapter(pendingComplaintsModels);
                                 complaintsList.setAdapter(mAdapter);
                             }
                         }

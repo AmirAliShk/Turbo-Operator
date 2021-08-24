@@ -114,7 +114,7 @@ public class StationInfoDialog {
 
                 if (txtStationCode == null) return;
 
-                stationInfoAdapter = new StationInfoAdapter(stationInfoModels, MyApplication.context);
+                stationInfoAdapter = new StationInfoAdapter(stationInfoModels);
                 listStationInfo.setAdapter(stationInfoAdapter);
 
                 txtStationCode.setText(StringHelper.toEnglishDigits(stationCode + ""));

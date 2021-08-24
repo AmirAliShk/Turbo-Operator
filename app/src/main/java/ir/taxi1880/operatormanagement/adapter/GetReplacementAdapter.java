@@ -1,6 +1,5 @@
 package ir.taxi1880.operatormanagement.adapter;
 
-import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -37,10 +36,10 @@ public class GetReplacementAdapter extends BaseAdapter {
 
     Listener listener;
 
-    public GetReplacementAdapter(ArrayList<ReplacementModel> replacementModels, Context context, Listener listener) {
+    public GetReplacementAdapter(ArrayList<ReplacementModel> replacementModels, Listener listener) {
         this.replacementModels = replacementModels;
         this.listener = listener;
-        this.layoutInflater = LayoutInflater.from(context);
+        this.layoutInflater = LayoutInflater.from(MyApplication.currentActivity);
     }
 
     @Override

@@ -1,6 +1,5 @@
 package ir.taxi1880.operatormanagement.adapter;
 
-import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -28,10 +27,10 @@ public class LastAddressAdapter extends BaseAdapter {
     private LayoutInflater layoutInflater;
     boolean isFromOrigin;
 
-    public LastAddressAdapter(boolean isFromOrigin, ArrayList<PassengerAddressModel> addressModels, Context context) {
+    public LastAddressAdapter(boolean isFromOrigin, ArrayList<PassengerAddressModel> addressModels) {
         this.addressModels = addressModels;
         this.isFromOrigin = isFromOrigin;
-        this.layoutInflater = LayoutInflater.from(context);
+        this.layoutInflater = LayoutInflater.from(MyApplication.currentActivity);
     }
 
     @Override

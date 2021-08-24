@@ -9,6 +9,7 @@ import java.util.ArrayList;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
+
 import ir.taxi1880.operatormanagement.R;
 import ir.taxi1880.operatormanagement.app.MyApplication;
 import ir.taxi1880.operatormanagement.helper.StringHelper;
@@ -21,7 +22,7 @@ public class ScoreAdapter extends RecyclerView.Adapter<ScoreAdapter.ViewHolder> 
     private ArrayList<ScoreModel> scoreModels;
 
     public ScoreAdapter(ArrayList<ScoreModel> scoreModels) {
-        this.layoutInflater = LayoutInflater.from(MyApplication.context);
+        this.layoutInflater = LayoutInflater.from(MyApplication.currentActivity);
         this.scoreModels = scoreModels;
     }
 
@@ -35,8 +36,8 @@ public class ScoreAdapter extends RecyclerView.Adapter<ScoreAdapter.ViewHolder> 
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-        holder.txtHour.setText(StringHelper.toPersianDigits(scoreModels.get(position).getHour()+":00"));
-        holder.txtScore.setText(StringHelper.toPersianDigits(scoreModels.get(position).getScore()+""));
+        holder.txtHour.setText(StringHelper.toPersianDigits(scoreModels.get(position).getHour() + ":00"));
+        holder.txtScore.setText(StringHelper.toPersianDigits(scoreModels.get(position).getScore() + ""));
     }
 
     @Override

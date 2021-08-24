@@ -7,7 +7,6 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.ViewFlipper;
 
 import java.util.ArrayList;
 
@@ -18,13 +17,12 @@ import ir.taxi1880.operatormanagement.helper.StringHelper;
 import ir.taxi1880.operatormanagement.helper.TypefaceUtil;
 import ir.taxi1880.operatormanagement.model.DriverTurnoverModel;
 
-
 public class DriverTurnoverAdapter extends BaseAdapter {
     Context mContext;
     ArrayList<DriverTurnoverModel> driverTurnoverModels;
 
-    public DriverTurnoverAdapter(Context mContext, ArrayList<DriverTurnoverModel> driverTurnoverModels) {
-        this.mContext = mContext;
+    public DriverTurnoverAdapter(ArrayList<DriverTurnoverModel> driverTurnoverModels) {
+        this.mContext = MyApplication.currentActivity;
         this.driverTurnoverModels = driverTurnoverModels;
     }
 
@@ -48,7 +46,7 @@ public class DriverTurnoverAdapter extends BaseAdapter {
 
         if (view == null) {
             view = LayoutInflater.from(mContext).inflate(R.layout.item_driver_turnover, null);
-            TypefaceUtil.overrideFonts(view,MyApplication.IraSanSMedume);
+            TypefaceUtil.overrideFonts(view, MyApplication.IraSanSMedume);
         }
 
         DriverTurnoverModel driverTurnoverModel = (DriverTurnoverModel) getItem(i);

@@ -92,7 +92,7 @@ public class CityDialog {
                 e.printStackTrace();
                 AvaCrashReporter.send(e, "CityDialog class, show method");
             }
-            cityAdapter = new CityAdapter(cityModels, MyApplication.context);
+            cityAdapter = new CityAdapter(cityModels);
             listCity.setAdapter(cityAdapter);
             listCity.setOnItemClickListener((parent, view, position, id) -> {
                 listener.selectedCity(position);

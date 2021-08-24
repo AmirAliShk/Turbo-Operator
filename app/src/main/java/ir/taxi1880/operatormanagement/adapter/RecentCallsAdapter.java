@@ -19,9 +19,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.downloader.Error;
 import com.downloader.OnDownloadListener;
-import com.downloader.OnProgressListener;
 import com.downloader.PRDownloader;
-import com.downloader.Progress;
 import com.warkiz.widget.IndicatorSeekBar;
 import com.warkiz.widget.OnSeekChangeListener;
 import com.warkiz.widget.SeekParams;

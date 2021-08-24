@@ -14,7 +14,6 @@ import ir.taxi1880.operatormanagement.app.MyApplication;
 import ir.taxi1880.operatormanagement.helper.StringHelper;
 import ir.taxi1880.operatormanagement.helper.TypefaceUtil;
 import ir.taxi1880.operatormanagement.model.DriverStationRegistrationModel;
-import ir.taxi1880.operatormanagement.model.DriverTurnoverModel;
 
 public class DriverStationRegistrationAdapter extends BaseAdapter {
 
@@ -22,8 +21,8 @@ public class DriverStationRegistrationAdapter extends BaseAdapter {
     Context mContext;
     ArrayList<DriverStationRegistrationModel> driverStationRegistrationModels;
 
-    public DriverStationRegistrationAdapter(Context mContext, ArrayList<DriverStationRegistrationModel> driverStationRegistrationModels) {
-        this.mContext = mContext;
+    public DriverStationRegistrationAdapter(ArrayList<DriverStationRegistrationModel> driverStationRegistrationModels) {
+        this.mContext = MyApplication.currentActivity;
         this.driverStationRegistrationModels = driverStationRegistrationModels;
     }
 
@@ -59,7 +58,7 @@ public class DriverStationRegistrationAdapter extends BaseAdapter {
         TextView txtOutDate = view.findViewById(R.id.txtOutDate);
         TextView txtOutTime = view.findViewById(R.id.txtOutTime);
 
-        String inTime = driverStationRegistrationModels.getInTime().substring(0,5);
+        String inTime = driverStationRegistrationModels.getInTime().substring(0, 5);
         String inDate = driverStationRegistrationModels.getInDate().substring(5);
 
         txtInDate.setText(StringHelper.toPersianDigits(inDate));
@@ -71,7 +70,7 @@ public class DriverStationRegistrationAdapter extends BaseAdapter {
             txtOutTime.setText(StringHelper.toPersianDigits("-"));
         } else {
             String outDate = driverStationRegistrationModels.getOutDate().substring(5);
-            String outTime = driverStationRegistrationModels.getOutTime().substring(0,5);
+            String outTime = driverStationRegistrationModels.getOutTime().substring(0, 5);
             txtOutType.setText(StringHelper.toPersianDigits(driverStationRegistrationModels.getOutType()));
             txtOutTime.setText(StringHelper.toPersianDigits(outTime));
             txtOutDate.setText(StringHelper.toPersianDigits(outDate));

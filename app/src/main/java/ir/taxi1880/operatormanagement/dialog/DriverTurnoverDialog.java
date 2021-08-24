@@ -89,7 +89,7 @@ public class DriverTurnoverDialog {
             } else {
                 if (vfFinancial != null)
                     vfFinancial.setDisplayedChild(0);
-                adapter = new DriverTurnoverAdapter(MyApplication.context, driverTurnoverModels);
+                adapter = new DriverTurnoverAdapter(driverTurnoverModels);
                 listDriverTurnover.setAdapter(adapter);
             }
         } catch (Exception e) {

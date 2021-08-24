@@ -6,7 +6,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.ViewFlipper;
@@ -31,9 +30,7 @@ import ir.taxi1880.operatormanagement.model.ComplaintDetailsModel;
 import ir.taxi1880.operatormanagement.model.PendingComplaintsModel;
 import ir.taxi1880.operatormanagement.okHttp.RequestHelper;
 
-import static ir.taxi1880.operatormanagement.app.Keys.KEY_COUNT_ALL_COMPLAINT;
 import static ir.taxi1880.operatormanagement.app.Keys.KEY_COUNT_PENDING_COMPLAINT;
-import static ir.taxi1880.operatormanagement.app.Keys.VALUE_COUNT_ALL_COMPLAINT;
 import static ir.taxi1880.operatormanagement.app.Keys.VALUE_COUNT_PENDING_COMPLAINT;
 
 public class PendingComplaintAdapter extends RecyclerView.Adapter<PendingComplaintAdapter.ViewHolder> {
@@ -43,8 +40,8 @@ public class PendingComplaintAdapter extends RecyclerView.Adapter<PendingComplai
     ViewFlipper vfDetail;
     LocalBroadcastManager broadcaster;
 
-    public PendingComplaintAdapter(Context mContext, ArrayList<PendingComplaintsModel> pendingComplaintsModels) {
-        this.mContext = mContext;
+    public PendingComplaintAdapter(ArrayList<PendingComplaintsModel> pendingComplaintsModels) {
+        this.mContext = MyApplication.currentActivity;
         this.pendingComplaintsModels = pendingComplaintsModels;
     }
 

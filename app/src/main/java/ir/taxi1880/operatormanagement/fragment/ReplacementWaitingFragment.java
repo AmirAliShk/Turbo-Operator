@@ -106,7 +106,7 @@ public class ReplacementWaitingFragment extends Fragment {
         }
         if (vfGetReq != null)
           vfGetReq.setDisplayedChild(1);
-        getReplacementAdapter = new GetReplacementAdapter(replacementModels, MyApplication.context, position -> {
+        getReplacementAdapter = new GetReplacementAdapter(replacementModels, position -> {
           replacementModels.remove(position);
           getReplacementAdapter.notifyDataSetChanged();
         });

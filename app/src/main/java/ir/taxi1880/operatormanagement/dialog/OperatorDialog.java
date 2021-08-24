@@ -121,7 +121,7 @@ public class OperatorDialog {
         } catch (JSONException e) {
             e.printStackTrace();
         }
-        operatorAdapter = new OperatorAdapter(operatorModels, MyApplication.context);
+        operatorAdapter = new OperatorAdapter(operatorModels);
         listOperator.setAdapter(operatorAdapter);
         return operatorModels;
     }

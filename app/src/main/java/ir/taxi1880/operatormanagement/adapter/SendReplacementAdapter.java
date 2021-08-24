@@ -1,7 +1,6 @@
 package ir.taxi1880.operatormanagement.adapter;
 
 import android.annotation.SuppressLint;
-import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -37,10 +36,10 @@ public class SendReplacementAdapter extends BaseAdapter {
 
     Listener listener;
 
-    public SendReplacementAdapter(ArrayList<ReplacementModel> replacementModels, Context context, Listener listener) {
+    public SendReplacementAdapter(ArrayList<ReplacementModel> replacementModels, Listener listener) {
         this.replacementModels = replacementModels;
         this.listener = listener;
-        this.layoutInflater = LayoutInflater.from(context);
+        this.layoutInflater = LayoutInflater.from(MyApplication.currentActivity);
     }
 
     @Override

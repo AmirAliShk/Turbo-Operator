@@ -3,7 +3,6 @@ package ir.taxi1880.operatormanagement.adapter;
 import android.annotation.SuppressLint;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;

@@ -1,6 +1,5 @@
 package ir.taxi1880.operatormanagement.adapter;
 
-import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -31,9 +30,9 @@ public class NotificationAdapter extends BaseAdapter {
     LayoutInflater layoutInflater;
     int notifId;
 
-    public NotificationAdapter(ArrayList<NotificationModel> notificationModels, Context context) {
+    public NotificationAdapter(ArrayList<NotificationModel> notificationModels) {
         this.notificationModels = notificationModels;
-        this.layoutInflater = LayoutInflater.from(context);
+        this.layoutInflater = LayoutInflater.from(MyApplication.currentActivity);
     }
 
     @Override
@@ -57,7 +56,7 @@ public class NotificationAdapter extends BaseAdapter {
         try {
             NotificationModel notificationModel = notificationModels.get(position);
             if (convertView == null) {
-                convertView = layoutInflater.inflate(R.layout.item_notification, parent, false);
+                convertView = layoutInflater.inflate(R.layout.item_notification, null, false);
                 TypefaceUtil.overrideFonts(convertView);
                 viewHolder = new ViewHolder(convertView);
                 convertView.setTag(viewHolder);

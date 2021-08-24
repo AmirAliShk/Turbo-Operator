@@ -65,7 +65,7 @@ public class AddressListDialog {
         blrView = dialog.findViewById(R.id.blrView);
         TextView txtTitle = dialog.findViewById(R.id.txtTitle);
 
-        lastAddressAdapter = new LastAddressAdapter(isFromOrigin, passengerAddressModels, MyApplication.context);
+        lastAddressAdapter = new LastAddressAdapter(isFromOrigin, passengerAddressModels);
         listLastAddress.setAdapter(lastAddressAdapter);
 
         if (isFromOrigin) {

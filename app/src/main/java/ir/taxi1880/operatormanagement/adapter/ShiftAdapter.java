@@ -1,6 +1,5 @@
 package ir.taxi1880.operatormanagement.adapter;
 
-import android.content.Context;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -27,9 +26,9 @@ public class ShiftAdapter extends BaseAdapter {
     private ArrayList<ShiftModel> shiftModels;
     private LayoutInflater layoutInflater;
 
-    public ShiftAdapter(ArrayList<ShiftModel> shiftModels, Context context) {
+    public ShiftAdapter(ArrayList<ShiftModel> shiftModels) {
         this.shiftModels = shiftModels;
-        this.layoutInflater = LayoutInflater.from(context);
+        this.layoutInflater = LayoutInflater.from(MyApplication.currentActivity);
     }
 
     @Override
@@ -53,7 +52,7 @@ public class ShiftAdapter extends BaseAdapter {
         try {
             final ShiftModel shiftModel = shiftModels.get(position);
             if (convertView == null) {
-                convertView = layoutInflater.inflate(R.layout.item_shift, parent,false);
+                convertView = layoutInflater.inflate(R.layout.item_shift, parent, false);
                 TypefaceUtil.overrideFonts(convertView);
                 viewHolder = new ViewHolder(convertView);
                 convertView.setTag(viewHolder);
@@ -108,7 +107,7 @@ public class ShiftAdapter extends BaseAdapter {
 
         } catch (Exception e) {
             e.printStackTrace();
-            AvaCrashReporter.send(e,"ShiftAdapter class, getView method");
+            AvaCrashReporter.send(e, "ShiftAdapter class, getView method");
         }
         return convertView;
     }

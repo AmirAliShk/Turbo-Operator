@@ -12,6 +12,7 @@ import android.widget.TextView;
 import java.util.ArrayList;
 
 import ir.taxi1880.operatormanagement.R;
+import ir.taxi1880.operatormanagement.app.MyApplication;
 import ir.taxi1880.operatormanagement.helper.TypefaceUtil;
 import ir.taxi1880.operatormanagement.model.OperatorModel;
 import ir.taxi1880.operatormanagement.push.AvaCrashReporter;
@@ -25,8 +26,8 @@ public class OperatorAdapter extends BaseAdapter implements Filterable {
     private ValueFilter valueFilter;
 
 
-    public OperatorAdapter(ArrayList<OperatorModel> operatorModels, Context context) {
-        this.context = context;
+    public OperatorAdapter(ArrayList<OperatorModel> operatorModels) {
+        this.context = MyApplication.currentActivity;
         this.operatorModels = operatorModels;
         this.operatorFilteredModels = operatorModels;
         this.layoutInflater = LayoutInflater.from(context);
@@ -66,7 +67,7 @@ public class OperatorAdapter extends BaseAdapter implements Filterable {
 
         } catch (Exception e) {
             e.printStackTrace();
-            AvaCrashReporter.send(e,"OperatorAdapter class, getView method");
+            AvaCrashReporter.send(e, "OperatorAdapter class, getView method");
         }
 
         return myView;
@@ -114,7 +115,7 @@ public class OperatorAdapter extends BaseAdapter implements Filterable {
         }
     }
 
-    public OperatorModel getOperator(int position){
+    public OperatorModel getOperator(int position) {
         return operatorModels.get(position);
     }
 

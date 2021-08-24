@@ -172,7 +172,7 @@ public class SearchLocationDialog {
 
                         if (vfLocation != null)
                             vfLocation.setDisplayedChild(2);
-                        addressAdapter = new StationAdapter(stationModels, MyApplication.context);
+                        addressAdapter = new StationAdapter(stationModels);
                         if (listPlace != null)
                             listPlace.setAdapter(addressAdapter);
 

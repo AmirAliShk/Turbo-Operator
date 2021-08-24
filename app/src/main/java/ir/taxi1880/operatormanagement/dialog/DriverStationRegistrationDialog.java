@@ -94,7 +94,7 @@ public class DriverStationRegistrationDialog {
             } else {
                 if (vfStationRegistration != null)
                     vfStationRegistration.setDisplayedChild(0);
-                adapter = new DriverStationRegistrationAdapter(MyApplication.context, driverStationRegistrationModels);
+                adapter = new DriverStationRegistrationAdapter(driverStationRegistrationModels);
                 listDriverStationRegistration.setAdapter(adapter);
             }
         } catch (JSONException e) {

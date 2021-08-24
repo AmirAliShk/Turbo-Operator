@@ -93,7 +93,7 @@ public class ShiftListFragment extends Fragment {
                         shiftModels.add(shiftModel);
                     }
 
-                    shiftAdapter = new ShiftAdapter(shiftModels, MyApplication.context);
+                    shiftAdapter = new ShiftAdapter(shiftModels);
                     if (listShift != null)
                         listShift.setAdapter(shiftAdapter);
 

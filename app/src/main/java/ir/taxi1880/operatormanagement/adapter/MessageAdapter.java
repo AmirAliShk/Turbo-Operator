@@ -19,7 +19,7 @@ import ir.taxi1880.operatormanagement.model.MessageModel;
 import java.util.ArrayList;
 import java.util.List;
 
-public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.MyViewHolder>{
+public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.MyViewHolder> {
 
     private Context context;
     private List<MessageModel> messageModelsList;
@@ -68,7 +68,7 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.MyViewHo
         holder.llMsgOut.setVisibility(View.GONE);
         holder.llMsgIn.setVisibility(View.GONE);
 
-        if (messageModel.getMsgType()==1) {
+        if (messageModel.getMsgType() == 1) {
             holder.llMsgOut.setVisibility(View.VISIBLE);
             holder.txtMsgOut.setText(StringHelper.toPersianDigits(messageModel.getMsgText()));
             holder.txtTimeMsgOut.setText(StringHelper.toPersianDigits(messageModel.getMsgTime()));
