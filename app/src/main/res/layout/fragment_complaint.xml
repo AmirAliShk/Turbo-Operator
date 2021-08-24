@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/colorWhite"
+    android:background="?attr/colorPageBackground"
     android:clickable="true"
     android:orientation="vertical"
     tools:context=".activity.SupportActivity">
@@ -13,7 +13,7 @@
         android:id="@+id/llActionBar"
         android:layout_width="match_parent"
         android:layout_height="?android:attr/actionBarSize"
-        android:background="@drawable/bg_action_bar_purple"
+        android:background="?attr/colorActionBarBackground"
         android:gravity="left"
         android:layoutDirection="rtl">
 
@@ -44,7 +44,8 @@
         android:id="@+id/tbLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:tabIndicatorColor="@color/colorAccent">
+        app:tabIndicatorColor="@color/colorAccent"
+        android:background="?attr/colorHederSwitch">
 
         <com.google.android.material.tabs.TabItem
             android:layout_width="wrap_content"

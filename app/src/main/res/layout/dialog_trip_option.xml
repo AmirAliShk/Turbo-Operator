@@ -63,7 +63,7 @@
                         android:layout_height="wrap_content"
                         android:gravity="center"
                         android:textAppearance="?android:attr/textAppearanceSmall"
-                        android:textColor="@color/colorBlack"
+                        android:textColor="?attr/colorValue"
                         android:textSize="@dimen/_15ssp"
                         android:textStyle="bold"
                         android:text=" پشتیبانی " />
@@ -98,7 +98,7 @@
                         android:layout_height="wrap_content"
                         android:gravity="center"
                         android:textAppearance="?android:attr/textAppearanceSmall"
-                        android:textColor="@color/colorBlack"
+                        android:textColor="?attr/colorValue"
                         android:textSize="@dimen/_15ssp"
                         android:textStyle="bold"
                         android:text=" استخدام " />

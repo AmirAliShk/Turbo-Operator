@@ -41,5 +41,6 @@
     <attr name="colorDialogeBody" format="color" />
     <attr name="colorDialogeBodyTop" format="color" />
     <attr name="colorDialogeBodyTop1" format="color" />
+    <attr name="colorDialogeBodyTop2" format="color" />
 
 </resources>

@@ -13,8 +13,7 @@
         android:id="@+id/rlActionBar"
         android:layout_width="match_parent"
         android:layout_height="?android:attr/actionBarSize"
-        android:background="?attr/colorIcon1"
-        android:gravity="center_vertical"
+        android:background="?attr/colorActionBarBackground"        android:gravity="center_vertical"
         android:layoutDirection="ltr"
         android:orientation="horizontal">
 
@@ -96,7 +95,7 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@drawable/bg_dialog_body"
+            android:background="@drawable/bg_white_edge"
             android:gravity="center_vertical"
             android:layoutDirection="ltr"
             android:orientation="horizontal"
@@ -106,7 +105,7 @@
                 android:id="@+id/imgSearch"
                 android:layout_width="50dp"
                 android:layout_height="50dp"
-                android:background="@drawable/bg_blue_border_edge"
+                android:background="@drawable/bg_body1"
                 android:padding="10dp"
                 android:src="@drawable/ic_search" />
 
@@ -134,7 +133,7 @@
                 android:id="@+id/imgSearchType"
                 android:layout_width="50dp"
                 android:layout_height="50dp"
-                android:background="@drawable/bg_blue_border_edge"
+                android:background="@drawable/bg_body1"
                 android:padding="10dp"
                 android:src="@drawable/ic_call" />
 

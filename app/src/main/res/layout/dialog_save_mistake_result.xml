@@ -54,7 +54,7 @@
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:background="@drawable/bg_gray_lite_edge"                    android:orientation="vertical"
+                    android:background="@drawable/bg_gray_lite_edge"                  android:orientation="vertical"
                     android:paddingBottom="5dp">
 
                     <RadioGroup

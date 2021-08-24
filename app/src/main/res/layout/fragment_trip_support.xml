@@ -96,7 +96,7 @@
                 android:id="@+id/imgSearch"
                 android:layout_width="50dp"
                 android:layout_height="50dp"
-                android:background="@drawable/edit_text_style"
+                android:background="@drawable/bg_body1"
                 android:padding="10dp"
                 android:src="@drawable/ic_search" />
 
@@ -125,7 +125,7 @@
                 android:id="@+id/imgSearchType"
                 android:layout_width="50dp"
                 android:layout_height="50dp"
-                android:background="@drawable/edit_text_style"
+                android:background="@drawable/bg_body1"
                 android:padding="10dp"
                 android:src="@drawable/ic_call" />
 

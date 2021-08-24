@@ -112,7 +112,7 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="@drawable/bg_blue_border_edge"
+                android:background="@drawable/bg_edit_text"
                 android:gravity="right"
                 android:orientation="vertical"
                 android:padding="10dp">
@@ -141,7 +141,7 @@
                         android:id="@+id/llComplaintType"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
-                        android:background="@drawable/edit_text_style"
+                        android:background="@drawable/bg_body1"
                         android:gravity="center_vertical"
                         android:padding="10dp"
                         android:layout_marginRight="10dp">
@@ -179,7 +179,7 @@
                         android:layout_width="100dp"
                         android:layout_height="match_parent"
                         android:layout_marginRight="5dp"
-                        android:background="@drawable/edit_text_style"
+                        android:background="@drawable/bg_body1"
                         android:gravity="center"
                         android:inputType="numberDecimal"
                         android:textSize="@dimen/_18ssp" />

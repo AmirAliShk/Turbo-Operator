@@ -40,7 +40,8 @@
         <item name="iconHomeUnselected">@drawable/ic_home_unselected_light</item>
         <item name="colorDialogeBody">#ebeff0</item>
         <item name="colorDialogeBodyTop">#ffffff</item>
-        <item name="colorDialogeBodyTop1">#f8e9ff</item>
+        <item name="colorDialogeBodyTop1">#867a99</item>
+        <item name="colorDialogeBodyTop2">#f8e9ff</item>
     </style>
 
     <style name="AppThemeDark" parent="Theme.AppCompat.Light.NoActionBar">
@@ -84,6 +85,7 @@
         <item name="colorDialogeBody">#010101</item>
         <item name="colorDialogeBodyTop">#222222</item>
         <item name="colorDialogeBodyTop1">#323232</item>
+        <item name="colorDialogeBodyTop2">#323232</item>
 
 
 

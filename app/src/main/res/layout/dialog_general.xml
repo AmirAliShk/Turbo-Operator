@@ -100,7 +100,7 @@
                     android:background="@drawable/green_shadow"
                     android:gravity="center"
                     android:textAppearance="?android:attr/textAppearanceMedium"
-                    android:textColor="@color/colorWhite"
+                    android:textColor="?attr/colorPageTitle"
                     android:textStyle="bold" />
 
                 <View
