@@ -136,7 +136,7 @@ public class MessageFragment extends Fragment {
                         messageModels.add(messageModel);
                     }
 
-                    messageAdapter = new MessageAdapter(MyApplication.context, messageModels);
+                    messageAdapter = new MessageAdapter(messageModels);
                     if (listMessage != null) {
                         listMessage.setAdapter(messageAdapter);
                         MyApplication.handler.postDelayed(() -> {

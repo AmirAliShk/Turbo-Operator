@@ -115,7 +115,7 @@ public class AllComplaintFragment extends Fragment {
                         } else {
                             if (vfAllComplaint != null) {
                                 vfAllComplaint.setDisplayedChild(1);
-                                mAdapter = new AllComplaintAdapter(MyApplication.currentActivity, allComplaintsModels);
+                                mAdapter = new AllComplaintAdapter(allComplaintsModels);
                                 complaintsList.setAdapter(mAdapter);
                             }
                         }

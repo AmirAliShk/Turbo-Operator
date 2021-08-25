@@ -17,12 +17,9 @@ import ir.taxi1880.operatormanagement.model.DriverStationRegistrationModel;
 
 public class DriverStationRegistrationAdapter extends BaseAdapter {
 
-
-    Context mContext;
     ArrayList<DriverStationRegistrationModel> driverStationRegistrationModels;
 
     public DriverStationRegistrationAdapter(ArrayList<DriverStationRegistrationModel> driverStationRegistrationModels) {
-        this.mContext = MyApplication.currentActivity;
         this.driverStationRegistrationModels = driverStationRegistrationModels;
     }
 
@@ -45,7 +42,7 @@ public class DriverStationRegistrationAdapter extends BaseAdapter {
     public View getView(int i, View view, ViewGroup viewGroup) {
 
         if (view == null) {
-            view = LayoutInflater.from(mContext).inflate(R.layout.item_driver_station_registration, null);
+            view = LayoutInflater.from(MyApplication.currentActivity).inflate(R.layout.item_driver_station_registration, null);
             TypefaceUtil.overrideFonts(view, MyApplication.IraSanSMedume);
         }
 

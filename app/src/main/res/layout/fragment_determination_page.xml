@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="?attr/colorPageBackground"
@@ -111,7 +110,7 @@
                 android:layout_weight="1"
                 android:gravity="center"
                 android:padding="10dp"
-                android:textColor="@color/colorBlack"
+                android:textColor="?attr/colorValue"
                 android:textSize="@dimen/_16ssp" />
 
         </LinearLayout>
@@ -288,7 +287,7 @@
                 android:background="@drawable/selector_top_left"
                 android:text="@string/one"
                 android:textAppearance="?android:attr/textAppearanceLarge"
-                android:textColor="?attr/colorPageTitle"
+                android:textColor="?attr/colorValue"
                 android:textStyle="bold"
                 app:layout_columnWeight="1"
                 app:layout_rowWeight="1" />
@@ -300,7 +299,7 @@
                 android:background="@drawable/selector_normal_btn"
                 android:text="@string/two"
                 android:textAppearance="?android:attr/textAppearanceLarge"
-                android:textColor="?attr/colorPageTitle"
+                android:textColor="?attr/colorValue"
                 android:textStyle="bold"
                 app:layout_columnWeight="1"
                 app:layout_rowWeight="1" />
@@ -312,7 +311,7 @@
                 android:background="@drawable/selector_top_right"
                 android:text="@string/three"
                 android:textAppearance="?android:attr/textAppearanceLarge"
-                android:textColor="?attr/colorPageTitle"
+                android:textColor="?attr/colorValue"
                 android:textStyle="bold"
                 app:layout_columnWeight="1"
                 app:layout_rowWeight="1" />
@@ -324,7 +323,7 @@
                 android:background="@drawable/selector_normal_btn"
                 android:text="@string/four"
                 android:textAppearance="?android:attr/textAppearanceLarge"
-                android:textColor="?attr/colorPageTitle"
+                android:textColor="?attr/colorValue"
                 android:textStyle="bold"
                 app:layout_columnWeight="1"
                 app:layout_rowWeight="1" />
@@ -336,7 +335,7 @@
                 android:background="@drawable/selector_normal_btn"
                 android:text="@string/five"
                 android:textAppearance="?android:attr/textAppearanceLarge"
-                android:textColor="?attr/colorPageTitle"
+                android:textColor="?attr/colorValue"
                 android:textStyle="bold"
                 app:layout_columnWeight="1"
                 app:layout_rowWeight="1" />
@@ -348,7 +347,7 @@
                 android:background="@drawable/selector_normal_btn"
                 android:text="@string/six"
                 android:textAppearance="?android:attr/textAppearanceLarge"
-                android:textColor="?attr/colorPageTitle"
+                android:textColor="?attr/colorValue"
                 android:textStyle="bold"
                 app:layout_columnWeight="1"
                 app:layout_rowWeight="1" />
@@ -360,7 +359,7 @@
                 android:background="@drawable/selector_normal_btn"
                 android:text="@string/seven"
                 android:textAppearance="?android:attr/textAppearanceLarge"
-                android:textColor="?attr/colorPageTitle"
+                android:textColor="?attr/colorValue"
                 android:textStyle="bold"
                 app:layout_columnWeight="1"
                 app:layout_rowWeight="1" />
@@ -372,7 +371,7 @@
                 android:background="@drawable/selector_normal_btn"
                 android:text="@string/eight"
                 android:textAppearance="?android:attr/textAppearanceLarge"
-                android:textColor="?attr/colorPageTitle"
+                android:textColor="?attr/colorValue"
                 android:textStyle="bold"
                 app:layout_columnWeight="1"
                 app:layout_rowWeight="1" />
@@ -384,7 +383,7 @@
                 android:background="@drawable/selector_normal_btn"
                 android:text="@string/nine"
                 android:textAppearance="?android:attr/textAppearanceLarge"
-                android:textColor="?attr/colorPageTitle"
+                android:textColor="?attr/colorValue"
                 android:textStyle="bold"
                 app:layout_columnWeight="1"
                 app:layout_rowWeight="1" />
@@ -396,7 +395,7 @@
                 android:background="@drawable/selector_bot_left"
                 android:text="@string/zero"
                 android:textAppearance="?android:attr/textAppearanceLarge"
-                android:textColor="?attr/colorPageTitle"
+                android:textColor="?attr/colorValue"
                 android:textStyle="bold"
                 app:layout_columnWeight="1"
                 app:layout_rowWeight="1" />

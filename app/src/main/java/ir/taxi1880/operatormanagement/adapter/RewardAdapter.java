@@ -22,7 +22,7 @@ public class RewardAdapter extends RecyclerView.Adapter<RewardAdapter.ViewHolder
     private ArrayList<RewardsModel> rewardsModels;
 
     public RewardAdapter(ArrayList<RewardsModel> rewardsModels) {
-        this.layoutInflater = LayoutInflater.from(MyApplication.context);
+        this.layoutInflater = LayoutInflater.from(MyApplication.currentActivity);
         this.rewardsModels = rewardsModels;
     }
 

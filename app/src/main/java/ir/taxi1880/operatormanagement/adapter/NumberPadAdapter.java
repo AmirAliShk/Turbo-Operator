@@ -52,17 +52,13 @@ public class NumberPadAdapter extends BaseAdapter {
         TextView txtNumber = v.findViewById(R.id.txtNumber);
         RelativeLayout rlRoot = v.findViewById(R.id.rlRoot);
 
-        rlRoot.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                switch (i) {
-                    case 9:
-                        listener.onResult("0");
-                        break;
-                    default:
-                        listener.onResult(i + 1 + "");
-                }
-
+        rlRoot.setOnClickListener(view1 -> {
+            switch (i) {
+                case 9:
+                    listener.onResult("0");
+                    break;
+                default:
+                    listener.onResult(i + 1 + "");
             }
         });
 

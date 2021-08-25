@@ -44,7 +44,7 @@ public class MainViewPagerAdapter extends FragmentStateAdapter {
     }
 
     public View getTabView(int position) {
-        View v = LayoutInflater.from(MyApplication.context).inflate(R.layout.main_item_tab, null);
+        View v = LayoutInflater.from(MyApplication.currentActivity).inflate(R.layout.main_item_tab, null);
         ImageView img = v.findViewById(R.id.imgCustomTab);
         if (position == 0) {
             img.setImageResource(ResourceHelper.getResIdFromAttribute(MyApplication.currentActivity, R.attr.iconHomeSelected));

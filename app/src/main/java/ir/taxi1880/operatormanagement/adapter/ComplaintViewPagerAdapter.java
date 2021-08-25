@@ -44,13 +44,13 @@ public class ComplaintViewPagerAdapter extends FragmentStateAdapter {
     }
 
     public View getTabView(int position, int newCount, int pendingCount) {
-        View v = LayoutInflater.from(MyApplication.context).inflate(R.layout.support_item_tab, null);
+        View v = LayoutInflater.from(MyApplication.currentActivity).inflate(R.layout.support_item_tab, null);
         TextView txtTabTitle = v.findViewById(R.id.txtTabTitle);
         TextView txtBadgeCount = v.findViewById(R.id.txtBadgeCount);
         txtBadgeCount.setVisibility(View.GONE);
         TypefaceUtil.overrideFonts(v);
 
-        txtTabTitle.setTextColor(ResourceHelper.getAttributeColor(MyApplication.currentActivity, R.attr.colorValue));
+//        txtTabTitle.setTextColor(ResourceHelper.getAttributeColor(MyApplication.currentActivity, R.attr.colorValue));
         txtBadgeCount.setBackgroundResource(R.drawable.badge_unselected);
 
         if (position == 0) {

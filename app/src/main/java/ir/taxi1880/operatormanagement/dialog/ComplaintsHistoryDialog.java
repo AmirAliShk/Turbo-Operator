@@ -199,7 +199,7 @@ public class ComplaintsHistoryDialog {
                             if (vfComplaintHistory != null)
                                 vfComplaintHistory.setDisplayedChild(1);
 
-                            mAdapter = new ComplaintsHistoryAdapter(MyApplication.currentActivity, complaintsHistoryModels);
+                            mAdapter = new ComplaintsHistoryAdapter(complaintsHistoryModels);
                             listComplaintsHistory.setAdapter(mAdapter);
                         }
                     } else {

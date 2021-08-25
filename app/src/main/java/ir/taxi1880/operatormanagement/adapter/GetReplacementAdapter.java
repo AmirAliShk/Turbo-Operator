@@ -87,19 +87,17 @@ public class GetReplacementAdapter extends BaseAdapter {
                         .show();
             });
 
-            llReject.setOnClickListener(v -> {
-                new GeneralDialog()
-                        .title("هشدار")
-                        .message("آیا از انجام عملیات فوق اطمینان دارید؟")
-                        .cancelable(false)
-                        .firstButton("بله", () -> {
-                            answer = 0;
-                            replaceId = replacementModel.getReplaceId();
-                            answerShiftReplacementRequest();
-                            notifyDataSetChanged();
-                        }).secondButton("خیر", null)
-                        .show();
-            });
+            llReject.setOnClickListener(v -> new GeneralDialog()
+                    .title("هشدار")
+                    .message("آیا از انجام عملیات فوق اطمینان دارید؟")
+                    .cancelable(false)
+                    .firstButton("بله", () -> {
+                        answer = 0;
+                        replaceId = replacementModel.getReplaceId();
+                        answerShiftReplacementRequest();
+                        notifyDataSetChanged();
+                    }).secondButton("خیر", null)
+                    .show());
 
             txtDate.setText(replacementModel.getReplaceDate());
             txtShift.setText(replacementModel.getReplaceShiftName());

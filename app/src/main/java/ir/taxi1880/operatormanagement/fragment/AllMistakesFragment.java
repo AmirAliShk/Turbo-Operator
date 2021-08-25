@@ -135,7 +135,7 @@ public class AllMistakesFragment extends Fragment {
                         } else {
                             if (vfAllMistake != null) {
                                 vfAllMistake.setDisplayedChild(1);
-                                mAdapter = new AllMistakesAdapter(MyApplication.currentActivity, allMistakesModels);
+                                mAdapter = new AllMistakesAdapter(allMistakesModels);
                                 mistakesList.setAdapter(mAdapter);
                             }
                         }

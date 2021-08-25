@@ -18,11 +18,9 @@ import ir.taxi1880.operatormanagement.helper.TypefaceUtil;
 import ir.taxi1880.operatormanagement.model.DriverTurnoverModel;
 
 public class DriverTurnoverAdapter extends BaseAdapter {
-    Context mContext;
     ArrayList<DriverTurnoverModel> driverTurnoverModels;
 
     public DriverTurnoverAdapter(ArrayList<DriverTurnoverModel> driverTurnoverModels) {
-        this.mContext = MyApplication.currentActivity;
         this.driverTurnoverModels = driverTurnoverModels;
     }
 
@@ -45,7 +43,7 @@ public class DriverTurnoverAdapter extends BaseAdapter {
     public View getView(int i, View view, ViewGroup viewGroup) {
 
         if (view == null) {
-            view = LayoutInflater.from(mContext).inflate(R.layout.item_driver_turnover, null);
+            view = LayoutInflater.from(MyApplication.currentActivity).inflate(R.layout.item_driver_turnover, null);
             TypefaceUtil.overrideFonts(view, MyApplication.IraSanSMedume);
         }
 

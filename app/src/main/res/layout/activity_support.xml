@@ -4,9 +4,9 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="?attr/colorPageBackground"
     android:orientation="vertical"
-    tools:context=".activity.SupportActivity"
-    android:background="?attr/colorPageBackground">
+    tools:context=".activity.SupportActivity">
 
     <RelativeLayout
         android:id="@+id/rlNewInComingCall"
@@ -101,9 +101,9 @@
     <LinearLayout
         android:id="@+id/llActionBar"
         android:layout_width="match_parent"
-        android:gravity="center"
         android:layout_height="?android:attr/actionBarSize"
         android:background="?attr/colorActionBarBackground"
+        android:gravity="center"
         android:layoutDirection="rtl">
 
         <ImageView
@@ -118,22 +118,22 @@
         <ImageView
             android:id="@+id/imgHelpWarning"
             android:layout_width="0dp"
-            android:layout_weight="0.5"
-            android:padding="@dimen/_6sdp"
             android:layout_height="match_parent"
             android:layout_toLeftOf="@id/llEndCall"
+            android:layout_weight="0.5"
+            android:padding="@dimen/_6sdp"
             android:src="@drawable/ic_error"
             android:visibility="invisible" />
 
         <LinearLayout
             android:id="@+id/llStatus"
             android:layout_width="0dp"
-            android:layout_weight="2"
             android:layout_height="45dp"
             android:layout_centerInParent="true"
+            android:layout_margin="@dimen/_10sdp"
+            android:layout_weight="2"
             android:background="@drawable/bg_blue_border_edge"
             android:gravity="center"
-            android:layout_margin="@dimen/_10sdp"
             android:orientation="horizontal">
 
             <Button
@@ -164,9 +164,9 @@
 
         <ImageView
             android:layout_width="0dp"
-            android:layout_weight="0.5"
             android:layout_height="match_parent"
             android:layout_toRightOf="@+id/imgBack"
+            android:layout_weight="0.5"
             android:background="?attr/colorIcon1"
             android:padding="@dimen/_10sdp"
             android:visibility="invisible" />
@@ -174,9 +174,9 @@
         <ImageView
             android:id="@+id/imgBack"
             android:layout_width="0dp"
-            android:layout_weight="0.5"
             android:layout_height="match_parent"
             android:layout_alignParentLeft="true"
+            android:layout_weight="0.5"
             android:padding="12dp"
             android:src="@drawable/ic_back" />
 

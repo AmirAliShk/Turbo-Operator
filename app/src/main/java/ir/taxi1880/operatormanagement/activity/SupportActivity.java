@@ -212,10 +212,10 @@ public class SupportActivity extends AppCompatActivity {
             window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
             window.getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LIGHT_NAVIGATION_BAR);
             window.addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
-            if (MyApplication.prefManager.isDarkMode()){
+            if (MyApplication.prefManager.isDarkMode()) {
                 window.setNavigationBarColor(getResources().getColor(R.color.dark_navigation_bar));
                 window.setStatusBarColor(getResources().getColor(R.color.dark_action_bar));
-            }else {
+            } else {
                 window.setNavigationBarColor(getResources().getColor(R.color.colorPrimaryLighter));
                 window.setStatusBarColor(getResources().getColor(R.color.colorPrimaryDark));
             }
@@ -232,9 +232,7 @@ public class SupportActivity extends AppCompatActivity {
         dataBase = new DataBase(MyApplication.context);
         broadcaster = LocalBroadcastManager.getInstance(MyApplication.context);
 
-        new TabLayoutMediator(tbLayout, vpSupport, (tab, position) -> {
-            tab.setCustomView(supportViewPagerAdapter.getTabView(position, 0, dataBase.getMistakesCount()));
-        }).attach();
+        new TabLayoutMediator(tbLayout, vpSupport, (tab, position) -> tab.setCustomView(supportViewPagerAdapter.getTabView(position, 0, dataBase.getMistakesCount()))).attach();
 
         tbLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
             @Override
@@ -455,9 +453,7 @@ public class SupportActivity extends AppCompatActivity {
         public void onReceive(Context context, Intent intent) {
             mistakeCountNew = intent.getIntExtra(NEW_MISTAKE_COUNT, 0);
             if (vpSupport != null) {
-                new TabLayoutMediator(tbLayout, vpSupport, (tab, position) -> {
-                    tab.setCustomView(supportViewPagerAdapter.getTabView(position, mistakeCountNew, dataBase.getMistakesCount()));
-                }).attach();
+                new TabLayoutMediator(tbLayout, vpSupport, (tab, position) -> tab.setCustomView(supportViewPagerAdapter.getTabView(position, mistakeCountNew, dataBase.getMistakesCount()))).attach();
             }
         }
     };
@@ -467,9 +463,7 @@ public class SupportActivity extends AppCompatActivity {
         public void onReceive(Context context, Intent intent) {
             mistakeCountPending = intent.getIntExtra(PENDING_MISTAKE_COUNT, 0);
             if (vpSupport != null) {
-                new TabLayoutMediator(tbLayout, vpSupport, (tab, position) -> {
-                    tab.setCustomView(supportViewPagerAdapter.getTabView(position, mistakeCountNew, mistakeCountPending));
-                }).attach();
+                new TabLayoutMediator(tbLayout, vpSupport, (tab, position) -> tab.setCustomView(supportViewPagerAdapter.getTabView(position, mistakeCountNew, mistakeCountPending))).attach();
             }
         }
     };
@@ -543,7 +537,7 @@ public class SupportActivity extends AppCompatActivity {
         if (getFragmentManager().getBackStackEntryCount() > 0 || getSupportFragmentManager().getBackStackEntryCount() > 0) {
             super.onBackPressed();
         } else {
-            Intent intent = new Intent(MyApplication.context, MainActivity.class);
+            Intent intent = new Intent(MyApplication.currentActivity, MainActivity.class);
             startActivity(intent);
             finish();
         }

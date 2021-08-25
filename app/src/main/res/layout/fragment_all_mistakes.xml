@@ -20,7 +20,7 @@
             android:layout_width="30dp"
             android:layout_height="30dp"
             android:layout_gravity="center"
-            app:indicatorColor="@color/colorPrimaryDark"
+            app:indicatorColor="?attr/colorIcon1"
             app:indicatorName="BallBeatIndicator" />
 
         <com.dinuscxj.refresh.RecyclerRefreshLayout
@@ -61,7 +61,7 @@
                 android:gravity="center"
                 android:text="متاسفیم خطایی در هنگام دانلود رخ داد لطفا پس از چند دقیقه مجدد تلاش فرمایید."
                 android:textAppearance="?android:attr/textAppearanceMedium"
-                android:textColor="@color/colorBlack"
+                android:textColor="?attr/colorValue"
                 android:textStyle="bold" />
         </LinearLayout>
 
@@ -77,7 +77,7 @@
                 android:gravity="center"
                 android:text="هنوز موردی ثبت نشده!"
                 android:textAppearance="?android:attr/textAppearanceMedium"
-                android:textColor="@color/colorBlack"
+                android:textColor="?attr/colorValue"
                 android:textStyle="bold" />
 
             <ImageButton

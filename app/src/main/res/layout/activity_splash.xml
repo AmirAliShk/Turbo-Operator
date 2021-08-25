@@ -4,8 +4,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:gravity="bottom"
     android:background="@color/colorPrimaryLighter"
+    android:gravity="bottom"
     android:orientation="vertical"
     tools:context="ir.taxi1880.operatormanagement.activity.SplashActivity">
 
@@ -22,23 +22,23 @@
             android:orientation="vertical">
 
             <ImageView
-                android:src="@mipmap/splash_header"
-                android:padding="@dimen/_20sdp"
                 android:layout_width="300dp"
-                android:layout_height="300dp"/>
+                android:layout_height="300dp"
+                android:padding="@dimen/_20sdp"
+                android:src="@mipmap/splash_header" />
 
             <ImageView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:gravity="center"
                 android:layout_margin="10dp"
-                android:src="@mipmap/turbo"/>
+                android:gravity="center"
+                android:src="@mipmap/turbo" />
 
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:gravity="center"
                 android:layout_margin="10dp"
+                android:gravity="center"
                 android:text="نسخه مدیریت کاربران"
                 android:textColor="@color/colorAccent"
                 android:textSize="@dimen/_13ssp"
@@ -47,7 +47,7 @@
             <View
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"/>
+                android:layout_weight="1" />
 
         </LinearLayout>
 
@@ -56,10 +56,10 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:gravity="center"
+        android:layout_alignParentBottom="true"
         android:layout_margin="20dp"
-        android:orientation="vertical"
-        android:layout_alignParentBottom="true">
+        android:gravity="center"
+        android:orientation="vertical">
 
         <com.wang.avi.AVLoadingIndicatorView
             android:layout_width="40dp"
@@ -71,8 +71,8 @@
             android:id="@+id/txtVersion"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:gravity="center"
             android:layout_margin="10dp"
+            android:gravity="center"
             android:text="نسخه 2.5.5"
             android:textColor="@color/colorPrimaryDark"
             android:textSize="@dimen/text_title" />

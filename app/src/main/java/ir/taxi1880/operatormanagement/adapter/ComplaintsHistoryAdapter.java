@@ -13,6 +13,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import java.util.ArrayList;
 
 import ir.taxi1880.operatormanagement.R;
+import ir.taxi1880.operatormanagement.app.MyApplication;
 import ir.taxi1880.operatormanagement.helper.DateHelper;
 import ir.taxi1880.operatormanagement.helper.TypefaceUtil;
 import ir.taxi1880.operatormanagement.model.ComplaintsHistoryModel;
@@ -20,19 +21,17 @@ import ir.taxi1880.operatormanagement.model.ComplaintsHistoryModel;
 import static ir.taxi1880.operatormanagement.app.MyApplication.context;
 
 public class ComplaintsHistoryAdapter extends RecyclerView.Adapter<ComplaintsHistoryAdapter.ViewHolder> {
-    private Context mContext;
     ArrayList<ComplaintsHistoryModel> complaintsHistoryModels;
     View view;
 
-    public ComplaintsHistoryAdapter(Context mContext, ArrayList<ComplaintsHistoryModel> complaintsHistoryModels) {
-        this.mContext = mContext;
+    public ComplaintsHistoryAdapter(ArrayList<ComplaintsHistoryModel> complaintsHistoryModels) {
         this.complaintsHistoryModels = complaintsHistoryModels;
     }
 
     @NonNull
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        view = LayoutInflater.from(context).inflate(R.layout.item_complaint_history, parent, false);
+        view = LayoutInflater.from(MyApplication.currentActivity).inflate(R.layout.item_complaint_history, parent, false);
         TypefaceUtil.overrideFonts(view);
         return new ComplaintsHistoryAdapter.ViewHolder(view);
     }

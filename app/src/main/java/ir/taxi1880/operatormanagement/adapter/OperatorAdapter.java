@@ -1,6 +1,5 @@
 package ir.taxi1880.operatormanagement.adapter;
 
-import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -22,15 +21,13 @@ public class OperatorAdapter extends BaseAdapter implements Filterable {
     private ArrayList<OperatorModel> operatorModels;
     private ArrayList<OperatorModel> operatorFilteredModels;
     private LayoutInflater layoutInflater;
-    private Context context;
     private ValueFilter valueFilter;
 
 
     public OperatorAdapter(ArrayList<OperatorModel> operatorModels) {
-        this.context = MyApplication.currentActivity;
         this.operatorModels = operatorModels;
         this.operatorFilteredModels = operatorModels;
-        this.layoutInflater = LayoutInflater.from(context);
+        this.layoutInflater = LayoutInflater.from(MyApplication.currentActivity);
         getFilter();
     }
 

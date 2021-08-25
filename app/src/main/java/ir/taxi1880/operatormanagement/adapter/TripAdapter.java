@@ -39,7 +39,7 @@ public class TripAdapter extends RecyclerView.Adapter<TripAdapter.TripViewHolder
     @NonNull
     @Override
     public TripViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_trip, parent, false);
+        View view = LayoutInflater.from(MyApplication.currentActivity).inflate(R.layout.item_trip, parent, false);
         TypefaceUtil.overrideFonts(view, MyApplication.IraSanSMedume);
         return new TripViewHolder(view);
     }
@@ -63,7 +63,7 @@ public class TripAdapter extends RecyclerView.Adapter<TripAdapter.TripViewHolder
         holder.txtPrice.setText(StringHelper.toPersianDigits(StringHelper.setComma(tripModel.getPrice() + "")));
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            Drawable bg_dialog_header = AppCompatResources.getDrawable(context, R.drawable.bg_dialog_header);
+            Drawable bg_dialog_header = AppCompatResources.getDrawable(MyApplication.currentActivity, R.drawable.bg_dialog_header);
             holder.llHeaderStatus.setBackground(bg_dialog_header);
             DrawableCompat.setTint(bg_dialog_header, Color.parseColor(tripModel.getStatusColor()));
         } else {

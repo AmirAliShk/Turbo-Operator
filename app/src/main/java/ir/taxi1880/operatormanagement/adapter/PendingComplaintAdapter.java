@@ -34,20 +34,18 @@ import static ir.taxi1880.operatormanagement.app.Keys.KEY_COUNT_PENDING_COMPLAIN
 import static ir.taxi1880.operatormanagement.app.Keys.VALUE_COUNT_PENDING_COMPLAINT;
 
 public class PendingComplaintAdapter extends RecyclerView.Adapter<PendingComplaintAdapter.ViewHolder> {
-    private Context mContext;
     private ArrayList<PendingComplaintsModel> pendingComplaintsModels;
     private ArrayList<ComplaintDetailsModel> complaintDetailsModel;
     ViewFlipper vfDetail;
     LocalBroadcastManager broadcaster;
 
     public PendingComplaintAdapter(ArrayList<PendingComplaintsModel> pendingComplaintsModels) {
-        this.mContext = MyApplication.currentActivity;
         this.pendingComplaintsModels = pendingComplaintsModels;
     }
 
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(MyApplication.context).inflate(R.layout.item_pending_complaint, parent, false);
+        View view = LayoutInflater.from(MyApplication.currentActivity).inflate(R.layout.item_pending_complaint, parent, false);
         TypefaceUtil.overrideFonts(view);
         return new ViewHolder(view);
     }
@@ -79,7 +77,6 @@ public class PendingComplaintAdapter extends RecyclerView.Adapter<PendingComplai
                 break;
         }
         holder.imgStatus.setImageResource(res);
-
 
         holder.vfDetail.setOnClickListener(view1 -> {
             this.vfDetail = holder.vfDetail;

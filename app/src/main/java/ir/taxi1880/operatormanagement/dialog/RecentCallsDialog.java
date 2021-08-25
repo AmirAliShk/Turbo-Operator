@@ -195,7 +195,7 @@ public class RecentCallsDialog {
                         } else {
                             if (vfDownload != null)
                                 vfDownload.setDisplayedChild(1);
-                            mAdapter = new RecentCallsAdapter(MyApplication.currentActivity, recentCallsModels);
+                            mAdapter = new RecentCallsAdapter(recentCallsModels);
                             listRecentCalls.setAdapter(mAdapter);
                         }
                     } else {

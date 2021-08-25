@@ -67,10 +67,10 @@ public class MainActivity extends AppCompatActivity implements NotificationFragm
 
     @OnClick(R.id.imgTheme)
     void onChangeTheme() {
-        if (MyApplication.prefManager.isDarkMode()){
+        if (MyApplication.prefManager.isDarkMode()) {
             ThemeHelper.changeToTheme(MyApplication.currentActivity, false);
             MyApplication.prefManager.setDarkMode(false);
-        }else{
+        } else {
             ThemeHelper.changeToTheme(MyApplication.currentActivity, true);
             MyApplication.prefManager.setDarkMode(true);
         }
@@ -91,7 +91,7 @@ public class MainActivity extends AppCompatActivity implements NotificationFragm
     }
 
     @OnClick(R.id.imgProfile)
-    void onProfile(){
+    void onProfile() {
         FragmentHelper
                 .toFragment(MyApplication.currentActivity, new AccountFragment())
                 .replace();
@@ -108,10 +108,10 @@ public class MainActivity extends AppCompatActivity implements NotificationFragm
             window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
             window.getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LIGHT_NAVIGATION_BAR);
             window.addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
-            if (MyApplication.prefManager.isDarkMode()){
+            if (MyApplication.prefManager.isDarkMode()) {
                 window.setNavigationBarColor(getResources().getColor(R.color.dark_navigation_bar));
                 window.setStatusBarColor(getResources().getColor(R.color.dark_action_bar));
-            }else {
+            } else {
                 window.setNavigationBarColor(getResources().getColor(R.color.colorPrimaryLighter));
                 window.setStatusBarColor(getResources().getColor(R.color.colorPrimaryDark));
             }
@@ -120,7 +120,7 @@ public class MainActivity extends AppCompatActivity implements NotificationFragm
         MyApplication.configureAccount();
         unbinder = ButterKnife.bind(this, view);
         TypefaceUtil.overrideFonts(view);
-        core=LinphoneService.getCore();
+        core = LinphoneService.getCore();
 
         mainViewPagerAdapter = new MainViewPagerAdapter(this);
         vpMain.setAdapter(mainViewPagerAdapter);
@@ -131,9 +131,9 @@ public class MainActivity extends AppCompatActivity implements NotificationFragm
             imgTheme.setVisibility(View.GONE);
         }
 
-        if (MyApplication.prefManager.isDarkMode()){
+        if (MyApplication.prefManager.isDarkMode()) {
             imgTheme.setImageResource(R.drawable.ic_dark);
-        }else {
+        } else {
             imgTheme.setImageResource(R.drawable.ic_light);
         }
 
@@ -271,7 +271,6 @@ public class MainActivity extends AppCompatActivity implements NotificationFragm
 
     @Override
     public void onBackPressed() {
-
         try {
             KeyBoardHelper.hideKeyboard();
             if (getFragmentManager().getBackStackEntryCount() > 0 || getSupportFragmentManager().getBackStackEntryCount() > 0) {

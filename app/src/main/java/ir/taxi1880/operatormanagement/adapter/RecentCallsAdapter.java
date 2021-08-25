@@ -45,7 +45,6 @@ import ir.taxi1880.operatormanagement.push.AvaCrashReporter;
 import static ir.taxi1880.operatormanagement.app.MyApplication.context;
 
 public class RecentCallsAdapter extends RecyclerView.Adapter<RecentCallsAdapter.ViewHolder> {
-    private Context mContext;
     private ArrayList<RecentCallsModel> recentCallsModels;
     static ViewFlipper vfPlayPause;
     ViewFlipper vfVoiceStatus;
@@ -62,14 +61,13 @@ public class RecentCallsAdapter extends RecyclerView.Adapter<RecentCallsAdapter.
     boolean isDownloading = false;
     View view;
 
-    public RecentCallsAdapter(Context mContext, ArrayList<RecentCallsModel> recentCallsModels) {
-        this.mContext = mContext;
+    public RecentCallsAdapter(ArrayList<RecentCallsModel> recentCallsModels) {
         this.recentCallsModels = recentCallsModels;
     }
 
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        view = LayoutInflater.from(context).inflate(R.layout.item_recent_calls, parent, false);
+        view = LayoutInflater.from(MyApplication.currentActivity).inflate(R.layout.item_recent_calls, parent, false);
         TypefaceUtil.overrideFonts(view);
         return new ViewHolder(view);
     }

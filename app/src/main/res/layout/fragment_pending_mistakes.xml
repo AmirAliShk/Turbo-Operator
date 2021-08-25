@@ -526,7 +526,7 @@
                     android:layout_weight="1"
                     android:background="@drawable/bg_strock_corner"
                     android:text="گزینه ها"
-                    android:textColor="?attr/colorPageTitle"
+                    android:textColor="?attr/colorValue"
                     android:textSize="@dimen/text_header"
                     android:textStyle="bold" />
 

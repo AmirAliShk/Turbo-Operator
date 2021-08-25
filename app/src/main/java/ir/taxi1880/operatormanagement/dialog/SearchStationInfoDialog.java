@@ -59,7 +59,6 @@ public class SearchStationInfoDialog {
     Spinner spSearchType;
     int city;
     RelativeLayout rlSearchType;
-
     String stationCode = "0";
     String address = "0";
     boolean firstTime = false;

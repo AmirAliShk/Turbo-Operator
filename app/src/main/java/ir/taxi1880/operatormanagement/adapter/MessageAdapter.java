@@ -12,6 +12,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import ir.taxi1880.operatormanagement.R;
+import ir.taxi1880.operatormanagement.app.MyApplication;
 import ir.taxi1880.operatormanagement.helper.StringHelper;
 import ir.taxi1880.operatormanagement.helper.TypefaceUtil;
 import ir.taxi1880.operatormanagement.model.MessageModel;
@@ -21,7 +22,6 @@ import java.util.List;
 
 public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.MyViewHolder> {
 
-    private Context context;
     private List<MessageModel> messageModelsList;
     private ArrayList<MessageModel> messageModelsArrList;
 
@@ -33,20 +33,19 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.MyViewHo
         public MyViewHolder(View view) {
             super(view);
 
-            llMsgIn = (LinearLayout) view.findViewById(R.id.llMsgIn);
-            llMsgOut = (LinearLayout) view.findViewById(R.id.llMsgOut);
-            txtMsgIn = (TextView) view.findViewById(R.id.txtMsgIn);
-            txtTimeMsgIn = (TextView) view.findViewById(R.id.txtTimeMsgIn);
-            txtDateMsgIn = (TextView) view.findViewById(R.id.txtDateMsgIn);
-            txtMsgOut = (TextView) view.findViewById(R.id.txtMsgOut);
-            txtTimeMsgOut = (TextView) view.findViewById(R.id.txtTimeMsgOut);
-            txtDateMsgOut = (TextView) view.findViewById(R.id.txtDateMsgOut);
+            llMsgIn = view.findViewById(R.id.llMsgIn);
+            llMsgOut = view.findViewById(R.id.llMsgOut);
+            txtMsgIn = view.findViewById(R.id.txtMsgIn);
+            txtTimeMsgIn = view.findViewById(R.id.txtTimeMsgIn);
+            txtDateMsgIn = view.findViewById(R.id.txtDateMsgIn);
+            txtMsgOut = view.findViewById(R.id.txtMsgOut);
+            txtTimeMsgOut = view.findViewById(R.id.txtTimeMsgOut);
+            txtDateMsgOut = view.findViewById(R.id.txtDateMsgOut);
 
         }
     }
 
-    public MessageAdapter(Context context, List<MessageModel> member1) {
-        this.context = context;
+    public MessageAdapter(List<MessageModel> member1) {
         messageModelsList = member1;
         messageModelsArrList = new ArrayList<>();
         messageModelsArrList.addAll(member1);
@@ -55,7 +54,7 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.MyViewHo
     @NonNull
     @Override
     public MyViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View itemView = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_message, parent, false);
+        View itemView = LayoutInflater.from(MyApplication.currentActivity).inflate(R.layout.item_message, parent, false);
         TypefaceUtil.overrideFonts(itemView);
         return new MyViewHolder(itemView);
     }

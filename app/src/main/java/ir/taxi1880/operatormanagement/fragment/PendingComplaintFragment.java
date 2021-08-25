@@ -66,8 +66,8 @@ public class PendingComplaintFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_pending_complaints, container, false);
         unbinder = ButterKnife.bind(this, view);
         TypefaceUtil.overrideFonts(view);
-
-        refreshPage.setOnRefreshListener(() -> getPendingRequests());
+        getPendingRequests();
+        refreshPage.setOnRefreshListener(this::getPendingRequests);
 
         return view;
     }

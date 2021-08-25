@@ -40,14 +40,13 @@ public class AllComplaintAdapter extends RecyclerView.Adapter<AllComplaintAdapte
     ViewFlipper viewFlipper;
     int position;
 
-    public AllComplaintAdapter(Context mContext, ArrayList<AllComplaintsModel> allComplaintsModels) {
-        this.mContext = mContext;
+    public AllComplaintAdapter(ArrayList<AllComplaintsModel> allComplaintsModels) {
         this.allComplaintsModels = allComplaintsModels;
     }
 
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(mContext).inflate(R.layout.item_all_complaints, parent, false);
+        View view = LayoutInflater.from(MyApplication.currentActivity).inflate(R.layout.item_all_complaints, parent, false);
         TypefaceUtil.overrideFonts(view);
         return new ViewHolder(view);
     }

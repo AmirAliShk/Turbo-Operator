@@ -1,6 +1,5 @@
 package ir.taxi1880.operatormanagement.adapter;
 
-import android.content.Context;
 import android.content.Intent;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -35,21 +34,19 @@ import static ir.taxi1880.operatormanagement.app.Keys.PENDING_MISTAKE_COUNT;
 import static ir.taxi1880.operatormanagement.app.MyApplication.context;
 
 public class AllMistakesAdapter extends RecyclerView.Adapter<AllMistakesAdapter.ViewHolder> {
-    private Context mContext;
     LocalBroadcastManager broadcaster;
     private ArrayList<AllMistakesModel> allMistakesModels;
     DataBase dataBase;
     ViewFlipper viewFlipper;
     int position;
 
-    public AllMistakesAdapter(Context mContext, ArrayList<AllMistakesModel> allMistakesModels) {
-        this.mContext = mContext;
+    public AllMistakesAdapter(ArrayList<AllMistakesModel> allMistakesModels) {
         this.allMistakesModels = allMistakesModels;
     }
 
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(context).inflate(R.layout.item_all_mistakes, parent, false);
+        View view = LayoutInflater.from(MyApplication.currentActivity).inflate(R.layout.item_all_mistakes, parent, false);
         TypefaceUtil.overrideFonts(view);
         dataBase = new DataBase(context);
         return new ViewHolder(view);
@@ -122,7 +119,7 @@ public class AllMistakesAdapter extends RecyclerView.Adapter<AllMistakesAdapter.
                                         allMistakesModels.remove(position);
                                         notifyDataSetChanged();
 
-                                        broadcaster = LocalBroadcastManager.getInstance(MyApplication.context);
+                                        broadcaster = LocalBroadcastManager.getInstance(context);
 
                                         Intent broadcastIntent1 = new Intent(KEY_PENDING_MISTAKE_COUNT);
                                         broadcastIntent1.putExtra(PENDING_MISTAKE_COUNT, dataBase.getMistakesCount());

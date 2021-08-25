@@ -22,7 +22,7 @@ public class BestAdapter extends RecyclerView.Adapter<BestAdapter.ViewHolder> {
     private ArrayList<BestModel> bestModels;
 
     public BestAdapter(ArrayList<BestModel> bestModels) {
-        this.layoutInflater = LayoutInflater.from(MyApplication.context);
+        this.layoutInflater = LayoutInflater.from(MyApplication.currentActivity);
         this.bestModels = bestModels;
     }
 
