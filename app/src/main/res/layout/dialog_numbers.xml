@@ -37,7 +37,7 @@
                 android:layout_marginTop="10dp"
                 android:gravity="center"
                 android:padding="5dp"
-                android:textColor="@color/colorBlack"
+                android:textColor="?attr/colorValue"
                 android:textSize="@dimen/_22ssp" />
 
             <ImageView
@@ -55,7 +55,7 @@
                 android:layout_marginBottom="10dp"
                 android:gravity="center"
                 android:padding="5dp"
-                android:textColor="@color/colorBlack"
+                android:textColor="?attr/colorValue"
                 android:textSize="@dimen/_22ssp" />
 
         </LinearLayout>

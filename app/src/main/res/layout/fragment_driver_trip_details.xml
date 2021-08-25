@@ -71,12 +71,14 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
+<!--
         <com.wang.avi.AVLoadingIndicatorView
             android:layout_width="50dp"
             android:layout_height="50dp"
             android:layout_gravity="center"
             app:indicatorColor="?attr/colorIcon1"
             app:indicatorName="BallSpinFadeLoaderIndicator" />
+-->
 
         <ScrollView
             android:layout_width="match_parent"
@@ -934,7 +936,7 @@
             android:layout_height="match_parent"
             android:gravity="center"
             android:text="خطایی رخ داده! \n لطفا پس از چند لحظه مجدد تلاش کنید"
-            android:textColor="@color/colorBlack"
+            android:textColor="?attr/colorValue"
             android:textSize="@dimen/_12ssp" />
 
     </ViewFlipper>
