@@ -58,8 +58,8 @@ public class CallDialog {
     @BindView(R.id.vfPause)
     ViewFlipper vfPause;
 
-    @BindView(R.id.llTransferr)
-    LinearLayout llTransferr;
+    @BindView(R.id.llTransfer)
+    LinearLayout llTransfer;
 
     @BindView(R.id.llCall)
     LinearLayout llCall;
@@ -73,24 +73,6 @@ public class CallDialog {
     @BindView(R.id.llCallSupport)
     LinearLayout llCallSupport;
 
-    @BindView(R.id.view)
-    View view;
-
-    @BindView(R.id.view1)
-    View view1;
-
-    @BindView(R.id.view2)
-    View view2;
-
-    @BindView(R.id.view3)
-    View view3;
-
-    @BindView(R.id.view4)
-    View view4;
-
-    @BindView(R.id.view7)
-    View view7;
-
     @OnClick(R.id.blrView)
     void onBlur() {
         dismiss();
@@ -98,7 +80,8 @@ public class CallDialog {
 
     @OnClick(R.id.llStationGuide)
     void onStationInfo() {
-        new SearchStationInfoDialog().show(stationCode -> {},0,false,"",false);
+        new SearchStationInfoDialog().show(stationCode -> {
+        }, 0, false, "", false);
         dismiss();
     }
 
@@ -278,14 +261,11 @@ public class CallDialog {
         core.addListener(coreListener);
 
         if (MyApplication.prefManager.getCustomerSupport() == 1) {
-            llTransferr.setVisibility(View.GONE);
+            llTransfer.setVisibility(View.GONE);
             llCallSupport.setVisibility(View.GONE);
-            view4.setVisibility(View.GONE);
             llOperatorRecentCalls.setVisibility(View.GONE);
-            view.setVisibility(View.GONE);
         } else if (MyApplication.prefManager.getCustomerSupport() == 0) {
             llSupportOperatorRecentCalls.setVisibility(View.GONE);
-            view7.setVisibility(View.GONE);
         }
 
         if (isFromSupport) {

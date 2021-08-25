@@ -4,10 +4,19 @@
     <option name="filePathToZoomLevelMap">
       <map>
         <entry key="app/src/main/res/drawable-v16/bg_body.xml" value="0.209375" />
+        <entry key="app/src/main/res/drawable-v16/bg_circle_dialogue.xml" value="0.35625" />
+        <entry key="app/src/main/res/drawable-v16/bg_circle_green.xml" value="0.35625" />
+        <entry key="app/src/main/res/drawable-v16/bg_circle_green1.xml" value="0.35625" />
+        <entry key="app/src/main/res/drawable-v16/bg_circle_yellow.xml" value="0.35625" />
         <entry key="app/src/main/res/drawable-v16/bg_dialog_body.xml" value="0.209375" />
         <entry key="app/src/main/res/drawable-v16/bg_edit_text.xml" value="0.35625" />
         <entry key="app/src/main/res/drawable-v21/badge_unselected.xml" value="0.35625" />
         <entry key="app/src/main/res/drawable-v21/bg_body.xml" value="0.209375" />
+        <entry key="app/src/main/res/drawable-v21/bg_circle_dialogue.xml" value="0.35625" />
+        <entry key="app/src/main/res/drawable-v21/bg_circle_dialogue1.xml" value="0.35625" />
+        <entry key="app/src/main/res/drawable-v21/bg_circle_green.xml" value="0.35625" />
+        <entry key="app/src/main/res/drawable-v21/bg_circle_green1.xml" value="0.35625" />
+        <entry key="app/src/main/res/drawable-v21/bg_circle_yellow.xml" value="0.35625" />
         <entry key="app/src/main/res/drawable-v21/bg_dialog_body.xml" value="0.209375" />
         <entry key="app/src/main/res/drawable-v21/bg_edit_text.xml" value="0.209375" />
         <entry key="app/src/main/res/drawable-v21/bg_item_icon.xml" value="0.35625" />
@@ -26,12 +35,46 @@
         <entry key="app/src/main/res/layout/activity_splash.xml" value="0.34010416666666665" />
         <entry key="app/src/main/res/layout/activity_support.xml" value="0.34010416666666665" />
         <entry key="app/src/main/res/layout/activity_trip_register.xml" value="0.34010416666666665" />
+        <entry key="app/src/main/res/layout/dialog_address_list.xml" value="0.34010416666666665" />
+        <entry key="app/src/main/res/layout/dialog_call.xml" value="0.34010416666666665" />
+        <entry key="app/src/main/res/layout/dialog_cancelable_loder.xml" value="0.34010416666666665" />
+        <entry key="app/src/main/res/layout/dialog_change_driver_queue.xml" value="0.34010416666666665" />
+        <entry key="app/src/main/res/layout/dialog_complaint_options.xml" value="0.34010416666666665" />
+        <entry key="app/src/main/res/layout/dialog_complaint_registreation.xml" value="0.34010416666666665" />
+        <entry key="app/src/main/res/layout/dialog_complaints_history.xml" value="0.34010416666666665" />
+        <entry key="app/src/main/res/layout/dialog_description.xml" value="0.34010416666666665" />
+        <entry key="app/src/main/res/layout/dialog_driver_info.xml" value="0.34010416666666665" />
+        <entry key="app/src/main/res/layout/dialog_driver_lock.xml" value="0.34010416666666665" />
+        <entry key="app/src/main/res/layout/dialog_driver_station_registration.xml" value="0.34010416666666665" />
+        <entry key="app/src/main/res/layout/dialog_driver_turnover.xml" value="0.34010416666666665" />
+        <entry key="app/src/main/res/layout/dialog_edit_address.xml" value="0.34010416666666665" />
+        <entry key="app/src/main/res/layout/dialog_edit_passenger_address.xml" value="0.34010416666666665" />
+        <entry key="app/src/main/res/layout/dialog_error.xml" value="0.34010416666666665" />
+        <entry key="app/src/main/res/layout/dialog_error_registration.xml" value="0.34010416666666665" />
+        <entry key="app/src/main/res/layout/dialog_extended_time.xml" value="0.34010416666666665" />
+        <entry key="app/src/main/res/layout/dialog_general.xml" value="0.34010416666666665" />
         <entry key="app/src/main/res/layout/dialog_hire.xml" value="0.34010416666666665" />
+        <entry key="app/src/main/res/layout/dialog_loder.xml" value="0.34010416666666665" />
+        <entry key="app/src/main/res/layout/dialog_lost.xml" value="0.34010416666666665" />
+        <entry key="app/src/main/res/layout/dialog_numbers.xml" value="0.34010416666666665" />
+        <entry key="app/src/main/res/layout/dialog_operator.xml" value="0.34010416666666665" />
+        <entry key="app/src/main/res/layout/dialog_paly_last_conversation.xml" value="0.34010416666666665" />
+        <entry key="app/src/main/res/layout/dialog_pending_mistakes_options.xml" value="0.34010416666666665" />
+        <entry key="app/src/main/res/layout/dialog_pricing.xml" value="0.34010416666666665" />
+        <entry key="app/src/main/res/layout/dialog_recent_calls.xml" value="0.34010416666666665" />
+        <entry key="app/src/main/res/layout/dialog_request.xml" value="0.34010416666666665" />
+        <entry key="app/src/main/res/layout/dialog_reserve.xml" value="0.34010416666666665" />
+        <entry key="app/src/main/res/layout/dialog_save_mistake_result.xml" value="0.34010416666666665" />
+        <entry key="app/src/main/res/layout/dialog_search_filter.xml" value="0.34010416666666665" />
         <entry key="app/src/main/res/layout/dialog_search_station_info.xml" value="0.19322916666666667" />
         <entry key="app/src/main/res/layout/dialog_select_city.xml" value="0.34010416666666665" />
         <entry key="app/src/main/res/layout/dialog_station_info.xml" value="0.34010416666666665" />
+        <entry key="app/src/main/res/layout/dialog_support.xml" value="0.34010416666666665" />
+        <entry key="app/src/main/res/layout/dialog_trip_option.xml" value="0.34010416666666665" />
         <entry key="app/src/main/res/layout/fragment_all_complaints.xml" value="0.34010416666666665" />
         <entry key="app/src/main/res/layout/fragment_all_mistakes.xml" value="0.34010416666666665" />
+        <entry key="app/src/main/res/layout/fragment_complaint.xml" value="0.325" />
+        <entry key="app/src/main/res/layout/fragment_complaint_detail.xml" value="0.34010416666666665" />
         <entry key="app/src/main/res/layout/fragment_complaint_trip_details.xml" value="0.19322916666666667" />
         <entry key="app/src/main/res/layout/fragment_determination_page.xml" value="0.34010416666666665" />
         <entry key="app/src/main/res/layout/fragment_driver_location.xml" value="0.19322916666666667" />

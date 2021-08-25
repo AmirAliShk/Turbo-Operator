@@ -30,7 +30,6 @@
             android:orientation="vertical"
             android:padding="40dp">
 
-
             <LinearLayout
                 android:id="@+id/llPricing"
                 android:layout_width="match_parent"
@@ -61,7 +60,6 @@
                     android:textStyle="bold" />
 
             </LinearLayout>
-
 
             <LinearLayout
                 android:id="@+id/llCustomerCalls"

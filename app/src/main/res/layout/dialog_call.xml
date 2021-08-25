@@ -3,8 +3,8 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:layoutDirection="rtl"
-    android:clickable="false">
+    android:clickable="false"
+    android:layoutDirection="rtl">
 
     <com.github.mmin18.widget.RealtimeBlurView
         android:id="@+id/blrView"
@@ -16,164 +16,143 @@
     <LinearLayout
         android:id="@+id/llCallDialog"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
         android:layout_centerInParent="true"
-        android:layout_marginLeft="15dp"
-        android:layout_marginRight="15dp"
+        android:layout_marginLeft="@dimen/_18sdp"
+        android:layout_marginRight="@dimen/_18sdp"
         android:gravity="center"
         android:orientation="vertical">
 
         <ViewFlipper
             android:id="@+id/vfCall"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="80dp"
-            android:background="@drawable/bg_gray_lite_edge">
+            android:layout_height="wrap_content">
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:gravity="top"
                 android:orientation="vertical"
-                android:padding="20dp">
+                android:paddingHorizontal="40dp"
+                android:paddingBottom="40dp">
 
                 <LinearLayout
+                    android:id="@+id/llSupportOperatorRecentCalls"
                     android:layout_width="match_parent"
-                    android:layout_height="0dp"
-                    android:layout_marginBottom="15dp"
-                    android:layout_weight="1"
-                    android:gravity="center_vertical"
-                    android:orientation="horizontal">
+                    android:layout_height="wrap_content"
+                    android:layout_margin="@dimen/_10sdp"
+                    android:background="@drawable/bg_dialogue"
+                    android:elevation="@dimen/_3sdp"
+                    android:gravity="center"
+                    android:orientation="horizontal"
+                    android:padding="@dimen/_8sdp">
 
-                    <View
-                        android:id="@+id/view7"
-                        android:layout_width="0dp"
-                        android:layout_height="0dp"
-                        android:layout_weight="1" />
+                    <ImageView
+                        android:layout_width="@dimen/_50sdp"
+                        android:layout_height="@dimen/_50sdp"
+                        android:layout_gravity="center"
+                        android:background="@drawable/bg_circle_dialogue"
+                        android:padding="@dimen/_13sdp"
+                        android:src="@drawable/ic_recent_calls" />
 
-                    <LinearLayout
-                        android:id="@+id/llSupportOperatorRecentCalls"
-                        android:layout_width="100dp"
-                        android:layout_height="100dp"
-                        android:background="@drawable/bg_light_pink_edge"
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
                         android:gravity="center"
-                        android:orientation="vertical"
-                        android:padding="10dp">
+                        android:text="تماس های اخیر"
+                        android:textAppearance="?android:attr/textAppearanceSmall"
+                        android:textColor="?attr/colorValue"
+                        android:textSize="@dimen/_15ssp"
+                        android:textStyle="bold" />
 
-                        <ImageView
-                            android:layout_width="30dp"
-                            android:layout_height="30dp"
-                            android:layout_gravity="center"
-                            android:src="@drawable/ic_recent_calls" />
+                </LinearLayout>
 
-                        <TextView
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:gravity="center"
-                            android:text="تماس های اخیر"
-                            android:textAppearance="?android:attr/textAppearanceSmall"
-                            android:textColor="@color/colorWhite" />
+                <LinearLayout
+                    android:id="@+id/llCallSupport"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="@dimen/_10sdp"
+                    android:background="@drawable/bg_dialogue"
+                    android:elevation="@dimen/_3sdp"
+                    android:gravity="center"
+                    android:orientation="horizontal"
+                    android:padding="@dimen/_8sdp">
 
-                    </LinearLayout>
+                    <ImageView
+                        android:layout_width="@dimen/_50sdp"
+                        android:layout_height="@dimen/_50sdp"
+                        android:layout_gravity="center"
+                        android:background="@drawable/bg_circle_dialogue"
+                        android:padding="@dimen/_13sdp"
+                        android:src="@drawable/ic_poshtibani" />
 
-                    <View
-                        android:id="@+id/view"
-                        android:layout_width="0dp"
-                        android:layout_height="0dp"
-                        android:layout_weight="1" />
-
-                    <LinearLayout
-                        android:id="@+id/llCallSupport"
-                        android:layout_width="100dp"
-                        android:layout_height="100dp"
-                        android:background="@drawable/bg_light_pink_edge"
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
                         android:gravity="center"
-                        android:orientation="vertical"
-                        android:padding="10dp">
+                        android:text="پشتیبانی"
+                        android:textAppearance="?android:attr/textAppearanceSmall"
+                        android:textColor="?attr/colorValue"
+                        android:textSize="@dimen/_15ssp"
+                        android:textStyle="bold" />
 
-                        <ImageView
-                            android:layout_width="30dp"
-                            android:layout_height="30dp"
-                            android:layout_gravity="center"
-                            android:src="@drawable/ic_poshtibani" />
+                </LinearLayout>
 
-                        <TextView
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:gravity="center"
-                            android:text="پشتیبانی"
-                            android:textAppearance="?android:attr/textAppearanceSmall"
-                            android:textColor="@color/colorWhite" />
+                <LinearLayout
+                    android:id="@+id/llTestConnection"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="@dimen/_10sdp"
+                    android:background="@drawable/bg_dialogue"
+                    android:elevation="@dimen/_3sdp"
+                    android:gravity="center"
+                    android:orientation="horizontal"
+                    android:padding="@dimen/_8sdp">
 
-                    </LinearLayout>
+                    <ImageView
+                        android:layout_width="@dimen/_50sdp"
+                        android:layout_height="@dimen/_50sdp"
+                        android:layout_gravity="center"
+                        android:background="@drawable/bg_circle_dialogue"
+                        android:padding="@dimen/_13sdp"
+                        android:src="@drawable/ic_status" />
 
-                    <View
-                        android:id="@+id/view1"
-                        android:layout_width="0dp"
-                        android:layout_height="0dp"
-                        android:layout_weight="1" />
-
-                    <LinearLayout
-                        android:id="@+id/llTestConnection"
-                        android:layout_width="100dp"
-                        android:layout_height="100dp"
-                        android:background="@drawable/bg_light_pink_edge"
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
                         android:gravity="center"
-                        android:orientation="vertical"
-                        android:padding="10dp">
-
-                        <ImageView
-                            android:layout_width="30dp"
-                            android:layout_height="30dp"
-                            android:layout_gravity="center"
-                            android:src="@drawable/ic_status" />
-
-                        <TextView
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:gravity="center"
-                            android:text="تست ارتباط"
-                            android:textAppearance="?android:attr/textAppearanceSmall"
-                            android:textColor="@color/colorWhite" />
-
-                    </LinearLayout>
-
-                    <View
-                        android:id="@+id/view2"
-                        android:layout_width="0dp"
-                        android:layout_height="0dp"
-                        android:layout_weight="1" />
+                        android:text="تست ارتباط"
+                        android:textAppearance="?android:attr/textAppearanceSmall"
+                        android:textColor="?attr/colorValue"
+                        android:textSize="@dimen/_15ssp"
+                        android:textStyle="bold" />
 
                 </LinearLayout>
 
                 <LinearLayout
                     android:id="@+id/llCall"
                     android:layout_width="match_parent"
-                    android:layout_height="0dp"
-                    android:layout_weight="1"
+                    android:layout_height="wrap_content"
                     android:gravity="center_vertical"
-                    android:orientation="horizontal">
-
-                    <View
-                        android:id="@+id/view5"
-                        android:layout_width="0dp"
-                        android:layout_height="0dp"
-                        android:layout_weight="1" />
+                    android:orientation="vertical">
 
                     <LinearLayout
                         android:id="@+id/llStationGuide"
-                        android:layout_width="100dp"
-                        android:layout_height="100dp"
-                        android:background="@drawable/bg_light_pink_edge"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="@dimen/_10sdp"
+                        android:background="@drawable/bg_dialogue"
+                        android:elevation="@dimen/_3sdp"
                         android:gravity="center"
-                        android:orientation="vertical"
-                        android:padding="10dp">
+                        android:orientation="horizontal"
+                        android:padding="@dimen/_8sdp">
 
                         <ImageView
-                            android:layout_width="35dp"
-                            android:layout_height="35dp"
+                            android:layout_width="@dimen/_50sdp"
+                            android:layout_height="@dimen/_50sdp"
                             android:layout_gravity="center"
+                            android:background="@drawable/bg_circle_dialogue"
+                            android:padding="@dimen/_13sdp"
                             android:src="@drawable/ic_station_guide" />
 
                         <TextView
@@ -182,29 +161,29 @@
                             android:gravity="center"
                             android:text="راهنمای ایستگاه"
                             android:textAppearance="?android:attr/textAppearanceSmall"
-                            android:textColor="@color/colorWhite" />
+                            android:textColor="?attr/colorValue"
+                            android:textSize="@dimen/_15ssp"
+                            android:textStyle="bold" />
 
                     </LinearLayout>
 
-                    <View
-                        android:id="@+id/view3"
-                        android:layout_width="0dp"
-                        android:layout_height="0dp"
-                        android:layout_weight="1" />
-
                     <LinearLayout
                         android:id="@+id/llOperatorRecentCalls"
-                        android:layout_width="100dp"
-                        android:layout_height="100dp"
-                        android:background="@drawable/bg_light_pink_edge"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="@dimen/_10sdp"
+                        android:background="@drawable/bg_dialogue"
+                        android:elevation="@dimen/_3sdp"
                         android:gravity="center"
-                        android:orientation="vertical"
-                        android:padding="10dp">
+                        android:orientation="horizontal"
+                        android:padding="@dimen/_8sdp">
 
                         <ImageView
-                            android:layout_width="30dp"
-                            android:layout_height="30dp"
+                            android:layout_width="@dimen/_50sdp"
+                            android:layout_height="@dimen/_50sdp"
                             android:layout_gravity="center"
+                            android:background="@drawable/bg_circle_dialogue"
+                            android:padding="@dimen/_13sdp"
                             android:src="@drawable/ic_recent_calls" />
 
                         <TextView
@@ -213,16 +192,11 @@
                             android:gravity="center"
                             android:text="تماس های اخیر"
                             android:textAppearance="?android:attr/textAppearanceSmall"
-                            android:textColor="@color/colorWhite" />
+                            android:textColor="?attr/colorValue"
+                            android:textSize="@dimen/_15ssp"
+                            android:textStyle="bold" />
 
                     </LinearLayout>
-
-                    <View
-                        android:id="@+id/view4"
-                        android:layout_width="0dp"
-                        android:layout_height="0dp"
-                        android:layout_weight="1" />
-
 
                 </LinearLayout>
 
@@ -238,75 +212,69 @@
 
                 <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:gravity="center">
+                    android:layout_height="match_parent"
+                    android:gravity="center"
+                    android:orientation="vertical">
 
                     <LinearLayout
-                        android:id="@+id/llTransferr"
-                        android:layout_width="0dp"
-                        android:layout_height="match_parent"
-                        android:layout_weight="1"
+                        android:id="@+id/llTransfer"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="@dimen/_10sdp"
+                        android:background="@drawable/bg_dialogue"
+                        android:elevation="@dimen/_3sdp"
                         android:gravity="center"
-                        android:orientation="vertical"
-                        android:padding="20dp">
+                        android:orientation="horizontal"
+                        android:padding="@dimen/_8sdp">
 
-                        <LinearLayout
-                            android:id="@+id/llTransfer"
-                            android:layout_width="100dp"
-                            android:layout_height="100dp"
-                            android:background="@drawable/bg_circle_green"
+                        <ImageView
+                            android:layout_width="@dimen/_50sdp"
+                            android:layout_height="@dimen/_50sdp"
+                            android:layout_gravity="center"
+                            android:background="@drawable/bg_circle_green1"
+                            android:padding="@dimen/_13sdp"
+                            android:src="@drawable/ic_call_transfer" />
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
                             android:gravity="center"
-                            android:orientation="vertical">
-
-                            <ImageView
-                                android:layout_width="30dp"
-                                android:layout_height="30dp"
-                                android:layout_gravity="center"
-                                android:src="@drawable/ic_call_transfer" />
-
-                            <TextView
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:gravity="center"
-                                android:text="انتقال تماس"
-                                android:textAppearance="?android:attr/textAppearanceSmall"
-                                android:textColor="@color/colorWhite" />
-
-                        </LinearLayout>
+                            android:text="انتقال تماس"
+                            android:textAppearance="?android:attr/textAppearanceSmall"
+                            android:textColor="?attr/colorValue"
+                            android:textSize="@dimen/_15ssp"
+                            android:textStyle="bold" />
 
                     </LinearLayout>
 
                     <LinearLayout
-                        android:layout_width="0dp"
-                        android:layout_height="match_parent"
-                        android:layout_weight="1"
+                        android:id="@+id/llEndCall"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="@dimen/_10sdp"
+                        android:background="@drawable/bg_dialogue"
+                        android:elevation="@dimen/_3sdp"
                         android:gravity="center"
-                        android:orientation="vertical"
-                        android:padding="20dp">
+                        android:orientation="horizontal"
+                        android:padding="@dimen/_8sdp">
 
-                        <LinearLayout
-                            android:id="@+id/llEndCall"
-                            android:layout_width="100dp"
-                            android:layout_height="100dp"
-                            android:background="@drawable/bg_circle_red"
+                        <ImageView
+                            android:layout_width="@dimen/_50sdp"
+                            android:layout_height="@dimen/_50sdp"
+                            android:layout_gravity="center"
+                            android:background="@drawable/circle_red"
+                            android:padding="@dimen/_5sdp"
+                            android:src="@drawable/ic_call_end" />
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
                             android:gravity="center"
-                            android:orientation="vertical">
-
-                            <ImageView
-                                android:layout_width="30dp"
-                                android:layout_height="30dp"
-                                android:layout_gravity="center"
-                                android:src="@drawable/ic_call_end" />
-
-                            <TextView
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:gravity="center"
-                                android:text="پایان تماس"
-                                android:textAppearance="?android:attr/textAppearanceSmall"
-                                android:textColor="@color/colorWhite" />
-
-                        </LinearLayout>
+                            android:text="پایان تماس"
+                            android:textAppearance="?android:attr/textAppearanceSmall"
+                            android:textColor="?attr/colorValue"
+                            android:textSize="@dimen/_15ssp"
+                            android:textStyle="bold" />
 
                     </LinearLayout>
 
@@ -320,60 +288,63 @@
 
                     <LinearLayout
                         android:id="@+id/llPause"
-                        android:layout_width="wrap_content"
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-
-                        android:layout_weight="1"
+                        android:layout_margin="@dimen/_10sdp"
+                        android:background="@drawable/bg_dialogue"
+                        android:elevation="@dimen/_3sdp"
                         android:gravity="center"
-                        android:orientation="vertical"
-                        android:padding="20dp">
+                        android:orientation="horizontal"
+                        android:padding="@dimen/_8sdp">
 
                         <ImageView
-                            android:layout_width="100dp"
-                            android:layout_height="100dp"
+                            android:layout_width="@dimen/_50sdp"
+                            android:layout_height="@dimen/_50sdp"
                             android:layout_gravity="center"
                             android:background="@drawable/bg_circle_yellow"
-                            android:elevation="3dp"
-                            android:padding="25dp"
+                            android:padding="@dimen/_13sdp"
                             android:src="@drawable/ic_phone_paused_black_24dp" />
 
                         <TextView
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:gravity="center"
-                            android:padding="10dp"
                             android:text="انتظار"
-                            android:textAppearance="?android:attr/textAppearanceMedium"
-                            android:textColor="@color/colorBlack" />
+                            android:textAppearance="?android:attr/textAppearanceSmall"
+                            android:textColor="?attr/colorValue"
+                            android:textSize="@dimen/_15ssp"
+                            android:textStyle="bold" />
 
                     </LinearLayout>
 
                     <LinearLayout
                         android:id="@+id/llPlay"
-                        android:layout_width="wrap_content"
-                        android:layout_height="match_parent"
-                        android:layout_weight="1"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="@dimen/_10sdp"
+                        android:background="@drawable/bg_dialogue"
+                        android:elevation="@dimen/_3sdp"
                         android:gravity="center"
-                        android:orientation="vertical"
-                        android:padding="20dp">
+                        android:orientation="horizontal"
+                        android:padding="@dimen/_8sdp">
 
                         <ImageView
-                            android:layout_width="100dp"
-                            android:layout_height="100dp"
+                            android:layout_width="@dimen/_50sdp"
+                            android:layout_height="@dimen/_50sdp"
                             android:layout_gravity="center"
                             android:background="@drawable/bg_circle_yellow"
-                            android:elevation="3dp"
-                            android:padding="15dp"
+                            android:padding="@dimen/_13sdp"
                             android:src="@drawable/ic_play_circle_outline_black_24dp" />
 
                         <TextView
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:gravity="center"
-                            android:padding="10dp"
                             android:text="انتقال تماس"
-                            android:textAppearance="?android:attr/textAppearanceMedium"
-                            android:textColor="@color/colorBlack" />
+                            android:textAppearance="?android:attr/textAppearanceSmall"
+                            android:textColor="?attr/colorValue"
+                            android:textSize="@dimen/_15ssp"
+                            android:textStyle="bold" />
 
                     </LinearLayout>
 
@@ -385,50 +356,47 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:gravity="top"
-                android:orientation="horizontal"
-                android:padding="10dp">
+                android:gravity="center"
+                android:orientation="vertical"
+                android:padding="30dp">
 
                 <LinearLayout
-                    android:layout_width="0dp"
-                    android:layout_height="match_parent"
-                    android:layout_weight="1"
+                    android:id="@+id/llEndCall2"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="@dimen/_10sdp"
+                    android:background="@drawable/bg_dialogue"
+                    android:elevation="@dimen/_3sdp"
                     android:gravity="center"
-                    android:orientation="vertical"
-                    android:padding="20dp">
+                    android:orientation="horizontal"
+                    android:padding="@dimen/_8sdp">
 
-                    <LinearLayout
-                        android:id="@+id/llEndCall2"
-                        android:layout_width="100dp"
-                        android:layout_height="100dp"
-                        android:background="@drawable/bg_circle_red"
+                    <ImageView
+                        android:layout_width="@dimen/_50sdp"
+                        android:layout_height="@dimen/_50sdp"
+                        android:layout_gravity="center"
+                        android:background="@drawable/circle_red"
+                        android:padding="@dimen/_5sdp"
+                        android:src="@drawable/ic_call_end" />
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
                         android:gravity="center"
-                        android:orientation="vertical">
-
-                        <ImageView
-                            android:layout_width="30dp"
-                            android:layout_height="30dp"
-                            android:layout_gravity="center"
-                            android:src="@drawable/ic_call_end" />
-
-                        <TextView
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:gravity="center"
-                            android:text="پایان تماس"
-                            android:textAppearance="?android:attr/textAppearanceSmall"
-                            android:textColor="@color/colorWhite" />
-
-                    </LinearLayout>
+                        android:text="پایان تماس"
+                        android:textAppearance="?android:attr/textAppearanceSmall"
+                        android:textColor="?attr/colorValue"
+                        android:textSize="@dimen/_15ssp"
+                        android:textStyle="bold" />
 
                 </LinearLayout>
 
             </LinearLayout>
 
+
         </ViewFlipper>
 
         <ImageView
-
             android:id="@+id/imgClose"
             android:layout_width="80dp"
             android:layout_height="80dp"
