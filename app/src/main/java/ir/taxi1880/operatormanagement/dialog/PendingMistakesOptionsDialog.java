@@ -69,15 +69,16 @@ public class PendingMistakesOptionsDialog {
         FragmentHelper.toFragment(MyApplication.currentActivity, new TripSupportFragment()).setArguments(bundle).replace();
     }
 
-    @OnClick(R.id.llNestFollowUp)
+    @OnClick(R.id.llNextFollowUp)
     void onPressNestFollowUp() {
         dismiss();
-        MyApplication.Toast("llNestFollowUp", Toast.LENGTH_SHORT);
+        MyApplication.Toast("llNextFollowUp", Toast.LENGTH_SHORT);
     }
 
     @OnClick(R.id.llStationGuide)
     void onStationInfo() {
-        new SearchStationInfoDialog().show(stationCode -> {},0,false,"",false);
+        new SearchStationInfoDialog().show(stationCode -> {
+        }, 0, false, "", false);
         dismiss();
     }
 
