@@ -58,7 +58,7 @@
                 android:gravity="center"
                 android:text="متاسفیم خطایی در هنگام دانلود رخ داد لطفا پس از چند دقیقه مجدد تلاش فرمایید."
                 android:textAppearance="?android:attr/textAppearanceMedium"
-                android:textColor="@color/colorBlack"
+                android:textColor="?attr/colorTitle"
                 android:textStyle="bold" />
 
         </LinearLayout>
@@ -75,7 +75,7 @@
                 android:gravity="center"
                 android:text="هنوز موردی ثبت نشده!"
                 android:textAppearance="?android:attr/textAppearanceMedium"
-                android:textColor="@color/colorBlack"
+                android:textColor="?attr/colorTitle"
                 android:textStyle="bold" />
 
             <ImageButton

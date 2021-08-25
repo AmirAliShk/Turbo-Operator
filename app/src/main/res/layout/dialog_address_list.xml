@@ -108,7 +108,7 @@
                     android:gravity="center"
                     android:text="هنوز هیچ آدرسی ثبت نشده"
                     android:textAppearance="?android:attr/textAppearanceMedium"
-                    android:textColor="@color/colorPrimaryDark" />
+                    android:textColor="?attr/colorTitle" />
 
                 <com.wang.avi.AVLoadingIndicatorView
                     android:layout_width="40dp"
