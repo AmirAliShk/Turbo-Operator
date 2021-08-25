@@ -163,7 +163,8 @@
                     android:maxLength="3"
                     android:maxLines="1"
                     android:textIsSelectable="false"
-                    android:textSize="30dp" />
+                    android:textSize="30dp"
+                    android:textColor="?attr/colorValue"/>
 
             </LinearLayout>
 

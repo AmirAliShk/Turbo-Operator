@@ -23,7 +23,7 @@
         android:layout_marginRight="15dp"
         android:layout_marginBottom="15dp"
         android:gravity="bottom"
-        android:background="@drawable/bg_gray_lite_edge"
+        android:background="@drawable/bg_body"
         android:orientation="vertical">
 
         <LinearLayout
@@ -58,7 +58,7 @@
                     android:layout_width="30dp"
                     android:layout_height="30dp"
                     android:layout_gravity="center"
-                    app:indicatorColor="?attr/colorIcon1"
+                    app:indicatorColor="?attr/colorButton1"
                     app:indicatorName="BallBeatIndicator" />
 
                 <ProgressBar
@@ -79,7 +79,7 @@
                     android:layout_centerInParent="true"
                     android:text="0%"
                     android:textAppearance="?android:attr/textAppearanceSmall"
-                    android:textColor="@color/colorAccent"
+                    android:textColor="?attr/colorpinkPurple"
                     android:textStyle="bold"
                     android:visibility="gone" />
 
@@ -121,7 +121,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="00:00"
-                        android:textColor="@color/colorBlack"
+                        android:textColor="?attr/colorValue"
                         android:visibility="invisible" />
 
                     <View
@@ -167,7 +167,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="00:00"
-                        android:textColor="@color/colorBlack" />
+                        android:textColor="?attr/colorValue" />
 
                 </LinearLayout>
 

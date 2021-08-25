@@ -119,7 +119,7 @@
             android:layout_width="25dp"
             android:layout_height="25dp"
             android:layout_gravity="center"
-            app:indicatorColor="@color/colorBlack" />
+            app:indicatorColor="?attr/colorButton1" />
 
     </ViewFlipper>
 

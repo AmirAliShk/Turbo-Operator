@@ -136,7 +136,7 @@
                         android:layout_width="17dp"
                         android:layout_height="17dp"
                         android:layout_gravity="center"
-                        app:indicatorColor="@color/colorPrimaryDark"
+                        app:indicatorColor="?attr/colorButton1"
                         app:indicatorName="BallBeatIndicator" />
 
                     <ImageView

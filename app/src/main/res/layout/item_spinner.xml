@@ -7,4 +7,5 @@
     android:minHeight="30dp"
     android:text="تست"
     android:textAppearance="?android:attr/textAppearanceLarge"
-    android:textColor="?attr/colorValue" />
+    android:textColor="?attr/colorTitle"
+    android:background="?attr/colorDialogeBodyTop"/>

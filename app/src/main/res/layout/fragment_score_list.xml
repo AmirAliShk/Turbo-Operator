@@ -40,10 +40,10 @@
 
         <com.wang.avi.AVLoadingIndicatorView
             android:layout_width="50dp"
-            android:layout_height="50dp"
+            android:layout_height="wrap_content"
             android:layout_gravity="center"
-            app:indicatorName="BallSpinFadeLoaderIndicator"
-            app:indicatorColor="?attr/colorIcon1" />
+            app:indicatorColor="?attr/colorIcon1"
+            app:indicatorName="BallSpinFadeLoaderIndicator" />
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/recycleScore"

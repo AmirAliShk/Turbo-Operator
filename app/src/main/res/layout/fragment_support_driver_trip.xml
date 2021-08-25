@@ -144,7 +144,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/_10sdp"
-            android:background="@drawable/bg_blue_border_edge"
+            android:background="@drawable/bg_body"
             android:orientation="vertical"
             android:padding="@dimen/_10sdp"
             android:visibility="gone">
@@ -192,7 +192,7 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="@drawable/bg_warning"
+                android:background="@drawable/bg_body1"
                 android:orientation="horizontal"
                 android:padding="@dimen/_8sdp">
 
@@ -258,7 +258,7 @@
                     android:layout_height="?android:attr/actionBarSize"
                     android:layout_margin="@dimen/_5sdp"
                     android:layout_weight="1"
-                    android:background="@drawable/bg_button_gray_edge"
+                    android:background="@drawable/bg_body1"
                     android:gravity="center">
 
                     <ViewFlipper
@@ -289,7 +289,7 @@
                     android:layout_height="?android:attr/actionBarSize"
                     android:layout_margin="@dimen/_5sdp"
                     android:layout_weight="1"
-                    android:background="@drawable/bg_button_gray_edge"
+                    android:background="@drawable/bg_body1"
                     android:padding="@dimen/_5sdp"
                     android:src="@drawable/ic_info" />
 
@@ -299,7 +299,7 @@
                     android:layout_height="?android:attr/actionBarSize"
                     android:layout_margin="@dimen/_5sdp"
                     android:layout_weight="1"
-                    android:background="@drawable/bg_button_gray_edge"
+                    android:background="@drawable/bg_body1"
                     android:padding="@dimen/_5sdp"
                     android:src="@drawable/ic_location" />
 
@@ -317,7 +317,7 @@
                 android:layout_height="match_parent"
                 android:gravity="center"
                 android:text="موردی یافت نشد!"
-                android:textColor="@color/colorBlack"
+                android:textColor="?attr/colorTitle"
                 android:textSize="@dimen/text_title" />
 
             <LinearLayout
@@ -330,7 +330,7 @@
                     android:layout_width="50dp"
                     android:layout_height="50dp"
                     android:layout_gravity="center"
-                    app:indicatorColor="@color/colorPrimaryDark"
+                    app:indicatorColor="?attr/colorButton1"
                     app:indicatorName="BallSpinFadeLoaderIndicator" />
 
                 <Button
@@ -367,7 +367,7 @@
                 android:layout_height="match_parent"
                 android:gravity="center"
                 android:text="خطایی رخ داده! \n لطفا پس از چند لحظه مجدد تلاش کنید"
-                android:textColor="@color/colorBlack"
+                android:textColor="?attr/colorTitle"
                 android:textSize="@dimen/text_title" />
 
         </ViewFlipper>

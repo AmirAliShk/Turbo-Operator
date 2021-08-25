@@ -49,7 +49,7 @@
                     android:id="@+id/imgSearch"
                     android:layout_width="50dp"
                     android:layout_height="50dp"
-                    android:background="@drawable/bg_blue_border_edge"
+                    android:background="@drawable/bg_body1"
                     android:padding="10dp"
                     android:src="@drawable/ic_search" />
 
@@ -69,7 +69,8 @@
                     android:gravity="right|center_vertical"
                     android:padding="5dp"
                     android:textSize="15sp"
-                    android:singleLine="true" />
+                    android:singleLine="true"
+                    android:textColor="?attr/colorValue"/>
 
                 <RelativeLayout
                     android:id="@+id/rlSearchType"
@@ -84,7 +85,7 @@
                         android:id="@+id/spSearchType"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
-                        android:background="@drawable/bg_blue_border_edge"
+                        android:background="@drawable/bg_body1"
                         android:dropDownWidth="match_parent"
                         android:gravity="center"
                         android:layout_alignParentRight="true"
@@ -112,13 +113,13 @@
                     android:gravity="center"
                     android:text="لطفا نام یا کد ایستگاه را وارد کنید."
                     android:textAppearance="?android:attr/textAppearanceSmall"
-                    android:textColor="@color/colorBlack" />
+                    android:textColor="?attr/colorValue" />
 
                 <com.wang.avi.AVLoadingIndicatorView
                     android:layout_width="30dp"
                     android:layout_height="30dp"
                     android:layout_gravity="center"
-                    app:indicatorColor="@color/colorPrimaryDark" />
+                    app:indicatorColor="?attr/colorButton1" />
 
                 <LinearLayout
 
@@ -200,7 +201,7 @@
                                 android:layout_height="wrap_content"
                                 android:text="ایستگاه واقع در حومه شهر است"
                                 android:textAppearance="?android:attr/textAppearanceMedium"
-                                android:textColor="@color/colorRed" />
+                                android:textColor="?attr/colorValue" />
 
                         </LinearLayout>
 

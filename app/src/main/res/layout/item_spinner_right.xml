@@ -9,4 +9,5 @@
     android:paddingBottom="5dp"
     android:text="تست"
     android:layout_gravity="center"
-    android:textAppearance="?android:attr/textAppearanceMedium" />
+    android:textAppearance="?android:attr/textAppearanceMedium"
+    android:background="?attr/colorDialogeBodyTop"/>

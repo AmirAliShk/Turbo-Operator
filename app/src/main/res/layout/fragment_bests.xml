@@ -172,7 +172,7 @@
                 android:layout_height="match_parent"
                 android:gravity="center"
                 android:textSize="@dimen/text_title"
-                android:textColor="@color/colorBlack"
+                android:textColor="?attr/colorValue"
                 android:text="هنوز هیچی ثبت نشده!"/>
 
             <TextView
@@ -180,7 +180,7 @@
                 android:layout_centerInParent="true"
                 android:gravity="center"
                 android:textSize="@dimen/text_title"
-                android:textColor="@color/colorBlack"
+                android:textColor="?attr/colorValue"
                 android:visibility="gone"
                 android:text="متاسفانه هنگام دریافت اطلاعات از سرور به مشکل خوردیم \n لطفا مجدد تلاش کنید!"
                 android:layout_width="match_parent"

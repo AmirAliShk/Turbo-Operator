@@ -199,7 +199,7 @@
                     android:paddingRight="10dp"
                     android:text="قیمت"
                     android:textAppearance="?android:attr/textAppearanceLarge"
-                    android:textColor="@color/grayMedium" />
+                    android:textColor="?attr/colorTitle" />
 
                 <TextView
                     android:id="@+id/txtPrice"
@@ -209,7 +209,7 @@
                     android:gravity="center_vertical"
                     android:paddingRight="10dp"
                     android:textAppearance="?android:attr/textAppearanceLarge"
-                    android:textColor="@color/colorBlack" />
+                    android:textColor="?attr/colorValue" />
 
             </LinearLayout>
 

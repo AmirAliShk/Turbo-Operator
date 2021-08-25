@@ -111,14 +111,14 @@
                                 android:layout_width="30dp"
                                 android:layout_height="30dp"
                                 android:layout_gravity="center"
-                                app:indicatorColor="@color/colorPrimaryDark" />
+                                app:indicatorColor="?attr/colorButton1" />
 
                             <TextView
                                 android:id="@+id/txtCharge"
                                 android:layout_width="match_parent"
                                 android:layout_height="match_parent"
                                 android:gravity="center"
-                                android:textColor="@color/colorBlack"
+                                android:textColor="?attr/colorValue"
                                 android:textSize="@dimen/_18ssp" />
 
                         </ViewFlipper>
@@ -162,7 +162,7 @@
                             android:paddingLeft="35dp"
                             android:singleLine="true"
                             android:textAppearance="?android:attr/textAppearanceMedium"
-                            android:textColor="@color/colorBlack"
+                            android:textColor="?attr/colorTitle"
                             android:textDirection="ltr" />
 
                         <TextView
@@ -207,7 +207,7 @@
                         android:padding="10dp"
                         android:singleLine="true"
                         android:textAppearance="?android:attr/textAppearanceMedium"
-                        android:textColor="@color/colorBlack"
+                        android:textColor="?attr/colorTitle"
                         android:textDirection="ltr" />
 
                 </LinearLayout>
@@ -242,7 +242,7 @@
                         android:padding="10dp"
                         android:singleLine="true"
                         android:textAppearance="?android:attr/textAppearanceMedium"
-                        android:textColor="@color/colorBlack"
+                        android:textColor="?attr/colorTitle"
                         android:textDirection="ltr" />
 
                 </LinearLayout>

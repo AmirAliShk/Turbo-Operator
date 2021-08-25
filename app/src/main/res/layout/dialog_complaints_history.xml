@@ -147,7 +147,7 @@
                             android:layout_marginRight="@dimen/_5sdp"
                             android:layout_weight="1"
                             android:gravity="center_vertical"
-                            android:textColor="@color/colorPrimaryDark"
+                            android:textColor="?attr/colorBackgroundTitleDialogue"
                             android:textSize="22sp" />
 
                         <TextView
@@ -191,7 +191,7 @@
                     android:padding="15dp"
                     android:text="شکایتی وجود ندارد."
                     android:textAppearance="?android:attr/textAppearanceMedium"
-                    android:textColor="@color/colorBlack"
+                    android:textColor="?attr/colorTitle"
                     android:textStyle="bold" />
 
                 <TextView
@@ -202,7 +202,7 @@
                     android:padding="15dp"
                     android:text="متاسفیم خطایی رخ داد لطفا پس از چند دقیقه مجدد تلاش فرمایید."
                     android:textAppearance="?android:attr/textAppearanceMedium"
-                    android:textColor="@color/colorBlack"
+                    android:textColor="?attr/colorTitle"
                     android:textStyle="bold" />
 
             </ViewFlipper>

@@ -493,7 +493,7 @@
                                 android:layout_height="35dp"
                                 android:layout_gravity="center"
                                 android:padding="5dp"
-                                app:indicatorColor="@color/colorPrimaryDark" />
+                                app:indicatorColor="?attr/colorButton1" />
 
                         </ViewFlipper>
 
