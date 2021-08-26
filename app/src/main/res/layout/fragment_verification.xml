@@ -104,7 +104,7 @@
                     android:padding="5dp"
                     android:singleLine="true"
                     android:textAppearance="?android:attr/textAppearanceMedium"
-                    android:textColor="@color/colorBlack"
+                    android:textColor="?attr/colorValue"
                     android:textDirection="ltr" />
 
             </LinearLayout>
@@ -121,7 +121,7 @@
                     android:layout_height="match_parent"
                     android:gravity="center_vertical"
                     android:backgroundTint="@color/colorAccent"
-                    android:buttonTint="@color/colorAccent"/>
+                    android:buttonTint="?attr/colorIcon2"/>
 
                 <LinearLayout
                     android:id="@+id/llRules"
@@ -137,7 +137,7 @@
                         android:layout_marginBottom="2dp"
                         android:gravity="center_vertical"
                         android:text="شرایط و قوانین توربوتاکسی"
-                        android:textColor="@color/colorPrimaryDark"
+                        android:textColor="?attr/colorIcon1"
                         android:textSize="20sp" />
 
                     <TextView
@@ -211,7 +211,7 @@
                     android:shadowDy="3"
                     android:shadowRadius="3"
                     android:text="ورود با نام کاربری و رمز عبور"
-                    android:textColor="@color/colorPrimaryDark"
+                    android:textColor="?attr/colorIcon1"
                     android:textSize="@dimen/_14ssp" />
 
 

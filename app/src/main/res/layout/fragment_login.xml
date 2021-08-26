@@ -5,7 +5,7 @@
     android:id="@+id/llParent"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/colorPrimaryDark"
+    android:background="?attr/colorActionBarBackground"
     android:clickable="true"
     android:layoutDirection="rtl"
     android:orientation="vertical"
@@ -103,7 +103,7 @@
                     android:padding="5dp"
                     android:singleLine="true"
                     android:textAppearance="?android:attr/textAppearanceMedium"
-                    android:textColor="@color/colorBlack"
+                    android:textColor="?attr/colorValue"
                     android:textDirection="ltr" />
 
             </LinearLayout>
@@ -139,7 +139,7 @@
                     android:padding="5dp"
                     android:singleLine="true"
                     android:textAppearance="?android:attr/textAppearanceMedium"
-                    android:textColor="@color/colorBlack"
+                    android:textColor="?attr/colorValue"
                     android:textDirection="ltr" />
 
             </LinearLayout>
@@ -155,7 +155,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
                     android:backgroundTint="@color/colorAccent"
-                    android:buttonTint="@color/colorAccent" />
+                    android:buttonTint="?attr/colorIcon2" />
 
                 <LinearLayout
                     android:id="@+id/llRules"
@@ -171,7 +171,7 @@
                         android:layout_marginBottom="2dp"
                         android:gravity="center_vertical"
                         android:text="شرایط و قوانین توربوتاکسی"
-                        android:textColor="@color/colorPrimaryDark"
+                        android:textColor="?attr/colorIcon1"
                         android:textSize="20sp" />
 
                     <TextView
@@ -179,7 +179,7 @@
                         android:layout_height="match_parent"
                         android:gravity="center_vertical"
                         android:text=" را مطالعه و قبول کردم."
-                        android:textColor="@color/colorBlack"
+                        android:textColor="?attr/colorIcon1"
                         android:textSize="18sp" />
 
                 </LinearLayout>
@@ -205,7 +205,7 @@
                     android:paddingLeft="@dimen/_50sdp"
                     android:paddingRight="@dimen/_50sdp"
                     android:text="@string/enter"
-                    android:textColor="@color/colorWhite"
+                    android:textColor="?attr/colorPageTitle"
                     android:textSize="@dimen/_20ssp"
                     android:textStyle="bold" />
 
@@ -245,7 +245,7 @@
                     android:shadowDy="3"
                     android:shadowRadius="3"
                     android:text="ورود با شماره همراه"
-                    android:textColor="@color/colorPrimaryDark"
+                    android:textColor="?attr/colorIcon1"
                     android:textSize="@dimen/_14ssp" />
 
             </LinearLayout>
