@@ -64,14 +64,14 @@
                 android:layout_weight="1" />
 
             <RelativeLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content">
+                android:layout_width="65dp"
+                android:layout_height="65dp"
+                android:gravity="center">
 
                 <ImageView
                     android:id="@+id/imgNotification"
                     android:layout_width="55dp"
                     android:layout_height="55dp"
-                    android:layout_margin="@dimen/_5sdp"
                     android:background="@drawable/circle_shadow"
                     android:padding="10dp"
                     android:src="@drawable/ic_notification" />
@@ -80,6 +80,8 @@
                     android:id="@+id/txtBadgeCount"
                     android:layout_width="25dp"
                     android:layout_height="25dp"
+                    android:layout_alignParentTop="true"
+                    android:layout_alignParentRight="true"
                     android:background="@drawable/bg_badge"
                     android:elevation="@dimen/_5sdp"
                     android:gravity="center"
