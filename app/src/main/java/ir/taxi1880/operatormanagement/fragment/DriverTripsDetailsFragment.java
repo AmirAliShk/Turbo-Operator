@@ -524,32 +524,21 @@ public class DriverTripsDetailsFragment extends Fragment {
     private void disableControllerButtonWaitingState() {
         if (btnDriverLocation == null) return;
         btnDriverLocation.setEnabled(false);
-        btnDriverLocation.setBackgroundResource(R.drawable.bg_btn_disable);
         btnReFollow.setEnabled(false);
-        btnReFollow.setBackgroundResource(R.drawable.bg_btn_disable);
         btnComplaintRegistration.setEnabled(false);
-        btnComplaintRegistration.setBackgroundResource(R.drawable.bg_btn_disable);
         btnLost.setEnabled(false);
-        btnLost.setBackgroundResource(R.drawable.bg_btn_disable);
         btnDriverLock.setEnabled(false);
-        btnDriverLock.setBackgroundResource(R.drawable.bg_btn_disable);
     }
 
     private void disableControllerButtonCancelState(boolean isBefore) {
         if (btnDriverLocation == null) return;
         btnDriverLocation.setEnabled(false);
-        btnDriverLocation.setBackgroundResource(R.drawable.bg_btn_disable);
         btnReFollow.setEnabled(false);
-        btnReFollow.setBackgroundResource(R.drawable.bg_btn_disable);
         btnCancelTrip.setEnabled(false);
-        btnCancelTrip.setBackgroundResource(R.drawable.bg_btn_disable);
         if (isBefore) {
             btnComplaintRegistration.setEnabled(false);
-            btnComplaintRegistration.setBackgroundResource(R.drawable.bg_btn_disable);
             btnDriverLock.setEnabled(false);
-            btnDriverLock.setBackgroundResource(R.drawable.bg_btn_disable);
             btnLost.setEnabled(false);
-            btnLost.setBackgroundResource(R.drawable.bg_btn_disable);
         }
 //    MyApplication.prefManager.setLastCallerId("");// set empty, because I don't want save this permanently .
     }
@@ -558,7 +547,6 @@ public class DriverTripsDetailsFragment extends Fragment {
         if (btnCancelTrip == null) return;
 //    MyApplication.prefManager.setLastCallerId("");// set empty, because I don't want save this permanently .
         btnReFollow.setEnabled(false);
-        btnReFollow.setBackgroundResource(R.drawable.bg_btn_disable);
     }
 
     private void cancelService() {

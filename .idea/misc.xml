@@ -76,6 +76,7 @@
         <entry key="app/src/main/res/layout/dialog_station_info.xml" value="0.34010416666666665" />
         <entry key="app/src/main/res/layout/dialog_support.xml" value="0.34010416666666665" />
         <entry key="app/src/main/res/layout/dialog_trip_option.xml" value="0.34010416666666665" />
+        <entry key="app/src/main/res/layout/fragment_account.xml" value="0.34010416666666665" />
         <entry key="app/src/main/res/layout/fragment_all_complaints.xml" value="0.34010416666666665" />
         <entry key="app/src/main/res/layout/fragment_all_mistakes.xml" value="0.34010416666666665" />
         <entry key="app/src/main/res/layout/fragment_bests.xml" value="0.34010416666666665" />
