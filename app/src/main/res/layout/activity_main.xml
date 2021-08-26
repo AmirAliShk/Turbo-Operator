@@ -48,14 +48,31 @@
                 android:layout_height="match_parent"
                 android:layout_weight="1" />
 
-            <ImageView
-                android:id="@+id/imgNotification"
-                android:layout_width="55dp"
-                android:layout_height="55dp"
-                android:layout_margin="@dimen/_5sdp"
-                android:background="@drawable/circle_shadow"
-                android:padding="10dp"
-                android:src="@drawable/ic_notification" />
+            <RelativeLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
+
+                <ImageView
+                    android:id="@+id/imgNotification"
+                    android:layout_width="55dp"
+                    android:layout_height="55dp"
+                    android:layout_margin="@dimen/_5sdp"
+                    android:background="@drawable/circle_shadow"
+                    android:padding="10dp"
+                    android:src="@drawable/ic_notification" />
+
+                <TextView
+                    android:id="@+id/txtBadgeCount"
+                    android:layout_width="25dp"
+                    android:layout_height="25dp"
+                    android:background="@drawable/bg_badge"
+                    android:elevation="@dimen/_5sdp"
+                    android:gravity="center"
+                    android:text="1"
+                    android:textColor="@color/colorWhite"
+                    android:visibility="gone"/>
+
+            </RelativeLayout>
 
             <View
                 android:layout_width="0dp"
@@ -91,22 +108,6 @@
                 android:layout_weight="1" />
 
         </LinearLayout>
-
-        <TextView
-            android:id="@+id/txtBadgeCount"
-            android:layout_width="25dp"
-            android:layout_height="25dp"
-            android:layout_marginLeft="@dimen/_190sdp"
-            android:layout_marginBottom="@dimen/_40sdp"
-            android:background="@drawable/bg_badge"
-            android:elevation="@dimen/_5sdp"
-            android:gravity="center"
-            android:text="1"
-            android:textColor="?attr/colorTitle"
-            android:visibility="gone"
-            app:layout_constraintBottom_toBottomOf="@id/llHeaderIcons"
-            app:layout_constraintLeft_toLeftOf="@id/llHeaderIcons"
-            app:layout_constraintTop_toTopOf="@id/llHeaderIcons" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
