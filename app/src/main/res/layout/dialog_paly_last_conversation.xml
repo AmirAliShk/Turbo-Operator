@@ -3,9 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-
     android:layoutDirection="ltr">
-
 
     <com.github.mmin18.widget.RealtimeBlurView
         android:id="@+id/blrView"
@@ -22,8 +20,8 @@
         android:layout_marginLeft="15dp"
         android:layout_marginRight="15dp"
         android:layout_marginBottom="15dp"
-        android:gravity="bottom"
         android:background="@drawable/bg_body"
+        android:gravity="bottom"
         android:orientation="vertical">
 
         <LinearLayout
@@ -180,10 +178,11 @@
                 android:gravity="center"
                 android:text="متاسفیم خطایی در هنگام دانلود رخ داد لطفا پس از چند دقیقه مجدد تلاش فرمایید"
                 android:textAppearance="?android:attr/textAppearanceMedium"
-                android:textColor="@color/colorBlack"
+                android:textColor="?attr/colorValue"
                 android:textStyle="bold" />
 
         </ViewFlipper>
 
     </LinearLayout>
+
 </RelativeLayout>

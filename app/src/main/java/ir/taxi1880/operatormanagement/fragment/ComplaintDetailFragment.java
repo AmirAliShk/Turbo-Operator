@@ -36,7 +36,6 @@ import ir.taxi1880.operatormanagement.okHttp.RequestHelper;
 
 import static ir.taxi1880.operatormanagement.fragment.ComplaintTripDetailsFragment.pauseVoice;
 
-
 public class ComplaintDetailFragment extends Fragment {
     Unbinder unbinder;
     int statusModel;

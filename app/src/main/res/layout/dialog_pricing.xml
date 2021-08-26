@@ -22,236 +22,236 @@
         android:gravity="center"
         android:orientation="vertical">
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_centerInParent="true"
-        android:layout_marginLeft="15dp"
-        android:layout_marginRight="15dp"
-        android:gravity="center"
-        android:orientation="vertical"
-        android:background="@drawable/bg_gray_lite_edge">
-
-        <TextView
-            style="@style/dialogTitle"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="@drawable/bg_dialog_header"
-            android:gravity="center"
-            android:padding="@dimen/_8sdp"
-            android:text="قیمت دهی" />
-
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_gravity="top|center_horizontal"
+            android:layout_centerInParent="true"
+            android:layout_marginLeft="15dp"
+            android:layout_marginRight="15dp"
             android:background="@drawable/bg_gray_lite_edge"
-            android:gravity="top"
-            android:orientation="vertical"
-            android:padding="10dp">
+            android:gravity="center"
+            android:orientation="vertical">
 
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:orientation="vertical">
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_margin="5dp"
-                    android:orientation="horizontal">
-
-                    <RadioButton
-                        android:id="@+id/rbByStation"
-                        android:layout_width="wrap_content"
-                        android:layout_height="match_parent"
-                        android:buttonTint="?attr/colorpinkPurple"
-                        android:gravity="bottom"
-                        android:paddingBottom="5dp" />
-
-                    <LinearLayout
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:orientation="vertical">
-
-                        <TextView
-                            android:layout_width="match_parent"
-                            android:layout_height="0dp"
-                            android:layout_weight="0.5"
-                            android:paddingRight="10dp"
-                            android:text="ایستگاه مبدا"
-                            android:textAppearance="?android:attr/textAppearanceMedium"
-                            android:textColor="?attr/colorTitle" />
-
-                        <EditText
-                            android:id="@+id/edtStationOrigin"
-                            android:layout_width="match_parent"
-                            android:layout_height="0dp"
-                            android:layout_weight="1"
-                            android:background="@drawable/edit_text_style"
-                            android:gravity="right|center_vertical"
-                            android:inputType="numberDecimal"
-                            android:padding="10dp"
-                            android:singleLine="true"
-                            android:textColor="?attr/colorValue" />
-
-                    </LinearLayout>
-
-                    <View
-                        android:layout_width="15dp"
-                        android:layout_height="0dp" />
-
-                    <LinearLayout
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:orientation="vertical">
-
-                        <TextView
-                            android:layout_width="match_parent"
-                            android:layout_height="0dp"
-                            android:layout_weight="0.5"
-                            android:paddingRight="10dp"
-                            android:text="ایستگاه مقصد"
-                            android:textAppearance="?android:attr/textAppearanceMedium"
-                            android:textColor="?attr/colorTitle" />
-
-                        <EditText
-                            android:id="@+id/edtStationDestination"
-                            android:layout_width="match_parent"
-                            android:layout_height="0dp"
-                            android:layout_weight="1"
-                            android:background="@drawable/edit_text_style"
-                            android:gravity="right|center_vertical"
-                            android:inputType="numberDecimal"
-                            android:padding="10dp"
-                            android:singleLine="true"
-                            android:textColor="?attr/colorValue" />
-
-                    </LinearLayout>
-
-                </LinearLayout>
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_margin="5dp"
-                    android:orientation="horizontal">
-
-                    <RadioButton
-                        android:id="@+id/rbByTime"
-                        android:layout_width="wrap_content"
-                        android:layout_height="match_parent"
-                        android:buttonTint="?attr/colorpinkPurple"
-                        android:gravity="bottom"
-                        android:paddingBottom="5dp" />
-
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:orientation="vertical">
-
-                        <TextView
-                            android:layout_width="match_parent"
-                            android:layout_height="match_parent"
-                            android:layout_marginTop="10dp"
-                            android:paddingRight="10dp"
-                            android:text="زمان"
-                            android:textAppearance="?android:attr/textAppearanceMedium"
-                            android:textColor="?attr/colorTitle" />
-
-                        <EditText
-                            android:id="@+id/edtTime"
-                            android:layout_width="match_parent"
-                            android:layout_height="0dp"
-                            android:layout_weight="1"
-                            android:background="@drawable/edit_text_style"
-                            android:gravity="right|center_vertical"
-                            android:inputType="numberDecimal"
-                            android:padding="10dp"
-                            android:singleLine="true"
-                            android:textColor="?attr/colorValue" />
-
-                    </LinearLayout>
-
-                </LinearLayout>
-
-            </LinearLayout>
-
-            <LinearLayout
-                android:id="@+id/llPrice"
+            <TextView
+                style="@style/dialogTitle"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:visibility="gone">
-
-                <ImageView
-                    android:layout_width="50dp"
-                    android:layout_height="50dp"
-                    android:src="@drawable/ic_price" />
-
-                <TextView
-                    android:layout_width="0dp"
-                    android:layout_height="match_parent"
-                    android:layout_weight="0.25"
-                    android:gravity="center_vertical"
-                    android:paddingRight="10dp"
-                    android:text="قیمت"
-                    android:textAppearance="?android:attr/textAppearanceLarge"
-                    android:textColor="?attr/colorTitle" />
-
-                <TextView
-                    android:id="@+id/txtPrice"
-                    android:layout_width="0dp"
-                    android:layout_height="match_parent"
-                    android:layout_weight="1"
-                    android:gravity="center_vertical"
-                    android:paddingRight="10dp"
-                    android:textAppearance="?android:attr/textAppearanceLarge"
-                    android:textColor="?attr/colorValue" />
-
-            </LinearLayout>
+                android:background="@drawable/bg_dialog_header"
+                android:gravity="center"
+                android:padding="@dimen/_8sdp"
+                android:text="قیمت دهی" />
 
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="@dimen/_40sdp"
-                android:layout_marginTop="10dp"
-                android:layout_weight="1"
-                android:gravity="center"
-                android:orientation="vertical">
+                android:layout_height="wrap_content"
+                android:layout_gravity="top|center_horizontal"
+                android:background="@drawable/bg_gray_lite_edge"
+                android:gravity="top"
+                android:orientation="vertical"
+                android:padding="10dp">
 
-                <ViewFlipper
-                    android:id="@+id/vfLoader"
-                    android:layout_width="wrap_content"
+                <LinearLayout
+                    android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:background="@drawable/green_shadow">
+                    android:orientation="vertical">
 
-                    <Button
-                        android:id="@+id/btnSubmit"
+                    <LinearLayout
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginLeft="40dp"
-                        android:layout_marginRight="40dp"
-                        android:background="@color/transparent"
-                        android:text="ثبت"
+                        android:layout_height="match_parent"
+                        android:layout_margin="5dp"
+                        android:orientation="horizontal">
+
+                        <RadioButton
+                            android:id="@+id/rbByStation"
+                            android:layout_width="wrap_content"
+                            android:layout_height="match_parent"
+                            android:buttonTint="?attr/colorpinkPurple"
+                            android:gravity="bottom"
+                            android:paddingBottom="5dp" />
+
+                        <LinearLayout
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:orientation="vertical">
+
+                            <TextView
+                                android:layout_width="match_parent"
+                                android:layout_height="0dp"
+                                android:layout_weight="0.5"
+                                android:paddingRight="10dp"
+                                android:text="ایستگاه مبدا"
+                                android:textAppearance="?android:attr/textAppearanceMedium"
+                                android:textColor="?attr/colorTitle" />
+
+                            <EditText
+                                android:id="@+id/edtStationOrigin"
+                                android:layout_width="match_parent"
+                                android:layout_height="0dp"
+                                android:layout_weight="1"
+                                android:background="@drawable/edit_text_style"
+                                android:gravity="right|center_vertical"
+                                android:inputType="numberDecimal"
+                                android:padding="10dp"
+                                android:singleLine="true"
+                                android:textColor="?attr/colorValue" />
+
+                        </LinearLayout>
+
+                        <View
+                            android:layout_width="15dp"
+                            android:layout_height="0dp" />
+
+                        <LinearLayout
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:orientation="vertical">
+
+                            <TextView
+                                android:layout_width="match_parent"
+                                android:layout_height="0dp"
+                                android:layout_weight="0.5"
+                                android:paddingRight="10dp"
+                                android:text="ایستگاه مقصد"
+                                android:textAppearance="?android:attr/textAppearanceMedium"
+                                android:textColor="?attr/colorTitle" />
+
+                            <EditText
+                                android:id="@+id/edtStationDestination"
+                                android:layout_width="match_parent"
+                                android:layout_height="0dp"
+                                android:layout_weight="1"
+                                android:background="@drawable/edit_text_style"
+                                android:gravity="right|center_vertical"
+                                android:inputType="numberDecimal"
+                                android:padding="10dp"
+                                android:singleLine="true"
+                                android:textColor="?attr/colorValue" />
+
+                        </LinearLayout>
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_margin="5dp"
+                        android:orientation="horizontal">
+
+                        <RadioButton
+                            android:id="@+id/rbByTime"
+                            android:layout_width="wrap_content"
+                            android:layout_height="match_parent"
+                            android:buttonTint="?attr/colorpinkPurple"
+                            android:gravity="bottom"
+                            android:paddingBottom="5dp" />
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="vertical">
+
+                            <TextView
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                android:layout_marginTop="10dp"
+                                android:paddingRight="10dp"
+                                android:text="زمان"
+                                android:textAppearance="?android:attr/textAppearanceMedium"
+                                android:textColor="?attr/colorTitle" />
+
+                            <EditText
+                                android:id="@+id/edtTime"
+                                android:layout_width="match_parent"
+                                android:layout_height="0dp"
+                                android:layout_weight="1"
+                                android:background="@drawable/edit_text_style"
+                                android:gravity="right|center_vertical"
+                                android:inputType="numberDecimal"
+                                android:padding="10dp"
+                                android:singleLine="true"
+                                android:textColor="?attr/colorValue" />
+
+                        </LinearLayout>
+
+                    </LinearLayout>
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/llPrice"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:visibility="gone">
+
+                    <ImageView
+                        android:layout_width="50dp"
+                        android:layout_height="50dp"
+                        android:src="@drawable/ic_price" />
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="0.25"
+                        android:gravity="center_vertical"
+                        android:paddingRight="10dp"
+                        android:text="قیمت"
                         android:textAppearance="?android:attr/textAppearanceLarge"
-                        android:textColor="?attr/colorPageTitle"
-                        android:textStyle="bold" />
+                        android:textColor="?attr/colorTitle" />
 
-                    <com.wang.avi.AVLoadingIndicatorView
-                        android:layout_width="30dp"
-                        android:layout_height="30dp"
-                        android:layout_gravity="center"
-                        app:indicatorColor="@color/colorWhite" />
+                    <TextView
+                        android:id="@+id/txtPrice"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:gravity="center_vertical"
+                        android:paddingRight="10dp"
+                        android:textAppearance="?android:attr/textAppearanceLarge"
+                        android:textColor="?attr/colorValue" />
 
-                </ViewFlipper>
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/_40sdp"
+                    android:layout_marginTop="10dp"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:orientation="vertical">
+
+                    <ViewFlipper
+                        android:id="@+id/vfLoader"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:background="@drawable/green_shadow">
+
+                        <Button
+                            android:id="@+id/btnSubmit"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="40dp"
+                            android:layout_marginRight="40dp"
+                            android:background="@color/transparent"
+                            android:text="ثبت"
+                            android:textAppearance="?android:attr/textAppearanceLarge"
+                            android:textColor="?attr/colorPageTitle"
+                            android:textStyle="bold" />
+
+                        <com.wang.avi.AVLoadingIndicatorView
+                            android:layout_width="30dp"
+                            android:layout_height="30dp"
+                            android:layout_gravity="center"
+                            app:indicatorColor="@color/colorWhite" />
+
+                    </ViewFlipper>
+
+                </LinearLayout>
 
             </LinearLayout>
 
         </LinearLayout>
-
-    </LinearLayout>
 
         <ImageView
             android:id="@+id/imgClose"

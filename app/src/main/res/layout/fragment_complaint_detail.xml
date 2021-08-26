@@ -78,7 +78,7 @@
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1"
-        android:background="?attr/colorPageBackground"/>
+        android:background="?attr/colorPageBackground" />
 
     <LinearLayout
         android:id="@+id/llButtons"
@@ -179,7 +179,8 @@
             <com.wang.avi.AVLoadingIndicatorView
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
-                android:layout_gravity="center" />
+                android:layout_gravity="center"
+                app:indicatorColor="?attr/colorValue"/>
 
         </ViewFlipper>
 

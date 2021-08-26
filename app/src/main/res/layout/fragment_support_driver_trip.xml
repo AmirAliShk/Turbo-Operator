@@ -13,7 +13,8 @@
         android:id="@+id/rlActionBar"
         android:layout_width="match_parent"
         android:layout_height="?android:attr/actionBarSize"
-        android:background="?attr/colorActionBarBackground"        android:gravity="center_vertical"
+        android:background="?attr/colorActionBarBackground"
+        android:gravity="center_vertical"
         android:layoutDirection="ltr"
         android:orientation="horizontal">
 
@@ -126,8 +127,8 @@
                 android:hint="@string/search"
                 android:padding="10dp"
                 android:singleLine="true"
-                android:textColorHint="?attr/colorTitle"
-                android:textColor="?attr/colorValue"/>
+                android:textColor="?attr/colorValue"
+                android:textColorHint="?attr/colorTitle" />
 
             <ImageView
                 android:id="@+id/imgSearchType"
@@ -198,7 +199,7 @@
 
                 <TextView
                     android:id="@+id/txtDriverQueue"
-                     style="@style/tripItemValue"
+                    style="@style/tripItemValue"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:gravity="center" />
@@ -247,7 +248,7 @@
                             android:layout_width="@dimen/_20sdp"
                             android:layout_height="@dimen/_20sdp"
                             android:layout_gravity="center"
-                            app:indicatorColor="@color/colorPrimaryDark" />
+                            app:indicatorColor="?attr/colorButton1" />
 
                     </ViewFlipper>
 
@@ -277,7 +278,7 @@
                             android:layout_width="@dimen/_20sdp"
                             android:layout_height="@dimen/_20sdp"
                             android:layout_gravity="center"
-                            app:indicatorColor="@color/colorPrimaryDark" />
+                            app:indicatorColor="?attr/colorButton1" />
 
                     </ViewFlipper>
 

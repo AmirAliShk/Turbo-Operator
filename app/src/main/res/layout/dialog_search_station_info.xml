@@ -39,7 +39,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="@dimen/_10sdp"
-                android:background="@drawable/bg_white_edge"                android:gravity="center_vertical"
+                android:background="@drawable/bg_white_edge"
+                android:gravity="center_vertical"
                 android:layoutDirection="ltr"
                 android:orientation="horizontal"
                 android:padding="10dp"
@@ -68,9 +69,9 @@
                     android:background="@color/transparent"
                     android:gravity="right|center_vertical"
                     android:padding="5dp"
-                    android:textSize="15sp"
                     android:singleLine="true"
-                    android:textColor="?attr/colorValue"/>
+                    android:textColor="?attr/colorValue"
+                    android:textSize="15sp" />
 
                 <RelativeLayout
                     android:id="@+id/rlSearchType"
@@ -85,10 +86,10 @@
                         android:id="@+id/spSearchType"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
+                        android:layout_alignParentRight="true"
                         android:background="@drawable/bg_body1"
                         android:dropDownWidth="match_parent"
                         android:gravity="center"
-                        android:layout_alignParentRight="true"
                         android:padding="8dp" />
 
                     <ImageView
@@ -224,7 +225,7 @@
                     android:gravity="center"
                     android:text="خطایی پیش آمده \n لطفا مجدد امتحان کنید"
                     android:textAppearance="?android:attr/textAppearanceMedium"
-                    android:textColor="@color/colorBlack" />
+                    android:textColor="?attr/colorValue" />
 
                 <TextView
                     android:layout_width="match_parent"
@@ -232,7 +233,7 @@
                     android:gravity="center"
                     android:text="اطلاعاتی موجود نیست"
                     android:textAppearance="?android:attr/textAppearanceMedium"
-                    android:textColor="@color/colorBlack" />
+                    android:textColor="?attr/colorValue" />
 
             </ViewFlipper>
 

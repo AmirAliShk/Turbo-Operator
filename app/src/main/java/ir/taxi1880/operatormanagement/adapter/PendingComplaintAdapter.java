@@ -162,7 +162,7 @@ public class PendingComplaintAdapter extends RecyclerView.Adapter<PendingComplai
                         if (vfDetail != null)
                             vfDetail.setDisplayedChild(0);
 
-                        FragmentHelper.toFragment(MyApplication.currentActivity, new ComplaintDetailFragment(model)).setNavigationBarColor(MyApplication.currentActivity.getResources().getColor(R.color.colorPrimaryLighter)).replace();
+                        FragmentHelper.toFragment(MyApplication.currentActivity, new ComplaintDetailFragment(model)).replace();
                     } else {
                         MyApplication.Toast("لطفا دوباره امتحان کنید", Toast.LENGTH_SHORT);
                     }

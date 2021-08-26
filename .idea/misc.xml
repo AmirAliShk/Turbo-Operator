@@ -19,10 +19,13 @@
         <entry key="app/src/main/res/drawable-v21/bg_circle_yellow.xml" value="0.35625" />
         <entry key="app/src/main/res/drawable-v21/bg_dialog_body.xml" value="0.209375" />
         <entry key="app/src/main/res/drawable-v21/bg_edit_text.xml" value="0.209375" />
+        <entry key="app/src/main/res/drawable-v21/bg_grye.xml" value="0.35625" />
+        <entry key="app/src/main/res/drawable-v21/bg_inactive.xml" value="0.35625" />
         <entry key="app/src/main/res/drawable-v21/bg_item_icon.xml" value="0.35625" />
         <entry key="app/src/main/res/drawable-v21/bg_light_pink_edge.xml" value="0.35625" />
         <entry key="app/src/main/res/drawable-v21/bg_pink_edge.xml" value="0.35625" />
         <entry key="app/src/main/res/drawable-v21/bg_strock_corner.xml" value="0.35625" />
+        <entry key="app/src/main/res/drawable-v21/selector_enable_disable_btn.xml" value="0.35625" />
         <entry key="app/src/main/res/drawable/ic_call_end.xml" value="0.35625" />
         <entry key="app/src/main/res/drawable/ic_call_status.xml" value="0.35625" />
         <entry key="app/src/main/res/drawable/ic_conclusion_status.xml" value="0.35625" />
@@ -30,6 +33,8 @@
         <entry key="app/src/main/res/drawable/ic_info_status.xml" value="0.35625" />
         <entry key="app/src/main/res/drawable/ic_led_connected.xml" value="0.209375" />
         <entry key="app/src/main/res/drawable/ic_refresh_black.xml" value="0.35625" />
+        <entry key="app/src/main/res/drawable/ic_search.xml" value="0.35625" />
+        <entry key="app/src/main/res/drawable/ic_stop_white.xml" value="0.35625" />
         <entry key="app/src/main/res/layout/activity_call_incoming.xml" value="0.34010416666666665" />
         <entry key="app/src/main/res/layout/activity_main.xml" value="0.34010416666666665" />
         <entry key="app/src/main/res/layout/activity_splash.xml" value="0.34010416666666665" />
@@ -66,15 +71,18 @@
         <entry key="app/src/main/res/layout/dialog_reserve.xml" value="0.34010416666666665" />
         <entry key="app/src/main/res/layout/dialog_save_mistake_result.xml" value="0.34010416666666665" />
         <entry key="app/src/main/res/layout/dialog_search_filter.xml" value="0.34010416666666665" />
-        <entry key="app/src/main/res/layout/dialog_search_station_info.xml" value="0.19322916666666667" />
+        <entry key="app/src/main/res/layout/dialog_search_station_info.xml" value="0.34010416666666665" />
         <entry key="app/src/main/res/layout/dialog_select_city.xml" value="0.34010416666666665" />
         <entry key="app/src/main/res/layout/dialog_station_info.xml" value="0.34010416666666665" />
         <entry key="app/src/main/res/layout/dialog_support.xml" value="0.34010416666666665" />
         <entry key="app/src/main/res/layout/dialog_trip_option.xml" value="0.34010416666666665" />
         <entry key="app/src/main/res/layout/fragment_all_complaints.xml" value="0.34010416666666665" />
         <entry key="app/src/main/res/layout/fragment_all_mistakes.xml" value="0.34010416666666665" />
+        <entry key="app/src/main/res/layout/fragment_bests.xml" value="0.34010416666666665" />
         <entry key="app/src/main/res/layout/fragment_complaint.xml" value="0.325" />
+        <entry key="app/src/main/res/layout/fragment_complaint_call.xml" value="0.34010416666666665" />
         <entry key="app/src/main/res/layout/fragment_complaint_detail.xml" value="0.34010416666666665" />
+        <entry key="app/src/main/res/layout/fragment_complaint_save_result.xml" value="0.34010416666666665" />
         <entry key="app/src/main/res/layout/fragment_complaint_trip_details.xml" value="0.19322916666666667" />
         <entry key="app/src/main/res/layout/fragment_determination_page.xml" value="0.34010416666666665" />
         <entry key="app/src/main/res/layout/fragment_driver_location.xml" value="0.19322916666666667" />
@@ -83,6 +91,8 @@
         <entry key="app/src/main/res/layout/fragment_pending_complaints.xml" value="0.34010416666666665" />
         <entry key="app/src/main/res/layout/fragment_pending_mistakes.xml" value="0.34010416666666665" />
         <entry key="app/src/main/res/layout/fragment_support_driver_trip.xml" value="0.2991360691144708" />
+        <entry key="app/src/main/res/layout/fragment_trip_details.xml" value="0.34010416666666665" />
+        <entry key="app/src/main/res/layout/fragment_trip_support.xml" value="0.34010416666666665" />
         <entry key="app/src/main/res/layout/item_city.xml" value="0.1" />
         <entry key="app/src/main/res/layout/item_complaint_history.xml" value="0.19322916666666667" />
         <entry key="app/src/main/res/layout/item_notification.xml" value="0.22" />

@@ -141,10 +141,10 @@
                         android:id="@+id/llComplaintType"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
+                        android:layout_marginRight="10dp"
                         android:background="@drawable/bg_body1"
                         android:gravity="center_vertical"
-                        android:padding="10dp"
-                        android:layout_marginRight="10dp">
+                        android:padding="10dp">
 
                         <Spinner
                             android:id="@+id/spComplaintType"

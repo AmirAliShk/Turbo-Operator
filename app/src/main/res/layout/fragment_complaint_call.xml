@@ -4,11 +4,11 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:layout_gravity="center"
+    android:background="?attr/colorPageBackground"
     android:clickable="true"
     android:layoutDirection="rtl"
     android:orientation="vertical"
-    android:padding="20dp"
-    android:background="?attr/colorPageBackground">
+    android:padding="20dp">
 
     <ScrollView
         android:layout_width="match_parent"

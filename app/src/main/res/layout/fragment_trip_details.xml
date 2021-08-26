@@ -916,14 +916,6 @@
 
                 </LinearLayout>
 
-                <!--                <LinearLayout-->
-                <!--                    android:layout_width="match_parent"-->
-                <!--                    android:layout_height="wrap_content"-->
-                <!--                    android:orientation="horizontal">-->
-                <!--                    -->
-
-                <!--                </LinearLayout>-->
-
             </LinearLayout>
 
         </ScrollView>
@@ -934,7 +926,7 @@
             android:layout_height="match_parent"
             android:gravity="center"
             android:text="خطایی رخ داده! \n لطفا پس از چند لحظه مجدد تلاش کنید"
-            android:textColor="@color/colorBlack"
+            android:textColor="?attr/colorValue"
             android:textSize="@dimen/_12ssp" />
 
     </ViewFlipper>
