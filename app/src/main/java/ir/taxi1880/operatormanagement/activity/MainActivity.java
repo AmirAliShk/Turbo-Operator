@@ -83,6 +83,9 @@ public class MainActivity extends AppCompatActivity implements NotificationFragm
     @BindView(R.id.imgTheme)
     ImageView imgTheme;
 
+    @BindView(R.id.imgSipStatus)
+    ImageView imgSipStatus;
+
     @OnClick(R.id.imgMessage)
     void onMessage() {
         FragmentHelper
@@ -158,28 +161,28 @@ public class MainActivity extends AppCompatActivity implements NotificationFragm
             }
         });
 
-//        mListener = new CoreListenerStub() {
-//            @Override
-//            public void onRegistrationStateChanged(Core lc, ProxyConfig proxy, RegistrationState state, String message) {
-//                if (core.getDefaultProxyConfig() != null && core.getDefaultProxyConfig().equals(proxy)) {
-//                    imgTheme.setImageResource(getStatusIconResource(state));
-//                } else if (core.getDefaultProxyConfig() == null) {
-//                    imgTheme.setImageResource(getStatusIconResource(state));
-//                }
+        mListener = new CoreListenerStub() {
+            @Override
+            public void onRegistrationStateChanged(Core lc, ProxyConfig proxy, RegistrationState state, String message) {
+                if (core.getDefaultProxyConfig() != null && core.getDefaultProxyConfig().equals(proxy)) {
+                    imgSipStatus.setImageResource(getStatusIconResource(state));
+                } else if (core.getDefaultProxyConfig() == null) {
+                    imgSipStatus.setImageResource(getStatusIconResource(state));
+                }
 
-//                try {
-//                    imgTheme.setOnClickListener( TODO uncomment these lines later
-//                            v -> {
-//                                Core core = LinphoneService.getCore();
-//                                if (core != null) {
-//                                    core.refreshRegisters();
-//                                }
-//                            });
-//                } catch (IllegalStateException ise) {
-//                    ise.printStackTrace();
-//                }
-//            }
-//        };
+                try {
+                    imgTheme.setOnClickListener(
+                            v -> {
+                                Core core = LinphoneService.getCore();
+                                if (core != null) {
+                                    core.refreshRegisters();
+                                }
+                            });
+                } catch (IllegalStateException ise) {
+                    ise.printStackTrace();
+                }
+            }
+        };
 
     }
 

@@ -36,12 +36,27 @@
                 android:layout_height="match_parent"
                 android:layout_weight="1" />
 
-            <ImageView
-                android:id="@+id/imgProfile"
-                android:layout_width="90dp"
-                android:layout_height="90dp"
-                android:background="@drawable/bg_circle"
-                android:src="@drawable/ic_operator_user" />
+            <RelativeLayout
+                android:layout_width="95dp"
+                android:gravity="center"
+                android:layout_height="90dp">
+
+                <ImageView
+                    android:id="@+id/imgProfile"
+                    android:layout_width="90dp"
+                    android:layout_height="90dp"
+                    android:background="@drawable/bg_circle"
+                    android:src="@drawable/ic_operator_user" />
+
+                <ImageView
+                    android:id="@+id/imgSipStatus"
+                    android:layout_width="25dp"
+                    android:layout_height="25dp"
+                    android:layout_alignParentBottom="true"
+                    android:layout_alignParentRight="true"
+                    android:src="@drawable/ic_connected" />
+
+            </RelativeLayout>
 
             <View
                 android:layout_width="0dp"
@@ -70,7 +85,7 @@
                     android:gravity="center"
                     android:text="1"
                     android:textColor="@color/colorWhite"
-                    android:visibility="gone"/>
+                    android:visibility="gone" />
 
             </RelativeLayout>
 
