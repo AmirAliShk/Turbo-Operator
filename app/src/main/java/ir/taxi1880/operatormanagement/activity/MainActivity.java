@@ -77,14 +77,8 @@ public class MainActivity extends AppCompatActivity implements NotificationFragm
 
     }
 
-    private CoreListenerStub mListener;
-    private Core core;
-
     @BindView(R.id.imgTheme)
     ImageView imgTheme;
-
-    @BindView(R.id.imgSipStatus)
-    ImageView imgSipStatus;
 
     @OnClick(R.id.imgMessage)
     void onMessage() {
@@ -123,7 +117,6 @@ public class MainActivity extends AppCompatActivity implements NotificationFragm
         MyApplication.configureAccount();
         unbinder = ButterKnife.bind(this, view);
         TypefaceUtil.overrideFonts(view);
-        core = LinphoneService.getCore();
 
         mainViewPagerAdapter = new MainViewPagerAdapter(this);
         vpMain.setAdapter(mainViewPagerAdapter);
@@ -161,47 +154,6 @@ public class MainActivity extends AppCompatActivity implements NotificationFragm
             }
         });
 
-        mListener = new CoreListenerStub() {
-            @Override
-            public void onRegistrationStateChanged(Core lc, ProxyConfig proxy, RegistrationState state, String message) {
-                if (core.getDefaultProxyConfig() != null && core.getDefaultProxyConfig().equals(proxy)) {
-                    imgSipStatus.setImageResource(getStatusIconResource(state));
-                } else if (core.getDefaultProxyConfig() == null) {
-                    imgSipStatus.setImageResource(getStatusIconResource(state));
-                }
-
-                try {
-                    imgTheme.setOnClickListener(
-                            v -> {
-                                Core core = LinphoneService.getCore();
-                                if (core != null) {
-                                    core.refreshRegisters();
-                                }
-                            });
-                } catch (IllegalStateException ise) {
-                    ise.printStackTrace();
-                }
-            }
-        };
-
-    }
-
-    private int getStatusIconResource(RegistrationState state) {
-        try {
-            Core core = LinphoneService.getCore();
-            boolean defaultAccountConnected = (core != null && core.getDefaultProxyConfig() != null && core.getDefaultProxyConfig().getState() == RegistrationState.Ok);
-            if (state == RegistrationState.Ok && defaultAccountConnected) {
-                return R.drawable.ic_connected;
-            } else if (state == RegistrationState.Progress) {
-                return R.drawable.ic_in_progress;
-            } else if (state == RegistrationState.Failed) {
-                return R.drawable.ic_sip_error;
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-
-        return R.drawable.ic_sip_error;
     }
 
     @Override
@@ -209,14 +161,6 @@ public class MainActivity extends AppCompatActivity implements NotificationFragm
         super.onResume();
         MyApplication.currentActivity = this;
         MyApplication.prefManager.setAppRun(true);
-
-//        if (core != null) {
-//            core.addListener(mListener);
-//            ProxyConfig lpc = core.getDefaultProxyConfig();
-//            if (lpc != null) {
-//                mListener.onRegistrationStateChanged(core, lpc, lpc.getState(), null);
-//            }
-//        }
 
         if (MyApplication.prefManager.getCountNotification() == 0) {
             txtBadgeCount.setVisibility(View.GONE);
@@ -253,9 +197,6 @@ public class MainActivity extends AppCompatActivity implements NotificationFragm
 
     @Override
     protected void onPause() {
-//        if (core != null) {
-//            core.removeListener(mListener);
-//        }
         super.onPause();
         MyApplication.prefManager.setAppRun(false);
     }
