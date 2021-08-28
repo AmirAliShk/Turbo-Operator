@@ -457,12 +457,7 @@ public class TripRegisterActivity extends AppCompatActivity {
         new GeneralDialog()
                 .title("هشدار")
                 .message("آیا از پاک کردن اطلاعات اطمینان دارید؟")
-                .firstButton("بله", new Runnable() {
-                    @Override
-                    public void run() {
-                        clearData();
-                    }
-                }).secondButton("خیر", null)
+                .firstButton("بله", () -> clearData()).secondButton("خیر", null)
                 .show();
     }
 

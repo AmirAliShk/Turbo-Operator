@@ -148,7 +148,6 @@
             android:src="@drawable/ic_back" />
 
         <ImageView
-
             android:id="@+id/imgCallQuality"
             android:layout_width="35dp"
             android:layout_height="match_parent"
@@ -157,7 +156,7 @@
             android:layout_marginRight="15dp"
             android:layout_marginBottom="15dp"
             android:layout_toRightOf="@+id/imgBack"
-            android:background="@color/colorPrimaryDark"
+            android:background="?attr/colorActionBarBackground"
             android:src="@drawable/ic_quality_0"
             android:visibility="invisible" />
 
