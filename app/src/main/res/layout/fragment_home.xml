@@ -39,7 +39,7 @@
                 android:layout_height="35dp"
                 android:layout_alignParentBottom="true"
                 android:layout_alignParentRight="true"
-                android:src="@drawable/ic_connected" />
+                android:src="@drawable/ic_successful" />
 
             <TextView
                 android:id="@+id/txtOperatorName"

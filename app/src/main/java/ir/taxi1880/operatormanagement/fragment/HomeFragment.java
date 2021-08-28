@@ -134,17 +134,17 @@ public class HomeFragment extends Fragment {
             Core core = LinphoneService.getCore();
             boolean defaultAccountConnected = (core != null && core.getDefaultProxyConfig() != null && core.getDefaultProxyConfig().getState() == RegistrationState.Ok);
             if (state == RegistrationState.Ok && defaultAccountConnected) {
-                return R.drawable.ic_connected;
+                return R.drawable.ic_successful;
             } else if (state == RegistrationState.Progress) {
-                return R.drawable.ic_in_progress;
+                return R.drawable.ic_pendig;
             } else if (state == RegistrationState.Failed) {
-                return R.drawable.ic_sip_error;
+                return R.drawable.ic_error;
             }
         } catch (Exception e) {
             e.printStackTrace();
         }
 
-        return R.drawable.ic_sip_error;
+        return R.drawable.ic_error;
     }
 
     private void getBalance() {

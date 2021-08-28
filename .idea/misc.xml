@@ -29,12 +29,17 @@
         <entry key="app/src/main/res/drawable/ic_call_end.xml" value="0.35625" />
         <entry key="app/src/main/res/drawable/ic_call_status.xml" value="0.35625" />
         <entry key="app/src/main/res/drawable/ic_conclusion_status.xml" value="0.35625" />
+        <entry key="app/src/main/res/drawable/ic_connected.xml" value="0.35625" />
         <entry key="app/src/main/res/drawable/ic_date.xml" value="0.35625" />
+        <entry key="app/src/main/res/drawable/ic_error.xml" value="0.35625" />
         <entry key="app/src/main/res/drawable/ic_info_status.xml" value="0.35625" />
         <entry key="app/src/main/res/drawable/ic_led_connected.xml" value="0.209375" />
+        <entry key="app/src/main/res/drawable/ic_mobile.xml" value="0.35625" />
+        <entry key="app/src/main/res/drawable/ic_pendig.xml" value="0.35625" />
         <entry key="app/src/main/res/drawable/ic_refresh_black.xml" value="0.35625" />
         <entry key="app/src/main/res/drawable/ic_search.xml" value="0.35625" />
         <entry key="app/src/main/res/drawable/ic_stop_white.xml" value="0.35625" />
+        <entry key="app/src/main/res/drawable/ic_sucsecfull.xml" value="0.35625" />
         <entry key="app/src/main/res/layout/activity_call_incoming.xml" value="0.34010416666666665" />
         <entry key="app/src/main/res/layout/activity_main.xml" value="0.34010416666666665" />
         <entry key="app/src/main/res/layout/activity_splash.xml" value="0.34010416666666665" />
@@ -88,6 +93,8 @@
         <entry key="app/src/main/res/layout/fragment_determination_page.xml" value="0.34010416666666665" />
         <entry key="app/src/main/res/layout/fragment_driver_location.xml" value="0.19322916666666667" />
         <entry key="app/src/main/res/layout/fragment_driver_trip_details.xml" value="0.19322916666666667" />
+        <entry key="app/src/main/res/layout/fragment_home.xml" value="0.34010416666666665" />
+        <entry key="app/src/main/res/layout/fragment_menu.xml" value="0.34010416666666665" />
         <entry key="app/src/main/res/layout/fragment_notification.xml" value="0.19322916666666667" />
         <entry key="app/src/main/res/layout/fragment_pending_complaints.xml" value="0.34010416666666665" />
         <entry key="app/src/main/res/layout/fragment_pending_mistakes.xml" value="0.34010416666666665" />
@@ -98,6 +105,7 @@
         <entry key="app/src/main/res/layout/item_complaint_history.xml" value="0.19322916666666667" />
         <entry key="app/src/main/res/layout/item_notification.xml" value="0.22" />
         <entry key="app/src/main/res/layout/item_pending_complaint.xml" value="0.34010416666666665" />
+        <entry key="app/src/main/res/layout/item_send_replacement.xml" value="0.18697916666666667" />
         <entry key="app/src/main/res/layout/item_station_info.xml" value="0.34010416666666665" />
         <entry key="app/src/main/res/layout/item_toast.xml" value="0.34010416666666665" />
         <entry key="app/src/main/res/layout/item_trip.xml" value="0.34010416666666665" />
