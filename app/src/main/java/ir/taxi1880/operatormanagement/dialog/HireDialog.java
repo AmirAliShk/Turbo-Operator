@@ -14,6 +14,7 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.Spinner;
+import android.widget.TextView;
 import android.widget.ViewFlipper;
 
 import com.github.mmin18.widget.RealtimeBlurView;
@@ -219,6 +220,7 @@ public class HireDialog {
                             spHireType.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
                                 @Override
                                 public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                                    ((TextView) parent.getChildAt(0)).setTextColor(Color.GRAY);
                                     hireType = hireTypeModels.get(position).getId();
                                 }
 

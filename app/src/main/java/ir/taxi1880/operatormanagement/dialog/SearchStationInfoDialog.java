@@ -187,6 +187,7 @@ public class SearchStationInfoDialog {
             spSearchType.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
                 @Override
                 public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                    ((TextView) parent.getChildAt(0)).setTextColor(Color.GRAY);
                     if (firstTime) {
                         edtStationCode.setText("");
                     }
@@ -280,7 +281,7 @@ public class SearchStationInfoDialog {
                             if (stationName.equals("")) {
                                 txtStationName.setText("ثبت نشده");
                             } else {
-                                txtStationName.setText(stationName);
+                                txtStationName.setText(StringHelper.toPersianDigits(stationName));
                             }
 
                             if (isCountrySide) {

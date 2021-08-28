@@ -69,6 +69,7 @@ import ir.taxi1880.operatormanagement.fragment.TripSupportFragment;
 import ir.taxi1880.operatormanagement.helper.FragmentHelper;
 import ir.taxi1880.operatormanagement.helper.KeyBoardHelper;
 import ir.taxi1880.operatormanagement.helper.PhoneNumberValidation;
+import ir.taxi1880.operatormanagement.helper.ResourceHelper;
 import ir.taxi1880.operatormanagement.helper.StringHelper;
 import ir.taxi1880.operatormanagement.helper.ThemeHelper;
 import ir.taxi1880.operatormanagement.helper.TypefaceUtil;
@@ -652,10 +653,10 @@ public class TripRegisterActivity extends AppCompatActivity {
             window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
             window.getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LIGHT_NAVIGATION_BAR);
             window.addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
-            if (MyApplication.prefManager.isDarkMode()){
+            if (MyApplication.prefManager.isDarkMode()) {
                 window.setNavigationBarColor(getResources().getColor(R.color.dark_navigation_bar));
                 window.setStatusBarColor(getResources().getColor(R.color.dark_action_bar));
-            }else {
+            } else {
                 window.setNavigationBarColor(getResources().getColor(R.color.colorPrimaryLighter));
                 window.setStatusBarColor(getResources().getColor(R.color.colorPrimaryDark));
             }
@@ -855,6 +856,7 @@ public class TripRegisterActivity extends AppCompatActivity {
             spServiceCount.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
                 @Override
                 public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                    ((TextView) parent.getChildAt(0)).setTextColor(Color.GRAY);
                     serviceCount = Integer.parseInt(spServiceCount.getSelectedItem().toString());
                 }
 
@@ -896,6 +898,7 @@ public class TripRegisterActivity extends AppCompatActivity {
             spServiceType.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
                 @Override
                 public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                    ((TextView) parent.getChildAt(0)).setTextColor(Color.GRAY);
                     serviceType = typeServiceModels.get(position).getId();
 //                    if (serviceType == 1) {
 //                        new CityDialog()
@@ -935,6 +938,7 @@ public class TripRegisterActivity extends AppCompatActivity {
             spWaitingTime.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
                 @Override
                 public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                    ((TextView) parent.getChildAt(0)).setTextColor(Color.GRAY);
                     switch (position) {
                         case 0:
                             stopTime = 0;
@@ -1004,6 +1008,8 @@ public class TripRegisterActivity extends AppCompatActivity {
             spCity.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
                 @Override
                 public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                    ((TextView) parent.getChildAt(0)).setTextColor(Color.GRAY);
+
                     if (position == 0) {
                         cityName = null;
                         cityLatinName = null;

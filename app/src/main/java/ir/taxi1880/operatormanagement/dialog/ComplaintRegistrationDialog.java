@@ -12,6 +12,7 @@ import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.Spinner;
+import android.widget.TextView;
 import android.widget.ViewFlipper;
 
 import org.json.JSONArray;
@@ -174,6 +175,7 @@ public class ComplaintRegistrationDialog {
             spComplaintType.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
                 @Override
                 public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                    ((TextView) parent.getChildAt(0)).setTextColor(Color.GRAY);
                     complaintType = typeServiceModels.get(position).getId();
                 }
 
