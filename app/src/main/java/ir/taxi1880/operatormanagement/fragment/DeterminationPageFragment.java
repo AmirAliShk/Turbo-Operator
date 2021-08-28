@@ -25,6 +25,8 @@ import java.util.TimerTask;
 import androidx.fragment.app.Fragment;
 import androidx.gridlayout.widget.GridLayout;
 
+import com.chaos.view.PinView;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
@@ -79,8 +81,9 @@ public class DeterminationPageFragment extends Fragment {
     @BindView(R.id.imgRefresh)
     ImageView imgRefresh;
 
-    @BindView(R.id.txtStation)
-    PinEntryEditText txtStation;
+    @BindView(R.id.pin)
+    PinView pin;
+
 
     @BindView(R.id.txtAddress)
     TextView txtAddress;
@@ -99,21 +102,22 @@ public class DeterminationPageFragment extends Fragment {
 
     @OnClick(R.id.imgDelete)
     void onDelete() {
-        txtStation.setText("");
+        pin.setText("");
     }
 
     @OnClick(R.id.btnSubmit)
     void onSubmit() {
-        if (txtStation.getText().toString().isEmpty()) {
+        Log.i(TAG, "onSubmit: "+pin.getText().toString());
+        if (pin.getText().toString().isEmpty()) {
             MyApplication.Toast("لطفا شماره ایستگاه را وارد کنید", Toast.LENGTH_SHORT);
             return;
         }
         if (dataBase.getRemainingAddress() == 0) {
             MyApplication.Toast("آدرسی برای ثبت موجود نیست", Toast.LENGTH_SHORT);
-            txtStation.setText("");
+            pin.setText("");
         }
 
-        String station = txtStation.getText().toString();
+        String station = pin.getText().toString();
         String code = StringHelper.toEnglishDigits(station);
 
         if (pressSubmit) {
@@ -130,7 +134,7 @@ public class DeterminationPageFragment extends Fragment {
                 Log.i(LOG, "onSubmit:2 " + dataBase.getTopAddress().getOriginStation() + "/: " + dataBase.getTopAddress().getDestinationStation() + "/:" + dataBase.getTopAddress().getId() + "" + isOriginZero);
                 setStationCode(dataBase.getTopAddress().getOriginStation() + "", dataBase.getTopAddress().getDestinationStation() + "");
             }
-            txtStation.setText("");
+            pin.setText("");
             txtAddress.setText(showAddress());
         } else {
             this.pressSubmit = true;
@@ -141,20 +145,20 @@ public class DeterminationPageFragment extends Fragment {
     @OnClick(R.id.imgSearch)
     void onSearch() {
         if (dataBase.getRemainingAddress() == 0) {
-            if (txtStation.getText().toString().isEmpty()) {
-                new SearchStationInfoDialog().show(stationCode -> txtStation.setText(stationCode), 0, false, "", true);
+            if (pin.getText().toString().isEmpty()) {
+                new SearchStationInfoDialog().show(stationCode -> pin.setText(stationCode), 0, false, "", true);
             } else {
-                new SearchStationInfoDialog().show(stationCode -> txtStation.setText(stationCode), 0, false, StringHelper.toEnglishDigits(txtStation.getText().toString()), true);
+                new SearchStationInfoDialog().show(stationCode -> pin.setText(stationCode), 0, false, StringHelper.toEnglishDigits(pin.getText().toString()), true);
             }
         } else {
-            if (txtStation.getText().toString().isEmpty()) {
-                new SearchStationInfoDialog().show(stationCode -> txtStation.setText(stationCode), dataBase.getTopAddress().getCity(), false, "", true);
+            if (pin.getText().toString().isEmpty()) {
+                new SearchStationInfoDialog().show(stationCode -> pin.setText(stationCode), dataBase.getTopAddress().getCity(), false, "", true);
             } else {
-                new SearchStationInfoDialog().show(stationCode -> txtStation.setText(stationCode), dataBase.getTopAddress().getCity(), false, StringHelper.toEnglishDigits(txtStation.getText().toString()), true);
+                new SearchStationInfoDialog().show(stationCode -> pin.setText(stationCode), dataBase.getTopAddress().getCity(), false, StringHelper.toEnglishDigits(pin.getText().toString()), true);
             }
         }
 
-//        String origin = txtStation.getText().toString();
+//        String origin = pin.getText().toString();
 //        if (origin.isEmpty()) {
 //            MyApplication.Toast("لطفا شماره ایستگاه را وارد کنید", Toast.LENGTH_SHORT);
 //            return;
@@ -187,7 +191,7 @@ public class DeterminationPageFragment extends Fragment {
     void onPressPlayVoice() {
         if (dataBase.getRemainingAddress() == 0) {
             MyApplication.Toast("مکالمه ای موجود نیست", Toast.LENGTH_SHORT);
-            txtStation.setText("");
+            pin.setText("");
             return;
         }
 
@@ -212,7 +216,7 @@ public class DeterminationPageFragment extends Fragment {
             return;
         }
         pressedRefresh = true;
-        txtStation.setText("");
+        pin.setText("");
         imgRefresh.startAnimation(AnimationUtils.loadAnimation(MyApplication.context, R.anim.rotate));
         getAddressList();
 //        MyApplication.handler.postDelayed(() -> getAddressList(), 500);
@@ -233,7 +237,7 @@ public class DeterminationPageFragment extends Fragment {
     void onEdit() {
         if (dataBase.getRemainingAddress() == 0) {
             MyApplication.Toast("آدرسی موجود نیست...", Toast.LENGTH_SHORT);
-            txtStation.setText("");
+            pin.setText("");
             return;
         }
         String originAddress = "";
@@ -251,8 +255,8 @@ public class DeterminationPageFragment extends Fragment {
                 if (dataBase.getRemainingAddress() > 0)
                     dataBase.deleteRow(dataBase.getTopAddress().getId());
                 txtAddress.setText(showAddress());
-                if (txtStation != null)
-                    txtStation.setText("");
+                if (pin != null)
+                    pin.setText("");
             } else {
                 new GeneralDialog()
                         .title("هشدار")
@@ -268,9 +272,9 @@ public class DeterminationPageFragment extends Fragment {
     void onAddress() {
         if (doubleBackPressedOnce) {
             if (dataBase.getRemainingAddress() == 0) {
-                new SearchStationInfoDialog().show(stationCode -> txtStation.setText(stationCode), 0, true, "", true);
+                new SearchStationInfoDialog().show(stationCode -> pin.setText(stationCode), 0, true, "", true);
             } else {
-                new SearchStationInfoDialog().show(stationCode -> txtStation.setText(stationCode), dataBase.getTopAddress().getCity(), true, "", true);
+                new SearchStationInfoDialog().show(stationCode -> pin.setText(stationCode), dataBase.getTopAddress().getCity(), true, "", true);
             }
         } else {
             doubleBackPressedOnce = true;
@@ -294,7 +298,7 @@ public class DeterminationPageFragment extends Fragment {
             int count = numberCount;
             grid.setOnClickListener(view1 -> {
                 if (count == 9) {
-                    if (txtStation.getText().toString().isEmpty()) return;
+                    if (pin.getText().toString().isEmpty()) return;
                     setNumber("0");
                 } else {
                     setNumber(count + 1 + "");
@@ -307,18 +311,18 @@ public class DeterminationPageFragment extends Fragment {
 
     @SuppressLint("SetTextI18n")
     private void setNumber(String c) {
-        String temp = txtStation.getText().toString();
+        String temp = pin.getText().toString();
         if (temp.length() == 3) {
-//      txtStation.setText(StringHelper.toPersianDigits(temp.substring(0, 2) + c));
-//      if (txtStation.getText().toString().indexOf(0)==0)return;
+//      pin.setText(StringHelper.toPersianDigits(temp.substring(0, 2) + c));
+//      if (pin.getText().toString().indexOf(0)==0)return;
             if (c.equals("0")) {
-                txtStation.setText("");
+                pin.setText("");
             } else {
-                txtStation.setText(StringHelper.toPersianDigits(c));
+                pin.setText(StringHelper.toPersianDigits(c));
             }
         } else {
-//      if (txtStation.getText().toString().indexOf(0)==0)return;
-            txtStation.setText(StringHelper.toPersianDigits(temp + c));
+//      if (pin.getText().toString().indexOf(0)==0)return;
+            pin.setText(StringHelper.toPersianDigits(temp + c));
         }
     }
 
@@ -517,7 +521,7 @@ public class DeterminationPageFragment extends Fragment {
             dataBase.deleteRow(dataBase.getTopAddress().getId());
 
         txtAddress.setText(showAddress());
-        txtStation.setText("");
+        pin.setText("");
     }
 
     RequestHelper.Callback setStationCode = new RequestHelper.Callback() {
