@@ -64,7 +64,7 @@ public class DriverLockDialog {
         spReason = dialog.findViewById(R.id.spReason);
         vfLoader = dialog.findViewById(R.id.vfLoader);
 
-        initSpinner();
+        MyApplication.handler.postDelayed(this::initSpinner,500);
 
         imgClose.setOnClickListener(view -> dismiss());
 

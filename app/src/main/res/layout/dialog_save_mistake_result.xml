@@ -25,7 +25,6 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="80dp"
-            android:background="@drawable/bg_blue_border_edge"
             android:gravity="center"
             android:orientation="vertical">
 
@@ -54,7 +53,8 @@
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:background="@drawable/bg_gray_lite_edge"                  android:orientation="vertical"
+                    android:background="@drawable/bg_gray_lite_edge"
+                    android:orientation="vertical"
                     android:paddingBottom="5dp">
 
                     <RadioGroup
@@ -70,22 +70,28 @@
                             android:id="@+id/rbTripRegistrationOperatorBlame"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
+                            android:buttonTint="@color/colorAccent"
+                            android:shadowColor="@color/colorAccent"
                             android:text="اپراتور ثبت سفر مقصر است."
-                            android:textColor="?attr/colorValue"/>
+                            android:textColor="?attr/colorValue" />
 
                         <RadioButton
                             android:id="@+id/rbStationRegistrationOriginOperatorBlame"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
+                            android:buttonTint="@color/colorAccent"
+                            android:shadowColor="@color/colorAccent"
                             android:text="اپراتور ثبت ایستگاه مبدا مقصر است."
-                            android:textColor="?attr/colorValue"/>
+                            android:textColor="?attr/colorValue" />
 
                         <RadioButton
                             android:id="@+id/rbStationRegistrationDestinationOperatorBlame"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
+                            android:buttonTint="@color/colorAccent"
+                            android:shadowColor="@color/colorAccent"
                             android:text="اپراتور ثبت ایستگاه مقصد مقصر است."
-                            android:textColor="?attr/colorValue"/>
+                            android:textColor="?attr/colorValue" />
 
                         <LinearLayout
                             android:layout_width="match_parent"
@@ -98,20 +104,22 @@
                                 android:layout_width="0dp"
                                 android:layout_height="wrap_content"
                                 android:layout_weight="0.5"
+                                android:buttonTint="@color/colorAccent"
+                                android:shadowColor="@color/colorAccent"
                                 android:text="سیپ اپراتور مقصر"
-                                android:textColor="?attr/colorValue"/>
+                                android:textColor="?attr/colorValue" />
 
                             <EditText
                                 android:id="@+id/edtAnotherOperator"
                                 android:layout_width="0dp"
                                 android:layout_height="match_parent"
                                 android:layout_weight="0.4"
-                                android:paddingRight="10dp"
-                                android:paddingLeft="10dp"
                                 android:background="@drawable/bg_edt"
                                 android:hint="SIP"
                                 android:inputType="numberDecimal"
-                                android:textColorHint="?attr/colorTitle"/>
+                                android:paddingLeft="10dp"
+                                android:paddingRight="10dp"
+                                android:textColorHint="?attr/colorTitle" />
 
                             <View
                                 android:layout_width="0dp"
@@ -124,8 +132,10 @@
                             android:id="@+id/rbUnknown"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
+                            android:buttonTint="@color/colorAccent"
+                            android:shadowColor="@color/colorAccent"
                             android:text="نامشخص"
-                            android:textColor="?attr/colorValue"/>
+                            android:textColor="?attr/colorValue" />
 
                     </RadioGroup>
 
@@ -142,43 +152,55 @@
                             android:id="@+id/rbDeleteOriginAddress"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
+                            android:buttonTint="@color/colorAccent"
+                            android:shadowColor="@color/colorAccent"
                             android:text="حذف آدرس مبدا"
-                            android:textColor="?attr/colorValue"/>
+                            android:textColor="?attr/colorValue" />
 
                         <RadioButton
                             android:id="@+id/rbDeleteDestinationAddress"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
+                            android:buttonTint="@color/colorAccent"
+                            android:shadowColor="@color/colorAccent"
                             android:text="حذف آدرس مقصد"
-                            android:textColor="?attr/colorValue"/>
+                            android:textColor="?attr/colorValue" />
 
                         <RadioButton
                             android:id="@+id/rbDeleteOriginStation"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
+                            android:buttonTint="@color/colorAccent"
+                            android:shadowColor="@color/colorAccent"
                             android:text="حذف ایستگاه مبدا"
-                            android:textColor="?attr/colorValue"/>
+                            android:textColor="?attr/colorValue" />
 
                         <RadioButton
                             android:id="@+id/rbDeleteDestinationStation"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
+                            android:buttonTint="@color/colorAccent"
+                            android:shadowColor="@color/colorAccent"
                             android:text="حذف ایستگاه مقصد"
-                            android:textColor="?attr/colorValue"/>
+                            android:textColor="?attr/colorValue" />
 
                         <RadioButton
                             android:id="@+id/rbDeleteCity"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
+                            android:buttonTint="@color/colorAccent"
+                            android:shadowColor="@color/colorAccent"
                             android:text="حذف شهر"
-                            android:textColor="?attr/colorValue"/>
+                            android:textColor="?attr/colorValue" />
 
                         <RadioButton
                             android:id="@+id/rbOtherCases"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
+                            android:buttonTint="@color/colorAccent"
+                            android:shadowColor="@color/colorAccent"
                             android:text="سایر موارد"
-                            android:textColor="?attr/colorValue"/>
+                            android:textColor="?attr/colorValue" />
                     </RadioGroup>
 
                     <ViewFlipper

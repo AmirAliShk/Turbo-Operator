@@ -66,7 +66,7 @@ public class LostDialog {
         spType = dialog.findViewById(R.id.spType);
         vfLoader = dialog.findViewById(R.id.vfLoader);
 
-        initSpinner();
+        MyApplication.handler.postDelayed(this::initSpinner,500);
 
         imgClose.setOnClickListener(view -> dismiss());
 

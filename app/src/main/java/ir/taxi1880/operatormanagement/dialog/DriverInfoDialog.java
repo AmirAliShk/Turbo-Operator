@@ -102,7 +102,7 @@ public class DriverInfoDialog {
         dismiss();
     }
 
-    @OnClick(R.id.imgSendLinkToDriver)
+    @OnClick(R.id.llSendLinkToDriver)
     void onPressSendLinkToDriver() {
         sendAppLink(driverMobile);
     }

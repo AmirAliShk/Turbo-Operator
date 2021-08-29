@@ -677,7 +677,7 @@ public class TripRegisterActivity extends AppCompatActivity {
             initServiceTypeSpinner();
             initServiceCountSpinner();
             initWaitingTimeSpinner();
-        }, 200);
+        }, 500);
 
         edtTell.requestFocus();
 

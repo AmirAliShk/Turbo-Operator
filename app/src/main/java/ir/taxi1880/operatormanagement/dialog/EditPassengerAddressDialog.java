@@ -94,7 +94,7 @@ public class EditPassengerAddressDialog {
         spCity = dialog.findViewById(R.id.spCity);
         vfLoader = dialog.findViewById(R.id.vfLoader);
 
-        initSpinner(cityCode);
+        MyApplication.handler.postDelayed(() -> initSpinner(cityCode), 500);
 
         if (tripModel.getOriginStation() == 0 && tripModel.getDestinationStation() == 0 && tripModel.getPriceable() != 0) {
             edtDestinationAddress.setText(tripModel.getDestination());

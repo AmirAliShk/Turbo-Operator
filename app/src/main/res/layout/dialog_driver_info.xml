@@ -453,6 +453,7 @@
                     android:background="@drawable/bg_light_pink_edge">
 
                     <LinearLayout
+                        android:id="@+id/llSendLinkToDriver"
                         android:layout_width="match_parent"
                         android:layout_height="@dimen/_30sdp"
                         android:gravity="center">
@@ -464,7 +465,6 @@
                             android:src="@drawable/ic_link" />
 
                         <TextView
-                            android:id="@+id/imgSendLinkToDriver"
                             android:layout_width="wrap_content"
                             android:layout_height="@dimen/_30sdp"
                             android:layout_marginRight="@dimen/_3sdp"

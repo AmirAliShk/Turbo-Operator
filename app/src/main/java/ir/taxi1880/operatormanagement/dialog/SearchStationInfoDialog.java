@@ -150,7 +150,7 @@ public class SearchStationInfoDialog {
             return false;
         });
 
-        initWaitingTimeSpinner();
+        MyApplication.handler.postDelayed(this::initWaitingTimeSpinner,500);
 
         if (isFromAddress) {
             spSearchType.setSelection(1);

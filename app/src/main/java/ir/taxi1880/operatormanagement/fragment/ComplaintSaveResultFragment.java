@@ -43,7 +43,8 @@ public class ComplaintSaveResultFragment extends Fragment {
         unbinder = ButterKnife.bind(this, binding.getRoot());
         TypefaceUtil.overrideFonts(binding.getRoot());
 
-        initSpinner();
+        MyApplication.handler.postDelayed(this::initSpinner,500);
+
         binding.spComplaintType.setEnabled(false);
         binding.llComplaintType.setEnabled(false);
         binding.edtLockTime.setEnabled(false);

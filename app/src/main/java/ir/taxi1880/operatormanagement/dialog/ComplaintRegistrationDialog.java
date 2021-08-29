@@ -63,7 +63,7 @@ public class ComplaintRegistrationDialog {
         spComplaintType = dialog.findViewById(R.id.spComplaintType);
         vfLoader = dialog.findViewById(R.id.vfLoader);
 
-        initSpinner();
+        MyApplication.handler.postDelayed(this::initSpinner,500);
 
         imgClose.setOnClickListener(view -> {
             KeyBoardHelper.hideKeyboard();

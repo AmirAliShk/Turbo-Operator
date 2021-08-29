@@ -42,7 +42,9 @@
                         style="@style/tripItemValue"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:buttonTint="@color/colorAccent"
                         android:gravity="center_vertical"
+                        android:shadowColor="@color/colorAccent"
                         android:text="حق با راننده بود."
                         android:textSize="@dimen/_18ssp" />
 
@@ -55,7 +57,9 @@
                         style="@style/tripItemValue"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:buttonTint="@color/colorAccent"
                         android:gravity="center_vertical"
+                        android:shadowColor="@color/colorAccent"
                         android:text="حق با مسافر بود."
                         android:textSize="@dimen/_18ssp" />
 
@@ -68,7 +72,9 @@
                         style="@style/tripItemValue"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:buttonTint="@color/colorAccent"
                         android:gravity="center_vertical"
+                        android:shadowColor="@color/colorAccent"
                         android:text="مهمان پاسخگو نبود."
                         android:textSize="@dimen/_18ssp" />
 
@@ -81,7 +87,9 @@
                         style="@style/tripItemValue"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:buttonTint="@color/colorAccent"
                         android:gravity="center_vertical"
+                        android:shadowColor="@color/colorAccent"
                         android:text="شکایت بی‌مورد"
                         android:textSize="@dimen/_18ssp" />
 
@@ -94,7 +102,9 @@
                         style="@style/tripItemValue"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:buttonTint="@color/colorAccent"
                         android:gravity="center_vertical"
+                        android:shadowColor="@color/colorAccent"
                         android:text="سایر موارد"
                         android:textSize="@dimen/_18ssp" />
 
@@ -132,8 +142,10 @@
                         style="@style/tripItemValue"
                         android:layout_width="wrap_content"
                         android:layout_height="match_parent"
+                        android:buttonTint="@color/colorAccent"
                         android:gravity="center_vertical"
                         android:layoutDirection="ltr"
+                        android:shadowColor="@color/colorAccent"
                         android:text="راننده قفل شود"
                         android:textSize="@dimen/_18ssp" />
 
@@ -195,8 +207,10 @@
                     style="@style/tripItemValue"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:buttonTint="@color/colorAccent"
                     android:gravity="center_vertical"
                     android:layoutDirection="ltr"
+                    android:shadowColor="@color/colorAccent"
                     android:text="قفل راننده باز شود"
                     android:textSize="@dimen/_18ssp" />
 
@@ -209,8 +223,10 @@
                     style="@style/tripItemValue"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:buttonTint="@color/colorAccent"
                     android:gravity="center_vertical"
                     android:layoutDirection="ltr"
+                    android:shadowColor="@color/colorAccent"
                     android:text="جریمه"
                     android:textSize="@dimen/_18ssp" />
 
@@ -223,8 +239,10 @@
                     style="@style/tripItemValue"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:buttonTint="@color/colorAccent"
                     android:gravity="center_vertical"
                     android:layoutDirection="ltr"
+                    android:shadowColor="@color/colorAccent"
                     android:text="غیرفعال سازی راننده"
                     android:textSize="@dimen/_18ssp" />
 
@@ -237,8 +255,10 @@
                     style="@style/tripItemValue"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:buttonTint="@color/colorAccent"
                     android:gravity="center_vertical"
                     android:layoutDirection="ltr"
+                    android:shadowColor="@color/colorAccent"
                     android:text="قفل مشترک"
                     android:textSize="@dimen/_18ssp" />
 
