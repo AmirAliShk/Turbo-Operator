@@ -123,7 +123,7 @@
                 android:gravity="center"
                 android:text="فعال"
                 android:textAppearance="?android:attr/textAppearanceMedium"
-                android:textColor="?attr/colorValue" />
+                android:textColor="@color/colorWhite" />
 
             <Button
                 android:id="@+id/btnDeActivate"
@@ -135,7 +135,7 @@
                 android:gravity="center"
                 android:text="غیر فعال"
                 android:textAppearance="?android:attr/textAppearanceMedium"
-                android:textColor="?attr/colorValue" />
+                android:textColor="@color/colorWhite" />
 
         </LinearLayout>
 

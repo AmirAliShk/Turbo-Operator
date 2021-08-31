@@ -36,19 +36,19 @@
             <LinearLayout
                 android:id="@+id/llSearchStation"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="@dimen/_45sdp"
                 android:layout_marginBottom="@dimen/_10sdp"
                 android:background="@drawable/bg_white_edge"
                 android:gravity="center_vertical"
                 android:layoutDirection="ltr"
                 android:orientation="horizontal"
-                android:padding="10dp"
+                android:padding="5dp"
                 android:visibility="visible">
 
                 <ImageView
                     android:id="@+id/imgSearch"
-                    android:layout_width="50dp"
-                    android:layout_height="50dp"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
                     android:background="@drawable/bg_body1"
                     android:padding="10dp"
                     android:src="@drawable/ic_search" />
@@ -76,7 +76,7 @@
                     android:id="@+id/rlSearchType"
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
-                    android:layout_weight="0.7"
+                    android:layout_weight="0.9"
                     android:gravity="center"
                     android:orientation="vertical"
                     android:padding="3dp">

@@ -390,10 +390,10 @@ public class TripRegisterActivity extends AppCompatActivity {
             destinationStation = 0;
         }
 
-        Log.i(TAG, "onPressSubmit: address length " + destAddressLength);
-        Log.i(TAG, "onPressSubmit: address percent " + destAddressPercent);
-        Log.i(TAG, "onPressSubmit: address change counter " + destAddressChangeCounter);
-        Log.i(TAG, "onPressSubmit: originStation " + destAddressPercent);
+//        Log.i(TAG, "onPressSubmit: address length " + destAddressLength);
+//        Log.i(TAG, "onPressSubmit: address percent " + destAddressPercent);
+//        Log.i(TAG, "onPressSubmit: address change counter " + destAddressChangeCounter);
+//        Log.i(TAG, "onPressSubmit: originStation " + destAddressPercent);
 
         if (cityCode == -1 || cityCode == 0) {
             MyApplication.Toast("شهر را وارد نمایید", Toast.LENGTH_SHORT);
@@ -668,11 +668,9 @@ public class TripRegisterActivity extends AppCompatActivity {
         if (MyApplication.prefManager.getActivateStatus()) {
             btnActivate.setBackgroundResource(R.drawable.bg_green_edge);
             btnDeActivate.setBackgroundColor(Color.parseColor("#00FFB2B2"));
-            btnDeActivate.setTextColor(Color.parseColor("#ffffff"));
         } else {
             btnDeActivate.setBackgroundResource(R.drawable.bg_pink_edge);
             btnActivate.setBackgroundColor(Color.parseColor("#00FFB2B2"));
-            btnDeActivate.setTextColor(Color.parseColor("#ffffff"));
         }
 
         disableViews();
@@ -758,9 +756,12 @@ public class TripRegisterActivity extends AppCompatActivity {
             isEnableView = false;
             disableViews();
             spCity.setSelection(0);
-            initServiceCountSpinner();
-            initServiceTypeSpinner();
-            initWaitingTimeSpinner();
+//            MyApplication.handler.postDelayed(() -> {
+                initCitySpinner();
+                initServiceTypeSpinner();
+                initServiceCountSpinner();
+                initWaitingTimeSpinner();
+//            }, 200);
 //        }
         }
 
@@ -801,7 +802,6 @@ public class TripRegisterActivity extends AppCompatActivity {
         public void onTextChanged(CharSequence charSequence, int start, int before, int count) {
             addressChangeCounter = addressChangeCounter + 1;
             callerCode = 0;
-            Log.i(TAG, "onTextChanged: counter " + addressChangeCounter);
         }
 
         @Override
@@ -823,7 +823,6 @@ public class TripRegisterActivity extends AppCompatActivity {
         public void onTextChanged(CharSequence charSequence, int start, int before, int count) {
             destAddressChangeCounter = destAddressChangeCounter + 1;
             addressIdDestination = 0;
-            Log.i(TAG, "onTextChanged: destAddressChangeCounter " + destAddressChangeCounter);
         }
 
         @Override
@@ -1102,8 +1101,8 @@ public class TripRegisterActivity extends AppCompatActivity {
                             new GeneralDialog()
                                     .message(msg)
                                     .cancelable(false)
-                                    .firstButton("بستن", null)
-                                    .secondButton("پشتیبانی", () -> {
+                                    .secondButton("بستن", null)
+                                    .firstButton("پشتیبانی", () -> {
                                         Bundle bundle = new Bundle();
                                         bundle.putString("tellNumber", getTellNumber());
                                         FragmentHelper.toFragment(MyApplication.currentActivity, new TripSupportFragment()).setArguments(bundle).replace();
@@ -1466,7 +1465,6 @@ public class TripRegisterActivity extends AppCompatActivity {
                         MyApplication.prefManager.setActivateStatus(true);
                         if (btnDeActivate != null) {
                             btnDeActivate.setBackgroundColor(Color.parseColor("#00FFB2B2"));
-                            btnDeActivate.setTextColor(Color.parseColor("#ffffff"));
                         }
                     } else {
                         new GeneralDialog()
@@ -1532,7 +1530,6 @@ public class TripRegisterActivity extends AppCompatActivity {
                             btnActivate.setBackgroundColor(Color.parseColor("#00FFB2B2"));
                         if (btnDeActivate != null) {
                             btnDeActivate.setBackgroundResource(R.drawable.bg_pink_edge);
-                            btnDeActivate.setTextColor(Color.parseColor("#ffffff"));
                         }
                     } else {
                         new GeneralDialog()
@@ -1619,6 +1616,7 @@ public class TripRegisterActivity extends AppCompatActivity {
                                         if (!callModel.getVoipId().equals(tempVoipId)) {
                                             MyApplication.prefManager.setLastNotification(null);
                                             handleCallerInfo(callModel);
+                                            Log.e("debugPush,insertSer", "onResponse: " );
                                         }
 
                                 })
@@ -1770,12 +1768,10 @@ public class TripRegisterActivity extends AppCompatActivity {
             if (!userStatus) {
                 btnDeActivate.setBackgroundResource(R.drawable.bg_pink_edge);
                 btnActivate.setBackgroundColor(Color.parseColor("#00FFB2B2"));
-                btnDeActivate.setTextColor(Color.parseColor("#ffffff"));
                 MyApplication.prefManager.setActivateStatus(false);
             } else {
                 btnActivate.setBackgroundResource(R.drawable.bg_green_edge);
                 btnDeActivate.setBackgroundColor(Color.parseColor("#00FFB2B2"));
-                btnDeActivate.setTextColor(Color.parseColor("#ffffff"));
                 MyApplication.prefManager.setActivateStatus(true);
             }
         }
@@ -1915,7 +1911,9 @@ public class TripRegisterActivity extends AppCompatActivity {
                 }
             }
         }
-
+    };
+// باید دوتا لیسنر باشه حتما چون هرکدوم جاهای مختلفی استارت و استوپ میشن
+    CoreListenerStub sipStatusListener = new CoreListenerStub() {
         @Override
         public void onRegistrationStateChanged(Core lc, ProxyConfig proxy, RegistrationState state, String message) {
             if (core.getDefaultProxyConfig() != null && core.getDefaultProxyConfig().equals(proxy)) {
@@ -1968,10 +1966,6 @@ public class TripRegisterActivity extends AppCompatActivity {
         core = LinphoneService.getCore();
         if (core != null) {
             core.addListener(mCoreListener);
-            ProxyConfig lpc = core.getDefaultProxyConfig();
-            if (lpc != null) {
-                mCoreListener.onRegistrationStateChanged(core, lpc, lpc.getState(), null);
-            }
         }
         isRunning = true;
     }
@@ -1981,6 +1975,15 @@ public class TripRegisterActivity extends AppCompatActivity {
         super.onResume();
         MyApplication.currentActivity = this;
         MyApplication.prefManager.setAppRun(true);
+
+        if(core!=null){
+            core.addListener(sipStatusListener);
+            ProxyConfig lpc = core.getDefaultProxyConfig();
+            if (lpc != null) {
+                sipStatusListener.onRegistrationStateChanged(core, lpc, lpc.getState(), null);
+            }
+        }
+
         showTitleBar();
         if (MyApplication.prefManager.getConnectedCall()) {
             startCallQuality();
@@ -2025,6 +2028,7 @@ public class TripRegisterActivity extends AppCompatActivity {
         super.onPause();
         KeyBoardHelper.hideKeyboard();
         MyApplication.prefManager.setAppRun(false);
+        core.removeListener(sipStatusListener);
         isRunning = false;
     }
 

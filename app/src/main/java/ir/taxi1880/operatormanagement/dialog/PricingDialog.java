@@ -105,11 +105,13 @@ public class PricingDialog {
         dialog.getWindow().setAttributes(wlp);
         dialog.setCancelable(true);
 
-        edtStationDestination.setEnabled(false);
         edtStationOrigin.setEnabled(false);
+        edtStationDestination.setEnabled(false);
         edtTime.setEnabled(false);
 
         llPrice.setVisibility(View.GONE);
+
+        MyApplication.handler.postDelayed(() -> rbByStation.setChecked(true), 100);
 
         rbByStation.setOnCheckedChangeListener((compoundButton, b) -> {
             if (rbByStation.isChecked()) {

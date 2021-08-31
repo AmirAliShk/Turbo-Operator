@@ -100,8 +100,7 @@
                     android:layout_alignParentLeft="true"
                     android:paddingTop="15dp"
                     android:paddingBottom="15dp"
-                    android:src="@drawable/ic_back"
-                    app:tint="?attr/colorValue" />
+                    android:src="@drawable/ic_back"/>
 
             </LinearLayout>
 

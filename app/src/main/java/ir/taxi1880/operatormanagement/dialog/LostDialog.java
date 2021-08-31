@@ -80,6 +80,10 @@ public class LostDialog {
                 MyApplication.Toast("لطفا آدرس را وارد کنید", Toast.LENGTH_SHORT);
                 return;
             }
+            if (comment.isEmpty()) {
+                MyApplication.Toast("لطفا توضیحات را وارد کنید", Toast.LENGTH_SHORT);
+                return;
+            }
 
             if (isDriverSupport) {
                 comment = " (اعلام شده توسط راننده) " + comment;
