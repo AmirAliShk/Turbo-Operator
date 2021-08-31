@@ -39,6 +39,8 @@ import org.linphone.core.Address;
 import org.linphone.core.Call;
 import org.linphone.core.Core;
 import org.linphone.core.CoreListenerStub;
+import org.linphone.core.ProxyConfig;
+import org.linphone.core.RegistrationState;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -126,6 +128,9 @@ public class TripRegisterActivity extends AppCompatActivity {
     void onBack() {
         MyApplication.currentActivity.onBackPressed();
     }
+
+    @BindView(R.id.imgSipStatus)
+    ImageView imgSipStatus;
 
     @BindView(R.id.spCity)
     Spinner spCity;
@@ -1910,7 +1915,46 @@ public class TripRegisterActivity extends AppCompatActivity {
                 }
             }
         }
+
+        @Override
+        public void onRegistrationStateChanged(Core lc, ProxyConfig proxy, RegistrationState state, String message) {
+            if (core.getDefaultProxyConfig() != null && core.getDefaultProxyConfig().equals(proxy)) {
+                imgSipStatus.setImageResource(getStatusIconResource(state));
+            } else if (core.getDefaultProxyConfig() == null) {
+                imgSipStatus.setImageResource(getStatusIconResource(state));
+            }
+
+            try {
+                imgSipStatus.setOnClickListener(
+                        v -> {
+                            Core core = LinphoneService.getCore();
+                            if (core != null) {
+                                core.refreshRegisters();
+                            }
+                        });
+            } catch (IllegalStateException ise) {
+                ise.printStackTrace();
+            }
+        }
     };
+
+    private int getStatusIconResource(RegistrationState state) {
+        try {
+            Core core = LinphoneService.getCore();
+            boolean defaultAccountConnected = (core != null && core.getDefaultProxyConfig() != null && core.getDefaultProxyConfig().getState() == RegistrationState.Ok);
+            if (state == RegistrationState.Ok && defaultAccountConnected) {
+                return R.drawable.ic_successful;
+            } else if (state == RegistrationState.Progress) {
+                return R.drawable.ic_pendig;
+            } else if (state == RegistrationState.Failed) {
+                return R.drawable.ic_error;
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return R.drawable.ic_error;
+    }
 
     @Override
     protected void onStart() {
@@ -1922,7 +1966,13 @@ public class TripRegisterActivity extends AppCompatActivity {
         LocalBroadcastManager.getInstance(MyApplication.currentActivity).registerReceiver((userStatusReceiver), new IntentFilter(Keys.KEY_REFRESH_USER_STATUS));
 
         core = LinphoneService.getCore();
-        core.addListener(mCoreListener);
+        if (core != null) {
+            core.addListener(mCoreListener);
+            ProxyConfig lpc = core.getDefaultProxyConfig();
+            if (lpc != null) {
+                mCoreListener.onRegistrationStateChanged(core, lpc, lpc.getState(), null);
+            }
+        }
         isRunning = true;
     }
 
