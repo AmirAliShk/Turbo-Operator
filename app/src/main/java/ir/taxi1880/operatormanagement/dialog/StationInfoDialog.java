@@ -15,10 +15,6 @@ import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
-import android.widget.ViewFlipper;
-
-import com.github.mmin18.widget.RealtimeBlurView;
-
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;

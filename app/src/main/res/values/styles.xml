@@ -43,6 +43,7 @@
         <item name="colorDialogeBodyTop1">#867a99</item>
         <item name="colorDialogeBodyTop2">#f8e9ff</item>
         <item name="colorEnableDisable">#b8b0c5</item>
+        <item name="colorBgDialogTransparent">#AEB3B3B3</item>
     </style>
 
     <style name="AppThemeDark" parent="Theme.AppCompat.Light.NoActionBar">
@@ -88,9 +89,7 @@
         <item name="colorDialogeBodyTop1">#323232</item>
         <item name="colorDialogeBodyTop2">#323232</item>
         <item name="colorEnableDisable">#222222</item>
-
-
-
+        <item name="colorBgDialogTransparent">#B0131313</item>
     </style>
 
 

@@ -13,10 +13,6 @@ import android.widget.ArrayAdapter;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
-import android.widget.Toast;
-
-import com.github.mmin18.widget.RealtimeBlurView;
-
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -42,7 +38,7 @@ public class CityDialog {
 
     private CityAdapter cityAdapter;
     private ListView listCity;
-    RealtimeBlurView blrView;
+    View blrView;
     private Listener listener;
     private static Dialog dialog;
     LinearLayout llSelectCity;

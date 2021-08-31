@@ -2,6 +2,7 @@ package ir.taxi1880.operatormanagement.push;
 
 import android.content.Context;
 import android.os.StrictMode;
+import android.util.Log;
 
 import ir.taxi1880.operatormanagement.app.MyApplication;
 import ir.taxi1880.operatormanagement.helper.ServiceHelper;
@@ -47,6 +48,7 @@ public class AvaFactory {
     }
 
     public AvaFactory readMissingPush() {
+        Log.e("DebugPush,AvaFactory", "true, instance.context");
         new ReadUnreadMessage().getUnreadPush(true, instance.context);
         return instance;
     }

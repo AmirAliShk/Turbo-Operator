@@ -11,9 +11,6 @@ import android.view.WindowManager;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.Toast;
-
-import com.github.mmin18.widget.RealtimeBlurView;
-
 import ir.taxi1880.operatormanagement.R;
 import ir.taxi1880.operatormanagement.app.MyApplication;
 import ir.taxi1880.operatormanagement.fragment.TripSupportFragment;
@@ -31,7 +28,7 @@ public class TripOptionDialog {
     }
 
     Listener listener;
-    RealtimeBlurView blrView;
+    View blrView;
     static Dialog dialog;
 
     public void show(Listener listener, String mobile, String name, int cityCode) {

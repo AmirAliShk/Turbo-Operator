@@ -13,8 +13,6 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
-
-import com.github.mmin18.widget.RealtimeBlurView;
 import com.mohamadamin.persianmaterialdatetimepicker.date.DatePickerDialog;
 import com.mohamadamin.persianmaterialdatetimepicker.time.TimePickerDialog;
 import com.mohamadamin.persianmaterialdatetimepicker.utils.PersianCalendar;
@@ -46,7 +44,7 @@ public class ReserveDialog {
     private static final String TIMEPICKER = "TimePickerDialog";
     private DatePickerDialog datePickerDialog;
     private TimePickerDialog timePickerDialog;
-    RealtimeBlurView blrView;
+    View blrView;
 
     public void show() {
         if (MyApplication.currentActivity == null || MyApplication.currentActivity.isFinishing())

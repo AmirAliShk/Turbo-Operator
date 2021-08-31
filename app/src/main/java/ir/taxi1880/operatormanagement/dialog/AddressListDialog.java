@@ -12,9 +12,6 @@ import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.ViewFlipper;
-
-import com.github.mmin18.widget.RealtimeBlurView;
-
 import java.util.ArrayList;
 
 import ir.taxi1880.operatormanagement.R;
@@ -38,7 +35,7 @@ public class AddressListDialog {
     private LastAddressAdapter lastAddressAdapter;
     private ListView listLastAddress;
     private ViewFlipper vfLastAddress;
-    RealtimeBlurView blrView;
+    View blrView;
 
     private Listener listener;
     private static Dialog dialog;

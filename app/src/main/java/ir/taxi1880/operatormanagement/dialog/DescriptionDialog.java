@@ -11,10 +11,6 @@ import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
-import android.widget.ViewFlipper;
-
-import com.github.mmin18.widget.RealtimeBlurView;
-
 import ir.taxi1880.operatormanagement.R;
 import ir.taxi1880.operatormanagement.app.MyApplication;
 import ir.taxi1880.operatormanagement.helper.KeyBoardHelper;
@@ -22,7 +18,7 @@ import ir.taxi1880.operatormanagement.helper.TypefaceUtil;
 import ir.taxi1880.operatormanagement.push.AvaCrashReporter;
 
 public class DescriptionDialog {
-    RealtimeBlurView blrView;
+    View blrView;
     private static final String TAG = DescriptionDialog.class.getSimpleName();
 
     public interface Listener {

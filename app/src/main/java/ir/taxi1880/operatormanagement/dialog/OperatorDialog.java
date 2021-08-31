@@ -7,13 +7,11 @@ import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
 import android.view.Gravity;
+import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.EditText;
 import android.widget.ListView;
-
-import com.github.mmin18.widget.RealtimeBlurView;
-
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -41,7 +39,7 @@ public class OperatorDialog {
     private OperatorAdapter operatorAdapter;
     static Dialog dialog;
     ListView listOperator;
-    RealtimeBlurView blrView;
+    View blrView;
 
     String opName;
 

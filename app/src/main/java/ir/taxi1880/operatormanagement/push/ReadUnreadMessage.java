@@ -12,6 +12,7 @@ import ir.taxi1880.operatormanagement.okHttp.RequestHelper;
 public class ReadUnreadMessage {
   public void getUnreadPush(boolean force, Context context) {
     AvaPref avaPref = new AvaPref();
+    if (!avaPref.isMissingApiEnable())return;
     if (avaPref.getMissingApiRequestTime() + 5000 > Calendar.getInstance().getTimeInMillis() && !force)
       return;
     avaPref.setMissingApiRequestTime(Calendar.getInstance().getTimeInMillis());

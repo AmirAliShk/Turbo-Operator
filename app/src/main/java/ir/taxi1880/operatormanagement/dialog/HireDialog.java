@@ -16,9 +16,6 @@ import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.ViewFlipper;
-
-import com.github.mmin18.widget.RealtimeBlurView;
-
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -48,7 +45,7 @@ public class HireDialog {
     private Spinner spHireType;
     private int hireType;
     ViewFlipper vfLoader;
-    RealtimeBlurView blrView;
+    View blrView;
     static Dialog dialog;
 
     public void show(Listener listener, String mobile, String name, int cityCode) {

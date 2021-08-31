@@ -5,12 +5,11 @@
     android:layout_height="match_parent"
     android:layoutDirection="rtl">
 
-    <com.github.mmin18.widget.RealtimeBlurView
+    <View
         android:id="@+id/blrView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        app:realtimeBlurRadius="20dp"
-        app:realtimeOverlayColor="#8000" />
+        android:background="?attr/colorBgDialogTransparent"/>
 
     <LinearLayout
         android:layout_width="match_parent"
