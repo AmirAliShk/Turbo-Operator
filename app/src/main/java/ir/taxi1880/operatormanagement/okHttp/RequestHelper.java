@@ -260,9 +260,7 @@ public class RequestHelper implements okhttp3.Callback {
 
     private void request() {
         try {
-            log("request url : " + req.url().toString());
-            log("params : " + params);
-            log("paths : " + path);
+            log("\n" + "request url : " + req.url().toString() + "\n" + "params : " + params + "\n" + "paths : " + path);
             builder = new OkHttpClient
                     .Builder()
                     .proxy(Proxy.NO_PROXY);
@@ -309,7 +307,6 @@ public class RequestHelper implements okhttp3.Callback {
             try {
                 bodyStr = parseXML(response.body().string());
                 log("request result : " + bodyStr);
-
                 if (response.isSuccessful()) {
                     if (object == null)
                         object = new Object[0];

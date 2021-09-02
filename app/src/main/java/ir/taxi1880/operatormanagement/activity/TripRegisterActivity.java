@@ -85,7 +85,6 @@ import ir.taxi1880.operatormanagement.push.AvaCrashReporter;
 import ir.taxi1880.operatormanagement.services.LinphoneService;
 
 public class TripRegisterActivity extends AppCompatActivity {
-
     public static final String TAG = TripRegisterActivity.class.getSimpleName();
     Unbinder unbinder;
     private String cityName = "";
@@ -757,10 +756,10 @@ public class TripRegisterActivity extends AppCompatActivity {
             disableViews();
             spCity.setSelection(0);
 //            MyApplication.handler.postDelayed(() -> {
-                initCitySpinner();
-                initServiceTypeSpinner();
-                initServiceCountSpinner();
-                initWaitingTimeSpinner();
+            initCitySpinner();
+            initServiceTypeSpinner();
+            initServiceCountSpinner();
+            initWaitingTimeSpinner();
 //            }, 200);
 //        }
         }
@@ -855,7 +854,8 @@ public class TripRegisterActivity extends AppCompatActivity {
             spServiceCount.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
                 @Override
                 public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                    ((TextView) parent.getChildAt(0)).setTextColor(Color.GRAY);
+                    if (spServiceCount != null)
+                        ((TextView) parent.getChildAt(0)).setTextColor(Color.GRAY);
                     serviceCount = Integer.parseInt(spServiceCount.getSelectedItem().toString());
                 }
 
@@ -897,7 +897,8 @@ public class TripRegisterActivity extends AppCompatActivity {
             spServiceType.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
                 @Override
                 public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                    ((TextView) parent.getChildAt(0)).setTextColor(Color.GRAY);
+                    if (spServiceType != null)
+                        ((TextView) parent.getChildAt(0)).setTextColor(Color.GRAY);
                     serviceType = typeServiceModels.get(position).getId();
 //                    if (serviceType == 1) {
 //                        new CityDialog()
@@ -937,7 +938,8 @@ public class TripRegisterActivity extends AppCompatActivity {
             spWaitingTime.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
                 @Override
                 public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                    ((TextView) parent.getChildAt(0)).setTextColor(Color.GRAY);
+                    if (spWaitingTime != null)
+                        ((TextView) parent.getChildAt(0)).setTextColor(Color.GRAY);
                     switch (position) {
                         case 0:
                             stopTime = 0;
@@ -1007,7 +1009,8 @@ public class TripRegisterActivity extends AppCompatActivity {
             spCity.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
                 @Override
                 public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                    ((TextView) parent.getChildAt(0)).setTextColor(Color.GRAY);
+                    if (spCity != null)
+                        ((TextView) parent.getChildAt(0)).setTextColor(Color.GRAY);
 
                     if (position == 0) {
                         cityName = null;
@@ -1616,7 +1619,6 @@ public class TripRegisterActivity extends AppCompatActivity {
                                         if (!callModel.getVoipId().equals(tempVoipId)) {
                                             MyApplication.prefManager.setLastNotification(null);
                                             handleCallerInfo(callModel);
-                                            Log.e("debugPush,insertSer", "onResponse: " );
                                         }
 
                                 })
@@ -1912,7 +1914,7 @@ public class TripRegisterActivity extends AppCompatActivity {
             }
         }
     };
-// باید دوتا لیسنر باشه حتما چون هرکدوم جاهای مختلفی استارت و استوپ میشن
+    // باید دوتا لیسنر باشه چون هرکدوم جاهای مختلفی استارت و استوپ میشن
     CoreListenerStub sipStatusListener = new CoreListenerStub() {
         @Override
         public void onRegistrationStateChanged(Core lc, ProxyConfig proxy, RegistrationState state, String message) {
@@ -1976,7 +1978,7 @@ public class TripRegisterActivity extends AppCompatActivity {
         MyApplication.currentActivity = this;
         MyApplication.prefManager.setAppRun(true);
 
-        if(core!=null){
+        if (core != null) {
             core.addListener(sipStatusListener);
             ProxyConfig lpc = core.getDefaultProxyConfig();
             if (lpc != null) {

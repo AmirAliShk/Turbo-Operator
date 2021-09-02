@@ -43,11 +43,12 @@ public class PushReceiver extends BroadcastReceiver {
 
             JSONObject object = new JSONObject(result);
             String strMessage = object.getString("message");
-            Log.i(TAG, "AMIRREZA=> onReceive: " + strMessage);
+            Log.i(TAG, "onReceive: " + strMessage);
 
             JSONObject messages = new JSONObject(strMessage);
             String typee = messages.getString("type");
-
+//            {"type":"callerInfo","exten":"423","participant":"05138581352","queue":"1880","voipId":"1630394815.772460"}
+//            {"messageId":37861454,"message":"{\"type\":\"callerInfo\",\"exten\":\"423\",\"participant\":\"09155598659\",\"queue\":\"1880\",\"voipId\":\"1630487041.856199\"}","projectId":5,"userId":123}
             if (typee.equals("callerInfo")) {
                 int exten = messages.getInt("exten");
                 String participant = messages.getString("participant");
@@ -57,6 +58,7 @@ public class PushReceiver extends BroadcastReceiver {
                 MyApplication.prefManager.setVoipId(voipId);
                 MyApplication.prefManager.setQueue(queue);
 
+//                {"status":true,"pushMessags":[{"messageId":37894239,"message":"{\"type\":\"userStatus\",\"status\":false,\"message\":\"اپراتور کد 123 شما به دلیل جواب ندادن تلفن از صف پاسخگویی خارج شدید  توربو تاکسی \"}","projectId":5,"userId":123}]}
             } else if (typee.equals("userStatus")) {
                 boolean status = messages.getBoolean("status");
                 String message = messages.getString("message");
