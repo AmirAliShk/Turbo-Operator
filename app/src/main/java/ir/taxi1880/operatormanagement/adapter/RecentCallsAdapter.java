@@ -233,8 +233,9 @@ public class RecentCallsAdapter extends RecyclerView.Adapter<RecentCallsAdapter.
                         @Override
                         public void onError(Error error) {
                             isDownloading = false;
-                            Log.e("PlayConversationDialog", "onError: " + error.getResponseCode() + "");
-                            Log.e("PlayConversationDialog", "onError: " + error.getServerErrorMessage() + "");
+//                            Log.e("PlayConversationDialog", "onError: " + error.getResponseCode() + "");
+//                            Log.e("getServerErrorMessage", "onError: " + error.getServerErrorMessage() + "");
+//                            Log.e("getConnectionException", "onError: " + error.getConnectionException() + "");
                             FileHelper.deleteFile(dirPathTemp, fileName);
                             if (error.getResponseCode() == 401)
                                 new RefreshTokenAsyncTask().execute();

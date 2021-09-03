@@ -79,13 +79,14 @@ public class SplashActivity extends AppCompatActivity {
 
     }
 
-    String[] permissionsRequired = new String[]{Manifest.permission.RECORD_AUDIO};
+    String[] permissionsRequired = {Manifest.permission.RECORD_AUDIO, Manifest.permission.WRITE_EXTERNAL_STORAGE};
+
     private static final int PERMISSION_CALLBACK_CONSTANT = 100;
 
     public void checkPermission() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            boolean recordAudioPermission = (ContextCompat.checkSelfPermission(MyApplication.currentActivity, Manifest.permission.RECORD_AUDIO) != PackageManager.PERMISSION_GRANTED);
-            if (recordAudioPermission) {
+            if ((ContextCompat.checkSelfPermission(MyApplication.currentActivity, Manifest.permission.RECORD_AUDIO) != PackageManager.PERMISSION_GRANTED)
+            ||(ContextCompat.checkSelfPermission(MyApplication.currentActivity, Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED)) {
                 new GeneralDialog()
                         .title("دسترسی")
                         .message("برای ورود به برنامه ضروری است تا دسترسی های لازم را برای عملکرد بهتر به برنامه داده شود لطفا جهت بهبود عملکرد دسترسی های لازم را اعمال نمایید")
