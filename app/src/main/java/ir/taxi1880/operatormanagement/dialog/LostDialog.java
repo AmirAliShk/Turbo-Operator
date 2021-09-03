@@ -66,8 +66,7 @@ public class LostDialog {
         spType = dialog.findViewById(R.id.spType);
         vfLoader = dialog.findViewById(R.id.vfLoader);
 
-        MyApplication.handler.postDelayed(this::initSpinner,500);
-
+        initSpinner();
         imgClose.setOnClickListener(view -> dismiss());
 
         btnSubmit.setOnClickListener(view -> {
@@ -193,7 +192,8 @@ public class LostDialog {
             spType.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
                 @Override
                 public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                    ((TextView) parent.getChildAt(0)).setTextColor(Color.GRAY);
+//                    if (spType != null)
+//                        ((TextView) parent.getChildAt(0)).setTextColor(Color.GRAY);
                     type = typeServiceModels.get(position).getId();
                 }
 

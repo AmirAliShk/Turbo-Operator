@@ -16,6 +16,7 @@ import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.ViewFlipper;
+
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -217,7 +218,8 @@ public class HireDialog {
                             spHireType.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
                                 @Override
                                 public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                                    ((TextView) parent.getChildAt(0)).setTextColor(Color.GRAY);
+//                                    if (spHireType != null)
+//                                        ((TextView) parent.getChildAt(0)).setTextColor(Color.GRAY);
                                     hireType = hireTypeModels.get(position).getId();
                                 }
 

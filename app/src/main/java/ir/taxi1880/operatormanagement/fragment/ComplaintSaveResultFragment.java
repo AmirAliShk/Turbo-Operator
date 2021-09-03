@@ -43,8 +43,7 @@ public class ComplaintSaveResultFragment extends Fragment {
         unbinder = ButterKnife.bind(this, binding.getRoot());
         TypefaceUtil.overrideFonts(binding.getRoot());
 
-        MyApplication.handler.postDelayed(this::initSpinner,500);
-
+        initSpinner();
         binding.spComplaintType.setEnabled(false);
         binding.llComplaintType.setEnabled(false);
         binding.edtLockTime.setEnabled(false);
@@ -94,7 +93,8 @@ public class ComplaintSaveResultFragment extends Fragment {
             binding.spComplaintType.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
                 @Override
                 public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                    ((TextView) parent.getChildAt(0)).setTextColor(Color.GRAY);
+//                    if (binding.spComplaintType != null)
+//                        ((TextView) parent.getChildAt(0)).setTextColor(Color.GRAY);
                     if (position == 0) {
                         DataHolder.getInstance().setLockReason((byte) 0);
                         return;

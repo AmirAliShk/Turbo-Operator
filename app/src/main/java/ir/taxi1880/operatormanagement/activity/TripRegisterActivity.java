@@ -854,8 +854,8 @@ public class TripRegisterActivity extends AppCompatActivity {
             spServiceCount.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
                 @Override
                 public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                    if (spServiceCount != null)
-                        ((TextView) parent.getChildAt(0)).setTextColor(Color.GRAY);
+//                    if (spServiceCount != null)
+//                        ((TextView) parent.getChildAt(0)).setTextColor(Color.GRAY);
                     serviceCount = Integer.parseInt(spServiceCount.getSelectedItem().toString());
                 }
 
@@ -897,8 +897,8 @@ public class TripRegisterActivity extends AppCompatActivity {
             spServiceType.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
                 @Override
                 public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                    if (spServiceType != null)
-                        ((TextView) parent.getChildAt(0)).setTextColor(Color.GRAY);
+//                    if (spServiceType != null)
+//                        ((TextView) parent.getChildAt(0)).setTextColor(Color.GRAY);
                     serviceType = typeServiceModels.get(position).getId();
 //                    if (serviceType == 1) {
 //                        new CityDialog()
@@ -938,8 +938,8 @@ public class TripRegisterActivity extends AppCompatActivity {
             spWaitingTime.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
                 @Override
                 public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                    if (spWaitingTime != null)
-                        ((TextView) parent.getChildAt(0)).setTextColor(Color.GRAY);
+//                    if (spWaitingTime != null)
+//                        ((TextView) parent.getChildAt(0)).setTextColor(Color.GRAY);
                     switch (position) {
                         case 0:
                             stopTime = 0;
@@ -1009,8 +1009,8 @@ public class TripRegisterActivity extends AppCompatActivity {
             spCity.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
                 @Override
                 public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                    if (spCity != null)
-                        ((TextView) parent.getChildAt(0)).setTextColor(Color.GRAY);
+//                    if (spCity != null)
+//                        ((TextView) parent.getChildAt(0)).setTextColor(Color.GRAY);
 
                     if (position == 0) {
                         cityName = null;
@@ -1338,6 +1338,7 @@ public class TripRegisterActivity extends AppCompatActivity {
                         } else {
                             new AddressListDialog().show(true, (address, stationCode, addressId) -> {
                                 if (edtAddress != null) {
+                                    edtAddress.setText(address);
                                     edtAddress.setText(address);
                                     addressLength = address.length();
                                     addressChangeCounter = 0;

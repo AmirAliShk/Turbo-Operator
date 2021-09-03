@@ -63,8 +63,7 @@ public class ComplaintRegistrationDialog {
         spComplaintType = dialog.findViewById(R.id.spComplaintType);
         vfLoader = dialog.findViewById(R.id.vfLoader);
 
-        MyApplication.handler.postDelayed(this::initSpinner,500);
-
+        initSpinner();
         imgClose.setOnClickListener(view -> {
             KeyBoardHelper.hideKeyboard();
             dismiss();
@@ -175,7 +174,8 @@ public class ComplaintRegistrationDialog {
             spComplaintType.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
                 @Override
                 public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                    ((TextView) parent.getChildAt(0)).setTextColor(Color.GRAY);
+//                    if (spComplaintType != null)
+//                        ((TextView) parent.getChildAt(0)).setTextColor(Color.GRAY);
                     complaintType = typeServiceModels.get(position).getId();
                 }
 
