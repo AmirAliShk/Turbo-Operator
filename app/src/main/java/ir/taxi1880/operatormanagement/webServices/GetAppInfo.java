@@ -135,43 +135,6 @@ public class GetAppInfo {
                         cityModel.setCityLatin(cityObj.getString("latinName"));
                         dataBase.insertCity(cityModel);
                     }
-
-                    if (block == 1) {
-                        new GeneralDialog()
-                                .title("هشدار")
-                                .message("اکانت شما توسط سیستم مسدود شده است")
-                                .firstButton("خروج از برنامه", () -> MyApplication.currentActivity.finish())
-                                .show();
-                        return;
-                    }
-
-                    if (changePass == 1) {
-                        FragmentHelper
-                                .toFragment(MyApplication.currentActivity, new LoginFragment())
-                                .setStatusBarColor(MyApplication.currentActivity.getResources().getColor(R.color.colorPrimaryDark))
-                                .setAddToBackStack(false)
-                                .replace();
-                        return;
-                    }
-
-                    MyApplication.prefManager.setSipServer(sipServer);
-                    MyApplication.prefManager.setSipNumber(sipNumber);
-                    MyApplication.prefManager.setSipPassword(sipPassword);
-                    if (updateAvailable == 1) {
-                        updatePart(forceUpdate, updateUrl);
-                        return;
-                    }
-
-                    startVoipService();
-
-                    if (sipNumber != MyApplication.prefManager.getSipNumber() ||
-                            !sipPassword.equals(MyApplication.prefManager.getSipPassword()) ||
-                            !sipServer.equals(MyApplication.prefManager.getSipServer())) {
-                        if (sipNumber != 0) {
-                            MyApplication.configureAccount();
-                        }
-                    }
-
                     MyApplication.prefManager.setActivateStatus(activeInQueue == 1);
 
                     JSONArray shiftArr = object.getJSONArray("shifs");
@@ -191,6 +154,42 @@ public class GetAppInfo {
                     MyApplication.prefManager.setCity(city);
                     MyApplication.prefManager.setAccessInsertService(accessInsertService);
                     MyApplication.prefManager.setAccessStationDeterminationPage(accessStationDeterminationPage);
+                    MyApplication.prefManager.setSipServer(sipServer);
+                    MyApplication.prefManager.setSipNumber(sipNumber);
+                    MyApplication.prefManager.setSipPassword(sipPassword);
+
+                    if (block == 1) {
+                        new GeneralDialog()
+                                .title("هشدار")
+                                .message("اکانت شما توسط سیستم مسدود شده است")
+                                .firstButton("خروج از برنامه", () -> MyApplication.currentActivity.finish())
+                                .show();
+                        return;
+                    }
+
+                    if (changePass == 1) {
+                        FragmentHelper
+                                .toFragment(MyApplication.currentActivity, new LoginFragment())
+                                .setStatusBarColor(MyApplication.currentActivity.getResources().getColor(R.color.colorPrimaryDark))
+                                .setAddToBackStack(false)
+                                .replace();
+                        return;
+                    }
+
+                    if (updateAvailable == 1) {
+                        updatePart(forceUpdate, updateUrl);
+                        return;
+                    }
+
+                    startVoipService();
+
+                    if (sipNumber != MyApplication.prefManager.getSipNumber() ||
+                            !sipPassword.equals(MyApplication.prefManager.getSipPassword()) ||
+                            !sipServer.equals(MyApplication.prefManager.getSipServer())) {
+                        if (sipNumber != 0) {
+                            MyApplication.configureAccount();
+                        }
+                    }
 
                     NotificationManager notificationManager = (NotificationManager) MyApplication.currentActivity.getSystemService(Context.NOTIFICATION_SERVICE);
                     notificationManager.cancel(Constant.USER_STATUS_NOTIFICATION_ID);
