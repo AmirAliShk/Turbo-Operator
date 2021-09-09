@@ -132,7 +132,13 @@ public class RecentCallsAdapter extends RecyclerView.Adapter<RecentCallsAdapter.
             }
             Log.i("URL", "show: " + EndPoints.CALL_VOICE + model.getVoipId());
             String voiceName = model.getVoipId() + ".mp3";
-            File file = new File(MyApplication.DIR_ROOT + MyApplication.VOICE_FOLDER_NAME + "/" + voiceName);
+            File file;
+            if (Build.VERSION.SDK_INT > Build.VERSION_CODES.O) {
+                file = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS)
+                        + File.separator + "operatorParsian/"+voiceName);
+            } else {
+                file = new File(MyApplication.DIR_ROOT + MyApplication.VOICE_FOLDER_NAME + "/" + voiceName);
+            }
             String voipId = model.getVoipId();
             if (file.exists()) {
                 initVoice(Uri.fromFile(file));

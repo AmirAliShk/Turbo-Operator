@@ -6,6 +6,8 @@ import android.graphics.drawable.ColorDrawable;
 import android.media.MediaPlayer;
 import android.net.Uri;
 import android.os.AsyncTask;
+import android.os.Build;
+import android.os.Environment;
 import android.util.Log;
 import android.view.Window;
 import android.view.WindowManager;
@@ -67,7 +69,13 @@ public class PlayLastConversationDialog {
         skbTimer.setProgress(0);
         Log.i("URL", "show: " + url);
         String voiceName = idTrip + ".mp3";
-        File file = new File(MyApplication.DIR_ROOT + MyApplication.VOICE_FOLDER_NAME + "/" + voiceName);
+        File file;
+        if (Build.VERSION.SDK_INT > Build.VERSION_CODES.O) {
+            file = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS)
+                    + File.separator + "operatorParsian/"+voiceName);
+        } else {
+            file = new File(MyApplication.DIR_ROOT + MyApplication.VOICE_FOLDER_NAME + "/" + voiceName);
+        }
         if (file.exists()) {
             initVoice(Uri.fromFile(file));
             playVoice();
@@ -126,7 +134,13 @@ public class PlayLastConversationDialog {
         skbTimer.setProgress(0);
         Log.i("URL", "show: " + urlString);
         String voiceName = tripId + ".mp3";
-        File file = new File(MyApplication.DIR_ROOT + MyApplication.VOICE_FOLDER_NAME + "/" + voiceName);
+        File file;
+        if (Build.VERSION.SDK_INT > Build.VERSION_CODES.O) {
+            file = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS)
+                    + File.separator + "operatorParsian/"+voiceName);
+        } else {
+            file = new File(MyApplication.DIR_ROOT + MyApplication.VOICE_FOLDER_NAME + "/" + voiceName);
+        }
         if (file.exists()) {
             initVoice(Uri.fromFile(file));
             playVoice();
@@ -175,8 +189,13 @@ public class PlayLastConversationDialog {
         try {
             URL url = new URL(urlString);
 
-            String dirPath = MyApplication.DIR_ROOT + "voice/";
-            String dirPathTemp = MyApplication.DIR_ROOT + "temp/";
+            String dirPath;
+//            String dirPathTemp = MyApplication.DIR_ROOT + "temp/";
+            if (Build.VERSION.SDK_INT > Build.VERSION_CODES.O) {
+                dirPath = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS) + File.separator + "operatorParsian/";
+            } else {
+                dirPath = MyApplication.DIR_ROOT + "voice/";
+            }
 
             new File(dirPath).mkdirs();
             File file = new File(dirPath);
@@ -193,7 +212,7 @@ public class PlayLastConversationDialog {
 //        PRDownloader.resume(downloadId);
 //      } else {
 //        downloadId =
-            PRDownloader.download(url.toString(), dirPathTemp, fileName)
+            PRDownloader.download(url.toString(), dirPath, fileName)
                     .setHeader("Authorization", MyApplication.prefManager.getAuthorization())
                     .setHeader("id_token", MyApplication.prefManager.getIdToken())
                     .build()
@@ -219,13 +238,11 @@ public class PlayLastConversationDialog {
                         @Override
                         public void onDownloadComplete() {
 //                    FinishedDownload.execute(urlString);
-                            FileHelper.moveFile(dirPathTemp, fileName, dirPath);
                             vfDownload.setDisplayedChild(1);
                             File file = new File(dirPath + fileName);
-
                             MyApplication.handler.postDelayed(() -> {
-                                initVoice(Uri.fromFile(file));
-                                playVoice();
+                                    initVoice(Uri.fromFile(file));
+                                    playVoice();
                             }, 500);
                         }
 
@@ -234,7 +251,7 @@ public class PlayLastConversationDialog {
                             Log.e("PlayConversationDialog", "onError: " + error.getResponseCode() + "");
                             Log.e("PlayConversationDialog", "onError: " + error.getServerErrorMessage() + "");
                             vfDownload.setDisplayedChild(2);
-                            FileHelper.deleteFile(dirPathTemp, fileName);
+                            FileHelper.deleteFile(dirPath, fileName);
                             if (error.getResponseCode() == 401)
                                 new RefreshTokenAsyncTask().execute();
                         }

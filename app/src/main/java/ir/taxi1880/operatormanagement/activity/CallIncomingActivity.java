@@ -7,6 +7,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
@@ -114,13 +115,11 @@ public class CallIncomingActivity extends AppCompatActivity {
             window.setNavigationBarColor(getResources().getColor(R.color.colorPrimaryLighter));
             window.setStatusBarColor(getResources().getColor(R.color.colorPrimaryLighter));
             window.getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);
-            window.addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
         }
         NotificationManager notificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
         notificationManager.cancel(notifManagerId);
 
-        getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON |
-                WindowManager.LayoutParams.FLAG_DISMISS_KEYGUARD |
+        getWindow().addFlags(WindowManager.LayoutParams.FLAG_DISMISS_KEYGUARD |
                 WindowManager.LayoutParams.FLAG_SHOW_WHEN_LOCKED |
                 WindowManager.LayoutParams.FLAG_TURN_SCREEN_ON);
 
@@ -150,7 +149,7 @@ public class CallIncomingActivity extends AppCompatActivity {
             intent = new Intent(this, TripRegisterActivity.class);
         } else if (MyApplication.prefManager.getActivityStatus() == 2) { // you are enable in support queue (800)
             intent = new Intent(this, SupportActivity.class);
-            intent.putExtra("comeFromCallActivity",true);
+            intent.putExtra("comeFromCallActivity", true);
         }
         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         startActivity(intent);
@@ -186,6 +185,7 @@ public class CallIncomingActivity extends AppCompatActivity {
     @Override
     protected void onStart() {
         super.onStart();
+        MyApplication.currentActivity = this;
         MyApplication.prefManager.setAppRun(true);
     }
 
