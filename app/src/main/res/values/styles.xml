@@ -1,7 +1,7 @@
 <resources>
 
     <style name="AppThemeLite" parent="Theme.AppCompat.Light.NoActionBar">
-
+        <item name="android:windowDisablePreview">true</item>
         <item name="colorPageBackground">#ebeff0</item>
         <item name="colorActionBarBackground">#381f60</item>
         <item name="colorWhiteBlack">#ffffff</item>
@@ -47,7 +47,7 @@
     </style>
 
     <style name="AppThemeDark" parent="Theme.AppCompat.Light.NoActionBar">
-
+        <item name="android:windowDisablePreview">true</item>
         <item name="colorPageBackground">#010101</item>
         <item name="colorActionBarBackground">#222222</item>
         <item name="colorWhiteBlack">#000000</item>

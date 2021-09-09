@@ -4,6 +4,8 @@ import android.content.Context;
 import android.media.MediaPlayer;
 import android.net.Uri;
 import android.os.AsyncTask;
+import android.os.Build;
+import android.os.Environment;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -15,6 +17,7 @@ import android.widget.Toast;
 import android.widget.ViewFlipper;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.RequiresApi;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.downloader.Error;
@@ -181,8 +184,13 @@ public class RecentCallsAdapter extends RecyclerView.Adapter<RecentCallsAdapter.
         try {
             URL url = new URL(urlString);
 
-            String dirPath = MyApplication.DIR_ROOT + "voice/";
-            String dirPathTemp = MyApplication.DIR_ROOT + "temp/";
+            String dirPath;
+//            String dirPathTemp = MyApplication.DIR_ROOT + "temp/";
+            if (Build.VERSION.SDK_INT > Build.VERSION_CODES.O) {
+                dirPath = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS) + File.separator + "operatorParsian/";
+            } else {
+                dirPath = MyApplication.DIR_ROOT + "voice/";
+            }
 
             new File(dirPath).mkdirs();
             File file = new File(dirPath);
@@ -199,7 +207,7 @@ public class RecentCallsAdapter extends RecyclerView.Adapter<RecentCallsAdapter.
 //        PRDownloader.resume(downloadId);
 //      } else {
 //        downloadId =
-            PRDownloader.download(url.toString(), dirPathTemp, fileName)
+            PRDownloader.download(url.toString(), dirPath, fileName)
                     .setHeader("Authorization", MyApplication.prefManager.getAuthorization())
                     .setHeader("id_token", MyApplication.prefManager.getIdToken())
                     .build()
@@ -220,7 +228,7 @@ public class RecentCallsAdapter extends RecyclerView.Adapter<RecentCallsAdapter.
                         @Override
                         public void onDownloadComplete() {
                             isDownloading = false;
-                            FileHelper.moveFile(dirPathTemp, fileName, dirPath);
+//                            FileHelper.moveFile(dirPathTemp, fileName, dirPath);
                             File file = new File(dirPath + fileName);
                             MyApplication.handler.postDelayed(() -> {
                                 if (view != null) {
@@ -233,10 +241,10 @@ public class RecentCallsAdapter extends RecyclerView.Adapter<RecentCallsAdapter.
                         @Override
                         public void onError(Error error) {
                             isDownloading = false;
-//                            Log.e("PlayConversationDialog", "onError: " + error.getResponseCode() + "");
-//                            Log.e("getServerErrorMessage", "onError: " + error.getServerErrorMessage() + "");
-//                            Log.e("getConnectionException", "onError: " + error.getConnectionException() + "");
-                            FileHelper.deleteFile(dirPathTemp, fileName);
+                            Log.e("PlayConversationDialog", "onError: " + error.getResponseCode() + "");
+                            Log.e("getServerErrorMessage", "onError: " + error.getServerErrorMessage() + "");
+                            Log.e("getConnectionException", "onError: " + error.getConnectionException() + "");
+                            FileHelper.deleteFile(dirPath, fileName);
                             if (error.getResponseCode() == 401)
                                 new RefreshTokenAsyncTask().execute();
                             if (error.getResponseCode() == 404)
