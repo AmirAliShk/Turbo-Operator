@@ -342,6 +342,14 @@ public class SupportDriverTripsFragment extends Fragment {
     };
 
     private void searchService(String searchText, int searchCase) {
+        String phonenumber = "0";
+        String driverPhone = "0";
+        String name = "0";
+        String address = "0";
+        String taxiCode = "0";
+        String stationCode = "0";
+        String destinationAddress = "0";
+
         if (vfTrip != null) {
             vfTrip.setDisplayedChild(1);
         }
@@ -349,81 +357,38 @@ public class SupportDriverTripsFragment extends Fragment {
         switch (searchCase) {
 
             case 6: // search by driver mobile
-                RequestHelper.builder(EndPoints.SEARCH_SERVICE)
-                        .ignore422Error(true)
-                        .addParam("phonenumber", 0)
-                        .addParam("driverPhone", searchText)
-                        .addParam("name", 0)
-                        .addParam("address", 0)
-                        .addParam("taxiCode", 0)
-                        .addParam("stationCode", 0)
-                        .addParam("destinationAddress", 0)
-                        .addParam("searchInterval", extendedTime)
-                        .listener(onGetTripList)
-                        .post();
+                driverPhone = searchText;
                 break;
 
             case 7: //search by taxi code
-                RequestHelper.builder(EndPoints.SEARCH_SERVICE)
-                        .ignore422Error(true)
-                        .addParam("phonenumber", 0)
-                        .addParam("driverPhone", 0)
-                        .addParam("name", 0)
-                        .addParam("address", 0)
-                        .addParam("taxiCode", searchText)
-                        .addParam("stationCode", 0)
-                        .addParam("destinationAddress", 0)
-                        .addParam("searchInterval", extendedTime)
-                        .listener(onGetTripList)
-                        .post();
+                taxiCode = searchText;
                 break;
 
             case 8: //search by address
-                RequestHelper.builder(EndPoints.SEARCH_SERVICE)
-                        .ignore422Error(true)
-                        .addParam("phonenumber", 0)
-                        .addParam("driverPhone", 0)
-                        .addParam("name", 0)
-                        .addParam("address", searchText)
-                        .addParam("taxiCode", 0)
-                        .addParam("stationCode", 0)
-                        .addParam("destinationAddress", 0)
-                        .addParam("searchInterval", extendedTime)
-                        .listener(onGetTripList)
-                        .post();
+                address = searchText;
                 break;
 
             case 9: //search by station code
-                RequestHelper.builder(EndPoints.SEARCH_SERVICE)
-                        .ignore422Error(true)
-                        .addParam("phonenumber", 0)
-                        .addParam("driverPhone", 0)
-                        .addParam("name", 0)
-                        .addParam("address", 0)
-                        .addParam("taxiCode", 0)
-                        .addParam("stationCode", searchText)
-                        .addParam("destinationAddress", 0)
-                        .addParam("searchInterval", extendedTime)
-                        .listener(onGetTripList)
-                        .post();
+                stationCode = searchText;
                 break;
 
             case 10: //search by destination address
-                RequestHelper.builder(EndPoints.SEARCH_SERVICE)
-                        .ignore422Error(true)
-                        .addParam("phonenumber", 0)
-                        .addParam("driverPhone", 0)
-                        .addParam("name", 0)
-                        .addParam("address", 0)
-                        .addParam("taxiCode", 0)
-                        .addParam("stationCode", 0)
-                        .addParam("destinationAddress", searchText)
-                        .addParam("searchInterval", extendedTime)
-                        .listener(onGetTripList)
-                        .post();
+                destinationAddress=searchText;
                 break;
-
         }
+
+        RequestHelper.builder(EndPoints.SEARCH_SERVICE)
+                .ignore422Error(true)
+                .addParam("phonenumber", phonenumber)
+                .addParam("driverPhone", driverPhone)
+                .addParam("name", name)
+                .addParam("address", address)
+                .addParam("taxiCode", taxiCode)
+                .addParam("stationCode", stationCode)
+                .addParam("destinationAddress", destinationAddress)
+                .addParam("searchInterval", extendedTime)
+                .listener(onGetTripList)
+                .post();
 
     }
 
