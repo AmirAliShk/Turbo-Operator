@@ -14,8 +14,7 @@
         android:id="@+id/rlActionBar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="?attr/colorActionBarBackground"
-        >
+        android:background="?attr/colorActionBarBackground">
 
         <TextView
             android:id="@+id/txtConnectionStatus"
