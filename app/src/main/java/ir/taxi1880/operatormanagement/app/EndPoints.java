@@ -10,29 +10,20 @@ public class EndPoints {
 //    http://api.parsian.ir:1881/api/operator/
 //    http://172.16.2.210:1885/api/findway/citylatinname/address
 
-    public static final String IP = (BuildConfig.DEBUG)
-//          ? "http://172.16.2.203"
-            ? "http://turbotaxi.ir"
-            : "http://turbotaxi.ir";
-//          : "http://172.16.2.203";
+    public static final String IP =
+            "http://turbotaxi.ir";
 
-    public static final String HAKWEYE_IP = (BuildConfig.DEBUG)
-//          ? "http://172.16.2.201"
-            ? "http://turbotaxi.ir"
-            : "http://turbotaxi.ir";
-//          : "http://172.16.2.203";
+    public static final String HAKWEYE_IP =
+            "http://turbotaxi.ir";
 
-    public static final String PUSH_ADDRESS = (BuildConfig.DEBUG)
-            ? "http://turbotaxi.ir:6060"
-//          ? "http://172.16.2.212:6060"
-//          : "http://172.16.2.212:6060";
-            : "http://turbotaxi.ir:6060";
+    public static final String PUSH_ADDRESS =
+            "http://turbotaxi.ir:6060";
 
-    public static final String APIPort = (BuildConfig.DEBUG) ? "1881" : "1881";
-    public static final String PIC_APIPort = (BuildConfig.DEBUG) ? "1880" : "1880";
-    public static final String TRIP_APIPort = (BuildConfig.DEBUG) ? "1881" : "1881";
-    public static final String CALL_VOICE_APIPort = (BuildConfig.DEBUG) ? "1884" : "1884";
-    public static final String HAWKEYE_APIPort = (BuildConfig.DEBUG) ? "1890" : "1890";
+    public static final String APIPort = "1881";
+    public static final String PIC_APIPort = "1880";
+    public static final String TRIP_APIPort = "1881";
+    public static final String CALL_VOICE_APIPort = "1884";
+    public static final String HAWKEYE_APIPort = "1890";
 
     public static final String ACRA_PATH = "http://turbotaxi.ir:6061/api/v1/crashReport";
 

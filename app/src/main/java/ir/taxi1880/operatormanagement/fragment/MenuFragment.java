@@ -119,6 +119,13 @@ public class MenuFragment extends Fragment {
                 .replace();
     }
 
+    @OnClick(R.id.llMyMistakes)
+    void onMistakes() {
+        FragmentHelper
+                .toFragment(MyApplication.currentActivity, new ScoreListFragment())
+                .replace();
+    }
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_menu, container, false);

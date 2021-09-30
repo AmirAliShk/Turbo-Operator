@@ -24,18 +24,15 @@ public class AvaFactory {
         return instance;
     }
 
-
     public AvaFactory setAddress(String... address) {
         instance.address = address;
         return instance;
     }
 
-
     public AvaFactory setProjectID(int projectID) {
         instance.projectID = projectID;
         return instance;
     }
-
 
     public AvaFactory setUserID(String userID) {
         instance.userID = userID;
