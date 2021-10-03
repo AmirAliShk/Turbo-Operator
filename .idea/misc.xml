@@ -131,6 +131,7 @@
         <entry key="app/src/main/res/layout/item_notification.xml" value="0.22" />
         <entry key="app/src/main/res/layout/item_number_pad.xml" value="0.34010416666666665" />
         <entry key="app/src/main/res/layout/item_operator.xml" value="0.34010416666666665" />
+        <entry key="app/src/main/res/layout/item_operator_mistake_list.xml" value="0.3328125" />
         <entry key="app/src/main/res/layout/item_pending_complaint.xml" value="0.34010416666666665" />
         <entry key="app/src/main/res/layout/item_recent_calls.xml" value="0.34010416666666665" />
         <entry key="app/src/main/res/layout/item_reward.xml" value="0.34010416666666665" />

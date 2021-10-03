@@ -119,7 +119,7 @@ public class TripRegisterActivity extends AppCompatActivity {
     private String[] countService = new String[6];
     private Runnable mCallQualityUpdater = null;
     private int mDisplayedQuality = -1;
-    int callerCode;
+    int addressIdOrigin;
     int addressIdDestination = 0;
     String address;
 
@@ -578,7 +578,7 @@ public class TripRegisterActivity extends AppCompatActivity {
         addressChangeCounter = 0;
         destAddressLength = 0;
         destAddressChangeCounter = 0;
-        callerCode = 0;
+        addressIdOrigin = 0;
     }
 
     @OnClick(R.id.clearDestinationAddress)
@@ -800,7 +800,7 @@ public class TripRegisterActivity extends AppCompatActivity {
         @Override
         public void onTextChanged(CharSequence charSequence, int start, int before, int count) {
             addressChangeCounter = addressChangeCounter + 1;
-            callerCode = 0;
+            addressIdOrigin = 0;
         }
 
         @Override
@@ -1079,7 +1079,7 @@ public class TripRegisterActivity extends AppCompatActivity {
                     int callTimeInterval = statusObj.getInt("callTimeInterval");
 
                     JSONObject passengerInfoObj = dataObj.getJSONObject("passengerInfo");
-                    callerCode = passengerInfoObj.getInt("callerCode");
+                    addressIdOrigin = passengerInfoObj.getInt("callerCode");
                     address = passengerInfoObj.getString("address");
                     String name = passengerInfoObj.getString("name");
                     int staion = passengerInfoObj.getInt("staion");
@@ -1132,7 +1132,7 @@ public class TripRegisterActivity extends AppCompatActivity {
                                     spCity.setSelection(position + 1);
                             }, true);
                         }
-                        if (callerCode == 0) {
+                        if (addressIdOrigin == 0) {
                             if (txtNewPassenger != null)
                                 txtNewPassenger.setVisibility(View.VISIBLE);
                             if (txtLockPassenger != null)
@@ -1344,7 +1344,7 @@ public class TripRegisterActivity extends AppCompatActivity {
                                     addressChangeCounter = 0;
                                 }
                                 originStation = stationCode;
-                                callerCode = addressId;
+                                addressIdOrigin = addressId;
                                 Log.i(TAG, "run: " + originStation);
 
                             }, passengerAddressModels);
@@ -1586,7 +1586,7 @@ public class TripRegisterActivity extends AppCompatActivity {
                 .addParam("maxDiscount", maxDiscount)
                 .addParam("senderClient", 0)
                 .addParam("stopTime", stopTime)
-                .addParam("addressIdOrigin", callerCode)
+                .addParam("addressIdOrigin", addressIdOrigin)
                 .addParam("addressIdDestination", addressIdDestination)
                 .listener(insertService)
                 .post();
