@@ -1,7 +1,5 @@
 package ir.taxi1880.operatormanagement.app;
 
-import ir.taxi1880.operatormanagement.BuildConfig;
-
 public class EndPoints {
 
     /*TODO : check apis and ports before release*/
@@ -11,7 +9,7 @@ public class EndPoints {
 //    http://172.16.2.210:1885/api/findway/citylatinname/address
 
     public static final String IP =
-            "http://turbotaxi.ir";
+            "http://192.168.2.5";
 
     public static final String HAKWEYE_IP =
             "http://turbotaxi.ir";
@@ -28,6 +26,7 @@ public class EndPoints {
     public static final String ACRA_PATH = "http://turbotaxi.ir:6061/api/v1/crashReport";
 
     public static final String WEBSERVICE_PATH = IP + ":" + APIPort + "/api/operator/v3/";
+    public static final String OPERATOR_MISTAKE_WEBSERVICE_PATH = IP + ":" + APIPort + "/api/operator/v3/mistake";
     public static final String SCORE_WEBSERVICE_PATH = IP + ":" + TRIP_APIPort + "/api/operator/v3/score/";
     public static final String SUPPORT_WEBSERVICE_PATH = IP + ":" + TRIP_APIPort + "/api/operator/v3/support/";
     public static final String LISTEN_WEBSERVICE_PATH = IP + ":" + TRIP_APIPort + "/api/operator/v3/support/listen/";
@@ -136,5 +135,10 @@ public class EndPoints {
     public static final String COMPLAINT_CUSTOMER_HISTORY = COMPLAINT_WEBSERVICE_PATH + "complaintsOfCustomer/";//:phoneNumber
     public static final String COMPLAINT_GET_PRICE = TRIP_WEBSERVICE_PATH + "price/";//:cityCode/:carClass/:origin/:destination/:time
 
+
+    /******************************** OperatorMistakeAPI ******************************/
+    public static final String GET_OPERATOR_MISTAKE = OPERATOR_MISTAKE_WEBSERVICE_PATH;
+    public static final String GET_REASON_OPERATOR_MISTAKE = OPERATOR_MISTAKE_WEBSERVICE_PATH + "/reasons";
+    public static final String RECHECK_OPERATOR_MISTAKE = OPERATOR_MISTAKE_WEBSERVICE_PATH + "/review";
 
 }

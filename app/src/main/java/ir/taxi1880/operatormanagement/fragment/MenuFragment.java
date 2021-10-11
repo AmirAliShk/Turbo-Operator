@@ -122,7 +122,7 @@ public class MenuFragment extends Fragment {
     @OnClick(R.id.llMyMistakes)
     void onMistakes() {
         FragmentHelper
-                .toFragment(MyApplication.currentActivity, new ScoreListFragment())
+                .toFragment(MyApplication.currentActivity, new OperatorMistakesFragment())
                 .replace();
     }
 

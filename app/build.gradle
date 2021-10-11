@@ -1,4 +1,5 @@
 apply plugin: 'com.android.application'
+apply plugin: 'kotlin-android'
 
 android {
     compileSdkVersion 30
@@ -8,6 +9,8 @@ android {
         targetSdkVersion 19
         versionCode 48
         versionName "8.0.3"
+        multiDexEnabled true
+
     }
 
     signingConfigs {
@@ -98,5 +101,12 @@ dependencies {
     implementation 'com.dinuscxj:recyclerrefreshlayout:2.0.5'
 
     implementation 'com.github.rakshakhegde:stepper-indicator:2.0.0-alpha'
+    implementation "androidx.core:core-ktx:1.6.0"
+    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
 
+    implementation "androidx.multidex:multidex:2.0.1"
+
+}
+repositories {
+    mavenCentral()
 }

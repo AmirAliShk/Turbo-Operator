@@ -10,11 +10,11 @@
     <androidx.cardview.widget.CardView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/_15sdp"
+        android:layout_marginRight="@dimen/_15sdp"
+        android:layout_marginBottom="@dimen/_15sdp"
         app:cardBackgroundColor="?attr/colorEditText"
         app:cardCornerRadius="@dimen/_10sdp"
-        android:layout_marginRight="@dimen/_15sdp"
-        android:layout_marginLeft="@dimen/_15sdp"
-        android:layout_marginBottom="@dimen/_15sdp"
         app:contentPadding="@dimen/_8sdp">
 
         <LinearLayout
@@ -39,6 +39,7 @@
                     android:text="تاریخ و ساعت :" />
 
                 <TextView
+                    android:id="@+id/timeAndDate"
                     style="@style/tripItemValue"
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
@@ -64,6 +65,7 @@
                     android:text="توضیحات :" />
 
                 <TextView
+                    android:id="@+id/description"
                     style="@style/tripItemValue"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
@@ -89,6 +91,7 @@
                     android:text="آدرس مبدا :" />
 
                 <TextView
+                    android:id="@+id/originAddress"
                     style="@style/tripItemValue"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
@@ -111,9 +114,10 @@
                     android:layout_height="match_parent"
                     android:layout_weight="1"
                     android:gravity="center_vertical"
-                    android:text="درس مقصد :" />
+                    android:text="آدرس مقصد :" />
 
                 <TextView
+                    android:id="@+id/destinationAddress"
                     style="@style/tripItemValue"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
@@ -139,6 +143,7 @@
                     android:text="ایستگاه مبدا :" />
 
                 <TextView
+                    android:id="@+id/originStation"
                     style="@style/tripItemValue"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
@@ -164,6 +169,7 @@
                     android:text="ایستگاه مقصد :" />
 
                 <TextView
+                    android:id="@+id/destinationStation"
                     style="@style/tripItemValue"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
@@ -263,39 +269,55 @@
             </LinearLayout>
 
             <androidx.cardview.widget.CardView
+                android:id="@+id/recheck"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                app:cardBackgroundColor="?attr/colorButton1"
+                android:layout_margin="@dimen/_5sdp"
                 android:background="@color/colorBlue"
-                app:cardCornerRadius="@dimen/_10sdp"
-                app:contentPadding="@dimen/_6sdp"
                 android:gravity="center"
-                android:layout_margin="@dimen/_5sdp">
+                app:cardBackgroundColor="?attr/colorButton1"
+                app:cardCornerRadius="@dimen/_10sdp"
+                app:contentPadding="@dimen/_6sdp">
 
-                <LinearLayout
+                <ViewFlipper
+                    android:id="@+id/vfRecheck"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal"
-                    android:gravity="center_horizontal">
+                    android:layout_height="wrap_content">
 
-                    <ImageView
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center_horizontal"
+                        android:orientation="horizontal">
+
+                        <ImageView
+                            android:layout_width="@dimen/_20sdp"
+                            android:layout_height="@dimen/_20sdp"
+                            android:layout_gravity="center"
+                            android:layout_marginLeft="@dimen/_10sdp"
+                            android:src="@drawable/ic_refresh" />
+
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:text="برررسی مجدد"
+                            android:textColor="?attr/colorPageTitle"
+                            android:textSize="@dimen/_15ssp"
+                            android:textStyle="bold" />
+
+                    </LinearLayout>
+
+                    <com.wang.avi.AVLoadingIndicatorView
                         android:layout_width="@dimen/_20sdp"
                         android:layout_height="@dimen/_20sdp"
-                        android:src="@drawable/ic_refresh"
                         android:layout_gravity="center"
-                        android:layout_marginLeft="@dimen/_10sdp" />
+                        app:indicatorColor="?attr/colorIcon3"
+                        app:indicatorName="BallBeatIndicator"/>
 
 
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="برررسی مجدد"
-                        android:textColor="?attr/colorPageTitle"
-                        android:textSize="@dimen/_15ssp"
-                        android:textStyle="bold"
-                        android:layout_gravity="center"/>
-
-                </LinearLayout>
+                </ViewFlipper>
 
             </androidx.cardview.widget.CardView>
 

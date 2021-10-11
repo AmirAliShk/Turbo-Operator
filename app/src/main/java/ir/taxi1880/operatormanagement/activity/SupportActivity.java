@@ -223,6 +223,7 @@ public class SupportActivity extends AppCompatActivity {
         MyApplication.configureAccount();
         unbinder = ButterKnife.bind(this, view);
         TypefaceUtil.overrideFonts(view);
+        getMistakeReason();
         mRipplePulseLayout = findViewById(R.id.layout_ripplepulse);
 
         supportViewPagerAdapter = new SupportViewPagerAdapter(this);
@@ -542,5 +543,33 @@ public class SupportActivity extends AppCompatActivity {
             finish();
         }
     }
+
+
+    private void getMistakeReason() {
+        RequestHelper.builder(EndPoints.GET_REASON_OPERATOR_MISTAKE)
+                .listener(getMistakeReasonsListener)
+                .get();
+    }
+
+    RequestHelper.Callback getMistakeReasonsListener = new RequestHelper.Callback() {
+        @Override
+        public void onResponse(Runnable reCall, Object... args) {
+            MyApplication.handler.post(()->{
+               try {
+                   JSONObject rawContent = new JSONObject(args[0].toString());
+                   Log.i("TAF",rawContent.toString());
+               }catch(Exception e)
+               {
+                   e.printStackTrace();
+               }
+            });
+
+        }
+
+        @Override
+        public void onFailure(Runnable reCall, Exception e) {
+            super.onFailure(reCall, e);
+        }
+    };
 
 }
