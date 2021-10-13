@@ -557,7 +557,15 @@ public class SupportActivity extends AppCompatActivity {
             MyApplication.handler.post(()->{
                try {
                    JSONObject rawContent = new JSONObject(args[0].toString());
-                   Log.i("TAF",rawContent.toString());
+                   boolean status = rawContent.getBoolean("success");
+                   String message = rawContent.getString("message");
+
+                   if (status)
+                   {
+                       String JArr = rawContent.getJSONArray("data").toString();
+                       MyApplication.prefManager.setMistakeReason(JArr);
+                       Log.i("TAF",MyApplication.prefManager.getMistakeReason());
+                   }
                }catch(Exception e)
                {
                    e.printStackTrace();

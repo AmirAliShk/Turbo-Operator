@@ -4,6 +4,7 @@ import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -378,6 +379,7 @@ public class DriverTripsDetailsFragment extends Fragment {
                     if (success) {
                         JSONObject data = tripObject.getJSONObject("data");
                         serviceDetails = tripObject.getJSONObject("data").toString();
+                        Log.i("TAF",serviceDetails);
                         serviceId = data.getString("serviceId");
                         int status = data.getInt("Status");
                         callDate = data.getString("callDate");

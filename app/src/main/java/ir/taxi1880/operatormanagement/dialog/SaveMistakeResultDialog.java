@@ -4,29 +4,38 @@ import android.app.Dialog;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
+import android.util.Log;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
+import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
+import android.widget.Spinner;
 import android.widget.Toast;
 import android.widget.ViewFlipper;
 
 import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 
+import org.json.JSONArray;
+import org.json.JSONException;
 import org.json.JSONObject;
+
+import java.util.ArrayList;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import butterknife.Unbinder;
 import ir.taxi1880.operatormanagement.R;
+import ir.taxi1880.operatormanagement.adapter.SpinnerAdapter;
 import ir.taxi1880.operatormanagement.app.EndPoints;
 import ir.taxi1880.operatormanagement.app.MyApplication;
 import ir.taxi1880.operatormanagement.dataBase.DataBase;
 import ir.taxi1880.operatormanagement.helper.TypefaceUtil;
+import ir.taxi1880.operatormanagement.model.MistakeReasonsModel;
 import ir.taxi1880.operatormanagement.okHttp.RequestHelper;
 import ir.taxi1880.operatormanagement.push.AvaCrashReporter;
 
@@ -45,6 +54,8 @@ public class SaveMistakeResultDialog {
     LocalBroadcastManager broadcaster;
     private boolean singleInstance = true;
     View view;
+    int reasonId;
+
 
     public interface MistakesResult {
         void onSuccess(boolean success);
@@ -80,6 +91,15 @@ public class SaveMistakeResultDialog {
 
     @BindView(R.id.edtAnotherOperator)
     EditText edtAnotherOperator;
+
+    @BindView(R.id.spinnerSaveMisRes)
+    Spinner reasonSpinner;
+
+    @OnClick(R.id.lLMainSaveMistake)
+    void onOpenSpinner()
+    {
+        reasonSpinner.performClick();
+    }
 
     @OnClick(R.id.btnSubmit)
     void onSubmit() {
@@ -137,9 +157,9 @@ public class SaveMistakeResultDialog {
         }
 
         int listenId = dataBase.getMistakesRow().getId();
-        if ( edtAnotherOperator.getText().toString().isEmpty()){
+        if (edtAnotherOperator.getText().toString().isEmpty()) {
             sipNumber = "0";
-        }else {
+        } else {
             sipNumber = edtAnotherOperator.getText().toString();
         }
 
@@ -180,6 +200,7 @@ public class SaveMistakeResultDialog {
         wlp.width = WindowManager.LayoutParams.MATCH_PARENT;
         wlp.windowAnimations = R.style.ExpandAnimation;
         tempDialog.getWindow().setAttributes(wlp);
+        initMistakeReasonsSpinner();
 
         dataBase = new DataBase(MyApplication.context);
         this.mistakesId = complaintId;
@@ -224,6 +245,46 @@ public class SaveMistakeResultDialog {
         tempDialog.show();
     }
 
+    private void initMistakeReasonsSpinner() {
+        ArrayList<MistakeReasonsModel> mistakeReasons = new ArrayList<>();
+        ArrayList<String> reasons = new ArrayList<>();
+        try {
+            JSONArray jReasons = new JSONArray(MyApplication.prefManager.getMistakeReason());
+            reasons.add(0, "یک دلیل انتخاب شود ...");
+            for (int i = 0; i < jReasons.length(); i++) {
+                JSONObject reasonObj = jReasons.getJSONObject(i);
+
+                MistakeReasonsModel mistakeReason = new MistakeReasonsModel();
+                mistakeReason.setId(reasonObj.getInt("id"));
+                mistakeReason.setReasons(reasonObj.getString("reason"));
+
+                mistakeReasons.add(mistakeReason);
+                reasons.add(i + 1, reasonObj.getString("reason"));
+            }
+            reasonSpinner.setAdapter(new SpinnerAdapter(MyApplication.context, R.layout.item_spinner, reasons));
+            reasonSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                @Override
+                public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                    if (position == 0)
+                    {
+                        reasonId = 0;
+                        return;
+                    }
+                    reasonId = mistakeReasons.get(position - 1).getId();
+                    Log.i("TAF",reasonId+"");
+                }
+
+                @Override
+                public void onNothingSelected(AdapterView<?> parent) {
+
+                }
+            });
+
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+    }
+
     private void sendResult(String culprit, String result, int listenId, String sipNumber) {
         LoadingDialog.makeCancelableLoader();
         if (vfLoader != null)
@@ -233,6 +294,7 @@ public class SaveMistakeResultDialog {
                 .addParam("result", result)
                 .addParam("listenId", listenId)
                 .addParam("sipNumber", sipNumber)
+                .addParam("reasonId", reasonId)
                 .listener(sendResult)
                 .put();
     }

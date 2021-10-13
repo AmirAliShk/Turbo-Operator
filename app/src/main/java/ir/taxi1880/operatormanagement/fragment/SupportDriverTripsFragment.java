@@ -404,6 +404,7 @@ public class SupportDriverTripsFragment extends Fragment {
                     Boolean success = tripObject.getBoolean("success");
                     String message = tripObject.getString("message");
                     JSONArray data = tripObject.getJSONArray("data");
+                    Log.i("TAF",tripObject.toString());
 
                     if (success) {
                         for (int i = 0; i < data.length(); i++) {

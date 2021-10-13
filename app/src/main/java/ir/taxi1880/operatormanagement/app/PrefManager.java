@@ -5,6 +5,8 @@ import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
 import android.util.Log;
 
+import org.json.JSONArray;
+
 
 public class PrefManager {
 
@@ -77,6 +79,7 @@ public class PrefManager {
     private static final String ACCESS_DRIVER_SUPPORT = "accessDriverSupport";
     private static final String ACTIVE_IN_DRIVER_SUPPORT = "activeInDriverSupport";
     private static final String KEY_ENABLE_DARK_MODE = "KEY_ENABLE_DARK_MODE";
+    private static final String MISTAKE_REASON = "mistakeReason";
 
 
     public boolean isDarkMode() {
@@ -94,6 +97,16 @@ public class PrefManager {
         this._context = context;
         pref = _context.getSharedPreferences(PREF_NAME, PRIVATE_MODE);
         editor = pref.edit();
+    }
+    public void setMistakeReason(String reasons)
+    {
+        editor.putString(MISTAKE_REASON,reasons);
+        editor.commit();
+    }
+
+    public String getMistakeReason()
+    {
+        return pref.getString(MISTAKE_REASON,"");
     }
 
     public boolean isActiveInSupport() {

@@ -34,7 +34,7 @@ class OperatorMistakesFragment : Fragment() {
                 .get()
         }
 
-        var operatorMistakesListener = object : RequestHelper.Callback() {
+        private var operatorMistakesListener = object : RequestHelper.Callback() {
             override fun onResponse(reCall: Runnable?, vararg args: Any?) {
                 MyApplication.handler.post {
                     try {
@@ -59,7 +59,8 @@ class OperatorMistakesFragment : Fragment() {
                                     jsonItem.getInt("destinationStation"),
                                     jsonItem.getString("sourceAddress"),
                                     jsonItem.getInt("sourceStation"),
-                                    jsonItem.getString("reason")
+                                    jsonItem.getString("reason"),
+                                    jsonItem.getInt("status")
                                 )
                                 mistakeArr.add(opMisModel)
 
@@ -106,6 +107,7 @@ class OperatorMistakesFragment : Fragment() {
         TypefaceUtil.overrideFonts(binding.root)
 
         getOperatorMistakes()
+        binding.imgBack.setOnClickListener { MyApplication.currentActivity.onBackPressed() }
         binding.refreshPage.setOnRefreshListener { getOperatorMistakes() }
         binding.imgRefresh.setOnClickListener { getOperatorMistakes() }
         binding.imgRefreshFail.setOnClickListener { getOperatorMistakes() }

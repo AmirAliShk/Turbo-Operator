@@ -12,5 +12,6 @@ data class OperatorMistakeModel(
     var destinationStation: Int,
     var sourceAddress:String,
     var sourceStation:Int,
-    var reason:String
+    var reason:String,
+    var misStatus:Int
     )

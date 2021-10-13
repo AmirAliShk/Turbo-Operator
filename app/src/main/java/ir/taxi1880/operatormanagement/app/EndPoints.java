@@ -9,7 +9,7 @@ public class EndPoints {
 //    http://172.16.2.210:1885/api/findway/citylatinname/address
 
     public static final String IP =
-            "http://192.168.2.5";
+            "http://turbotaxi.ir";
 
     public static final String HAKWEYE_IP =
             "http://turbotaxi.ir";
@@ -102,7 +102,7 @@ public class EndPoints {
     public static final String ARCHIVE_ORIGIN = SUPPORT_WEBSERVICE_PATH + "archiveAddress";
     public static final String ARCHIVE_DESTINATION = SUPPORT_WEBSERVICE_PATH + "archiveDestination";
     public static final String LISTEN = SUPPORT_WEBSERVICE_PATH + "listen";
-    public static final String V1_LISTEN = SUPPORT_WEBSERVICE_PATH + "v1/listen";
+    public static final String V1_LISTEN = SUPPORT_WEBSERVICE_PATH + "v2/listen";
     public static final String ACCEPT_LISTEN = LISTEN_WEBSERVICE_PATH + "accept";
     public static final String ACTIVATE_SUPPORT = SUPPORT_WEBSERVICE_PATH + "activate";
     public static final String DEACTIVATE_SUPPORT = SUPPORT_WEBSERVICE_PATH + "deActivate";
