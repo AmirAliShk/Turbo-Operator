@@ -29,14 +29,12 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:gravity="center"
-                android:visibility="gone"
                 android:orientation="horizontal">
 
                 <ImageView
                     android:id="@+id/situationImg"
-                    android:layout_width="0dp"
-                    android:layout_height="match_parent"
-                    android:layout_weight=".5"
+                    android:layout_width="@dimen/_20sdp"
+                    android:layout_height="@dimen/_20sdp"
                     android:gravity="center_vertical"
                     android:layout_marginRight="@dimen/_5sdp"
                     android:layout_marginEnd="@dimen/_5sdp" />
@@ -44,8 +42,9 @@
                 <TextView
                     android:id="@+id/situationTxt"
                     android:layout_width="0dp"
-                    android:layout_height="match_parent"
+                    android:layout_height="wrap_content"
                     android:layout_weight="5"
+                    android:textSize="@dimen/_15ssp"
                     android:gravity="center_vertical" />
 
             </LinearLayout>
@@ -60,39 +59,13 @@
                 <TextView
                     style="@style/tripItemTitle"
                     android:layout_width="0dp"
-                    android:layout_height="match_parent"
+                    android:layout_height="wrap_content"
                     android:layout_weight="1.5"
                     android:gravity="center_vertical"
                     android:text="تاریخ و ساعت :" />
 
                 <TextView
                     android:id="@+id/timeAndDate"
-                    style="@style/tripItemValue"
-                    android:layout_width="0dp"
-                    android:layout_height="match_parent"
-                    android:layout_weight="3.5"
-                    android:gravity="center_vertical"
-                    android:textSize="@dimen/_15ssp" />
-
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:gravity="center"
-                android:orientation="horizontal"
-                android:padding="@dimen/_5sdp">
-
-                <TextView
-                    style="@style/tripItemTitle"
-                    android:layout_width="0dp"
-                    android:layout_height="match_parent"
-                    android:layout_weight="1.5"
-                    android:gravity="center_vertical"
-                    android:text="توضیحات :" />
-
-                <TextView
-                    android:id="@+id/description"
                     style="@style/tripItemValue"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
@@ -105,14 +78,39 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:gravity="center"
+                android:orientation="horizontal"
+                android:layout_gravity="top|right"
+                android:padding="@dimen/_5sdp">
+
+                <TextView
+                    style="@style/tripItemTitle"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:gravity="center_vertical"
+                    android:text="توضیحات :" />
+
+                <TextView
+                    android:id="@+id/description"
+                    style="@style/tripItemValue"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="3.5"
+                    android:textSize="@dimen/_15ssp" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="top|right"
                 android:orientation="horizontal"
                 android:padding="@dimen/_5sdp">
 
                 <TextView
                     style="@style/tripItemTitle"
                     android:layout_width="0dp"
-                    android:layout_height="match_parent"
+                    android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:gravity="center_vertical"
                     android:text="آدرس مبدا :" />
@@ -123,7 +121,6 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="3.5"
-                    android:gravity="center_vertical"
                     android:textSize="@dimen/_15ssp" />
 
             </LinearLayout>
@@ -131,14 +128,14 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:gravity="center"
+                android:gravity="top|right"
                 android:orientation="horizontal"
                 android:padding="@dimen/_5sdp">
 
                 <TextView
                     style="@style/tripItemTitle"
                     android:layout_width="0dp"
-                    android:layout_height="match_parent"
+                    android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:gravity="center_vertical"
                     android:text="آدرس مقصد :" />
@@ -149,7 +146,6 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="3.5"
-                    android:gravity="center_vertical"
                     android:textSize="@dimen/_15ssp" />
 
             </LinearLayout>
@@ -164,7 +160,7 @@
                 <TextView
                     style="@style/tripItemTitle"
                     android:layout_width="0dp"
-                    android:layout_height="match_parent"
+                    android:layout_height="wrap_content"
                     android:layout_weight="1.5"
                     android:gravity="center_vertical"
                     android:text="ایستگاه مبدا :" />
@@ -190,7 +186,7 @@
                 <TextView
                     style="@style/tripItemTitle"
                     android:layout_width="0dp"
-                    android:layout_height="match_parent"
+                    android:layout_height="wrap_content"
                     android:layout_weight="1.5"
                     android:gravity="center_vertical"
                     android:text="ایستگاه مقصد :" />

@@ -6,12 +6,15 @@ import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Gravity;
+import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
+import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import com.downloader.PRDownloader;
 
+import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import butterknife.Unbinder;
@@ -29,6 +32,7 @@ public class PendingMistakesOptionsDialog {
     static Dialog dialog;
     String tell;
     String mobile;
+
 
     @OnClick(R.id.blrView)
     void onBlur() {
@@ -81,8 +85,10 @@ public class PendingMistakesOptionsDialog {
         }, 0, false, "", false);
         dismiss();
     }
+    @BindView(R.id.llGuestCalls)
+    LinearLayout llGuestCall;
 
-    public void show(String tell, String mobile) {
+    public void show(String tell, String mobile , boolean secondTimeCheckMis) {
         if (MyApplication.currentActivity == null || MyApplication.currentActivity.isFinishing())
             return;
         dialog = new Dialog(MyApplication.currentActivity);
@@ -100,6 +106,11 @@ public class PendingMistakesOptionsDialog {
         dialog.setCancelable(true);
         this.tell = tell;
         this.mobile = mobile;
+
+        if (secondTimeCheckMis)
+        {
+            llGuestCall.setVisibility(View.GONE);
+        }
 
         dialog.show();
     }

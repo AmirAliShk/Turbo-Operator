@@ -64,6 +64,7 @@ public class PendingMistakesFragment extends Fragment {
     MediaPlayer mediaPlayer;
     AllMistakesModel model;
     LocalBroadcastManager broadcaster;
+    boolean SecondTimeCheckMis = false;
 
     @OnClick(R.id.btnSaveResult)
     void onSaveResult() {
@@ -86,7 +87,7 @@ public class PendingMistakesFragment extends Fragment {
                         if (vfSaveResult != null)
                             vfSaveResult.setDisplayedChild(0);
                     }
-                });
+                } );
     }
 
     @OnClick(R.id.btnOptions)
@@ -95,7 +96,7 @@ public class PendingMistakesFragment extends Fragment {
         String tell = dataBase.getMistakesRow().getTell();
         String mobile = dataBase.getMistakesRow().getMobile();
         new PendingMistakesOptionsDialog()
-                .show(tell, mobile);
+                .show(tell, mobile , SecondTimeCheckMis);
     }
 
     @BindView(R.id.txtUserCode)
@@ -368,8 +369,11 @@ public class PendingMistakesFragment extends Fragment {
             txtDestStation.setText(StringHelper.toPersianDigits(model.getDestStation()));
             txtDestStation.setText(StringHelper.toPersianDigits(model.getDestStation()));
             if (model.getMistakeReason() == null || model.getMistakeReason().isEmpty()) {
+                SecondTimeCheckMis = false;
                 llMistakeReason.setVisibility(View.GONE);
+
             } else {
+                SecondTimeCheckMis = true;
                 txtMistakeReason.setText(StringHelper.toPersianDigits(model.getMistakeReason()));
             }
             txtPrice.setText(StringHelper.toPersianDigits(StringHelper.setComma(model.getPrice())));

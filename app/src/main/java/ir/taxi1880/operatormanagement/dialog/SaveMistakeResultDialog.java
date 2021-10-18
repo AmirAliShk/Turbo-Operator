@@ -112,6 +112,10 @@ public class SaveMistakeResultDialog {
             return;
         }
 
+        if (reasonId == 0) {
+            MyApplication.Toast("لطفا دلیل را انتخاب کنید.", Toast.LENGTH_SHORT);
+            return;
+        }
         switch (rgCulprit.getCheckedRadioButtonId()) {
             case R.id.rbTripRegistrationOperatorBlame:
                 culprit = "1";

@@ -108,13 +108,14 @@ public class AllMistakesAdapter extends RecyclerView.Adapter<AllMistakesAdapter.
                     JSONObject obj = new JSONObject(args[0].toString());
                     boolean success = obj.getBoolean("success");
                     String message = obj.getString("message");
-                    Log.i("TAF",obj.toString());
+                    Log.i("TAF", obj.toString());
                     if (success) {
                         JSONObject data = obj.getJSONObject("data");
                         int status = data.getInt("status");
-                        if (status) {
+                        if (status == 0) {
                             new GeneralDialog()
-                                    .message("با موفقیت به لیست در حال بررسی اضافه شد")
+//                                        .message("با موفقیت به لیست در حال بررسی اضافه شد")
+                                    .message(message)
                                     .cancelable(false)
                                     .firstButton("باشه", () -> {
                                         dataBase.insertMistakes(allMistakesModels.get(position));
@@ -133,11 +134,19 @@ public class AllMistakesAdapter extends RecyclerView.Adapter<AllMistakesAdapter.
 
                                     })
                                     .show();
+
+                        } else {
+                            new GeneralDialog()
+                                    .message(message)
+                                    .cancelable(false)
+                                    .secondButton("فهمیدم", null)
+                                    .show();
                         }
+
                     }
                 } catch (Exception e) {
                     e.printStackTrace();
-                    AvaCrashReporter.send(e,"AllMistakesAdapter,getAccept");
+                    AvaCrashReporter.send(e, "AllMistakesAdapter,getAccept");
                 }
                 if (viewFlipper != null) {
                     viewFlipper.setDisplayedChild(0);

@@ -6,11 +6,11 @@ import android.net.Uri
 import android.os.AsyncTask
 import android.os.Build
 import android.os.Environment
+import android.text.style.TtsSpan
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.recyclerview.widget.RecyclerView
 import com.downloader.Error
 import com.downloader.OnDownloadListener
@@ -20,6 +20,7 @@ import ir.taxi1880.operatormanagement.app.EndPoints
 import ir.taxi1880.operatormanagement.app.MyApplication
 import ir.taxi1880.operatormanagement.databinding.ItemOperatorMistakeListBinding
 import ir.taxi1880.operatormanagement.fragment.OperatorMistakesFragment
+import ir.taxi1880.operatormanagement.helper.DateHelper
 import ir.taxi1880.operatormanagement.helper.FileHelper
 import ir.taxi1880.operatormanagement.helper.StringHelper
 import ir.taxi1880.operatormanagement.helper.TypefaceUtil
@@ -65,7 +66,7 @@ class OperatorMistakesAdapter() : RecyclerView.Adapter<OperatorMistakesAdapter.O
             parent,
             false
         )
-        TypefaceUtil.overrideFonts(binding.root)
+        TypefaceUtil.overrideFonts(binding.root, MyApplication.IraSanSMedume)
         return OpMistakeHolder(binding)
     }
 
@@ -77,12 +78,10 @@ class OperatorMistakesAdapter() : RecyclerView.Adapter<OperatorMistakesAdapter.O
         val opMistake = opMistakesA[position]
 
 
-//        holder.binding.timeAndDate.text = StringHelper.toPersianDigits(
-//            DateHelper.strPersianTen(DateHelper.parseDate(opMistake.serviceDate)) + " " + opMistake.serviceTime.substring(
-//                0,
-//                5
-//            )
-//        )
+        holder.binding.timeAndDate.text =
+            StringHelper.toPersianDigits(DateHelper.strPersianTree(
+                DateHelper.parseDate(opMistake.serviceDate)) + " " + opMistake.serviceTime.substring(0,5)
+           )
         holder.binding.description.text = StringHelper.toPersianDigits(opMistake.description)
         holder.binding.originAddress.text = StringHelper.toPersianDigits(opMistake.sourceAddress)
         holder.binding.originStation.text =
