@@ -11,6 +11,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.ViewFlipper;
 
@@ -32,7 +33,6 @@ import org.json.JSONObject;
 import java.io.File;
 import java.net.MalformedURLException;
 import java.net.URL;
-import java.util.Date;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -145,6 +145,12 @@ public class PendingMistakesFragment extends Fragment {
     @BindView(R.id.txtDestStation)
     TextView txtDestStation;
 
+    @BindView(R.id.txtMistakeReason)
+    TextView txtMistakeReason;
+
+    @BindView(R.id.llMistakeReason)
+    LinearLayout llMistakeReason;
+
     @OnClick(R.id.imgPlay)
     void onPlay() {
         if (vfPlayPause != null)
@@ -154,7 +160,7 @@ public class PendingMistakesFragment extends Fragment {
         File file;
         if (Build.VERSION.SDK_INT > Build.VERSION_CODES.O) {
             file = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS)
-                    + File.separator + "operatorParsian/"+voiceName);
+                    + File.separator + "operatorParsian/" + voiceName);
         } else {
             file = new File(MyApplication.DIR_ROOT + MyApplication.VOICE_FOLDER_NAME + "/" + voiceName);
         }
@@ -350,6 +356,7 @@ public class PendingMistakesFragment extends Fragment {
     void getMistakesFromDB() {
         if (dataBase.getMistakesCount() > 0) {
             model = dataBase.getMistakesRow();
+            Log.i("TAF", model.toString());
             txtOriginAddress.setText(StringHelper.toPersianDigits(model.getAddress()));
             txtPassengerName.setText(StringHelper.toPersianDigits(model.getCustomerName()));
             txtPassengerPhone.setText(StringHelper.toPersianDigits(model.getTell()));
@@ -359,6 +366,12 @@ public class PendingMistakesFragment extends Fragment {
             txtTripDate.setText(StringHelper.toPersianDigits(DateHelper.strPersianTen(DateHelper.parseDate(model.getDate())) + " " + model.getTime().substring(0, 5)));
             txtDestAddress.setText(StringHelper.toPersianDigits(model.getDestination()));
             txtDestStation.setText(StringHelper.toPersianDigits(model.getDestStation()));
+            txtDestStation.setText(StringHelper.toPersianDigits(model.getDestStation()));
+            if (model.getMistakeReason() == null || model.getMistakeReason().isEmpty()) {
+                llMistakeReason.setVisibility(View.GONE);
+            } else {
+                txtMistakeReason.setText(StringHelper.toPersianDigits(model.getMistakeReason()));
+            }
             txtPrice.setText(StringHelper.toPersianDigits(StringHelper.setComma(model.getPrice())));
             txtUserCode.setText(StringHelper.toPersianDigits(model.getUserCode() + ""));
             txtUserCodeOrigin.setText(StringHelper.toPersianDigits(model.getStationRegisterUser() + ""));
@@ -455,13 +468,15 @@ public class PendingMistakesFragment extends Fragment {
                     JSONObject listenObj = new JSONObject(args[0].toString());
                     boolean success = listenObj.getBoolean("success");
                     String message = listenObj.getString("message");
-                    Log.i("TAF",listenObj.toString());
+                    Log.i("TAF getAccepted",listenObj.toString());
+
                     if (success) {
                         JSONArray dataArr = listenObj.getJSONArray("data");
                         for (int i = 0; i < dataArr.length(); i++) {
                             JSONObject dataObj = dataArr.getJSONObject(i);
 
                             model = new AllMistakesModel();
+
 
                             model.setId(dataObj.getInt("id"));
                             model.setServiceCode(dataObj.getInt("serviceCode"));
@@ -482,6 +497,7 @@ public class PendingMistakesFragment extends Fragment {
                             model.setVoipId(dataObj.getString("VoipId"));
                             model.setStationCode(dataObj.getInt("stationCode"));
                             model.setCity(dataObj.getInt("cityId"));
+                            model.setMistakeReason(dataObj.getString("reasonMistake"));
                             model.setDestStation(dataObj.getString("destinationStation"));
                             model.setDestination(dataObj.getString("destinationAddress"));
                             model.setPrice(dataObj.getString("servicePrice"));

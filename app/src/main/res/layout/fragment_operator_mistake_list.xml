@@ -119,10 +119,7 @@
             app:indicatorColor="?attr/colorIcon1"
             app:indicatorName="BallBeatIndicator" />
 
-        <com.dinuscxj.refresh.RecyclerRefreshLayout
-            android:id="@+id/refreshPage"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent">
+
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/opMistakesList"
@@ -131,7 +128,6 @@
                 app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                 tools:listitem="@layout/item_operator_mistake_list" />
 
-        </com.dinuscxj.refresh.RecyclerRefreshLayout>
 
         <LinearLayout
             android:layout_width="match_parent"

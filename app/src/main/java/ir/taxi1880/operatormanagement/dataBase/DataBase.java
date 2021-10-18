@@ -15,7 +15,7 @@ import ir.taxi1880.operatormanagement.model.CityModel;
 
 public class DataBase extends SQLiteOpenHelper {
     // TODO when you change the entitys structure, please increase the version of dataBase.
-    private static int VERSION = 5;
+    private static int VERSION = 6;
     //TODO Do not change names any way
     private static String DB_NAME = "operators";
     private static String TRIP_TABLE = "Trip";
@@ -67,6 +67,7 @@ public class DataBase extends SQLiteOpenHelper {
     private static String COLUMN_MISTAKES_SEND_TIME = "mistakesSendTime";
     private static String COLUMN_MISTAKE_DESTINATION = "destination";
     private static String COLUMN_MISTAKES_DESTINATION_CODE = "destStation";
+    private static String COLUMN_MISTAKES_REASONS = "mistakeReason";
     private static String COLUMN_MISTAKES_PRICE = "price";
 
     //******************************************************************************************
@@ -359,6 +360,7 @@ public class DataBase extends SQLiteOpenHelper {
                 COLUMN_MISTAKES_SEND_TIME + " TEXT," +
                 COLUMN_MISTAKE_DESTINATION + " TEXT," +
                 COLUMN_MISTAKES_DESTINATION_CODE + " TEXT," +
+                COLUMN_MISTAKES_REASONS + " TEXT," +
                 COLUMN_MISTAKES_PRICE + " TEXT," +
                 COLUMN_MISTAKES_STATION_CODE + " INTEGER," +
                 COLUMN_MISTAKES_PASSENGER_VOICE + " TEXT )"
@@ -389,6 +391,7 @@ public class DataBase extends SQLiteOpenHelper {
             contentValues.put(COLUMN_MISTAKES_SEND_TIME, mistakesModel.getSendTime());
             contentValues.put(COLUMN_MISTAKES_DESTINATION_CODE, mistakesModel.getDestStation());
             contentValues.put(COLUMN_MISTAKE_DESTINATION, mistakesModel.getDestination());
+            contentValues.put(COLUMN_MISTAKES_REASONS,mistakesModel.getMistakeReason());
             contentValues.put(COLUMN_MISTAKES_PRICE, mistakesModel.getPrice());
             contentValues.put(COLUMN_MISTAKES_PASSENGER_VOICE, mistakesModel.getVoipId());
             sqLiteDatabase.insertWithOnConflict(MISTAKES_TABLE, COLUMN_MISTAKES_ID, contentValues, SQLiteDatabase.CONFLICT_REPLACE);
@@ -424,6 +427,7 @@ public class DataBase extends SQLiteOpenHelper {
         pendingMistakesModel.setSendTime(res.getString(res.getColumnIndex(COLUMN_MISTAKES_SEND_TIME)));
         pendingMistakesModel.setDestination(res.getString(res.getColumnIndex(COLUMN_MISTAKE_DESTINATION)));
         pendingMistakesModel.setDestStation(res.getString(res.getColumnIndex(COLUMN_MISTAKES_DESTINATION_CODE)));
+        pendingMistakesModel.setMistakeReason(res.getString(res.getColumnIndex(COLUMN_MISTAKES_REASONS)));
         pendingMistakesModel.setPrice(res.getString(res.getColumnIndex(COLUMN_MISTAKES_PRICE)));
         pendingMistakesModel.setStationCode(res.getInt(res.getColumnIndex(COLUMN_MISTAKES_STATION_CODE)));
         pendingMistakesModel.setVoipId(res.getString(res.getColumnIndex(COLUMN_MISTAKES_PASSENGER_VOICE)));
@@ -457,6 +461,7 @@ public class DataBase extends SQLiteOpenHelper {
         pendingMistakesModel.setSendTime(res.getString(res.getColumnIndex(COLUMN_MISTAKES_SEND_TIME)));
         pendingMistakesModel.setDestination(res.getString(res.getColumnIndex(COLUMN_MISTAKE_DESTINATION)));
         pendingMistakesModel.setDestStation(res.getString(res.getColumnIndex(COLUMN_MISTAKES_DESTINATION_CODE)));
+        pendingMistakesModel.setMistakeReason(res.getString(res.getColumnIndex(COLUMN_MISTAKES_REASONS)));
         pendingMistakesModel.setPrice(res.getString(res.getColumnIndex(COLUMN_MISTAKES_PRICE)));
         pendingMistakesModel.setStationCode(res.getInt(res.getColumnIndex(COLUMN_MISTAKES_STATION_CODE)));
         pendingMistakesModel.setVoipId(res.getString(res.getColumnIndex(COLUMN_MISTAKES_PASSENGER_VOICE)));

@@ -26,6 +26,7 @@ import ir.taxi1880.operatormanagement.helper.StringHelper;
 import ir.taxi1880.operatormanagement.helper.TypefaceUtil;
 import ir.taxi1880.operatormanagement.model.AllMistakesModel;
 import ir.taxi1880.operatormanagement.okHttp.RequestHelper;
+import ir.taxi1880.operatormanagement.push.AvaCrashReporter;
 
 import static ir.taxi1880.operatormanagement.app.Keys.KEY_NEW_MISTAKE_COUNT;
 import static ir.taxi1880.operatormanagement.app.Keys.KEY_PENDING_MISTAKE_COUNT;
@@ -107,9 +108,10 @@ public class AllMistakesAdapter extends RecyclerView.Adapter<AllMistakesAdapter.
                     JSONObject obj = new JSONObject(args[0].toString());
                     boolean success = obj.getBoolean("success");
                     String message = obj.getString("message");
+                    Log.i("TAF",obj.toString());
                     if (success) {
                         JSONObject data = obj.getJSONObject("data");
-                        boolean status = data.getBoolean("status");
+                        int status = data.getInt("status");
                         if (status) {
                             new GeneralDialog()
                                     .message("با موفقیت به لیست در حال بررسی اضافه شد")
@@ -135,6 +137,7 @@ public class AllMistakesAdapter extends RecyclerView.Adapter<AllMistakesAdapter.
                     }
                 } catch (Exception e) {
                     e.printStackTrace();
+                    AvaCrashReporter.send(e,"AllMistakesAdapter,getAccept");
                 }
                 if (viewFlipper != null) {
                     viewFlipper.setDisplayedChild(0);

@@ -22,6 +22,16 @@ public class AllMistakesModel {
     private String conTime;
     private String sendTime;
     private String VoipId;
+
+    public String getMistakeReason() {
+        return mistakeReason;
+    }
+
+    public void setMistakeReason(String mistakeReason) {
+        this.mistakeReason = mistakeReason;
+    }
+
+    private String mistakeReason;
     private String price;
 
     public int getDestStationRegisterUser() {

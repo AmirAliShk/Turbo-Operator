@@ -1,5 +1,6 @@
 package ir.taxi1880.operatormanagement.adapter
 
+import android.graphics.Color
 import android.media.MediaPlayer
 import android.net.Uri
 import android.os.AsyncTask
@@ -7,20 +8,18 @@ import android.os.Build
 import android.os.Environment
 import android.util.Log
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.recyclerview.widget.RecyclerView
 import com.downloader.Error
 import com.downloader.OnDownloadListener
 import com.downloader.PRDownloader
-import com.warkiz.widget.IndicatorSeekBar
-import com.warkiz.widget.OnSeekChangeListener
-import com.warkiz.widget.SeekParams
+import ir.taxi1880.operatormanagement.R
 import ir.taxi1880.operatormanagement.app.EndPoints
 import ir.taxi1880.operatormanagement.app.MyApplication
 import ir.taxi1880.operatormanagement.databinding.ItemOperatorMistakeListBinding
 import ir.taxi1880.operatormanagement.fragment.OperatorMistakesFragment
-import ir.taxi1880.operatormanagement.helper.DateHelper
 import ir.taxi1880.operatormanagement.helper.FileHelper
 import ir.taxi1880.operatormanagement.helper.StringHelper
 import ir.taxi1880.operatormanagement.helper.TypefaceUtil
@@ -39,9 +38,7 @@ class OperatorMistakesAdapter() : RecyclerView.Adapter<OperatorMistakesAdapter.O
     private var opMistakesA: ArrayList<OperatorMistakeModel> = ArrayList()
     lateinit var aHolder: OpMistakeHolder
 
-    var TOTAL_VOICE_DURATION: Float? = null
-
-    lateinit var mediaPlayer: MediaPlayer
+    var mediaPlayer: MediaPlayer? = null
 
 
     constructor(opMistakes: ArrayList<OperatorMistakeModel>) : this() {
@@ -55,6 +52,8 @@ class OperatorMistakesAdapter() : RecyclerView.Adapter<OperatorMistakesAdapter.O
                 return null
             }
         }
+
+        var TOTAL_VOICE_DURATION: Float? = null
     }
 
     class OpMistakeHolder(val binding: ItemOperatorMistakeListBinding) :
@@ -70,17 +69,20 @@ class OperatorMistakesAdapter() : RecyclerView.Adapter<OperatorMistakesAdapter.O
         return OpMistakeHolder(binding)
     }
 
+    override fun getItemCount(): Int {
+        return opMistakesA.size
+    }
+
     override fun onBindViewHolder(holder: OpMistakeHolder, position: Int) {
         val opMistake = opMistakesA[position]
-        aHolder = OpMistakeHolder(holder.binding)
 
 
-        holder.binding.timeAndDate.text = StringHelper.toPersianDigits(
-            DateHelper.strPersianTen(DateHelper.parseDate(opMistake.serviceDate)) + " " + opMistake.serviceTime.substring(
-                0,
-                5
-            )
-        )
+//        holder.binding.timeAndDate.text = StringHelper.toPersianDigits(
+//            DateHelper.strPersianTen(DateHelper.parseDate(opMistake.serviceDate)) + " " + opMistake.serviceTime.substring(
+//                0,
+//                5
+//            )
+//        )
         holder.binding.description.text = StringHelper.toPersianDigits(opMistake.description)
         holder.binding.originAddress.text = StringHelper.toPersianDigits(opMistake.sourceAddress)
         holder.binding.originStation.text =
@@ -90,30 +92,45 @@ class OperatorMistakesAdapter() : RecyclerView.Adapter<OperatorMistakesAdapter.O
         holder.binding.destinationStation.text =
             StringHelper.toPersianDigits(opMistake.destinationStation.toString())
         when (opMistake.misStatus) {
-            0 -> {
-                holder.binding.recheck.setOnClickListener {
+            1 -> {
+                holder.binding.recheck.visibility = View.GONE
+                holder.binding.situationTxt.text = "بررسی نشده"
+                holder.binding.situationTxt.setTextColor(Color.parseColor("#f44336"))
+                holder.binding.situationImg.setImageResource(R.drawable.ic_false)
 
-                    aHolder = holder
+            }
+            2 -> {
+                holder.binding.recheck.visibility = View.GONE
+                holder.binding.llSituation.visibility = View.VISIBLE
+                holder.binding.situationTxt.text = "در حال بررسی"
+                holder.binding.situationTxt.setTextColor(Color.parseColor("#1976d2"))
+                holder.binding.situationImg.setImageResource(R.drawable.ic_pennding)
+            }
+            3 -> {
+                holder.binding.recheck.visibility = View.VISIBLE
+                holder.binding.llSituation.visibility = View.VISIBLE
+                holder.binding.situationTxt.text = "بررسی شده"
+                holder.binding.situationTxt.setTextColor(Color.parseColor("#388e3c"))
+                holder.binding.situationImg.setImageResource(R.drawable.ic_reviewed)
+
+                holder.binding.recheck.setOnClickListener {
+                    aHolder = OpMistakeHolder(holder.binding)
                     aHolder.binding.vfRecheck.displayedChild = 1
+
                     RequestHelper.builder(EndPoints.RECHECK_OPERATOR_MISTAKE)
                         .addParam("mistakeId", opMistake.id)
                         .listener(recheckListener)
                         .put()
+
+
                 }
-            }
-            1 -> {
-                aHolder.binding.recheck.isEnabled = false
-                aHolder.binding.btnTxt.text = "در حال بررسی"
-            }
-            2 -> {
-                aHolder.binding.recheck.isEnabled = false
-                aHolder.binding.btnTxt.text = "بررسی شده"
             }
         }
 
 
         holder.binding.imgplay.setOnClickListener {
-            if (mediaPlayer.isPlaying) {
+            aHolder = OpMistakeHolder(holder.binding)
+            if (mediaPlayer?.isPlaying == true) {
                 pauseVoice()
             }
             holder.binding.vfPlayPause.displayedChild = 1
@@ -134,7 +151,6 @@ class OperatorMistakesAdapter() : RecyclerView.Adapter<OperatorMistakesAdapter.O
                     playVoice()
                 }
                 voipId == "0" -> {
-                    MyApplication.Toast("صوتی برای این تماس وجود ندارد", Toast.LENGTH_SHORT)
                     holder.binding.vfVoiceStatus.displayedChild = 1
                     holder.binding.vfPlayPause.displayedChild = 0
                 }
@@ -144,29 +160,52 @@ class OperatorMistakesAdapter() : RecyclerView.Adapter<OperatorMistakesAdapter.O
             }
 
         }
-        holder.binding.skbTimer.onSeekChangeListener = object : OnSeekChangeListener {
-            override fun onSeeking(seekParams: SeekParams?) {
-                val timeRemaining = seekParams?.progress!! / 1000f
-                val strTimeRemaining = String.format(
-                    Locale("en_US"),
-                    "%02d:%02d",
-                    timeRemaining / 60,
-                    timeRemaining % 60
-                )
-            }
 
-            override fun onStartTrackingTouch(seekBar: IndicatorSeekBar?) {
-                TODO("Not yet implemented")
-            }
+//        holder.binding.skbTimer.onSeekChangeListener = object : OnSeekChangeListener {
+//            override fun onSeeking(seekParams: SeekParams?) {
+//            }
+//
+//            override fun onStartTrackingTouch(seekBar: IndicatorSeekBar?) {
+//            }
+//
+//            override fun onStopTrackingTouch(seekBar: IndicatorSeekBar?) {
+//                seekBar?.let { mediaPlayer?.seekTo(it.progress) }
+//            }
+//
+//        }
 
-            override fun onStopTrackingTouch(seekBar: IndicatorSeekBar?) {
-                seekBar?.let { mediaPlayer.seekTo(it.progress) }
-            }
-
-        }
         holder.binding.imgPause.setOnClickListener {
             pauseVoice()
         }
+    }
+
+    private var recheckListener = object : RequestHelper.Callback() {
+        override fun onResponse(reCall: Runnable?, vararg args: Any?) {
+            MyApplication.handler.post {
+                aHolder.binding.vfRecheck.displayedChild = 0
+
+                try {
+                    val rawContent = JSONObject(args[0].toString())
+                    Log.i("TAF", rawContent.toString())
+                    val status = rawContent.getJSONObject("data").getBoolean("status")
+                    if (status) {
+                        OperatorMistakesFragment.getOperatorMistakes()
+                    }
+
+                } catch (e: Exception) {
+                    e.printStackTrace()
+                }
+            }
+        }
+
+        override fun onFailure(reCall: Runnable?, e: Exception?) {
+            MyApplication.handler.post {
+
+                aHolder.binding.vfRecheck.displayedChild = 0
+
+            }
+        }
+
     }
 
     private fun startDownload(urlString: String, fileName: String) {
@@ -220,36 +259,30 @@ class OperatorMistakesAdapter() : RecyclerView.Adapter<OperatorMistakesAdapter.O
         }
     }
 
-    var recheckListener = object : RequestHelper.Callback() {
-        override fun onResponse(reCall: Runnable?, vararg args: Any?) {
-            MyApplication.handler.post {
-                aHolder.binding.vfRecheck.displayedChild = 0
-
-                try {
-                    val rawContent = JSONObject(args[0].toString())
-                    Log.i("TAF", rawContent.toString())
-                    val status = rawContent.getJSONObject("data").getBoolean("status")
-                    if (status) {
-                        OperatorMistakesFragment.getOperatorMistakes()
-                    }
-
-                } catch (e: Exception) {
-                    e.printStackTrace()
-                }
+    private var timer: Timer? = null
+    private fun initVoice(uri: Uri?) {
+        try {
+            mediaPlayer = MediaPlayer.create(MyApplication.currentActivity, uri)
+            mediaPlayer?.setOnCompletionListener {
+                aHolder.binding.vfPlayPause.displayedChild = 0
             }
+            Companion.TOTAL_VOICE_DURATION = mediaPlayer?.duration?.toFloat()
+            aHolder.binding.skbTimer.max = Companion.TOTAL_VOICE_DURATION as Float
+        } catch (e: Exception) {
+            e.printStackTrace()
         }
-
-        override fun onFailure(reCall: Runnable?, e: Exception?) {
-            super.onFailure(reCall, e)
-        }
-
     }
 
-    override fun getItemCount(): Int {
-        return opMistakesA.size
+    private fun playVoice() {
+        try {
+            mediaPlayer?.start()
+            aHolder.binding.vfPlayPause.displayedChild = 2
+        } catch (e: Exception) {
+        }
+
+        startTimer()
     }
 
-    var timer: Timer? = null
     private fun startTimer() {
         Log.i("operatorMistakeAdapter", "startTimer: ")
         timer = Timer()
@@ -258,33 +291,9 @@ class OperatorMistakesAdapter() : RecyclerView.Adapter<OperatorMistakesAdapter.O
 
     }
 
-    private fun initVoice(uri: Uri?) {
-        try {
-            mediaPlayer = MediaPlayer.create(MyApplication.currentActivity, uri)
-            mediaPlayer.setOnCompletionListener {
-//                aHolder.binding.vfPlayPause.let { it.displayedChild = 0 }
-                aHolder.binding.vfPlayPause.displayedChild = 0
-            }
-            TOTAL_VOICE_DURATION = mediaPlayer.duration.toFloat()
-            aHolder.binding.skbTimer.max = TOTAL_VOICE_DURATION as Float
-        } catch (e: Exception) {
-            e.printStackTrace()
-        }
-    }
-
-    private fun playVoice() {
-        try {
-            mediaPlayer.start()
-            aHolder.binding.vfPlayPause.displayedChild = 2
-        } catch (e: Exception) {
-        }
-
-        startTimer()
-    }
-
     private fun pauseVoice() {
         try {
-            mediaPlayer.pause()
+            mediaPlayer?.pause()
             aHolder.binding.skbTimer.setProgress(0f)
             aHolder.binding.vfPlayPause.displayedChild = 0
         } catch (e: Exception) {
@@ -308,9 +317,13 @@ class OperatorMistakesAdapter() : RecyclerView.Adapter<OperatorMistakesAdapter.O
                 MyApplication.handler.post {
                     Log.i(
                         "pendingMistakeFragment",
-                        "onStopTrackingTouch run: " + mediaPlayer.currentPosition
+                        "onStopTrackingTouch run: " + mediaPlayer?.currentPosition
                     )
-                    aHolder.binding.skbTimer.setProgress(mediaPlayer.currentPosition.toFloat())
+                    mediaPlayer?.currentPosition?.toFloat()?.let {
+                        aHolder.binding.skbTimer.setProgress(
+                            it
+                        )
+                    }
 
                 }
             } catch (e: Exception) {

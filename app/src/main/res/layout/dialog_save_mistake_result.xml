@@ -128,6 +128,15 @@
                         </LinearLayout>
 
                         <RadioButton
+                            android:id="@+id/rbChecker"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:buttonTint="@color/colorAccent"
+                            android:shadowColor="@color/colorAccent"
+                            android:text="ثبت خطا و بررسی کننده مقصر است."
+                            android:textColor="?attr/colorValue" />
+
+                        <RadioButton
                             android:id="@+id/rbUnknown"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"

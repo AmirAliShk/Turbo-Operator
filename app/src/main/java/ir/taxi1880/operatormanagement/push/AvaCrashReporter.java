@@ -6,6 +6,7 @@ import android.util.Log;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import ir.taxi1880.operatormanagement.app.EndPoints;
 import ir.taxi1880.operatormanagement.app.MyApplication;
 import ir.taxi1880.operatormanagement.helper.AppVersionHelper;
 import ir.taxi1880.operatormanagement.okHttp.RequestHelper;
@@ -37,7 +38,7 @@ public class AvaCrashReporter {
             customeData.put("CATCH_LINE_NUMBER", AvaSocket.getSocketParams());
             customeData.put("CATCH_ID", arg.length > 0 ? arg[0] : 0);
             customeData.put("CATCH_INPUT_PARAMS", arg.length > 1 ? arg[1] : 0);
-            RequestHelper.builder("http://turbotaxi.ir:6061/api/crashReport")
+            RequestHelper.builder(EndPoints.ACRA_PATH)
                     .addParam("APP_VERSION_CODE", new AppVersionHelper(MyApplication.context).getVerionCode())
                     .addParam("APP_VERSION_NAME", new AppVersionHelper(MyApplication.context).getVerionName())
                     .addParam("PACKAGE_NAME", MyApplication.context.getPackageName())

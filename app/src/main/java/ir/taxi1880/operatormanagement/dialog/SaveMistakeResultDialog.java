@@ -96,8 +96,7 @@ public class SaveMistakeResultDialog {
     Spinner reasonSpinner;
 
     @OnClick(R.id.lLMainSaveMistake)
-    void onOpenSpinner()
-    {
+    void onOpenSpinner() {
         reasonSpinner.performClick();
     }
 
@@ -123,9 +122,13 @@ public class SaveMistakeResultDialog {
             case R.id.rbStationRegistrationDestinationOperatorBlame:
                 culprit = "4";
                 break;
+            case R.id.rbChecker:
+                culprit = "6";
+                break;
             case R.id.rbUnknown:
                 culprit = "3";
                 break;
+
         }
         if (rbAnotherOperator.isChecked()) {
             culprit = "5";
@@ -265,13 +268,14 @@ public class SaveMistakeResultDialog {
             reasonSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
                 @Override
                 public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                    if (position == 0)
-                    {
+                    if (position == 0) {
                         reasonId = 0;
                         return;
                     }
                     reasonId = mistakeReasons.get(position - 1).getId();
-                    Log.i("TAF",reasonId+"");
+                    Log.i("TAF", position + "");
+
+                    Log.i("TAF", reasonId + "");
                 }
 
                 @Override
@@ -289,6 +293,7 @@ public class SaveMistakeResultDialog {
         LoadingDialog.makeCancelableLoader();
         if (vfLoader != null)
             vfLoader.setDisplayedChild(1);
+        Log.i("TAF", culprit);
         RequestHelper.builder(EndPoints.V1_LISTEN)
                 .addParam("culprit", culprit)
                 .addParam("result", result)

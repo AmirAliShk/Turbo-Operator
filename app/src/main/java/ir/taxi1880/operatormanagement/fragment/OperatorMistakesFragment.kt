@@ -52,6 +52,7 @@ class OperatorMistakesFragment : Fragment() {
                                 val opMisModel = OperatorMistakeModel(
                                     jsonItem.getInt("id"),
                                     jsonItem.getString("voipId"),
+//                                    "1634133871.1961665",
                                     jsonItem.getString("serviceDate"),
                                     jsonItem.getString("serviceTime"),
                                     jsonItem.getString("description"),
@@ -82,7 +83,6 @@ class OperatorMistakesFragment : Fragment() {
 
                         }
                     } catch (e: Exception) {
-                        binding.refreshPage.setRefreshing(false)
                         binding.vfOpMistake.displayedChild = 2
                         e.printStackTrace()
                     }
@@ -91,7 +91,6 @@ class OperatorMistakesFragment : Fragment() {
 
             override fun onFailure(reCall: Runnable?, e: Exception?) {
                 MyApplication.handler.post {
-                    binding.refreshPage.setRefreshing(false)
                     binding.vfOpMistake.displayedChild = 2
                 }
             }
@@ -108,7 +107,6 @@ class OperatorMistakesFragment : Fragment() {
 
         getOperatorMistakes()
         binding.imgBack.setOnClickListener { MyApplication.currentActivity.onBackPressed() }
-        binding.refreshPage.setOnRefreshListener { getOperatorMistakes() }
         binding.imgRefresh.setOnClickListener { getOperatorMistakes() }
         binding.imgRefreshFail.setOnClickListener { getOperatorMistakes() }
         return binding.root
