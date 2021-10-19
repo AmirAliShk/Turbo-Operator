@@ -14,12 +14,12 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <com.wang.avi.AVLoadingIndicatorView
-            android:layout_width="30dp"
-            android:layout_height="30dp"
-            android:layout_gravity="center"
-            app:indicatorColor="?attr/colorIcon1"
-            app:indicatorName="BallBeatIndicator" />
+<!--        <com.wang.avi.AVLoadingIndicatorView-->
+<!--            android:layout_width="30dp"-->
+<!--            android:layout_height="30dp"-->
+<!--            android:layout_gravity="center"-->
+<!--            app:indicatorColor="?attr/colorIcon1"-->
+<!--            app:indicatorName="BallBeatIndicator" />-->
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -341,7 +341,7 @@
                         android:id="@+id/llMistakeReason"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:gravity="center_vertical"
+                        android:gravity="top|right"
                         android:orientation="horizontal"
                         android:padding="@dimen/_5sdp">
 
@@ -358,8 +358,7 @@
                             style="@style/tripItemValue"
                             android:layout_width="0dp"
                             android:layout_height="match_parent"
-                            android:layout_weight="3"
-                            android:gravity="center_vertical" />
+                            android:layout_weight="3" />
 
                     </LinearLayout>
 
@@ -387,7 +386,7 @@
 
                             <ViewFlipper
                                 android:id="@+id/vfVoiceStatus"
-                                android:layout_width="wrap_content"
+                                android:layout_width="match_parent"
                                 android:layout_height="match_parent">
 
                                 <LinearLayout
@@ -425,7 +424,7 @@
                                         <ImageView
                                             android:id="@+id/imgPlay"
                                             android:layout_width="match_parent"
-                                            android:layout_height="match_parent"
+                                            android:layout_height="40dp"
                                             android:layout_gravity="center"
                                             android:paddingHorizontal="10dp"
                                             android:paddingTop="6dp"
@@ -442,7 +441,7 @@
                                         <ImageView
                                             android:id="@+id/imgPause"
                                             android:layout_width="match_parent"
-                                            android:layout_height="match_parent"
+                                            android:layout_height="40dp"
                                             android:layout_gravity="center"
                                             android:paddingHorizontal="10dp"
                                             android:paddingTop="6dp"

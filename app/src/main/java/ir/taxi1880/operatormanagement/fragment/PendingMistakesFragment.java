@@ -371,9 +371,9 @@ public class PendingMistakesFragment extends Fragment {
             if (model.getMistakeReason() == null || model.getMistakeReason().isEmpty()) {
                 SecondTimeCheckMis = false;
                 llMistakeReason.setVisibility(View.GONE);
-
             } else {
                 SecondTimeCheckMis = true;
+                vfMissedCall.setVisibility(View.GONE);
                 txtMistakeReason.setText(StringHelper.toPersianDigits(model.getMistakeReason()));
             }
             txtPrice.setText(StringHelper.toPersianDigits(StringHelper.setComma(model.getPrice())));

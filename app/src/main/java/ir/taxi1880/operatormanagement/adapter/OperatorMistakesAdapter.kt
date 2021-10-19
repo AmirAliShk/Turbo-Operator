@@ -6,7 +6,6 @@ import android.net.Uri
 import android.os.AsyncTask
 import android.os.Build
 import android.os.Environment
-import android.text.style.TtsSpan
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -19,7 +18,7 @@ import ir.taxi1880.operatormanagement.R
 import ir.taxi1880.operatormanagement.app.EndPoints
 import ir.taxi1880.operatormanagement.app.MyApplication
 import ir.taxi1880.operatormanagement.databinding.ItemOperatorMistakeListBinding
-import ir.taxi1880.operatormanagement.fragment.OperatorMistakesFragment
+import ir.taxi1880.operatormanagement.dialog.GeneralDialog
 import ir.taxi1880.operatormanagement.helper.DateHelper
 import ir.taxi1880.operatormanagement.helper.FileHelper
 import ir.taxi1880.operatormanagement.helper.StringHelper
@@ -79,9 +78,15 @@ class OperatorMistakesAdapter() : RecyclerView.Adapter<OperatorMistakesAdapter.O
 
 
         holder.binding.timeAndDate.text =
-            StringHelper.toPersianDigits(DateHelper.strPersianTree(
-                DateHelper.parseDate(opMistake.serviceDate)) + " " + opMistake.serviceTime.substring(0,5)
-           )
+            if (opMistake.serviceTime.trim().isEmpty() || opMistake.serviceDate.trim().isEmpty()) {
+                "زمان درج نشده است"
+            } else {
+                StringHelper.toPersianDigits(
+                    DateHelper.strPersianTree(
+                        DateHelper.parseDate(opMistake.serviceDate)
+                    ) + " " + opMistake.serviceTime.substring(0, 5)
+                )
+            }
         holder.binding.description.text = StringHelper.toPersianDigits(opMistake.description)
         holder.binding.originAddress.text = StringHelper.toPersianDigits(opMistake.sourceAddress)
         holder.binding.originStation.text =
@@ -90,6 +95,13 @@ class OperatorMistakesAdapter() : RecyclerView.Adapter<OperatorMistakesAdapter.O
             StringHelper.toPersianDigits(opMistake.destinationAddress)
         holder.binding.destinationStation.text =
             StringHelper.toPersianDigits(opMistake.destinationStation.toString())
+
+        if (opMistake.reasonMis.isEmpty()) holder.binding.llResonMis.visibility = View.GONE
+        else {
+            holder.binding.llResonMis.visibility = View.VISIBLE
+            holder.binding.reasonMis.text = opMistake.reasonMis
+        }
+
         when (opMistake.misStatus) {
             1 -> {
                 holder.binding.recheck.visibility = View.GONE
@@ -186,11 +198,24 @@ class OperatorMistakesAdapter() : RecyclerView.Adapter<OperatorMistakesAdapter.O
                 try {
                     val rawContent = JSONObject(args[0].toString())
                     Log.i("TAF", rawContent.toString())
-                    val status = rawContent.getJSONObject("data").getBoolean("status")
-                    if (status) {
-                        OperatorMistakesFragment.getOperatorMistakes()
-                    }
 
+                    val success = rawContent.getBoolean("success")
+                    val reviewRequest = rawContent.getJSONObject("data").getInt("reviewRequest")
+                    val reviewMessage = rawContent.getJSONObject("data").getString("msg")
+
+                    if (success) {
+                        if (reviewRequest == 1) {
+//                        OperatorMistakesFragment.getOperatorMistakes()
+                            aHolder.binding.recheck.visibility = View.GONE
+                            aHolder.binding.situationTxt.setTextColor(Color.parseColor("#1976d2"))
+                            aHolder.binding.situationImg.setImageResource(R.drawable.ic_pennding)
+                        } else {
+                            GeneralDialog()
+                                .message(reviewMessage)
+                                .secondButton("فهمیدم") {}
+                                .show()
+                        }
+                    }
                 } catch (e: Exception) {
                     e.printStackTrace()
                 }
@@ -258,7 +283,7 @@ class OperatorMistakesAdapter() : RecyclerView.Adapter<OperatorMistakesAdapter.O
         }
     }
 
-    private var timer: Timer? = null
+//    private var timer: Timer? = null
     private fun initVoice(uri: Uri?) {
         try {
             mediaPlayer = MediaPlayer.create(MyApplication.currentActivity, uri)
@@ -279,16 +304,16 @@ class OperatorMistakesAdapter() : RecyclerView.Adapter<OperatorMistakesAdapter.O
         } catch (e: Exception) {
         }
 
-        startTimer()
+//        startTimer()
     }
 
-    private fun startTimer() {
-        Log.i("operatorMistakeAdapter", "startTimer: ")
-        timer = Timer()
-        val task = UpdateSeekBar()
-        timer?.scheduleAtFixedRate(task, 500, 1000)
-
-    }
+//    private fun startTimer() {
+//        Log.i("operatorMistakeAdapter", "startTimer: ")
+//        timer = Timer()
+//        val task = UpdateSeekBar()
+//        timer?.scheduleAtFixedRate(task, 500, 1000)
+//
+//    }
 
     private fun pauseVoice() {
         try {
@@ -298,39 +323,39 @@ class OperatorMistakesAdapter() : RecyclerView.Adapter<OperatorMistakesAdapter.O
         } catch (e: Exception) {
 
         }
-        cancelTimer()
+//        cancelTimer()
     }
 
-    private fun cancelTimer() {
-        try {
-            timer?.cancel()
-            timer = null
-        } catch (e: Exception) {
+//    private fun cancelTimer() {
+//        try {
+//            timer?.cancel()
+//            timer = null
+//        } catch (e: Exception) {
+//
+//        }
+//    }
 
-        }
-    }
-
-    private inner class UpdateSeekBar : TimerTask() {
-        override fun run() {
-            try {
-                MyApplication.handler.post {
-                    Log.i(
-                        "pendingMistakeFragment",
-                        "onStopTrackingTouch run: " + mediaPlayer?.currentPosition
-                    )
-                    mediaPlayer?.currentPosition?.toFloat()?.let {
-                        aHolder.binding.skbTimer.setProgress(
-                            it
-                        )
-                    }
-
-                }
-            } catch (e: Exception) {
-                e.printStackTrace()
-            }
-        }
-
-    }
+//    private inner class UpdateSeekBar : TimerTask() {
+//        override fun run() {
+//            try {
+//                MyApplication.handler.post {
+//                    Log.i(
+//                        "pendingMistakeFragment",
+//                        "onStopTrackingTouch run: " + mediaPlayer?.currentPosition
+//                    )
+//                    mediaPlayer?.currentPosition?.toFloat()?.let {
+//                        aHolder.binding.skbTimer.setProgress(
+//                            it
+//                        )
+//                    }
+//
+//                }
+//            } catch (e: Exception) {
+//                e.printStackTrace()
+//            }
+//        }
+//
+//    }
 
 
 }
