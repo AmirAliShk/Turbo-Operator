@@ -22,6 +22,7 @@ import butterknife.OnClick;
 import butterknife.Unbinder;
 import ir.taxi1880.operatormanagement.R;
 import ir.taxi1880.operatormanagement.adapter.BestAdapter;
+import ir.taxi1880.operatormanagement.app.EndPoints;
 import ir.taxi1880.operatormanagement.app.MyApplication;
 import ir.taxi1880.operatormanagement.dialog.GeneralDialog;
 import ir.taxi1880.operatormanagement.helper.TypefaceUtil;
@@ -79,8 +80,7 @@ public class BestsFragment extends Fragment {
     private void getBest() {
         if (vfBest != null)
             vfBest.setDisplayedChild(0);
-//        RequestHelper.builder(EndPoints.BESTS)
-        RequestHelper.builder("http://192.168.2.34:1881/api/operator/v3/score/bests")
+        RequestHelper.builder(EndPoints.BESTS)
                 .listener(getBest)
                 .get();
     }
