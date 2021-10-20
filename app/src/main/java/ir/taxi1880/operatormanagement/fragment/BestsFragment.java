@@ -1,9 +1,6 @@
 package ir.taxi1880.operatormanagement.fragment;
 
-import android.annotation.SuppressLint;
-import android.os.Build;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,14 +8,13 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.ViewFlipper;
 
+import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.RecyclerView;
+
 import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
-
-import androidx.annotation.RequiresApi;
-import androidx.fragment.app.Fragment;
-import androidx.recyclerview.widget.RecyclerView;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -26,7 +22,6 @@ import butterknife.OnClick;
 import butterknife.Unbinder;
 import ir.taxi1880.operatormanagement.R;
 import ir.taxi1880.operatormanagement.adapter.BestAdapter;
-import ir.taxi1880.operatormanagement.app.EndPoints;
 import ir.taxi1880.operatormanagement.app.MyApplication;
 import ir.taxi1880.operatormanagement.dialog.GeneralDialog;
 import ir.taxi1880.operatormanagement.helper.TypefaceUtil;
@@ -84,7 +79,8 @@ public class BestsFragment extends Fragment {
     private void getBest() {
         if (vfBest != null)
             vfBest.setDisplayedChild(0);
-        RequestHelper.builder(EndPoints.BESTS)
+//        RequestHelper.builder(EndPoints.BESTS)
+        RequestHelper.builder("http://192.168.2.34:1881/api/operator/v3/score/bests")
                 .listener(getBest)
                 .get();
     }
@@ -96,36 +92,41 @@ public class BestsFragment extends Fragment {
                 try {
                     bestModels = new ArrayList<>();
                     JSONObject bestObj = new JSONObject(args[0].toString());
+
                     boolean success = bestObj.getBoolean("success");
                     String messsage = bestObj.getString("messsage");
 
                     if (success) {
                         JSONArray bestArr = bestObj.getJSONArray("data");
-                        JSONObject obj0 = bestArr.getJSONObject(0);
-                        JSONObject obj1 = bestArr.getJSONObject(1);
-                        JSONObject obj2 = bestArr.getJSONObject(2);
-                        if (txtGolden != null) {
-                            txtGolden.setText((obj0.getInt("rowNumber") + "." + obj0.getString("name") + " " + obj0.getString("lastName")));
+                        if (bestArr.length()!= 0)
+                        {
+                            JSONObject obj0 = bestArr.getJSONObject(0);
+                            JSONObject obj1 = bestArr.getJSONObject(1);
+                            JSONObject obj2 = bestArr.getJSONObject(2);
+                            if (txtGolden != null) {
+                                txtGolden.setText((obj0.getInt("rowNumber") + "." + obj0.getString("name") + " " + obj0.getString("lastName")));
+                            }
+                            if (txtSilver != null) {
+                                txtSilver.setText((obj1.getInt("rowNumber") + "." + obj1.getString("name") + " " + obj1.getString("lastName")));
+                            }
+                            if (txtBronze != null) {
+                                txtBronze.setText((obj2.getInt("rowNumber") + "." + obj2.getString("name") + " " + obj2.getString("lastName")));
+                            }
+                            for (int i = 3; i < bestArr.length(); i++) {
+                                JSONObject obj = bestArr.getJSONObject(i);
+                                BestModel bestModel = new BestModel();
+                                bestModel.setLastName(obj.getString("lastName"));
+                                bestModel.setName(obj.getString("name"));
+                                bestModel.setUserId(obj.getInt("userId"));
+                                bestModel.setRowNumber(obj.getInt("rowNumber"));
+                                bestModel.setScore(obj.getInt("score"));
+                                bestModels.add(bestModel);
+                            }
+                            bestAdapter = new BestAdapter(bestModels);
+                            if (recycleBest != null)
+                                recycleBest.setAdapter(bestAdapter);
                         }
-                        if (txtSilver != null) {
-                            txtSilver.setText((obj1.getInt("rowNumber") + "." + obj1.getString("name") + " " + obj1.getString("lastName")));
-                        }
-                        if (txtBronze != null) {
-                            txtBronze.setText((obj2.getInt("rowNumber") + "." + obj2.getString("name") + " " + obj2.getString("lastName")));
-                        }
-                        for (int i = 3; i < bestArr.length(); i++) {
-                            JSONObject obj = bestArr.getJSONObject(i);
-                            BestModel bestModel = new BestModel();
-                            bestModel.setLastName(obj.getString("lastName"));
-                            bestModel.setName(obj.getString("name"));
-                            bestModel.setUserId(obj.getInt("userId"));
-                            bestModel.setRowNumber(obj.getInt("rowNumber"));
-                            bestModel.setScore(obj.getInt("score"));
-                            bestModels.add(bestModel);
-                        }
-                        bestAdapter = new BestAdapter(bestModels);
-                        if (recycleBest != null)
-                            recycleBest.setAdapter(bestAdapter);
+
                     } else {
                         new GeneralDialog()
                                 .title("هشدار")

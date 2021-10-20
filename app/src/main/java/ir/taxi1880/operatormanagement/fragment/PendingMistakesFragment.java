@@ -357,7 +357,6 @@ public class PendingMistakesFragment extends Fragment {
     void getMistakesFromDB() {
         if (dataBase.getMistakesCount() > 0) {
             model = dataBase.getMistakesRow();
-            Log.i("TAF", model.toString());
             txtOriginAddress.setText(StringHelper.toPersianDigits(model.getAddress()));
             txtPassengerName.setText(StringHelper.toPersianDigits(model.getCustomerName()));
             txtPassengerPhone.setText(StringHelper.toPersianDigits(model.getTell()));
@@ -472,7 +471,6 @@ public class PendingMistakesFragment extends Fragment {
                     JSONObject listenObj = new JSONObject(args[0].toString());
                     boolean success = listenObj.getBoolean("success");
                     String message = listenObj.getString("message");
-                    Log.i("TAF getAccepted",listenObj.toString());
 
                     if (success) {
                         JSONArray dataArr = listenObj.getJSONArray("data");

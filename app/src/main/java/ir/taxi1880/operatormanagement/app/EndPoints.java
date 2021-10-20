@@ -103,6 +103,7 @@ public class EndPoints {
     public static final String ARCHIVE_DESTINATION = SUPPORT_WEBSERVICE_PATH + "archiveDestination";
     public static final String LISTEN = SUPPORT_WEBSERVICE_PATH + "listen";
     public static final String V1_LISTEN = SUPPORT_WEBSERVICE_PATH + "v2/listen";
+    public static final String V2_LISTEN = SUPPORT_WEBSERVICE_PATH + "v3/listen";
     public static final String ACCEPT_LISTEN = LISTEN_WEBSERVICE_PATH + "accept";
     public static final String ACTIVATE_SUPPORT = SUPPORT_WEBSERVICE_PATH + "activate";
     public static final String DEACTIVATE_SUPPORT = SUPPORT_WEBSERVICE_PATH + "deActivate";

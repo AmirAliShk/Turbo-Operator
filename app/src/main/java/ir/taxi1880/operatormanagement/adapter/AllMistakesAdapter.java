@@ -108,7 +108,6 @@ public class AllMistakesAdapter extends RecyclerView.Adapter<AllMistakesAdapter.
                     JSONObject obj = new JSONObject(args[0].toString());
                     boolean success = obj.getBoolean("success");
                     String message = obj.getString("message");
-                    Log.i("TAF", obj.toString());
                     if (success) {
                         JSONObject data = obj.getJSONObject("data");
                         int status = data.getInt("status");

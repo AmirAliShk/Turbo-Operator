@@ -197,7 +197,6 @@ class OperatorMistakesAdapter() : RecyclerView.Adapter<OperatorMistakesAdapter.O
 
                 try {
                     val rawContent = JSONObject(args[0].toString())
-                    Log.i("TAF", rawContent.toString())
 
                     val success = rawContent.getBoolean("success")
                     val reviewRequest = rawContent.getJSONObject("data").getInt("reviewRequest")

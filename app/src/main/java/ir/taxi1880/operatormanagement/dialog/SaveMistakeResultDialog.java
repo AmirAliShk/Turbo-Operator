@@ -4,7 +4,6 @@ import android.app.Dialog;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
-import android.util.Log;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
@@ -277,9 +276,6 @@ public class SaveMistakeResultDialog {
                         return;
                     }
                     reasonId = mistakeReasons.get(position - 1).getId();
-                    Log.i("TAF", position + "");
-
-                    Log.i("TAF", reasonId + "");
                 }
 
                 @Override
@@ -297,8 +293,8 @@ public class SaveMistakeResultDialog {
         LoadingDialog.makeCancelableLoader();
         if (vfLoader != null)
             vfLoader.setDisplayedChild(1);
-        Log.i("TAF", culprit);
-        RequestHelper.builder(EndPoints.V1_LISTEN)
+//        api/operator/v3/support/v3/listen
+        RequestHelper.builder(EndPoints.V2_LISTEN)
                 .addParam("culprit", culprit)
                 .addParam("result", result)
                 .addParam("listenId", listenId)

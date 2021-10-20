@@ -40,7 +40,6 @@ class OperatorMistakesFragment : Fragment() {
                     try {
                         mistakeArr = ArrayList()
                         val rawContent = JSONObject(args[0].toString())
-                        Log.i("TAF", rawContent.toString())
                         val status = rawContent.getBoolean("success")
                         val message = rawContent.getString("message")
 
@@ -79,7 +78,6 @@ class OperatorMistakesFragment : Fragment() {
                             binding.opMistakesList.adapter = adapter
                             binding.opMistakesList.setHasFixedSize(true)
 
-//                            Log.i("TAF",mistakeArr.toString())
 
                         }
                     } catch (e: Exception) {

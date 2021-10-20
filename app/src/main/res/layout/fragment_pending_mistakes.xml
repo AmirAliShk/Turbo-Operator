@@ -14,12 +14,12 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-<!--        <com.wang.avi.AVLoadingIndicatorView-->
-<!--            android:layout_width="30dp"-->
-<!--            android:layout_height="30dp"-->
-<!--            android:layout_gravity="center"-->
-<!--            app:indicatorColor="?attr/colorIcon1"-->
-<!--            app:indicatorName="BallBeatIndicator" />-->
+        <com.wang.avi.AVLoadingIndicatorView
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_gravity="center"
+            app:indicatorColor="?attr/colorIcon1"
+            app:indicatorName="BallBeatIndicator" />
 
         <LinearLayout
             android:layout_width="match_parent"
