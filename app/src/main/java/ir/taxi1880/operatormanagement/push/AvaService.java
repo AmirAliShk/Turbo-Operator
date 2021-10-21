@@ -1,13 +1,29 @@
 package ir.taxi1880.operatormanagement.push;
 
+import static ir.taxi1880.operatormanagement.services.LinphoneService.CHANNEL_ID;
+
+import android.annotation.SuppressLint;
+import android.app.Notification;
+import android.app.NotificationChannel;
+import android.app.NotificationChannelGroup;
+import android.app.NotificationManager;
+import android.app.PendingIntent;
 import android.app.Service;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.os.Build;
 import android.os.IBinder;
+
+import androidx.annotation.RequiresApi;
+import androidx.core.app.NotificationCompat;
 
 import java.util.Timer;
 import java.util.TimerTask;
 
+import ir.taxi1880.operatormanagement.R;
+import ir.taxi1880.operatormanagement.activity.SplashActivity;
 import ir.taxi1880.operatormanagement.app.MyApplication;
 
 //import ir.efsp.ava.io.core.client.Socket;
@@ -52,7 +68,9 @@ public class AvaService extends Service {
             if (MyApplication.context == null) {
                 MyApplication.context = this;
             }
-
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                startNotification();
+            }
 //      MyApplication.prefManager.incrementResetPushServiceCount();
 
             avaPref = new AvaPref();
@@ -77,6 +95,33 @@ public class AvaService extends Service {
         return START_STICKY;
     }
 
+    @SuppressLint("WrongConstant")
+    @RequiresApi(api = Build.VERSION_CODES.O)
+    private void startNotification() {
+        Intent intent = new Intent(this, SplashActivity.class);
+        PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, intent, 0);
+//        Bitmap iconNotification = BitmapFactory.decodeResource(getResources(), R.mipmap.ic_launcher);
+        NotificationManager notificationManager = (NotificationManager) this.getSystemService(Context.NOTIFICATION_SERVICE);
+//        notificationManager.createNotificationChannelGroup(new NotificationChannelGroup("LinphoneGroupId", "LinphoneGroupName"));
+//        NotificationChannel notificationChannel = new NotificationChannel(CHANNEL_ID, "LinphoneChannelName",
+//                NotificationManager.IMPORTANCE_MIN);
+//        notificationChannel.enableLights(false);
+//        notificationChannel.setLockscreenVisibility(Notification.VISIBILITY_SECRET);
+//        notificationManager.createNotificationChannel(notificationChannel);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            NotificationChannel notificationChannel = new NotificationChannel(CHANNEL_ID, "LinphoneChannelName",
+                    NotificationManager.IMPORTANCE_MIN);
+            notificationManager.createNotificationChannel(notificationChannel);
+        }
+        NotificationCompat.Builder builder = new NotificationCompat.Builder(this, CHANNEL_ID);
+        builder.setContentTitle("در حال کار")
+                .setSmallIcon(R.mipmap.ic_launcher)
+                .setPriority(NotificationCompat.PRIORITY_HIGH)
+                .setWhen(0)
+                .setOngoing(true)
+                .setContentIntent(pendingIntent);
+        startForeground(1880, builder.build());
+    }
 
     @Override
     public void onDestroy() {

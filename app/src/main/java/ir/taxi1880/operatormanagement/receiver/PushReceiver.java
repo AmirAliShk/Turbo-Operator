@@ -30,6 +30,7 @@ import ir.taxi1880.operatormanagement.push.Keys;
 import static ir.taxi1880.operatormanagement.app.Keys.KEY_MESSAGE_USER_STATUS;
 import static ir.taxi1880.operatormanagement.app.Keys.KEY_REFRESH_USER_STATUS;
 import static ir.taxi1880.operatormanagement.app.Keys.KEY_USER_STATUS;
+import static ir.taxi1880.operatormanagement.services.LinphoneService.CHANNEL_ID;
 
 public class PushReceiver extends BroadcastReceiver {
     public static final String TAG = PushReceiver.class.getSimpleName();
@@ -150,7 +151,6 @@ public class PushReceiver extends BroadcastReceiver {
             mNotificationManager.createNotificationChannel(channel);
             mBuilder.setChannelId(CHANNEL);
         }
-
         mNotificationManager.notify(Constant.PUSH_NOTIFICATION_ID, mBuilder.build());
 
     }
@@ -179,7 +179,6 @@ public class PushReceiver extends BroadcastReceiver {
             mNotificationManager.createNotificationChannel(channel);
             mBuilder.setChannelId(CHANNEL);
         }
-
         mNotificationManager.notify(Constant.USER_STATUS_NOTIFICATION_ID, mBuilder.build());
 
     }

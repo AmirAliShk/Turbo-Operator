@@ -1,7 +1,12 @@
 package ir.taxi1880.operatormanagement.services;
 
 import android.Manifest;
+import android.annotation.SuppressLint;
+import android.app.Notification;
+import android.app.NotificationChannel;
+import android.app.NotificationChannelGroup;
 import android.app.NotificationManager;
+import android.app.PendingIntent;
 import android.app.Service;
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
@@ -12,6 +17,8 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.media.AudioManager;
 import android.media.MediaPlayer;
 import android.net.Uri;
@@ -49,9 +56,11 @@ import java.util.TimerTask;
 
 import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
+import androidx.core.app.NotificationCompat;
 
 import ir.taxi1880.operatormanagement.R;
 import ir.taxi1880.operatormanagement.activity.CallIncomingActivity;
+import ir.taxi1880.operatormanagement.activity.SplashActivity;
 import ir.taxi1880.operatormanagement.activity.SupportActivity;
 import ir.taxi1880.operatormanagement.activity.TripRegisterActivity;
 import ir.taxi1880.operatormanagement.app.DataHolder;
@@ -293,6 +302,9 @@ public class LinphoneService extends Service {
     public int onStartCommand(Intent intent, int flags, int startId) {
         super.onStartCommand(intent, flags, startId);
 
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            startNotification();
+        }
         // If our Service is already running, no need to continue
         if (sInstance != null) {
             return START_STICKY;
@@ -348,6 +360,34 @@ public class LinphoneService extends Service {
         stopSelf();
 
         super.onTaskRemoved(rootIntent);
+    }
+
+    @SuppressLint("WrongConstant")
+    @RequiresApi(api = Build.VERSION_CODES.O)
+    private void startNotification() {
+        Intent intent = new Intent(this, SplashActivity.class);
+        PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, intent, 0);
+//        Bitmap iconNotification = BitmapFactory.decodeResource(getResources(), R.mipmap.ic_launcher);
+        NotificationManager notificationManager = (NotificationManager) this.getSystemService(Context.NOTIFICATION_SERVICE);
+//        notificationManager.createNotificationChannelGroup(new NotificationChannelGroup("LinphoneGroupId", "LinphoneGroupName"));
+//        NotificationChannel notificationChannel = new NotificationChannel(CHANNEL_ID, "LinphoneChannelName",
+//                NotificationManager.IMPORTANCE_MIN);
+//        notificationChannel.enableLights(false);
+//        notificationChannel.setLockscreenVisibility(Notification.VISIBILITY_SECRET);
+//        notificationManager.createNotificationChannel(notificationChannel);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            NotificationChannel notificationChannel = new NotificationChannel(CHANNEL_ID, "LinphoneChannelName",
+                    NotificationManager.IMPORTANCE_MIN);
+            notificationManager.createNotificationChannel(notificationChannel);
+        }
+        NotificationCompat.Builder builder = new NotificationCompat.Builder(this, CHANNEL_ID);
+        builder.setContentTitle("در حال کار")
+                .setSmallIcon(R.mipmap.ic_launcher)
+                .setPriority(NotificationCompat.PRIORITY_HIGH)
+                .setWhen(0)
+                .setOngoing(true)
+                .setContentIntent(pendingIntent);
+        startForeground(1880, builder.build());
     }
 
     private void configureCore() {
