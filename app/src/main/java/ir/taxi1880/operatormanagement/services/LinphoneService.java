@@ -323,12 +323,9 @@ public class LinphoneService extends Service {
             @Override
             public void run() {
                 mHandler.post(
-                        new Runnable() {
-                            @Override
-                            public void run() {
-                                if (mCore != null) {
-                                    mCore.iterate();
-                                }
+                        () -> {
+                            if (mCore != null) {
+                                mCore.iterate();
                             }
                         });
             }

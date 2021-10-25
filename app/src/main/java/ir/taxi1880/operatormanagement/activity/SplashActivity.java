@@ -2,10 +2,13 @@ package ir.taxi1880.operatormanagement.activity;
 
 import android.Manifest;
 import android.annotation.SuppressLint;
+import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
+import android.provider.Settings;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
@@ -72,10 +75,7 @@ public class SplashActivity extends AppCompatActivity {
 
         txtVersion.setText(StringHelper.toPersianDigits("نسخه " + new AppVersionHelper(context).getVerionName() + ""));
 
-        MyApplication.handler.postDelayed(() -> {
-            checkPermission();
-
-        }, 1500);
+        MyApplication.handler.postDelayed(this::checkPermission, 1500);
 
     }
 
@@ -86,12 +86,20 @@ public class SplashActivity extends AppCompatActivity {
     public void checkPermission() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             if ((ContextCompat.checkSelfPermission(MyApplication.currentActivity, Manifest.permission.RECORD_AUDIO) != PackageManager.PERMISSION_GRANTED)
-            ||(ContextCompat.checkSelfPermission(MyApplication.currentActivity, Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED)) {
+                    || (ContextCompat.checkSelfPermission(MyApplication.currentActivity, Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED)
+                    || !Settings.canDrawOverlays(context)) {
                 new GeneralDialog()
                         .title("دسترسی")
                         .message("برای ورود به برنامه ضروری است تا دسترسی های لازم را برای عملکرد بهتر به برنامه داده شود لطفا جهت بهبود عملکرد دسترسی های لازم را اعمال نمایید")
                         .cancelable(false)
-                        .firstButton("باشه", () -> ActivityCompat.requestPermissions(MyApplication.currentActivity, permissionsRequired, PERMISSION_CALLBACK_CONSTANT))
+                        .firstButton("باشه", () -> {
+                            ActivityCompat.requestPermissions(MyApplication.currentActivity, permissionsRequired, PERMISSION_CALLBACK_CONSTANT);
+
+                            int REQUEST_CODE = 101;
+                            Intent myIntent = new Intent(Settings.ACTION_MANAGE_OVERLAY_PERMISSION);
+                            myIntent.setData(Uri.parse("package:" + getPackageName()));
+                            startActivityForResult(myIntent, REQUEST_CODE);
+                        })
                         .show();
             } else {
                 new GetAppInfo().callAppInfoAPI();
