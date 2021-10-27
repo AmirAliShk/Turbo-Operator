@@ -5,17 +5,9 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Build;
 
-import androidx.annotation.RequiresApi;
-import androidx.core.content.ContextCompat;
-
 import ir.taxi1880.operatormanagement.app.MyApplication;
 import ir.taxi1880.operatormanagement.push.AvaCrashReporter;
 import ir.taxi1880.operatormanagement.push.AvaLog;
-
-
-/***
- * Created by Amirreza Erfanian on 4/8/16.
- */
 
 public class ServiceHelper {
 

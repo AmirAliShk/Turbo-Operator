@@ -96,7 +96,7 @@ public class PendingMistakesFragment extends Fragment {
         String tell = dataBase.getMistakesRow().getTell();
         String mobile = dataBase.getMistakesRow().getMobile();
         new PendingMistakesOptionsDialog()
-                .show(tell, mobile , SecondTimeCheckMis);
+                .show(tell, mobile);
     }
 
     @BindView(R.id.txtUserCode)

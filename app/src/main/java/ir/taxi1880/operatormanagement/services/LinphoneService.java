@@ -2,9 +2,7 @@ package ir.taxi1880.operatormanagement.services;
 
 import android.Manifest;
 import android.annotation.SuppressLint;
-import android.app.Notification;
 import android.app.NotificationChannel;
-import android.app.NotificationChannelGroup;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.app.Service;
@@ -17,8 +15,6 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.media.AudioManager;
 import android.media.MediaPlayer;
 import android.net.Uri;
@@ -347,15 +343,15 @@ public class LinphoneService extends Service {
         mCore = null;
         // Don't forget to free the singleton as well
         sInstance = null;
-
+        Log.i("TAG", "onDestroy: linephone destroyeddddddddddddddddddddddddddddddddddd");
         super.onDestroy();
     }
 
     @Override
     public void onTaskRemoved(Intent rootIntent) {
         // For this sample we will kill the Service at the same time we kill the app
-        stopSelf();
-
+//        stopSelf();
+        Log.i("TAG", "onTaskRemoved: removedddddddddddddddddddddddddddddddddd");
         super.onTaskRemoved(rootIntent);
     }
 
@@ -453,7 +449,6 @@ public class LinphoneService extends Service {
     }
 
     private void onIncomingReceived() {
-//    SoundHelper.ringing(R.raw.ring);
         if (TripRegisterActivity.isRunning) return;
         if (SupportActivity.supportActivityIsRunning) return;
         Intent intent = new Intent(this, CallIncomingActivity.class);

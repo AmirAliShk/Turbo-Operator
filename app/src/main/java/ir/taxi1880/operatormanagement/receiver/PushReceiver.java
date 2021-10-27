@@ -24,13 +24,11 @@ import ir.taxi1880.operatormanagement.app.Constant;
 import ir.taxi1880.operatormanagement.app.DataHolder;
 import ir.taxi1880.operatormanagement.app.MyApplication;
 import ir.taxi1880.operatormanagement.dialog.GeneralDialog;
-import ir.taxi1880.operatormanagement.push.AvaCrashReporter;
 import ir.taxi1880.operatormanagement.push.Keys;
 
 import static ir.taxi1880.operatormanagement.app.Keys.KEY_MESSAGE_USER_STATUS;
 import static ir.taxi1880.operatormanagement.app.Keys.KEY_REFRESH_USER_STATUS;
 import static ir.taxi1880.operatormanagement.app.Keys.KEY_USER_STATUS;
-import static ir.taxi1880.operatormanagement.services.LinphoneService.CHANNEL_ID;
 
 public class PushReceiver extends BroadcastReceiver {
     public static final String TAG = PushReceiver.class.getSimpleName();
@@ -50,65 +48,68 @@ public class PushReceiver extends BroadcastReceiver {
             String typee = messages.getString("type");
 //            {"type":"callerInfo","exten":"423","participant":"05138581352","queue":"1880","voipId":"1630394815.772460"}
 //            {"messageId":37861454,"message":"{\"type\":\"callerInfo\",\"exten\":\"423\",\"participant\":\"09155598659\",\"queue\":\"1880\",\"voipId\":\"1630487041.856199\"}","projectId":5,"userId":123}
-            if (typee.equals("callerInfo")) {
-                int exten = messages.getInt("exten");
-                String participant = messages.getString("participant");
-                String queue = messages.getString("queue");
-                String voipId = messages.getString("voipId");
+            switch (typee) {
+                case "callerInfo":
+                    int exten = messages.getInt("exten");
+                    String participant = messages.getString("participant");
+                    String queue = messages.getString("queue");
+                    String voipId = messages.getString("voipId");
 
-                MyApplication.prefManager.setVoipId(voipId);
-                MyApplication.prefManager.setQueue(queue);
+                    MyApplication.prefManager.setVoipId(voipId);
+                    MyApplication.prefManager.setQueue(queue);
 
 //                {"status":true,"pushMessags":[{"messageId":37894239,"message":"{\"type\":\"userStatus\",\"status\":false,\"message\":\"اپراتور کد 123 شما به دلیل جواب ندادن تلفن از صف پاسخگویی خارج شدید  توربو تاکسی \"}","projectId":5,"userId":123}]}
-            } else if (typee.equals("userStatus")) {
-                boolean status = messages.getBoolean("status");
-                String message = messages.getString("message");
+                    break;
+                case "userStatus":
+                    boolean status = messages.getBoolean("status");
+                    String message = messages.getString("message");
 
-                if (status)
-                    MyApplication.prefManager.setActivateStatus(true);
-                else
-                    MyApplication.prefManager.setActivateStatus(false);
+                    if (status)
+                        MyApplication.prefManager.setActivateStatus(true);
+                    else
+                        MyApplication.prefManager.setActivateStatus(false);
 
-                if (MyApplication.prefManager.isAppRun()) {
-                    new GeneralDialog()
-                            .title("هشدار")
-                            .message(message)
-                            .cancelable(false)
-                            .firstButton("باشه", null)
-                            .isSingleMode(true)
-                            .show();
-                } else {
-                    createUserStatusNotification(MyApplication.context, message);
-                }
+                    if (MyApplication.prefManager.isAppRun()) {
+                        new GeneralDialog()
+                                .title("هشدار")
+                                .message(message)
+                                .cancelable(false)
+                                .firstButton("باشه", null)
+                                .isSingleMode(true)
+                                .show();
+                    } else {
+                        createUserStatusNotification(MyApplication.context, message);
+                    }
 
-                LocalBroadcastManager broadcaster = LocalBroadcastManager.getInstance(MyApplication.context);
-                Intent broadcastIntent = new Intent(KEY_REFRESH_USER_STATUS);
-                broadcastIntent.putExtra(KEY_USER_STATUS, status);
-                broadcastIntent.putExtra(KEY_MESSAGE_USER_STATUS, message);
-                broadcaster.sendBroadcast(broadcastIntent);
+                    LocalBroadcastManager broadcaster = LocalBroadcastManager.getInstance(MyApplication.context);
+                    Intent broadcastIntent = new Intent(KEY_REFRESH_USER_STATUS);
+                    broadcastIntent.putExtra(KEY_USER_STATUS, status);
+                    broadcastIntent.putExtra(KEY_MESSAGE_USER_STATUS, message);
+                    broadcaster.sendBroadcast(broadcastIntent);
 
-            } else if (typee.equals("message")) {
-                String value = messages.getString("value");
-                String messageType = messages.getString("messageType");
+                    break;
+                case "message":
+                    String value = messages.getString("value");
+                    String messageType = messages.getString("messageType");
 
-                String title = "پیام";
-                if (messageType.equals("message"))
-                    title = "پیام";
-                else if (messageType.equals("announcement"))
-                    title = "اطلاعیه";
+                    String title = "پیام";
+                    if (messageType.equals("message"))
+                        title = "پیام";
+                    else if (messageType.equals("announcement"))
+                        title = "اطلاعیه";
 
-                if (MyApplication.prefManager.isAppRun()) {
-                    new GeneralDialog()
-                            .title(title)
-                            .message(value)
-                            .cancelable(false)
-                            .firstButton("باشه", null)
-                            .isSingleMode(true)
-                            .show();
-                } else {
-                    createMessageNotification(MyApplication.context, messageType, value);
-                }
-
+                    if (MyApplication.prefManager.isAppRun()) {
+                        new GeneralDialog()
+                                .title(title)
+                                .message(value)
+                                .cancelable(false)
+                                .firstButton("باشه", null)
+                                .isSingleMode(true)
+                                .show();
+                    } else {
+                        createMessageNotification(MyApplication.context, messageType, value);
+                    }
+                    break;
             }
 
         } catch (JSONException e) {

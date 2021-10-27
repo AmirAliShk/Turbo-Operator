@@ -88,7 +88,7 @@ public class PendingMistakesOptionsDialog {
     @BindView(R.id.llGuestCalls)
     LinearLayout llGuestCall;
 
-    public void show(String tell, String mobile , boolean secondTimeCheckMis) {
+    public void show(String tell, String mobile) {
         if (MyApplication.currentActivity == null || MyApplication.currentActivity.isFinishing())
             return;
         dialog = new Dialog(MyApplication.currentActivity);
@@ -106,11 +106,6 @@ public class PendingMistakesOptionsDialog {
         dialog.setCancelable(true);
         this.tell = tell;
         this.mobile = mobile;
-
-        if (secondTimeCheckMis)
-        {
-            llGuestCall.setVisibility(View.GONE);
-        }
 
         dialog.show();
     }

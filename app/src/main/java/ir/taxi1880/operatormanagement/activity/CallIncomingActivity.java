@@ -7,11 +7,10 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
-import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
-import android.widget.TextView;
 
 import com.gauravbhola.ripplepulsebackground.RipplePulseLayout;
 
@@ -22,83 +21,20 @@ import org.linphone.core.CoreListenerStub;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import butterknife.BindView;
-import butterknife.ButterKnife;
-import butterknife.OnClick;
-import butterknife.Unbinder;
 import ir.taxi1880.operatormanagement.R;
 import ir.taxi1880.operatormanagement.app.MyApplication;
+import ir.taxi1880.operatormanagement.databinding.ActivityCallIncomingBinding;
 import ir.taxi1880.operatormanagement.helper.ThemeHelper;
 import ir.taxi1880.operatormanagement.helper.TypefaceUtil;
 import ir.taxi1880.operatormanagement.push.AvaCrashReporter;
 import ir.taxi1880.operatormanagement.services.LinphoneService;
 
 public class CallIncomingActivity extends AppCompatActivity {
+
+    ActivityCallIncomingBinding binding;
     public static final String TAG = CallIncomingActivity.class.getSimpleName();
     private CoreListenerStub mListener;
     NotificationManager mNotificationManager;
-
-    @BindView(R.id.txtCallerNum)
-    TextView txtCallerNum;
-
-    @BindView(R.id.txtCallerName)
-    TextView txtCallerName;
-
-    @OnClick(R.id.imgAccept)
-    void onAcceptPress() {
-        try {
-            Core core;
-            core = LinphoneService.getCore();
-            call = core.getCurrentCall();
-            Call[] calls = core.getCalls();
-            int i = calls.length;
-            if (call != null) {
-                call.accept();
-            } else if (calls.length > 0) {
-                calls[0].accept();
-            }
-
-            ClipboardManager clipboard = (ClipboardManager) getSystemService(Context.CLIPBOARD_SERVICE);
-            ClipData clip = ClipData.newPlainText("passengerTell", txtCallerNum.getText().toString());
-            clipboard.setPrimaryClip(clip);
-
-        } catch (Exception e) {
-            e.printStackTrace();
-            AvaCrashReporter.send(e, "CallIncomingActivity class, onAcceptPress");
-        }
-    }
-
-    @OnClick(R.id.imgReject)
-    void onRejectPress() {
-        Core mCore = LinphoneService.getCore();
-        Call currentCall = mCore.getCurrentCall();
-        boolean flagTerminate = false;
-        for (Call call : mCore.getCalls()) {
-            if (call != null && call.getConference() != null) {
-//        if (mCore.isInConference()) {
-//          displayConferenceCall(call);
-//          conferenceDisplayed = true;
-//        } else if (!pausedConferenceDisplayed) {
-//          displayPausedConference();
-//          pausedConferenceDisplayed = true;
-//        }
-            } else if (call != null && call != currentCall) {
-                Call.State state = call.getState();
-                if (state == Call.State.Paused || state == Call.State.PausedByRemote || state == Call.State.Pausing) {
-                    call.terminate();
-                    flagTerminate = true;
-                }
-            } else if (call != null && call == currentCall) {
-                flagTerminate = true;
-                call.terminate();
-            }
-        }
-        if (!flagTerminate) {
-            finish();
-        }
-    }
-
-    Unbinder unbinder;
     Call call;
     int notifManagerId = 0;
 
@@ -107,8 +43,8 @@ public class CallIncomingActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         ThemeHelper.onActivityCreateSetTheme(this);
 
-        setContentView(R.layout.activity_call_incoming);
-        View view = getWindow().getDecorView();
+        binding = ActivityCallIncomingBinding.inflate(LayoutInflater.from(this));
+        setContentView(binding.getRoot());
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             Window window = getWindow();
             window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
@@ -123,8 +59,59 @@ public class CallIncomingActivity extends AppCompatActivity {
                 WindowManager.LayoutParams.FLAG_SHOW_WHEN_LOCKED |
                 WindowManager.LayoutParams.FLAG_TURN_SCREEN_ON);
 
-        unbinder = ButterKnife.bind(this);
-        TypefaceUtil.overrideFonts(view);
+        TypefaceUtil.overrideFonts(binding.getRoot());
+
+        binding.imgAccept.setOnClickListener(view -> {
+            try {
+                Core core;
+                core = LinphoneService.getCore();
+                call = core.getCurrentCall();
+                Call[] calls = core.getCalls();
+                int i = calls.length;
+                if (call != null) {
+                    call.accept();
+                } else if (calls.length > 0) {
+                    calls[0].accept();
+                }
+
+                ClipboardManager clipboard = (ClipboardManager) getSystemService(Context.CLIPBOARD_SERVICE);
+                ClipData clip = ClipData.newPlainText("passengerTell", binding.txtCallerNum.getText().toString());
+                clipboard.setPrimaryClip(clip);
+
+            } catch (Exception e) {
+                e.printStackTrace();
+                AvaCrashReporter.send(e, "CallIncomingActivity class, onAcceptPress");
+            }
+        });
+
+        binding.imgReject.setOnClickListener(view -> {
+            Core mCore = LinphoneService.getCore();
+            Call currentCall = mCore.getCurrentCall();
+            boolean flagTerminate = false;
+            for (Call call : mCore.getCalls()) {
+                if (call != null && call.getConference() != null) {
+//        if (mCore.isInConference()) {
+//          displayConferenceCall(call);
+//          conferenceDisplayed = true;
+//        } else if (!pausedConferenceDisplayed) {
+//          displayPausedConference();
+//          pausedConferenceDisplayed = true;
+//        }
+                } else if (call != null && call != currentCall) {
+                    Call.State state = call.getState();
+                    if (state == Call.State.Paused || state == Call.State.PausedByRemote || state == Call.State.Pausing) {
+                        call.terminate();
+                        flagTerminate = true;
+                    }
+                } else if (call != null && call == currentCall) {
+                    flagTerminate = true;
+                    call.terminate();
+                }
+            }
+            if (!flagTerminate) {
+                finish();
+            }
+        });
 
         mListener =
                 new CoreListenerStub() {
@@ -172,7 +159,7 @@ public class CallIncomingActivity extends AppCompatActivity {
                 if (callList.getState() == Call.State.IncomingReceived) {
                     call = callList;
                     Address address = callList.getRemoteAddress();
-                    txtCallerNum.setText(address.getUsername());
+                    binding.txtCallerNum.setText(address.getUsername());
                 }
             }
         } catch (Exception e) {
@@ -192,7 +179,6 @@ public class CallIncomingActivity extends AppCompatActivity {
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        unbinder.unbind();
         MyApplication.prefManager.setAppRun(false);
     }
 
