@@ -98,15 +98,14 @@ public class PrefManager {
         pref = _context.getSharedPreferences(PREF_NAME, PRIVATE_MODE);
         editor = pref.edit();
     }
-    public void setMistakeReason(String reasons)
-    {
-        editor.putString(MISTAKE_REASON,reasons);
+
+    public void setMistakeReason(String reasons) {
+        editor.putString(MISTAKE_REASON, reasons);
         editor.commit();
     }
 
-    public String getMistakeReason()
-    {
-        return pref.getString(MISTAKE_REASON,"");
+    public String getMistakeReason() {
+        return pref.getString(MISTAKE_REASON, "");
     }
 
     public boolean isActiveInSupport() {
@@ -570,5 +569,9 @@ public class PrefManager {
     public void setCallIncoming(Boolean incoming) {
         editor.putBoolean(INCOMINGCALL, incoming);
         editor.commit();
+    }
+
+    public void cleanPrefManger() {
+        pref.edit().clear().apply();
     }
 }

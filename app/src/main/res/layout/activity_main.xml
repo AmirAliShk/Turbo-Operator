@@ -109,6 +109,20 @@
                 android:layout_height="match_parent"
                 android:layout_weight="1" />
 
+            <ImageView
+                android:id="@+id/imgLogout"
+                android:layout_width="55dp"
+                android:layout_height="55dp"
+                android:layout_margin="@dimen/_5sdp"
+                android:background="@drawable/circle_shadow"
+                android:padding="10dp"
+                android:src="@drawable/ic_bad" />
+
+            <View
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1" />
+
         </LinearLayout>
 
     </androidx.constraintlayout.widget.ConstraintLayout>

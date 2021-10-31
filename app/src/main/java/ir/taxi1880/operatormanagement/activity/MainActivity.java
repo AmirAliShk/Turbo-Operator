@@ -1,8 +1,12 @@
 package ir.taxi1880.operatormanagement.activity;
 
+import static ir.taxi1880.operatormanagement.app.MyApplication.context;
+
+import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
+import android.util.Log;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
@@ -36,10 +40,12 @@ import ir.taxi1880.operatormanagement.fragment.MessageFragment;
 import ir.taxi1880.operatormanagement.fragment.NotificationFragment;
 import ir.taxi1880.operatormanagement.helper.FragmentHelper;
 import ir.taxi1880.operatormanagement.helper.KeyBoardHelper;
+import ir.taxi1880.operatormanagement.helper.ServiceHelper;
 import ir.taxi1880.operatormanagement.helper.StringHelper;
 import ir.taxi1880.operatormanagement.helper.ThemeHelper;
 import ir.taxi1880.operatormanagement.helper.TypefaceUtil;
 import ir.taxi1880.operatormanagement.push.AvaCrashReporter;
+import ir.taxi1880.operatormanagement.push.AvaService;
 import ir.taxi1880.operatormanagement.services.LinphoneService;
 
 public class MainActivity extends AppCompatActivity implements NotificationFragment.RefreshNotificationCount {
@@ -92,6 +98,19 @@ public class MainActivity extends AppCompatActivity implements NotificationFragm
         FragmentHelper
                 .toFragment(MyApplication.currentActivity, new AccountFragment())
                 .replace();
+    }
+
+    @OnClick(R.id.imgLogout)
+    void onLogout() {
+        MyApplication.prefManager.setAuthorization("");
+        MyApplication.prefManager.setRefreshToken("");
+        ServiceHelper.stop(context, LinphoneService.class);
+        ServiceHelper.stop(context, AvaService.class);
+        MyApplication.prefManager.cleanPrefManger();
+        MyApplication.handler.post(() -> {
+            MyApplication.currentActivity.startActivity(new Intent(MyApplication.currentActivity, SplashActivity.class));
+            MyApplication.currentActivity.finish();
+        });
     }
 
     @Override

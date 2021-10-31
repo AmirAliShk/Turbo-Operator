@@ -233,7 +233,7 @@ public class GetAppInfo {
                 MyApplication.currentActivity.startActivity(i);
                 MyApplication.currentActivity.finish();
             });
-            generalDialog.secondButton("فعلا نه", () -> startVoipService());
+            generalDialog.secondButton("فعلا نه", this::startVoipService);
             generalDialog.show();
         }
     }
@@ -251,7 +251,7 @@ public class GetAppInfo {
             }
             // As we're in a thread, we can't do UI stuff in it, must post a runnable in UI thread
             MyApplication.handler.post(
-                    () -> ContinueProcessing.runMainActivity());
+                    ContinueProcessing::runMainActivity);
         }
     }
 
