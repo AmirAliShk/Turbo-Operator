@@ -5,7 +5,6 @@ import android.app.Application;
 import android.content.Context;
 import android.content.res.Configuration;
 import android.graphics.Typeface;
-import android.os.Bundle;
 import android.os.Environment;
 import android.os.Handler;
 import android.util.Log;
@@ -16,9 +15,6 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import org.acra.ACRA;
-import org.acra.ReportField;
-import org.acra.annotation.AcraCore;
-import org.acra.annotation.AcraHttpSender;
 import org.acra.config.CoreConfigurationBuilder;
 import org.acra.config.HttpSenderConfigurationBuilder;
 import org.acra.data.StringFormat;
@@ -28,13 +24,11 @@ import org.linphone.core.Core;
 import org.linphone.core.ProxyConfig;
 import org.linphone.core.TransportType;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
-
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.fragment.app.FragmentManager;
 
 import ir.taxi1880.operatormanagement.BuildConfig;
 import ir.taxi1880.operatormanagement.R;
@@ -42,8 +36,6 @@ import ir.taxi1880.operatormanagement.helper.TypefaceUtil;
 import ir.taxi1880.operatormanagement.push.AvaCrashReporter;
 import ir.taxi1880.operatormanagement.push.AvaFactory;
 import ir.taxi1880.operatormanagement.services.LinphoneService;
-
-import static butterknife.internal.Finder.DIALOG;
 
 public class MyApplication extends Application {
     private static final String TAG = MyApplication.class.getSimpleName();
@@ -59,12 +51,10 @@ public class MyApplication extends Application {
     public static Typeface IraSanSBold;
     public static Typeface IraSanSLight;
     public static PrefManager prefManager;
-    public static final String DIR_SDCARD = Environment.getExternalStorageDirectory().getAbsolutePath();
-    public static String DIR_DOWNLOAD;
-    public static String DIR_ROOT;
-    public static final String VOICE_FOLDER_NAME = "voice";
+    public static final String DIR_MAIN_FOLDER = Environment.getExternalStorageDirectory().getAbsolutePath() + "/TurboOperator/";
+    public static final String VOICE_FOLDER_NAME = "Voice/";
+    public static final String image_path_save = DIR_MAIN_FOLDER + "Image/";
     public static final String SOUND = "android.resource://ir.taxi1880.operatormanagement/";
-    public static final String image_path_save = DIR_SDCARD + "/operatormanagement/Image/";
 
     @Override
     public void onCreate() {
@@ -74,8 +64,14 @@ public class MyApplication extends Application {
         initTypeface();
 
         prefManager = new PrefManager(context);
-        DIR_ROOT = DIR_SDCARD + "/Android/data/" + context.getPackageName() + "/";
-        DIR_DOWNLOAD = DIR_SDCARD + "/Android/data/" + context.getPackageName() + "/files/";
+
+        File file = new File(DIR_MAIN_FOLDER + VOICE_FOLDER_NAME + ".nomedia");
+        try {
+            file.createNewFile();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
         String languageToLoad = "fa_";
         Locale locale = new Locale(languageToLoad);
         Locale.setDefault(locale);

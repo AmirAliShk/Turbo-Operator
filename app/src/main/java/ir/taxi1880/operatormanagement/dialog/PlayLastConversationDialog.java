@@ -1,13 +1,13 @@
 package ir.taxi1880.operatormanagement.dialog;
 
+import static ir.taxi1880.operatormanagement.app.MyApplication.context;
+
 import android.app.Dialog;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.media.MediaPlayer;
 import android.net.Uri;
 import android.os.AsyncTask;
-import android.os.Build;
-import android.os.Environment;
 import android.util.Log;
 import android.view.Window;
 import android.view.WindowManager;
@@ -70,12 +70,8 @@ public class PlayLastConversationDialog {
         Log.i("URL", "show: " + url);
         String voiceName = idTrip + ".mp3";
         File file;
-        if (Build.VERSION.SDK_INT > Build.VERSION_CODES.O) {
-            file = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS)
-                    + File.separator + "operatorParsian/"+voiceName);
-        } else {
-            file = new File(MyApplication.DIR_ROOT + MyApplication.VOICE_FOLDER_NAME + "/" + voiceName);
-        }
+        file = new File(MyApplication.DIR_MAIN_FOLDER + MyApplication.VOICE_FOLDER_NAME + voiceName);
+
         if (file.exists()) {
             initVoice(Uri.fromFile(file));
             playVoice();
@@ -134,13 +130,7 @@ public class PlayLastConversationDialog {
         skbTimer.setProgress(0);
         Log.i("URL", "show: " + urlString);
         String voiceName = tripId + ".mp3";
-        File file;
-        if (Build.VERSION.SDK_INT > Build.VERSION_CODES.O) {
-            file = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS)
-                    + File.separator + "operatorParsian/"+voiceName);
-        } else {
-            file = new File(MyApplication.DIR_ROOT + MyApplication.VOICE_FOLDER_NAME + "/" + voiceName);
-        }
+        File file = new File(MyApplication.DIR_MAIN_FOLDER + MyApplication.VOICE_FOLDER_NAME + voiceName);
         if (file.exists()) {
             initVoice(Uri.fromFile(file));
             playVoice();
@@ -189,13 +179,7 @@ public class PlayLastConversationDialog {
         try {
             URL url = new URL(urlString);
 
-            String dirPath;
-//            String dirPathTemp = MyApplication.DIR_ROOT + "temp/";
-            if (Build.VERSION.SDK_INT > Build.VERSION_CODES.O) {
-                dirPath = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS) + File.separator + "operatorParsian/";
-            } else {
-                dirPath = MyApplication.DIR_ROOT + "voice/";
-            }
+            String dirPath = MyApplication.DIR_MAIN_FOLDER + MyApplication.VOICE_FOLDER_NAME;
 
             new File(dirPath).mkdirs();
             File file = new File(dirPath);
@@ -241,8 +225,8 @@ public class PlayLastConversationDialog {
                             vfDownload.setDisplayedChild(1);
                             File file = new File(dirPath + fileName);
                             MyApplication.handler.postDelayed(() -> {
-                                    initVoice(Uri.fromFile(file));
-                                    playVoice();
+                                initVoice(Uri.fromFile(file));
+                                playVoice();
                             }, 500);
                         }
 
@@ -267,7 +251,7 @@ public class PlayLastConversationDialog {
 
     private void initVoice(Uri uri) {
         try {
-            mediaPlayer = MediaPlayer.create(MyApplication.context, uri);
+            mediaPlayer = MediaPlayer.create(context, uri);
             mediaPlayer.setOnCompletionListener(mp -> {
                 dismiss();
             });

@@ -4,9 +4,7 @@ import android.content.Intent;
 import android.media.MediaPlayer;
 import android.net.Uri;
 import android.os.AsyncTask;
-import android.os.Build;
 import android.os.Bundle;
-import android.os.Environment;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -64,7 +62,6 @@ public class PendingMistakesFragment extends Fragment {
     MediaPlayer mediaPlayer;
     AllMistakesModel model;
     LocalBroadcastManager broadcaster;
-    boolean SecondTimeCheckMis = false;
 
     @OnClick(R.id.btnSaveResult)
     void onSaveResult() {
@@ -87,7 +84,7 @@ public class PendingMistakesFragment extends Fragment {
                         if (vfSaveResult != null)
                             vfSaveResult.setDisplayedChild(0);
                     }
-                } );
+                });
     }
 
     @OnClick(R.id.btnOptions)
@@ -159,12 +156,8 @@ public class PendingMistakesFragment extends Fragment {
         Log.i("URL", "show: " + EndPoints.CALL_VOICE + dataBase.getMistakesRow().getVoipId());
         String voiceName = dataBase.getMistakesRow().getId() + ".mp3";
         File file;
-        if (Build.VERSION.SDK_INT > Build.VERSION_CODES.O) {
-            file = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS)
-                    + File.separator + "operatorParsian/" + voiceName);
-        } else {
-            file = new File(MyApplication.DIR_ROOT + MyApplication.VOICE_FOLDER_NAME + "/" + voiceName);
-        }
+        file = new File(MyApplication.DIR_MAIN_FOLDER + MyApplication.VOICE_FOLDER_NAME + voiceName);
+
         String voipId = dataBase.getMistakesRow().getVoipId();
         if (file.exists()) {
             initVoice(Uri.fromFile(file));
@@ -222,13 +215,7 @@ public class PendingMistakesFragment extends Fragment {
         try {
             URL url = new URL(urlString);
 
-            String dirPath;
-//            String dirPathTemp = MyApplication.DIR_ROOT + "temp/";
-            if (Build.VERSION.SDK_INT > Build.VERSION_CODES.O) {
-                dirPath = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS) + File.separator + "operatorParsian/";
-            } else {
-                dirPath = MyApplication.DIR_ROOT + "voice/";
-            }
+            String dirPath = MyApplication.DIR_MAIN_FOLDER + MyApplication.VOICE_FOLDER_NAME;
 
             new File(dirPath).mkdirs();
             File file = new File(dirPath);
@@ -368,10 +355,8 @@ public class PendingMistakesFragment extends Fragment {
             txtDestStation.setText(StringHelper.toPersianDigits(model.getDestStation()));
             txtDestStation.setText(StringHelper.toPersianDigits(model.getDestStation()));
             if (model.getMistakeReason() == null || model.getMistakeReason().isEmpty()) {
-                SecondTimeCheckMis = false;
                 llMistakeReason.setVisibility(View.GONE);
             } else {
-                SecondTimeCheckMis = true;
                 vfMissedCall.setVisibility(View.GONE);
                 txtMistakeReason.setText(StringHelper.toPersianDigits(model.getMistakeReason()));
             }

@@ -3,9 +3,7 @@ package ir.taxi1880.operatormanagement.fragment;
 import android.media.MediaPlayer;
 import android.net.Uri;
 import android.os.AsyncTask;
-import android.os.Build;
 import android.os.Bundle;
-import android.os.Environment;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -97,13 +95,7 @@ public class ComplaintCallFragment extends Fragment {
 
         Log.i("URL", "show: " + EndPoints.CALL_VOICE + complaintDetailsModel.getComplaintVoipId());
         String voiceName = complaintDetailsModel.getComplaintId() + ".mp3";
-        File file;
-        if (Build.VERSION.SDK_INT > Build.VERSION_CODES.O) {
-            file = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS)
-                    + File.separator + "operatorParsian/"+voiceName);
-        } else {
-            file = new File(MyApplication.DIR_ROOT + MyApplication.VOICE_FOLDER_NAME + "/" + voiceName);
-        }
+        File file = new File(MyApplication.DIR_MAIN_FOLDER + MyApplication.VOICE_FOLDER_NAME + voiceName);
         String voipId = complaintDetailsModel.getComplaintVoipId();
         if (file.exists()) {
             initVoice(Uri.fromFile(file));
@@ -176,13 +168,7 @@ public class ComplaintCallFragment extends Fragment {
         try {
             URL url = new URL(urlString);
 
-            String dirPath;
-//            String dirPathTemp = MyApplication.DIR_ROOT + "temp/";
-            if (Build.VERSION.SDK_INT > Build.VERSION_CODES.O) {
-                dirPath = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS) + File.separator + "operatorParsian/";
-            } else {
-                dirPath = MyApplication.DIR_ROOT + "voice/";
-            }
+            String dirPath = MyApplication.DIR_MAIN_FOLDER + MyApplication.VOICE_FOLDER_NAME;
 
             new File(dirPath).mkdirs();
             File file = new File(dirPath);

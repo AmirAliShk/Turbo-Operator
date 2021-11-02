@@ -1,11 +1,8 @@
 package ir.taxi1880.operatormanagement.adapter;
 
-import android.content.Context;
 import android.media.MediaPlayer;
 import android.net.Uri;
 import android.os.AsyncTask;
-import android.os.Build;
-import android.os.Environment;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -17,7 +14,6 @@ import android.widget.Toast;
 import android.widget.ViewFlipper;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.RequiresApi;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.downloader.Error;
@@ -44,8 +40,6 @@ import ir.taxi1880.operatormanagement.helper.TypefaceUtil;
 import ir.taxi1880.operatormanagement.model.RecentCallsModel;
 import ir.taxi1880.operatormanagement.okHttp.AuthenticationInterceptor;
 import ir.taxi1880.operatormanagement.push.AvaCrashReporter;
-
-import static ir.taxi1880.operatormanagement.app.MyApplication.context;
 
 public class RecentCallsAdapter extends RecyclerView.Adapter<RecentCallsAdapter.ViewHolder> {
     private ArrayList<RecentCallsModel> recentCallsModels;
@@ -133,12 +127,8 @@ public class RecentCallsAdapter extends RecyclerView.Adapter<RecentCallsAdapter.
             Log.i("URL", "show: " + EndPoints.CALL_VOICE + model.getVoipId());
             String voiceName = model.getVoipId() + ".mp3";
             File file;
-            if (Build.VERSION.SDK_INT > Build.VERSION_CODES.O) {
-                file = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS)
-                        + File.separator + "operatorParsian/"+voiceName);
-            } else {
-                file = new File(MyApplication.DIR_ROOT + MyApplication.VOICE_FOLDER_NAME + "/" + voiceName);
-            }
+            file = new File(MyApplication.DIR_MAIN_FOLDER + MyApplication.VOICE_FOLDER_NAME + voiceName);
+
             String voipId = model.getVoipId();
             if (file.exists()) {
                 initVoice(Uri.fromFile(file));
@@ -190,13 +180,7 @@ public class RecentCallsAdapter extends RecyclerView.Adapter<RecentCallsAdapter.
         try {
             URL url = new URL(urlString);
 
-            String dirPath;
-//            String dirPathTemp = MyApplication.DIR_ROOT + "temp/";
-            if (Build.VERSION.SDK_INT > Build.VERSION_CODES.O) {
-                dirPath = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS) + File.separator + "operatorParsian/";
-            } else {
-                dirPath = MyApplication.DIR_ROOT + "voice/";
-            }
+            String dirPath = MyApplication.DIR_MAIN_FOLDER + MyApplication.VOICE_FOLDER_NAME;
 
             new File(dirPath).mkdirs();
             File file = new File(dirPath);

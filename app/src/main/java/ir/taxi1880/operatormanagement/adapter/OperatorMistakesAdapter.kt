@@ -4,8 +4,6 @@ import android.graphics.Color
 import android.media.MediaPlayer
 import android.net.Uri
 import android.os.AsyncTask
-import android.os.Build
-import android.os.Environment
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -30,7 +28,6 @@ import org.json.JSONObject
 import java.io.File
 import java.net.MalformedURLException
 import java.net.URL
-import java.util.*
 import kotlin.collections.ArrayList
 
 class OperatorMistakesAdapter() : RecyclerView.Adapter<OperatorMistakesAdapter.OpMistakeHolder>() {
@@ -148,12 +145,8 @@ class OperatorMistakesAdapter() : RecyclerView.Adapter<OperatorMistakesAdapter.O
 
             Log.i("URL", "show: ${EndPoints.CALL_VOICE}${opMistake.voipId}")
             val voiceName = "${opMistake.voipId}.mp3"
-
-            val file: File = if (Build.VERSION.SDK_INT > Build.VERSION_CODES.O) {
-                File("${Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS)}${File.separator}operatorParsian/${voiceName}")
-            } else {
-                File("${MyApplication.DIR_ROOT}${MyApplication.VOICE_FOLDER_NAME}/$voiceName")
-            }
+            val file =
+                File(MyApplication.DIR_MAIN_FOLDER + MyApplication.VOICE_FOLDER_NAME + voiceName)
 
             val voipId = opMistake.voipId
             when {
@@ -234,11 +227,7 @@ class OperatorMistakesAdapter() : RecyclerView.Adapter<OperatorMistakesAdapter.O
     private fun startDownload(urlString: String, fileName: String) {
         try {
             val url = URL(urlString)
-            val dirPath: String = if (Build.VERSION.SDK_INT > Build.VERSION_CODES.O) {
-                "${Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS)}${File.separator}operatorParsian/"
-            } else {
-                "${MyApplication.DIR_ROOT}voice/"
-            }
+            val dirPath = MyApplication.DIR_MAIN_FOLDER + MyApplication.VOICE_FOLDER_NAME
             File(dirPath).mkdirs()
             val file = File(dirPath)
             if (file.isDirectory) {
@@ -282,7 +271,7 @@ class OperatorMistakesAdapter() : RecyclerView.Adapter<OperatorMistakesAdapter.O
         }
     }
 
-//    private var timer: Timer? = null
+    //    private var timer: Timer? = null
     private fun initVoice(uri: Uri?) {
         try {
             mediaPlayer = MediaPlayer.create(MyApplication.currentActivity, uri)
