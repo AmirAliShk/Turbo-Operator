@@ -1,118 +1,93 @@
 package ir.taxi1880.operatormanagement.fragment;
 
+import static ir.taxi1880.operatormanagement.app.MyApplication.context;
 
+import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.WindowManager;
-import android.widget.Button;
-import android.widget.EditText;
-import android.widget.TextView;
-import android.widget.ViewFlipper;
+
+import androidx.fragment.app.Fragment;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import androidx.fragment.app.Fragment;
-
-import butterknife.BindView;
-import butterknife.ButterKnife;
-import butterknife.OnClick;
-import butterknife.Unbinder;
-import ir.taxi1880.operatormanagement.R;
+import ir.taxi1880.operatormanagement.activity.SplashActivity;
 import ir.taxi1880.operatormanagement.app.EndPoints;
 import ir.taxi1880.operatormanagement.app.MyApplication;
+import ir.taxi1880.operatormanagement.databinding.FragmentAccountBinding;
 import ir.taxi1880.operatormanagement.dialog.GeneralDialog;
 import ir.taxi1880.operatormanagement.dialog.LoadingDialog;
 import ir.taxi1880.operatormanagement.helper.KeyBoardHelper;
+import ir.taxi1880.operatormanagement.helper.ServiceHelper;
 import ir.taxi1880.operatormanagement.helper.StringHelper;
 import ir.taxi1880.operatormanagement.helper.TypefaceUtil;
 import ir.taxi1880.operatormanagement.okHttp.RequestHelper;
 import ir.taxi1880.operatormanagement.push.AvaCrashReporter;
+import ir.taxi1880.operatormanagement.push.AvaService;
+import ir.taxi1880.operatormanagement.services.LinphoneService;
 
-/**
- * A simple {@link Fragment} subclass.
- */
 public class AccountFragment extends Fragment {
 
     public static final String TAG = AccountFragment.class.getSimpleName();
-    Unbinder unbinder;
-    String a;
-    private int keyDel;
-
-    @OnClick(R.id.imgBack)
-    void onBack() {
-        MyApplication.currentActivity.onBackPressed();
-    }
-
-    @BindView(R.id.txtCharge)
-    TextView txtCharge;
-
-    @BindView(R.id.edtCardNumber)
-    EditText edtCardNumber;
-
-    @BindView(R.id.edtIben)
-    EditText edtIben;
-
-    @BindView(R.id.edtAccountNum)
-    EditText edtAccountNum;
-
-    @OnClick(R.id.btnCheckOut)
-    void OnCheckOut() {
-        new GeneralDialog()
-                .title("هشدار")
-                .message("آیا از درخواست تسویه حساب خود اطمینان دارید؟")
-                .firstButton("بله مطمئنم", () -> payment())
-                .secondButton("پشیمون شدم", null)
-                .show();
-    }
-
-    @OnClick(R.id.rlParent)
-    void onParent() {
-        KeyBoardHelper.hideKeyboard();
-    }
-
-    @OnClick(R.id.btnUpdate)
-    void OnUpdae() {
-        String cardNumber = edtCardNumber.getText().toString().replaceAll(" ", "");
-        new GeneralDialog()
-                .title("به روز رسانی")
-                .message("اطلاعات شما به روز شود؟")
-                .firstButton("بله", () ->
-                        updateProfile(edtAccountNum.getText().toString(), cardNumber, edtIben.getText().toString()))
-                .secondButton("خیر", null)
-                .show();
-    }
-
-    @BindView(R.id.btnCheckOut)
-    Button btnCheckOut;
-
-    @BindView(R.id.vfBalance)
-    ViewFlipper vfBalance;
+    FragmentAccountBinding binding;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_account, container, false);
-        unbinder = ButterKnife.bind(this, view);
-        TypefaceUtil.overrideFonts(view);
-        TypefaceUtil.overrideFonts(txtCharge, MyApplication.IraSanSBold);
+        binding = FragmentAccountBinding.inflate(inflater, container, false);
+        TypefaceUtil.overrideFonts(binding.getRoot());
+        TypefaceUtil.overrideFonts(binding.txtCharge, MyApplication.IraSanSBold);
 
         getBalance();
 
-        StringHelper.setCharAfterOnTime(edtCardNumber, " - ", 4);
-        edtAccountNum.setText(StringHelper.toPersianDigits(MyApplication.prefManager.getAccountNumber()));
-        edtCardNumber.setText(StringHelper.toPersianDigits(MyApplication.prefManager.getCardNumber()));
-        edtIben.setText(StringHelper.toPersianDigits(MyApplication.prefManager.getSheba()));
+        StringHelper.setCharAfterOnTime(binding.edtCardNumber, " - ", 4);
+        binding.edtAccountNum.setText(StringHelper.toPersianDigits(MyApplication.prefManager.getAccountNumber()));
+        binding.edtCardNumber.setText(StringHelper.toPersianDigits(MyApplication.prefManager.getCardNumber()));
+        binding.edtIben.setText(StringHelper.toPersianDigits(MyApplication.prefManager.getSheba()));
 
+        binding.btnCheckOut.setOnClickListener(view -> new GeneralDialog()
+                .title("هشدار")
+                .message("آیا از درخواست تسویه حساب خود اطمینان دارید؟")
+                .firstButton("بله مطمئنم", this::payment)
+                .secondButton("پشیمون شدم", null)
+                .show());
 
-        return view;
+        binding.llLogout.setOnClickListener(view -> new GeneralDialog()
+                .title("خروج از حساب")
+                .message("میخواهید از حساب خود خارج شوید؟")
+                .firstButton("بله", () -> {
+                    MyApplication.currentActivity.finish();
+                    ServiceHelper.stop(context, LinphoneService.class);
+                    ServiceHelper.stop(context, AvaService.class);
+                    MyApplication.prefManager.cleanPrefManger();
+                    MyApplication.currentActivity.startActivity(new Intent(MyApplication.currentActivity, SplashActivity.class));
+                })
+                .secondButton("نه", null)
+                .cancelable(true)
+                .show());
+
+        binding.rlParent.setOnClickListener(view -> KeyBoardHelper.hideKeyboard());
+
+        binding.btnUpdate.setOnClickListener(view -> {
+            String cardNumber = binding.edtCardNumber.getText().toString().replaceAll(" ", "");
+            new GeneralDialog()
+                    .title("به روز رسانی")
+                    .message("اطلاعات شما به روز شود؟")
+                    .firstButton("بله", () ->
+                            updateProfile(binding.edtAccountNum.getText().toString(), cardNumber, binding.edtIben.getText().toString()))
+                    .secondButton("خیر", null)
+                    .show();
+        });
+
+        binding.imgBack.setOnClickListener(view -> MyApplication.currentActivity.onBackPressed());
+
+        return binding.getRoot();
     }
 
     private void getBalance() {
-        if (vfBalance != null)
-            vfBalance.setDisplayedChild(0);
+        if (binding.vfBalance != null)
+            binding.vfBalance.setDisplayedChild(0);
 
         RequestHelper.builder(EndPoints.BALANCE)
                 .listener(getBalance)
@@ -134,10 +109,10 @@ public class AccountFragment extends Fragment {
                         JSONObject dataObj = obj.getJSONObject("data");
                         String accountBalance = dataObj.getString("accountBalance");
                         String balance = StringHelper.setComma(accountBalance);
-                        if (txtCharge != null)
-                            txtCharge.setText(StringHelper.toPersianDigits(balance + ""));
-                        if (vfBalance != null)
-                            vfBalance.setDisplayedChild(1);
+                        if (binding.txtCharge != null)
+                            binding.txtCharge.setText(StringHelper.toPersianDigits(balance + ""));
+                        if (binding.vfBalance != null)
+                            binding.vfBalance.setDisplayedChild(1);
                     } else {
                         new GeneralDialog()
                                 .title("هشدار")
@@ -189,12 +164,12 @@ public class AccountFragment extends Fragment {
                                     .message("اطلاعات شما با موفقـیت به روز رسانی شد")
                                     .firstButton("باشه", null)
                                     .show();
-                            if (edtAccountNum != null)
-                                MyApplication.prefManager.setAccountNumber(edtAccountNum.getText().toString());
-                            if (edtIben != null)
-                                MyApplication.prefManager.setSheba(edtIben.getText().toString());
-                            if (edtCardNumber != null)
-                                MyApplication.prefManager.setCardNumber(edtCardNumber.getText().toString());
+                            if (binding.edtAccountNum != null)
+                                MyApplication.prefManager.setAccountNumber(binding.edtAccountNum.getText().toString());
+                            if (binding.edtIben != null)
+                                MyApplication.prefManager.setSheba(binding.edtIben.getText().toString());
+                            if (binding.edtCardNumber != null)
+                                MyApplication.prefManager.setCardNumber(binding.edtCardNumber.getText().toString());
                         } else {
                             new GeneralDialog()
                                     .title("هشدار")
@@ -282,6 +257,5 @@ public class AccountFragment extends Fragment {
     @Override
     public void onDestroy() {
         super.onDestroy();
-        unbinder.unbind();
     }
 }

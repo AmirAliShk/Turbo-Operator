@@ -1,5 +1,7 @@
 package ir.taxi1880.operatormanagement.webServices;
 
+import static ir.taxi1880.operatormanagement.app.MyApplication.context;
+
 import android.annotation.SuppressLint;
 import android.app.NotificationManager;
 import android.content.Context;
@@ -29,8 +31,6 @@ import ir.taxi1880.operatormanagement.okHttp.RequestHelper;
 import ir.taxi1880.operatormanagement.push.AvaCrashReporter;
 import ir.taxi1880.operatormanagement.services.LinphoneService;
 
-import static ir.taxi1880.operatormanagement.app.MyApplication.context;
-
 public class GetAppInfo {
     DataBase dataBase;
 
@@ -39,7 +39,6 @@ public class GetAppInfo {
             if (MyApplication.prefManager.getRefreshToken().equals("")) {
                 FragmentHelper
                         .toFragment(MyApplication.currentActivity, new LoginFragment())
-                        .setStatusBarColor(MyApplication.currentActivity.getResources().getColor(R.color.colorPrimaryDark))
                         .setAddToBackStack(false)
                         .add();
             } else {

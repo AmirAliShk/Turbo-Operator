@@ -119,9 +119,9 @@
                     android:id="@+id/cbRules"
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
-                    android:gravity="center_vertical"
                     android:backgroundTint="@color/colorAccent"
-                    android:buttonTint="?attr/colorIcon2"/>
+                    android:buttonTint="?attr/colorIcon2"
+                    android:gravity="center_vertical" />
 
                 <LinearLayout
                     android:id="@+id/llRules"
@@ -213,7 +213,6 @@
                     android:text="ورود با نام کاربری و رمز عبور"
                     android:textColor="?attr/colorIcon1"
                     android:textSize="@dimen/_14ssp" />
-
 
             </LinearLayout>
 
