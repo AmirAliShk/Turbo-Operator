@@ -199,6 +199,7 @@ class OperatorMistakesAdapter() : RecyclerView.Adapter<OperatorMistakesAdapter.O
                         if (reviewRequest == 1) {
 //                        OperatorMistakesFragment.getOperatorMistakes()
                             aHolder.binding.recheck.visibility = View.GONE
+                            aHolder.binding.situationTxt.text = "در حال بررسی"
                             aHolder.binding.situationTxt.setTextColor(Color.parseColor("#1976d2"))
                             aHolder.binding.situationImg.setImageResource(R.drawable.ic_pennding)
                         } else {
@@ -244,7 +245,6 @@ class OperatorMistakesAdapter() : RecyclerView.Adapter<OperatorMistakesAdapter.O
                 .start(object : OnDownloadListener {
                     override fun onDownloadComplete() {
                         val file = File(dirPath + fileName)
-
                         MyApplication.handler.postDelayed({
                             initVoice(Uri.fromFile(file))
                             playVoice()
