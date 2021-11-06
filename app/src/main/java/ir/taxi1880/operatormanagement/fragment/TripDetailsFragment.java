@@ -1,5 +1,7 @@
 package ir.taxi1880.operatormanagement.fragment;
 
+import static ir.taxi1880.operatormanagement.app.MyApplication.context;
+
 import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
@@ -11,26 +13,20 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 import android.widget.ViewFlipper;
-
-import org.json.JSONException;
-import org.json.JSONObject;
-import org.linphone.core.Address;
-import org.linphone.core.Call;
-import org.linphone.core.Core;
-import org.linphone.core.CoreListenerStub;
 
 import androidx.appcompat.content.res.AppCompatResources;
 import androidx.core.graphics.drawable.DrawableCompat;
 import androidx.fragment.app.Fragment;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import butterknife.Unbinder;
 import ir.taxi1880.operatormanagement.R;
-import ir.taxi1880.operatormanagement.activity.TripRegisterActivity;
 import ir.taxi1880.operatormanagement.app.EndPoints;
 import ir.taxi1880.operatormanagement.app.MyApplication;
 import ir.taxi1880.operatormanagement.dialog.CallDialog;
@@ -44,14 +40,10 @@ import ir.taxi1880.operatormanagement.dialog.LostDialog;
 import ir.taxi1880.operatormanagement.helper.DateHelper;
 import ir.taxi1880.operatormanagement.helper.FragmentHelper;
 import ir.taxi1880.operatormanagement.helper.KeyBoardHelper;
-import ir.taxi1880.operatormanagement.helper.PhoneNumberValidation;
 import ir.taxi1880.operatormanagement.helper.StringHelper;
 import ir.taxi1880.operatormanagement.helper.TypefaceUtil;
 import ir.taxi1880.operatormanagement.okHttp.RequestHelper;
 import ir.taxi1880.operatormanagement.push.AvaCrashReporter;
-import ir.taxi1880.operatormanagement.services.LinphoneService;
-
-import static ir.taxi1880.operatormanagement.app.MyApplication.context;
 
 public class TripDetailsFragment extends Fragment {
     Unbinder unbinder;
@@ -77,6 +69,7 @@ public class TripDetailsFragment extends Fragment {
     int cityCode;
     String price;
     String destinationStation;
+    String destination;
     String serviceDetails;
 
     @OnClick(R.id.imgBack)
@@ -270,7 +263,7 @@ public class TripDetailsFragment extends Fragment {
     void onError() {
 //        String cityName= new DataBase(MyApplication.context).getCityName2(cityCode);
         new ErrorRegistrationDialog()
-                .show(serviceId, passengerPhone, customerMobile, passengerAddress, passengerName, voipId, cityCode, stationCode, userId, callTime, callDate, price, destinationStation);
+                .show(serviceId, passengerPhone, customerMobile, passengerAddress, passengerName, voipId, cityCode, stationCode, userId, callTime, callDate, price, destinationStation, destination);
     }
 
     @OnClick(R.id.btnComplaintRegistration)
@@ -430,7 +423,7 @@ public class TripDetailsFragment extends Fragment {
                         String serviceComment = data.getString("serviceComment");
                         voipId = data.getString("VoipId");
                         destinationStation = data.getString("destinationStation");
-                        String destination = data.getString("destinationAddress");
+                        destination = data.getString("destinationAddress");
                         int stationRegisterUser = data.getInt("stationRegisterUser");
                         int destStationRegisterUser = data.getInt("destStationRegisterUser");
                         String timeToCome = data.getString("PUGTime");

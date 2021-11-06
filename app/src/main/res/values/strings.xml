@@ -143,5 +143,6 @@
     <string name="fuel_quota">سهمیه سوخت</string>
     <string name="confirm_info">تایید اطلاعات</string>
     <string name="stationName">نام ایستگاه</string>
+    <string name="logout">خروج از حساب</string>
 
 </resources>

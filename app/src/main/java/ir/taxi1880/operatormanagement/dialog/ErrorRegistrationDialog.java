@@ -29,7 +29,7 @@ public class ErrorRegistrationDialog {
     ViewFlipper vfLoader;
 
     public void show(String ServiceId, String phone, String mobile, String address, String customerName, String voipId,
-                     int cityCode, String stationCode, int userCodeContact, String conTime, String conDate, String price, String destinationStation) {
+                     int cityCode, String stationCode, int userCodeContact, String conTime, String conDate, String price, String destinationStation, String destinationAddress) {
         if (MyApplication.currentActivity == null || MyApplication.currentActivity.isFinishing())
             return;
         dialog = new Dialog(MyApplication.currentActivity);
@@ -61,7 +61,7 @@ public class ErrorRegistrationDialog {
                 return;
             }
 
-            setMistake(ServiceId, phone, mobile, address, customerName, voipId, description, cityCode, stationCode, userCodeContact, conTime, conDate, price, destinationStation);
+            setMistake(ServiceId, phone, mobile, address, customerName, voipId, description, cityCode, stationCode, userCodeContact, conTime, conDate, price, destinationStation, destinationAddress);
             dismiss();
         });
 
@@ -69,7 +69,7 @@ public class ErrorRegistrationDialog {
     }
 
     private void setMistake(String ServiceId, String phone, String mobile, String address, String customerName, String voipId, String desc,
-                            int cityCode, String stationCode, int userCodeContact, String conTime, String conDate, String price, String destinationStation) {
+                            int cityCode, String stationCode, int userCodeContact, String conTime, String conDate, String price, String destinationStation, String destinationAddress) {
         if (vfLoader != null) {
             vfLoader.setDisplayedChild(1);
         }
@@ -81,14 +81,15 @@ public class ErrorRegistrationDialog {
                 .addParam("tripUser", userCodeContact)//
                 .addParam("cityId", cityCode)//
                 .addParam("tripStation", stationCode)//
-                .addParam("destinationStation", destinationStation)
-                .addParam("Price", price)//
                 .addParam("tripDate", conDate)//
                 .addParam("tripTime", conTime)//
                 .addParam("adrs", address)
                 .addParam("customerName", customerName)
                 .addParam("voipId", voipId)
                 .addParam("description", desc)
+                .addParam("destinationAddress", destinationAddress)
+                .addParam("destinationStation", destinationStation)
+                .addParam("Price", price)//
                 .listener(onSetMistake)
                 .post();
     }

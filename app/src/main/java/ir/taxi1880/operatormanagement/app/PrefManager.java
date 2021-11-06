@@ -5,9 +5,6 @@ import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
 import android.util.Log;
 
-import org.json.JSONArray;
-
-
 public class PrefManager {
 
     // Shared Preferences
@@ -81,7 +78,6 @@ public class PrefManager {
     private static final String KEY_ENABLE_DARK_MODE = "KEY_ENABLE_DARK_MODE";
     private static final String MISTAKE_REASON = "mistakeReason";
 
-
     public boolean isDarkMode() {
         return pref.getBoolean(KEY_ENABLE_DARK_MODE, false);
     }
@@ -89,24 +85,21 @@ public class PrefManager {
     public void setDarkMode(boolean v) {
         editor.putBoolean(KEY_ENABLE_DARK_MODE, v);
         editor.commit();
-        MyApplication.currentActivity.recreate();
     }
-
 
     public PrefManager(Context context) {
         this._context = context;
         pref = _context.getSharedPreferences(PREF_NAME, PRIVATE_MODE);
         editor = pref.edit();
     }
-    public void setMistakeReason(String reasons)
-    {
-        editor.putString(MISTAKE_REASON,reasons);
+
+    public void setMistakeReason(String reasons) {
+        editor.putString(MISTAKE_REASON, reasons);
         editor.commit();
     }
 
-    public String getMistakeReason()
-    {
-        return pref.getString(MISTAKE_REASON,"");
+    public String getMistakeReason() {
+        return pref.getString(MISTAKE_REASON, "");
     }
 
     public boolean isActiveInSupport() {
@@ -570,5 +563,9 @@ public class PrefManager {
     public void setCallIncoming(Boolean incoming) {
         editor.putBoolean(INCOMINGCALL, incoming);
         editor.commit();
+    }
+
+    public void cleanPrefManger() {
+        pref.edit().clear().apply();
     }
 }

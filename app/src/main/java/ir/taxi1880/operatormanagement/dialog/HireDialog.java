@@ -14,7 +14,6 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.Spinner;
-import android.widget.TextView;
 import android.widget.ViewFlipper;
 
 import org.json.JSONArray;
@@ -138,7 +137,7 @@ public class HireDialog {
                         if (status) {
                             new GeneralDialog()
                                     .title("ثبت شد")
-                                    .message("درخواست استخدامی شما با موفقیت ثبت شد")
+                                    .message(message)
                                     .firstButton("باشه", () -> {
                                         dismiss();
                                         listener.onClose(true);

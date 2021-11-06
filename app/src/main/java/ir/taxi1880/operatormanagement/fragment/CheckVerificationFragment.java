@@ -1,35 +1,27 @@
 package ir.taxi1880.operatormanagement.fragment;
 
 import android.annotation.SuppressLint;
+import android.content.Context;
 import android.os.Bundle;
-
-import androidx.fragment.app.Fragment;
-
 import android.os.CountDownTimer;
+import android.view.ContextThemeWrapper;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
-import android.widget.TextView;
 import android.widget.Toast;
-import android.widget.ViewFlipper;
 
-import com.chaos.view.PinView;
+import androidx.fragment.app.Fragment;
 
 import org.json.JSONObject;
 
 import java.util.Calendar;
 
-import butterknife.BindView;
-import butterknife.ButterKnife;
-import butterknife.OnClick;
-import butterknife.Unbinder;
 import ir.taxi1880.operatormanagement.R;
-import ir.taxi1880.operatormanagement.activity.SplashActivity;
 import ir.taxi1880.operatormanagement.app.Constant;
 import ir.taxi1880.operatormanagement.app.EndPoints;
 import ir.taxi1880.operatormanagement.app.MyApplication;
-import ir.taxi1880.operatormanagement.customView.PinEntryEditText;
+import ir.taxi1880.operatormanagement.databinding.FragmentCheckVerificationBinding;
 import ir.taxi1880.operatormanagement.helper.FragmentHelper;
 import ir.taxi1880.operatormanagement.helper.KeyBoardHelper;
 import ir.taxi1880.operatormanagement.helper.TypefaceUtil;
@@ -40,92 +32,70 @@ import ir.taxi1880.operatormanagement.webServices.GetAppInfo;
 public class CheckVerificationFragment extends Fragment {
 
     public static final String TAG = CheckVerificationFragment.class.getSimpleName();
-    Unbinder unbinder;
+    FragmentCheckVerificationBinding binding;
     String code;
     String phoneNumber;
     static CountDownTimer countDownTimer;
 
-    @OnClick(R.id.llResendCode)
-    void onPressResendCode() {
-        verification(phoneNumber);
-    }
-
-    @OnClick(R.id.llChangeNumber)
-    void onPressChangeNumber() {
-        if (countDownTimer != null)
-            countDownTimer.cancel();
-        FragmentHelper
-                .toFragment(MyApplication.currentActivity, new VerificationFragment())
-                .setStatusBarColor(MyApplication.currentActivity.getResources().getColor(R.color.colorPrimaryDark))
-                .setAddToBackStack(false)
-                .replace();
-    }
-
-    @OnClick(R.id.btnEnter)
-    void onPressEnter() {
-        code = pin.getText().toString();
-
-        if (code.isEmpty()) {
-            MyApplication.Toast("کد را وارد کنید", Toast.LENGTH_SHORT);
-            return;
-        }
-
-        checkVerification();
-    }
-
-    @BindView(R.id.pin)
-    PinView pin;
-
-    @BindView(R.id.txtResendCode)
-    TextView txtResendCode;
-
-    @BindView(R.id.txtPhoneNumber)
-    TextView txtPhoneNumber;
-
-    @BindView(R.id.vfTime)
-    ViewFlipper vfTime;
-
-    @BindView(R.id.vfEnter)
-    ViewFlipper vfEnter;
-
-    @OnClick(R.id.llParent)
-    void onParent() {
-        KeyBoardHelper.hideKeyboard();
-    }
-
-
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_check_verification, container, false);
+        Context contextThemeWrapper = new ContextThemeWrapper(getActivity(), R.style.AppThemeLite);
+        LayoutInflater localInflater = inflater.cloneInContext(contextThemeWrapper);
+        binding = FragmentCheckVerificationBinding.inflate(localInflater, container, false);
         getActivity().getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_NOTHING);
-        unbinder = ButterKnife.bind(this, view);
-        TypefaceUtil.overrideFonts(view);
+        TypefaceUtil.overrideFonts(binding.getRoot());
 
         Bundle bundle = getArguments();
         if (bundle != null) {
             phoneNumber = bundle.getString("mobileNumber");
-            txtPhoneNumber.setText(phoneNumber);
+            binding.txtPhoneNumber.setText(phoneNumber);
         }
 
         startWaitingTime();
 
-        return view;
+        binding.llResendCode.setOnClickListener(view -> verification(phoneNumber));
+
+        binding.llChangeNumber.setOnClickListener(view -> {
+            if (countDownTimer != null)
+                countDownTimer.cancel();
+            KeyBoardHelper.hideKeyboard();
+            FragmentHelper
+                    .toFragment(MyApplication.currentActivity, new VerificationFragment())
+                    .setStatusBarColor(MyApplication.currentActivity.getResources().getColor(R.color.colorPrimaryDark))
+                    .setAddToBackStack(false)
+                    .replace();
+        });
+
+        binding.btnEnter.setOnClickListener(view -> {
+            code = binding.pin.getText().toString();
+
+            if (code.isEmpty()) {
+                MyApplication.Toast("کد را وارد کنید", Toast.LENGTH_SHORT);
+                return;
+            }
+            KeyBoardHelper.hideKeyboard();
+            checkVerification();
+        });
+
+        binding.llParent.setOnClickListener(view -> KeyBoardHelper.hideKeyboard());
+
+        return binding.getRoot();
     }
 
     /**
      * request the verification code again, after the repetition time has elapsed.
+     *
      * @input phone number
-     * */
+     */
     private void verification(String phoneNumber) {
-        if (vfTime != null) {
-            vfTime.setDisplayedChild(2);
+        if (binding.vfTime != null) {
+            binding.vfTime.setDisplayedChild(2);
         }
 
         RequestHelper.builder(EndPoints.VERIFICATION)
                 .addParam("phoneNumber", phoneNumber)
                 .listener(onVerificationCallBack)
                 .post();
-
     }
 
     private RequestHelper.Callback onVerificationCallBack = new RequestHelper.Callback() {
@@ -134,8 +104,8 @@ public class CheckVerificationFragment extends Fragment {
             MyApplication.handler.post(() -> {
                 try {
 //                    {"success":true,"message":"با موفقیت ارسال شد","data":{"repetitionTime":120}}
-                    if (vfTime != null) {
-                        vfTime.setDisplayedChild(0);
+                    if (binding.vfTime != null) {
+                        binding.vfTime.setDisplayedChild(0);
                     }
                     JSONObject object = new JSONObject(args[0].toString());
                     boolean success = object.getBoolean("success");
@@ -150,8 +120,8 @@ public class CheckVerificationFragment extends Fragment {
                         MyApplication.Toast(message, Toast.LENGTH_SHORT);
                     }
                 } catch (Exception e) {
-                    if (vfTime != null) {
-                        vfTime.setDisplayedChild(1);
+                    if (binding.vfTime != null) {
+                        binding.vfTime.setDisplayedChild(1);
                     }
                     e.printStackTrace();
                     AvaCrashReporter.send(e, "CheckVerificationFragment class, CheckVerificationFragment onResponse method");
@@ -162,16 +132,16 @@ public class CheckVerificationFragment extends Fragment {
         @Override
         public void onFailure(Runnable reCall, Exception e) {
             MyApplication.handler.post(() -> {
-                if (vfTime != null) {
-                    vfTime.setDisplayedChild(1);
+                if (binding.vfTime != null) {
+                    binding.vfTime.setDisplayedChild(1);
                 }
             });
         }
     };
 
     private void checkVerification() {
-        if (vfEnter != null) {
-            vfEnter.setDisplayedChild(1);
+        if (binding.vfEnter != null) {
+            binding.vfEnter.setDisplayedChild(1);
         }
 
         RequestHelper.builder(EndPoints.CHECK)
@@ -198,18 +168,18 @@ public class CheckVerificationFragment extends Fragment {
                         MyApplication.prefManager.setIdToken(data.getString("id_token"));
                         MyApplication.prefManager.setAuthorization(data.getString("access_token"));
                         MyApplication.prefManager.setRefreshToken(data.getString("refresh_token"));
-                       new GetAppInfo().callAppInfoAPI();
+                        new GetAppInfo().callAppInfoAPI();
                     } else {
-                        if (vfEnter != null) {
-                            vfEnter.setDisplayedChild(0);
+                        if (binding.vfEnter != null) {
+                            binding.vfEnter.setDisplayedChild(0);
                         }
 //                        {"success":false,"message":".اطلاعات صحیح نمی باشد","data":{}}
                         MyApplication.Toast(message, Toast.LENGTH_SHORT);
                     }
 
                 } catch (Exception e) {
-                    if (vfEnter != null) {
-                        vfEnter.setDisplayedChild(0);
+                    if (binding.vfEnter != null) {
+                        binding.vfEnter.setDisplayedChild(0);
                     }
                     e.printStackTrace();
                     AvaCrashReporter.send(e, "CheckVerificationFragment class, CheckVerificationFragment onResponse method");
@@ -220,8 +190,8 @@ public class CheckVerificationFragment extends Fragment {
         @Override
         public void onFailure(Runnable reCall, Exception e) {
             MyApplication.handler.post(() -> {
-                if (vfEnter != null) {
-                    vfEnter.setDisplayedChild(0);
+                if (binding.vfEnter != null) {
+                    binding.vfEnter.setDisplayedChild(0);
                 }
             });
         }
@@ -239,17 +209,17 @@ public class CheckVerificationFragment extends Fragment {
         countDownTimer = new CountDownTimer(remainingTime, 1000) {
             @SuppressLint("SetTextI18n")
             public void onTick(long millisUntilFinished) {
-                if (txtResendCode != null) {
-                    if (vfTime != null)
-                        vfTime.setDisplayedChild(0);
-                    txtResendCode.setText( millisUntilFinished / 1000 +"");
+                if (binding.txtResendCode != null) {
+                    if (binding.vfTime != null)
+                        binding.vfTime.setDisplayedChild(0);
+                    binding.txtResendCode.setText(millisUntilFinished / 1000 + "");
                 }
             }
 
             public void onFinish() {
-                if (txtResendCode != null) {
-                    if (vfTime != null)
-                        vfTime.setDisplayedChild(1);
+                if (binding.txtResendCode != null) {
+                    if (binding.vfTime != null)
+                        binding.vfTime.setDisplayedChild(1);
                 }
             }
         }.start();
@@ -258,6 +228,5 @@ public class CheckVerificationFragment extends Fragment {
     @Override
     public void onDestroyView() {
         super.onDestroyView();
-        unbinder.unbind();
     }
 }

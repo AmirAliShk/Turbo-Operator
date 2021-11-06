@@ -3,33 +3,24 @@ package ir.taxi1880.operatormanagement.activity;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
+import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
-import android.widget.ImageView;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.viewpager2.widget.ViewPager2;
 
 import com.google.android.material.tabs.TabLayout;
 import com.google.android.material.tabs.TabLayoutMediator;
 
-import org.linphone.core.Core;
-import org.linphone.core.CoreListenerStub;
-import org.linphone.core.ProxyConfig;
-import org.linphone.core.RegistrationState;
-
-import butterknife.BindView;
-import butterknife.ButterKnife;
-import butterknife.OnClick;
-import butterknife.Unbinder;
 import ir.taxi1880.operatormanagement.R;
 import ir.taxi1880.operatormanagement.adapter.MainViewPagerAdapter;
 import ir.taxi1880.operatormanagement.app.Constant;
 import ir.taxi1880.operatormanagement.app.DataHolder;
 import ir.taxi1880.operatormanagement.app.MyApplication;
+import ir.taxi1880.operatormanagement.databinding.ActivityMainBinding;
 import ir.taxi1880.operatormanagement.dialog.GeneralDialog;
 import ir.taxi1880.operatormanagement.fragment.AccountFragment;
 import ir.taxi1880.operatormanagement.fragment.MessageFragment;
@@ -40,66 +31,23 @@ import ir.taxi1880.operatormanagement.helper.StringHelper;
 import ir.taxi1880.operatormanagement.helper.ThemeHelper;
 import ir.taxi1880.operatormanagement.helper.TypefaceUtil;
 import ir.taxi1880.operatormanagement.push.AvaCrashReporter;
-import ir.taxi1880.operatormanagement.services.LinphoneService;
 
 public class MainActivity extends AppCompatActivity implements NotificationFragment.RefreshNotificationCount {
 
     public static final String TAG = MainActivity.class.getSimpleName();
-    Unbinder unbinder;
+    ActivityMainBinding binding;
     MainViewPagerAdapter mainViewPagerAdapter;
     boolean doubleBackToExitPressedOnce = false;
 
-    @BindView(R.id.vpMain)
-    ViewPager2 vpMain;
-
-    @BindView(R.id.tabMain)
-    TabLayout tabLayout;
-
-    @BindView(R.id.txtBadgeCount)
-    TextView txtBadgeCount;
-
-    @OnClick(R.id.imgNotification)
-    void onNotification() {
-        FragmentHelper
-                .toFragment(MyApplication.currentActivity, new NotificationFragment())
-                .replace();
-    }
-
-    @OnClick(R.id.imgTheme)
-    void onChangeTheme() {
-        if (MyApplication.prefManager.isDarkMode()) {
-            ThemeHelper.changeToTheme(MyApplication.currentActivity, false);
-            MyApplication.prefManager.setDarkMode(false);
-        } else {
-            ThemeHelper.changeToTheme(MyApplication.currentActivity, true);
-            MyApplication.prefManager.setDarkMode(true);
-        }
-
-    }
-
-    @BindView(R.id.imgTheme)
-    ImageView imgTheme;
-
-    @OnClick(R.id.imgMessage)
-    void onMessage() {
-        FragmentHelper
-                .toFragment(MyApplication.currentActivity, new MessageFragment())
-                .replace();
-    }
-
-    @OnClick(R.id.imgProfile)
-    void onProfile() {
-        FragmentHelper
-                .toFragment(MyApplication.currentActivity, new AccountFragment())
-                .replace();
-    }
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        Log.i(TAG, "onCreate=========: ");
         super.onCreate(savedInstanceState);
         ThemeHelper.onActivityCreateSetTheme(this);
-        setContentView(R.layout.activity_main);
-        View view = getWindow().getDecorView();
+        binding = ActivityMainBinding.inflate(LayoutInflater.from(this));
+        setContentView(binding.getRoot());
+        TypefaceUtil.overrideFonts(binding.getRoot());
+
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             Window window = getWindow();
             window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
@@ -112,40 +60,37 @@ public class MainActivity extends AppCompatActivity implements NotificationFragm
                 window.setNavigationBarColor(getResources().getColor(R.color.colorPrimaryLighter));
                 window.setStatusBarColor(getResources().getColor(R.color.colorPrimaryDark));
             }
-
         }
         MyApplication.configureAccount();
-        unbinder = ButterKnife.bind(this, view);
-        TypefaceUtil.overrideFonts(view);
 
         mainViewPagerAdapter = new MainViewPagerAdapter(this);
-        vpMain.setAdapter(mainViewPagerAdapter);
+        binding.vpMain.setAdapter(mainViewPagerAdapter);
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            imgTheme.setVisibility(View.VISIBLE);
+            binding.imgTheme.setVisibility(View.VISIBLE);
         } else {
-            imgTheme.setVisibility(View.GONE);
+            binding.imgTheme.setVisibility(View.GONE);
         }
 
         if (MyApplication.prefManager.isDarkMode()) {
-            imgTheme.setImageResource(R.drawable.ic_dark);
+            binding.imgTheme.setImageResource(R.drawable.ic_dark);
         } else {
-            imgTheme.setImageResource(R.drawable.ic_light);
+            binding.imgTheme.setImageResource(R.drawable.ic_light);
         }
 
-        new TabLayoutMediator(tabLayout, vpMain, (tab, position) -> {
+        new TabLayoutMediator(binding.tabMain, binding.vpMain, (tab, position) -> {
             tab.setCustomView(mainViewPagerAdapter.getTabView(position));
         }).attach();
 
-        tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
+        binding.tabMain.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
             @Override
             public void onTabSelected(TabLayout.Tab tab) {
-                mainViewPagerAdapter.setSelectView(tabLayout, tab.getPosition(), "select");
+                mainViewPagerAdapter.setSelectView(binding.tabMain, tab.getPosition(), "select");
             }
 
             @Override
             public void onTabUnselected(TabLayout.Tab tab) {
-                mainViewPagerAdapter.setSelectView(tabLayout, tab.getPosition(), "unSelect");
+                mainViewPagerAdapter.setSelectView(binding.tabMain, tab.getPosition(), "unSelect");
             }
 
             @Override
@@ -153,6 +98,28 @@ public class MainActivity extends AppCompatActivity implements NotificationFragm
 
             }
         });
+
+        binding.imgNotification.setOnClickListener(view -> FragmentHelper
+                .toFragment(MyApplication.currentActivity, new NotificationFragment())
+                .replace());
+
+        binding.imgTheme.setOnClickListener(view -> {
+            if (MyApplication.prefManager.isDarkMode()) {
+                ThemeHelper.changeToTheme(MyApplication.currentActivity);
+                MyApplication.prefManager.setDarkMode(false);
+            } else {
+                ThemeHelper.changeToTheme(MyApplication.currentActivity);
+                MyApplication.prefManager.setDarkMode(true);
+            }
+        });
+
+        binding.imgMessage.setOnClickListener(view -> FragmentHelper
+                .toFragment(MyApplication.currentActivity, new MessageFragment())
+                .replace());
+
+        binding.imgProfile.setOnClickListener(view -> FragmentHelper
+                .toFragment(MyApplication.currentActivity, new AccountFragment())
+                .replace());
 
     }
 
@@ -163,7 +130,7 @@ public class MainActivity extends AppCompatActivity implements NotificationFragm
         MyApplication.prefManager.setAppRun(true);
 
         if (MyApplication.prefManager.getCountNotification() == 0) {
-            txtBadgeCount.setVisibility(View.GONE);
+            binding.txtBadgeCount.setVisibility(View.GONE);
         } else {
             String message = " شما " + MyApplication.prefManager.getCountNotification() + " اطلاعیه جدید دارید. ";
             new GeneralDialog()
@@ -172,8 +139,8 @@ public class MainActivity extends AppCompatActivity implements NotificationFragm
                     .firstButton("باشه", () -> FragmentHelper.toFragment(MyApplication.currentActivity, new NotificationFragment()).replace())
                     .cancelable(false)
                     .show();
-            txtBadgeCount.setVisibility(View.VISIBLE);
-            txtBadgeCount.setText(StringHelper.toPersianDigits(MyApplication.prefManager.getCountNotification() + ""));
+            binding.txtBadgeCount.setVisibility(View.VISIBLE);
+            binding.txtBadgeCount.setText(StringHelper.toPersianDigits(MyApplication.prefManager.getCountNotification() + ""));
         }
 
         if (DataHolder.getInstance().getPushType() != null) {
@@ -210,7 +177,6 @@ public class MainActivity extends AppCompatActivity implements NotificationFragm
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        unbinder.unbind();
     }
 
     @Override
@@ -238,10 +204,10 @@ public class MainActivity extends AppCompatActivity implements NotificationFragm
     @Override
     public void refreshNotification() {
         if (MyApplication.prefManager.getCountNotification() == 0) {
-            txtBadgeCount.setVisibility(View.GONE);
+            binding.txtBadgeCount.setVisibility(View.GONE);
         } else {
-            txtBadgeCount.setVisibility(View.VISIBLE);
-            txtBadgeCount.setText(StringHelper.toPersianDigits(MyApplication.prefManager.getCountNotification() + ""));
+            binding.txtBadgeCount.setVisibility(View.VISIBLE);
+            binding.txtBadgeCount.setText(StringHelper.toPersianDigits(MyApplication.prefManager.getCountNotification() + ""));
         }
     }
 }
