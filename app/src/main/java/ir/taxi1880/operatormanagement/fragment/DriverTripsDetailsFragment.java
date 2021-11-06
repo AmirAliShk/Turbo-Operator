@@ -1,5 +1,7 @@
 package ir.taxi1880.operatormanagement.fragment;
 
+import static ir.taxi1880.operatormanagement.app.MyApplication.context;
+
 import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
@@ -44,8 +46,6 @@ import ir.taxi1880.operatormanagement.helper.TypefaceUtil;
 import ir.taxi1880.operatormanagement.okHttp.RequestHelper;
 import ir.taxi1880.operatormanagement.push.AvaCrashReporter;
 
-import static ir.taxi1880.operatormanagement.app.MyApplication.context;
-
 public class DriverTripsDetailsFragment extends Fragment {
     Unbinder unbinder;
     String serviceId;
@@ -71,6 +71,7 @@ public class DriverTripsDetailsFragment extends Fragment {
     String serviceDetails;
     String price;
     String destinationStation;
+    String destination;
 
     @OnClick(R.id.imgBack)
     void onBackPress() {
@@ -264,7 +265,7 @@ public class DriverTripsDetailsFragment extends Fragment {
     void onError() {
 //        String cityName= new DataBase(MyApplication.context).getCityName2(cityCode);
         new ErrorRegistrationDialog()
-                .show(serviceId, passengerPhone, customerMobile, passengerAddress, passengerName, voipId, cityCode, stationCode, userId, callTime, callDate, price, destinationStation);
+                .show(serviceId, passengerPhone, customerMobile, passengerAddress, passengerName, voipId, cityCode, stationCode, userId, callTime, callDate, price, destinationStation, destination);
     }
 
     @OnClick(R.id.btnComplaintRegistration)
@@ -424,7 +425,7 @@ public class DriverTripsDetailsFragment extends Fragment {
                         String serviceComment = data.getString("serviceComment");
                         voipId = data.getString("VoipId");
                         destinationStation = data.getString("destinationStation");
-                        String destination = data.getString("destinationAddress");
+                        destination = data.getString("destinationAddress");
                         int stationRegisterUser = data.getInt("stationRegisterUser");
                         int destStationRegisterUser = data.getInt("destStationRegisterUser");
                         String timeToCome = data.getString("PUGTime");

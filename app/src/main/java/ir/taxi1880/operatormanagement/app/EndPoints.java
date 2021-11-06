@@ -88,7 +88,7 @@ public class EndPoints {
     /******************************** Support Api *********************************/
 
     public static final String SEARCH_SERVICE = SUPPORT_TRIP_WEBSERVICE_PATH + "v1/search";//api/operator/v3/support/trip/v1/search
-    public static final String MISTAKE = SUPPORT_TRIP_WEBSERVICE_PATH + "mistake";
+    public static final String MISTAKE = SUPPORT_TRIP_WEBSERVICE_PATH + "v1/mistake";
     public static final String CANCEL = SUPPORT_TRIP_WEBSERVICE_PATH + "cancel";
     public static final String MAKE_DISPOSAL = SUPPORT_TRIP_WEBSERVICE_PATH + "makeDisposal";
     public static final String PASSENGER_INFO = SUPPORT_WEBSERVICE_PATH + "passengerInfo";

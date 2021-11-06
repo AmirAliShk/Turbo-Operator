@@ -15,17 +15,17 @@ import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.ViewFlipper;
 
+import androidx.fragment.app.Fragment;
+import androidx.gridlayout.widget.GridLayout;
+
+import com.chaos.view.PinView;
+
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.Timer;
 import java.util.TimerTask;
-
-import androidx.fragment.app.Fragment;
-import androidx.gridlayout.widget.GridLayout;
-
-import com.chaos.view.PinView;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -34,9 +34,8 @@ import butterknife.Unbinder;
 import ir.taxi1880.operatormanagement.R;
 import ir.taxi1880.operatormanagement.app.EndPoints;
 import ir.taxi1880.operatormanagement.app.MyApplication;
-import ir.taxi1880.operatormanagement.customView.PinEntryEditText;
-import ir.taxi1880.operatormanagement.dataBase.DataBase;
 import ir.taxi1880.operatormanagement.dataBase.DBTripModel;
+import ir.taxi1880.operatormanagement.dataBase.DataBase;
 import ir.taxi1880.operatormanagement.dialog.EditPassengerAddressDialog;
 import ir.taxi1880.operatormanagement.dialog.GeneralDialog;
 import ir.taxi1880.operatormanagement.dialog.LoadingDialog;
@@ -107,7 +106,7 @@ public class DeterminationPageFragment extends Fragment {
 
     @OnClick(R.id.btnSubmit)
     void onSubmit() {
-        Log.i(TAG, "onSubmit: "+pin.getText().toString());
+        Log.i(TAG, "onSubmit: " + pin.getText().toString());
         if (pin.getText().toString().isEmpty()) {
             MyApplication.Toast("لطفا شماره ایستگاه را وارد کنید", Toast.LENGTH_SHORT);
             return;
@@ -565,14 +564,16 @@ public class DeterminationPageFragment extends Fragment {
                 .addParam("phone", StringHelper.toEnglishDigits(dataBase.getTopAddress().getTell()))
                 .addParam("mobile", StringHelper.toEnglishDigits(dataBase.getTopAddress().getMobile()))
                 .addParam("tripUser", StringHelper.toEnglishDigits(dataBase.getTopAddress().getOperatorId() + ""))
+                .addParam("cityId", StringHelper.toEnglishDigits(dataBase.getTopAddress().getCity() + ""))
+                .addParam("tripStation", StringHelper.toEnglishDigits(dataBase.getTopAddress().getOriginStation() + ""))
+                .addParam("tripDate", tripDate)
+                .addParam("tripTime", tripTime)
                 .addParam("adrs", StringHelper.toEnglishDigits(dataBase.getTopAddress().getOriginText()))
                 .addParam("customerName", StringHelper.toEnglishDigits(dataBase.getTopAddress().getCustomerName()))
                 .addParam("voipId", StringHelper.toEnglishDigits(dataBase.getTopAddress().getVoipId()))
-                .addParam("tripTime", tripTime)
-                .addParam("tripDate", tripDate)
-                .addParam("cityId", StringHelper.toEnglishDigits(dataBase.getTopAddress().getCity() + ""))
-                .addParam("tripStation", StringHelper.toEnglishDigits(dataBase.getTopAddress().getOriginStation() + ""))
                 .addParam("description", " ")
+                .addParam("destinationAddress", StringHelper.toEnglishDigits(dataBase.getTopAddress().getDestination() + ""))
+                .addParam("destinationStation", StringHelper.toEnglishDigits(dataBase.getTopAddress().getDestinationStation() + ""))
                 .listener(setMistake)
                 .post();
     }

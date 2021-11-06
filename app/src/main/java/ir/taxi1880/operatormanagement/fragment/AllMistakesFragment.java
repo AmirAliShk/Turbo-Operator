@@ -1,5 +1,8 @@
 package ir.taxi1880.operatormanagement.fragment;
 
+import static ir.taxi1880.operatormanagement.app.Keys.KEY_NEW_MISTAKE_COUNT;
+import static ir.taxi1880.operatormanagement.app.Keys.NEW_MISTAKE_COUNT;
+
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -28,13 +31,9 @@ import ir.taxi1880.operatormanagement.R;
 import ir.taxi1880.operatormanagement.adapter.AllMistakesAdapter;
 import ir.taxi1880.operatormanagement.app.EndPoints;
 import ir.taxi1880.operatormanagement.app.MyApplication;
-import ir.taxi1880.operatormanagement.dialog.GeneralDialog;
 import ir.taxi1880.operatormanagement.helper.TypefaceUtil;
 import ir.taxi1880.operatormanagement.model.AllMistakesModel;
 import ir.taxi1880.operatormanagement.okHttp.RequestHelper;
-
-import static ir.taxi1880.operatormanagement.app.Keys.KEY_NEW_MISTAKE_COUNT;
-import static ir.taxi1880.operatormanagement.app.Keys.NEW_MISTAKE_COUNT;
 
 public class AllMistakesFragment extends Fragment {
     Unbinder unbinder;
@@ -71,7 +70,7 @@ public class AllMistakesFragment extends Fragment {
 
         getListen();
 
-        refreshPage.setOnRefreshListener(() -> getListen());
+        refreshPage.setOnRefreshListener(this::getListen);
 
         return view;
     }
