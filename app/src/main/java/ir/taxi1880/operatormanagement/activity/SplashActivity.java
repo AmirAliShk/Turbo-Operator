@@ -1,5 +1,7 @@
 package ir.taxi1880.operatormanagement.activity;
 
+import static ir.taxi1880.operatormanagement.app.MyApplication.context;
+
 import android.Manifest;
 import android.annotation.SuppressLint;
 import android.content.Intent;
@@ -9,13 +11,11 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.provider.Settings;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
-import android.widget.TextView;
 import android.widget.Toast;
-
-import org.acra.ACRA;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
@@ -23,12 +23,12 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 
-import butterknife.BindView;
-import butterknife.ButterKnife;
-import butterknife.Unbinder;
+import org.acra.ACRA;
+
 import ir.taxi1880.operatormanagement.R;
 import ir.taxi1880.operatormanagement.app.Constant;
 import ir.taxi1880.operatormanagement.app.MyApplication;
+import ir.taxi1880.operatormanagement.databinding.ActivitySplashBinding;
 import ir.taxi1880.operatormanagement.dialog.GeneralDialog;
 import ir.taxi1880.operatormanagement.helper.AppVersionHelper;
 import ir.taxi1880.operatormanagement.helper.KeyBoardHelper;
@@ -38,16 +38,11 @@ import ir.taxi1880.operatormanagement.helper.TypefaceUtil;
 import ir.taxi1880.operatormanagement.push.AvaCrashReporter;
 import ir.taxi1880.operatormanagement.webServices.GetAppInfo;
 
-import static ir.taxi1880.operatormanagement.app.MyApplication.context;
-
 public class SplashActivity extends AppCompatActivity {
 
     public static final String TAG = SplashActivity.class.getSimpleName();
+    ActivitySplashBinding binding;
     boolean doubleBackToExitPressedOnce = false;
-    Unbinder unbinder;
-
-    @BindView(R.id.txtVersion)
-    TextView txtVersion;
 
     @RequiresApi(api = Build.VERSION_CODES.M)
     @SuppressLint("SetTextI18n")
@@ -55,9 +50,10 @@ public class SplashActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         ThemeHelper.onActivityCreateSetTheme(this);
+        binding = ActivitySplashBinding.inflate(LayoutInflater.from(context));
+        setContentView(binding.getRoot());
+        TypefaceUtil.overrideFonts(binding.getRoot());
 
-        setContentView(R.layout.activity_splash);
-        View view = getWindow().getDecorView();
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             Window window = getWindow();
             window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
@@ -67,13 +63,11 @@ public class SplashActivity extends AppCompatActivity {
             window.getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);
             window.addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
         }
-        unbinder = ButterKnife.bind(this, view);
-        TypefaceUtil.overrideFonts(view);
 
         ACRA.getErrorReporter().putCustomData("projectId", Constant.PUSH_PROJECT_ID);
         ACRA.getErrorReporter().putCustomData("LineCode", MyApplication.prefManager.getUserCode() + "");
 
-        txtVersion.setText(StringHelper.toPersianDigits("نسخه " + new AppVersionHelper(context).getVerionName() + ""));
+        binding.txtVersion.setText(StringHelper.toPersianDigits("نسخه " + new AppVersionHelper(context).getVerionName() + ""));
 
         MyApplication.handler.postDelayed(this::checkPermission, 1500);
 
@@ -125,7 +119,6 @@ public class SplashActivity extends AppCompatActivity {
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        unbinder.unbind();
     }
 
     @Override

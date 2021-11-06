@@ -1,5 +1,8 @@
 package ir.taxi1880.operatormanagement.okHttp;
 
+import static ir.taxi1880.operatormanagement.app.MyApplication.context;
+
+import android.content.Intent;
 import android.util.Log;
 
 import org.json.JSONException;
@@ -13,15 +16,16 @@ import java.util.concurrent.TimeUnit;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import ir.taxi1880.operatormanagement.R;
+import ir.taxi1880.operatormanagement.activity.SplashActivity;
 import ir.taxi1880.operatormanagement.app.EndPoints;
 import ir.taxi1880.operatormanagement.app.MyApplication;
 import ir.taxi1880.operatormanagement.dialog.ErrorDialog;
 import ir.taxi1880.operatormanagement.dialog.GeneralDialog;
-import ir.taxi1880.operatormanagement.fragment.LoginFragment;
-import ir.taxi1880.operatormanagement.helper.FragmentHelper;
+import ir.taxi1880.operatormanagement.helper.ServiceHelper;
 import ir.taxi1880.operatormanagement.helper.StringHelper;
 import ir.taxi1880.operatormanagement.push.AvaCrashReporter;
+import ir.taxi1880.operatormanagement.push.AvaService;
+import ir.taxi1880.operatormanagement.services.LinphoneService;
 import okhttp3.Call;
 import okhttp3.Headers;
 import okhttp3.HttpUrl;
@@ -489,11 +493,11 @@ public class RequestHelper implements okhttp3.Callback {
 
     private void logout() {
         MyApplication.handler.post(() -> {
-            FragmentHelper
-                    .toFragment(MyApplication.currentActivity, new LoginFragment())
-                    .setStatusBarColor(MyApplication.currentActivity.getResources().getColor(R.color.colorPrimaryDark))
-                    .setAddToBackStack(false)
-                    .replace();
+            MyApplication.currentActivity.finish();
+            ServiceHelper.stop(context, LinphoneService.class);
+            ServiceHelper.stop(context, AvaService.class);
+            MyApplication.prefManager.cleanPrefManger();
+            MyApplication.currentActivity.startActivity(new Intent(MyApplication.currentActivity, SplashActivity.class));
         });
     }
 }

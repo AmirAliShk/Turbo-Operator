@@ -18,12 +18,12 @@
 
         <TextView
             android:id="@+id/txtConnectionStatus"
+            style="@style/pageTitle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerHorizontal="true"
             android:padding="@dimen/_12sdp"
-            android:text="@string/accountInfo"
-            style="@style/pageTitle"/>
+            android:text="@string/accountInfo" />
 
         <ImageView
             android:id="@+id/imgBack"
@@ -39,8 +39,8 @@
             android:layout_width="match_parent"
             android:layout_height="@dimen/_50sdp"
             android:layout_below="@id/imgBack"
-            android:background="@drawable/header_main"
-            android:layout_marginTop="@dimen/_10sdp"/>
+            android:layout_marginTop="@dimen/_10sdp"
+            android:background="@drawable/header_main" />
 
     </RelativeLayout>
 
@@ -130,11 +130,11 @@
                     android:id="@+id/llIben"
                     android:layout_width="match_parent"
                     android:layout_height="0dp"
+                    android:layout_marginTop="@dimen/_20sdp"
                     android:layout_weight="1"
                     android:gravity="top"
                     android:orientation="vertical"
-                    android:padding="5dp"
-                    android:layout_marginTop="@dimen/_20sdp">
+                    android:padding="5dp">
 
                     <TextView
                         android:layout_width="match_parent"
@@ -251,16 +251,16 @@
             <!--    this must be in a separate layout-->
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="0dp"
                 android:layout_gravity="bottom"
                 android:layout_weight="2"
+                android:background="?attr/colorPageBackground"
                 android:gravity="bottom"
-                android:orientation="horizontal"
-                android:background="?attr/colorPageBackground">
+                android:orientation="horizontal">
 
                 <View
                     android:layout_width="0dp"
-                    android:layout_height="match_parent"
+                    android:layout_height="0dp"
                     android:layout_weight="0.10" />
 
                 <Button
@@ -277,7 +277,7 @@
 
                 <View
                     android:layout_width="0dp"
-                    android:layout_height="match_parent"
+                    android:layout_height="0dp"
                     android:layout_weight="0.10" />
 
                 <Button
@@ -294,8 +294,58 @@
 
                 <View
                     android:layout_width="0dp"
-                    android:layout_height="match_parent"
+                    android:layout_height="0dp"
                     android:layout_weight="0.10" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_gravity="bottom"
+                android:layout_weight="2"
+                android:background="?attr/colorPageBackground"
+                android:gravity="bottom"
+                android:orientation="horizontal">
+
+                <View
+                    android:layout_width="0dp"
+                    android:layout_height="0dp"
+                    android:layout_weight="1" />
+
+                <LinearLayout
+                    android:id="@+id/llLogout"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="10dp"
+                    android:layout_weight="1"
+                    android:background="@drawable/bg_circle_red"
+                    android:elevation="5dp"
+                    android:gravity="center"
+                    android:orientation="horizontal"
+                    android:padding="5dp">
+
+                    <ImageView
+                        android:layout_width="30dp"
+                        android:layout_height="30dp"
+                        android:padding="3dp"
+                        android:src="@drawable/ic_log_out" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="@dimen/_3sdp"
+                        android:text="@string/logout"
+                        android:textColor="@color/colorWhite"
+                        android:textSize="@dimen/text_header"
+                        android:textStyle="bold" />
+
+                </LinearLayout>
+
+                <View
+                    android:layout_width="0dp"
+                    android:layout_height="0dp"
+                    android:layout_weight="1" />
 
             </LinearLayout>
 

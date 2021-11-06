@@ -1,130 +1,130 @@
 package ir.taxi1880.operatormanagement.dataBase;
 
 public class DBTripModel {
-  int id;// the unique id for each trip
-  int operatorId;// ID of the person who registered the service
-  String originText;
-  String saveDate;
-  String sendDate;
-  int originStation;
-  int city;
-  String tell;
-  String mobile;
-  String customerName;
-  String voipId;
-  int destinationStation;
-  String destination;
-  int priceable;
+    int id;// the unique id for each trip
+    int operatorId;// ID of the person who registered the service
+    String originText;
+    String saveDate;
+    String sendDate;
+    int originStation;
+    int city;
+    String tell;
+    String mobile;
+    String customerName;
+    String voipId;
+    int destinationStation;
+    String destination;
+    int priceable;
 
-  public int getPriceable() {
-    return priceable;
-  }
+    public int getPriceable() {
+        return priceable;
+    }
 
-  public void setPriceable(int priceable) {
-    this.priceable = priceable;
-  }
+    public void setPriceable(int priceable) {
+        this.priceable = priceable;
+    }
 
-  public int getDestinationStation() {
-    return destinationStation;
-  }
+    public int getDestinationStation() {
+        return destinationStation;
+    }
 
-  public void setDestinationStation(int destinationStation) {
-    this.destinationStation = destinationStation;
-  }
+    public void setDestinationStation(int destinationStation) {
+        this.destinationStation = destinationStation;
+    }
 
-  public String getDestination() {
-    return destination;
-  }
+    public String getDestination() {
+        return destination;
+    }
 
-  public void setDestination(String destination) {
-    this.destination = destination;
-  }
+    public void setDestination(String destination) {
+        this.destination = destination;
+    }
 
-  public int getOperatorId() {
-    return operatorId;
-  }
+    public int getOperatorId() {
+        return operatorId;
+    }
 
-  public void setOperatorId(int operatorId) {
-    this.operatorId = operatorId;
-  }
+    public void setOperatorId(int operatorId) {
+        this.operatorId = operatorId;
+    }
 
-  public String getTell() {
-    return tell;
-  }
+    public String getTell() {
+        return tell;
+    }
 
-  public void setTell(String tell) {
-    this.tell = tell;
-  }
+    public void setTell(String tell) {
+        this.tell = tell;
+    }
 
-  public String getMobile() {
-    return mobile;
-  }
+    public String getMobile() {
+        return mobile;
+    }
 
-  public void setMobile(String mobile) {
-    this.mobile = mobile;
-  }
+    public void setMobile(String mobile) {
+        this.mobile = mobile;
+    }
 
-  public String getCustomerName() {
-    return customerName;
-  }
+    public String getCustomerName() {
+        return customerName;
+    }
 
-  public void setCustomerName(String customerName) {
-    this.customerName = customerName;
-  }
+    public void setCustomerName(String customerName) {
+        this.customerName = customerName;
+    }
 
-  public String getVoipId() {
-    return voipId;
-  }
+    public String getVoipId() {
+        return voipId;
+    }
 
-  public void setVoipId(String voipId) {
-    this.voipId = voipId;
-  }
+    public void setVoipId(String voipId) {
+        this.voipId = voipId;
+    }
 
-  public int getCity() {
-    return city;
-  }
+    public int getCity() {
+        return city;
+    }
 
-  public void setCity(int city) {
-    this.city = city;
-  }
+    public void setCity(int city) {
+        this.city = city;
+    }
 
-  public int getId() {
-    return id;
-  }
+    public int getId() {
+        return id;
+    }
 
-  public void setId(int id) {
-    this.id = id;
-  }
+    public void setId(int id) {
+        this.id = id;
+    }
 
-  public String getOriginText() {
-    return originText;
-  }
+    public String getOriginText() {
+        return originText;
+    }
 
-  public void setOriginText(String originText) {
-    this.originText = originText;
-  }
+    public void setOriginText(String originText) {
+        this.originText = originText;
+    }
 
-  public int getOriginStation() {
-    return originStation;
-  }
+    public int getOriginStation() {
+        return originStation;
+    }
 
-  public void setOriginStation(int originStation) {
-    this.originStation = originStation;
-  }
+    public void setOriginStation(int originStation) {
+        this.originStation = originStation;
+    }
 
-  public String getSaveDate() {
-    return saveDate;
-  }
+    public String getSaveDate() {
+        return saveDate;
+    }
 
-  public void setSaveDate(String saveDate) {
-    this.saveDate = saveDate;
-  }
+    public void setSaveDate(String saveDate) {
+        this.saveDate = saveDate;
+    }
 
-  public String getSendDate() {
-    return sendDate;
-  }
+    public String getSendDate() {
+        return sendDate;
+    }
 
-  public void setSendDate(String sendDate) {
-    this.sendDate = sendDate;
-  }
+    public void setSendDate(String sendDate) {
+        this.sendDate = sendDate;
+    }
 }
