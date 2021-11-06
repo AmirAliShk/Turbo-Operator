@@ -24,6 +24,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.Calendar;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -55,7 +56,6 @@ public class DeterminationPageFragment extends Fragment {
     Unbinder unbinder;
     boolean pressedRefresh = false;
     boolean isEnable = false;
-    boolean callLastTime = false;
     boolean isFinished = false;
     boolean isFragmentOpen = false;
     boolean pressSubmit = false; // press twice for generate station Code
@@ -63,6 +63,7 @@ public class DeterminationPageFragment extends Fragment {
     boolean isOriginZero = false;
     boolean isDestinationZero = false;
     boolean bothStationAreZero = false;
+    long lastFiveSecond;
     Timer timer;
     DBTripModel tripModel;
 
@@ -82,7 +83,6 @@ public class DeterminationPageFragment extends Fragment {
 
     @BindView(R.id.pin)
     PinView pin;
-
 
     @BindView(R.id.txtAddress)
     TextView txtAddress;
@@ -465,7 +465,6 @@ public class DeterminationPageFragment extends Fragment {
     private void changeStatus(boolean status) {
         if (status) {
             isEnable = true;
-            callLastTime = true;
             txtRemainingAddress.setText("");
             txtAddress.setText("آدرسی موجود نیست...");
             startGetAddressTimer();
@@ -479,13 +478,6 @@ public class DeterminationPageFragment extends Fragment {
         } else {
             dataBase.deleteAllData();
             MyApplication.prefManager.setStartGettingAddress(false);
-            if (callLastTime) {
-                getAddressList();
-            } else {// From the outside to the inside of the page
-                txtAddress.setText("برای مشاهده آدرس ها فعال شوید");
-                txtRemainingAddress.setText("");
-            }
-            callLastTime = false;
             isEnable = false;
             stopGetAddressTimer();
             if (btnActivate != null)
@@ -536,12 +528,13 @@ public class DeterminationPageFragment extends Fragment {
 
 //                    boolean success = obj.getBoolean("success");
 //                    String message = obj.getString("message");
-                    if (dataBase.getRemainingAddress() < 1)
+                    if (dataBase.getRemainingAddress() < 1) {
                         getAddressList();
+                        lastFiveSecond = Calendar.getInstance().getTimeInMillis() + 5000;
+                    }
 
                 } catch (Exception e) {
                     e.printStackTrace();
-
                 }
             });
         }
@@ -743,7 +736,9 @@ public class DeterminationPageFragment extends Fragment {
                 @Override
                 public void run() {
                     if (dataBase.getRemainingAddress() < 1)
-                        getAddressList();
+                        if (lastFiveSecond < Calendar.getInstance().getTimeInMillis()) {
+                            getAddressList();
+                        }
                 }
             }, 0, 10000);
         } catch (Exception e) {

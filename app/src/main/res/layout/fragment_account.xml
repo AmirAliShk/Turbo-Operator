@@ -317,10 +317,9 @@
                     android:id="@+id/llLogout"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_margin="10dp"
+                    android:layout_margin="15dp"
                     android:layout_weight="1"
                     android:background="@drawable/bg_circle_red"
-                    android:elevation="5dp"
                     android:gravity="center"
                     android:orientation="horizontal"
                     android:padding="5dp">
