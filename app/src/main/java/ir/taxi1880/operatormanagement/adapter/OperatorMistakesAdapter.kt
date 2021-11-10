@@ -145,8 +145,7 @@ class OperatorMistakesAdapter() : RecyclerView.Adapter<OperatorMistakesAdapter.O
 
             Log.i("URL", "show: ${EndPoints.CALL_VOICE}${opMistake.voipId}")
             val voiceName = "${opMistake.voipId}.mp3"
-            val file =
-                File(MyApplication.DIR_MAIN_FOLDER + MyApplication.VOICE_FOLDER_NAME + voiceName)
+            val file = File(MyApplication.DIR_MAIN_FOLDER + MyApplication.VOICE_FOLDER_NAME + voiceName)
 
             val voipId = opMistake.voipId
             when {
