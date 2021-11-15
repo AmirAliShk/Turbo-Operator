@@ -17,6 +17,8 @@ import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
+import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
@@ -29,6 +31,9 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.ViewFlipper;
+
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 
 import com.gauravbhola.ripplepulsebackground.RipplePulseLayout;
 
@@ -44,9 +49,6 @@ import org.linphone.core.RegistrationState;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -71,7 +73,6 @@ import ir.taxi1880.operatormanagement.fragment.TripSupportFragment;
 import ir.taxi1880.operatormanagement.helper.FragmentHelper;
 import ir.taxi1880.operatormanagement.helper.KeyBoardHelper;
 import ir.taxi1880.operatormanagement.helper.PhoneNumberValidation;
-import ir.taxi1880.operatormanagement.helper.ResourceHelper;
 import ir.taxi1880.operatormanagement.helper.StringHelper;
 import ir.taxi1880.operatormanagement.helper.ThemeHelper;
 import ir.taxi1880.operatormanagement.helper.TypefaceUtil;
@@ -99,7 +100,6 @@ public class TripRegisterActivity extends AppCompatActivity {
     int addressChangeCounter = 0; // this variable count the last edition of edtAddress
     private int destAddressLength = 0;
     int destAddressChangeCounter = 0; // this variable count the last edition of edtAddress
-    private String destinationAddress = " ";// It must have a value otherwise it will get an error of 422
     private int serviceType;
     private int serviceCount;
     private boolean isEnableView = false;
@@ -121,7 +121,8 @@ public class TripRegisterActivity extends AppCompatActivity {
     private int mDisplayedQuality = -1;
     int addressIdOrigin;
     int addressIdDestination = 0;
-    String address;
+    private String destinationAddress = " ";// It must have a value otherwise it will get an error of 422
+    private String address;
 
     @OnClick(R.id.imgBack)
     void onBack() {
@@ -171,10 +172,10 @@ public class TripRegisterActivity extends AppCompatActivity {
     EditText edtFamily;
 
     @BindView(R.id.edtAddress)
-    EditText edtAddress;
+    AutoCompleteTextView edtAddress;
 
     @BindView(R.id.edtDestinationAddress)
-    EditText edtDestinationAddress;
+    AutoCompleteTextView edtDestinationAddress;
 
     @BindView(R.id.llTrafficBg)
     LinearLayout llTrafficBg;
@@ -698,7 +699,6 @@ public class TripRegisterActivity extends AppCompatActivity {
         MyApplication.handler.postDelayed(() -> KeyBoardHelper.showKeyboard(MyApplication.context), 300);
 
         setCursorEnd(getWindow().getDecorView().getRootView());
-
     }
 
     public static void setCursorEnd(final View v) {
@@ -1037,7 +1037,6 @@ public class TripRegisterActivity extends AppCompatActivity {
         }
     }
 
-    ArrayList<PassengerAddressModel> passengerAddressModels;
 
     private void getPassengerInfo(String phoneNumber, String mobile, String queue) {
         if (vfPassengerInfo != null)
@@ -1220,6 +1219,11 @@ public class TripRegisterActivity extends AppCompatActivity {
         }
     };
 
+    ArrayList<PassengerAddressModel> passengerAddressModels;
+    ArrayList<PassengerAddressModel> passengerDestAddressModels;
+    ArrayAdapter<String> destArrayAdapter;
+    ArrayAdapter<String> originArrayAdapter;
+
     private void getPassengerDestAddress(String phoneNumber) {
         if (vfPassengerDestAddress != null)
             vfPassengerDestAddress.setDisplayedChild(1);
@@ -1234,7 +1238,8 @@ public class TripRegisterActivity extends AppCompatActivity {
         public void onResponse(Runnable reCall, Object... args) {
             MyApplication.handler.post(() -> {
                 try {
-                    passengerAddressModels = new ArrayList<>();
+                    passengerDestAddressModels = new ArrayList<>();
+                    ArrayList<String> list = new ArrayList<>();
                     JSONObject obj = new JSONObject(args[0].toString());
                     boolean success = obj.getBoolean("success");
                     String message = obj.getString("message");
@@ -1250,11 +1255,17 @@ public class TripRegisterActivity extends AppCompatActivity {
                             addressModel.setStation(dataObj.getInt("destinationStation"));
                             addressModel.setStatus(dataObj.getInt("status"));
                             addressModel.setAddressId(dataObj.getInt("moshId"));
-                            passengerAddressModels.add(addressModel);
+                            passengerDestAddressModels.add(addressModel);
+                            list.add(dataObj.getString("destination"));
                         }
-                        if (passengerAddressModels.size() == 0) {
+                        if (passengerDestAddressModels.size() == 0) {
                             MyApplication.Toast("آدرسی موجود نیست", Toast.LENGTH_SHORT);
                         } else {
+
+                            Log.i("TAF", list.toString());
+                            destArrayAdapter = new ArrayAdapter<>(MyApplication.currentActivity, android.R.layout.simple_dropdown_item_1line, list);
+                            edtDestinationAddress.setAdapter(destArrayAdapter);
+
                             new AddressListDialog().show(false, (address, stationCode, addressId) -> {
                                 if (edtDestinationAddress != null) {
                                     edtDestinationAddress.setText(address);
@@ -1263,7 +1274,7 @@ public class TripRegisterActivity extends AppCompatActivity {
                                 }
                                 destinationStation = stationCode;
                                 addressIdDestination = addressId;
-                            }, passengerAddressModels);
+                            }, passengerDestAddressModels);
                         }
                     } else {
                         new GeneralDialog()
@@ -1316,6 +1327,7 @@ public class TripRegisterActivity extends AppCompatActivity {
                 try {
                     Log.i(TAG, "onResponse: " + args[0].toString());
                     passengerAddressModels = new ArrayList<>();
+                    ArrayList<String> list = new ArrayList<>();
                     JSONObject obj = new JSONObject(args[0].toString());
                     boolean success = obj.getBoolean("success");
                     String message = obj.getString("message");
@@ -1332,10 +1344,16 @@ public class TripRegisterActivity extends AppCompatActivity {
                             addressModel.setStatus(dataObj.getInt("status"));
                             addressModel.setAddressId(dataObj.getInt("moshid"));
                             passengerAddressModels.add(addressModel);
+                            list.add(dataObj.getString("address"));
                         }
                         if (passengerAddressModels.size() == 0) {
                             MyApplication.Toast("آدرسی موجود نیست", Toast.LENGTH_SHORT);
                         } else {
+
+                            Log.i("TAF", list.toString());
+                            destArrayAdapter = new ArrayAdapter<>(MyApplication.currentActivity, android.R.layout.simple_dropdown_item_1line, list);
+                            edtAddress.setAdapter(destArrayAdapter);
+
                             new AddressListDialog().show(true, (address, stationCode, addressId) -> {
                                 if (edtAddress != null) {
                                     edtAddress.setText(address);
@@ -1423,6 +1441,25 @@ public class TripRegisterActivity extends AppCompatActivity {
                 carClass = 3;
                 break;
         }
+
+        for (int i = 0; i < passengerAddressModels.size(); i++) {
+            if (passengerAddressModels.get(i).getAddress().equals(address))
+            {
+                originStation = passengerAddressModels.get(i).getStation();
+                Log.i("TAF_ORIGIN",originStation + "");
+            }
+        }
+
+        for (int i = 0; i < passengerDestAddressModels.size(); i++) {
+            if (passengerDestAddressModels.get(i).getAddress().equals(destinationAddress))
+            {
+                destinationStation = passengerDestAddressModels.get(i).getStation();
+                Log.i("TAF_DEST",destinationStation + "");
+            }
+        }
+
+
+
 
         new GeneralDialog()
                 .title("ثبت اطلاعات")

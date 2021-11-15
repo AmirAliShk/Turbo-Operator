@@ -575,11 +575,12 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content">
 
-                        <EditText
+                        <AutoCompleteTextView
                             android:id="@+id/edtAddress"
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
                             android:layout_weight="1"
+                            android:completionThreshold="2"
                             android:background="@drawable/edit_text_style"
                             android:enabled="false"
                             android:nextFocusDown="@id/edtDestinationAddress"
@@ -682,11 +683,12 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content">
 
-                        <EditText
+                        <AutoCompleteTextView
                             android:id="@+id/edtDestinationAddress"
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
                             android:layout_weight="1"
+                            android:completionThreshold="2"
                             android:background="@drawable/edit_text_style"
                             android:enabled="false"
                             android:nextFocusDown="@id/edtFamily"
