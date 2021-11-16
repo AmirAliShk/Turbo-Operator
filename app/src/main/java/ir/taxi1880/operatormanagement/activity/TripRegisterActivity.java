@@ -328,28 +328,9 @@ public class TripRegisterActivity extends AppCompatActivity {
         setCursorEnd(getWindow().getDecorView().getRootView());
 
         binding.imgBack.setOnClickListener(v -> MyApplication.currentActivity.onBackPressed());
-        //    @OnClick(R.id.imgBack)
-//    void onBack() {
-//        MyApplication.currentActivity.onBackPressed();
-//    }
         binding.llCity.setOnClickListener(v -> binding.spCity.performClick());
         binding.llWaitingTime.setOnClickListener(v -> binding.spWaitingTime.performClick());
         binding.llServiceType.setOnClickListener(v -> binding.spServiceType.performClick());
-        //    @OnClick(R.id.llCity)
-//    void onPressllCity() {
-//        binding.spCity.performClick();
-//    }
-//
-//    @OnClick(R.id.llWaitingTime)
-//    void onPressllWaitingTime() {
-//        binding.spWaitingTime.performClick();
-//    }
-//
-//    @OnClick(R.id.llServiceType)
-//    void onPressllServiceType() {
-//        binding.spServiceType.performClick();
-//    }
-
         binding.llServiceCount.setOnClickListener(v -> binding.spServiceCount.performClick());
         binding.llTell.setOnClickListener(v -> {
             binding.edtTell.requestFocus();
@@ -372,34 +353,13 @@ public class TripRegisterActivity extends AppCompatActivity {
         });
 
         binding.llAddress.setOnClickListener(v -> {
-            binding.edtFamily.requestFocus();
+            binding.edtAddress.requestFocus();
             KeyBoardHelper.showKeyboard(MyApplication.context);
         });
 
-//        @OnClick(R.id.llServiceCount)
-//    void onPressllServiceCount() {
-//        binding.spServiceCount.performClick();
-//    }
 
-//    @OnClick(R.id.llTell)
-//    void onPressllTell() {
-//        binding.edtTell.requestFocus();
-//        KeyBoardHelper.showKeyboard(MyApplication.context);
-//    }
-//
-//    @OnClick(R.id.llDiscount)
-//    void onPressllDiscount() {
-//        binding.edtDiscount.requestFocus();
-//        KeyBoardHelper.showKeyboard(MyApplication.context);
-//    }
-//
-//    @OnClick(R.id.llMobile)
-//    void onPressllMobile() {
-//        binding.edtMobile.requestFocus();
-//        KeyBoardHelper.showKeyboard(MyApplication.context);
-//    }
-//
-//    @OnClick(R.id.llFamily)
+
+//        @OnClick(R.id.llFamily)
 //    void onPressllFamily() {
 //        binding.edtFamily.requestFocus();
 //        KeyBoardHelper.showKeyboard(MyApplication.context);
@@ -974,6 +934,25 @@ public class TripRegisterActivity extends AppCompatActivity {
 //            }
 //        }
 //    }
+
+    }
+
+    private void onPressDownload(){
+        if (getTellNumber().isEmpty() && binding.edtTell != null) {
+            binding.edtTell.setError("شماره تلفن را وارد نمایید");
+            binding.edtTell.requestFocus();
+            return;
+        }
+
+//    if (getMobileNumber().isEmpty() && !isTellValidable && binding.edtMobile != null) {
+//      binding.edtMobile.setError("شماره تلفن همراه را وارد نمایید");
+//      binding.edtMobile.requestFocus();
+//      return;
+//    }
+
+        String mobile = isTellValidable && getMobileNumber().isEmpty() ? "0" : getMobileNumber();
+
+        getPassengerInfo(StringHelper.toEnglishDigits(getTellNumber()), StringHelper.toEnglishDigits(mobile), StringHelper.toEnglishDigits(queue));
 
     }
 
