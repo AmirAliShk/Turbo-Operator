@@ -123,149 +123,6 @@ public class TripRegisterActivity extends AppCompatActivity {
     private String destinationAddress = " ";// It must have a value otherwise it will get an error of 422
     String address;
 
-
-
-//    @BindView(R.id.imgSipStatus)
-//    ImageView imgSipStatus;
-
-//    @BindView(R.id.spCity)
-//    Spinner spCity;
-
-//    @BindView(R.id.txtDescription)
-//    TextView txtDescription;
-
-//    @BindView(R.id.txtNewPassenger)
-//    TextView txtNewPassenger;
-
-//    @BindView(R.id.txtLockPassenger)
-//    TextView txtLockPassenger;
-
-//    @BindView(R.id.spServiceCount)
-//    Spinner spServiceCount;
-
-//    @BindView(R.id.imgCallQuality)
-//    ImageView imgCallQuality;
-
-//    @BindView(R.id.spWaitingTime)
-//    Spinner spWaitingTime;
-
-//    @BindView(R.id.spServiceType)
-//    Spinner spServiceType;
-
-//    @BindView(R.id.edtDiscount)
-//    EditText edtDiscount;
-
-//    @BindView(R.id.edtTell)
-//    EditText edtTell;
-
-//    @BindView(R.id.svTripRegister)
-//    ScrollView svTripRegister;
-
-//    @BindView(R.id.edtMobile)
-//    EditText edtMobile;
-
-//    @BindView(R.id.edtFamily)
-//    EditText edtFamily;
-
-//    @BindView(R.id.edtAddress)
-//    EditText edtAddress;
-
-//    @BindView(R.id.edtDestinationAddress)
-//    EditText edtDestinationAddress;
-
-//    @BindView(R.id.llTrafficBg)
-//    LinearLayout llTrafficBg;
-
-//    @BindView(R.id.llAlwaysBg)
-//    LinearLayout llAlwaysBg;
-
-//    @BindView(R.id.llWaitingTime)
-//    LinearLayout llWaitingTime;
-
-//    @BindView(R.id.llServiceType)
-//    LinearLayout llServiceType;
-
-//    @BindView(R.id.chbTraffic)
-//    CheckBox chbTraffic;
-
-//    @BindView(R.id.chbAlways)
-//    CheckBox chbAlways;
-
-//    @BindView(R.id.rbUnknow)
-//    RadioButton rbUnknow;
-
-//    @BindView(R.id.rbTaxi)
-//    RadioButton rbTaxi;
-
-//    @BindView(R.id.rbPrivilage)
-//    RadioButton rbPrivilage;
-
-//    @BindView(R.id.rbEconomical)
-//    RadioButton rbEconomical;
-
-//    @BindView(R.id.rbFormality)
-//    RadioButton rbFormality;
-
-//    @BindView(R.id.rgCarClass)
-//    MultiRowsRadioGroup rgCarClass;
-
-//    @BindView(R.id.txtPassengerAddress)
-//    TextView txtPassengerAddress;
-
-//    @BindView(R.id.txtPassengerDestAddress)
-//    TextView txtPassengerDestAddress;
-
-//    @BindView(R.id.txtCallerNum)
-//    TextView txtCallerNum;
-
-//    @BindView(R.id.vfPassengerAddress)
-//    ViewFlipper vfPassengerAddress;
-
-//    @BindView(R.id.vfPassengerDestAddress)
-//    ViewFlipper vfPassengerDestAddress;
-
-//    @BindView(R.id.vfPassengerInfo)
-//    ViewFlipper vfPassengerInfo;
-
-//    @BindView(R.id.rlNewInComingCall)
-//    RelativeLayout rlNewInComingCall;
-
-//    @BindView(R.id.rlActionBar)
-//    RelativeLayout rlActionBar;
-
-//    @BindView(R.id.llDescriptionDetail)
-//    LinearLayout llDescriptionDetail;
-
-//    @BindView(R.id.llTraffic)
-//    LinearLayout llTraffic;
-
-//    @BindView(R.id.llAlways)
-//    LinearLayout llAlways;
-
-//    @BindView(R.id.llServiceCount)
-//    LinearLayout llServiceCount;
-
-//    @BindView(R.id.llFamily)
-//    LinearLayout llFamily;
-
-//    @BindView(R.id.llDiscount)
-//    LinearLayout llDiscount;
-
-//    @BindView(R.id.llAddress)
-//    LinearLayout llAddress;
-
-    @BindView(R.id.btnActivate)
-    Button btnActivate;
-
-    @BindView(R.id.btnDeActivate)
-    Button btnDeActivate;
-
-//    @BindView(R.id.vfSubmit)
-//    ViewFlipper vfSubmit;
-
-    @BindView(R.id.imgEndCall)
-    ImageView imgEndCall;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -436,7 +293,6 @@ public class TripRegisterActivity extends AppCompatActivity {
             }
         });
 
-
         binding.btnSubmit.setOnClickListener(v -> {
             int addressPercent = addressLength * 50 / 100;
             if (addressChangeCounter >= addressPercent) {
@@ -496,66 +352,6 @@ public class TripRegisterActivity extends AppCompatActivity {
 
         });
 
-        //    @OnClick(R.id.btnSubmit)
-//    void onPressSubmit() {
-//        int addressPercent = addressLength * 50 / 100;
-//        if (addressChangeCounter >= addressPercent) {
-//            originStation = 0;
-//        }
-//
-//        int destAddressPercent = destAddressLength * 50 / 100;
-//        if (destAddressChangeCounter >= destAddressPercent) {
-//            destinationStation = 0;
-//        }
-//
-////        Log.i(TAG, "onPressSubmit: address length " + destAddressLength);
-////        Log.i(TAG, "onPressSubmit: address percent " + destAddressPercent);
-////        Log.i(TAG, "onPressSubmit: address change counter " + destAddressChangeCounter);
-////        Log.i(TAG, "onPressSubmit: originStation " + destAddressPercent);
-//
-//        if (cityCode == -1 || cityCode == 0) {
-//            MyApplication.Toast("شهر را وارد نمایید", Toast.LENGTH_SHORT);
-//            binding.spCity.performClick();
-//            return;
-//        }
-//        if (getTellNumber().isEmpty()) {
-//            binding.edtTell.setError("شماره تلفن را وارد کنید");
-//            binding.edtTell.requestFocus();
-//            return;
-//        }
-//        if (getMobileNumber().isEmpty() && !isTellValidable) {
-//            binding.edtMobile.setError("شماره همراه را وارد کنید");
-//            binding.edtMobile.requestFocus();
-//            return;
-//        }
-//        if (binding.edtFamily.getText().toString().isEmpty()) {
-//            binding.edtFamily.setError(" نام مسافر را مشخص کنید");
-//            binding.edtFamily.requestFocus();
-//            return;
-//        }
-//        if (binding.edtFamily.getText().toString().trim().isEmpty()) {
-//            binding.edtFamily.setError("آدرس مبدا را مشخص کنید");
-//            binding.edtFamily.requestFocus();
-//            return;
-//        }
-//
-//        if (binding.edtDestinationAddress.getText().toString().trim().isEmpty()) {
-//            binding.edtDestinationAddress.setError("آدرس مقصد را مشخص کنید");
-//            binding.edtDestinationAddress.requestFocus();
-//            return;
-//        }
-////        if (serviceType == 1 && stopTime == 0) {
-////            MyApplication.Toast("لطفا مقدار توقف را مشخص کنید.", Toast.LENGTH_SHORT);
-////            binding.spWaitingTime.requestFocus();
-////            return;
-////        }
-//        if (binding.vfSubmit != null)
-//            binding.vfSubmit.setDisplayedChild(1);
-//
-//        callInsertService();
-//
-//    }
-
 
         binding.btnOptions.setOnClickListener(v -> {
             KeyBoardHelper.hideKeyboard();
@@ -566,71 +362,17 @@ public class TripRegisterActivity extends AppCompatActivity {
             }, getMobileNumber(), binding.edtFamily.getText().toString(), cityCode);
         });
 
-//        @OnClick(R.id.btnOptions)
-//    void onPressOptions() {
-//        KeyBoardHelper.hideKeyboard();
-//        new TripOptionDialog().show(b -> {
-//            if (b) {
-//                clearData();
-//            }
-//        }, getMobileNumber(), binding.edtFamily.getText().toString(), cityCode);
-//    }
-
         binding.llClear.setOnClickListener(v -> {
             new GeneralDialog()
                     .title("هشدار")
                     .message("آیا از پاک کردن اطلاعات اطمینان دارید؟")
-                    .firstButton("بله", () -> clearData()).secondButton("خیر", null)
+                    .firstButton("بله", this::clearData).secondButton("خیر", null)
                     .show();
         });
 
-
-        //    @OnClick(R.id.llClear)
-//    void onClear() {
-//        new GeneralDialog()
-//                .title("هشدار")
-//                .message("آیا از پاک کردن اطلاعات اطمینان دارید؟")
-//                .firstButton("بله", () -> clearData()).secondButton("خیر", null)
-//                .show();
-//    }
-
         binding.imgPassengerInfo.setOnClickListener(v -> {
-            if (getTellNumber().isEmpty() && binding.edtTell != null) {
-                binding.edtTell.setError("شماره تلفن را وارد نمایید");
-                binding.edtTell.requestFocus();
-                return;
-            }
-
-//    if (getMobileNumber().isEmpty() && !isTellValidable && binding.edtMobile != null) {
-//      binding.edtMobile.setError("شماره تلفن همراه را وارد نمایید");
-//      binding.edtMobile.requestFocus();
-//      return;
-//    }
-
-            String mobile = isTellValidable && getMobileNumber().isEmpty() ? "0" : getMobileNumber();
-
-            getPassengerInfo(StringHelper.toEnglishDigits(getTellNumber()), StringHelper.toEnglishDigits(mobile), StringHelper.toEnglishDigits(queue));
-
+            onPressDownload();
         });
-
-//        @OnClick(R.id.imgPassengerInfo)
-//    void onPressDownload() {
-//        if (getTellNumber().isEmpty() && binding.edtTell != null) {
-//            binding.edtTell.setError("شماره تلفن را وارد نمایید");
-//            binding.edtTell.requestFocus();
-//            return;
-//        }
-//
-////    if (getMobileNumber().isEmpty() && !isTellValidable && binding.edtMobile != null) {
-////      binding.edtMobile.setError("شماره تلفن همراه را وارد نمایید");
-////      binding.edtMobile.requestFocus();
-////      return;
-////    }
-//
-//        String mobile = isTellValidable && getMobileNumber().isEmpty() ? "0" : getMobileNumber();
-//
-//        getPassengerInfo(StringHelper.toEnglishDigits(getTellNumber()), StringHelper.toEnglishDigits(mobile), StringHelper.toEnglishDigits(queue));
-//    }
 
         binding.llEndCall.setOnClickListener(v -> {
             KeyBoardHelper.hideKeyboard();
@@ -664,75 +406,19 @@ public class TripRegisterActivity extends AppCompatActivity {
 //            call.terminate();
         });
 
-//        @OnClick(R.id.llEndCall)
-//    void onPressEndCall() {
-//
-//        KeyBoardHelper.hideKeyboard();
-//        core.removeListener(mCoreListener);
-//        new CallDialog().show(new CallDialog.CallBack() {
-//            @Override
-//            public void onDismiss() {
-//                if (mCoreListener != null && core != null) {
-//                    core.addListener(mCoreListener);
-//                }
-//            }
-//
-//            @Override
-//            public void onCallReceived() {
-//                showCallIncoming();
-//            }
-//
-//            @Override
-//            public void onCallTransferred() {
-//                MyApplication.handler.postDelayed(() -> clearData(), 100);
-//            }
-//
-//            @Override
-//            public void onCallEnded() {
-//
-//            }
-//
-//        }, false);
-//
-////    Call call = LinphoneService.getCore().getCurrentCall();
-////    call.terminate();
-//    }
-
         binding.btnActivate.setOnClickListener(v -> {
             KeyBoardHelper.hideKeyboard();
             new GeneralDialog()
                     .title("هشدار")
                     .cancelable(false)
                     .message("مطمئنی میخوای وارد صف بشی؟")
-                    .firstButton("مطمئنم", new Runnable() {
-                        @Override
-                        public void run() {
-                            setActivate(MyApplication.prefManager.getSipNumber());
+                    .firstButton("مطمئنم", () -> {
+                        setActivate(MyApplication.prefManager.getSipNumber());
 //                MyApplication.Toast("activated",Toast.LENGTH_SHORT);
-                        }
                     })
                     .secondButton("نیستم", null)
                     .show();
         });
-
-//        @OnClick(R.id.btnActivate)
-//    void onActivePress() {
-//        KeyBoardHelper.hideKeyboard();
-//        new GeneralDialog()
-//                .title("هشدار")
-//                .cancelable(false)
-//                .message("مطمئنی میخوای وارد صف بشی؟")
-//                .firstButton("مطمئنم", new Runnable() {
-//                    @Override
-//                    public void run() {
-//                        setActivate(MyApplication.prefManager.getSipNumber());
-////                MyApplication.Toast("activated",Toast.LENGTH_SHORT);
-//                    }
-//                })
-//                .secondButton("نیستم", null)
-//                .show();
-//
-//    }
 
         binding.clearAddress.setOnClickListener(v -> {
             binding.edtAddress.getText().clear();
@@ -744,19 +430,6 @@ public class TripRegisterActivity extends AppCompatActivity {
             addressIdOrigin = 0;
         });
 
-        //    @OnClick(R.id.clearAddress)
-//    void onCLearAddress() {
-//        binding.edtAddress.getText().clear();
-//        originStation = 0;
-//        addressLength = 0;
-//        addressChangeCounter = 0;
-//        destAddressLength = 0;
-//        destAddressChangeCounter = 0;
-//        addressIdOrigin = 0;
-//    }
-//
-
-
         binding.clearDestinationAddress.setOnClickListener(v -> {
             binding.edtDestinationAddress.getText().clear();
             destinationStation = 0;
@@ -765,55 +438,22 @@ public class TripRegisterActivity extends AppCompatActivity {
             addressIdDestination = 0;
         });
 
-        //    @OnClick(R.id.clearDestinationAddress)
-//    void onClearDestinationAddress() {
-//        binding.edtDestinationAddress.getText().clear();
-//        destinationStation = 0;
-//        destAddressLength = 0;
-//        destAddressChangeCounter = 0;
-//        addressIdDestination = 0;
-//    }
-
         binding.btnDeActivate.setOnClickListener(v -> {
             KeyBoardHelper.hideKeyboard();
             new GeneralDialog()
                     .title("هشدار")
                     .cancelable(false)
                     .message("مطمئنی میخوای خارج بشی؟")
-                    .firstButton("مطمئنم", new Runnable() {
-                        @Override
-                        public void run() {
-                            if (MyApplication.prefManager.isCallIncoming()) {
-                                MyApplication.Toast(getString(R.string.exit), Toast.LENGTH_SHORT);
-                            } else {
-                                setDeActivate(MyApplication.prefManager.getSipNumber());
-                            }
+                    .firstButton("مطمئنم", () -> {
+                        if (MyApplication.prefManager.isCallIncoming()) {
+                            MyApplication.Toast(getString(R.string.exit), Toast.LENGTH_SHORT);
+                        } else {
+                            setDeActivate(MyApplication.prefManager.getSipNumber());
                         }
                     })
                     .secondButton("نیستم", null)
                     .show();
         });
-
-//        @OnClick(R.id.btnDeActivate)
-//    void onDeActivePress() {
-//        KeyBoardHelper.hideKeyboard();
-//        new GeneralDialog()
-//                .title("هشدار")
-//                .cancelable(false)
-//                .message("مطمئنی میخوای خارج بشی؟")
-//                .firstButton("مطمئنم", new Runnable() {
-//                    @Override
-//                    public void run() {
-//                        if (MyApplication.prefManager.isCallIncoming()) {
-//                            MyApplication.Toast(getString(R.string.exit), Toast.LENGTH_SHORT);
-//                        } else {
-//                            setDeActivate(MyApplication.prefManager.getSipNumber());
-//                        }
-//                    }
-//                })
-//                .secondButton("نیستم", null)
-//                .show();
-//    }
 
         binding.edtTell.setOnFocusChangeListener((v, hasFocus) -> {
             if (hasFocus) {
@@ -835,29 +475,6 @@ public class TripRegisterActivity extends AppCompatActivity {
                 }
             }
         });
-
-//        @OnFocusChange(R.id.binding.edtTell)
-//    void onChangeFocus(boolean v) {
-//        if (v) {
-//            if (getTellNumber().trim().isEmpty()) {
-//                try {
-//                    Core core = LinphoneService.getCore();
-//                    Call[] calls = core.getCalls();
-//                    for (Call callList : calls) {
-//                        if (callList.getState() == Call.State.Connected) {
-//                            call = core.getCurrentCall();
-//                            Address address = call.getRemoteAddress();
-//                            binding.edtTell.setText(PhoneNumberValidation.removePrefix(address.getUsername()));
-//                        }
-//                    }
-//                } catch (Exception e) {
-//                    e.printStackTrace();
-//                    AvaCrashReporter.send(e, "callIncomingActivity");
-//                }
-//            }
-//        }
-//    }
-
     }
 
     private void onPressDownload(){
