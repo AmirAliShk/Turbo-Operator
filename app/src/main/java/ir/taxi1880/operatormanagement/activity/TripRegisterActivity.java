@@ -17,18 +17,9 @@ import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.AdapterView;
-import android.widget.Button;
-import android.widget.CheckBox;
+import android.widget.ArrayAdapter;
 import android.widget.EditText;
-import android.widget.ImageView;
-import android.widget.LinearLayout;
-import android.widget.RadioButton;
-import android.widget.RelativeLayout;
-import android.widget.ScrollView;
-import android.widget.Spinner;
-import android.widget.TextView;
 import android.widget.Toast;
-import android.widget.ViewFlipper;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.localbroadcastmanager.content.LocalBroadcastManager;
@@ -48,17 +39,12 @@ import org.linphone.core.RegistrationState;
 import java.util.ArrayList;
 import java.util.Arrays;
 
-import butterknife.BindView;
-import butterknife.ButterKnife;
-import butterknife.OnClick;
-import butterknife.Unbinder;
 import ir.taxi1880.operatormanagement.R;
 import ir.taxi1880.operatormanagement.adapter.SpinnerAdapter;
 import ir.taxi1880.operatormanagement.app.DataHolder;
 import ir.taxi1880.operatormanagement.app.EndPoints;
 import ir.taxi1880.operatormanagement.app.Keys;
 import ir.taxi1880.operatormanagement.app.MyApplication;
-import ir.taxi1880.operatormanagement.customView.MultiRowsRadioGroup;
 import ir.taxi1880.operatormanagement.databinding.ActivityTripRegisterBinding;
 import ir.taxi1880.operatormanagement.dialog.AddressListDialog;
 import ir.taxi1880.operatormanagement.dialog.CallDialog;
@@ -86,7 +72,6 @@ import ir.taxi1880.operatormanagement.services.LinphoneService;
 public class TripRegisterActivity extends AppCompatActivity {
     public static final String TAG = TripRegisterActivity.class.getSimpleName();
     ActivityTripRegisterBinding binding;
-    Unbinder unbinder;
     private String cityName = "";
     private String cityLatinName = "";
     private String maxDiscount = "";
@@ -126,11 +111,10 @@ public class TripRegisterActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        View view;
         ThemeHelper.onActivityCreateSetTheme(this);
 
-        setContentView(R.layout.activity_trip_register);
-        view = getWindow().getDecorView();
+        binding = ActivityTripRegisterBinding.inflate(getLayoutInflater());
+        setContentView(binding.getRoot());
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             Window window = getWindow();
             window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
@@ -144,9 +128,7 @@ public class TripRegisterActivity extends AppCompatActivity {
                 window.setStatusBarColor(getResources().getColor(R.color.colorPrimaryDark));
             }
         }
-        unbinder = ButterKnife.bind(this, view);
-        binding = ActivityTripRegisterBinding.inflate(getLayoutInflater());
-        TypefaceUtil.overrideFonts(view);
+        TypefaceUtil.overrideFonts(binding.getRoot());
         mRipplePulseLayout = findViewById(R.id.layout_ripplepulse);
 
         if (MyApplication.prefManager.getActivateStatus()) {
@@ -345,7 +327,7 @@ public class TripRegisterActivity extends AppCompatActivity {
 //            binding.spWaitingTime.requestFocus();
 //            return;
 //        }
-            if (binding.vfSubmit != null)
+//            if (binding.vfSubmit != null)
                 binding.vfSubmit.setDisplayedChild(1);
 
             callInsertService();
@@ -478,7 +460,8 @@ public class TripRegisterActivity extends AppCompatActivity {
     }
 
     private void onPressDownload(){
-        if (getTellNumber().isEmpty() && binding.edtTell != null) {
+//        && binding.edtTell != null
+        if (getTellNumber().isEmpty() ) {
             binding.edtTell.setError("شماره تلفن را وارد نمایید");
             binding.edtTell.requestFocus();
             return;
@@ -497,8 +480,8 @@ public class TripRegisterActivity extends AppCompatActivity {
     }
 
     private String getTellNumber() {
-        if (binding.edtTell == null)
-            return "";
+//        if (binding.edtTell == null)
+//            return "";
         String txtTell = binding.edtTell.getText().toString();
         if (txtTell == null)
             return "";
@@ -507,8 +490,8 @@ public class TripRegisterActivity extends AppCompatActivity {
     }
 
     private String getMobileNumber() {
-        if (binding.edtMobile == null)
-            return "";
+//        if (binding.edtMobile == null)
+//            return "";
         String mobileNo = binding.edtMobile.getText().toString();
         if (mobileNo == null)
             return "";
@@ -658,8 +641,8 @@ public class TripRegisterActivity extends AppCompatActivity {
                 countServices.add(countService[i]);
             }
 
-            if (binding.spServiceCount == null)
-                return;
+//            if (binding.spServiceCount == null)
+//                return;
 
             if (isEnableView) {
                 binding.spServiceCount.setEnabled(true);
@@ -700,8 +683,8 @@ public class TripRegisterActivity extends AppCompatActivity {
                 typeServiceModels.add(typeServiceModel);
                 serviceList.add(serviceObj.getString("name"));
             }
-            if (binding.spServiceType == null)
-                return;
+//            if (binding.spServiceType == null)
+//                return;
 
             if (isEnableView) {
                 binding.spServiceType.setEnabled(true);
@@ -741,8 +724,8 @@ public class TripRegisterActivity extends AppCompatActivity {
         ArrayList<String> waitingTime = new ArrayList<String>(Arrays.asList("بدون توقف", "۵ دقیقه", "۱۰ دقیقه", "۲۰ دقیقه", "۳۰ دقیقه", "۴۰ دقیقه", "۵۰ دقیقه", "۱ ساعت", "۱.۵ ساعت", "۲ ساعت", "۲.۵ ساعت", "۳ ساعت"));
         try {
 
-            if (binding.spWaitingTime == null)
-                return;
+//            if (binding.spWaitingTime == null)
+//                return;
 
             if (isEnableView) {
                 binding.spWaitingTime.setEnabled(true);
@@ -820,7 +803,7 @@ public class TripRegisterActivity extends AppCompatActivity {
                 cityModels.add(cityModel);
                 cityList.add(i + 1, cityObj.getString("cityname"));
             }
-            if (binding.spCity == null) return;
+//            if (binding.spCity == null) return;
             binding.spCity.setAdapter(new SpinnerAdapter(MyApplication.currentActivity, R.layout.item_spinner, cityList));
             binding.spCity.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
                 @Override
@@ -853,10 +836,9 @@ public class TripRegisterActivity extends AppCompatActivity {
         }
     }
 
-    ArrayList<PassengerAddressModel> passengerAddressModels;
 
     private void getPassengerInfo(String phoneNumber, String mobile, String queue) {
-        if (binding.vfPassengerInfo != null)
+//        if (binding.vfPassengerInfo != null)
             binding.vfPassengerInfo.setDisplayedChild(1);
 
         RequestHelper.builder(EndPoints.PASSENGER_INFO)
@@ -879,7 +861,7 @@ public class TripRegisterActivity extends AppCompatActivity {
                 try {
                     if (queue.trim().equals("1817")) {
                         MyApplication.handler.postDelayed(() -> {
-                            if (binding.spServiceType != null)
+//                            if (binding.spServiceType != null)
                                 binding.spServiceType.setSelection(2, true);
                         }, 500);
                     }
@@ -915,7 +897,7 @@ public class TripRegisterActivity extends AppCompatActivity {
                     if (success) {
                         if (status == 2) {
                             String msg = " مسافر " + callTimeInterval + " دقیقه پیش سفری درخواست داده است " + "\n" + " وضعیت سفر : " + tripState;
-                            if (binding.vfPassengerInfo != null)
+//                            if (binding.vfPassengerInfo != null)
                                 binding.vfPassengerInfo.setDisplayedChild(0);
                             new GeneralDialog()
                                     .message(msg)
@@ -928,8 +910,8 @@ public class TripRegisterActivity extends AppCompatActivity {
                                     })
                                     .show();
                         }
-                        if (binding.edtTell == null)
-                            return;
+//                        if (binding.edtTell == null)
+//                            return;
                         binding.edtTell.setNextFocusDownId(R.id.edtFamily);
                         isEnableView = true;
                         initServiceCountSpinner();
@@ -944,46 +926,46 @@ public class TripRegisterActivity extends AppCompatActivity {
                         if (cityCode == 0) {
                             KeyBoardHelper.hideKeyboard();
                             new CityDialog().show(position -> {
-                                if (binding.spCity != null)
+//                                if (binding.spCity != null)
                                     binding.spCity.setSelection(position + 1);
                             }, true);
                         }
                         if (addressIdOrigin == 0) {
-                            if (binding.txtNewPassenger != null)
+//                            if (binding.txtNewPassenger != null)
                                 binding.txtNewPassenger.setVisibility(View.VISIBLE);
-                            if (binding.txtLockPassenger != null)
+//                            if (binding.txtLockPassenger != null)
                                 binding.txtLockPassenger.setVisibility(View.GONE);
-                            if (binding.edtTell != null)
+//                            if (binding.edtTell != null)
                                 binding.edtFamily.requestFocus();
                         } else {
                             switch (status) {
                                 case 0:
-                                    if (binding.txtNewPassenger != null)
+//                                    if (binding.txtNewPassenger != null)
                                         binding.txtNewPassenger.setVisibility(View.GONE);
-                                    if (binding.txtLockPassenger != null)
+//                                    if (binding.txtLockPassenger != null)
                                         binding.txtLockPassenger.setVisibility(View.GONE);
                                     break;
                                 case 1:
-                                    if (binding.txtNewPassenger != null)
+//                                    if (binding.txtNewPassenger != null)
                                         binding.txtNewPassenger.setVisibility(View.GONE);
-                                    if (binding.txtLockPassenger != null)
+//                                    if (binding.txtLockPassenger != null)
                                         binding.txtLockPassenger.setVisibility(View.VISIBLE);
                                     break;
                             }
-                            if (binding.edtFamily != null)
+//                            if (binding.edtFamily != null)
                                 binding.edtFamily.setText(name);
-                            if (binding.edtAddress != null) {
+//                            if (binding.edtAddress != null) {
                                 binding.edtAddress.setText(address);
                                 addressLength = address.length();
                                 addressChangeCounter = 0;
-                            }
-                            if (binding.txtDescription != null)
+//                            }
+//                            if (binding.txtDescription != null)
                                 binding.txtDescription.setText(permanentDesc + "");
-                            if (binding.rgCarClass != null)
+//                            if (binding.rgCarClass != null)
                                 binding.rgCarClass.clearCheck();
-                            if (binding.edtDiscount != null)
+//                            if (binding.edtDiscount != null)
                                 binding.edtDiscount.setText(discountCode);
-                            if (binding.rgCarClass != null) {
+//                            if (binding.rgCarClass != null) {
                                 switch (carType) {
                                     case 0:
                                         binding.rbUnknow.setChecked(true);
@@ -1005,22 +987,22 @@ public class TripRegisterActivity extends AppCompatActivity {
                                         binding.chbAlways.setChecked(true);
                                         break;
                                 }
-                            }
+//                            }
 
                         }
                         originStation = staion;
                     }
 
-                    if (binding.vfPassengerInfo == null)
-                        return;
+//                    if (binding.vfPassengerInfo == null)
+//                        return;
                     MyApplication.handler.postDelayed(() -> {
-                        if (binding.vfPassengerInfo != null)
+//                        if (binding.vfPassengerInfo != null)
                             binding.vfPassengerInfo.setDisplayedChild(0);
                     }, 500);
 
                 } catch (JSONException e) {
                     e.printStackTrace();
-                    if (binding.vfPassengerInfo != null)
+//                    if (binding.vfPassengerInfo != null)
                         binding.vfPassengerInfo.setDisplayedChild(0);
                     AvaCrashReporter.send(e, "TripRegisterActivity class, getPassengerInfo onResponse method");
                 }
@@ -1030,94 +1012,19 @@ public class TripRegisterActivity extends AppCompatActivity {
         @Override
         public void onFailure(Runnable reCall, Exception e) {
             MyApplication.handler.post(() -> {
-                if (binding.vfPassengerInfo != null)
+//                if (binding.vfPassengerInfo != null)
                     binding.vfPassengerInfo.setDisplayedChild(0);
             });
         }
     };
+    ArrayList<PassengerAddressModel> passengerAddressModels;
+    ArrayList<PassengerAddressModel> passengerDestAddressModels;
+    ArrayAdapter<String> arrayAdapter;
 
-    private void getPassengerDestAddress(String phoneNumber) {
-        if (binding.vfPassengerDestAddress != null)
-            binding.vfPassengerDestAddress.setDisplayedChild(1);
-        RequestHelper.builder(EndPoints.PASSENGER_DESTINATION)
-                .addPath(phoneNumber)
-                .listener(getPassengerDestAddress)
-                .get();
-    }
-
-    RequestHelper.Callback getPassengerDestAddress = new RequestHelper.Callback() {
-        @Override
-        public void onResponse(Runnable reCall, Object... args) {
-            MyApplication.handler.post(() -> {
-                try {
-                    passengerAddressModels = new ArrayList<>();
-                    JSONObject obj = new JSONObject(args[0].toString());
-                    boolean success = obj.getBoolean("success");
-                    String message = obj.getString("message");
-
-                    if (success) {
-                        JSONArray dataArr = obj.getJSONArray("data");
-                        for (int i = 0; i < dataArr.length(); i++) {
-                            JSONObject dataObj = dataArr.getJSONObject(i);
-                            PassengerAddressModel addressModel = new PassengerAddressModel();
-                            addressModel.setPhoneNumber(dataObj.getString("phoneNumber"));
-                            addressModel.setMobile(dataObj.getString("mobile"));
-                            addressModel.setAddress(dataObj.getString("destination"));
-                            addressModel.setStation(dataObj.getInt("destinationStation"));
-                            addressModel.setStatus(dataObj.getInt("status"));
-                            addressModel.setAddressId(dataObj.getInt("moshId"));
-                            passengerAddressModels.add(addressModel);
-                        }
-                        if (passengerAddressModels.size() == 0) {
-                            MyApplication.Toast("آدرسی موجود نیست", Toast.LENGTH_SHORT);
-                        } else {
-                            new AddressListDialog().show(false, (address, stationCode, addressId) -> {
-                                if (binding.edtDestinationAddress != null) {
-                                    binding.edtDestinationAddress.setText(address);
-                                    destAddressLength = address.length();
-                                    destAddressChangeCounter = 0;
-                                }
-                                destinationStation = stationCode;
-                                addressIdDestination = addressId;
-                            }, passengerAddressModels);
-                        }
-                    } else {
-                        new GeneralDialog()
-                                .title("هشدار")
-                                .message(message)
-                                .secondButton("باشه", null)
-                                .cancelable(false)
-                                .show();
-                    }
-
-                    MyApplication.handler.postDelayed(() -> {
-                        if (binding.vfPassengerDestAddress != null)
-                            binding.vfPassengerDestAddress.setDisplayedChild(0);
-                    }, 500);
-
-                } catch (JSONException e) {
-                    MyApplication.handler.postDelayed(() -> {
-                        if (binding.vfPassengerDestAddress != null)
-                            binding.vfPassengerDestAddress.setDisplayedChild(0);
-                    }, 500);
-                    e.printStackTrace();
-                    AvaCrashReporter.send(e, "TripRegisterActivity class, getPassengerAddress onResponse method");
-                }
-            });
-        }
-
-        @Override
-        public void onFailure(Runnable reCall, Exception e) {
-            MyApplication.handler.post(() -> MyApplication.handler.postDelayed(() -> {
-                if (binding.vfPassengerDestAddress != null)
-                    binding.vfPassengerDestAddress.setDisplayedChild(0);
-            }, 500));
-        }
-    };
-
+//    ArrayAdapter<String> originArrayAdapter;
     private void getPassengerAddress(String phoneNumber) {
-        if (binding.vfPassengerAddress != null)
-            binding.vfPassengerAddress.setDisplayedChild(1);
+//        if (binding.vfPassengerAddress != null)
+        binding.vfPassengerAddress.setDisplayedChild(1);
         RequestHelper.builder(EndPoints.PASSENGER_ORIGIN)
                 .addPath(phoneNumber)
                 .listener(getPassengerOrigin)
@@ -1132,6 +1039,8 @@ public class TripRegisterActivity extends AppCompatActivity {
                 try {
                     Log.i(TAG, "onResponse: " + args[0].toString());
                     passengerAddressModels = new ArrayList<>();
+                    ArrayList<String> list = new ArrayList<>();
+
                     JSONObject obj = new JSONObject(args[0].toString());
                     boolean success = obj.getBoolean("success");
                     String message = obj.getString("message");
@@ -1148,17 +1057,23 @@ public class TripRegisterActivity extends AppCompatActivity {
                             addressModel.setStatus(dataObj.getInt("status"));
                             addressModel.setAddressId(dataObj.getInt("moshid"));
                             passengerAddressModels.add(addressModel);
+                            list.add(dataObj.getString("address"));
                         }
                         if (passengerAddressModels.size() == 0) {
                             MyApplication.Toast("آدرسی موجود نیست", Toast.LENGTH_SHORT);
                         } else {
+
+                            Log.i("TAF", list.toString());
+                            arrayAdapter = new ArrayAdapter<>(MyApplication.currentActivity, android.R.layout.simple_dropdown_item_1line, list);
+                            binding.edtAddress.setAdapter(arrayAdapter);
+
                             new AddressListDialog().show(true, (address, stationCode, addressId) -> {
-                                if (binding.edtAddress != null) {
-                                    binding.edtAddress.setText(address);
+//                                if (binding.edtAddress != null) {
+                                binding.edtAddress.setText(address);
 //                                    binding.edtAddress.setText(address);
-                                    addressLength = address.length();
-                                    addressChangeCounter = 0;
-                                }
+                                addressLength = address.length();
+                                addressChangeCounter = 0;
+//                                }
                                 originStation = stationCode;
                                 addressIdOrigin = addressId;
                                 Log.i(TAG, "run: " + originStation);
@@ -1175,14 +1090,14 @@ public class TripRegisterActivity extends AppCompatActivity {
                     }
 
                     MyApplication.handler.postDelayed(() -> {
-                        if (binding.vfPassengerAddress != null)
-                            binding.vfPassengerAddress.setDisplayedChild(0);
+//                        if (binding.vfPassengerAddress != null)
+                        binding.vfPassengerAddress.setDisplayedChild(0);
                     }, 500);
 
                 } catch (JSONException e) {
                     MyApplication.handler.postDelayed(() -> {
-                        if (binding.vfPassengerAddress != null)
-                            binding.vfPassengerAddress.setDisplayedChild(0);
+//                        if (binding.vfPassengerAddress != null)
+                        binding.vfPassengerAddress.setDisplayedChild(0);
                     }, 500);
                     e.printStackTrace();
                     AvaCrashReporter.send(e, "TripRegisterActivity class, getPassengerAddress onResponse method");
@@ -1192,17 +1107,99 @@ public class TripRegisterActivity extends AppCompatActivity {
 
         @Override
         public void onFailure(Runnable reCall, Exception e) {
-            MyApplication.handler.post(new Runnable() {
-                @Override
-                public void run() {
+            MyApplication.handler.post(() -> MyApplication.handler.postDelayed(() -> {
+//                        if (binding.vfPassengerAddress != null)
+                binding.vfPassengerAddress.setDisplayedChild(0);
+            }, 500));
+        }
+    };
+
+
+    private void getPassengerDestAddress(String phoneNumber) {
+//        if (binding.vfPassengerDestAddress != null)
+            binding.vfPassengerDestAddress.setDisplayedChild(1);
+        RequestHelper.builder(EndPoints.PASSENGER_DESTINATION)
+                .addPath(phoneNumber)
+                .listener(getPassengerDestAddress)
+                .get();
+    }
+    RequestHelper.Callback getPassengerDestAddress = new RequestHelper.Callback() {
+        @Override
+        public void onResponse(Runnable reCall, Object... args) {
+            MyApplication.handler.post(() -> {
+                try {
+                    passengerDestAddressModels = new ArrayList<>();
+                    ArrayList<String> list = new ArrayList<>();
+                    JSONObject obj = new JSONObject(args[0].toString());
+                    boolean success = obj.getBoolean("success");
+                    String message = obj.getString("message");
+
+                    if (success) {
+                        JSONArray dataArr = obj.getJSONArray("data");
+                        for (int i = 0; i < dataArr.length(); i++) {
+                            JSONObject dataObj = dataArr.getJSONObject(i);
+                            PassengerAddressModel addressModel = new PassengerAddressModel();
+                            addressModel.setPhoneNumber(dataObj.getString("phoneNumber"));
+                            addressModel.setMobile(dataObj.getString("mobile"));
+                            addressModel.setAddress(dataObj.getString("destination"));
+                            addressModel.setStation(dataObj.getInt("destinationStation"));
+                            addressModel.setStatus(dataObj.getInt("status"));
+                            addressModel.setAddressId(dataObj.getInt("moshId"));
+                            passengerDestAddressModels.add(addressModel);
+                            list.add(dataObj.getString("destination"));
+                        }
+                        if (passengerDestAddressModels.size() == 0) {
+                            MyApplication.Toast("آدرسی موجود نیست", Toast.LENGTH_SHORT);
+                        } else {
+
+                            Log.i("TAF", list.toString());
+                            arrayAdapter = new ArrayAdapter<>(MyApplication.currentActivity, android.R.layout.simple_dropdown_item_1line, list);
+                            binding.edtDestinationAddress.setAdapter(arrayAdapter);
+
+                            new AddressListDialog().show(false, (address, stationCode, addressId) -> {
+//                                if (binding.edtDestinationAddress != null) {
+                                    binding.edtDestinationAddress.setText(address);
+                                    destAddressLength = address.length();
+                                    destAddressChangeCounter = 0;
+//                                }
+                                destinationStation = stationCode;
+                                addressIdDestination = addressId;
+                            }, passengerDestAddressModels);
+                        }
+                    } else {
+                        new GeneralDialog()
+                                .title("هشدار")
+                                .message(message)
+                                .secondButton("باشه", null)
+                                .cancelable(false)
+                                .show();
+                    }
+
                     MyApplication.handler.postDelayed(() -> {
-                        if (binding.vfPassengerAddress != null)
-                            binding.vfPassengerAddress.setDisplayedChild(0);
+//                        if (binding.vfPassengerDestAddress != null)
+                            binding.vfPassengerDestAddress.setDisplayedChild(0);
                     }, 500);
+
+                } catch (JSONException e) {
+                    MyApplication.handler.postDelayed(() -> {
+//                        if (binding.vfPassengerDestAddress != null)
+                            binding.vfPassengerDestAddress.setDisplayedChild(0);
+                    }, 500);
+                    e.printStackTrace();
+                    AvaCrashReporter.send(e, "TripRegisterActivity class, getPassengerAddress onResponse method");
                 }
             });
         }
+
+        @Override
+        public void onFailure(Runnable reCall, Exception e) {
+            MyApplication.handler.post(() -> MyApplication.handler.postDelayed(() -> {
+//                if (binding.vfPassengerDestAddress != null)
+                    binding.vfPassengerDestAddress.setDisplayedChild(0);
+            }, 500));
+        }
     };
+
 
     private void callInsertService() {
         String mobile = isTellValidable && getMobileNumber().isEmpty() ? "0" : getMobileNumber();
@@ -1240,6 +1237,23 @@ public class TripRegisterActivity extends AppCompatActivity {
                 break;
         }
 
+
+        for (int i = 0; i < passengerAddressModels.size(); i++) {
+            if (passengerAddressModels.get(i).getAddress().equals(address))
+            {
+                originStation = passengerAddressModels.get(i).getStation();
+                Log.i("TAF_ORIGIN",originStation + "");
+            }
+        }
+
+        for (int i = 0; i < passengerDestAddressModels.size(); i++) {
+            if (passengerDestAddressModels.get(i).getAddress().equals(destinationAddress))
+            {
+                destinationStation = passengerDestAddressModels.get(i).getStation();
+                Log.i("TAF_DEST",destinationStation + "");
+            }
+        }
+
         new GeneralDialog()
                 .title("ثبت اطلاعات")
                 .cancelable(false)
@@ -1248,7 +1262,7 @@ public class TripRegisterActivity extends AppCompatActivity {
                         insertService(serviceCount, tell, mobile, cityCode,
                                 name, address, fixedComment, destinationAddress, serviceType, carClass, normalDescription, traffic, defaultClass, stopTime))
                 .secondButton("خیر", () -> {
-                    if (binding.vfSubmit != null)
+//                    if (binding.vfSubmit != null)
                         binding.vfSubmit.setDisplayedChild(0);
                 })
                 .show();
@@ -1280,12 +1294,12 @@ public class TripRegisterActivity extends AppCompatActivity {
                     if (success) {
                         MyApplication.prefManager.setActivityStatus(1);
                         MyApplication.Toast("شما باموفقیت وارد صف شدید", Toast.LENGTH_SHORT);
-                        if (binding.btnActivate != null)
+//                        if (binding.btnActivate != null)
                             binding.btnActivate.setBackgroundResource(R.drawable.bg_green_edge);
                         MyApplication.prefManager.setActivateStatus(true);
-                        if (binding.btnDeActivate != null) {
+//                        if (binding.btnDeActivate != null) {
                             binding.btnDeActivate.setBackgroundColor(Color.parseColor("#00FFB2B2"));
-                        }
+//                        }
                     } else {
                         new GeneralDialog()
                                 .title("هشدار")
@@ -1346,11 +1360,11 @@ public class TripRegisterActivity extends AppCompatActivity {
                         MyApplication.prefManager.setActivityStatus(0);
                         MyApplication.Toast("شما باموفقیت از صف خارج شدید", Toast.LENGTH_SHORT);
                         MyApplication.prefManager.setActivateStatus(false);
-                        if (binding.btnActivate != null)
+//                        if (binding.btnActivate != null)
                             binding.btnActivate.setBackgroundColor(Color.parseColor("#00FFB2B2"));
-                        if (binding.btnDeActivate != null) {
+//                        if (binding.btnDeActivate != null) {
                             binding.btnDeActivate.setBackgroundResource(R.drawable.bg_pink_edge);
-                        }
+//                        }
                     } else {
                         new GeneralDialog()
                                 .title("هشدار")
@@ -1414,7 +1428,7 @@ public class TripRegisterActivity extends AppCompatActivity {
         public void onResponse(Runnable reCall, Object... args) {
             MyApplication.handler.post(() -> {
                 try {
-                    if (binding.vfSubmit != null)
+//                    if (binding.vfSubmit != null)
                         binding.vfSubmit.setDisplayedChild(0);
                     LoadingDialog.dismissCancelableDialog();
                     Log.i(TAG, "run: " + args[0].toString());
@@ -1441,7 +1455,7 @@ public class TripRegisterActivity extends AppCompatActivity {
                                 })
 
                                 .show();
-                        if (binding.svTripRegister != null)
+//                        if (binding.svTripRegister != null)
                             binding.svTripRegister.scrollTo(0, 0);
                     } else {
                         new GeneralDialog()
@@ -1464,7 +1478,7 @@ public class TripRegisterActivity extends AppCompatActivity {
         public void onFailure(Runnable reCall, Exception e) {
             MyApplication.handler.post(() -> {
                 LoadingDialog.dismissCancelableDialog();
-                if (binding.vfSubmit != null)
+//                if (binding.vfSubmit != null)
                     binding.vfSubmit.setDisplayedChild(0);
             });
         }
@@ -1487,7 +1501,7 @@ public class TripRegisterActivity extends AppCompatActivity {
     };
 
     private void clearData() {
-        if (binding.edtTell == null) return;
+//        if (binding.edtTell == null) return;
         originStation = 0;
         destinationStation = 0;
         addressLength = 0;
@@ -1607,7 +1621,7 @@ public class TripRegisterActivity extends AppCompatActivity {
                 queue = callModel.getQueue();
                 voipId = callModel.getVoipId();
                 DataHolder.getInstance().setVoipId(voipId);
-                if (binding.edtTell == null) return;
+//                if (binding.edtTell == null) return;
                 if (participant == null) return;
                 binding.edtTell.setText(participant);
                 MyApplication.handler.postDelayed(this::onPressDownload, 400);
@@ -1687,10 +1701,10 @@ public class TripRegisterActivity extends AppCompatActivity {
         } else if (quality >= 1) { // Very low quality
             imageRes = (R.drawable.ic_quality_1);
         }
-        if (binding.imgCallQuality != null) {
+//        if (binding.imgCallQuality != null) {
             binding.imgCallQuality.setVisibility(View.VISIBLE);
             binding.imgCallQuality.setImageResource(imageRes);
-        }
+//        }
         mDisplayedQuality = iQuality;
     }
 
@@ -1702,7 +1716,7 @@ public class TripRegisterActivity extends AppCompatActivity {
             if (state == Call.State.IncomingReceived) {
                 showCallIncoming();
             } else if (state == Call.State.Released) {
-                if (binding.imgEndCall != null)
+//                if (binding.imgEndCall != null)
                     binding.imgEndCall.setImageResource(R.drawable.ic_call_dialog_disable);
                 showTitleBar();
                 if (mCallQualityUpdater != null) {
@@ -1711,7 +1725,7 @@ public class TripRegisterActivity extends AppCompatActivity {
                 }
             } else if (state == Call.State.Connected) {
                 startCallQuality();
-                if (binding.imgEndCall != null)
+//                if (binding.imgEndCall != null)
                     binding.imgEndCall.setImageResource(R.drawable.ic_call_dialog_enable);
                 Address address = call.getRemoteAddress();
                 if (voipId.equals("0")) {
@@ -1721,7 +1735,7 @@ public class TripRegisterActivity extends AppCompatActivity {
             } else if (state == Call.State.Error) {
                 showTitleBar();
             } else if (state == Call.State.End) {
-                if (binding.imgCallQuality != null)
+//                if (binding.imgCallQuality != null)
                     binding.imgCallQuality.setVisibility(View.INVISIBLE);
                 showTitleBar();
                 if (mCallQualityUpdater != null) {
@@ -1814,7 +1828,7 @@ public class TripRegisterActivity extends AppCompatActivity {
                     if (voipId.equals("0")) {
                         Address address = call.getRemoteAddress();
                         binding.edtTell.setText(PhoneNumberValidation.removePrefix(address.getUsername()));
-                        MyApplication.handler.postDelayed(() -> onPressDownload(), 600);
+                        MyApplication.handler.postDelayed(this::onPressDownload, 600);
                     }
                 }
             }
@@ -1849,7 +1863,6 @@ public class TripRegisterActivity extends AppCompatActivity {
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        unbinder.unbind();
         core.removeListener(mCoreListener);
 //    MyApplication.prefManager.setLastCallerId("");// set empty, because I don't want save this permanently .
         core = null;
