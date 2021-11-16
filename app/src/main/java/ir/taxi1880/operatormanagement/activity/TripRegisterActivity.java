@@ -357,8 +357,6 @@ public class TripRegisterActivity extends AppCompatActivity {
             KeyBoardHelper.showKeyboard(MyApplication.context);
         });
 
-
-
 //        @OnClick(R.id.llFamily)
 //    void onPressllFamily() {
 //        binding.edtFamily.requestFocus();
