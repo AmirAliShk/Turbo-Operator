@@ -315,7 +315,7 @@ public class TripRegisterActivity extends AppCompatActivity {
 
         binding.edtMobile.addTextChangedListener(edtMobileTW);
 
-        binding.edtFamily.addTextChangedListener(addressTW);
+        binding.edtAddress.addTextChangedListener(addressTW);
 
         binding.edtDestinationAddress.addTextChangedListener(destAddressTW);
 
@@ -357,28 +357,6 @@ public class TripRegisterActivity extends AppCompatActivity {
             KeyBoardHelper.showKeyboard(MyApplication.context);
         });
 
-//        @OnClick(R.id.llFamily)
-//    void onPressllFamily() {
-//        binding.edtFamily.requestFocus();
-//        KeyBoardHelper.showKeyboard(MyApplication.context);
-//    }
-//
-//    @OnClick(R.id.llAddress)
-//    void onPressllAddress() {
-//        binding.edtFamily.requestFocus();
-//        KeyBoardHelper.showKeyboard(MyApplication.context);
-//    }
-
-//    @OnClick(R.id.llTraffic)
-//    void onPressllTraffic() {
-//        binding.chbTraffic.setChecked(!binding.chbTraffic.isChecked());
-//    }
-//
-//    @OnClick(R.id.llAlways)
-//    void onPressllAlways() {
-//        binding.chbAlways.setChecked(!binding.chbAlways.isChecked());
-//    }
-
         binding.llTraffic.setOnClickListener(v -> {
             binding.chbTraffic.setChecked(!binding.chbTraffic.isChecked());
         });
@@ -401,21 +379,6 @@ public class TripRegisterActivity extends AppCompatActivity {
             }, binding.txtDescription.getText().toString(), normalDescription);
         });
 
-        //        @OnClick(R.id.llDescriptionDetail)
-//    void onPressLlDescriptionDetail() {
-//        new DescriptionDialog().show(new DescriptionDialog.Listener() {
-//            @Override
-//            public void description(String description) {
-//                normalDescription = description;
-//            }
-//
-//            @Override
-//            public void fixedDescription(String fixedDescription) {
-//                binding.txtDescription.setText(fixedDescription);
-//            }
-//        }, binding.txtDescription.getText().toString(), normalDescription);
-//    }
-
         binding.txtPassengerAddress.setOnClickListener(v -> {
             if (getTellNumber().isEmpty()) {
                 MyApplication.Toast("ابتدا شماره تلفن را وارد کنید", Toast.LENGTH_SHORT);
@@ -425,18 +388,6 @@ public class TripRegisterActivity extends AppCompatActivity {
             getPassengerAddress(StringHelper.toEnglishDigits(getTellNumber()));
         });
 
-
-
-        //    @OnClick(R.id.txtPassengerAddress)
-//    void txtPassengerAddress() {
-//        if (getTellNumber().isEmpty()) {
-//            MyApplication.Toast("ابتدا شماره تلفن را وارد کنید", Toast.LENGTH_SHORT);
-//            return;
-//        }
-//        KeyBoardHelper.hideKeyboard();
-//        getPassengerAddress(StringHelper.toEnglishDigits(getTellNumber()));
-//    }
-
         binding.txtPassengerDestAddress.setOnClickListener(v -> {
             if (getTellNumber().isEmpty()) {
                 MyApplication.Toast("ابتدا شماره تلفن را وارد کنید", Toast.LENGTH_SHORT);
@@ -445,18 +396,6 @@ public class TripRegisterActivity extends AppCompatActivity {
             KeyBoardHelper.hideKeyboard();
             getPassengerDestAddress(StringHelper.toEnglishDigits(getTellNumber()));
         });
-
-//        @OnClick(R.id.txtPassengerDestAddress)
-//    void txtPassengerDestAddress() {
-//        if (getTellNumber().isEmpty()) {
-//            MyApplication.Toast("ابتدا شماره تلفن را وارد کنید", Toast.LENGTH_SHORT);
-//            return;
-//        }
-//        KeyBoardHelper.hideKeyboard();
-//        getPassengerDestAddress(StringHelper.toEnglishDigits(getTellNumber()));
-//    }
-
-
 
         binding.imgAccept.setOnClickListener(v -> {
             call = core.getCurrentCall();
@@ -471,21 +410,6 @@ public class TripRegisterActivity extends AppCompatActivity {
                 calls[0].accept();
             }
         });
-
-        //    @OnClick(R.id.imgAccept)
-//    void onAcceptPress() {
-//        call = core.getCurrentCall();
-//        Call[] calls = core.getCalls();
-//        int i = calls.length;
-//        Log.i(TAG, "onRejectPress: " + i);
-//        if (call != null) {
-//            call.accept();
-////      if (getMobileNumber().isEmpty() && isTellValidable)
-////        MyApplication.handler.postDelayed(() -> onPressDownload(), 400);
-//        } else if (calls.length > 0) {
-//            calls[0].accept();
-//        }
-//   }
 
         binding.imgReject.setOnClickListener(v -> {
             Core mCore = LinphoneService.getCore();
@@ -511,6 +435,7 @@ public class TripRegisterActivity extends AppCompatActivity {
                 }
             }
         });
+
 
         binding.btnSubmit.setOnClickListener(v -> {
             int addressPercent = addressLength * 50 / 100;
@@ -548,9 +473,9 @@ public class TripRegisterActivity extends AppCompatActivity {
                 binding.edtFamily.requestFocus();
                 return;
             }
-            if (binding.edtFamily.getText().toString().trim().isEmpty()) {
-                binding.edtFamily.setError("آدرس مبدا را مشخص کنید");
-                binding.edtFamily.requestFocus();
+            if (binding.edtAddress.getText().toString().trim().isEmpty()) {
+                binding.edtAddress.setError("آدرس مبدا را مشخص کنید");
+                binding.edtAddress.requestFocus();
                 return;
             }
 
@@ -810,7 +735,7 @@ public class TripRegisterActivity extends AppCompatActivity {
 //    }
 
         binding.clearAddress.setOnClickListener(v -> {
-            binding.edtFamily.getText().clear();
+            binding.edtAddress.getText().clear();
             originStation = 0;
             addressLength = 0;
             addressChangeCounter = 0;
@@ -821,7 +746,7 @@ public class TripRegisterActivity extends AppCompatActivity {
 
         //    @OnClick(R.id.clearAddress)
 //    void onCLearAddress() {
-//        binding.edtFamily.getText().clear();
+//        binding.edtAddress.getText().clear();
 //        originStation = 0;
 //        addressLength = 0;
 //        addressChangeCounter = 0;
@@ -1053,7 +978,7 @@ public class TripRegisterActivity extends AppCompatActivity {
                 isTellValidable = true;
                 binding.edtFamily.setText("");
                 addressChangeCounter = 0;
-                binding.edtFamily.setText("");
+                binding.edtAddress.setText("");
                 binding.txtDescription.setText("");
                 binding.rgCarClass.clearCheck();
                 binding.txtLockPassenger.setVisibility(View.GONE);
@@ -1082,7 +1007,7 @@ public class TripRegisterActivity extends AppCompatActivity {
             if (editable.toString().isEmpty()) {
                 originStation = 0;
                 addressLength = 0;
-                binding.edtFamily.getText().clear();
+                binding.edtAddress.getText().clear();
             }
         }
     };
@@ -1430,8 +1355,8 @@ public class TripRegisterActivity extends AppCompatActivity {
                             }
                             if (binding.edtFamily != null)
                                 binding.edtFamily.setText(name);
-                            if (binding.edtFamily != null) {
-                                binding.edtFamily.setText(address);
+                            if (binding.edtAddress != null) {
+                                binding.edtAddress.setText(address);
                                 addressLength = address.length();
                                 addressChangeCounter = 0;
                             }
@@ -1611,9 +1536,9 @@ public class TripRegisterActivity extends AppCompatActivity {
                             MyApplication.Toast("آدرسی موجود نیست", Toast.LENGTH_SHORT);
                         } else {
                             new AddressListDialog().show(true, (address, stationCode, addressId) -> {
-                                if (binding.edtFamily != null) {
-                                    binding.edtFamily.setText(address);
-                                    binding.edtFamily.setText(address);
+                                if (binding.edtAddress != null) {
+                                    binding.edtAddress.setText(address);
+//                                    binding.edtAddress.setText(address);
                                     addressLength = address.length();
                                     addressChangeCounter = 0;
                                 }
@@ -1666,7 +1591,7 @@ public class TripRegisterActivity extends AppCompatActivity {
         String mobile = isTellValidable && getMobileNumber().isEmpty() ? "0" : getMobileNumber();
         String tell = getTellNumber();
         String name = binding.edtFamily.getText().toString().trim();
-        String address = binding.edtFamily.getText().toString().trim();
+        String address = binding.edtAddress.getText().toString().trim();
         String fixedComment = binding.txtDescription.getText().toString().trim();
         destinationAddress = binding.edtDestinationAddress.getText().toString().trim();
 
@@ -1959,7 +1884,7 @@ public class TripRegisterActivity extends AppCompatActivity {
         binding.edtMobile.setText("");
         binding.edtDiscount.setText("");
         binding.edtFamily.setText("");
-        binding.edtFamily.setText("");
+        binding.edtAddress.setText("");
         binding.edtDestinationAddress.setText("");
         addressChangeCounter = 0;
         destAddressChangeCounter = 0;
@@ -1976,7 +1901,7 @@ public class TripRegisterActivity extends AppCompatActivity {
     private void enableViews() {
         binding.edtFamily.setEnabled(true);
 //    binding.edtDiscount.setEnabled(true);
-        binding.edtFamily.setEnabled(true);
+        binding.edtAddress.setEnabled(true);
         binding.edtDestinationAddress.setEnabled(true);
         binding.txtDescription.setEnabled(true);
         binding.chbTraffic.setEnabled(true);
@@ -2002,7 +1927,7 @@ public class TripRegisterActivity extends AppCompatActivity {
     private void disableViews() {
         binding.edtFamily.setEnabled(false);
 //    binding.edtDiscount.setEnabled(false);
-        binding.edtFamily.setEnabled(false);
+        binding.edtAddress.setEnabled(false);
         binding.edtDestinationAddress.setEnabled(false);
         binding.txtDescription.setEnabled(false);
         binding.chbTraffic.setEnabled(false);
