@@ -711,10 +711,6 @@ public class TripRegisterActivity extends AppCompatActivity {
     private void initWaitingTimeSpinner() {
         ArrayList<String> waitingTime = new ArrayList<String>(Arrays.asList("بدون توقف", "۵ دقیقه", "۱۰ دقیقه", "۲۰ دقیقه", "۳۰ دقیقه", "۴۰ دقیقه", "۵۰ دقیقه", "۱ ساعت", "۱.۵ ساعت", "۲ ساعت", "۲.۵ ساعت", "۳ ساعت"));
         try {
-
-//            if (binding.spWaitingTime == null)
-//                return;
-
             if (isEnableView) {
                 binding.spWaitingTime.setEnabled(true);
             } else {
@@ -725,7 +721,6 @@ public class TripRegisterActivity extends AppCompatActivity {
             binding.spWaitingTime.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
                 @Override
                 public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-//                    if (binding.spWaitingTime != null)
 //                        ((TextView) parent.getChildAt(0)).setTextColor(Color.GRAY);
                     switch (position) {
                         case 0:
@@ -1455,7 +1450,6 @@ public class TripRegisterActivity extends AppCompatActivity {
     };
 
     private void clearData() {
-//        if (binding.edtTell == null) return;
         originStation = 0;
         destinationStation = 0;
         addressLength = 0;
@@ -1684,7 +1678,6 @@ public class TripRegisterActivity extends AppCompatActivity {
             if (state == Call.State.IncomingReceived) {
                 showCallIncoming();
             } else if (state == Call.State.Released) {
-//                if (binding.imgEndCall != null)
                 binding.imgEndCall.setImageResource(R.drawable.ic_call_dialog_disable);
                 showTitleBar();
                 if (mCallQualityUpdater != null) {
@@ -1693,7 +1686,6 @@ public class TripRegisterActivity extends AppCompatActivity {
                 }
             } else if (state == Call.State.Connected) {
                 startCallQuality();
-//                if (binding.imgEndCall != null)
                 binding.imgEndCall.setImageResource(R.drawable.ic_call_dialog_enable);
                 Address address = call.getRemoteAddress();
                 if (voipId.equals("0")) {
@@ -1703,7 +1695,6 @@ public class TripRegisterActivity extends AppCompatActivity {
             } else if (state == Call.State.Error) {
                 showTitleBar();
             } else if (state == Call.State.End) {
-//                if (binding.imgCallQuality != null)
                 binding.imgCallQuality.setVisibility(View.INVISIBLE);
                 showTitleBar();
                 if (mCallQualityUpdater != null) {
