@@ -86,7 +86,7 @@ public class TripRegisterActivity extends AppCompatActivity {
     private int addressChangeCounter = 0; // this variable count the last edition of edtAddress
     private int destAddressChangeCounter = 0; // this variable count the last edition of edtAddress
     int originAddressId;
-    int destintionAddressId = 0;
+    int destinationAddressId = 0;
     private int serviceType;
     private int serviceCount;
     private boolean isEnableView = false;
@@ -354,7 +354,6 @@ public class TripRegisterActivity extends AppCompatActivity {
                     .show();
         });
 
-
         binding.llEndCall.setOnClickListener(v -> {
             KeyBoardHelper.hideKeyboard();
             core.removeListener(mCoreListener);
@@ -416,7 +415,7 @@ public class TripRegisterActivity extends AppCompatActivity {
             destinationStation = 0;
             destAddressLength = 0;
             destAddressChangeCounter = 0;
-            destintionAddressId = 0;
+            destinationAddressId = 0;
         });
 
         binding.btnDeActivate.setOnClickListener(v -> {
@@ -456,6 +455,14 @@ public class TripRegisterActivity extends AppCompatActivity {
                 }
             }
         });
+
+//        binding.edtOriginAddress.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+//            @Override
+//            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+//                Log.i("Taf","  "+position);
+//                Toast.makeText(MyApplication.context,"HI GLObi",Toast.LENGTH_LONG);
+//            }
+//        });
     }
 
     private void onPressDownload() {
@@ -592,7 +599,10 @@ public class TripRegisterActivity extends AppCompatActivity {
         @Override
         public void onTextChanged(CharSequence charSequence, int start, int before, int count) {
             addressChangeCounter = addressChangeCounter + 1;
-            originAddressId = 0;
+            if (binding.edtOriginAddress.isFocused()){
+                originAddressId = 0;
+            }
+            Log.i("Taf_onText",originAddressId+"");
         }
 
         @Override
@@ -613,7 +623,7 @@ public class TripRegisterActivity extends AppCompatActivity {
         @Override
         public void onTextChanged(CharSequence charSequence, int start, int before, int count) {
             destAddressChangeCounter = destAddressChangeCounter + 1;
-            destintionAddressId = 0;
+            destinationAddressId = 0;
         }
 
         @Override
@@ -818,7 +828,6 @@ public class TripRegisterActivity extends AppCompatActivity {
     }
 
     private void getPassengerInfo(String phoneNumber, String mobile, String queue) {
-//        if (binding.vfPassengerInfo != null)
         binding.vfPassengerInfo.setDisplayedChild(1);
 
         RequestHelper.builder(EndPoints.PASSENGER_INFO)
@@ -858,6 +867,7 @@ public class TripRegisterActivity extends AppCompatActivity {
 
                     JSONObject passengerInfoObj = dataObj.getJSONObject("passengerInfo");
                     originAddressId = passengerInfoObj.getInt("callerCode");
+                    Log.i("Taf_passengerInfo",originAddressId + "");
                     address = passengerInfoObj.getString("address");
                     String name = passengerInfoObj.getString("name");
                     int originStationFromSV = passengerInfoObj.getInt("staion");
@@ -988,12 +998,12 @@ public class TripRegisterActivity extends AppCompatActivity {
         binding.vfPassengerAddress.setDisplayedChild(1);
         RequestHelper.builder(EndPoints.PASSENGER_ORIGIN)
                 .addPath(phoneNumber)
-                .listener(getPassengerOrigin)
+                .listener(getPassengerOriginAddress)
                 .get();
 
     }
 
-    RequestHelper.Callback getPassengerOrigin = new RequestHelper.Callback() {
+    RequestHelper.Callback getPassengerOriginAddress = new RequestHelper.Callback() {
         @Override
         public void onResponse(Runnable reCall, Object... args) {
             MyApplication.handler.post(() -> {
@@ -1025,6 +1035,7 @@ public class TripRegisterActivity extends AppCompatActivity {
                         } else {
                             arrayAdapter = new ArrayAdapter<>(MyApplication.currentActivity, android.R.layout.simple_dropdown_item_1line, list);
                             binding.edtOriginAddress.setAdapter(arrayAdapter);
+
 
                             new AddressListDialog().show(true, (address, stationCode, addressId) -> {
                                 binding.edtOriginAddress.setText(address);
@@ -1118,7 +1129,7 @@ public class TripRegisterActivity extends AppCompatActivity {
                                 destAddressChangeCounter = 0;
 //                                }
                                 destinationStation = stationCode;
-                                destintionAddressId = addressId;
+                                destinationAddressId = addressId;
                             }, passengerDestAddressModels);
                         }
                     } else {
@@ -1366,9 +1377,13 @@ public class TripRegisterActivity extends AppCompatActivity {
                 .addParam("senderClient", 0)
                 .addParam("stopTime", stopTime)
                 .addParam("addressIdOrigin", originAddressId)
-                .addParam("addressIdDestination", destintionAddressId)
+                .addParam("addressIdDestination", destinationAddressId)
                 .listener(insertService)
                 .post();
+
+        Log.i("Taf_insertTrip",originAddressId + "");
+
+
 
     }
 
@@ -1454,6 +1469,8 @@ public class TripRegisterActivity extends AppCompatActivity {
         destinationStation = 0;
         addressLength = 0;
         destAddressLength = 0;
+        originAddressId = 0;
+        destinationAddressId = 0;
         isEnableView = false;
         isTellValidable = false;
         binding.edtTell.requestFocus();
