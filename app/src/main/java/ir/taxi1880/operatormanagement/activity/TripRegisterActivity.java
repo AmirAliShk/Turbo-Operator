@@ -481,7 +481,6 @@ public class TripRegisterActivity extends AppCompatActivity {
         String mobile = isTellValidable && getMobileNumber().isEmpty() ? "0" : getMobileNumber();
 
         getPassengerInfo(StringHelper.toEnglishDigits(getTellNumber()), StringHelper.toEnglishDigits(mobile), StringHelper.toEnglishDigits(queue));
-
     }
 
     private String getTellNumber() {
@@ -850,7 +849,6 @@ public class TripRegisterActivity extends AppCompatActivity {
                 try {
                     if (queue.trim().equals("1817")) {
                         MyApplication.handler.postDelayed(() -> {
-//                            if (binding.spServiceType != null)
                             binding.spServiceType.setSelection(2, true);
                         }, 500);
                     }
@@ -867,7 +865,6 @@ public class TripRegisterActivity extends AppCompatActivity {
 
                     JSONObject passengerInfoObj = dataObj.getJSONObject("passengerInfo");
                     originAddressId = passengerInfoObj.getInt("callerCode");
-                    Log.i("Taf_passengerInfo",originAddressId + "");
                     address = passengerInfoObj.getString("address");
                     String name = passengerInfoObj.getString("name");
                     int originStationFromSV = passengerInfoObj.getInt("staion");
@@ -887,7 +884,6 @@ public class TripRegisterActivity extends AppCompatActivity {
                     if (success) {
                         if (status == 2) {
                             String msg = " مسافر " + callTimeInterval + " دقیقه پیش سفری درخواست داده است " + "\n" + " وضعیت سفر : " + tripState;
-//                            if (binding.vfPassengerInfo != null)
                             binding.vfPassengerInfo.setDisplayedChild(0);
                             new GeneralDialog()
                                     .message(msg)
@@ -900,8 +896,7 @@ public class TripRegisterActivity extends AppCompatActivity {
                                     })
                                     .show();
                         }
-//                        if (binding.edtTell == null)
-//                            return;
+
                         binding.edtTell.setNextFocusDownId(R.id.edtFamily);
                         isEnableView = true;
                         initServiceCountSpinner();
@@ -913,11 +908,9 @@ public class TripRegisterActivity extends AppCompatActivity {
                             if (cityModels.get(i).getId() == cityCode)
                                 binding.spCity.setSelection(i + 1, true);
                         }
-
                         if (cityCode == 0) {
                             KeyBoardHelper.hideKeyboard();
                             new CityDialog().show(position -> {
-//                                if (binding.spCity != null)
                                 binding.spCity.setSelection(position + 1);
                             }, true);
                         }
@@ -967,6 +960,11 @@ public class TripRegisterActivity extends AppCompatActivity {
                             }
                         }
                         originStation = originStationFromSV;
+//                      api/operator/v3/trip/passengerAddresses/:phone/
+//                        RequestHelper.builder(EndPoints.PASSENGER_ADDRESSES)
+//                                .addPath(StringHelper.toEnglishDigits(getMobileNumber()))
+//                                .listener(getPassengerAddresses)
+//                                .get();
                     }
 
                     MyApplication.handler.postDelayed(() -> {
@@ -988,6 +986,43 @@ public class TripRegisterActivity extends AppCompatActivity {
             });
         }
     };
+
+//    RequestHelper.Callback getPassengerAddresses = new RequestHelper.Callback() {
+//        @Override
+//        public void onResponse(Runnable reCall, Object... args) {
+//            MyApplication.handler.post(()->{
+//                try {
+//                    JSONObject rawContent = new JSONObject(args[0].toString());
+//                    boolean success = rawContent.getBoolean("success");
+//                    String message = rawContent.getString("message");
+//                    if (success)
+//                    {
+//                        JSONArray dataArr = rawContent.getJSONArray("data");
+//                        for(int i = 0;i<dataArr.length();i++)
+//                        {
+//                            JSONObject addressObject = dataArr.getJSONObject(i);
+//                            addressObject.getString("text");
+//                            addressObject.getString("station");
+//                        }
+//                    }
+//                    else
+//                    {
+//
+//                    }
+//
+//                }catch(Exception e)
+//                {
+//                    e.printStackTrace();
+//                    AvaCrashReporter.send(e,"getPassengerAddresses , getPassengerInfo , TripRegisterActivity");
+//                }
+//            });
+//        }
+//
+//        @Override
+//        public void onFailure(Runnable reCall, Exception e) {
+//            super.onFailure(reCall, e);
+//        }
+//    };
 
     ArrayList<PassengerAddressModel> passengerAddressModels;
     ArrayList<PassengerAddressModel> passengerDestAddressModels;
