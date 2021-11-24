@@ -112,6 +112,7 @@ public class TripRegisterActivity extends AppCompatActivity {
     private ArrayAdapter<String> arrayAdapter;
     private ArrayList<String> AutoList;
 
+    String passengerId;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -280,12 +281,23 @@ public class TripRegisterActivity extends AppCompatActivity {
         });
 
         binding.btnSubmit.setOnClickListener(v -> {
+            originAddressLength = originAddress.length();
+            int addressPercent = originAddressLength * 50 / 100;
+            if (originAddressChangeCounter >= addressPercent) {
+                originStation = 0;
+                originAddressId = "0";
+            }
+            destAddressLength = destinationAddress.length();
+            Log.i("TAF", "onPressSubmit: address length " + destAddressLength);
+            int destAddressPercent = destAddressLength * 50 / 100;
+            if (destAddressChangeCounter >= destAddressPercent) {
+                destinationStation = 0;
+                destinationAddressId = "0";
+            }
 
-
-//        Log.i(TAG, "onPressSubmit: address length " + destAddressLength);
-//        Log.i(TAG, "onPressSubmit: address percent " + destAddressPercent);
-//        Log.i(TAG, "onPressSubmit: address change counter " + destAddressChangeCounter);
-//        Log.i(TAG, "onPressSubmit: originStation " + destAddressPercent);
+        Log.i("TAF", "onPressSubmit: address percent " + destAddressPercent);
+        Log.i("TAF", "onPressSubmit: address change counter " + destAddressChangeCounter);
+        Log.i("TAF", "onPressSubmit: originStation " + destAddressPercent);
 
             if (cityCode == -1 || cityCode == 0) {
                 MyApplication.Toast("شهر را وارد نمایید", Toast.LENGTH_SHORT);
@@ -444,14 +456,6 @@ public class TripRegisterActivity extends AppCompatActivity {
                 }
             }
         });
-
-//        binding.edtOriginAddress.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-//            @Override
-//            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-//                Log.i("Taf","  "+position);
-//                Toast.makeText(MyApplication.context,"HI GLObi",Toast.LENGTH_LONG);
-//            }
-//        });
     }
 
     private void onPressDownload() {
@@ -610,7 +614,9 @@ public class TripRegisterActivity extends AppCompatActivity {
         @Override
         public void onTextChanged(CharSequence charSequence, int start, int before, int count) {
             destAddressChangeCounter = destAddressChangeCounter + 1;
-            destinationAddressId = "0";
+            if (binding.edtDestinationAddress.isFocused()) {
+                destinationAddressId = "0";
+            }
         }
 
         @Override
@@ -829,70 +835,103 @@ public class TripRegisterActivity extends AppCompatActivity {
                     JSONObject obj = new JSONObject(args[0].toString());
                     boolean success = obj.getBoolean("success");
                     String message = obj.getString("message");
-                    JSONObject dataObj = obj.getJSONObject("data");
 
-                    JSONObject lastTripStatus = dataObj.getJSONObject("status");
-                    int status = lastTripStatus.getInt("status");
+                    if (success) {
+                        JSONObject dataObj = obj.getJSONObject("data");
+
+                        passengerId = dataObj.getString("passengerId");
+
+                        JSONObject lastTripStatus = dataObj.getJSONObject("status");
+                        int status = lastTripStatus.getInt("status");
 //                    String descriptionStatus = lastTripStatus.getString("descriptionStatus");
-                    String tripState = lastTripStatus.getString("tripState");
-                    int callTimeInterval = lastTripStatus.getInt("callTimeInterval");
+                        String tripState = lastTripStatus.getString("tripState");
+                        int callTimeInterval = lastTripStatus.getInt("callTimeInterval");
 
-                    JSONObject passengerInfoObj = dataObj.getJSONObject("passengerInfo");
+                        JSONObject passengerInfoObj = dataObj.getJSONObject("passengerInfo");
 //                    originAddressId = passengerInfoObj.getInt("callerCode");
 //                    originAddress = passengerInfoObj.getString("address");
 //                    int originStationFromSV = passengerInfoObj.getInt("staion");
-                    String name = passengerInfoObj.getString("name");
-                    permanentDesc = passengerInfoObj.getString("description");
-                    String discountCode = passengerInfoObj.getString("discountCode");
-                    int discountId = passengerInfoObj.getInt("discountId");
-                    int carType = passengerInfoObj.getInt("carType");
-                    int cityCode = passengerInfoObj.getInt("cityCode");
-                    maxDiscount = passengerInfoObj.getString("maxDiscount");
-                    percentDiscount = passengerInfoObj.getString("percentDiscount");
-                    Log.i("TAF", "name: " + name +
-                                    "\npermanentDesc:" + permanentDesc +
-                                    "\ndiscuontCode:" + discountCode +
-                                    "\ncartype:" + carType +
-                                    "\ncityCode:" + cityCode);
+                        String name = passengerInfoObj.getString("name");
+                        permanentDesc = passengerInfoObj.getString("description");
+                        String discountCode = passengerInfoObj.getString("discountCode");
+                        int discountId = passengerInfoObj.getInt("discountId");
+                        int carType = passengerInfoObj.getInt("carType");
+                        int cityCode = passengerInfoObj.getInt("cityCode");
+                        maxDiscount = passengerInfoObj.getString("maxDiscount");
+                        percentDiscount = passengerInfoObj.getString("percentDiscount");
 
 
-                    String passengerId = dataObj.getString("passengerId");
+                        JSONArray AddressesArr = dataObj.getJSONArray("addresses").getJSONObject(0).getJSONArray("address");
+                        addressesModels = new ArrayList<>();
+                        AutoList = new ArrayList<>();
+                        for (int i = 0; i < AddressesArr.length(); i++) {
+                            JSONObject jsonAddress = AddressesArr.getJSONObject(i);
 
-//                    JSONArray AddressesArr = dataObj.getJSONArray("addresses").getJSONObject(0).getJSONArray("address");
-//                    addressesModels = new ArrayList<>();
-//                    AutoList = new ArrayList<>();
-//                    for (int i = 0; i < AddressesArr.length(); i++) {
-//                        JSONObject jsonAddress = AddressesArr.getJSONObject(i);
-//
-//                        String Address = jsonAddress.getString("text");
-//                        String AddressId = jsonAddress.getString("_id");
-//                        int originStation = jsonAddress.getInt("station");
-//
-//                        addressesModels.add(new AddressesModel(Address, originStation, AddressId));
-//                        AutoList.add(Address);
-//
-////                        if (i == 0) {
-////                            originAddress = Address;
-////                            binding.edtOriginAddress.setText(originAddress);
-////                            originAddressLength = originAddress.length();
-////                            originAddressId = AddressId;
-////                            originAddressChangeCounter = 0;
-////
-////                            Log.i("TAF", "\n originAddress: " + originAddress
-////                                    + "\n originAddressLength: " + originAddressLength
-////                                    + "\n originAddressId: " + originAddressId);
-////                        }
-//                    }
-//                    arrayAdapter = new ArrayAdapter<String>(MyApplication.context, android.R.layout.simple_dropdown_item_1line, AutoList);
-//                    binding.edtOriginAddress.setAdapter(arrayAdapter);
-//                    binding.edtDestinationAddress.setAdapter(arrayAdapter);
+                            String Address = jsonAddress.getString("text");
+                            String AddressId = jsonAddress.getString("_id");
+                            int AddressStation = jsonAddress.getInt("station");
 
-                    ClipboardManager clipboard = (ClipboardManager) getSystemService(Context.CLIPBOARD_SERVICE);
-                    ClipData clip = ClipData.newPlainText("passengerTell", getTellNumber());
-                    clipboard.setPrimaryClip(clip);
-                    MyApplication.prefManager.setLastCallerId(getTellNumber().startsWith("51") ? getTellNumber().substring(2) : getTellNumber());
+                            addressesModels.add(new AddressesModel(Address, AddressStation, AddressId));
+                            AutoList.add(Address);
 
-                    if (success) {
+                            if (i == 0) {
+                                originAddress = Address;
+                                binding.edtOriginAddress.setText(originAddress);
+                                originAddressLength = originAddress.length();
+                                originStation = AddressStation;
+                                originAddressId = AddressId;
+                                originAddressChangeCounter = 0;
+                            }
+                        }
+                        arrayAdapter = new ArrayAdapter<String>(MyApplication.context, android.R.layout.simple_dropdown_item_1line, AutoList);
+                        binding.edtOriginAddress.setAdapter(arrayAdapter);
+                        binding.edtDestinationAddress.setAdapter(arrayAdapter);
+                        binding.edtOriginAddress.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                            @Override
+                            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                                originAddress = binding.edtOriginAddress.getText().toString().trim();
+                                originAddressLength = originAddress.length();
+                                originAddressChangeCounter = 0;
+
+                                for (int i = 0; i < addressesModels.size(); i++) {
+                                    if (addressesModels.get(i).getAddress().equals(originAddress)) {
+                                        originStation = addressesModels.get(i).getStation();
+                                        originAddressId = addressesModels.get(i).getAddressId();
+                                    }
+                                }
+
+                                Log.i("TAF", "TAF_onItemClick,originStation: " + originStation);
+                                Log.i("TAF", "TAF_onItemClick,addressLength: " + originAddressLength);
+                                Log.i("TAF", "TAF_onItemClick,originAddressId: " + originAddressId);
+                            }
+                        });
+                        binding.edtDestinationAddress.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                            @Override
+                            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                                destinationAddress = binding.edtDestinationAddress.getText().toString().trim();
+                                destAddressLength = destinationAddress.length();
+                                destAddressChangeCounter = 0;
+
+                                for (int i = 0; i < addressesModels.size(); i++) {
+                                    if (addressesModels.get(i).getAddress().trim().equals(destinationAddress)) {
+                                        destinationStation = addressesModels.get(i).getStation();
+                                        destinationAddressId = addressesModels.get(i).getAddressId();
+                                    }
+                                }
+
+                                Log.i("TAF", "TAF_onItemClick,destinationStation: " + destinationStation);
+                                Log.i("TAF", "TAF_onItemClick,destAddressLength:" + destAddressLength);
+                                Log.i("TAF", "TAF_onItemClick, destinationAddressId:" + destinationAddressId);
+                            }
+                        });
+
+
+                        ClipboardManager clipboard = (ClipboardManager) getSystemService(Context.CLIPBOARD_SERVICE);
+                        ClipData clip = ClipData.newPlainText("passengerTell", getTellNumber());
+                        clipboard.setPrimaryClip(clip);
+                        MyApplication.prefManager.setLastCallerId(getTellNumber().startsWith("51") ? getTellNumber().substring(2) : getTellNumber());
+
+
                         if (status == 2) {
                             String msg = " مسافر " + callTimeInterval + " دقیقه پیش سفری درخواست داده است " + "\n" + " وضعیت سفر : " + tripState;
                             binding.vfPassengerInfo.setDisplayedChild(0);
@@ -988,18 +1027,18 @@ public class TripRegisterActivity extends AppCompatActivity {
     private void getPassengerOriginAddress() {
         binding.vfPassengerOriginAddress.setDisplayedChild(1);
         MyApplication.handler.postDelayed(() ->
-        {
-            new AddressListDialog().show(true, (address, stationCode, addressId) -> {
+        { new AddressListDialog().show(true, (address, stationCode, addressId) -> {
                 binding.edtOriginAddress.setText(address);
                 originAddressLength = address.length();
                 originAddressChangeCounter = 0;
                 originStation = stationCode;
                 originAddressId = addressId;
 
+                Log.i("TAF", "TAF_getPassengerOriginAddress,originStation: " + originStation);
+                Log.i("TAF", "TAF_getPassengerOriginAddress,addressLength: " + originAddressLength);
+                Log.i("TAF", "TAF_getPassengerOriginAddress,originAddressId: " + originAddressId);
+
             }, addressesModels);
-            Log.i(TAG, "getPassengerOriginAddress,originStation: " + originStation);
-            Log.i(TAG, "getPassengerOriginAddress,addressLength: " + originAddressLength);
-            Log.i(TAG, "getPassengerOriginAddress,originAddressId: " + originAddressId);
             binding.vfPassengerOriginAddress.setDisplayedChild(0);
         }, 700);
     }
@@ -1007,17 +1046,18 @@ public class TripRegisterActivity extends AppCompatActivity {
     private void getPassengerDestAddress() {
         binding.vfPassengerDestAddress.setDisplayedChild(1);
         MyApplication.handler.postDelayed(() ->
-        {
-            new AddressListDialog().show(false, (address, stationCode, addressId) -> {
+        { new AddressListDialog().show(false, (address, stationCode, addressId) -> {
                 binding.edtDestinationAddress.setText(address);
                 destAddressLength = address.length();
                 destAddressChangeCounter = 0;
                 destinationStation = stationCode;
                 destinationAddressId = addressId;
+
+                Log.i("TAF", "TAF_getPassengerDestinationAddress,destinationStation: " + destinationStation);
+                Log.i("TAF", "TAF_getPassengerDestinationAddress,destAddressLength:" + destAddressLength);
+                Log.i("TAF", "TAF_getPassengerDestinationAddress, destinationAddressId:" + destinationAddressId);
             }, addressesModels);
-            Log.i(TAG, "getPassengerDestinationAddress,destinationStation: " + destinationStation);
-            Log.i(TAG, "getPassengerDestinationAddress,destAddressLength:" + destAddressLength);
-            Log.i(TAG, "getPassengerDestinationAddress, destinationAddressId:" + destinationAddressId);
+
             binding.vfPassengerDestAddress.setDisplayedChild(0);
         }, 700);
     }
@@ -1030,16 +1070,6 @@ public class TripRegisterActivity extends AppCompatActivity {
         String fixedComment = binding.txtDescription.getText().toString().trim();
         destinationAddress = binding.edtDestinationAddress.getText().toString().trim();
 
-        originAddressLength = originAddress.length();
-        int addressPercent = originAddressLength * 50 / 100;
-        if (originAddressChangeCounter >= addressPercent) {
-            originStation = 0;
-        }
-        destAddressLength = destinationAddress.length();
-        int destAddressPercent = destAddressLength * 50 / 100;
-        if (destAddressChangeCounter >= destAddressPercent) {
-            destinationStation = 0;
-        }
 
         if (binding.chbTraffic.isChecked())
             traffic = 1;
@@ -1069,20 +1099,27 @@ public class TripRegisterActivity extends AppCompatActivity {
                 break;
         }
 
-
-        for (int i = 0; i < addressesModels.size(); i++) {
-            if (addressesModels.get(i).getAddress().equals(originAddress)) {
-                originStation = addressesModels.get(i).getStation();
-                originAddressId = addressesModels.get(i).getAddressId();
-            }
-        }
-
-        for (int i = 0; i < addressesModels.size(); i++) {
-            if (addressesModels.get(i).getAddress().equals(destinationAddress)) {
-                destinationStation = addressesModels.get(i).getStation();
-                destinationAddressId = addressesModels.get(i).getAddressId();
-            }
-        }
+        Log.i("TAF", "\nserviceCount:" + serviceCount
+                + "\ntell: " + tell
+                + "\nmobile: " + mobile
+                + "\ncityCode: " + cityCode
+                + "\nname: " + name
+                + "\noriginAddress: " + originAddress
+                + "\nfixedComment: " + fixedComment
+                + "\ndestinationAddress: " + destinationAddress
+                + "\nserviceType: " + serviceType
+                + "\ncarClass: " + carClass
+                + "\nnormalDescription: " + normalDescription
+                + "\ntraffic: " + traffic
+                + "\ndefaultClass: " + defaultClass
+                + "\nstopTime: " + stopTime
+                + "\nqueue: " + queue
+                + "\npercentDiscount: " + percentDiscount
+                + "\nmaxDiscount: " + maxDiscount
+                + "\naddressIdOrigin: " + originAddressId
+                + "\naddressIdDestination: " + destinationAddressId
+                + "\nstationCode: " + originStation
+                + "\ndestinationStation: " + destinationStation);
 
         new GeneralDialog()
                 .title("ثبت اطلاعات")
