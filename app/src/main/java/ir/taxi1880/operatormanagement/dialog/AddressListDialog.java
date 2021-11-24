@@ -29,32 +29,27 @@ public class AddressListDialog {
 
     private static final String TAG = AddressListDialog.class.getSimpleName();
 
+    private static Dialog dialog;
+    private DialogAddressListBinding binding;
+    private LastAddressAdapter lastAddressAdapter;
+    private ArrayList <AddressesModel> passengerAddressModels;
+    private Listener listener;
+
+
     public interface Listener {
         void description(String address, int stationCode, String addressId);
 //    void selectedAddress(boolean b);
     }
-    private DialogAddressListBinding binding;
-    private LastAddressAdapter lastAddressAdapter;
-    private ArrayList <AddressesModel> passengerAddressModels;
 
-    private Listener listener;
-    private static Dialog dialog;
-
-    public void setPassengerAddresses(ArrayList <AddressesModel>passengerAddresses)
-    {
-        passengerAddressModels = new ArrayList<>();
-        this.passengerAddressModels = passengerAddresses;
-    }
-
-    public void show(boolean isFromOrigin, Listener listener) {
+    public void show(boolean isFromOrigin, Listener listener,ArrayList <AddressesModel>passengerAddresses) {
         if (MyApplication.currentActivity == null || MyApplication.currentActivity.isFinishing())
             return;
         dialog = new Dialog(MyApplication.currentActivity);
-        binding = DialogAddressListBinding.inflate(LayoutInflater.from(MyApplication.context));
+        binding = DialogAddressListBinding.inflate(LayoutInflater.from(MyApplication.currentActivity));
         dialog.getWindow().requestFeature(Window.FEATURE_NO_TITLE);
         dialog.getWindow().getAttributes().windowAnimations = R.style.ExpandAnimation;
-        dialog.setContentView(R.layout.dialog_address_list);
-        TypefaceUtil.overrideFonts(dialog.getWindow().getDecorView());
+        dialog.setContentView(binding.getRoot());
+        TypefaceUtil.overrideFonts(binding.getRoot());
         dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         WindowManager.LayoutParams wlp = dialog.getWindow().getAttributes();
         wlp.gravity = Gravity.CENTER;
@@ -63,6 +58,7 @@ public class AddressListDialog {
         dialog.getWindow().setAttributes(wlp);
         dialog.setCancelable(true);
         this.listener = listener;
+        this.passengerAddressModels = passengerAddresses;
 
         lastAddressAdapter = new LastAddressAdapter(isFromOrigin, passengerAddressModels);
         binding.listLastAddress.setAdapter(lastAddressAdapter);
@@ -78,9 +74,14 @@ public class AddressListDialog {
         }
 
         binding.listLastAddress.setOnItemClickListener((parent, view, position, id) -> {
-//            listener .description(passengerAddressModels.get(position).getAddress(), passengerAddressModels.get(position).getStation(),passengerAddressModels.get(position).getAddressId());
+            listener .description(passengerAddressModels.get(position).getAddress(), passengerAddressModels.get(position).getStation(),passengerAddressModels.get(position).getAddressId());
 ////        listener.selectedAddress(true);
             dismiss();
+        });
+
+        binding.blrView.setOnClickListener(v ->
+        {
+            dialog.dismiss();
         });
 
         dialog.show();

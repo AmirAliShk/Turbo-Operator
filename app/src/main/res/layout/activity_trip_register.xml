@@ -541,7 +541,7 @@
                         android:background="@drawable/edit_text_style">
 
                         <ViewFlipper
-                            android:id="@+id/vfPassengerAddress"
+                            android:id="@+id/vfPassengerOriginAddress"
                             android:layout_width="match_parent"
                             android:layout_height="40dp"
                             android:background="@drawable/bg_ripple">
@@ -580,20 +580,19 @@
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
                             android:layout_weight="1"
-                            android:completionThreshold="1"
                             android:background="@drawable/edit_text_style"
-                            android:enabled="false"
+                            android:clickable="true"
+                            android:completionThreshold="1"
+                            android:focusable="true"
                             android:nextFocusDown="@id/edtDestinationAddress"
                             android:paddingLeft="35dp"
                             android:paddingRight="5dp"
                             android:singleLine="true"
-                            android:clickable="true"
                             android:textAppearance="?android:attr/textAppearanceMedium"
-                            android:textColor="?attr/colorValue"
-                            android:focusable="true" />
+                            android:textColor="?attr/colorValue" />
 
                         <ImageView
-                            android:id="@+id/clearAddress"
+                            android:id="@+id/clearOriginAddress"
                             android:layout_width="40dp"
                             android:layout_height="match_parent"
                             android:layout_alignParentLeft="true"
@@ -689,8 +688,9 @@
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
                             android:layout_weight="1"
-                            android:completionThreshold="1"
                             android:background="@drawable/edit_text_style"
+                            android:clickable="true"
+                            android:completionThreshold="1"
                             android:enabled="false"
                             android:nextFocusDown="@id/edtFamily"
                             android:paddingLeft="35dp"

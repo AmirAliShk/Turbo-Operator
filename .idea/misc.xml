@@ -3,6 +3,9 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="..\:/AndroidProject/operatorAssistance/app/src/main/res/drawable/ic_call_dialog_disable.xml" value="0.22552083333333334" />
+        <entry key="..\:/AndroidProject/operatorAssistance/app/src/main/res/layout/activity_trip_register.xml" value="0.2" />
+        <entry key="..\:/AndroidProject/operatorAssistance/app/src/main/res/layout/dialog_address_list.xml" value="0.10182370820668693" />
         <entry key="app/src/main/res/drawable-v16/bg_body.xml" value="0.209375" />
         <entry key="app/src/main/res/drawable-v16/bg_circle_dialogue.xml" value="0.35625" />
         <entry key="app/src/main/res/drawable-v16/bg_circle_green.xml" value="0.35625" />
