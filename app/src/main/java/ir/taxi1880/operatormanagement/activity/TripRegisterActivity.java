@@ -86,6 +86,8 @@ public class TripRegisterActivity extends AppCompatActivity {
     private int destAddressChangeCounter = 0; // this variable count the last edition of edtAddress
     private String originAddressId = "0";
     private String destinationAddressId = "0";
+    private String destinationAddress = " ";// It must have a value otherwise it will get an error of 422
+    private String originAddress = " ";// It must have a value otherwise it will get an error of 422
     private int serviceType;
     private int serviceCount;
     private boolean isEnableView = false;
@@ -105,8 +107,6 @@ public class TripRegisterActivity extends AppCompatActivity {
     private String[] countService = new String[6];
     private Runnable mCallQualityUpdater = null;
     private int mDisplayedQuality = -1;
-    private String destinationAddress = " ";// It must have a value otherwise it will get an error of 422
-    private String originAddress = " ";// It must have a value otherwise it will get an error of 422
 
     private ArrayList<AddressesModel> addressesModels;
     private ArrayAdapter<String> arrayAdapter;
@@ -281,23 +281,22 @@ public class TripRegisterActivity extends AppCompatActivity {
         });
 
         binding.btnSubmit.setOnClickListener(v -> {
-            originAddressLength = originAddress.length();
+
             int addressPercent = originAddressLength * 50 / 100;
             if (originAddressChangeCounter >= addressPercent) {
                 originStation = 0;
                 originAddressId = "0";
             }
-            destAddressLength = destinationAddress.length();
-            Log.i("TAF", "onPressSubmit: address length " + destAddressLength);
             int destAddressPercent = destAddressLength * 50 / 100;
             if (destAddressChangeCounter >= destAddressPercent) {
                 destinationStation = 0;
                 destinationAddressId = "0";
             }
 
-        Log.i("TAF", "onPressSubmit: address percent " + destAddressPercent);
-        Log.i("TAF", "onPressSubmit: address change counter " + destAddressChangeCounter);
-        Log.i("TAF", "onPressSubmit: originStation " + destAddressPercent);
+//            Log.i("TAF", "onPressSubmit: address length " + destAddressLength);
+//            Log.i("TAF", "onPressSubmit: address percent " + destAddressPercent);
+//            Log.i("TAF", "onPressSubmit: address change counter " + destAddressChangeCounter);
+//            Log.i("TAF", "onPressSubmit: originStation " + destAddressPercent);
 
             if (cityCode == -1 || cityCode == 0) {
                 MyApplication.Toast("شهر را وارد نمایید", Toast.LENGTH_SHORT);
@@ -406,9 +405,9 @@ public class TripRegisterActivity extends AppCompatActivity {
             originStation = 0;
             originAddressLength = 0;
             originAddressChangeCounter = 0;
-            destAddressLength = 0;
-            destAddressChangeCounter = 0;
             originAddressId = "0";
+//            destAddressLength = 0;
+//            destAddressChangeCounter = 0;
         });
 
         binding.clearDestinationAddress.setOnClickListener(v -> {
@@ -591,9 +590,9 @@ public class TripRegisterActivity extends AppCompatActivity {
         @Override
         public void onTextChanged(CharSequence charSequence, int start, int before, int count) {
             originAddressChangeCounter = originAddressChangeCounter + 1;
-            if (binding.edtOriginAddress.isFocused()) {
-                originAddressId = "0";
-            }
+//            if (binding.edtOriginAddress.isFocused()) {
+//                originAddressId = "0";
+//            }
         }
 
         @Override
@@ -614,9 +613,9 @@ public class TripRegisterActivity extends AppCompatActivity {
         @Override
         public void onTextChanged(CharSequence charSequence, int start, int before, int count) {
             destAddressChangeCounter = destAddressChangeCounter + 1;
-            if (binding.edtDestinationAddress.isFocused()) {
-                destinationAddressId = "0";
-            }
+//            if (binding.edtDestinationAddress.isFocused()) {
+//                destinationAddressId = "0";
+//            }
         }
 
         @Override
@@ -1027,9 +1026,11 @@ public class TripRegisterActivity extends AppCompatActivity {
     private void getPassengerOriginAddress() {
         binding.vfPassengerOriginAddress.setDisplayedChild(1);
         MyApplication.handler.postDelayed(() ->
-        { new AddressListDialog().show(true, (address, stationCode, addressId) -> {
-                binding.edtOriginAddress.setText(address);
-                originAddressLength = address.length();
+        {
+            new AddressListDialog().show(true, (address, stationCode, addressId) -> {
+                originAddress = address;
+                binding.edtOriginAddress.setText(originAddress);
+                originAddressLength = originAddress.length();
                 originAddressChangeCounter = 0;
                 originStation = stationCode;
                 originAddressId = addressId;
@@ -1046,9 +1047,11 @@ public class TripRegisterActivity extends AppCompatActivity {
     private void getPassengerDestAddress() {
         binding.vfPassengerDestAddress.setDisplayedChild(1);
         MyApplication.handler.postDelayed(() ->
-        { new AddressListDialog().show(false, (address, stationCode, addressId) -> {
-                binding.edtDestinationAddress.setText(address);
-                destAddressLength = address.length();
+        {
+            new AddressListDialog().show(false, (address, stationCode, addressId) -> {
+                destinationAddress = address;
+                binding.edtDestinationAddress.setText(destinationAddress);
+                destAddressLength = destinationAddress.length();
                 destAddressChangeCounter = 0;
                 destinationStation = stationCode;
                 destinationAddressId = addressId;
