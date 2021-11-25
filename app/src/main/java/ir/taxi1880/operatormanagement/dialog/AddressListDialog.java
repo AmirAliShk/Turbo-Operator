@@ -34,6 +34,7 @@ public class AddressListDialog {
     private LastAddressAdapter lastAddressAdapter;
     private ArrayList <AddressesModel> passengerAddressModels;
     private Listener listener;
+    private String passengerId;
 
 
     public interface Listener {
@@ -41,7 +42,7 @@ public class AddressListDialog {
 //    void selectedAddress(boolean b);
     }
 
-    public void show(boolean isFromOrigin, Listener listener,ArrayList <AddressesModel>passengerAddresses) {
+    public void show(boolean isFromOrigin,String passengerId,ArrayList <AddressesModel>passengerAddresses, Listener listener) {
         if (MyApplication.currentActivity == null || MyApplication.currentActivity.isFinishing())
             return;
         dialog = new Dialog(MyApplication.currentActivity);
@@ -59,8 +60,9 @@ public class AddressListDialog {
         dialog.setCancelable(true);
         this.listener = listener;
         this.passengerAddressModels = passengerAddresses;
+        this.passengerId = passengerId;
 
-        lastAddressAdapter = new LastAddressAdapter(isFromOrigin, passengerAddressModels);
+        lastAddressAdapter = new LastAddressAdapter(isFromOrigin,passengerId , passengerAddressModels);
         binding.listLastAddress.setAdapter(lastAddressAdapter);
 
         if (isFromOrigin) {

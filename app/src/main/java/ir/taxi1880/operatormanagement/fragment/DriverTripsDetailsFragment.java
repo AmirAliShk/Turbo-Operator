@@ -380,7 +380,6 @@ public class DriverTripsDetailsFragment extends Fragment {
                     if (success) {
                         JSONObject data = tripObject.getJSONObject("data");
                         serviceDetails = tripObject.getJSONObject("data").toString();
-                        Log.i("TAF",serviceDetails);
                         serviceId = data.getString("serviceId");
                         int status = data.getInt("Status");
                         callDate = data.getString("callDate");
@@ -679,7 +678,7 @@ public class DriverTripsDetailsFragment extends Fragment {
 
     private void archiveAddress() {
         LoadingDialog.makeCancelableLoader();
-        RequestHelper.builder(EndPoints.ARCHIVE_ORIGIN)
+        RequestHelper.builder(EndPoints.DELETE_ADDRESS)
                 .addParam("phoneNumber", passengerPhone)
                 .addParam("adrs", passengerAddress)
                 .addParam("mobile", customerMobile)

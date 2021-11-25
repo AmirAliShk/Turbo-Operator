@@ -1027,7 +1027,7 @@ public class TripRegisterActivity extends AppCompatActivity {
         binding.vfPassengerOriginAddress.setDisplayedChild(1);
         MyApplication.handler.postDelayed(() ->
         {
-            new AddressListDialog().show(true, (address, stationCode, addressId) -> {
+            new AddressListDialog().show(true,passengerId,addressesModels, (address, stationCode, addressId) -> {
                 originAddress = address;
                 binding.edtOriginAddress.setText(originAddress);
                 originAddressLength = originAddress.length();
@@ -1039,7 +1039,7 @@ public class TripRegisterActivity extends AppCompatActivity {
                 Log.i("TAF", "TAF_getPassengerOriginAddress,addressLength: " + originAddressLength);
                 Log.i("TAF", "TAF_getPassengerOriginAddress,originAddressId: " + originAddressId);
 
-            }, addressesModels);
+            });
             binding.vfPassengerOriginAddress.setDisplayedChild(0);
         }, 700);
     }
@@ -1048,7 +1048,7 @@ public class TripRegisterActivity extends AppCompatActivity {
         binding.vfPassengerDestAddress.setDisplayedChild(1);
         MyApplication.handler.postDelayed(() ->
         {
-            new AddressListDialog().show(false, (address, stationCode, addressId) -> {
+            new AddressListDialog().show(false,passengerId,addressesModels, (address, stationCode, addressId) -> {
                 destinationAddress = address;
                 binding.edtDestinationAddress.setText(destinationAddress);
                 destAddressLength = destinationAddress.length();
@@ -1059,7 +1059,7 @@ public class TripRegisterActivity extends AppCompatActivity {
                 Log.i("TAF", "TAF_getPassengerDestinationAddress,destinationStation: " + destinationStation);
                 Log.i("TAF", "TAF_getPassengerDestinationAddress,destAddressLength:" + destAddressLength);
                 Log.i("TAF", "TAF_getPassengerDestinationAddress, destinationAddressId:" + destinationAddressId);
-            }, addressesModels);
+            });
 
             binding.vfPassengerDestAddress.setDisplayedChild(0);
         }, 700);

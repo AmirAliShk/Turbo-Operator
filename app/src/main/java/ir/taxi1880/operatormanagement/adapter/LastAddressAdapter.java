@@ -27,10 +27,12 @@ public class LastAddressAdapter extends BaseAdapter {
     private ArrayList<AddressesModel> addressModels;
     private LayoutInflater layoutInflater;
     boolean isFromOrigin;
+    String passengerId;
 
-    public LastAddressAdapter(boolean isFromOrigin, ArrayList<AddressesModel> addressModels) {
+    public LastAddressAdapter(boolean isFromOrigin,String passengerId ,ArrayList<AddressesModel> addressModels) {
         this.addressModels = addressModels;
         this.isFromOrigin = isFromOrigin;
+        this.passengerId = passengerId;
         this.layoutInflater = LayoutInflater.from(MyApplication.currentActivity);
     }
 
@@ -76,32 +78,17 @@ public class LastAddressAdapter extends BaseAdapter {
 //            }
 
             imgArchive.setOnClickListener(view -> {
-                if (isFromOrigin) {
                     new GeneralDialog()
                             .title("هشدار")
                             .message("ایا از انجام عملیات فوق اطمینان دارید؟")
                             .firstButton("بله", () -> {
-//                                archiveOrigin(addressModels.get(position));
+                                archiveOrigin(addressModels.get(position).getAddressId());
                                 addressModels.remove(position);
                                 notifyDataSetChanged();
                             })
                             .secondButton("خیر", null)
                             .cancelable(false)
                             .show();
-                } else {
-                    new GeneralDialog()
-                            .title("هشدار")
-                            .message("ایا از انجام عملیات فوق اطمینان دارید؟")
-                            .firstButton("بله", () -> {
-//                                archiveDestination(addressModels.get(position));
-                                addressModels.remove(position);
-                                notifyDataSetChanged();
-                            })
-                            .secondButton("خیر", null)
-                            .cancelable(false)
-                            .show();
-                }
-
             });
 
         } catch (Exception e) {
@@ -112,23 +99,14 @@ public class LastAddressAdapter extends BaseAdapter {
         return myView;
     }
 
-//    private void archiveOrigin(AddressesModel passengerAddressModel) {
-//        RequestHelper.builder(EndPoints.ARCHIVE_ORIGIN)
-//                .addParam("phoneNumber", passengerAddressModel.getPhoneNumber())
-//                .addParam("adrs", passengerAddressModel.getAddress())
-//                .addParam("mobile", passengerAddressModel.getMobile())
-//                .listener(onArchiveAddress)
-//                .put();
-//    }
-
-//    private void archiveDestination(AddressesModel passengerAddressModel) {
-//        RequestHelper.builder(EndPoints.ARCHIVE_DESTINATION)
-//                .addParam("phoneNumber", passengerAddressModel.getPhoneNumber())
-//                .addParam("destination", passengerAddressModel.getAddress())
-//                .addParam("mobile", passengerAddressModel.getMobile())
-//                .listener(onArchiveAddress)
-//                .put();
-//    }
+    private void archiveOrigin(String addressId) {
+//        /api/operator/v3/trip/deleteAddress/:passengerId/:addressId
+        RequestHelper.builder(EndPoints.DELETE_ADDRESS)
+                .addParam("passengerId",passengerId)
+                .addParam("addressId", addressId)
+                .listener(onArchiveAddress)
+                .delete();
+    }
 
     RequestHelper.Callback onArchiveAddress = new RequestHelper.Callback() {
         @Override

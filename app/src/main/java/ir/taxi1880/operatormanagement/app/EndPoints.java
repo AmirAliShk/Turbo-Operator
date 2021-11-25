@@ -57,12 +57,10 @@ public class EndPoints {
 
     /******************************** Trip Register Api *********************************/
 
-    public static final String PASSENGER_ORIGIN = TRIP_WEBSERVICE_PATH + "passengerAddress";
-    public static final String PASSENGER_DESTINATION = TRIP_WEBSERVICE_PATH + "passengerDestination";
-    public static final String PASSENGER_ADDRESSES = TRIP_WEBSERVICE_PATH+"passengerAddresses";
     public static final String STATION_INFO = TRIP_WEBSERVICE_PATH + "stationInfo";//api/operator/v3/trip/stationInfo/:city/:code/:name
     public static final String INSERT_TRIP_SENDING_QUEUE = TRIP_WEBSERVICE_PATH + "insertTripSendingQueue";
     public static final String ACTIVATE = TRIP_WEBSERVICE_PATH + "activate";
+    public static final String DELETE_ADDRESS = TRIP_WEBSERVICE_PATH + "deleteAddress";
     public static final String DEACTIVATE = TRIP_WEBSERVICE_PATH + "deActivate";
     public static final String HIRE_TYPES = TRIP_WEBSERVICE_PATH + "hireTypes";
     public static final String HIRE = TRIP_WEBSERVICE_PATH + "hire";
@@ -100,8 +98,6 @@ public class EndPoints {
     public static final String LOCK_TAXI = SUPPORT_WEBSERVICE_PATH + "lockTaxi";
     public static final String AGAIN_TRACKING = SUPPORT_WEBSERVICE_PATH + "againTracking";
     public static final String EDIT_ADDRESS = SUPPORT_WEBSERVICE_PATH + "editAddress";
-    public static final String ARCHIVE_ORIGIN = SUPPORT_WEBSERVICE_PATH + "archiveAddress";
-    public static final String ARCHIVE_DESTINATION = SUPPORT_WEBSERVICE_PATH + "archiveDestination";
     public static final String LISTEN = SUPPORT_WEBSERVICE_PATH + "listen";
     public static final String V1_LISTEN = SUPPORT_WEBSERVICE_PATH + "v2/listen";
     public static final String V2_LISTEN = SUPPORT_WEBSERVICE_PATH + "v3/listen";
