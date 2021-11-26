@@ -670,9 +670,6 @@ public class TripRegisterActivity extends AppCompatActivity {
                 typeServiceModels.add(typeServiceModel);
                 serviceList.add(serviceObj.getString("name"));
             }
-//            if (binding.spServiceType == null)
-//                return;
-
             binding.spServiceType.setEnabled(isEnableView);
             binding.spServiceType.setAdapter(new SpinnerAdapter(MyApplication.currentActivity, R.layout.item_spinner, serviceList));
 
@@ -810,7 +807,7 @@ public class TripRegisterActivity extends AppCompatActivity {
     private void getPassengerInfo(String phoneNumber, String mobile, String queue) {
         binding.vfPassengerInfo.setDisplayedChild(1);
 
-        RequestHelper.builder("http://turbotaxi.ir:1881/api/operator/v3/trip/passengerInfo") //http://turbotaxi.ir:1881/api/operator/v3/trip/passengerInfo
+        RequestHelper.builder("http://turbotaxi.ir:1881/api/operator/v3/trip/passengerInfo")
                 .addPath(MyApplication.prefManager.getCustomerSupport() + "")
                 .addPath(StringHelper.extractTheNumber(phoneNumber))
                 .addPath(StringHelper.extractTheNumber(mobile))
@@ -882,7 +879,7 @@ public class TripRegisterActivity extends AppCompatActivity {
                                 originAddressChangeCounter = 0;
                             }
                         }
-                        arrayAdapter = new ArrayAdapter<String>(MyApplication.context, android.R.layout.simple_dropdown_item_1line, AutoList);
+                        arrayAdapter = new ArrayAdapter<>(MyApplication.context, android.R.layout.simple_dropdown_item_1line, AutoList);
                         binding.edtOriginAddress.setAdapter(arrayAdapter);
                         binding.edtDestinationAddress.setAdapter(arrayAdapter);
                         binding.edtOriginAddress.setOnItemClickListener(new AdapterView.OnItemClickListener() {
