@@ -1301,7 +1301,6 @@ public class TripRegisterActivity extends AppCompatActivity {
                                             MyApplication.prefManager.setLastNotification(null);
                                             handleCallerInfo(callModel);
                                         }
-
                                 })
                                 .show();
                         binding.svTripRegister.scrollTo(0, 0);
@@ -1562,10 +1561,8 @@ public class TripRegisterActivity extends AppCompatActivity {
         } else if (quality >= 1) { // Very low quality
             imageRes = (R.drawable.ic_quality_1);
         }
-//        if (binding.imgCallQuality != null) {
         binding.imgCallQuality.setVisibility(View.VISIBLE);
         binding.imgCallQuality.setImageResource(imageRes);
-//        }
         mDisplayedQuality = iQuality;
     }
 
