@@ -61,6 +61,7 @@ import ir.taxi1880.operatormanagement.activity.SupportActivity;
 import ir.taxi1880.operatormanagement.activity.TripRegisterActivity;
 import ir.taxi1880.operatormanagement.app.DataHolder;
 import ir.taxi1880.operatormanagement.app.MyApplication;
+import ir.taxi1880.operatormanagement.helper.NotificationSingleton;
 import ir.taxi1880.operatormanagement.helper.ServiceHelper;
 import ir.taxi1880.operatormanagement.push.AvaCrashReporter;
 import ir.taxi1880.operatormanagement.push.AvaFactory;
@@ -299,7 +300,7 @@ public class LinphoneService extends Service {
         super.onStartCommand(intent, flags, startId);
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            startNotification();
+            startForeground(NotificationSingleton.getNotificationId(), NotificationSingleton.getNotification(this));
         }
         // If our Service is already running, no need to continue
         if (sInstance != null) {
