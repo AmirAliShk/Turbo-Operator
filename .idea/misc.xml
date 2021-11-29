@@ -77,7 +77,7 @@
         <entry key="app/src/main/res/layout/dialog_driver_turnover.xml" value="0.34010416666666665" />
         <entry key="app/src/main/res/layout/dialog_edit_address.xml" value="0.34010416666666665" />
         <entry key="app/src/main/res/layout/dialog_edit_passenger_address.xml" value="0.34010416666666665" />
-        <entry key="app/src/main/res/layout/dialog_error.xml" value="0.34010416666666665" />
+        <entry key="app/src/main/res/layout/dialog_error.xml" value="0.2" />
         <entry key="app/src/main/res/layout/dialog_error_registration.xml" value="0.34010416666666665" />
         <entry key="app/src/main/res/layout/dialog_extended_time.xml" value="0.34010416666666665" />
         <entry key="app/src/main/res/layout/dialog_general.xml" value="0.34010416666666665" />

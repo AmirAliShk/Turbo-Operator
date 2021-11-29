@@ -64,7 +64,7 @@ public class LastAddressAdapter extends BaseAdapter {
 
             TextView txtAddress = myView.findViewById(R.id.txtAddress);
             TextView txtStation = myView.findViewById(R.id.txtStation);
-            LinearLayout llStation = myView.findViewById(R.id.llStation);
+//            LinearLayout llStation = myView.findViewById(R.id.llStation);
             ImageView imgArchive = myView.findViewById(R.id.imgArchive);
 
             txtAddress.setText(addressModel.getAddress());
@@ -82,7 +82,7 @@ public class LastAddressAdapter extends BaseAdapter {
                             .title("هشدار")
                             .message("ایا از انجام عملیات فوق اطمینان دارید؟")
                             .firstButton("بله", () -> {
-                                archiveOrigin(addressModels.get(position).getAddressId());
+                                archiveOrigin(addressModels.get(position).getAddressId(),isFromOrigin);
                                 addressModels.remove(position);
                                 notifyDataSetChanged();
                             })
@@ -99,11 +99,15 @@ public class LastAddressAdapter extends BaseAdapter {
         return myView;
     }
 
-    private void archiveOrigin(String addressId) {
-//        /api/operator/v3/trip/deleteAddress/:passengerId/:addressId
+    private void archiveOrigin(String addressId,boolean isOrigin) {
+        String oOrd;
+        if (isOrigin) oOrd = "origin";
+        else oOrd = "destination";
+
         RequestHelper.builder(EndPoints.DELETE_ADDRESS)
                 .addParam("passengerId",passengerId)
                 .addParam("addressId", addressId)
+                .addParam("type",oOrd)
                 .listener(onArchiveAddress)
                 .delete();
     }

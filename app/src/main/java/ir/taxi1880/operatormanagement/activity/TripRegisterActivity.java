@@ -107,12 +107,10 @@ public class TripRegisterActivity extends AppCompatActivity {
     private String[] countService = new String[6];
     private Runnable mCallQualityUpdater = null;
     private int mDisplayedQuality = -1;
-
-    private ArrayList<AddressesModel> addressesModels;
-    private ArrayAdapter<String> arrayAdapter;
-    private ArrayList<String> AutoList;
-
     String passengerId;
+
+    ArrayList<AddressesModel> originAddresses;
+    ArrayList<AddressesModel> destinationAddresses;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -857,18 +855,20 @@ public class TripRegisterActivity extends AppCompatActivity {
                         percentDiscount = passengerInfoObj.getString("percentDiscount");
 
 
-                        JSONArray AddressesArr = dataObj.getJSONArray("addresses").getJSONObject(0).getJSONArray("address");
-                        addressesModels = new ArrayList<>();
-                        AutoList = new ArrayList<>();
-                        for (int i = 0; i < AddressesArr.length(); i++) {
-                            JSONObject jsonAddress = AddressesArr.getJSONObject(i);
+                        JSONArray originAddressArr = dataObj.getJSONArray("originAddress");
+                        JSONArray destinationAddressArr = dataObj.getJSONArray("destinationAddress");
+
+                        originAddresses = new ArrayList<>();
+                        ArrayList<String> originAutoAddresses = new ArrayList<>();
+                        for (int i = 0; i < originAddressArr.length(); i++) {
+                            JSONObject jsonAddress = originAddressArr.getJSONObject(i);
 
                             String Address = jsonAddress.getString("text");
                             String AddressId = jsonAddress.getString("_id");
                             int AddressStation = jsonAddress.getInt("station");
 
-                            addressesModels.add(new AddressesModel(Address, AddressStation, AddressId));
-                            AutoList.add(Address);
+                            originAddresses.add(new AddressesModel(Address, AddressStation, AddressId));
+                            originAutoAddresses.add(Address);
 
                             if (i == 0) {
                                 originAddress = Address;
@@ -879,9 +879,8 @@ public class TripRegisterActivity extends AppCompatActivity {
                                 originAddressChangeCounter = 0;
                             }
                         }
-                        arrayAdapter = new ArrayAdapter<>(MyApplication.context, android.R.layout.simple_dropdown_item_1line, AutoList);
-                        binding.edtOriginAddress.setAdapter(arrayAdapter);
-                        binding.edtDestinationAddress.setAdapter(arrayAdapter);
+                        ArrayAdapter<String> originArrayAdapter = new ArrayAdapter<>(MyApplication.context, android.R.layout.simple_dropdown_item_1line, originAutoAddresses);
+                        binding.edtOriginAddress.setAdapter(originArrayAdapter);
                         binding.edtOriginAddress.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                             @Override
                             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
@@ -889,10 +888,10 @@ public class TripRegisterActivity extends AppCompatActivity {
                                 originAddressLength = originAddress.length();
                                 originAddressChangeCounter = 0;
 
-                                for (int i = 0; i < addressesModels.size(); i++) {
-                                    if (addressesModels.get(i).getAddress().equals(originAddress)) {
-                                        originStation = addressesModels.get(i).getStation();
-                                        originAddressId = addressesModels.get(i).getAddressId();
+                                for (int i = 0; i < originAddresses.size(); i++) {
+                                    if (originAddresses.get(i).getAddress().equals(originAddress)) {
+                                        originStation = originAddresses.get(i).getStation();
+                                        originAddressId = originAddresses.get(i).getAddressId();
                                     }
                                 }
 
@@ -901,6 +900,21 @@ public class TripRegisterActivity extends AppCompatActivity {
                                 Log.i("TAF", "TAF_onItemClick,originAddressId: " + originAddressId);
                             }
                         });
+
+                        destinationAddresses = new ArrayList<>();
+                        ArrayList<String> destinationAutoAddresses = new ArrayList<>();
+                        for (int i = 0; i < destinationAddressArr.length(); i++) {
+                            JSONObject jsonAddress = destinationAddressArr.getJSONObject(i);
+
+                            String Address = jsonAddress.getString("text");
+                            String AddressId = jsonAddress.getString("_id");
+                            int AddressStation = jsonAddress.getInt("station");
+
+                            destinationAddresses.add(new AddressesModel(Address, AddressStation, AddressId));
+                            destinationAutoAddresses.add(Address);
+                        }
+                        ArrayAdapter<String> destinationArrayAdapter = new ArrayAdapter<>(MyApplication.context, android.R.layout.simple_dropdown_item_1line, destinationAutoAddresses);
+                        binding.edtDestinationAddress.setAdapter(destinationArrayAdapter);
                         binding.edtDestinationAddress.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                             @Override
                             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
@@ -908,10 +922,10 @@ public class TripRegisterActivity extends AppCompatActivity {
                                 destAddressLength = destinationAddress.length();
                                 destAddressChangeCounter = 0;
 
-                                for (int i = 0; i < addressesModels.size(); i++) {
-                                    if (addressesModels.get(i).getAddress().trim().equals(destinationAddress)) {
-                                        destinationStation = addressesModels.get(i).getStation();
-                                        destinationAddressId = addressesModels.get(i).getAddressId();
+                                for (int i = 0; i < destinationAddresses.size(); i++) {
+                                    if (destinationAddresses.get(i).getAddress().trim().equals(destinationAddress)) {
+                                        destinationStation = destinationAddresses.get(i).getStation();
+                                        destinationAddressId = destinationAddresses.get(i).getAddressId();
                                     }
                                 }
 
@@ -1024,7 +1038,7 @@ public class TripRegisterActivity extends AppCompatActivity {
         binding.vfPassengerOriginAddress.setDisplayedChild(1);
         MyApplication.handler.postDelayed(() ->
         {
-            new AddressListDialog().show(true,passengerId,addressesModels, (address, stationCode, addressId) -> {
+            new AddressListDialog().show(true,passengerId,originAddresses, (address, stationCode, addressId) -> {
                 originAddress = address;
                 binding.edtOriginAddress.setText(originAddress);
                 originAddressLength = originAddress.length();
@@ -1045,7 +1059,7 @@ public class TripRegisterActivity extends AppCompatActivity {
         binding.vfPassengerDestAddress.setDisplayedChild(1);
         MyApplication.handler.postDelayed(() ->
         {
-            new AddressListDialog().show(false,passengerId,addressesModels, (address, stationCode, addressId) -> {
+            new AddressListDialog().show(false,passengerId,destinationAddresses, (address, stationCode, addressId) -> {
                 destinationAddress = address;
                 binding.edtDestinationAddress.setText(destinationAddress);
                 destAddressLength = destinationAddress.length();
