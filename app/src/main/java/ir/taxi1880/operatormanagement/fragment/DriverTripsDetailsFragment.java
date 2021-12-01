@@ -48,7 +48,7 @@ import ir.taxi1880.operatormanagement.push.AvaCrashReporter;
 
 public class DriverTripsDetailsFragment extends Fragment {
     Unbinder unbinder;
-    String serviceId;
+    int serviceId;
     String passengerPhone;
     String customerMobile;
     String passengerName;
@@ -235,7 +235,7 @@ public class DriverTripsDetailsFragment extends Fragment {
 
     @OnClick(R.id.btnEditAddress)
     void onEditAddress() {
-        new ErrorAddressDialog().show(passengerAddress, serviceId);
+        new ErrorAddressDialog().show(passengerAddress, serviceId+"");
     }
 
     @OnClick(R.id.btnDriverLocation)
@@ -265,17 +265,17 @@ public class DriverTripsDetailsFragment extends Fragment {
     void onError() {
 //        String cityName= new DataBase(MyApplication.context).getCityName2(cityCode);
         new ErrorRegistrationDialog()
-                .show(serviceId, passengerPhone, customerMobile, passengerAddress, passengerName, voipId, cityCode, stationCode, userId, callTime, callDate, price, destinationStation, destination);
+                .show(serviceId+"", passengerPhone, customerMobile, passengerAddress, passengerName, voipId, cityCode, stationCode, userId, callTime, callDate, price, destinationStation, destination);
     }
 
     @OnClick(R.id.btnComplaintRegistration)
     void onComplaint() {
-        new ComplaintRegistrationDialog().show(serviceId, voipId);
+        new ComplaintRegistrationDialog().show(serviceId+"", voipId);
     }
 
     @OnClick(R.id.btnLost)
     void onLost() {
-        new LostDialog().show(serviceId, passengerName, passengerPhone, taxiCode, true);
+        new LostDialog().show(serviceId+"", passengerName, passengerPhone, taxiCode, true);
     }
 
     @OnClick(R.id.btnDriverLock)
@@ -349,7 +349,7 @@ public class DriverTripsDetailsFragment extends Fragment {
 
         Bundle bundle = getArguments();
         if (bundle != null) {
-            serviceId = bundle.getString("id");
+            serviceId = bundle.getInt("id");
         }
 
         tripDetails();
@@ -380,7 +380,7 @@ public class DriverTripsDetailsFragment extends Fragment {
                     if (success) {
                         JSONObject data = tripObject.getJSONObject("data");
                         serviceDetails = tripObject.getJSONObject("data").toString();
-                        serviceId = data.getString("serviceId");
+                        serviceId = data.getInt("serviceId");
                         int status = data.getInt("Status");
                         callDate = data.getString("callDate");
                         callTime = data.getString("callTime");

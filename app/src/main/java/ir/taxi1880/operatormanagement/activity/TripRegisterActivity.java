@@ -600,6 +600,12 @@ public class TripRegisterActivity extends AppCompatActivity {
                 originAddressLength = 0;
                 binding.edtOriginAddress.getText().clear();
             }
+
+            String result = editable.toString().replaceAll("  ", " ");
+            if (!editable.toString().equals(result)) {
+                binding.edtOriginAddress.setText(result);
+//                ed.setSelection(result.length());
+            }
         }
     };
 
@@ -622,6 +628,12 @@ public class TripRegisterActivity extends AppCompatActivity {
                 destinationStation = 0;
                 destAddressLength = 0;
                 binding.edtDestinationAddress.getText().clear();
+            }
+
+            String result = editable.toString().replaceAll("  ", " ");
+            if (!editable.toString().equals(result)) {
+                binding.edtDestinationAddress.setText(result);
+//                ed.setSelection(result.length());
             }
         }
     };
@@ -805,7 +817,7 @@ public class TripRegisterActivity extends AppCompatActivity {
     private void getPassengerInfo(String phoneNumber, String mobile, String queue) {
         binding.vfPassengerInfo.setDisplayedChild(1);
 
-        RequestHelper.builder("http://turbotaxi.ir:1881/api/operator/v3/trip/passengerInfo")
+        RequestHelper.builder(EndPoints.PASSENGER_INFO)
                 .addPath(MyApplication.prefManager.getCustomerSupport() + "")
                 .addPath(StringHelper.extractTheNumber(phoneNumber))
                 .addPath(StringHelper.extractTheNumber(mobile))
@@ -935,7 +947,7 @@ public class TripRegisterActivity extends AppCompatActivity {
                             }
                         });
 
-
+                        Log.i("TAF",getTellNumber());
                         ClipboardManager clipboard = (ClipboardManager) getSystemService(Context.CLIPBOARD_SERVICE);
                         ClipData clip = ClipData.newPlainText("passengerTell", getTellNumber());
                         clipboard.setPrimaryClip(clip);
@@ -1038,42 +1050,50 @@ public class TripRegisterActivity extends AppCompatActivity {
         binding.vfPassengerOriginAddress.setDisplayedChild(1);
         MyApplication.handler.postDelayed(() ->
         {
-            new AddressListDialog().show(true,passengerId,originAddresses, (address, stationCode, addressId) -> {
-                originAddress = address;
-                binding.edtOriginAddress.setText(originAddress);
-                originAddressLength = originAddress.length();
-                originAddressChangeCounter = 0;
-                originStation = stationCode;
-                originAddressId = addressId;
+            if (originAddresses.size() == 0) {
+                MyApplication.Toast("آدرسی موجود نیست", Toast.LENGTH_SHORT);
+            } else {
+                new AddressListDialog().show(true, passengerId, originAddresses, (address, stationCode, addressId) -> {
+                    originAddress = address;
+                    binding.edtOriginAddress.setText(originAddress);
+                    originAddressLength = originAddress.length();
+                    originAddressChangeCounter = 0;
+                    originStation = stationCode;
+                    originAddressId = addressId;
 
-                Log.i("TAF", "TAF_getPassengerOriginAddress,originStation: " + originStation);
-                Log.i("TAF", "TAF_getPassengerOriginAddress,addressLength: " + originAddressLength);
-                Log.i("TAF", "TAF_getPassengerOriginAddress,originAddressId: " + originAddressId);
+                    Log.i("TAF", "TAF_getPassengerOriginAddress,originStation: " + originStation);
+                    Log.i("TAF", "TAF_getPassengerOriginAddress,addressLength: " + originAddressLength);
+                    Log.i("TAF", "TAF_getPassengerOriginAddress,originAddressId: " + originAddressId);
 
-            });
+                });
+            }
             binding.vfPassengerOriginAddress.setDisplayedChild(0);
-        }, 700);
+        }, 500);
     }
 
     private void getPassengerDestAddress() {
         binding.vfPassengerDestAddress.setDisplayedChild(1);
         MyApplication.handler.postDelayed(() ->
         {
-            new AddressListDialog().show(false,passengerId,destinationAddresses, (address, stationCode, addressId) -> {
-                destinationAddress = address;
-                binding.edtDestinationAddress.setText(destinationAddress);
-                destAddressLength = destinationAddress.length();
-                destAddressChangeCounter = 0;
-                destinationStation = stationCode;
-                destinationAddressId = addressId;
+            if (originAddresses.size() == 0) {
+                MyApplication.Toast("آدرسی موجود نیست", Toast.LENGTH_SHORT);
+            } else {
+                new AddressListDialog().show(false, passengerId, destinationAddresses, (address, stationCode, addressId) -> {
+                    destinationAddress = address;
+                    binding.edtDestinationAddress.setText(destinationAddress);
+                    destAddressLength = destinationAddress.length();
+                    destAddressChangeCounter = 0;
+                    destinationStation = stationCode;
+                    destinationAddressId = addressId;
 
-                Log.i("TAF", "TAF_getPassengerDestinationAddress,destinationStation: " + destinationStation);
-                Log.i("TAF", "TAF_getPassengerDestinationAddress,destAddressLength:" + destAddressLength);
-                Log.i("TAF", "TAF_getPassengerDestinationAddress, destinationAddressId:" + destinationAddressId);
-            });
+                    Log.i("TAF", "TAF_getPassengerDestinationAddress,destinationStation: " + destinationStation);
+                    Log.i("TAF", "TAF_getPassengerDestinationAddress,destAddressLength:" + destAddressLength);
+                    Log.i("TAF", "TAF_getPassengerDestinationAddress, destinationAddressId:" + destinationAddressId);
+                });
+            }
 
             binding.vfPassengerDestAddress.setDisplayedChild(0);
-        }, 700);
+        }, 500);
     }
 
     private void callInsertService() {

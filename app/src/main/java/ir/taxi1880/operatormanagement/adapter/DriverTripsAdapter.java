@@ -73,7 +73,7 @@ public class DriverTripsAdapter extends RecyclerView.Adapter<DriverTripsAdapter.
 
         holder.itemView.setOnClickListener(view -> {
             Bundle bundle = new Bundle();
-            bundle.putString("id", tripModel.getServiceId());
+            bundle.putInt("id", Integer.parseInt(tripModel.getServiceId()));
             FragmentHelper.toFragment(MyApplication.currentActivity, new DriverTripsDetailsFragment()).setArguments(bundle).add();
             KeyBoardHelper.hideKeyboard();
         });
