@@ -57,11 +57,10 @@ public class EndPoints {
 
     /******************************** Trip Register Api *********************************/
 
-    public static final String PASSENGER_ORIGIN = TRIP_WEBSERVICE_PATH + "passengerAddress";
     public static final String STATION_INFO = TRIP_WEBSERVICE_PATH + "stationInfo";//api/operator/v3/trip/stationInfo/:city/:code/:name
-    public static final String PASSENGER_DESTINATION = TRIP_WEBSERVICE_PATH + "passengerDestination";
     public static final String INSERT_TRIP_SENDING_QUEUE = TRIP_WEBSERVICE_PATH + "insertTripSendingQueue";
     public static final String ACTIVATE = TRIP_WEBSERVICE_PATH + "activate";
+    public static final String DELETE_ADDRESS = TRIP_WEBSERVICE_PATH + "deleteAddress";
     public static final String DEACTIVATE = TRIP_WEBSERVICE_PATH + "deActivate";
     public static final String HIRE_TYPES = TRIP_WEBSERVICE_PATH + "hireTypes";
     public static final String HIRE = TRIP_WEBSERVICE_PATH + "hire";
@@ -70,6 +69,8 @@ public class EndPoints {
     public static final String UPDATE_TRIP_STATION = TRIP_WEBSERVICE_PATH + "updateTripStation";
     public static final String STATION = TRIP_WEBSERVICE_PATH + "station";
     public static final String EDIT_STATION = TRIP_WEBSERVICE_PATH + "editStation";
+
+    public static final String PASSENGER_INFO = TRIP_WEBSERVICE_PATH + "passengerInfo";
     public static final String CALL_VOICE = CALL_VOICE_PATH + "voice/"; // http://turbotaxi.ir:1884/api/v1/voice/1604130536.10343290
 
     /******************************** Account Api *********************************/
@@ -91,7 +92,7 @@ public class EndPoints {
     public static final String MISTAKE = SUPPORT_TRIP_WEBSERVICE_PATH + "v1/mistake";
     public static final String CANCEL = SUPPORT_TRIP_WEBSERVICE_PATH + "cancel";
     public static final String MAKE_DISPOSAL = SUPPORT_TRIP_WEBSERVICE_PATH + "makeDisposal";
-    public static final String PASSENGER_INFO = SUPPORT_WEBSERVICE_PATH + "passengerInfo";
+//    public static final String PASSENGER_INFO = SUPPORT_WEBSERVICE_PATH + "passengerInfo";
     public static final String SERVICE_DETAIL = SUPPORT_WEBSERVICE_PATH + "serviceDetail";
     public static final String LAST_DRIVER_POSITION = SUPPORT_WEBSERVICE_PATH + "lastDriverPosition";
     public static final String INSERT_COMPLAINT = SUPPORT_WEBSERVICE_PATH + "insertComplaint";
@@ -99,8 +100,6 @@ public class EndPoints {
     public static final String LOCK_TAXI = SUPPORT_WEBSERVICE_PATH + "lockTaxi";
     public static final String AGAIN_TRACKING = SUPPORT_WEBSERVICE_PATH + "againTracking";
     public static final String EDIT_ADDRESS = SUPPORT_WEBSERVICE_PATH + "editAddress";
-    public static final String ARCHIVE_ORIGIN = SUPPORT_WEBSERVICE_PATH + "archiveAddress";
-    public static final String ARCHIVE_DESTINATION = SUPPORT_WEBSERVICE_PATH + "archiveDestination";
     public static final String LISTEN = SUPPORT_WEBSERVICE_PATH + "listen";
     public static final String V1_LISTEN = SUPPORT_WEBSERVICE_PATH + "v2/listen";
     public static final String V2_LISTEN = SUPPORT_WEBSERVICE_PATH + "v3/listen";

@@ -47,7 +47,7 @@ import ir.taxi1880.operatormanagement.push.AvaCrashReporter;
 
 public class TripDetailsFragment extends Fragment {
     Unbinder unbinder;
-    String serviceId;
+    int serviceId;
     String passengerPhone;
     String customerMobile;
     String passengerName;
@@ -71,6 +71,9 @@ public class TripDetailsFragment extends Fragment {
     String destinationStation;
     String destination;
     String serviceDetails;
+
+    String passengerId;
+    String originId;
 
     @OnClick(R.id.imgBack)
     void onBackPress() {
@@ -102,6 +105,7 @@ public class TripDetailsFragment extends Fragment {
 
     @BindView(R.id.txtTripType)
     TextView txtTripType;
+
 
     @BindView(R.id.txtCity)
     TextView txtCity;
@@ -234,7 +238,7 @@ public class TripDetailsFragment extends Fragment {
 
     @OnClick(R.id.btnEditAddress)
     void onEditAddress() {
-        new ErrorAddressDialog().show(passengerAddress, serviceId);
+        new ErrorAddressDialog().show(passengerAddress, serviceId+"");
     }
 
     @OnClick(R.id.btnDriverLocation)
@@ -263,17 +267,17 @@ public class TripDetailsFragment extends Fragment {
     void onError() {
 //        String cityName= new DataBase(MyApplication.context).getCityName2(cityCode);
         new ErrorRegistrationDialog()
-                .show(serviceId, passengerPhone, customerMobile, passengerAddress, passengerName, voipId, cityCode, stationCode, userId, callTime, callDate, price, destinationStation, destination);
+                .show(serviceId+"", passengerPhone, customerMobile, passengerAddress, passengerName, voipId, cityCode, stationCode, userId, callTime, callDate, price, destinationStation, destination);
     }
 
     @OnClick(R.id.btnComplaintRegistration)
     void onComplaint() {
-        new ComplaintRegistrationDialog().show(serviceId, voipId);
+        new ComplaintRegistrationDialog().show(serviceId+"", voipId);
     }
 
     @OnClick(R.id.btnLost)
     void onLost() {
-        new LostDialog().show(serviceId, passengerName, passengerPhone, taxiCode, false);
+        new LostDialog().show(serviceId+"", passengerName, passengerPhone, taxiCode, false);
     }
 
     @OnClick(R.id.btnDriverLock)
@@ -347,7 +351,7 @@ public class TripDetailsFragment extends Fragment {
 
         Bundle bundle = getArguments();
         if (bundle != null) {
-            serviceId = bundle.getString("id");
+            serviceId = bundle.getInt("id");
         }
 
         tripDetails();
@@ -379,7 +383,9 @@ public class TripDetailsFragment extends Fragment {
                     if (success) {
                         JSONObject data = tripObject.getJSONObject("data");
                         serviceDetails = tripObject.getJSONObject("data").toString();
-                        serviceId = data.getString("serviceId");
+                        serviceId = data.getInt("serviceId");
+                        passengerId = data.getString("passengerId");
+                        originId = data.getString("originId");
                         int status = data.getInt("Status");
                         callDate = data.getString("callDate");
                         callTime = data.getString("callTime");
@@ -689,12 +695,12 @@ public class TripDetailsFragment extends Fragment {
 
     private void archiveAddress() {
         LoadingDialog.makeCancelableLoader();
-        RequestHelper.builder(EndPoints.ARCHIVE_ORIGIN)
-                .addParam("phoneNumber", passengerPhone)
-                .addParam("adrs", passengerAddress)
-                .addParam("mobile", customerMobile)
+        RequestHelper.builder(EndPoints.DELETE_ADDRESS)
+                .addParam("passengerId",passengerId)
+                .addParam("addressId", originId)
+                .addParam("type","origin")
                 .listener(onArchiveAddress)
-                .put();
+                .delete();
     }
 
     RequestHelper.Callback onArchiveAddress = new RequestHelper.Callback() {

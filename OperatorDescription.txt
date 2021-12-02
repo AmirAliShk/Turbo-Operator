@@ -96,3 +96,6 @@ release on
 - change design of support dialog
 
 
+versionCode 50, versionName 8.2.1 :
+release on 
+-remove FINE_LOCATION in manifest for BAZAR

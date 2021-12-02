@@ -17,18 +17,13 @@ import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.AdapterView;
-import android.widget.Button;
-import android.widget.CheckBox;
+import android.widget.ArrayAdapter;
 import android.widget.EditText;
-import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.RadioButton;
-import android.widget.RelativeLayout;
-import android.widget.ScrollView;
-import android.widget.Spinner;
-import android.widget.TextView;
 import android.widget.Toast;
-import android.widget.ViewFlipper;
+
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 
 import com.gauravbhola.ripplepulsebackground.RipplePulseLayout;
 
@@ -45,21 +40,13 @@ import org.linphone.core.RegistrationState;
 import java.util.ArrayList;
 import java.util.Arrays;
 
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.localbroadcastmanager.content.LocalBroadcastManager;
-
-import butterknife.BindView;
-import butterknife.ButterKnife;
-import butterknife.OnClick;
-import butterknife.OnFocusChange;
-import butterknife.Unbinder;
 import ir.taxi1880.operatormanagement.R;
 import ir.taxi1880.operatormanagement.adapter.SpinnerAdapter;
 import ir.taxi1880.operatormanagement.app.DataHolder;
 import ir.taxi1880.operatormanagement.app.EndPoints;
 import ir.taxi1880.operatormanagement.app.Keys;
 import ir.taxi1880.operatormanagement.app.MyApplication;
-import ir.taxi1880.operatormanagement.customView.MultiRowsRadioGroup;
+import ir.taxi1880.operatormanagement.databinding.ActivityTripRegisterBinding;
 import ir.taxi1880.operatormanagement.dialog.AddressListDialog;
 import ir.taxi1880.operatormanagement.dialog.CallDialog;
 import ir.taxi1880.operatormanagement.dialog.CityDialog;
@@ -71,14 +58,12 @@ import ir.taxi1880.operatormanagement.fragment.TripSupportFragment;
 import ir.taxi1880.operatormanagement.helper.FragmentHelper;
 import ir.taxi1880.operatormanagement.helper.KeyBoardHelper;
 import ir.taxi1880.operatormanagement.helper.PhoneNumberValidation;
-import ir.taxi1880.operatormanagement.helper.ResourceHelper;
 import ir.taxi1880.operatormanagement.helper.StringHelper;
 import ir.taxi1880.operatormanagement.helper.ThemeHelper;
 import ir.taxi1880.operatormanagement.helper.TypefaceUtil;
+import ir.taxi1880.operatormanagement.model.AddressesModel;
 import ir.taxi1880.operatormanagement.model.CallModel;
 import ir.taxi1880.operatormanagement.model.CityModel;
-import ir.taxi1880.operatormanagement.model.PassengerAddressModel;
-import ir.taxi1880.operatormanagement.model.StationInfoModel;
 import ir.taxi1880.operatormanagement.model.TypeServiceModel;
 import ir.taxi1880.operatormanagement.okHttp.RequestHelper;
 import ir.taxi1880.operatormanagement.push.AvaCrashReporter;
@@ -86,7 +71,7 @@ import ir.taxi1880.operatormanagement.services.LinphoneService;
 
 public class TripRegisterActivity extends AppCompatActivity {
     public static final String TAG = TripRegisterActivity.class.getSimpleName();
-    Unbinder unbinder;
+    ActivityTripRegisterBinding binding;
     private String cityName = "";
     private String cityLatinName = "";
     private String maxDiscount = "";
@@ -95,11 +80,14 @@ public class TripRegisterActivity extends AppCompatActivity {
     private String normalDescription = " ";
     private int originStation = 0;
     private int destinationStation = 0;
-    private int addressLength = 0;
-    int addressChangeCounter = 0; // this variable count the last edition of edtAddress
+    private int originAddressLength = 0;
     private int destAddressLength = 0;
-    int destAddressChangeCounter = 0; // this variable count the last edition of edtAddress
+    private int originAddressChangeCounter = 0; // this variable count the last edition of edtAddress
+    private int destAddressChangeCounter = 0; // this variable count the last edition of edtAddress
+    private String originAddressId = "0";
+    private String destinationAddressId = "0";
     private String destinationAddress = " ";// It must have a value otherwise it will get an error of 422
+    private String originAddress = " ";// It must have a value otherwise it will get an error of 422
     private int serviceType;
     private int serviceCount;
     private boolean isEnableView = false;
@@ -119,539 +107,23 @@ public class TripRegisterActivity extends AppCompatActivity {
     private String[] countService = new String[6];
     private Runnable mCallQualityUpdater = null;
     private int mDisplayedQuality = -1;
-    int addressIdOrigin;
-    int addressIdDestination = 0;
-    String address;
+    String passengerId;
 
-    @OnClick(R.id.imgBack)
-    void onBack() {
-        MyApplication.currentActivity.onBackPressed();
-    }
-
-    @BindView(R.id.imgSipStatus)
-    ImageView imgSipStatus;
-
-    @BindView(R.id.spCity)
-    Spinner spCity;
-
-    @BindView(R.id.txtDescription)
-    TextView txtDescription;
-
-    @BindView(R.id.txtNewPassenger)
-    TextView txtNewPassenger;
-
-    @BindView(R.id.txtLockPassenger)
-    TextView txtLockPassenger;
-
-    @BindView(R.id.spServiceCount)
-    Spinner spServiceCount;
-
-    @BindView(R.id.imgCallQuality)
-    ImageView imgCallQuality;
-
-    @BindView(R.id.spWaitingTime)
-    Spinner spWaitingTime;
-
-    @BindView(R.id.spServiceType)
-    Spinner spServiceType;
-
-    @BindView(R.id.edtDiscount)
-    EditText edtDiscount;
-
-    @BindView(R.id.edtTell)
-    EditText edtTell;
-
-    @BindView(R.id.svTripRegister)
-    ScrollView svTripRegister;
-
-    @BindView(R.id.edtMobile)
-    EditText edtMobile;
-
-    @BindView(R.id.edtFamily)
-    EditText edtFamily;
-
-    @BindView(R.id.edtAddress)
-    EditText edtAddress;
-
-    @BindView(R.id.edtDestinationAddress)
-    EditText edtDestinationAddress;
-
-    @BindView(R.id.llTrafficBg)
-    LinearLayout llTrafficBg;
-
-    @BindView(R.id.llAlwaysBg)
-    LinearLayout llAlwaysBg;
-
-    @OnClick(R.id.llCity)
-    void onPressllCity() {
-        spCity.performClick();
-    }
-
-    @OnClick(R.id.llWaitingTime)
-    void onPressllWaitingTime() {
-        spWaitingTime.performClick();
-    }
-
-    @OnClick(R.id.llServiceType)
-    void onPressllServiceType() {
-        spServiceType.performClick();
-    }
-
-    @BindView(R.id.llWaitingTime)
-    LinearLayout llWaitingTime;
-
-    @BindView(R.id.llServiceType)
-    LinearLayout llServiceType;
-
-    @OnClick(R.id.llServiceCount)
-    void onPressllServiceCount() {
-        spServiceCount.performClick();
-    }
-
-    @OnClick(R.id.llTell)
-    void onPressllTell() {
-        edtTell.requestFocus();
-        KeyBoardHelper.showKeyboard(MyApplication.context);
-    }
-
-    @OnClick(R.id.llDiscount)
-    void onPressllDiscount() {
-        edtDiscount.requestFocus();
-        KeyBoardHelper.showKeyboard(MyApplication.context);
-    }
-
-    @OnClick(R.id.llMobile)
-    void onPressllMobile() {
-        edtMobile.requestFocus();
-        KeyBoardHelper.showKeyboard(MyApplication.context);
-    }
-
-    @OnClick(R.id.llFamily)
-    void onPressllFamily() {
-        edtFamily.requestFocus();
-        KeyBoardHelper.showKeyboard(MyApplication.context);
-    }
-
-    @OnClick(R.id.llAddress)
-    void onPressllAddress() {
-        edtAddress.requestFocus();
-        KeyBoardHelper.showKeyboard(MyApplication.context);
-    }
-
-    @OnClick(R.id.llTraffic)
-    void onPressllTraffic() {
-        chbTraffic.setChecked(!chbTraffic.isChecked());
-    }
-
-    @OnClick(R.id.llAlways)
-    void onPressllAlways() {
-        chbAlways.setChecked(!chbAlways.isChecked());
-    }
-
-    @BindView(R.id.chbTraffic)
-    CheckBox chbTraffic;
-
-    @BindView(R.id.chbAlways)
-    CheckBox chbAlways;
-
-    @BindView(R.id.rbUnknow)
-    RadioButton rbUnknow;
-
-    @BindView(R.id.rbTaxi)
-    RadioButton rbTaxi;
-
-    @BindView(R.id.rbPrivilage)
-    RadioButton rbPrivilage;
-
-    @BindView(R.id.rbEconomical)
-    RadioButton rbEconomical;
-
-    @BindView(R.id.rbFormality)
-    RadioButton rbFormality;
-
-    @BindView(R.id.rgCarClass)
-    MultiRowsRadioGroup rgCarClass;
-
-    @BindView(R.id.txtPassengerAddress)
-    TextView txtPassengerAddress;
-
-    @BindView(R.id.txtPassengerDestAddress)
-    TextView txtPassengerDestAddress;
-
-    @OnClick(R.id.llDescriptionDetail)
-    void onPressLlDescriptionDetail() {
-        new DescriptionDialog().show(new DescriptionDialog.Listener() {
-            @Override
-            public void description(String description) {
-                normalDescription = description;
-            }
-
-            @Override
-            public void fixedDescription(String fixedDescription) {
-                txtDescription.setText(fixedDescription);
-            }
-        }, txtDescription.getText().toString(), normalDescription);
-    }
-
-    @OnClick(R.id.txtPassengerAddress)
-    void txtPassengerAddress() {
-        if (getTellNumber().isEmpty()) {
-            MyApplication.Toast("ابتدا شماره تلفن را وارد کنید", Toast.LENGTH_SHORT);
-            return;
-        }
-        KeyBoardHelper.hideKeyboard();
-        getPassengerAddress(StringHelper.toEnglishDigits(getTellNumber()));
-    }
-
-    @OnClick(R.id.txtPassengerDestAddress)
-    void txtPassengerDestAddress() {
-        if (getTellNumber().isEmpty()) {
-            MyApplication.Toast("ابتدا شماره تلفن را وارد کنید", Toast.LENGTH_SHORT);
-            return;
-        }
-        KeyBoardHelper.hideKeyboard();
-        getPassengerDestAddress(StringHelper.toEnglishDigits(getTellNumber()));
-    }
-
-    private String getTellNumber() {
-        if (edtTell == null)
-            return "";
-        String txtTell = edtTell.getText().toString();
-        if (txtTell == null)
-            return "";
-        else
-            return txtTell;
-    }
-
-    private String getMobileNumber() {
-        if (edtMobile == null)
-            return "";
-        String mobileNo = edtMobile.getText().toString();
-        if (mobileNo == null)
-            return "";
-        else
-            return mobileNo;
-    }
-
-    @OnClick(R.id.imgAccept)
-    void onAcceptPress() {
-        call = core.getCurrentCall();
-        Call[] calls = core.getCalls();
-        int i = calls.length;
-        Log.i(TAG, "onRejectPress: " + i);
-        if (call != null) {
-            call.accept();
-//      if (getMobileNumber().isEmpty() && isTellValidable)
-//        MyApplication.handler.postDelayed(() -> onPressDownload(), 400);
-        } else if (calls.length > 0) {
-            calls[0].accept();
-        }
-    }
-
-    @OnClick(R.id.imgReject)
-    void onRejectPress() {
-        Core mCore = LinphoneService.getCore();
-        Call currentCall = mCore.getCurrentCall();
-        for (Call call : mCore.getCalls()) {
-            if (call != null && call.getConference() != null) {
-//        if (mCore.isInConference()) {
-//          displayConferenceCall(call);
-//          conferenceDisplayed = true;
-//        } else if (!pausedConferenceDisplayed) {
-//          displayPausedConference();
-//          pausedConferenceDisplayed = true;
-//        }
-            } else if (call != null && call != currentCall) {
-                Call.State state = call.getState();
-                if (state == Call.State.Paused
-                        || state == Call.State.PausedByRemote
-                        || state == Call.State.Pausing) {
-                    call.terminate();
-                }
-            } else if (call != null && call == currentCall) {
-                call.terminate();
-            }
-        }
-    }
-
-    @BindView(R.id.txtCallerNum)
-    TextView txtCallerNum;
-
-    @OnClick(R.id.btnSubmit)
-    void onPressSubmit() {
-        int addressPercent = addressLength * 50 / 100;
-        if (addressChangeCounter >= addressPercent) {
-            originStation = 0;
-        }
-
-        int destAddressPercent = destAddressLength * 50 / 100;
-        if (destAddressChangeCounter >= destAddressPercent) {
-            destinationStation = 0;
-        }
-
-//        Log.i(TAG, "onPressSubmit: address length " + destAddressLength);
-//        Log.i(TAG, "onPressSubmit: address percent " + destAddressPercent);
-//        Log.i(TAG, "onPressSubmit: address change counter " + destAddressChangeCounter);
-//        Log.i(TAG, "onPressSubmit: originStation " + destAddressPercent);
-
-        if (cityCode == -1 || cityCode == 0) {
-            MyApplication.Toast("شهر را وارد نمایید", Toast.LENGTH_SHORT);
-            spCity.performClick();
-            return;
-        }
-        if (getTellNumber().isEmpty()) {
-            edtTell.setError("شماره تلفن را وارد کنید");
-            edtTell.requestFocus();
-            return;
-        }
-        if (getMobileNumber().isEmpty() && !isTellValidable) {
-            edtMobile.setError("شماره همراه را وارد کنید");
-            edtMobile.requestFocus();
-            return;
-        }
-        if (edtFamily.getText().toString().isEmpty()) {
-            edtFamily.setError(" نام مسافر را مشخص کنید");
-            edtFamily.requestFocus();
-            return;
-        }
-        if (edtAddress.getText().toString().trim().isEmpty()) {
-            edtAddress.setError("آدرس مبدا را مشخص کنید");
-            edtAddress.requestFocus();
-            return;
-        }
-
-        if (edtDestinationAddress.getText().toString().trim().isEmpty()) {
-            edtDestinationAddress.setError("آدرس مقصد را مشخص کنید");
-            edtDestinationAddress.requestFocus();
-            return;
-        }
-//        if (serviceType == 1 && stopTime == 0) {
-//            MyApplication.Toast("لطفا مقدار توقف را مشخص کنید.", Toast.LENGTH_SHORT);
-//            spWaitingTime.requestFocus();
-//            return;
-//        }
-        if (vfSubmit != null)
-            vfSubmit.setDisplayedChild(1);
-
-        callInsertService();
-
-    }
-
-    @OnClick(R.id.btnOptions)
-    void onPressOptions() {
-        KeyBoardHelper.hideKeyboard();
-        new TripOptionDialog().show(b -> {
-            if (b) {
-                clearData();
-            }
-        }, getMobileNumber(), edtFamily.getText().toString(), cityCode);
-    }
-
-    @BindView(R.id.vfPassengerAddress)
-    ViewFlipper vfPassengerAddress;
-
-    @BindView(R.id.vfPassengerDestAddress)
-    ViewFlipper vfPassengerDestAddress;
-
-    @BindView(R.id.vfPassengerInfo)
-    ViewFlipper vfPassengerInfo;
-
-    @OnClick(R.id.llClear)
-    void onClear() {
-        new GeneralDialog()
-                .title("هشدار")
-                .message("آیا از پاک کردن اطلاعات اطمینان دارید؟")
-                .firstButton("بله", () -> clearData()).secondButton("خیر", null)
-                .show();
-    }
-
-    @OnClick(R.id.imgPassengerInfo)
-    void onPressDownload() {
-        if (getTellNumber().isEmpty() && edtTell != null) {
-            edtTell.setError("شماره تلفن را وارد نمایید");
-            edtTell.requestFocus();
-            return;
-        }
-
-//    if (getMobileNumber().isEmpty() && !isTellValidable && edtMobile != null) {
-//      edtMobile.setError("شماره تلفن همراه را وارد نمایید");
-//      edtMobile.requestFocus();
-//      return;
-//    }
-
-        String mobile = isTellValidable && getMobileNumber().isEmpty() ? "0" : getMobileNumber();
-
-        getPassengerInfo(StringHelper.toEnglishDigits(getTellNumber()), StringHelper.toEnglishDigits(mobile), StringHelper.toEnglishDigits(queue));
-    }
-
-    @OnClick(R.id.llEndCall)
-    void onPressEndCall() {
-
-        KeyBoardHelper.hideKeyboard();
-        core.removeListener(mCoreListener);
-        new CallDialog().show(new CallDialog.CallBack() {
-            @Override
-            public void onDismiss() {
-                if (mCoreListener != null && core != null) {
-                    core.addListener(mCoreListener);
-                }
-            }
-
-            @Override
-            public void onCallReceived() {
-                showCallIncoming();
-            }
-
-            @Override
-            public void onCallTransferred() {
-                MyApplication.handler.postDelayed(() -> clearData(), 100);
-            }
-
-            @Override
-            public void onCallEnded() {
-
-            }
-
-        }, false);
-
-//    Call call = LinphoneService.getCore().getCurrentCall();
-//    call.terminate();
-    }
-
-    @BindView(R.id.rlNewInComingCall)
-    RelativeLayout rlNewInComingCall;
-
-    @BindView(R.id.rlActionBar)
-    RelativeLayout rlActionBar;
-
-    @BindView(R.id.llDescriptionDetail)
-    LinearLayout llDescriptionDetail;
-
-    @BindView(R.id.llTraffic)
-    LinearLayout llTraffic;
-
-    @BindView(R.id.llAlways)
-    LinearLayout llAlways;
-
-    @BindView(R.id.llServiceCount)
-    LinearLayout llServiceCount;
-
-    @BindView(R.id.llFamily)
-    LinearLayout llFamily;
-
-    @BindView(R.id.llDiscount)
-    LinearLayout llDiscount;
-
-    @BindView(R.id.llAddress)
-    LinearLayout llAddress;
-
-    @BindView(R.id.btnActivate)
-    Button btnActivate;
-
-    @BindView(R.id.btnDeActivate)
-    Button btnDeActivate;
-
-    @OnClick(R.id.btnActivate)
-    void onActivePress() {
-        KeyBoardHelper.hideKeyboard();
-        new GeneralDialog()
-                .title("هشدار")
-                .cancelable(false)
-                .message("مطمئنی میخوای وارد صف بشی؟")
-                .firstButton("مطمئنم", new Runnable() {
-                    @Override
-                    public void run() {
-                        setActivate(MyApplication.prefManager.getSipNumber());
-//                MyApplication.Toast("activated",Toast.LENGTH_SHORT);
-                    }
-                })
-                .secondButton("نیستم", null)
-                .show();
-
-    }
-
-    @OnClick(R.id.clearAddress)
-    void onCLearAddress() {
-        edtAddress.getText().clear();
-        originStation = 0;
-        addressLength = 0;
-        addressChangeCounter = 0;
-        destAddressLength = 0;
-        destAddressChangeCounter = 0;
-        addressIdOrigin = 0;
-    }
-
-    @OnClick(R.id.clearDestinationAddress)
-    void onClearDestinationAddress() {
-        edtDestinationAddress.getText().clear();
-        destinationStation = 0;
-        destAddressLength = 0;
-        destAddressChangeCounter = 0;
-        addressIdDestination = 0;
-    }
-
-    @OnClick(R.id.btnDeActivate)
-    void onDeActivePress() {
-        KeyBoardHelper.hideKeyboard();
-        new GeneralDialog()
-                .title("هشدار")
-                .cancelable(false)
-                .message("مطمئنی میخوای خارج بشی؟")
-                .firstButton("مطمئنم", new Runnable() {
-                    @Override
-                    public void run() {
-                        if (MyApplication.prefManager.isCallIncoming()) {
-                            MyApplication.Toast(getString(R.string.exit), Toast.LENGTH_SHORT);
-                        } else {
-                            setDeActivate(MyApplication.prefManager.getSipNumber());
-                        }
-                    }
-                })
-                .secondButton("نیستم", null)
-                .show();
-    }
-
-    @BindView(R.id.vfSubmit)
-    ViewFlipper vfSubmit;
-
-    @OnFocusChange(R.id.edtTell)
-    void onChangeFocus(boolean v) {
-        if (v) {
-            if (getTellNumber().trim().isEmpty()) {
-                try {
-                    Core core = LinphoneService.getCore();
-                    Call[] calls = core.getCalls();
-                    for (Call callList : calls) {
-                        if (callList.getState() == Call.State.Connected) {
-                            call = core.getCurrentCall();
-                            Address address = call.getRemoteAddress();
-                            edtTell.setText(PhoneNumberValidation.removePrefix(address.getUsername()));
-                        }
-                    }
-                } catch (Exception e) {
-                    e.printStackTrace();
-                    AvaCrashReporter.send(e, "callIncomingActivity");
-                }
-            }
-        }
-    }
-
-    @BindView(R.id.imgEndCall)
-    ImageView imgEndCall;
+    ArrayList<AddressesModel> originAddresses;
+    ArrayList<AddressesModel> destinationAddresses;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        View view;
         ThemeHelper.onActivityCreateSetTheme(this);
 
-        setContentView(R.layout.activity_trip_register);
-        view = getWindow().getDecorView();
+
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             Window window = getWindow();
             window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
             window.getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LIGHT_NAVIGATION_BAR);
             window.addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
+
             if (MyApplication.prefManager.isDarkMode()) {
                 window.setNavigationBarColor(getResources().getColor(R.color.dark_navigation_bar));
                 window.setStatusBarColor(getResources().getColor(R.color.dark_action_bar));
@@ -660,16 +132,19 @@ public class TripRegisterActivity extends AppCompatActivity {
                 window.setStatusBarColor(getResources().getColor(R.color.colorPrimaryDark));
             }
         }
-        unbinder = ButterKnife.bind(this, view);
-        TypefaceUtil.overrideFonts(view);
+
+        binding = ActivityTripRegisterBinding.inflate(getLayoutInflater());
+        setContentView(binding.getRoot());
+
+        TypefaceUtil.overrideFonts(binding.getRoot());
         mRipplePulseLayout = findViewById(R.id.layout_ripplepulse);
 
         if (MyApplication.prefManager.getActivateStatus()) {
-            btnActivate.setBackgroundResource(R.drawable.bg_green_edge);
-            btnDeActivate.setBackgroundColor(Color.parseColor("#00FFB2B2"));
+            binding.btnActivate.setBackgroundResource(R.drawable.bg_green_edge);
+            binding.btnDeActivate.setBackgroundColor(Color.parseColor("#00FFB2B2"));
         } else {
-            btnDeActivate.setBackgroundResource(R.drawable.bg_pink_edge);
-            btnActivate.setBackgroundColor(Color.parseColor("#00FFB2B2"));
+            binding.btnDeActivate.setBackgroundResource(R.drawable.bg_pink_edge);
+            binding.btnActivate.setBackgroundColor(Color.parseColor("#00FFB2B2"));
         }
 
         disableViews();
@@ -681,24 +156,337 @@ public class TripRegisterActivity extends AppCompatActivity {
             initWaitingTimeSpinner();
         }, 500);
 
-        edtTell.requestFocus();
+        binding.edtTell.requestFocus();
 
-        edtTell.addTextChangedListener(edtTellTextWather);
+        binding.edtTell.addTextChangedListener(edtTellTextWatcher);
 
-        edtMobile.addTextChangedListener(edtMobileTW);
+        binding.edtMobile.addTextChangedListener(edtMobileTW);
 
-        edtAddress.addTextChangedListener(addressTW);
+        binding.edtOriginAddress.addTextChangedListener(originAddressTW);
 
-        edtDestinationAddress.addTextChangedListener(destAddressTW);
+        binding.edtDestinationAddress.addTextChangedListener(destAddressTW);
 
-        rgCarClass.setOnCheckedChangeListener((group, i) -> {
-            chbAlways.setChecked(false);
-        });
+        binding.rgCarClass.setOnCheckedChangeListener((group, i) -> binding.chbAlways.setChecked(false));
 
         MyApplication.handler.postDelayed(() -> KeyBoardHelper.showKeyboard(MyApplication.context), 300);
 
         setCursorEnd(getWindow().getDecorView().getRootView());
 
+        binding.imgBack.setOnClickListener(v -> MyApplication.currentActivity.onBackPressed());
+        binding.llCity.setOnClickListener(v -> binding.spCity.performClick());
+        binding.llWaitingTime.setOnClickListener(v -> binding.spWaitingTime.performClick());
+        binding.llServiceType.setOnClickListener(v -> binding.spServiceType.performClick());
+        binding.llServiceCount.setOnClickListener(v -> binding.spServiceCount.performClick());
+
+        binding.llTell.setOnClickListener(v -> {
+            binding.edtTell.requestFocus();
+            KeyBoardHelper.showKeyboard(MyApplication.context);
+        });
+
+        binding.llDiscount.setOnClickListener(v -> {
+            binding.edtDiscount.requestFocus();
+            KeyBoardHelper.showKeyboard(MyApplication.context);
+        });
+
+        binding.llMobile.setOnClickListener(v -> {
+            binding.edtMobile.requestFocus();
+            KeyBoardHelper.showKeyboard(MyApplication.context);
+        });
+
+        binding.llFamily.setOnClickListener(v -> {
+            binding.edtFamily.requestFocus();
+            KeyBoardHelper.showKeyboard(MyApplication.context);
+        });
+
+        binding.llAddress.setOnClickListener(v -> {
+            binding.edtOriginAddress.requestFocus();
+            KeyBoardHelper.showKeyboard(MyApplication.context);
+        });
+
+        binding.llTraffic.setOnClickListener(v -> binding.chbTraffic.setChecked(!binding.chbTraffic.isChecked()));
+
+        binding.llAlways.setOnClickListener(v -> binding.chbAlways.setChecked(!binding.chbAlways.isChecked()));
+
+        binding.imgPassengerInfo.setOnClickListener(v -> onPressDownload());
+
+        binding.llDescriptionDetail.setOnClickListener(v -> new DescriptionDialog().show(new DescriptionDialog.Listener() {
+            @Override
+            public void description(String description) {
+                normalDescription = description;
+            }
+
+            @Override
+            public void fixedDescription(String fixedDescription) {
+                binding.txtDescription.setText(fixedDescription);
+            }
+        }, binding.txtDescription.getText().toString(), normalDescription));
+
+        binding.txtPassengerAddress.setOnClickListener(v -> {
+            if (getTellNumber().isEmpty()) {
+                MyApplication.Toast("ابتدا شماره تلفن را وارد کنید", Toast.LENGTH_SHORT);
+                return;
+            }
+            KeyBoardHelper.hideKeyboard();
+            getPassengerOriginAddress();
+        });
+
+        binding.txtPassengerDestAddress.setOnClickListener(v -> {
+            if (getTellNumber().isEmpty()) {
+                MyApplication.Toast("ابتدا شماره تلفن را وارد کنید", Toast.LENGTH_SHORT);
+                return;
+            }
+            KeyBoardHelper.hideKeyboard();
+            getPassengerDestAddress();
+        });
+
+        binding.imgAccept.setOnClickListener(v -> {
+            call = core.getCurrentCall();
+            Call[] calls = core.getCalls();
+            int i = calls.length;
+            Log.i(TAG, "onRejectPress: " + i);
+            if (call != null) {
+                call.accept();
+//      if (getMobileNumber().isEmpty() && isTellValidable)
+//        MyApplication.handler.postDelayed(() -> onPressDownload(), 400);
+            } else if (calls.length > 0) {
+                calls[0].accept();
+            }
+        });
+
+        binding.imgReject.setOnClickListener(v -> {
+            Core mCore = LinphoneService.getCore();
+            Call currentCall = mCore.getCurrentCall();
+            for (Call call : mCore.getCalls()) {
+                if (call != null && call.getConference() != null) {
+//        if (mCore.isInConference()) {
+//          displayConferenceCall(call);
+//          conferenceDisplayed = true;
+//        } else if (!pausedConferenceDisplayed) {
+//          displayPausedConference();
+//          pausedConferenceDisplayed = true;
+//        }
+                } else if (call != null && call != currentCall) {
+                    Call.State state = call.getState();
+                    if (state == Call.State.Paused
+                            || state == Call.State.PausedByRemote
+                            || state == Call.State.Pausing) {
+                        call.terminate();
+                    }
+                } else if (call != null && call == currentCall) {
+                    call.terminate();
+                }
+            }
+        });
+
+        binding.btnSubmit.setOnClickListener(v -> {
+
+            int addressPercent = originAddressLength * 50 / 100;
+            if (originAddressChangeCounter >= addressPercent) {
+                originStation = 0;
+                originAddressId = "0";
+            }
+            int destAddressPercent = destAddressLength * 50 / 100;
+            if (destAddressChangeCounter >= destAddressPercent) {
+                destinationStation = 0;
+                destinationAddressId = "0";
+            }
+
+//            Log.i("TAF", "onPressSubmit: address length " + destAddressLength);
+//            Log.i("TAF", "onPressSubmit: address percent " + destAddressPercent);
+//            Log.i("TAF", "onPressSubmit: address change counter " + destAddressChangeCounter);
+//            Log.i("TAF", "onPressSubmit: originStation " + destAddressPercent);
+
+            if (cityCode == -1 || cityCode == 0) {
+                MyApplication.Toast("شهر را وارد نمایید", Toast.LENGTH_SHORT);
+                binding.spCity.performClick();
+                return;
+            }
+            if (getTellNumber().isEmpty()) {
+                binding.edtTell.setError("شماره تلفن را وارد کنید");
+                binding.edtTell.requestFocus();
+                return;
+            }
+            if (getMobileNumber().isEmpty() && !isTellValidable) {
+                binding.edtMobile.setError("شماره همراه را وارد کنید");
+                binding.edtMobile.requestFocus();
+                return;
+            }
+            if (binding.edtFamily.getText().toString().isEmpty()) {
+                binding.edtFamily.setError(" نام مسافر را مشخص کنید");
+                binding.edtFamily.requestFocus();
+                return;
+            }
+            if (binding.edtOriginAddress.getText().toString().trim().isEmpty()) {
+                binding.edtOriginAddress.setError("آدرس مبدا را مشخص کنید");
+                binding.edtOriginAddress.requestFocus();
+                return;
+            }
+
+            if (binding.edtDestinationAddress.getText().toString().trim().isEmpty()) {
+                binding.edtDestinationAddress.setError("آدرس مقصد را مشخص کنید");
+                binding.edtDestinationAddress.requestFocus();
+                return;
+            }
+//        if (serviceType == 1 && stopTime == 0) {
+//            MyApplication.Toast("لطفا مقدار توقف را مشخص کنید.", Toast.LENGTH_SHORT);
+//            binding.spWaitingTime.requestFocus();
+//            return;
+//        }
+            binding.vfSubmit.setDisplayedChild(1);
+            callInsertService();
+        });
+
+        binding.btnOptions.setOnClickListener(v -> {
+            KeyBoardHelper.hideKeyboard();
+            new TripOptionDialog().show(b -> {
+                if (b) {
+                    clearData();
+                }
+            }, getMobileNumber(), binding.edtFamily.getText().toString(), cityCode);
+        });
+
+        binding.llClear.setOnClickListener(v ->
+                new GeneralDialog()
+                        .title("هشدار")
+                        .message("آیا از پاک کردن اطلاعات اطمینان دارید؟")
+                        .firstButton("بله", this::clearData).secondButton("خیر", null)
+                        .show());
+
+        binding.llEndCall.setOnClickListener(v -> {
+            KeyBoardHelper.hideKeyboard();
+            core.removeListener(mCoreListener);
+            new CallDialog().show(new CallDialog.CallBack() {
+                @Override
+                public void onDismiss() {
+                    if (mCoreListener != null && core != null) {
+                        core.addListener(mCoreListener);
+                    }
+                }
+
+                @Override
+                public void onCallReceived() {
+                    showCallIncoming();
+                }
+
+                @Override
+                public void onCallTransferred() {
+                    MyApplication.handler.postDelayed(() -> clearData(), 100);
+                }
+
+                @Override
+                public void onCallEnded() {
+
+                }
+
+            }, false);
+
+//            Call call = LinphoneService.getCore().getCurrentCall();
+//            call.terminate();
+        });
+
+        binding.btnActivate.setOnClickListener(v -> {
+            KeyBoardHelper.hideKeyboard();
+            new GeneralDialog()
+                    .title("هشدار")
+                    .cancelable(false)
+                    .message("مطمئنی میخوای وارد صف بشی؟")
+                    .firstButton("مطمئنم", () -> {
+                        setActivate(MyApplication.prefManager.getSipNumber());
+//                MyApplication.Toast("activated",Toast.LENGTH_SHORT);
+                    })
+                    .secondButton("نیستم", null)
+                    .show();
+        });
+
+        binding.clearOriginAddress.setOnClickListener(v -> {
+            binding.edtOriginAddress.getText().clear();
+            originStation = 0;
+            originAddressLength = 0;
+            originAddressChangeCounter = 0;
+            originAddressId = "0";
+//            destAddressLength = 0;
+//            destAddressChangeCounter = 0;
+        });
+
+        binding.clearDestinationAddress.setOnClickListener(v -> {
+            binding.edtDestinationAddress.getText().clear();
+            destinationStation = 0;
+            destAddressLength = 0;
+            destAddressChangeCounter = 0;
+            destinationAddressId = "0";
+        });
+
+        binding.btnDeActivate.setOnClickListener(v -> {
+            KeyBoardHelper.hideKeyboard();
+            new GeneralDialog()
+                    .title("هشدار")
+                    .cancelable(false)
+                    .message("مطمئنی میخوای خارج بشی؟")
+                    .firstButton("مطمئنم", () -> {
+                        if (MyApplication.prefManager.isCallIncoming()) {
+                            MyApplication.Toast(getString(R.string.exit), Toast.LENGTH_SHORT);
+                        } else {
+                            setDeActivate(MyApplication.prefManager.getSipNumber());
+                        }
+                    })
+                    .secondButton("نیستم", null)
+                    .show();
+        });
+
+        binding.edtTell.setOnFocusChangeListener((v, hasFocus) -> {
+            if (hasFocus) {
+                if (getTellNumber().trim().isEmpty()) {
+                    try {
+                        Core core = LinphoneService.getCore();
+                        Call[] calls = core.getCalls();
+                        for (Call callList : calls) {
+                            if (callList.getState() == Call.State.Connected) {
+                                call = core.getCurrentCall();
+                                Address address = call.getRemoteAddress();
+                                binding.edtTell.setText(PhoneNumberValidation.removePrefix(address.getUsername()));
+                            }
+                        }
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                        AvaCrashReporter.send(e, "callIncomingActivity");
+                    }
+                }
+            }
+        });
+    }
+
+    private void onPressDownload() {
+        if (getTellNumber().isEmpty()) {
+            binding.edtTell.setError("شماره تلفن را وارد نمایید");
+            binding.edtTell.requestFocus();
+            return;
+        }
+
+//    if (getMobileNumber().isEmpty() && !isTellValidable && binding.edtMobile != null) {
+//      binding.edtMobile.setError("شماره تلفن همراه را وارد نمایید");
+//      binding.edtMobile.requestFocus();
+//      return;
+//    }
+
+        String mobile = isTellValidable && getMobileNumber().isEmpty() ? "0" : getMobileNumber();
+
+        getPassengerInfo(StringHelper.toEnglishDigits(getTellNumber()), StringHelper.toEnglishDigits(mobile), StringHelper.toEnglishDigits(queue));
+    }
+
+    private String getTellNumber() {
+        String txtTell = binding.edtTell.getText().toString();
+        if (txtTell == null)
+            return "";
+        else
+            return txtTell;
+    }
+
+    private String getMobileNumber() {
+        String mobileNo = binding.edtMobile.getText().toString();
+        if (mobileNo == null)
+            return "";
+        else
+            return mobileNo;
     }
 
     public static void setCursorEnd(final View v) {
@@ -737,12 +525,12 @@ public class TripRegisterActivity extends AppCompatActivity {
         @Override
         public void afterTextChanged(Editable editable) {
             if (PhoneNumberValidation.havePrefix(editable.toString()))
-                edtMobile.setText(PhoneNumberValidation.removePrefix(editable.toString()));
+                binding.edtMobile.setText(PhoneNumberValidation.removePrefix(editable.toString()));
 
         }
     };
 
-    TextWatcher edtTellTextWather = new TextWatcher() {
+    TextWatcher edtTellTextWatcher = new TextWatcher() {
         @Override
         public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
 
@@ -751,10 +539,10 @@ public class TripRegisterActivity extends AppCompatActivity {
         @Override
         public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
 //        if (charSequence.toString().isEmpty()) {
-//        spCity.setSelection(0);
+//        binding.spCity.setSelection(0);
             isEnableView = false;
             disableViews();
-            spCity.setSelection(0);
+            binding.spCity.setSelection(0);
 //            MyApplication.handler.postDelayed(() -> {
             initCitySpinner();
             initServiceTypeSpinner();
@@ -768,47 +556,55 @@ public class TripRegisterActivity extends AppCompatActivity {
         public void afterTextChanged(Editable editable) {
 
             if (PhoneNumberValidation.havePrefix(editable.toString()))
-                edtTell.setText(PhoneNumberValidation.removePrefix(editable.toString()));
+                binding.edtTell.setText(PhoneNumberValidation.removePrefix(editable.toString()));
 
             if (PhoneNumberValidation.isValid(editable.toString())) {
                 isTellValidable = false;
-                edtMobile.setText(editable.toString());
+                binding.edtMobile.setText(editable.toString());
             } else {
 //          clearData();
-//          edtMobile.setText("");
+//          binding.edtMobile.setText("");
                 isTellValidable = true;
-                edtFamily.setText("");
-                addressChangeCounter = 0;
-                edtAddress.setText("");
-                txtDescription.setText("");
-                rgCarClass.clearCheck();
-                txtLockPassenger.setVisibility(View.GONE);
-                txtNewPassenger.setVisibility(View.GONE);
-                rbUnknow.setChecked(true);
-                chbAlways.setChecked(false);
-                edtTell.setNextFocusDownId(R.id.edtMobile);
-                edtMobile.setNextFocusDownId(R.id.edtMobile);
+                binding.edtFamily.setText("");
+                originAddressChangeCounter = 0;
+                binding.edtOriginAddress.setText("");
+                binding.txtDescription.setText("");
+                binding.rgCarClass.clearCheck();
+                binding.txtLockPassenger.setVisibility(View.GONE);
+                binding.txtNewPassenger.setVisibility(View.GONE);
+                binding.rbUnknow.setChecked(true);
+                binding.chbAlways.setChecked(false);
+                binding.edtTell.setNextFocusDownId(R.id.edtMobile);
+                binding.edtMobile.setNextFocusDownId(R.id.edtMobile);
             }
         }
     };
 
-    TextWatcher addressTW = new TextWatcher() {
+    TextWatcher originAddressTW = new TextWatcher() {
         @Override
         public void beforeTextChanged(CharSequence charSequence, int start, int count, int after) {
         }
 
         @Override
         public void onTextChanged(CharSequence charSequence, int start, int before, int count) {
-            addressChangeCounter = addressChangeCounter + 1;
-            addressIdOrigin = 0;
+            originAddressChangeCounter = originAddressChangeCounter + 1;
+//            if (binding.edtOriginAddress.isFocused()) {
+//                originAddressId = "0";
+//            }
         }
 
         @Override
         public void afterTextChanged(Editable editable) {
             if (editable.toString().isEmpty()) {
                 originStation = 0;
-                addressLength = 0;
-                edtAddress.getText().clear();
+                originAddressLength = 0;
+                binding.edtOriginAddress.getText().clear();
+            }
+
+            String result = editable.toString().replaceAll("  ", " ");
+            if (!editable.toString().equals(result)) {
+                binding.edtOriginAddress.setText(result);
+//                ed.setSelection(result.length());
             }
         }
     };
@@ -821,7 +617,9 @@ public class TripRegisterActivity extends AppCompatActivity {
         @Override
         public void onTextChanged(CharSequence charSequence, int start, int before, int count) {
             destAddressChangeCounter = destAddressChangeCounter + 1;
-            addressIdDestination = 0;
+//            if (binding.edtDestinationAddress.isFocused()) {
+//                destinationAddressId = "0";
+//            }
         }
 
         @Override
@@ -829,7 +627,13 @@ public class TripRegisterActivity extends AppCompatActivity {
             if (editable.toString().isEmpty()) {
                 destinationStation = 0;
                 destAddressLength = 0;
-                edtDestinationAddress.getText().clear();
+                binding.edtDestinationAddress.getText().clear();
+            }
+
+            String result = editable.toString().replaceAll("  ", " ");
+            if (!editable.toString().equals(result)) {
+                binding.edtDestinationAddress.setText(result);
+//                ed.setSelection(result.length());
             }
         }
     };
@@ -842,21 +646,13 @@ public class TripRegisterActivity extends AppCompatActivity {
                 countServices.add(countService[i]);
             }
 
-            if (spServiceCount == null)
-                return;
-
-            if (isEnableView) {
-                spServiceCount.setEnabled(true);
-            } else {
-                spServiceCount.setEnabled(false);
-            }
-            spServiceCount.setAdapter(new SpinnerAdapter(MyApplication.currentActivity, R.layout.item_spinner, countServices));
-            spServiceCount.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            binding.spServiceCount.setEnabled(isEnableView);
+            binding.spServiceCount.setAdapter(new SpinnerAdapter(MyApplication.currentActivity, R.layout.item_spinner, countServices));
+            binding.spServiceCount.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
                 @Override
                 public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-//                    if (spServiceCount != null)
 //                        ((TextView) parent.getChildAt(0)).setTextColor(Color.GRAY);
-                    serviceCount = Integer.parseInt(spServiceCount.getSelectedItem().toString());
+                    serviceCount = Integer.parseInt(binding.spServiceCount.getSelectedItem().toString());
                 }
 
                 @Override
@@ -873,7 +669,7 @@ public class TripRegisterActivity extends AppCompatActivity {
 
     private void initServiceTypeSpinner() {
         ArrayList<TypeServiceModel> typeServiceModels = new ArrayList<>();
-        ArrayList<String> serviceList = new ArrayList<String>();
+        ArrayList<String> serviceList = new ArrayList<>();
         try {
             JSONArray serviceArr = new JSONArray(MyApplication.prefManager.getServiceType());
             for (int i = 0; i < serviceArr.length(); i++) {
@@ -884,28 +680,20 @@ public class TripRegisterActivity extends AppCompatActivity {
                 typeServiceModels.add(typeServiceModel);
                 serviceList.add(serviceObj.getString("name"));
             }
-            if (spServiceType == null)
-                return;
+            binding.spServiceType.setEnabled(isEnableView);
+            binding.spServiceType.setAdapter(new SpinnerAdapter(MyApplication.currentActivity, R.layout.item_spinner, serviceList));
 
-            if (isEnableView) {
-                spServiceType.setEnabled(true);
-            } else {
-                spServiceType.setEnabled(false);
-            }
-            spServiceType.setAdapter(new SpinnerAdapter(MyApplication.currentActivity, R.layout.item_spinner, serviceList));
-
-            spServiceType.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            binding.spServiceType.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
                 @Override
                 public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-//                    if (spServiceType != null)
 //                        ((TextView) parent.getChildAt(0)).setTextColor(Color.GRAY);
                     serviceType = typeServiceModels.get(position).getId();
 //                    if (serviceType == 1) {
 //                        new CityDialog()
 //                                .setTitle("مدت زمان توقف")
 //                                .show(pos -> {
-//                                    if (spWaitingTime != null)
-//                                        spWaitingTime.setSelection(pos);
+//                                    if (binding.spWaitingTime != null)
+//                                        binding.spWaitingTime.setSelection(pos);
 //                                }, false);
 //                    }
                 }
@@ -922,23 +710,14 @@ public class TripRegisterActivity extends AppCompatActivity {
     }
 
     private void initWaitingTimeSpinner() {
-        ArrayList<String> waitingTime = new ArrayList<String>(Arrays.asList("بدون توقف", "۵ دقیقه", "۱۰ دقیقه", "۲۰ دقیقه", "۳۰ دقیقه", "۴۰ دقیقه", "۵۰ دقیقه", "۱ ساعت", "۱.۵ ساعت", "۲ ساعت", "۲.۵ ساعت", "۳ ساعت"));
+        ArrayList<String> waitingTime = new ArrayList<>(Arrays.asList("بدون توقف", "۵ دقیقه", "۱۰ دقیقه", "۲۰ دقیقه", "۳۰ دقیقه", "۴۰ دقیقه", "۵۰ دقیقه", "۱ ساعت", "۱.۵ ساعت", "۲ ساعت", "۲.۵ ساعت", "۳ ساعت"));
         try {
+            binding.spWaitingTime.setEnabled(isEnableView);
+            binding.spWaitingTime.setAdapter(new SpinnerAdapter(MyApplication.currentActivity, R.layout.item_spinner, waitingTime));
 
-            if (spWaitingTime == null)
-                return;
-
-            if (isEnableView) {
-                spWaitingTime.setEnabled(true);
-            } else {
-                spWaitingTime.setEnabled(false);
-            }
-            spWaitingTime.setAdapter(new SpinnerAdapter(MyApplication.currentActivity, R.layout.item_spinner, waitingTime));
-
-            spWaitingTime.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            binding.spWaitingTime.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
                 @Override
                 public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-//                    if (spWaitingTime != null)
 //                        ((TextView) parent.getChildAt(0)).setTextColor(Color.GRAY);
                     switch (position) {
                         case 0:
@@ -991,7 +770,7 @@ public class TripRegisterActivity extends AppCompatActivity {
 
     private void initCitySpinner() {
         cityModels = new ArrayList<>();
-        ArrayList<String> cityList = new ArrayList<String>();
+        ArrayList<String> cityList = new ArrayList<>();
         try {
             JSONArray cityArr = new JSONArray(MyApplication.prefManager.getCity());
             cityList.add(0, "انتخاب نشده");
@@ -1004,12 +783,10 @@ public class TripRegisterActivity extends AppCompatActivity {
                 cityModels.add(cityModel);
                 cityList.add(i + 1, cityObj.getString("cityname"));
             }
-            if (spCity == null) return;
-            spCity.setAdapter(new SpinnerAdapter(MyApplication.currentActivity, R.layout.item_spinner, cityList));
-            spCity.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            binding.spCity.setAdapter(new SpinnerAdapter(MyApplication.currentActivity, R.layout.item_spinner, cityList));
+            binding.spCity.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
                 @Override
                 public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-//                    if (spCity != null)
 //                        ((TextView) parent.getChildAt(0)).setTextColor(Color.GRAY);
 
                     if (position == 0) {
@@ -1037,11 +814,8 @@ public class TripRegisterActivity extends AppCompatActivity {
         }
     }
 
-    ArrayList<PassengerAddressModel> passengerAddressModels;
-
     private void getPassengerInfo(String phoneNumber, String mobile, String queue) {
-        if (vfPassengerInfo != null)
-            vfPassengerInfo.setDisplayedChild(1);
+        binding.vfPassengerInfo.setDisplayedChild(1);
 
         RequestHelper.builder(EndPoints.PASSENGER_INFO)
                 .addPath(MyApplication.prefManager.getCustomerSupport() + "")
@@ -1053,7 +827,6 @@ public class TripRegisterActivity extends AppCompatActivity {
                 .writeTimeout(10)
                 .listener(getPassengerInfo)
                 .get();
-
     }
 
     RequestHelper.Callback getPassengerInfo = new RequestHelper.Callback() {
@@ -1062,45 +835,128 @@ public class TripRegisterActivity extends AppCompatActivity {
             MyApplication.handler.post(() -> {
                 try {
                     if (queue.trim().equals("1817")) {
-                        MyApplication.handler.postDelayed(() -> {
-                            if (spServiceType != null)
-                                spServiceType.setSelection(2, true);
-                        }, 500);
+                        MyApplication.handler.postDelayed(() -> binding.spServiceType.setSelection(2, true), 500);
                     }
 
                     JSONObject obj = new JSONObject(args[0].toString());
                     boolean success = obj.getBoolean("success");
                     String message = obj.getString("message");
-                    JSONObject dataObj = obj.getJSONObject("data");
-                    JSONObject statusObj = dataObj.getJSONObject("status");
-                    int status = statusObj.getInt("status");
-                    String descriptionStatus = statusObj.getString("descriptionStatus");
-                    String tripState = statusObj.getString("tripState");
-                    int callTimeInterval = statusObj.getInt("callTimeInterval");
-
-                    JSONObject passengerInfoObj = dataObj.getJSONObject("passengerInfo");
-                    addressIdOrigin = passengerInfoObj.getInt("callerCode");
-                    address = passengerInfoObj.getString("address");
-                    String name = passengerInfoObj.getString("name");
-                    int staion = passengerInfoObj.getInt("staion");
-                    permanentDesc = passengerInfoObj.getString("description");
-                    String discountCode = passengerInfoObj.getString("discountCode");
-                    int discountId = passengerInfoObj.getInt("discountId");
-                    int carType = passengerInfoObj.getInt("carType");
-                    int cityCode = passengerInfoObj.getInt("cityCode");
-                    maxDiscount = passengerInfoObj.getString("maxDiscount");
-                    percentDiscount = passengerInfoObj.getString("percentDiscount");
-
-                    ClipboardManager clipboard = (ClipboardManager) getSystemService(Context.CLIPBOARD_SERVICE);
-                    ClipData clip = ClipData.newPlainText("passengerTell", getTellNumber());
-                    clipboard.setPrimaryClip(clip);
-                    MyApplication.prefManager.setLastCallerId(getTellNumber().startsWith("51") ? getTellNumber().substring(2) : getTellNumber());
 
                     if (success) {
+                        JSONObject dataObj = obj.getJSONObject("data");
+
+                        passengerId = dataObj.getString("passengerId");
+
+                        JSONObject lastTripStatus = dataObj.getJSONObject("status");
+                        int status = lastTripStatus.getInt("status");
+//                    String descriptionStatus = lastTripStatus.getString("descriptionStatus");
+                        String tripState = lastTripStatus.getString("tripState");
+                        int callTimeInterval = lastTripStatus.getInt("callTimeInterval");
+
+                        JSONObject passengerInfoObj = dataObj.getJSONObject("passengerInfo");
+//                    originAddressId = passengerInfoObj.getInt("callerCode");
+//                    originAddress = passengerInfoObj.getString("address");
+//                    int originStationFromSV = passengerInfoObj.getInt("staion");
+                        String name = passengerInfoObj.getString("name");
+                        permanentDesc = passengerInfoObj.getString("description");
+                        String discountCode = passengerInfoObj.getString("discountCode");
+                        int discountId = passengerInfoObj.getInt("discountId");
+                        int carType = passengerInfoObj.getInt("carType");
+                        int cityCode = passengerInfoObj.getInt("cityCode");
+                        maxDiscount = passengerInfoObj.getString("maxDiscount");
+                        percentDiscount = passengerInfoObj.getString("percentDiscount");
+
+
+                        JSONArray originAddressArr = dataObj.getJSONArray("originAddress");
+                        JSONArray destinationAddressArr = dataObj.getJSONArray("destinationAddress");
+
+                        originAddresses = new ArrayList<>();
+                        ArrayList<String> originAutoAddresses = new ArrayList<>();
+                        for (int i = 0; i < originAddressArr.length(); i++) {
+                            JSONObject jsonAddress = originAddressArr.getJSONObject(i);
+
+                            String Address = jsonAddress.getString("text");
+                            String AddressId = jsonAddress.getString("_id");
+                            int AddressStation = jsonAddress.getInt("station");
+
+                            originAddresses.add(new AddressesModel(Address, AddressStation, AddressId));
+                            originAutoAddresses.add(Address);
+
+                            if (i == 0) {
+                                originAddress = Address;
+                                binding.edtOriginAddress.setText(originAddress);
+                                originAddressLength = originAddress.length();
+                                originStation = AddressStation;
+                                originAddressId = AddressId;
+                                originAddressChangeCounter = 0;
+                            }
+                        }
+                        ArrayAdapter<String> originArrayAdapter = new ArrayAdapter<>(MyApplication.context, android.R.layout.simple_dropdown_item_1line, originAutoAddresses);
+                        binding.edtOriginAddress.setAdapter(originArrayAdapter);
+                        binding.edtOriginAddress.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                            @Override
+                            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                                originAddress = binding.edtOriginAddress.getText().toString().trim();
+                                originAddressLength = originAddress.length();
+                                originAddressChangeCounter = 0;
+
+                                for (int i = 0; i < originAddresses.size(); i++) {
+                                    if (originAddresses.get(i).getAddress().equals(originAddress)) {
+                                        originStation = originAddresses.get(i).getStation();
+                                        originAddressId = originAddresses.get(i).getAddressId();
+                                    }
+                                }
+
+                                Log.i("TAF", "TAF_onItemClick,originStation: " + originStation);
+                                Log.i("TAF", "TAF_onItemClick,addressLength: " + originAddressLength);
+                                Log.i("TAF", "TAF_onItemClick,originAddressId: " + originAddressId);
+                            }
+                        });
+
+                        destinationAddresses = new ArrayList<>();
+                        ArrayList<String> destinationAutoAddresses = new ArrayList<>();
+                        for (int i = 0; i < destinationAddressArr.length(); i++) {
+                            JSONObject jsonAddress = destinationAddressArr.getJSONObject(i);
+
+                            String Address = jsonAddress.getString("text");
+                            String AddressId = jsonAddress.getString("_id");
+                            int AddressStation = jsonAddress.getInt("station");
+
+                            destinationAddresses.add(new AddressesModel(Address, AddressStation, AddressId));
+                            destinationAutoAddresses.add(Address);
+                        }
+                        ArrayAdapter<String> destinationArrayAdapter = new ArrayAdapter<>(MyApplication.context, android.R.layout.simple_dropdown_item_1line, destinationAutoAddresses);
+                        binding.edtDestinationAddress.setAdapter(destinationArrayAdapter);
+                        binding.edtDestinationAddress.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                            @Override
+                            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                                destinationAddress = binding.edtDestinationAddress.getText().toString().trim();
+                                destAddressLength = destinationAddress.length();
+                                destAddressChangeCounter = 0;
+
+                                for (int i = 0; i < destinationAddresses.size(); i++) {
+                                    if (destinationAddresses.get(i).getAddress().trim().equals(destinationAddress)) {
+                                        destinationStation = destinationAddresses.get(i).getStation();
+                                        destinationAddressId = destinationAddresses.get(i).getAddressId();
+                                    }
+                                }
+
+                                Log.i("TAF", "TAF_onItemClick,destinationStation: " + destinationStation);
+                                Log.i("TAF", "TAF_onItemClick,destAddressLength:" + destAddressLength);
+                                Log.i("TAF", "TAF_onItemClick, destinationAddressId:" + destinationAddressId);
+                            }
+                        });
+
+                        Log.i("TAF",getTellNumber());
+                        ClipboardManager clipboard = (ClipboardManager) getSystemService(Context.CLIPBOARD_SERVICE);
+                        ClipData clip = ClipData.newPlainText("passengerTell", getTellNumber());
+                        clipboard.setPrimaryClip(clip);
+                        MyApplication.prefManager.setLastCallerId(getTellNumber().startsWith("51") ? getTellNumber().substring(2) : getTellNumber());
+
+
                         if (status == 2) {
                             String msg = " مسافر " + callTimeInterval + " دقیقه پیش سفری درخواست داده است " + "\n" + " وضعیت سفر : " + tripState;
-                            if (vfPassengerInfo != null)
-                                vfPassengerInfo.setDisplayedChild(0);
+                            binding.vfPassengerInfo.setDisplayedChild(0);
                             new GeneralDialog()
                                     .message(msg)
                                     .cancelable(false)
@@ -1112,100 +968,73 @@ public class TripRegisterActivity extends AppCompatActivity {
                                     })
                                     .show();
                         }
-                        if (edtTell == null)
-                            return;
-                        edtTell.setNextFocusDownId(R.id.edtFamily);
+
+                        binding.edtTell.setNextFocusDownId(R.id.edtFamily);
                         isEnableView = true;
                         initServiceCountSpinner();
                         initServiceTypeSpinner();
                         initWaitingTimeSpinner();
                         enableViews();
+
                         for (int i = 0; i < cityModels.size(); i++) {
                             if (cityModels.get(i).getId() == cityCode)
-                                spCity.setSelection(i + 1, true);
+                                binding.spCity.setSelection(i + 1, true);
                         }
-
                         if (cityCode == 0) {
                             KeyBoardHelper.hideKeyboard();
-                            new CityDialog().show(position -> {
-                                if (spCity != null)
-                                    spCity.setSelection(position + 1);
-                            }, true);
+                            new CityDialog().show(position -> binding.spCity.setSelection(position + 1), true);
                         }
-                        if (addressIdOrigin == 0) {
-                            if (txtNewPassenger != null)
-                                txtNewPassenger.setVisibility(View.VISIBLE);
-                            if (txtLockPassenger != null)
-                                txtLockPassenger.setVisibility(View.GONE);
-                            if (edtTell != null)
-                                edtFamily.requestFocus();
+
+
+                        if (originAddressId.equals("0")) {
+                            binding.txtNewPassenger.setVisibility(View.VISIBLE);
+                            binding.txtLockPassenger.setVisibility(View.GONE);
+                            binding.edtFamily.requestFocus();
                         } else {
                             switch (status) {
                                 case 0:
-                                    if (txtNewPassenger != null)
-                                        txtNewPassenger.setVisibility(View.GONE);
-                                    if (txtLockPassenger != null)
-                                        txtLockPassenger.setVisibility(View.GONE);
+                                    binding.txtNewPassenger.setVisibility(View.GONE);
+                                    binding.txtLockPassenger.setVisibility(View.GONE);
                                     break;
                                 case 1:
-                                    if (txtNewPassenger != null)
-                                        txtNewPassenger.setVisibility(View.GONE);
-                                    if (txtLockPassenger != null)
-                                        txtLockPassenger.setVisibility(View.VISIBLE);
+                                    binding.txtNewPassenger.setVisibility(View.GONE);
+                                    binding.txtLockPassenger.setVisibility(View.VISIBLE);
                                     break;
                             }
-                            if (edtFamily != null)
-                                edtFamily.setText(name);
-                            if (edtAddress != null) {
-                                edtAddress.setText(address);
-                                addressLength = address.length();
-                                addressChangeCounter = 0;
+                            binding.edtFamily.setText(name);
+                            binding.txtDescription.setText(permanentDesc + "");
+                            binding.rgCarClass.clearCheck();
+                            binding.edtDiscount.setText(discountCode);
+                            switch (carType) {
+                                case 0:
+                                    binding.rbUnknow.setChecked(true);
+                                    break;
+                                case 1:
+                                    binding.rbEconomical.setChecked(true);
+                                    binding.chbAlways.setChecked(true);
+                                    break;
+                                case 2:
+                                    binding.rbPrivilage.setChecked(true);
+                                    binding.chbAlways.setChecked(true);
+                                    break;
+                                case 3:
+                                    binding.rbFormality.setChecked(true);
+                                    binding.chbAlways.setChecked(true);
+                                    break;
+                                case 4:
+                                    binding.rbTaxi.setChecked(true);
+                                    binding.chbAlways.setChecked(true);
+                                    break;
                             }
-                            if (txtDescription != null)
-                                txtDescription.setText(permanentDesc + "");
-                            if (rgCarClass != null)
-                                rgCarClass.clearCheck();
-                            if (edtDiscount != null)
-                                edtDiscount.setText(discountCode);
-                            if (rgCarClass != null) {
-                                switch (carType) {
-                                    case 0:
-                                        rbUnknow.setChecked(true);
-                                        break;
-                                    case 1:
-                                        rbEconomical.setChecked(true);
-                                        chbAlways.setChecked(true);
-                                        break;
-                                    case 2:
-                                        rbPrivilage.setChecked(true);
-                                        chbAlways.setChecked(true);
-                                        break;
-                                    case 3:
-                                        rbFormality.setChecked(true);
-                                        chbAlways.setChecked(true);
-                                        break;
-                                    case 4:
-                                        rbTaxi.setChecked(true);
-                                        chbAlways.setChecked(true);
-                                        break;
-                                }
-                            }
+
 
                         }
-                        originStation = staion;
                     }
-
-                    if (vfPassengerInfo == null)
-                        return;
-                    MyApplication.handler.postDelayed(() -> {
-                        if (vfPassengerInfo != null)
-                            vfPassengerInfo.setDisplayedChild(0);
-                    }, 500);
+                    MyApplication.handler.postDelayed(() -> binding.vfPassengerInfo.setDisplayedChild(0), 500);
 
                 } catch (JSONException e) {
                     e.printStackTrace();
-                    if (vfPassengerInfo != null)
-                        vfPassengerInfo.setDisplayedChild(0);
+                    binding.vfPassengerInfo.setDisplayedChild(0);
                     AvaCrashReporter.send(e, "TripRegisterActivity class, getPassengerInfo onResponse method");
                 }
             });
@@ -1213,200 +1042,80 @@ public class TripRegisterActivity extends AppCompatActivity {
 
         @Override
         public void onFailure(Runnable reCall, Exception e) {
-            MyApplication.handler.post(() -> {
-                if (vfPassengerInfo != null)
-                    vfPassengerInfo.setDisplayedChild(0);
-            });
+            MyApplication.handler.post(() -> binding.vfPassengerInfo.setDisplayedChild(0));
         }
     };
 
-    private void getPassengerDestAddress(String phoneNumber) {
-        if (vfPassengerDestAddress != null)
-            vfPassengerDestAddress.setDisplayedChild(1);
-        RequestHelper.builder(EndPoints.PASSENGER_DESTINATION)
-                .addPath(phoneNumber)
-                .listener(getPassengerDestAddress)
-                .get();
+    private void getPassengerOriginAddress() {
+        binding.vfPassengerOriginAddress.setDisplayedChild(1);
+        MyApplication.handler.postDelayed(() ->
+        {
+            if (originAddresses.size() == 0) {
+                MyApplication.Toast("آدرسی موجود نیست", Toast.LENGTH_SHORT);
+            } else {
+                new AddressListDialog().show(true, passengerId, originAddresses, (address, stationCode, addressId) -> {
+                    originAddress = address;
+                    binding.edtOriginAddress.setText(originAddress);
+                    originAddressLength = originAddress.length();
+                    originAddressChangeCounter = 0;
+                    originStation = stationCode;
+                    originAddressId = addressId;
+
+                    Log.i("TAF", "TAF_getPassengerOriginAddress,originStation: " + originStation);
+                    Log.i("TAF", "TAF_getPassengerOriginAddress,addressLength: " + originAddressLength);
+                    Log.i("TAF", "TAF_getPassengerOriginAddress,originAddressId: " + originAddressId);
+
+                });
+            }
+            binding.vfPassengerOriginAddress.setDisplayedChild(0);
+        }, 500);
     }
 
-    RequestHelper.Callback getPassengerDestAddress = new RequestHelper.Callback() {
-        @Override
-        public void onResponse(Runnable reCall, Object... args) {
-            MyApplication.handler.post(() -> {
-                try {
-                    passengerAddressModels = new ArrayList<>();
-                    JSONObject obj = new JSONObject(args[0].toString());
-                    boolean success = obj.getBoolean("success");
-                    String message = obj.getString("message");
+    private void getPassengerDestAddress() {
+        binding.vfPassengerDestAddress.setDisplayedChild(1);
+        MyApplication.handler.postDelayed(() ->
+        {
+            if (originAddresses.size() == 0) {
+                MyApplication.Toast("آدرسی موجود نیست", Toast.LENGTH_SHORT);
+            } else {
+                new AddressListDialog().show(false, passengerId, destinationAddresses, (address, stationCode, addressId) -> {
+                    destinationAddress = address;
+                    binding.edtDestinationAddress.setText(destinationAddress);
+                    destAddressLength = destinationAddress.length();
+                    destAddressChangeCounter = 0;
+                    destinationStation = stationCode;
+                    destinationAddressId = addressId;
 
-                    if (success) {
-                        JSONArray dataArr = obj.getJSONArray("data");
-                        for (int i = 0; i < dataArr.length(); i++) {
-                            JSONObject dataObj = dataArr.getJSONObject(i);
-                            PassengerAddressModel addressModel = new PassengerAddressModel();
-                            addressModel.setPhoneNumber(dataObj.getString("phoneNumber"));
-                            addressModel.setMobile(dataObj.getString("mobile"));
-                            addressModel.setAddress(dataObj.getString("destination"));
-                            addressModel.setStation(dataObj.getInt("destinationStation"));
-                            addressModel.setStatus(dataObj.getInt("status"));
-                            addressModel.setAddressId(dataObj.getInt("moshId"));
-                            passengerAddressModels.add(addressModel);
-                        }
-                        if (passengerAddressModels.size() == 0) {
-                            MyApplication.Toast("آدرسی موجود نیست", Toast.LENGTH_SHORT);
-                        } else {
-                            new AddressListDialog().show(false, (address, stationCode, addressId) -> {
-                                if (edtDestinationAddress != null) {
-                                    edtDestinationAddress.setText(address);
-                                    destAddressLength = address.length();
-                                    destAddressChangeCounter = 0;
-                                }
-                                destinationStation = stationCode;
-                                addressIdDestination = addressId;
-                            }, passengerAddressModels);
-                        }
-                    } else {
-                        new GeneralDialog()
-                                .title("هشدار")
-                                .message(message)
-                                .secondButton("باشه", null)
-                                .cancelable(false)
-                                .show();
-                    }
+                    Log.i("TAF", "TAF_getPassengerDestinationAddress,destinationStation: " + destinationStation);
+                    Log.i("TAF", "TAF_getPassengerDestinationAddress,destAddressLength:" + destAddressLength);
+                    Log.i("TAF", "TAF_getPassengerDestinationAddress, destinationAddressId:" + destinationAddressId);
+                });
+            }
 
-                    MyApplication.handler.postDelayed(() -> {
-                        if (vfPassengerDestAddress != null)
-                            vfPassengerDestAddress.setDisplayedChild(0);
-                    }, 500);
-
-                } catch (JSONException e) {
-                    MyApplication.handler.postDelayed(() -> {
-                        if (vfPassengerDestAddress != null)
-                            vfPassengerDestAddress.setDisplayedChild(0);
-                    }, 500);
-                    e.printStackTrace();
-                    AvaCrashReporter.send(e, "TripRegisterActivity class, getPassengerAddress onResponse method");
-                }
-            });
-        }
-
-        @Override
-        public void onFailure(Runnable reCall, Exception e) {
-            MyApplication.handler.post(() -> MyApplication.handler.postDelayed(() -> {
-                if (vfPassengerDestAddress != null)
-                    vfPassengerDestAddress.setDisplayedChild(0);
-            }, 500));
-        }
-    };
-
-    private void getPassengerAddress(String phoneNumber) {
-        if (vfPassengerAddress != null)
-            vfPassengerAddress.setDisplayedChild(1);
-        RequestHelper.builder(EndPoints.PASSENGER_ORIGIN)
-                .addPath(phoneNumber)
-                .listener(getPassengerOrigin)
-                .get();
-
+            binding.vfPassengerDestAddress.setDisplayedChild(0);
+        }, 500);
     }
-
-    RequestHelper.Callback getPassengerOrigin = new RequestHelper.Callback() {
-        @Override
-        public void onResponse(Runnable reCall, Object... args) {
-            MyApplication.handler.post(() -> {
-                try {
-                    Log.i(TAG, "onResponse: " + args[0].toString());
-                    passengerAddressModels = new ArrayList<>();
-                    JSONObject obj = new JSONObject(args[0].toString());
-                    boolean success = obj.getBoolean("success");
-                    String message = obj.getString("message");
-
-                    if (success) {
-                        JSONArray dataArr = obj.getJSONArray("data");
-                        for (int i = 0; i < dataArr.length(); i++) {
-                            JSONObject dataObj = dataArr.getJSONObject(i);
-                            PassengerAddressModel addressModel = new PassengerAddressModel();
-                            addressModel.setPhoneNumber(dataObj.getString("phoneNumber"));
-                            addressModel.setMobile(dataObj.getString("mobile"));
-                            addressModel.setAddress(dataObj.getString("address"));
-                            addressModel.setStation(dataObj.getInt("station"));
-                            addressModel.setStatus(dataObj.getInt("status"));
-                            addressModel.setAddressId(dataObj.getInt("moshid"));
-                            passengerAddressModels.add(addressModel);
-                        }
-                        if (passengerAddressModels.size() == 0) {
-                            MyApplication.Toast("آدرسی موجود نیست", Toast.LENGTH_SHORT);
-                        } else {
-                            new AddressListDialog().show(true, (address, stationCode, addressId) -> {
-                                if (edtAddress != null) {
-                                    edtAddress.setText(address);
-                                    edtAddress.setText(address);
-                                    addressLength = address.length();
-                                    addressChangeCounter = 0;
-                                }
-                                originStation = stationCode;
-                                addressIdOrigin = addressId;
-                                Log.i(TAG, "run: " + originStation);
-
-                            }, passengerAddressModels);
-                        }
-                    } else {
-                        new GeneralDialog()
-                                .title("هشدار")
-                                .message(message)
-                                .secondButton("باشه", null)
-                                .cancelable(false)
-                                .show();
-                    }
-
-                    MyApplication.handler.postDelayed(() -> {
-                        if (vfPassengerAddress != null)
-                            vfPassengerAddress.setDisplayedChild(0);
-                    }, 500);
-
-                } catch (JSONException e) {
-                    MyApplication.handler.postDelayed(() -> {
-                        if (vfPassengerAddress != null)
-                            vfPassengerAddress.setDisplayedChild(0);
-                    }, 500);
-                    e.printStackTrace();
-                    AvaCrashReporter.send(e, "TripRegisterActivity class, getPassengerAddress onResponse method");
-                }
-            });
-        }
-
-        @Override
-        public void onFailure(Runnable reCall, Exception e) {
-            MyApplication.handler.post(new Runnable() {
-                @Override
-                public void run() {
-                    MyApplication.handler.postDelayed(() -> {
-                        if (vfPassengerAddress != null)
-                            vfPassengerAddress.setDisplayedChild(0);
-                    }, 500);
-                }
-            });
-        }
-    };
 
     private void callInsertService() {
         String mobile = isTellValidable && getMobileNumber().isEmpty() ? "0" : getMobileNumber();
         String tell = getTellNumber();
-        String name = edtFamily.getText().toString().trim();
-        String address = edtAddress.getText().toString().trim();
-        String fixedComment = txtDescription.getText().toString().trim();
-        destinationAddress = edtDestinationAddress.getText().toString().trim();
+        String name = binding.edtFamily.getText().toString().trim();
+        originAddress = binding.edtOriginAddress.getText().toString().trim();
+        String fixedComment = binding.txtDescription.getText().toString().trim();
+        destinationAddress = binding.edtDestinationAddress.getText().toString().trim();
 
-        if (chbTraffic.isChecked())
+
+        if (binding.chbTraffic.isChecked())
             traffic = 1;
         else
             traffic = 0;
 
-        if (chbAlways.isChecked())
+        if (binding.chbAlways.isChecked())
             defaultClass = 1;
         else
             defaultClass = 0;
 
-        switch (rgCarClass.getCheckedRadioButtonId()) {
+        switch (binding.rgCarClass.getCheckedRadioButtonId()) {
             case R.id.rbUnknow:
                 carClass = 0;
                 break;
@@ -1424,30 +1133,45 @@ public class TripRegisterActivity extends AppCompatActivity {
                 break;
         }
 
+        Log.i("TAF", "\nserviceCount:" + serviceCount
+                + "\ntell: " + tell
+                + "\nmobile: " + mobile
+                + "\ncityCode: " + cityCode
+                + "\nname: " + name
+                + "\noriginAddress: " + originAddress
+                + "\nfixedComment: " + fixedComment
+                + "\ndestinationAddress: " + destinationAddress
+                + "\nserviceType: " + serviceType
+                + "\ncarClass: " + carClass
+                + "\nnormalDescription: " + normalDescription
+                + "\ntraffic: " + traffic
+                + "\ndefaultClass: " + defaultClass
+                + "\nstopTime: " + stopTime
+                + "\nqueue: " + queue
+                + "\npercentDiscount: " + percentDiscount
+                + "\nmaxDiscount: " + maxDiscount
+                + "\naddressIdOrigin: " + originAddressId
+                + "\naddressIdDestination: " + destinationAddressId
+                + "\nstationCode: " + originStation
+                + "\ndestinationStation: " + destinationStation);
+
         new GeneralDialog()
                 .title("ثبت اطلاعات")
                 .cancelable(false)
                 .message("آیا از ثبت اطلاعات اطمینان دارید؟")
                 .firstButton("بله", () ->
                         insertService(serviceCount, tell, mobile, cityCode,
-                                name, address, fixedComment, destinationAddress, serviceType, carClass, normalDescription, traffic, defaultClass, stopTime))
-                .secondButton("خیر", () -> {
-                    if (vfSubmit != null)
-                        vfSubmit.setDisplayedChild(0);
-                })
+                                name, originAddress, fixedComment, destinationAddress, serviceType, carClass, normalDescription, traffic, defaultClass, stopTime))
+                .secondButton("خیر", () -> binding.vfSubmit.setDisplayedChild(0))
                 .show();
     }
 
-    ArrayList<StationInfoModel> stationInfoModels;
-
     private void setActivate(int sipNumber) {
-
         LoadingDialog.makeCancelableLoader();
         RequestHelper.builder(EndPoints.ACTIVATE)
                 .addParam("sipNumber", sipNumber)
                 .listener(setActivate)
                 .post();
-
     }
 
     RequestHelper.Callback setActivate = new RequestHelper.Callback() {
@@ -1464,12 +1188,9 @@ public class TripRegisterActivity extends AppCompatActivity {
                     if (success) {
                         MyApplication.prefManager.setActivityStatus(1);
                         MyApplication.Toast("شما باموفقیت وارد صف شدید", Toast.LENGTH_SHORT);
-                        if (btnActivate != null)
-                            btnActivate.setBackgroundResource(R.drawable.bg_green_edge);
+                        binding.btnActivate.setBackgroundResource(R.drawable.bg_green_edge);
                         MyApplication.prefManager.setActivateStatus(true);
-                        if (btnDeActivate != null) {
-                            btnDeActivate.setBackgroundColor(Color.parseColor("#00FFB2B2"));
-                        }
+                        binding.btnDeActivate.setBackgroundColor(Color.parseColor("#00FFB2B2"));
                     } else {
                         new GeneralDialog()
                                 .title("هشدار")
@@ -1530,11 +1251,8 @@ public class TripRegisterActivity extends AppCompatActivity {
                         MyApplication.prefManager.setActivityStatus(0);
                         MyApplication.Toast("شما باموفقیت از صف خارج شدید", Toast.LENGTH_SHORT);
                         MyApplication.prefManager.setActivateStatus(false);
-                        if (btnActivate != null)
-                            btnActivate.setBackgroundColor(Color.parseColor("#00FFB2B2"));
-                        if (btnDeActivate != null) {
-                            btnDeActivate.setBackgroundResource(R.drawable.bg_pink_edge);
-                        }
+                        binding.btnActivate.setBackgroundColor(Color.parseColor("#00FFB2B2"));
+                        binding.btnDeActivate.setBackgroundResource(R.drawable.bg_pink_edge);
                     } else {
                         new GeneralDialog()
                                 .title("هشدار")
@@ -1586,11 +1304,10 @@ public class TripRegisterActivity extends AppCompatActivity {
                 .addParam("maxDiscount", maxDiscount)
                 .addParam("senderClient", 0)
                 .addParam("stopTime", stopTime)
-                .addParam("addressIdOrigin", addressIdOrigin)
-                .addParam("addressIdDestination", addressIdDestination)
+                .addParam("addressIdOrigin", originAddressId)
+                .addParam("addressIdDestination", destinationAddressId)
                 .listener(insertService)
                 .post();
-
     }
 
     RequestHelper.Callback insertService = new RequestHelper.Callback() {
@@ -1598,16 +1315,13 @@ public class TripRegisterActivity extends AppCompatActivity {
         public void onResponse(Runnable reCall, Object... args) {
             MyApplication.handler.post(() -> {
                 try {
-                    if (vfSubmit != null)
-                        vfSubmit.setDisplayedChild(0);
+                    binding.vfSubmit.setDisplayedChild(0);
                     LoadingDialog.dismissCancelableDialog();
-                    Log.i(TAG, "run: " + args[0].toString());
                     JSONObject obj = new JSONObject(args[0].toString());
                     boolean success = obj.getBoolean("success");
                     String message = obj.getString("message");
 
                     if (success) {
-
                         new GeneralDialog()
                                 .title("ثبت شد")
                                 .message(message)
@@ -1621,12 +1335,9 @@ public class TripRegisterActivity extends AppCompatActivity {
                                             MyApplication.prefManager.setLastNotification(null);
                                             handleCallerInfo(callModel);
                                         }
-
                                 })
-
                                 .show();
-                        if (svTripRegister != null)
-                            svTripRegister.scrollTo(0, 0);
+                        binding.svTripRegister.scrollTo(0, 0);
                     } else {
                         new GeneralDialog()
                                 .title("خطا")
@@ -1648,8 +1359,7 @@ public class TripRegisterActivity extends AppCompatActivity {
         public void onFailure(Runnable reCall, Exception e) {
             MyApplication.handler.post(() -> {
                 LoadingDialog.dismissCancelableDialog();
-                if (vfSubmit != null)
-                    vfSubmit.setDisplayedChild(0);
+                binding.vfSubmit.setDisplayedChild(0);
             });
         }
 
@@ -1671,85 +1381,100 @@ public class TripRegisterActivity extends AppCompatActivity {
     };
 
     private void clearData() {
-        if (edtTell == null) return;
         originStation = 0;
         destinationStation = 0;
-        addressLength = 0;
+        originAddressLength = 0;
         destAddressLength = 0;
+        originAddressId = "0";
+        destinationAddressId = "0";
+        originAddressChangeCounter = 0;
+        destAddressChangeCounter = 0;
         isEnableView = false;
         isTellValidable = false;
-        edtTell.requestFocus();
-        txtLockPassenger.setVisibility(View.GONE);
-        txtNewPassenger.setVisibility(View.GONE);
-        edtTell.setText("");
-        edtMobile.setText("");
-        edtDiscount.setText("");
-        edtFamily.setText("");
-        edtAddress.setText("");
-        edtDestinationAddress.setText("");
-        addressChangeCounter = 0;
-        destAddressChangeCounter = 0;
-        chbTraffic.setChecked(false);
-        txtDescription.setText("");
-        chbAlways.setChecked(false);
-        rgCarClass.clearCheck();
-        rbUnknow.setChecked(true);
+        binding.edtTell.requestFocus();
+        binding.txtLockPassenger.setVisibility(View.GONE);
+        binding.txtNewPassenger.setVisibility(View.GONE);
+        binding.edtTell.setText("");
+        binding.edtMobile.setText("");
+        binding.edtDiscount.setText("");
+        binding.edtFamily.setText("");
+        binding.edtOriginAddress.setText("");
+        binding.edtDestinationAddress.setText("");
+        binding.chbTraffic.setChecked(false);
+        binding.txtDescription.setText("");
+        binding.chbAlways.setChecked(false);
+        binding.rgCarClass.clearCheck();
+        binding.rbUnknow.setChecked(true);
         voipId = "0";
         queue = "0";
         normalDescription = "";
     }
 
     private void enableViews() {
-        edtFamily.setEnabled(true);
-//    edtDiscount.setEnabled(true);
-        edtAddress.setEnabled(true);
-        edtDestinationAddress.setEnabled(true);
-        txtDescription.setEnabled(true);
-        chbTraffic.setEnabled(true);
-        llTrafficBg.setEnabled(true);
-        chbAlways.setEnabled(true);
-        txtPassengerAddress.setEnabled(true);
-        llDescriptionDetail.setEnabled(true);
-        llServiceType.setEnabled(true);
-        llWaitingTime.setEnabled(true);
-        llTraffic.setEnabled(true);
-        llAlwaysBg.setEnabled(true);
-        llAlways.setEnabled(true);
-        llServiceCount.setEnabled(true);
-        rgCarClass.setEnabled(true);
-        llDiscount.setEnabled(true);
-        llFamily.setEnabled(true);
-        llAddress.setEnabled(true);
-        spServiceCount.setEnabled(true);
-        spServiceType.setEnabled(true);
+        binding.edtFamily.setEnabled(true);
+//    binding.edtDiscount.setEnabled(true);
+        binding.edtOriginAddress.setEnabled(true);
+        binding.edtDestinationAddress.setEnabled(true);
+        binding.txtDescription.setEnabled(true);
+        binding.chbTraffic.setEnabled(true);
+        binding.llTrafficBg.setEnabled(true);
+        binding.chbAlways.setEnabled(true);
+        binding.txtPassengerAddress.setEnabled(true);
+        binding.txtPassengerDestAddress.setEnabled(true);
+        binding.llDescriptionDetail.setEnabled(true);
+        binding.llServiceType.setEnabled(true);
+        binding.llWaitingTime.setEnabled(true);
+        binding.llTraffic.setEnabled(true);
+        binding.llAlwaysBg.setEnabled(true);
+        binding.llAlways.setEnabled(true);
+        binding.llServiceCount.setEnabled(true);
+        binding.llDiscount.setEnabled(true);
+        binding.llFamily.setEnabled(true);
+        binding.llAddress.setEnabled(true);
+        binding.spServiceCount.setEnabled(true);
+        binding.spServiceType.setEnabled(true);
+        binding.rgCarClass.setEnabled(true);
+        activationRadioButton(binding.rgCarClass, true);
 
     }
 
     private void disableViews() {
-        edtFamily.setEnabled(false);
-//    edtDiscount.setEnabled(false);
-        edtAddress.setEnabled(false);
-        edtDestinationAddress.setEnabled(false);
-        txtDescription.setEnabled(false);
-        chbTraffic.setEnabled(false);
-        llTrafficBg.setEnabled(false);
-        chbAlways.setEnabled(false);
-        txtPassengerAddress.setEnabled(false);
-        llDescriptionDetail.setEnabled(false);
-        llServiceType.setEnabled(false);
-        llWaitingTime.setEnabled(false);
-        llTraffic.setEnabled(false);
-        llAlwaysBg.setEnabled(false);
-        llAlways.setEnabled(false);
-        llServiceCount.setEnabled(false);
-        llDiscount.setEnabled(false);
-        llFamily.setEnabled(false);
-        llAddress.setEnabled(false);
-        spServiceCount.setEnabled(false);
-        spServiceType.setEnabled(false);
-        rgCarClass.setEnabled(false);
-        for (int i = 0; i < rgCarClass.getChildCount(); i++) {
-            rgCarClass.getChildAt(i).setEnabled(false);
+        binding.edtFamily.setEnabled(false);
+//    binding.edtDiscount.setEnabled(false);
+        binding.edtOriginAddress.setEnabled(false);
+        binding.edtDestinationAddress.setEnabled(false);
+        binding.txtDescription.setEnabled(false);
+        binding.chbTraffic.setEnabled(false);
+        binding.llTrafficBg.setEnabled(false);
+        binding.chbAlways.setEnabled(false);
+        binding.txtPassengerAddress.setEnabled(false);
+        binding.txtPassengerDestAddress.setEnabled(false);
+        binding.llDescriptionDetail.setEnabled(false);
+        binding.llServiceType.setEnabled(false);
+        binding.llWaitingTime.setEnabled(false);
+        binding.llTraffic.setEnabled(false);
+        binding.llAlwaysBg.setEnabled(false);
+        binding.llAlways.setEnabled(false);
+        binding.llServiceCount.setEnabled(false);
+        binding.llDiscount.setEnabled(false);
+        binding.llFamily.setEnabled(false);
+        binding.llAddress.setEnabled(false);
+        binding.spServiceCount.setEnabled(false);
+        binding.spServiceType.setEnabled(false);
+        binding.rgCarClass.setEnabled(false);
+        activationRadioButton(binding.rgCarClass, false);
+    }
+
+    private void activationRadioButton(View view, boolean setEnabled) {
+        if (view instanceof ViewGroup) {
+            ViewGroup vg = (ViewGroup) view;
+            for (int i = 0; i < vg.getChildCount(); i++) {
+                View childVg = vg.getChildAt(i);
+                view.setEnabled(setEnabled);
+                activationRadioButton(childVg, setEnabled);
+            }
+        } else if (view instanceof RadioButton) {
+            ((RadioButton) view).setEnabled(setEnabled);
         }
     }
 
@@ -1769,12 +1494,12 @@ public class TripRegisterActivity extends AppCompatActivity {
             String messageUserStatus = intent.getStringExtra(Keys.KEY_MESSAGE_USER_STATUS);
             boolean userStatus = intent.getBooleanExtra(Keys.KEY_USER_STATUS, false);
             if (!userStatus) {
-                btnDeActivate.setBackgroundResource(R.drawable.bg_pink_edge);
-                btnActivate.setBackgroundColor(Color.parseColor("#00FFB2B2"));
+                binding.btnDeActivate.setBackgroundResource(R.drawable.bg_pink_edge);
+                binding.btnActivate.setBackgroundColor(Color.parseColor("#00FFB2B2"));
                 MyApplication.prefManager.setActivateStatus(false);
             } else {
-                btnActivate.setBackgroundResource(R.drawable.bg_green_edge);
-                btnDeActivate.setBackgroundColor(Color.parseColor("#00FFB2B2"));
+                binding.btnActivate.setBackgroundResource(R.drawable.bg_green_edge);
+                binding.btnDeActivate.setBackgroundColor(Color.parseColor("#00FFB2B2"));
                 MyApplication.prefManager.setActivateStatus(true);
             }
         }
@@ -1791,9 +1516,8 @@ public class TripRegisterActivity extends AppCompatActivity {
                 queue = callModel.getQueue();
                 voipId = callModel.getVoipId();
                 DataHolder.getInstance().setVoipId(voipId);
-                if (edtTell == null) return;
                 if (participant == null) return;
-                edtTell.setText(participant);
+                binding.edtTell.setText(participant);
                 MyApplication.handler.postDelayed(this::onPressDownload, 400);
             }
         } catch (Exception e) {
@@ -1871,10 +1595,8 @@ public class TripRegisterActivity extends AppCompatActivity {
         } else if (quality >= 1) { // Very low quality
             imageRes = (R.drawable.ic_quality_1);
         }
-        if (imgCallQuality != null) {
-            imgCallQuality.setVisibility(View.VISIBLE);
-            imgCallQuality.setImageResource(imageRes);
-        }
+        binding.imgCallQuality.setVisibility(View.VISIBLE);
+        binding.imgCallQuality.setImageResource(imageRes);
         mDisplayedQuality = iQuality;
     }
 
@@ -1886,8 +1608,7 @@ public class TripRegisterActivity extends AppCompatActivity {
             if (state == Call.State.IncomingReceived) {
                 showCallIncoming();
             } else if (state == Call.State.Released) {
-                if (imgEndCall != null)
-                    imgEndCall.setImageResource(R.drawable.ic_call_dialog_disable);
+                binding.imgEndCall.setImageResource(R.drawable.ic_call_dialog_disable);
                 showTitleBar();
                 if (mCallQualityUpdater != null) {
                     LinphoneService.removeFromUIThreadDispatcher(mCallQualityUpdater);
@@ -1895,18 +1616,16 @@ public class TripRegisterActivity extends AppCompatActivity {
                 }
             } else if (state == Call.State.Connected) {
                 startCallQuality();
-                if (imgEndCall != null)
-                    imgEndCall.setImageResource(R.drawable.ic_call_dialog_enable);
+                binding.imgEndCall.setImageResource(R.drawable.ic_call_dialog_enable);
                 Address address = call.getRemoteAddress();
                 if (voipId.equals("0")) {
-                    edtTell.setText(PhoneNumberValidation.removePrefix(address.getUsername()));
+                    binding.edtTell.setText(PhoneNumberValidation.removePrefix(address.getUsername()));
                 }
                 showTitleBar();
             } else if (state == Call.State.Error) {
                 showTitleBar();
             } else if (state == Call.State.End) {
-                if (imgCallQuality != null)
-                    imgCallQuality.setVisibility(View.INVISIBLE);
+                binding.imgCallQuality.setVisibility(View.INVISIBLE);
                 showTitleBar();
                 if (mCallQualityUpdater != null) {
                     LinphoneService.removeFromUIThreadDispatcher(mCallQualityUpdater);
@@ -1920,13 +1639,13 @@ public class TripRegisterActivity extends AppCompatActivity {
         @Override
         public void onRegistrationStateChanged(Core lc, ProxyConfig proxy, RegistrationState state, String message) {
             if (core.getDefaultProxyConfig() != null && core.getDefaultProxyConfig().equals(proxy)) {
-                imgSipStatus.setImageResource(getStatusIconResource(state));
+                binding.imgSipStatus.setImageResource(getStatusIconResource(state));
             } else if (core.getDefaultProxyConfig() == null) {
-                imgSipStatus.setImageResource(getStatusIconResource(state));
+                binding.imgSipStatus.setImageResource(getStatusIconResource(state));
             }
 
             try {
-                imgSipStatus.setOnClickListener(
+                binding.imgSipStatus.setOnClickListener(
                         v -> {
                             Core core = LinphoneService.getCore();
                             if (core != null) {
@@ -1990,15 +1709,15 @@ public class TripRegisterActivity extends AppCompatActivity {
         showTitleBar();
         if (MyApplication.prefManager.getConnectedCall()) {
             startCallQuality();
-            imgEndCall.setImageResource(R.drawable.ic_call_dialog_enable);
+            binding.imgEndCall.setImageResource(R.drawable.ic_call_dialog_enable);
 
             Call[] calls = core.getCalls();
             for (Call call : calls) {
                 if (call != null && call.getState() == Call.State.StreamsRunning) {
                     if (voipId.equals("0")) {
                         Address address = call.getRemoteAddress();
-                        edtTell.setText(PhoneNumberValidation.removePrefix(address.getUsername()));
-                        MyApplication.handler.postDelayed(() -> onPressDownload(), 600);
+                        binding.edtTell.setText(PhoneNumberValidation.removePrefix(address.getUsername()));
+                        MyApplication.handler.postDelayed(this::onPressDownload, 600);
                     }
                 }
             }
@@ -2033,7 +1752,6 @@ public class TripRegisterActivity extends AppCompatActivity {
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        unbinder.unbind();
         core.removeListener(mCoreListener);
 //    MyApplication.prefManager.setLastCallerId("");// set empty, because I don't want save this permanently .
         core = null;
@@ -2073,15 +1791,15 @@ public class TripRegisterActivity extends AppCompatActivity {
         mRipplePulseLayout.startRippleAnimation();
         call = core.getCurrentCall();
         Address address = call.getRemoteAddress();
-        txtCallerNum.setText(address.getUsername());
-        rlNewInComingCall.setVisibility(View.VISIBLE);
-        rlActionBar.setVisibility(View.GONE);
+        binding.txtCallerNum.setText(address.getUsername());
+        binding.rlNewInComingCall.setVisibility(View.VISIBLE);
+        binding.rlActionBar.setVisibility(View.GONE);
     }
 
     private void showTitleBar() {
         mRipplePulseLayout.stopRippleAnimation();
-        rlNewInComingCall.setVisibility(View.GONE);
-        rlActionBar.setVisibility(View.VISIBLE);
+        binding.rlNewInComingCall.setVisibility(View.GONE);
+        binding.rlActionBar.setVisibility(View.VISIBLE);
     }
 
 }

@@ -17,19 +17,22 @@ import ir.taxi1880.operatormanagement.app.EndPoints;
 import ir.taxi1880.operatormanagement.app.MyApplication;
 import ir.taxi1880.operatormanagement.dialog.GeneralDialog;
 import ir.taxi1880.operatormanagement.helper.TypefaceUtil;
+import ir.taxi1880.operatormanagement.model.AddressesModel;
 import ir.taxi1880.operatormanagement.model.PassengerAddressModel;
 import ir.taxi1880.operatormanagement.okHttp.RequestHelper;
 import ir.taxi1880.operatormanagement.push.AvaCrashReporter;
 
 public class LastAddressAdapter extends BaseAdapter {
 
-    private ArrayList<PassengerAddressModel> addressModels;
+    private ArrayList<AddressesModel> addressModels;
     private LayoutInflater layoutInflater;
     boolean isFromOrigin;
+    String passengerId;
 
-    public LastAddressAdapter(boolean isFromOrigin, ArrayList<PassengerAddressModel> addressModels) {
+    public LastAddressAdapter(boolean isFromOrigin,String passengerId ,ArrayList<AddressesModel> addressModels) {
         this.addressModels = addressModels;
         this.isFromOrigin = isFromOrigin;
+        this.passengerId = passengerId;
         this.layoutInflater = LayoutInflater.from(MyApplication.currentActivity);
     }
 
@@ -53,7 +56,7 @@ public class LastAddressAdapter extends BaseAdapter {
         View myView = convertView;
 
         try {
-            final PassengerAddressModel addressModel = addressModels.get(position);
+            final AddressesModel addressModel = addressModels.get(position);
             if (myView == null) {
                 myView = layoutInflater.inflate(R.layout.item_last_address, null);
                 TypefaceUtil.overrideFonts(myView);
@@ -61,46 +64,31 @@ public class LastAddressAdapter extends BaseAdapter {
 
             TextView txtAddress = myView.findViewById(R.id.txtAddress);
             TextView txtStation = myView.findViewById(R.id.txtStation);
-            LinearLayout llStation = myView.findViewById(R.id.llStation);
+//            LinearLayout llStation = myView.findViewById(R.id.llStation);
             ImageView imgArchive = myView.findViewById(R.id.imgArchive);
 
             txtAddress.setText(addressModel.getAddress());
             txtStation.setText(addressModel.getStation() + "");
 
 
-            if (addressModel.getStatus() == 1) {
-                llStation.setBackgroundColor(MyApplication.currentActivity.getResources().getColor(R.color.colorRedLight));
-            } else {
-                llStation.setBackgroundColor(MyApplication.currentActivity.getResources().getColor(R.color.transparent));
-            }
+//            if (addressModel.getStatus() == 1) {
+//                llStation.setBackgroundColor(MyApplication.currentActivity.getResources().getColor(R.color.colorRedLight));
+//            } else {
+//                llStation.setBackgroundColor(MyApplication.currentActivity.getResources().getColor(R.color.transparent));
+//            }
 
             imgArchive.setOnClickListener(view -> {
-                if (isFromOrigin) {
                     new GeneralDialog()
                             .title("هشدار")
                             .message("ایا از انجام عملیات فوق اطمینان دارید؟")
                             .firstButton("بله", () -> {
-                                archiveOrigin(addressModels.get(position));
+                                archiveOrigin(addressModels.get(position).getAddressId(),isFromOrigin);
                                 addressModels.remove(position);
                                 notifyDataSetChanged();
                             })
                             .secondButton("خیر", null)
                             .cancelable(false)
                             .show();
-                } else {
-                    new GeneralDialog()
-                            .title("هشدار")
-                            .message("ایا از انجام عملیات فوق اطمینان دارید؟")
-                            .firstButton("بله", () -> {
-                                archiveDestination(addressModels.get(position));
-                                addressModels.remove(position);
-                                notifyDataSetChanged();
-                            })
-                            .secondButton("خیر", null)
-                            .cancelable(false)
-                            .show();
-                }
-
             });
 
         } catch (Exception e) {
@@ -111,22 +99,17 @@ public class LastAddressAdapter extends BaseAdapter {
         return myView;
     }
 
-    private void archiveOrigin(PassengerAddressModel passengerAddressModel) {
-        RequestHelper.builder(EndPoints.ARCHIVE_ORIGIN)
-                .addParam("phoneNumber", passengerAddressModel.getPhoneNumber())
-                .addParam("adrs", passengerAddressModel.getAddress())
-                .addParam("mobile", passengerAddressModel.getMobile())
-                .listener(onArchiveAddress)
-                .put();
-    }
+    private void archiveOrigin(String addressId,boolean isOrigin) {
+        String oOrd;
+        if (isOrigin) oOrd = "origin";
+        else oOrd = "destination";
 
-    private void archiveDestination(PassengerAddressModel passengerAddressModel) {
-        RequestHelper.builder(EndPoints.ARCHIVE_DESTINATION)
-                .addParam("phoneNumber", passengerAddressModel.getPhoneNumber())
-                .addParam("destination", passengerAddressModel.getAddress())
-                .addParam("mobile", passengerAddressModel.getMobile())
+        RequestHelper.builder(EndPoints.DELETE_ADDRESS)
+                .addParam("passengerId",passengerId)
+                .addParam("addressId", addressId)
+                .addParam("type",oOrd)
                 .listener(onArchiveAddress)
-                .put();
+                .delete();
     }
 
     RequestHelper.Callback onArchiveAddress = new RequestHelper.Callback() {

@@ -25,6 +25,7 @@ import java.util.TimerTask;
 import ir.taxi1880.operatormanagement.R;
 import ir.taxi1880.operatormanagement.activity.SplashActivity;
 import ir.taxi1880.operatormanagement.app.MyApplication;
+import ir.taxi1880.operatormanagement.helper.NotificationSingleton;
 
 //import ir.efsp.ava.io.core.client.Socket;
 
@@ -69,7 +70,7 @@ public class AvaService extends Service {
                 MyApplication.context = this;
             }
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                startNotification();
+                startForeground(NotificationSingleton.getNotificationId(), NotificationSingleton.getNotification(this));
             }
 //      MyApplication.prefManager.incrementResetPushServiceCount();
 
