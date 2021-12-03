@@ -54,7 +54,7 @@ import ir.taxi1880.operatormanagement.dialog.DescriptionDialog;
 import ir.taxi1880.operatormanagement.dialog.GeneralDialog;
 import ir.taxi1880.operatormanagement.dialog.LoadingDialog;
 import ir.taxi1880.operatormanagement.dialog.TripOptionDialog;
-import ir.taxi1880.operatormanagement.fragment.TripSupportFragment;
+import ir.taxi1880.operatormanagement.fragment.PassengerTripSupportFragment;
 import ir.taxi1880.operatormanagement.helper.FragmentHelper;
 import ir.taxi1880.operatormanagement.helper.KeyBoardHelper;
 import ir.taxi1880.operatormanagement.helper.PhoneNumberValidation;
@@ -964,7 +964,7 @@ public class TripRegisterActivity extends AppCompatActivity {
                                     .firstButton("پشتیبانی", () -> {
                                         Bundle bundle = new Bundle();
                                         bundle.putString("tellNumber", getTellNumber());
-                                        FragmentHelper.toFragment(MyApplication.currentActivity, new TripSupportFragment()).setArguments(bundle).replace();
+                                        FragmentHelper.toFragment(MyApplication.currentActivity, new PassengerTripSupportFragment()).setArguments(bundle).replace();
                                     })
                                     .show();
                         }

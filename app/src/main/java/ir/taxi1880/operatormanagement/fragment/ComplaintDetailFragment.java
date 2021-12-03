@@ -120,7 +120,7 @@ public class ComplaintDetailFragment extends Fragment {
 
         Bundle bundle = new Bundle();
         bundle.putString("id", complaintDetailsModel.getServiceId() + "");
-        FragmentHelper.toFragment(MyApplication.currentActivity, new TripDetailsFragment()).setArguments(bundle).replace();
+        FragmentHelper.toFragment(MyApplication.currentActivity, new PassengerTripSupportDetailsFragment()).setArguments(bundle).replace();
     }
 
     @OnClick(R.id.btnOptions)

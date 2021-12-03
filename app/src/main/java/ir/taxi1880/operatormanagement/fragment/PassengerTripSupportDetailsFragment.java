@@ -6,7 +6,6 @@ import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -46,7 +45,7 @@ import ir.taxi1880.operatormanagement.helper.TypefaceUtil;
 import ir.taxi1880.operatormanagement.okHttp.RequestHelper;
 import ir.taxi1880.operatormanagement.push.AvaCrashReporter;
 
-public class DriverTripsDetailsFragment extends Fragment {
+public class PassengerTripSupportDetailsFragment extends Fragment {
     Unbinder unbinder;
     int serviceId;
     String passengerPhone;
@@ -68,32 +67,35 @@ public class DriverTripsDetailsFragment extends Fragment {
     String callTime;
     String cityName;
     int cityCode;
-    String serviceDetails;
     String price;
     String destinationStation;
     String destination;
+    String serviceDetails;
+
+    String passengerId;
+    String originId;
 
     @OnClick(R.id.imgBack)
     void onBackPress() {
         MyApplication.currentActivity.onBackPressed();
     }
 
+    @BindView(R.id.txtTimeToCome)
+    TextView txtTimeToCome;
     @BindView(R.id.txtStatus)
     TextView txtStatus;
 
-    @BindView(R.id.txtTimeToCome)
-    TextView txtTimeToCome;
+    @BindView(R.id.llHeaderStatus)
+    LinearLayout llHeaderStatus;
+
+    @BindView(R.id.txtCustomerName)
+    TextView txtCustomerName;
 
     @BindView(R.id.txtUserCodeDestination)
     TextView txtUserCodeDestination;
 
     @BindView(R.id.txtUserCodeOrigin)
     TextView txtUserCodeOrigin;
-    @BindView(R.id.llHeaderStatus)
-    LinearLayout llHeaderStatus;
-
-    @BindView(R.id.txtCustomerName)
-    TextView txtCustomerName;
 
     @BindView(R.id.txtDate)
     TextView txtDate;
@@ -103,6 +105,7 @@ public class DriverTripsDetailsFragment extends Fragment {
 
     @BindView(R.id.txtTripType)
     TextView txtTripType;
+
 
     @BindView(R.id.txtCity)
     TextView txtCity;
@@ -146,6 +149,12 @@ public class DriverTripsDetailsFragment extends Fragment {
     @BindView(R.id.txtEndTime)
     TextView txtEndTime;
 
+    @BindView(R.id.txtDestStation)
+    TextView txtDestStation;
+
+    @BindView(R.id.txtDestAddress)
+    TextView txtDestAddress;
+
     @BindView(R.id.txtPlaque)
     TextView txtPlaque;
 
@@ -163,12 +172,6 @@ public class DriverTripsDetailsFragment extends Fragment {
 
     @BindView(R.id.txtNull)
     TextView txtNull;
-
-    @BindView(R.id.txtDestStation)
-    TextView txtDestStation;
-
-    @BindView(R.id.txtDestAddress)
-    TextView txtDestAddress;
 
     @BindView(R.id.txtServiceFixedComment)
     TextView txtServiceFixedComment;
@@ -246,7 +249,6 @@ public class DriverTripsDetailsFragment extends Fragment {
         bundle.putString("time", lastPositionTime);
         bundle.putString("date", lastPositionDate);
         bundle.putString("taxiCode", taxiCode);
-        bundle.putBoolean("isFromDriverSupport", false);
         FragmentHelper.toFragment(MyApplication.currentActivity, new DriverLocationFragment()).setArguments(bundle).add();
     }
 
@@ -275,7 +277,7 @@ public class DriverTripsDetailsFragment extends Fragment {
 
     @OnClick(R.id.btnLost)
     void onLost() {
-        new LostDialog().show(serviceId+"", passengerName, passengerPhone, taxiCode, true);
+        new LostDialog().show(serviceId+"", passengerName, passengerPhone, taxiCode, false);
     }
 
     @OnClick(R.id.btnDriverLock)
@@ -283,14 +285,14 @@ public class DriverTripsDetailsFragment extends Fragment {
         new DriverLockDialog().show(taxiCode);
     }
 
-    @OnClick(R.id.btnResendService)
-    void onResendService() {
-        new GeneralDialog()
-                .message("آیا میخواهید سرویس را مجدد ارسال کنید؟")
-                .firstButton("بله", this::resendCancelService)
-                .secondButton("خیر ", null)
-                .show();
-    }
+//    @OnClick(R.id.btnResendService)
+//    void onResendService() {
+//        new GeneralDialog()
+//                .message("آیا میخواهید سرویس را مجدد ارسال کنید؟")
+//                .firstButton("بله", this::resendCancelService)
+//                .secondButton("خیر ", null)
+//                .show();
+//    }
 
     @OnClick(R.id.rlEndCall)
     void onPressEndCall() {
@@ -341,7 +343,7 @@ public class DriverTripsDetailsFragment extends Fragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_driver_trip_details, container, false);
+        View view = inflater.inflate(R.layout.fragment_passenger_trip_support_details, container, false);
         unbinder = ButterKnife.bind(this, view);
         TypefaceUtil.overrideFonts(view, MyApplication.IraSanSMedume);
         TypefaceUtil.overrideFonts(txtTitle);
@@ -376,11 +378,14 @@ public class DriverTripsDetailsFragment extends Fragment {
                     JSONObject tripObject = new JSONObject(args[0].toString());
                     Boolean success = tripObject.getBoolean("success");
                     String message = tripObject.getString("message");
+//                    JSONObject data = tripObject.getJSONObject("data");
 
                     if (success) {
                         JSONObject data = tripObject.getJSONObject("data");
                         serviceDetails = tripObject.getJSONObject("data").toString();
                         serviceId = data.getInt("serviceId");
+                        passengerId = data.getString("passengerId");
+                        originId = data.getString("originId");
                         int status = data.getInt("Status");
                         callDate = data.getString("callDate");
                         callTime = data.getString("callTime");
@@ -448,8 +453,8 @@ public class DriverTripsDetailsFragment extends Fragment {
 
                         if (txtCustomerName == null) return;
 
-                        txtUserCodeDestination.setText(StringHelper.toPersianDigits(stationRegisterUser + ""));
-                        txtUserCodeOrigin.setText(StringHelper.toPersianDigits(destStationRegisterUser + ""));
+                        txtUserCodeOrigin.setText(StringHelper.toPersianDigits(stationRegisterUser + ""));
+                        txtUserCodeDestination.setText(StringHelper.toPersianDigits(destStationRegisterUser + ""));
                         txtCustomerName.setText(StringHelper.toPersianDigits(passengerName));
                         txtDate.setText(StringHelper.toPersianDigits(callDate));
                         txtTime.setText(StringHelper.toPersianDigits(callTime));
@@ -474,13 +479,12 @@ public class DriverTripsDetailsFragment extends Fragment {
                         txtPlaque.setText(plak.equals("null") ? " " : StringHelper.toPersianDigits(plak));
                         txtServiceFixedComment.setText(customerFixedDes.equals("null") ? " " : StringHelper.toPersianDigits(customerFixedDes));
                         txtDestAddress.setText(StringHelper.toPersianDigits(destination));
-                        txtDestStation.setText(StringHelper.toPersianDigits(destinationStation));
 
+                        txtDestStation.setText(StringHelper.toPersianDigits(destinationStation));
                         if (!dateToCome.isEmpty()) {
                             String date = DateHelper.strPersianTree(DateHelper.parseDate(dateToCome));
                             txtTimeToCome.setText(StringHelper.toPersianDigits(date) + " ساعت " + StringHelper.toPersianDigits(timeToCome.substring(0, 5)));
                         }
-
                         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
                             Drawable bg_blue_border_edge = AppCompatResources.getDrawable(context, R.drawable.bg_blue_border_edge);
                             llHeaderStatus.setBackground(bg_blue_border_edge);
@@ -552,12 +556,26 @@ public class DriverTripsDetailsFragment extends Fragment {
     }
 
     private void cancelService() {
-        LoadingDialog.makeCancelableLoader();
-        RequestHelper.builder(EndPoints.CANCEL)
-                .addParam("serviceId", serviceId)
-                .addParam("scope", "driver")
-                .listener(onCancelService)
-                .post();
+
+        String driverMessage = "اپراتور گرامی، این تماس از سمت راننده میباشد و امکان لغو سرویس میسر نیست.\n" +
+                "اگر راننده خود را به عنوان مسافر معرفی کرده و درخواست لغو سفرش را دارد، با همین موضوع ثبت خطا کنید.";
+
+        if (MyApplication.prefManager.getLastCallerId().trim().equals(driverMobile.trim()) || MyApplication.prefManager.getLastCallerId().trim().equals(carMobile.trim())) {
+            new GeneralDialog()
+                    .title("هشدار")
+                    .message(driverMessage)
+                    .cancelable(false)
+                    .firstButton("باشه", null)
+                    .show();
+        } else {
+            LoadingDialog.makeCancelableLoader();
+            RequestHelper.builder(EndPoints.CANCEL)
+                    .addParam("serviceId", serviceId)
+                    .addParam("scope", "passenger")
+                    .listener(onCancelService)
+                    .post();
+        }
+
     }
 
     RequestHelper.Callback onCancelService = new RequestHelper.Callback() {
@@ -610,7 +628,6 @@ public class DriverTripsDetailsFragment extends Fragment {
                 LoadingDialog.dismissCancelableDialog();
             });
         }
-
     };
 
     private void trackingAgain() {
@@ -679,11 +696,11 @@ public class DriverTripsDetailsFragment extends Fragment {
     private void archiveAddress() {
         LoadingDialog.makeCancelableLoader();
         RequestHelper.builder(EndPoints.DELETE_ADDRESS)
-                .addParam("phoneNumber", passengerPhone)
-                .addParam("adrs", passengerAddress)
-                .addParam("mobile", customerMobile)
+                .addParam("passengerId",passengerId)
+                .addParam("addressId", originId)
+                .addParam("type","origin")
                 .listener(onArchiveAddress)
-                .put();
+                .delete();
     }
 
     RequestHelper.Callback onArchiveAddress = new RequestHelper.Callback() {

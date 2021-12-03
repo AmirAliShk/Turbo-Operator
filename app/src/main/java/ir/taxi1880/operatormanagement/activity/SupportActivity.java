@@ -48,7 +48,7 @@ import ir.taxi1880.operatormanagement.dataBase.DataBase;
 import ir.taxi1880.operatormanagement.dialog.GeneralDialog;
 import ir.taxi1880.operatormanagement.dialog.LoadingDialog;
 import ir.taxi1880.operatormanagement.fragment.PendingMistakesFragment;
-import ir.taxi1880.operatormanagement.fragment.SupportDriverTripsFragment;
+import ir.taxi1880.operatormanagement.fragment.DriverTripSupportFragment;
 import ir.taxi1880.operatormanagement.helper.FragmentHelper;
 import ir.taxi1880.operatormanagement.helper.KeyBoardHelper;
 import ir.taxi1880.operatormanagement.helper.ThemeHelper;
@@ -144,7 +144,7 @@ public class SupportActivity extends AppCompatActivity {
     @OnClick(R.id.imgOpenDriverSupport)
     void onPressOpenDriverSupport() {
         new PendingMistakesFragment().pauseVoice();
-        FragmentHelper.toFragment(MyApplication.currentActivity, new SupportDriverTripsFragment()).replace();
+        FragmentHelper.toFragment(MyApplication.currentActivity, new DriverTripSupportFragment()).replace();
     }
 
     @BindView(R.id.imgHelpWarning)
@@ -161,7 +161,7 @@ public class SupportActivity extends AppCompatActivity {
             Address address = call.getRemoteAddress();
             Bundle b = new Bundle();
             b.putString("number", address.getUsername());
-            FragmentHelper.toFragment(MyApplication.currentActivity, new SupportDriverTripsFragment()).setArguments(b).replace();
+            FragmentHelper.toFragment(MyApplication.currentActivity, new DriverTripSupportFragment()).setArguments(b).replace();
 //      if (getMobileNumber().isEmpty() && isTellValidable)
 //        MyApplication.handler.postDelayed(() -> onPressDownload(), 400);
         } else if (calls.length > 0) {
@@ -254,7 +254,7 @@ public class SupportActivity extends AppCompatActivity {
 
         Intent intent = getIntent();
         if (intent.getBooleanExtra("comeFromCallActivity", false)) {
-            MyApplication.handler.postDelayed(() -> FragmentHelper.toFragment(MyApplication.currentActivity, new SupportDriverTripsFragment()).replace(), 400);
+            MyApplication.handler.postDelayed(() -> FragmentHelper.toFragment(MyApplication.currentActivity, new DriverTripSupportFragment()).replace(), 400);
         }
 
         if (MyApplication.prefManager.isActiveInSupport()) {

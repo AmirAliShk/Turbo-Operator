@@ -13,7 +13,7 @@ import android.widget.LinearLayout;
 import android.widget.Toast;
 import ir.taxi1880.operatormanagement.R;
 import ir.taxi1880.operatormanagement.app.MyApplication;
-import ir.taxi1880.operatormanagement.fragment.TripSupportFragment;
+import ir.taxi1880.operatormanagement.fragment.PassengerTripSupportFragment;
 import ir.taxi1880.operatormanagement.helper.FragmentHelper;
 import ir.taxi1880.operatormanagement.helper.KeyBoardHelper;
 import ir.taxi1880.operatormanagement.helper.TypefaceUtil;
@@ -64,7 +64,7 @@ public class TripOptionDialog {
         if (MyApplication.prefManager.getCustomerSupport() == 1) {
             llSupport.setVisibility(View.VISIBLE);
             llSupport.setOnClickListener(view -> {
-                FragmentHelper.toFragment(MyApplication.currentActivity, new TripSupportFragment()).replace();
+                FragmentHelper.toFragment(MyApplication.currentActivity, new PassengerTripSupportFragment()).replace();
                 dismiss();
             });
         } else {

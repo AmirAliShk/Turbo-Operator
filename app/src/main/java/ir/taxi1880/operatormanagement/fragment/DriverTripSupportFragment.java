@@ -54,7 +54,7 @@ import ir.taxi1880.operatormanagement.model.TripModel;
 import ir.taxi1880.operatormanagement.okHttp.RequestHelper;
 import ir.taxi1880.operatormanagement.services.LinphoneService;
 
-public class SupportDriverTripsFragment extends Fragment {
+public class DriverTripSupportFragment extends Fragment {
     Unbinder unbinder;
     View view;
     ArrayList<TripModel> tripModels;
@@ -282,7 +282,7 @@ public class SupportDriverTripsFragment extends Fragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        view = inflater.inflate(R.layout.fragment_support_driver_trip, container, false);
+        view = inflater.inflate(R.layout.fragment_driver_trip_support, container, false);
         unbinder = ButterKnife.bind(this, view);
         TypefaceUtil.overrideFonts(view);
         TypefaceUtil.overrideFonts(llDriverInfo, MyApplication.IraSanSMedume);

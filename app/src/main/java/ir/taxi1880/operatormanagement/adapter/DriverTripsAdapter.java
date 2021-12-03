@@ -19,7 +19,7 @@ import java.util.ArrayList;
 
 import ir.taxi1880.operatormanagement.R;
 import ir.taxi1880.operatormanagement.app.MyApplication;
-import ir.taxi1880.operatormanagement.fragment.DriverTripsDetailsFragment;
+import ir.taxi1880.operatormanagement.fragment.DriverTripSupportDetailsFragment;
 import ir.taxi1880.operatormanagement.helper.FragmentHelper;
 import ir.taxi1880.operatormanagement.helper.KeyBoardHelper;
 import ir.taxi1880.operatormanagement.helper.StringHelper;
@@ -74,7 +74,7 @@ public class DriverTripsAdapter extends RecyclerView.Adapter<DriverTripsAdapter.
         holder.itemView.setOnClickListener(view -> {
             Bundle bundle = new Bundle();
             bundle.putInt("id", Integer.parseInt(tripModel.getServiceId()));
-            FragmentHelper.toFragment(MyApplication.currentActivity, new DriverTripsDetailsFragment()).setArguments(bundle).add();
+            FragmentHelper.toFragment(MyApplication.currentActivity, new DriverTripSupportDetailsFragment()).setArguments(bundle).add();
             KeyBoardHelper.hideKeyboard();
         });
     }

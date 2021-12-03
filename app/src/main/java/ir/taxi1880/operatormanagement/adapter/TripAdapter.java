@@ -19,14 +19,12 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import ir.taxi1880.operatormanagement.R;
 import ir.taxi1880.operatormanagement.app.MyApplication;
-import ir.taxi1880.operatormanagement.fragment.TripDetailsFragment;
+import ir.taxi1880.operatormanagement.fragment.PassengerTripSupportDetailsFragment;
 import ir.taxi1880.operatormanagement.helper.FragmentHelper;
 import ir.taxi1880.operatormanagement.helper.KeyBoardHelper;
 import ir.taxi1880.operatormanagement.helper.StringHelper;
 import ir.taxi1880.operatormanagement.helper.TypefaceUtil;
 import ir.taxi1880.operatormanagement.model.TripModel;
-
-import static ir.taxi1880.operatormanagement.app.MyApplication.context;
 
 public class TripAdapter extends RecyclerView.Adapter<TripAdapter.TripViewHolder> {
 
@@ -75,7 +73,7 @@ public class TripAdapter extends RecyclerView.Adapter<TripAdapter.TripViewHolder
         holder.itemView.setOnClickListener(view -> {
             Bundle bundle = new Bundle();
             bundle.putInt("id", Integer.parseInt(tripModel.getServiceId()));
-            FragmentHelper.toFragment(MyApplication.currentActivity, new TripDetailsFragment()).setArguments(bundle).add();
+            FragmentHelper.toFragment(MyApplication.currentActivity, new PassengerTripSupportDetailsFragment()).setArguments(bundle).add();
             KeyBoardHelper.hideKeyboard();
         });
     }
