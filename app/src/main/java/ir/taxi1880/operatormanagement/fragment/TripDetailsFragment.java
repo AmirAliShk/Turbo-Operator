@@ -236,6 +236,11 @@ public class TripDetailsFragment extends Fragment {
                 .show();
     }
 
+    @OnClick(R.id.btnRewardTip)
+    void onTripReward(){
+
+    }
+
     @OnClick(R.id.btnEditAddress)
     void onEditAddress() {
         new ErrorAddressDialog().show(passengerAddress, serviceId+"");

@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layoutDirection="rtl">
+
+    <View
+        android:id="@+id/blrView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="?attr/colorBgDialogTransparent" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_centerInParent="true"
+        android:gravity="center"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="15dp"
+            android:layout_marginTop="80dp"
+            android:layout_marginRight="15dp"
+            android:background="@drawable/bg_gray_lite_edge"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:id="@+id/llColor"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:background="@drawable/bg_dialog_header"
+                android:gravity="center"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/txtTitle"
+                    style="@style/dialogTitle"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:text="انعام" />
+
+            </LinearLayout>
+
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_margin="10dp"
+                android:layout_weight="0.7"
+                android:background="@drawable/bg_edit_text"
+                android:elevation="3dp"
+                android:gravity="center"
+                android:orientation="horizontal">
+
+                <EditText
+                    android:id="@+id/txtNumber"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_margin="1.5dp"
+                    android:layout_weight="80"
+                    android:gravity="center"
+                    android:inputType="number"
+                    android:padding="5dp"
+                    android:textAppearance="?android:attr/textAppearanceLarge"
+                    android:textColor="?attr/colorValue"
+                    app:boxBackgroundMode="none" />
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_marginVertical="1.5dp"
+                    android:layout_weight="15"
+                    android:gravity="center"
+                    android:padding="5dp"
+                    android:text="@string/Toman"
+                    android:textAppearance="?android:attr/textAppearanceLarge"
+                    android:textColor="?attr/colorValue" />
+
+
+            </LinearLayout>
+
+            <Button
+                android:id="@+id/btnSubmit"
+                android:layout_width="170dp"
+                android:layout_height="0dp"
+                android:layout_gravity="center"
+                android:layout_marginBottom="10dp"
+                android:layout_weight="0.5"
+                android:background="@drawable/bg_circle_green"
+                android:minHeight="35dp"
+                android:text="ثبت"
+                android:textAppearance="?android:attr/textAppearanceLarge"
+                android:textColor="?attr/colorPageTitle"
+                android:textStyle="bold" />
+
+        </LinearLayout>
+
+        <ImageView
+            android:id="@+id/imgClose"
+            android:layout_width="80dp"
+            android:layout_height="80dp"
+            android:padding="20dp"
+            android:src="@drawable/ic_close_black_24dp" />
+
+    </LinearLayout>
+
+</RelativeLayout>

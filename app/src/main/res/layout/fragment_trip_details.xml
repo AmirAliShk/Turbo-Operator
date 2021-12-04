@@ -71,12 +71,12 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <com.wang.avi.AVLoadingIndicatorView
-            android:layout_width="50dp"
-            android:layout_height="50dp"
-            android:layout_gravity="center"
-            app:indicatorColor="?attr/colorIcon1"
-            app:indicatorName="BallSpinFadeLoaderIndicator" />
+<!--        <com.wang.avi.AVLoadingIndicatorView-->
+<!--            android:layout_width="50dp"-->
+<!--            android:layout_height="50dp"-->
+<!--            android:layout_gravity="center"-->
+<!--            app:indicatorColor="?attr/colorIcon1"-->
+<!--            app:indicatorName="BallSpinFadeLoaderIndicator" />-->
 
         <ScrollView
             android:layout_width="match_parent"
@@ -915,6 +915,22 @@
                         android:text="@string/disposal" />
 
                 </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <Button
+                        android:id="@+id/btnRewardTip"
+                        style="@style/button"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="@string/rewardForTrip" />
+
+                </LinearLayout>
+
 
             </LinearLayout>
 
