@@ -57,7 +57,7 @@
                 android:orientation="horizontal">
 
                 <EditText
-                    android:id="@+id/txtNumber"
+                    android:id="@+id/edtReward"
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:layout_margin="1.5dp"

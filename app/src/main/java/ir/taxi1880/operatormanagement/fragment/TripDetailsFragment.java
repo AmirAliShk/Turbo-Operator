@@ -37,6 +37,7 @@ import ir.taxi1880.operatormanagement.dialog.ErrorRegistrationDialog;
 import ir.taxi1880.operatormanagement.dialog.GeneralDialog;
 import ir.taxi1880.operatormanagement.dialog.LoadingDialog;
 import ir.taxi1880.operatormanagement.dialog.LostDialog;
+import ir.taxi1880.operatormanagement.dialog.RewardTripDialog;
 import ir.taxi1880.operatormanagement.helper.DateHelper;
 import ir.taxi1880.operatormanagement.helper.FragmentHelper;
 import ir.taxi1880.operatormanagement.helper.KeyBoardHelper;
@@ -105,7 +106,6 @@ public class TripDetailsFragment extends Fragment {
 
     @BindView(R.id.txtTripType)
     TextView txtTripType;
-
 
     @BindView(R.id.txtCity)
     TextView txtCity;
@@ -237,13 +237,20 @@ public class TripDetailsFragment extends Fragment {
     }
 
     @OnClick(R.id.btnRewardTip)
-    void onTripReward(){
+    void onTripReward() {
+        String liveNumber = MyApplication.prefManager.getLastCallerId();
+        if(liveNumber.equals(passengerPhone) || liveNumber.equals(customerMobile)){
+            new RewardTripDialog().show();
+        }else
+        {
+            MyApplication.Toast("سرویس به این مشتری تعلق ندارد",2);
+        }
 
     }
 
     @OnClick(R.id.btnEditAddress)
     void onEditAddress() {
-        new ErrorAddressDialog().show(passengerAddress, serviceId+"");
+        new ErrorAddressDialog().show(passengerAddress, serviceId + "");
     }
 
     @OnClick(R.id.btnDriverLocation)
@@ -272,17 +279,17 @@ public class TripDetailsFragment extends Fragment {
     void onError() {
 //        String cityName= new DataBase(MyApplication.context).getCityName2(cityCode);
         new ErrorRegistrationDialog()
-                .show(serviceId+"", passengerPhone, customerMobile, passengerAddress, passengerName, voipId, cityCode, stationCode, userId, callTime, callDate, price, destinationStation, destination);
+                .show(serviceId + "", passengerPhone, customerMobile, passengerAddress, passengerName, voipId, cityCode, stationCode, userId, callTime, callDate, price, destinationStation, destination);
     }
 
     @OnClick(R.id.btnComplaintRegistration)
     void onComplaint() {
-        new ComplaintRegistrationDialog().show(serviceId+"", voipId);
+        new ComplaintRegistrationDialog().show(serviceId + "", voipId);
     }
 
     @OnClick(R.id.btnLost)
     void onLost() {
-        new LostDialog().show(serviceId+"", passengerName, passengerPhone, taxiCode, false);
+        new LostDialog().show(serviceId + "", passengerName, passengerPhone, taxiCode, false);
     }
 
     @OnClick(R.id.btnDriverLock)
@@ -701,9 +708,9 @@ public class TripDetailsFragment extends Fragment {
     private void archiveAddress() {
         LoadingDialog.makeCancelableLoader();
         RequestHelper.builder(EndPoints.DELETE_ADDRESS)
-                .addParam("passengerId",passengerId)
+                .addParam("passengerId", passengerId)
                 .addParam("addressId", originId)
-                .addParam("type","origin")
+                .addParam("type", "origin")
                 .listener(onArchiveAddress)
                 .delete();
     }
