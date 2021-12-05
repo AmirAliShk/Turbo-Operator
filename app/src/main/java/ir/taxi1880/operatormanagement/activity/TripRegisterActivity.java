@@ -19,6 +19,7 @@ import android.view.WindowManager;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
+import android.widget.MultiAutoCompleteTextView;
 import android.widget.RadioButton;
 import android.widget.Toast;
 
@@ -41,6 +42,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 
 import ir.taxi1880.operatormanagement.R;
+import ir.taxi1880.operatormanagement.adapter.AddressAdapter;
 import ir.taxi1880.operatormanagement.adapter.SpinnerAdapter;
 import ir.taxi1880.operatormanagement.app.DataHolder;
 import ir.taxi1880.operatormanagement.app.EndPoints;
@@ -61,6 +63,7 @@ import ir.taxi1880.operatormanagement.helper.PhoneNumberValidation;
 import ir.taxi1880.operatormanagement.helper.StringHelper;
 import ir.taxi1880.operatormanagement.helper.ThemeHelper;
 import ir.taxi1880.operatormanagement.helper.TypefaceUtil;
+import ir.taxi1880.operatormanagement.model.AddressArr;
 import ir.taxi1880.operatormanagement.model.AddressesModel;
 import ir.taxi1880.operatormanagement.model.CallModel;
 import ir.taxi1880.operatormanagement.model.CityModel;
@@ -601,11 +604,11 @@ public class TripRegisterActivity extends AppCompatActivity {
                 binding.edtOriginAddress.getText().clear();
             }
 
-            String result = editable.toString().replaceAll("  ", " ");
-            if (!editable.toString().equals(result)) {
-                binding.edtOriginAddress.setText(result);
-//                ed.setSelection(result.length());
-            }
+//            String result = editable.toString().replaceAll("  ", " ");
+//            if (!editable.toString().equals(result)) {
+//                binding.edtOriginAddress.setText(result);
+////                ed.setSelection(result.length());
+//            }
         }
     };
 
@@ -630,11 +633,11 @@ public class TripRegisterActivity extends AppCompatActivity {
                 binding.edtDestinationAddress.getText().clear();
             }
 
-            String result = editable.toString().replaceAll("  ", " ");
-            if (!editable.toString().equals(result)) {
-                binding.edtDestinationAddress.setText(result);
-//                ed.setSelection(result.length());
-            }
+//            String result = editable.toString().replaceAll("  ", " ");
+//            if (!editable.toString().equals(result)) {
+//                binding.edtDestinationAddress.setText(result);
+////                ed.setSelection(result.length());
+//            }
         }
     };
 
@@ -871,7 +874,7 @@ public class TripRegisterActivity extends AppCompatActivity {
                         JSONArray destinationAddressArr = dataObj.getJSONArray("destinationAddress");
 
                         originAddresses = new ArrayList<>();
-                        ArrayList<String> originAutoAddresses = new ArrayList<>();
+                        ArrayList<AddressArr> originAutoAddresses = new ArrayList<>();
                         for (int i = 0; i < originAddressArr.length(); i++) {
                             JSONObject jsonAddress = originAddressArr.getJSONObject(i);
 
@@ -879,8 +882,11 @@ public class TripRegisterActivity extends AppCompatActivity {
                             String AddressId = jsonAddress.getString("_id");
                             int AddressStation = jsonAddress.getInt("station");
 
+                            AddressArr arr  = new AddressArr();
+                            arr.address = Address;
+
                             originAddresses.add(new AddressesModel(Address, AddressStation, AddressId));
-                            originAutoAddresses.add(Address);
+                            originAutoAddresses.add(arr);
 
                             if (i == 0) {
                                 originAddress = Address;
@@ -891,7 +897,7 @@ public class TripRegisterActivity extends AppCompatActivity {
                                 originAddressChangeCounter = 0;
                             }
                         }
-                        ArrayAdapter<String> originArrayAdapter = new ArrayAdapter<>(MyApplication.context, android.R.layout.simple_dropdown_item_1line, originAutoAddresses);
+                        AddressAdapter originArrayAdapter = new AddressAdapter(MyApplication.context, android.R.layout.simple_dropdown_item_1line, R.id.lbl_address,originAutoAddresses);
                         binding.edtOriginAddress.setAdapter(originArrayAdapter);
                         binding.edtOriginAddress.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                             @Override
@@ -914,7 +920,7 @@ public class TripRegisterActivity extends AppCompatActivity {
                         });
 
                         destinationAddresses = new ArrayList<>();
-                        ArrayList<String> destinationAutoAddresses = new ArrayList<>();
+                        ArrayList<AddressArr> destinationAutoAddresses = new ArrayList<>();
                         for (int i = 0; i < destinationAddressArr.length(); i++) {
                             JSONObject jsonAddress = destinationAddressArr.getJSONObject(i);
 
@@ -922,11 +928,15 @@ public class TripRegisterActivity extends AppCompatActivity {
                             String AddressId = jsonAddress.getString("_id");
                             int AddressStation = jsonAddress.getInt("station");
 
+                            AddressArr arr  = new AddressArr();
+                            arr.address = Address;
+
                             destinationAddresses.add(new AddressesModel(Address, AddressStation, AddressId));
-                            destinationAutoAddresses.add(Address);
+                            destinationAutoAddresses.add(arr);
                         }
-                        ArrayAdapter<String> destinationArrayAdapter = new ArrayAdapter<>(MyApplication.context, android.R.layout.simple_dropdown_item_1line, destinationAutoAddresses);
+                        AddressAdapter destinationArrayAdapter = new AddressAdapter(MyApplication.context, android.R.layout.simple_dropdown_item_1line, R.id.lbl_address,destinationAutoAddresses);
                         binding.edtDestinationAddress.setAdapter(destinationArrayAdapter);
+                        binding.edtDestinationAddress.showDropDown();
                         binding.edtDestinationAddress.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                             @Override
                             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
