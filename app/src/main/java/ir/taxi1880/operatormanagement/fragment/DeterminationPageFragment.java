@@ -37,6 +37,7 @@ import ir.taxi1880.operatormanagement.app.EndPoints;
 import ir.taxi1880.operatormanagement.app.MyApplication;
 import ir.taxi1880.operatormanagement.dataBase.DBTripModel;
 import ir.taxi1880.operatormanagement.dataBase.DataBase;
+import ir.taxi1880.operatormanagement.databinding.FragmentDeterminationPageBinding;
 import ir.taxi1880.operatormanagement.dialog.EditPassengerAddressDialog;
 import ir.taxi1880.operatormanagement.dialog.GeneralDialog;
 import ir.taxi1880.operatormanagement.dialog.LoadingDialog;
@@ -50,6 +51,7 @@ import ir.taxi1880.operatormanagement.helper.TypefaceUtil;
 import ir.taxi1880.operatormanagement.okHttp.RequestHelper;
 
 public class DeterminationPageFragment extends Fragment {
+    FragmentDeterminationPageBinding binding;
     String TAG = DeterminationPageFragment.class.getSimpleName();
     String LOG = "STATION_REGISTER --> ";
     boolean doubleBackPressedOnce = false;
@@ -67,225 +69,11 @@ public class DeterminationPageFragment extends Fragment {
     Timer timer;
     DBTripModel tripModel;
 
-    @OnClick(R.id.imgBack)
-    void onBack() {
-        MyApplication.currentActivity.onBackPressed();
-    }
-
-    @BindView(R.id.gridNumber)
-    GridLayout gridNumber;
-
-    @BindView(R.id.vfStationInfo)
-    ViewFlipper vfStationInfo;
-
-    @BindView(R.id.imgRefresh)
-    ImageView imgRefresh;
-
-    @BindView(R.id.pin)
-    PinView pin;
-
-    @BindView(R.id.txtAddress)
-    TextView txtAddress;
-
-    @BindView(R.id.txtRemainingAddress)
-    TextView txtRemainingAddress;
-
-    @BindView(R.id.btnActivate)
-    Button btnActivate;
-
-    @BindView(R.id.btnDeActivate)
-    Button btnDeActivate;
-
-    @BindView(R.id.imgNextAddress)
-    ImageView imgNextAddress;
-
-    @OnClick(R.id.imgDelete)
-    void onDelete() {
-        pin.setText("");
-    }
-
-    @OnClick(R.id.btnSubmit)
-    void onSubmit() {
-        Log.i(TAG, "onSubmit: " + pin.getText().toString());
-        if (pin.getText().toString().isEmpty()) {
-            MyApplication.Toast("لطفا شماره ایستگاه را وارد کنید", Toast.LENGTH_SHORT);
-            return;
-        }
-        if (dataBase.getRemainingAddress() == 0) {
-            MyApplication.Toast("آدرسی برای ثبت موجود نیست", Toast.LENGTH_SHORT);
-            pin.setText("");
-        }
-
-        String station = pin.getText().toString();
-        String code = StringHelper.toEnglishDigits(station);
-
-        if (pressSubmit) {
-            if (bothStationAreZero) {
-                dataBase.updateOriginStation(dataBase.getTopAddress().getId(), Integer.parseInt(station));
-            } else if (isOriginZero) {
-                dataBase.updateOriginStation(dataBase.getTopAddress().getId(), Integer.parseInt(station));
-                Log.i(LOG, "onSubmit1: " + dataBase.getTopAddress().getOriginStation() + "/:" + dataBase.getTopAddress().getDestinationStation() + "/:" + dataBase.getTopAddress().getId());
-                setStationCode(dataBase.getTopAddress().getOriginStation() + "", dataBase.getTopAddress().getDestinationStation() + "");
-            } else if (isDestinationZero) {
-                Log.i(LOG, "onSubmit:2 origin:" + txtAddress.getText());
-                Log.i(LOG, "onSubmit:2 DB: origin" + dataBase.getTopAddress().getOriginText() + " DEst:" + dataBase.getTopAddress().getDestination());
-                dataBase.updateDestinationStation(dataBase.getTopAddress().getId(), Integer.parseInt(station));
-                Log.i(LOG, "onSubmit:2 " + dataBase.getTopAddress().getOriginStation() + "/: " + dataBase.getTopAddress().getDestinationStation() + "/:" + dataBase.getTopAddress().getId() + "" + isOriginZero);
-                setStationCode(dataBase.getTopAddress().getOriginStation() + "", dataBase.getTopAddress().getDestinationStation() + "");
-            }
-            pin.setText("");
-            txtAddress.setText(showAddress());
-        } else {
-            this.pressSubmit = true;
-            MyApplication.handler.postDelayed(() -> pressSubmit = false, 300);
-        }
-    }
-
-    @OnClick(R.id.imgSearch)
-    void onSearch() {
-        if (dataBase.getRemainingAddress() == 0) {
-            if (pin.getText().toString().isEmpty()) {
-                new SearchStationInfoDialog().show(stationCode -> pin.setText(stationCode), 0, false, "", true);
-            } else {
-                new SearchStationInfoDialog().show(stationCode -> pin.setText(stationCode), 0, false, StringHelper.toEnglishDigits(pin.getText().toString()), true);
-            }
-        } else {
-            if (pin.getText().toString().isEmpty()) {
-                new SearchStationInfoDialog().show(stationCode -> pin.setText(stationCode), dataBase.getTopAddress().getCity(), false, "", true);
-            } else {
-                new SearchStationInfoDialog().show(stationCode -> pin.setText(stationCode), dataBase.getTopAddress().getCity(), false, StringHelper.toEnglishDigits(pin.getText().toString()), true);
-            }
-        }
-
-//        String origin = pin.getText().toString();
-//        if (origin.isEmpty()) {
-//            MyApplication.Toast("لطفا شماره ایستگاه را وارد کنید", Toast.LENGTH_SHORT);
-//            return;
-//        }
-//        getStationInfo(origin);
-    }
-
-    @OnClick(R.id.imgSetMistake)
-    void onSetMistake() {
-        if (!MyApplication.prefManager.isStartGettingAddress()) {
-            MyApplication.Toast("لطفا فعال شوید", Toast.LENGTH_SHORT);
-            return;
-        }
-        if (dataBase.getRemainingAddress() == 0) {
-            MyApplication.Toast("موردی برای ثبت موجود نیست", Toast.LENGTH_SHORT);
-            return;
-        }
-
-        new GeneralDialog()
-                .title("هشدار")
-                .message("آیا از اشتباه بودن آدرس اطمینان دارید؟")
-                .cancelable(false)
-                .firstButton("بله", () -> setMistake())
-                .secondButton("خیر", null)
-                .show();
-
-    }
-
-    @OnClick(R.id.imgPlayVoice)
-    void onPressPlayVoice() {
-        if (dataBase.getRemainingAddress() == 0) {
-            MyApplication.Toast("مکالمه ای موجود نیست", Toast.LENGTH_SHORT);
-            pin.setText("");
-            return;
-        }
-
-        new PlayLastConversationDialog().show(dataBase.getTopAddress().getId(), EndPoints.CALL_VOICE + dataBase.getTopAddress().getVoipId());
-    }
-
-    @OnClick(R.id.imgNextAddress)
-    void onNextAddress() {
-        if (dataBase.getRemainingAddress() > 1) {
-            dataBase.updateNextRecord(dataBase.getTopAddress().getId());
-            txtAddress.setText(showAddress());
-            //show text of next record
-        } else {
-            MyApplication.Toast("موردی برای نمایش موجود نیست", Toast.LENGTH_SHORT);
-        }
-    }
-
-    @OnClick(R.id.llRefresh)
-    void onPressRefresh() {
-        if (!MyApplication.prefManager.isStartGettingAddress()) {
-            MyApplication.Toast("لطفا فعال شوید", Toast.LENGTH_SHORT);
-            return;
-        }
-        pressedRefresh = true;
-        pin.setText("");
-        imgRefresh.startAnimation(AnimationUtils.loadAnimation(MyApplication.context, R.anim.rotate));
-        getAddressList();
-//        MyApplication.handler.postDelayed(() -> getAddressList(), 500);
-
-    }
-
-    @OnClick(R.id.btnActivate)
-    void onActivePress() {
-        changeStatus(true);
-    }
-
-    @OnClick(R.id.btnDeActivate)
-    void onDeActivePress() {
-        changeStatus(false);
-    }
-
-    @OnClick(R.id.imgEdit)
-    void onEdit() {
-        if (dataBase.getRemainingAddress() == 0) {
-            MyApplication.Toast("آدرسی موجود نیست...", Toast.LENGTH_SHORT);
-            pin.setText("");
-            return;
-        }
-        String originAddress = "";
-        String destinationAddress = "";
-        if (bothStationAreZero) {
-            originAddress = dataBase.getTopAddress().getOriginText();
-            destinationAddress = dataBase.getTopAddress().getDestination();
-        } else if (isOriginZero) {
-            originAddress = dataBase.getTopAddress().getOriginText();
-        } else if (isDestinationZero) {
-            destinationAddress = dataBase.getTopAddress().getDestination();
-        }
-        new EditPassengerAddressDialog().show(dataBase.getTopAddress(), (success, message) -> {
-            if (success) {
-                if (dataBase.getRemainingAddress() > 0)
-                    dataBase.deleteRow(dataBase.getTopAddress().getId());
-                txtAddress.setText(showAddress());
-                if (pin != null)
-                    pin.setText("");
-            } else {
-                new GeneralDialog()
-                        .title("هشدار")
-                        .message(message)
-                        .secondButton("باشه", null)
-                        .cancelable(false)
-                        .show();
-            }
-        });
-    }
-
-    @OnClick(R.id.txtAddress)
-    void onAddress() {
-        if (doubleBackPressedOnce) {
-            if (dataBase.getRemainingAddress() == 0) {
-                new SearchStationInfoDialog().show(stationCode -> pin.setText(stationCode), 0, true, "", true);
-            } else {
-                new SearchStationInfoDialog().show(stationCode -> pin.setText(stationCode), dataBase.getTopAddress().getCity(), true, "", true);
-            }
-        } else {
-            doubleBackPressedOnce = true;
-            new Handler().postDelayed(() -> doubleBackPressedOnce = false, 1500);
-        }
-    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_determination_page, container, false);
-        unbinder = ButterKnife.bind(this, view);
-        TypefaceUtil.overrideFonts(view);
+        binding = FragmentDeterminationPageBinding.inflate(inflater, container, false);
+        TypefaceUtil.overrideFonts(binding.getRoot());
 
         dataBase = new DataBase(MyApplication.context);
 
@@ -293,11 +81,11 @@ public class DeterminationPageFragment extends Fragment {
         changeStatus(MyApplication.prefManager.isStartGettingAddress());
 
         for (int numberCount = 0; numberCount < 10; numberCount++) {
-            View grid = gridNumber.getChildAt(numberCount);
+            View grid = binding.gridNumber.getChildAt(numberCount);
             int count = numberCount;
             grid.setOnClickListener(view1 -> {
                 if (count == 9) {
-                    if (pin.getText().toString().isEmpty()) return;
+                    if (binding.pin.getText().toString().isEmpty()) return;
                     setNumber("0");
                 } else {
                     setNumber(count + 1 + "");
@@ -305,23 +93,165 @@ public class DeterminationPageFragment extends Fragment {
             });
         }
 
-        return view;
+        binding.imgBack.setOnClickListener(V -> MyApplication.currentActivity.onBackPressed());
+        binding.imgDelete.setOnClickListener(v -> binding.pin.setText(""));
+        binding.btnSubmit.setOnClickListener(v -> {
+            Log.i(TAG, "onSubmit: " + binding.pin.getText().toString());
+            if (binding.pin.getText().toString().isEmpty()) {
+                MyApplication.Toast("لطفا شماره ایستگاه را وارد کنید", Toast.LENGTH_SHORT);
+                return;
+            }
+            if (dataBase.getRemainingAddress() == 0) {
+                MyApplication.Toast("آدرسی برای ثبت موجود نیست", Toast.LENGTH_SHORT);
+                binding.pin.setText("");
+            }
+
+            String station = binding.pin.getText().toString();
+            String code = StringHelper.toEnglishDigits(station);
+
+            if (pressSubmit) {
+                if (bothStationAreZero) {
+                    dataBase.updateOriginStation(dataBase.getTopAddress().getId(), Integer.parseInt(station));
+                } else if (isOriginZero) {
+                    dataBase.updateOriginStation(dataBase.getTopAddress().getId(), Integer.parseInt(station));
+                    Log.i(LOG, "onSubmit1: " + dataBase.getTopAddress().getOriginStation() + "/:" + dataBase.getTopAddress().getDestinationStation() + "/:" + dataBase.getTopAddress().getId());
+                    setStationCode(dataBase.getTopAddress().getOriginStation() + "", dataBase.getTopAddress().getDestinationStation() + "");
+                } else if (isDestinationZero) {
+                    Log.i(LOG, "onSubmit:2 origin:" + binding.txtAddress.getText());
+                    Log.i(LOG, "onSubmit:2 DB: origin" + dataBase.getTopAddress().getOriginText() + " DEst:" + dataBase.getTopAddress().getDestination());
+                    dataBase.updateDestinationStation(dataBase.getTopAddress().getId(), Integer.parseInt(station));
+                    Log.i(LOG, "onSubmit:2 " + dataBase.getTopAddress().getOriginStation() + "/: " + dataBase.getTopAddress().getDestinationStation() + "/:" + dataBase.getTopAddress().getId() + "" + isOriginZero);
+                    setStationCode(dataBase.getTopAddress().getOriginStation() + "", dataBase.getTopAddress().getDestinationStation() + "");
+                }
+                binding.pin.setText("");
+                binding.txtAddress.setText(showAddress());
+            } else {
+                this.pressSubmit = true;
+                MyApplication.handler.postDelayed(() -> pressSubmit = false, 300);
+            }
+        });
+        binding.imgSearch.setOnClickListener(v -> {
+            if (dataBase.getRemainingAddress() == 0) {
+                if (binding.pin.getText().toString().isEmpty()) {
+                    new SearchStationInfoDialog().show(stationCode -> binding.pin.setText(stationCode), 0, false, "", true);
+                } else {
+                    new SearchStationInfoDialog().show(stationCode -> binding.pin.setText(stationCode), 0, false, StringHelper.toEnglishDigits(binding.pin.getText().toString()), true);
+                }
+            } else {
+                if (binding.pin.getText().toString().isEmpty()) {
+                    new SearchStationInfoDialog().show(stationCode -> binding.pin.setText(stationCode), dataBase.getTopAddress().getCity(), false, "", true);
+                } else {
+                    new SearchStationInfoDialog().show(stationCode -> binding.pin.setText(stationCode), dataBase.getTopAddress().getCity(), false, StringHelper.toEnglishDigits(binding.pin.getText().toString()), true);
+                }
+            }
+
+//        String origin = binding.pin.getText().toString();
+//        if (origin.isEmpty()) {
+//            MyApplication.Toast("لطفا شماره ایستگاه را وارد کنید", Toast.LENGTH_SHORT);
+//            return;
+//        }
+//        getStationInfo(origin);
+        });
+        binding.imgSetMistake.setOnClickListener(v -> {
+            if (!MyApplication.prefManager.isStartGettingAddress()) {
+                MyApplication.Toast("لطفا فعال شوید", Toast.LENGTH_SHORT);
+                return;
+            }
+            if (dataBase.getRemainingAddress() == 0) {
+                MyApplication.Toast("موردی برای ثبت موجود نیست", Toast.LENGTH_SHORT);
+                return;
+            }
+
+            new GeneralDialog()
+                    .title("هشدار")
+                    .message("آیا از اشتباه بودن آدرس اطمینان دارید؟")
+                    .cancelable(false)
+                    .firstButton("بله", () -> setMistake())
+                    .secondButton("خیر", null)
+                    .show();
+
+        });
+        binding.imgPlayVoice.setOnClickListener(v -> {
+            if (dataBase.getRemainingAddress() == 0) {
+                MyApplication.Toast("مکالمه ای موجود نیست", Toast.LENGTH_SHORT);
+                binding.pin.setText("");
+                return;
+            }
+
+            new PlayLastConversationDialog().show(dataBase.getTopAddress().getId(), EndPoints.CALL_VOICE + dataBase.getTopAddress().getVoipId());
+        });
+        binding.imgNextAddress.setOnClickListener(v -> {
+            if (dataBase.getRemainingAddress() > 1) {
+                dataBase.updateNextRecord(dataBase.getTopAddress().getId());
+                binding.txtAddress.setText(showAddress());
+                //show text of next record
+            } else {
+                MyApplication.Toast("موردی برای نمایش موجود نیست", Toast.LENGTH_SHORT);
+            }
+        });
+        binding.llRefresh.setOnClickListener(v -> {
+            if (!MyApplication.prefManager.isStartGettingAddress()) {
+                MyApplication.Toast("لطفا فعال شوید", Toast.LENGTH_SHORT);
+                return;
+            }
+            pressedRefresh = true;
+            binding.pin.setText("");
+            binding.imgRefresh.startAnimation(AnimationUtils.loadAnimation(MyApplication.context, R.anim.rotate));
+            getAddressList();
+//        MyApplication.handler.postDelayed(() -> getAddressList(), 500);
+
+        });
+        binding.btnActivate.setOnClickListener(v -> changeStatus(true));
+        binding.btnDeActivate.setOnClickListener(v -> changeStatus(false));
+        binding.imgEdit.setOnClickListener(v -> {
+            if (dataBase.getRemainingAddress() == 0) {
+                MyApplication.Toast("آدرسی موجود نیست...", Toast.LENGTH_SHORT);
+                binding.pin.setText("");
+                return;
+            }
+            new EditPassengerAddressDialog().show(dataBase.getTopAddress(), (success, message) -> {
+                if (success) {
+                    if (dataBase.getRemainingAddress() > 0)
+                        dataBase.deleteRow(dataBase.getTopAddress().getId());
+                    binding.txtAddress.setText(showAddress());
+                    binding.pin.setText("");
+                } else {
+                    new GeneralDialog()
+                            .title("هشدار")
+                            .message(message)
+                            .secondButton("باشه", null)
+                            .cancelable(false)
+                            .show();
+                }
+            });
+        });
+        binding.txtAddress.setOnClickListener(v -> {
+            if (doubleBackPressedOnce) {
+                if (dataBase.getRemainingAddress() == 0) {
+                    new SearchStationInfoDialog().show(stationCode -> binding.pin.setText(stationCode), 0, true, "", true);
+                } else {
+                    new SearchStationInfoDialog().show(stationCode -> binding.pin.setText(stationCode), dataBase.getTopAddress().getCity(), true, "", true);
+                }
+            } else {
+                doubleBackPressedOnce = true;
+                new Handler().postDelayed(() -> doubleBackPressedOnce = false, 1500);
+            }
+        });
+        return binding.getRoot();
     }
 
     @SuppressLint("SetTextI18n")
     private void setNumber(String c) {
-        String temp = pin.getText().toString();
+        String temp = binding.pin.getText().toString();
         if (temp.length() == 3) {
-//      pin.setText(StringHelper.toPersianDigits(temp.substring(0, 2) + c));
-//      if (pin.getText().toString().indexOf(0)==0)return;
             if (c.equals("0")) {
-                pin.setText("");
+                binding.pin.setText("");
             } else {
-                pin.setText(StringHelper.toPersianDigits(c));
+                binding.pin.setText(StringHelper.toPersianDigits(c));
             }
         } else {
-//      if (pin.getText().toString().indexOf(0)==0)return;
-            pin.setText(StringHelper.toPersianDigits(temp + c));
+
+            binding.pin.setText(StringHelper.toPersianDigits(temp + c));
         }
     }
 
@@ -344,8 +274,7 @@ public class DeterminationPageFragment extends Fragment {
 
                     if (success) {
                         if (pressedRefresh) {
-                            if (imgRefresh != null)
-                                imgRefresh.clearAnimation();
+                            binding.imgRefresh.clearAnimation();
                             dataBase.deleteAllData();
                         }
 
@@ -353,20 +282,15 @@ public class DeterminationPageFragment extends Fragment {
                             isFinished = true;
                             if (dataBase.getRemainingAddress() > 0) {
                                 dataBase.deleteRemainingRecord(dataBase.getTopAddress().getId());
-                                if (txtAddress != null)
-                                    txtAddress.setText(showAddress());
+                                binding.txtAddress.setText(showAddress());
                             } else {
                                 dataBase.deleteAllData();
-                                if (txtAddress == null) return;
                                 if (!MyApplication.prefManager.isStartGettingAddress()) {
-                                    if (txtAddress != null)
-                                        txtAddress.setText("برای مشاهده آدرس ها فعال شوید");
+                                    binding.txtAddress.setText("برای مشاهده آدرس ها فعال شوید");
                                 } else {
-                                    if (txtAddress != null)
-                                        txtAddress.setText("آدرسی موجود نیست...");
+                                    binding.txtAddress.setText("آدرسی موجود نیست...");
                                 }
-                                if (txtRemainingAddress != null)
-                                    txtRemainingAddress.setText("");
+                                binding.txtRemainingAddress.setText("");
                             }
                         } else {
                             if (dataBase.getRemainingAddress() > 1)
@@ -393,13 +317,11 @@ public class DeterminationPageFragment extends Fragment {
                                     dataBase.insertTripRow(tripModel);
                                 } catch (Exception e) {
                                     e.printStackTrace();
-                                    if (imgRefresh != null)
-                                        imgRefresh.clearAnimation();
+                                    binding.imgRefresh.clearAnimation();
                                 }
                             }
 
-                            if (txtRemainingAddress != null)
-                                txtRemainingAddress.setText("" + dataBase.getRemainingAddress());
+                            binding.txtRemainingAddress.setText("" + dataBase.getRemainingAddress());
 
                             // I can't put setAddress() function here! because I want set address just when the user is enable and is disable and press refresh.
                             // Do you think it never crossed my mind?! ;)
@@ -411,20 +333,17 @@ public class DeterminationPageFragment extends Fragment {
                                     " serviceId= " + dataBase.getTopAddress().getId());
 
                             if (isEnable) {
-                                if (txtAddress != null)
-                                    txtAddress.setText(showAddress());
+                                binding.txtAddress.setText(showAddress());
                                 isEnable = false;
                             }
 
                             if (isFinished) {
-                                if (txtAddress != null)
-                                    txtAddress.setText(showAddress());
+                                binding.txtAddress.setText(showAddress());
                                 isFinished = false;
                             }
 
                             if (pressedRefresh) {
-                                if (txtAddress != null)
-                                    txtAddress.setText(showAddress());
+                                binding.txtAddress.setText(showAddress());
                                 pressedRefresh = false;
                             }
 
@@ -443,8 +362,7 @@ public class DeterminationPageFragment extends Fragment {
                     e.printStackTrace();
                     isFinished = false;
                     pressedRefresh = false;
-                    if (imgRefresh != null)
-                        imgRefresh.clearAnimation();
+                    binding.imgRefresh.clearAnimation();
                 }
             });
         }
@@ -454,8 +372,7 @@ public class DeterminationPageFragment extends Fragment {
             MyApplication.handler.post(() -> {
                 isFinished = false;
                 pressedRefresh = false;
-                if (imgRefresh != null)
-                    imgRefresh.clearAnimation();
+                binding.imgRefresh.clearAnimation();
 
             });
         }
@@ -465,27 +382,21 @@ public class DeterminationPageFragment extends Fragment {
     private void changeStatus(boolean status) {
         if (status) {
             isEnable = true;
-            txtRemainingAddress.setText("");
-            txtAddress.setText("آدرسی موجود نیست...");
+            binding.txtRemainingAddress.setText("");
+            binding.txtAddress.setText("آدرسی موجود نیست...");
             startGetAddressTimer();
             MyApplication.prefManager.setStartGettingAddress(true);
-            if (btnActivate != null)
-                btnActivate.setBackgroundResource(R.drawable.bg_green_edge);
-            if (btnDeActivate != null) {
-                btnDeActivate.setBackgroundColor(Color.parseColor("#00FFB2B2"));
-                btnDeActivate.setTextColor(Color.parseColor("#ffffff"));//todo
-            }
+            binding.btnActivate.setBackgroundResource(R.drawable.bg_green_edge);
+            binding.btnDeActivate.setBackgroundColor(Color.parseColor("#00FFB2B2"));
+            binding.btnDeActivate.setTextColor(Color.parseColor("#ffffff"));//todo
         } else {
             dataBase.deleteAllData();
             MyApplication.prefManager.setStartGettingAddress(false);
             isEnable = false;
             stopGetAddressTimer();
-            if (btnActivate != null)
-                btnActivate.setBackgroundColor(Color.parseColor("#00FFB2B2"));
-            if (btnDeActivate != null) {
-                btnDeActivate.setBackgroundResource(R.drawable.bg_pink_edge);
-                btnDeActivate.setTextColor(Color.parseColor("#ffffff"));
-            }
+            binding.btnActivate.setBackgroundColor(Color.parseColor("#00FFB2B2"));
+            binding.btnDeActivate.setBackgroundResource(R.drawable.bg_pink_edge);
+            binding.btnDeActivate.setTextColor(Color.parseColor("#ffffff"));
         }
     }
 
@@ -511,8 +422,8 @@ public class DeterminationPageFragment extends Fragment {
         if (dataBase.getRemainingAddress() > 0)
             dataBase.deleteRow(dataBase.getTopAddress().getId());
 
-        txtAddress.setText(showAddress());
-        pin.setText("");
+        binding.txtAddress.setText(showAddress());
+        binding.pin.setText("");
     }
 
     RequestHelper.Callback setStationCode = new RequestHelper.Callback() {
@@ -619,8 +530,7 @@ public class DeterminationPageFragment extends Fragment {
     };
 
     private void getStationInfo(String stationCode) {
-        if (vfStationInfo != null)
-            vfStationInfo.setDisplayedChild(1);
+        binding.vfStationInfo.setDisplayedChild(1);
         KeyBoardHelper.hideKeyboard();
         RequestHelper.builder(EndPoints.STATION_INFO)
                 .addPath(StringHelper.toEnglishDigits(stationCode) + "")
@@ -633,8 +543,7 @@ public class DeterminationPageFragment extends Fragment {
         public void onResponse(Runnable reCall, Object... args) {
             MyApplication.handler.post(() -> {
                 try {
-                    if (vfStationInfo != null)
-                        vfStationInfo.setDisplayedChild(0);
+                    binding.vfStationInfo.setDisplayedChild(0);
 
                     KeyBoardHelper.hideKeyboard();
                     JSONObject obj = new JSONObject(args[0].toString());
@@ -659,8 +568,7 @@ public class DeterminationPageFragment extends Fragment {
 
                 } catch (JSONException e) {
                     e.printStackTrace();
-                    if (vfStationInfo != null)
-                        vfStationInfo.setDisplayedChild(0);
+                    binding.vfStationInfo.setDisplayedChild(0);
                 }
             });
         }
@@ -668,8 +576,7 @@ public class DeterminationPageFragment extends Fragment {
         @Override
         public void onFailure(Runnable reCall, Exception e) {
             MyApplication.handler.post(() -> {
-                if (vfStationInfo != null)
-                    vfStationInfo.setDisplayedChild(0);
+                binding.vfStationInfo.setDisplayedChild(0);
             });
         }
     };
@@ -679,20 +586,16 @@ public class DeterminationPageFragment extends Fragment {
             isDestinationZero = false;
             isOriginZero = false;
             bothStationAreZero = false;
-            if (txtAddress == null) return "";
-            if (txtRemainingAddress == null) return "";
 
             if (dataBase.getRemainingAddress() == 0) {
-                if (txtRemainingAddress != null)
-                    txtRemainingAddress.setText("");
+                binding.txtRemainingAddress.setText("");
                 if (!MyApplication.prefManager.isStartGettingAddress()) {
                     return "برای مشاهده آدرس ها فعال شوید";
                 } else {
                     return "آدرسی موجود نیست...";
                 }
             } else {
-                if (txtRemainingAddress != null)
-                    txtRemainingAddress.setText(dataBase.getRemainingAddress() + "");
+                binding.txtRemainingAddress.setText(dataBase.getRemainingAddress() + "");
                 String cityName = dataBase.getCityName2(dataBase.getTopAddress().getCity());
 
                 if (dataBase.getTopAddress().getOriginStation() == 0 && dataBase.getTopAddress().getDestinationStation() == 0 && dataBase.getTopAddress().getPriceable() == 1) {
@@ -766,7 +669,6 @@ public class DeterminationPageFragment extends Fragment {
     @Override
     public void onDestroyView() {
         super.onDestroyView();
-        unbinder.unbind();
     }
 
     @Override
