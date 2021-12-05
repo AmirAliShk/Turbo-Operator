@@ -240,7 +240,7 @@ public class TripDetailsFragment extends Fragment {
     void onTripReward() {
         String liveNumber = MyApplication.prefManager.getLastCallerId();
         if(liveNumber.equals(passengerPhone) || liveNumber.equals(customerMobile)){
-            new RewardTripDialog().show();
+            new RewardTripDialog().show(serviceId);
         }else
         {
             MyApplication.Toast("سرویس به این مشتری تعلق ندارد",2);

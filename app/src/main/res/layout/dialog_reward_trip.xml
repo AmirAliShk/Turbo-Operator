@@ -21,9 +21,9 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="15dp"
+            android:layout_marginLeft="35dp"
             android:layout_marginTop="80dp"
-            android:layout_marginRight="15dp"
+            android:layout_marginRight="35dp"
             android:background="@drawable/bg_gray_lite_edge"
             android:orientation="vertical">
 
@@ -50,7 +50,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
                 android:layout_margin="10dp"
-                android:layout_weight="0.7"
+                android:layout_weight="1"
                 android:background="@drawable/bg_edit_text"
                 android:elevation="3dp"
                 android:gravity="center"
@@ -67,13 +67,13 @@
                     android:padding="5dp"
                     android:textAppearance="?android:attr/textAppearanceLarge"
                     android:textColor="?attr/colorValue"
-                    app:boxBackgroundMode="none" />
+                    android:background="#00000000" />
 
                 <TextView
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:layout_marginVertical="1.5dp"
-                    android:layout_weight="15"
+                    android:layout_weight="20"
                     android:gravity="center"
                     android:padding="5dp"
                     android:text="@string/Toman"
@@ -89,7 +89,7 @@
                 android:layout_height="0dp"
                 android:layout_gravity="center"
                 android:layout_marginBottom="10dp"
-                android:layout_weight="0.5"
+                android:layout_weight="0.7"
                 android:background="@drawable/bg_circle_green"
                 android:minHeight="35dp"
                 android:text="ثبت"
