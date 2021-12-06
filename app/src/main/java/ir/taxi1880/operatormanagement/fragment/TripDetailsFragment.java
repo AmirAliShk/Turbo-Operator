@@ -15,6 +15,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.ViewFlipper;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.content.res.AppCompatResources;
 import androidx.core.graphics.drawable.DrawableCompat;
 import androidx.fragment.app.Fragment;
@@ -200,6 +201,12 @@ public class TripDetailsFragment extends Fragment {
     @BindView(R.id.btnDriverLocation)
     Button btnDriverLocation;
 
+    @BindView(R.id.btnRewardTip)
+    Button btnRewardTip;
+
+    @BindView(R.id.btnDisposal)
+    Button btnDisposal;
+
     @BindView(R.id.imgEndCall)
     ImageView imgEndCall;
 
@@ -240,7 +247,13 @@ public class TripDetailsFragment extends Fragment {
     void onTripReward() {
         String liveNumber = MyApplication.prefManager.getLastCallerId();
         if(liveNumber.equals(passengerPhone) || liveNumber.equals(customerMobile)){
-            new RewardTripDialog().show(serviceId);
+            new RewardTripDialog().show(serviceId, reward -> {
+                int rewardInt  = Integer.parseInt(reward);
+                int priceInt  = Integer.parseInt(price);
+                int total = priceInt + rewardInt;
+                price =  total + "";
+                txtPrice.setText(price.equals("null") ? " " : StringHelper.toPersianDigits(StringHelper.setComma(price)));
+            });
         }else
         {
             MyApplication.Toast("سرویس به این مشتری تعلق ندارد",2);
@@ -553,6 +566,8 @@ public class TripDetailsFragment extends Fragment {
         btnDriverLocation.setEnabled(false);
         btnReFollow.setEnabled(false);
         btnCancelTrip.setEnabled(false);
+        btnRewardTip.setEnabled(false);
+        btnDisposal.setEnabled(false);
         if (isBefore) {
             btnComplaintRegistration.setEnabled(false);
             btnDriverLock.setEnabled(false);
@@ -565,6 +580,10 @@ public class TripDetailsFragment extends Fragment {
         if (btnCancelTrip == null) return;
 //    MyApplication.prefManager.setLastCallerId("");// set empty, because I don't want save this permanently .
         btnReFollow.setEnabled(false);
+        btnDriverLocation.setEnabled(false);
+        btnRewardTip.setEnabled(false);
+        btnCancelTrip.setEnabled(false);
+        btnDisposal.setEnabled(false);
     }
 
     private void cancelService() {

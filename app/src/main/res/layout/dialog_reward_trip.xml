@@ -47,6 +47,7 @@
 
 
             <LinearLayout
+                android:id="@+id/llSpinner"
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
                 android:layout_margin="10dp"
@@ -56,18 +57,16 @@
                 android:gravity="center"
                 android:orientation="horizontal">
 
-                <EditText
-                    android:id="@+id/edtReward"
+                <Spinner
+                    android:id="@+id/rewardSpinner"
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
+                    android:dropDownWidth="match_parent"
                     android:layout_margin="1.5dp"
                     android:layout_weight="80"
                     android:gravity="center"
-                    android:inputType="number"
                     android:padding="5dp"
-                    android:textAppearance="?android:attr/textAppearanceLarge"
-                    android:textColor="?attr/colorValue"
-                    android:background="#00000000" />
+                    android:textColor="?attr/colorValue" />
 
                 <TextView
                     android:layout_width="0dp"
@@ -89,7 +88,7 @@
                 android:layout_height="0dp"
                 android:layout_gravity="center"
                 android:layout_marginBottom="10dp"
-                android:layout_weight="0.7"
+                android:layout_weight="1"
                 android:background="@drawable/bg_circle_green"
                 android:minHeight="35dp"
                 android:text="ثبت"

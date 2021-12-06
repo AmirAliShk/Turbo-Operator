@@ -68,7 +68,7 @@
                 android:text="تلاش مجدد"
                 android:textColor="?attr/colorPageTitle"
                 android:textSize="18dp"
-                android:visibility="invisible"/>
+                android:visibility="gone"/>
 
             <View
                 android:layout_width="8dp"
