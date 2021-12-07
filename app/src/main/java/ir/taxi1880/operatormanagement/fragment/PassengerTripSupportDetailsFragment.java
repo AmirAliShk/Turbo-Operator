@@ -15,6 +15,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.ViewFlipper;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.content.res.AppCompatResources;
 import androidx.core.graphics.drawable.DrawableCompat;
 import androidx.fragment.app.Fragment;
@@ -37,6 +38,7 @@ import ir.taxi1880.operatormanagement.dialog.ErrorRegistrationDialog;
 import ir.taxi1880.operatormanagement.dialog.GeneralDialog;
 import ir.taxi1880.operatormanagement.dialog.LoadingDialog;
 import ir.taxi1880.operatormanagement.dialog.LostDialog;
+import ir.taxi1880.operatormanagement.dialog.RewardTripDialog;
 import ir.taxi1880.operatormanagement.helper.DateHelper;
 import ir.taxi1880.operatormanagement.helper.FragmentHelper;
 import ir.taxi1880.operatormanagement.helper.KeyBoardHelper;
@@ -105,7 +107,6 @@ public class PassengerTripSupportDetailsFragment extends Fragment {
 
     @BindView(R.id.txtTripType)
     TextView txtTripType;
-
 
     @BindView(R.id.txtCity)
     TextView txtCity;
@@ -200,6 +201,12 @@ public class PassengerTripSupportDetailsFragment extends Fragment {
     @BindView(R.id.btnDriverLocation)
     Button btnDriverLocation;
 
+    @BindView(R.id.btnRewardTip)
+    Button btnRewardTip;
+
+    @BindView(R.id.btnDisposal)
+    Button btnDisposal;
+
     @BindView(R.id.imgEndCall)
     ImageView imgEndCall;
 
@@ -236,9 +243,27 @@ public class PassengerTripSupportDetailsFragment extends Fragment {
                 .show();
     }
 
+    @OnClick(R.id.btnRewardTip)
+    void onTripReward() {
+        String liveNumber = MyApplication.prefManager.getLastCallerId();
+        if(liveNumber.equals(passengerPhone) || liveNumber.equals(customerMobile)){
+            new RewardTripDialog().show(serviceId, reward -> {
+                int rewardInt  = Integer.parseInt(reward);
+                int priceInt  = Integer.parseInt(price);
+                int total = priceInt + rewardInt;
+                price =  total + "";
+                txtPrice.setText(price.equals("null") ? " " : StringHelper.toPersianDigits(StringHelper.setComma(price)));
+            });
+        }else
+        {
+            MyApplication.Toast("سرویس به این مشتری تعلق ندارد",2);
+        }
+
+    }
+
     @OnClick(R.id.btnEditAddress)
     void onEditAddress() {
-        new ErrorAddressDialog().show(passengerAddress, serviceId+"");
+        new ErrorAddressDialog().show(passengerAddress, serviceId + "");
     }
 
     @OnClick(R.id.btnDriverLocation)
@@ -267,17 +292,17 @@ public class PassengerTripSupportDetailsFragment extends Fragment {
     void onError() {
 //        String cityName= new DataBase(MyApplication.context).getCityName2(cityCode);
         new ErrorRegistrationDialog()
-                .show(serviceId+"", passengerPhone, customerMobile, passengerAddress, passengerName, voipId, cityCode, stationCode, userId, callTime, callDate, price, destinationStation, destination);
+                .show(serviceId + "", passengerPhone, customerMobile, passengerAddress, passengerName, voipId, cityCode, stationCode, userId, callTime, callDate, price, destinationStation, destination);
     }
 
     @OnClick(R.id.btnComplaintRegistration)
     void onComplaint() {
-        new ComplaintRegistrationDialog().show(serviceId+"", voipId);
+        new ComplaintRegistrationDialog().show(serviceId + "", voipId);
     }
 
     @OnClick(R.id.btnLost)
     void onLost() {
-        new LostDialog().show(serviceId+"", passengerName, passengerPhone, taxiCode, false);
+        new LostDialog().show(serviceId + "", passengerName, passengerPhone, taxiCode, false);
     }
 
     @OnClick(R.id.btnDriverLock)
@@ -541,6 +566,8 @@ public class PassengerTripSupportDetailsFragment extends Fragment {
         btnDriverLocation.setEnabled(false);
         btnReFollow.setEnabled(false);
         btnCancelTrip.setEnabled(false);
+        btnRewardTip.setEnabled(false);
+        btnDisposal.setEnabled(false);
         if (isBefore) {
             btnComplaintRegistration.setEnabled(false);
             btnDriverLock.setEnabled(false);
@@ -553,6 +580,10 @@ public class PassengerTripSupportDetailsFragment extends Fragment {
         if (btnCancelTrip == null) return;
 //    MyApplication.prefManager.setLastCallerId("");// set empty, because I don't want save this permanently .
         btnReFollow.setEnabled(false);
+        btnDriverLocation.setEnabled(false);
+        btnRewardTip.setEnabled(false);
+        btnCancelTrip.setEnabled(false);
+        btnDisposal.setEnabled(false);
     }
 
     private void cancelService() {
@@ -696,9 +727,9 @@ public class PassengerTripSupportDetailsFragment extends Fragment {
     private void archiveAddress() {
         LoadingDialog.makeCancelableLoader();
         RequestHelper.builder(EndPoints.DELETE_ADDRESS)
-                .addParam("passengerId",passengerId)
+                .addParam("passengerId", passengerId)
                 .addParam("addressId", originId)
-                .addParam("type","origin")
+                .addParam("type", "origin")
                 .listener(onArchiveAddress)
                 .delete();
     }

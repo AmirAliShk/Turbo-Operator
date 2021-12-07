@@ -108,6 +108,7 @@ public class EndPoints {
     public static final String DEACTIVATE_SUPPORT = SUPPORT_WEBSERVICE_PATH + "deActivate";
     public static final String RECENT_CALLS = CALL_VOICE_PATH + "report/"; //http://turbotaxi.ir:1884/api/v1/report/09376148583/4
     public static final String MISSED_CALL = LISTEN_WEBSERVICE_PATH + "missCall";
+    public static final String REWARD_FOR_TRIP = SUPPORT_TRIP_WEBSERVICE_PATH + "reward";
 
     /******************************** Driver Api *********************************/
 
