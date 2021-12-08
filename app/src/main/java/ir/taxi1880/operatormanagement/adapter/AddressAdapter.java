@@ -10,6 +10,8 @@ import android.widget.Filter;
 import android.widget.Filterable;
 import android.widget.TextView;
 
+import androidx.annotation.Nullable;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -20,14 +22,13 @@ import ir.taxi1880.operatormanagement.push.AvaCrashReporter;
 
 public class AddressAdapter extends ArrayAdapter<AddressArr> {
     Context context;
-    int resource, textViewResourceId;
+    int resource;
     List<AddressArr> addressModels, addressFilterModels;
 
     public AddressAdapter(Context context, int resource, int textViewResourceId, List<AddressArr> items) {
         super(context, resource, textViewResourceId, items);
         this.context = context;
         this.resource = resource;
-        this.textViewResourceId = textViewResourceId;
         this.addressModels = items;
         addressFilterModels = items;
         getFilter();
@@ -54,10 +55,16 @@ public class AddressAdapter extends ArrayAdapter<AddressArr> {
         return view;
     }
 
-//    @Override
-//    public int getCount() {
-//        return addressModels.size();
-//    }
+    @Override
+    public int getCount() {
+        return addressModels.size();
+    }
+
+    @Nullable
+    @Override
+    public AddressArr getItem(int position) {
+        return addressModels.get(position);
+    }
 
     private NameFilter nameFilter;
 
@@ -82,19 +89,17 @@ public class AddressAdapter extends ArrayAdapter<AddressArr> {
 
                 ArrayList<AddressArr> filterList = new ArrayList<>();
                 String[] split = constraint.toString().split(" ");
-                Log.i("TAG", "performFiltering: " + constraint.toString());
                 for (int i = 0; i < addressFilterModels.size(); i++) {
-
-                    for (int j = 0; j < split.length; j++) {
-                        if (addressFilterModels.get(i).address.contains(split[j])) {
-                            Log.i("TAG", "performFiltering: " + addressFilterModels.get(i).address);
+                    for (String s : split) {
+                        if (addressFilterModels.get(i).address.contains(s)) {
                             AddressArr addressArr = new AddressArr();
                             addressArr.address = addressFilterModels.get(i).address;
                             filterList.add(addressArr);
                         }
-                    }
 
+                    }
                 }
+
                 results.count = filterList.size();
                 results.values = filterList;
             } else {
