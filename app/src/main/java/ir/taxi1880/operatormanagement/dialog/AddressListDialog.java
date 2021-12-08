@@ -46,7 +46,7 @@ public class AddressListDialog {
         if (MyApplication.currentActivity == null || MyApplication.currentActivity.isFinishing())
             return;
         dialog = new Dialog(MyApplication.currentActivity);
-        binding = DialogAddressListBinding.inflate(LayoutInflater.from(MyApplication.currentActivity));
+        binding = DialogAddressListBinding.inflate(LayoutInflater.from(dialog.getContext()));
         dialog.getWindow().requestFeature(Window.FEATURE_NO_TITLE);
         dialog.getWindow().getAttributes().windowAnimations = R.style.ExpandAnimation;
         dialog.setContentView(binding.getRoot());

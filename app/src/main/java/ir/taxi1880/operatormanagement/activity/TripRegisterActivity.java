@@ -936,7 +936,6 @@ public class TripRegisterActivity extends AppCompatActivity {
                         }
                         AddressAdapter destinationArrayAdapter = new AddressAdapter(MyApplication.context, android.R.layout.simple_dropdown_item_1line, R.id.lbl_address,destinationAutoAddresses);
                         binding.edtDestinationAddress.setAdapter(destinationArrayAdapter);
-                        binding.edtDestinationAddress.showDropDown();
                         binding.edtDestinationAddress.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                             @Override
                             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
@@ -957,7 +956,6 @@ public class TripRegisterActivity extends AppCompatActivity {
                             }
                         });
 
-                        Log.i("TAF",getTellNumber());
                         ClipboardManager clipboard = (ClipboardManager) getSystemService(Context.CLIPBOARD_SERVICE);
                         ClipData clip = ClipData.newPlainText("passengerTell", getTellNumber());
                         clipboard.setPrimaryClip(clip);
@@ -1504,7 +1502,7 @@ public class TripRegisterActivity extends AppCompatActivity {
             String messageUserStatus = intent.getStringExtra(Keys.KEY_MESSAGE_USER_STATUS);
             boolean userStatus = intent.getBooleanExtra(Keys.KEY_USER_STATUS, false);
             if (!userStatus) {
-                binding.btnDeActivate.setBackgroundResource(R.drawable.bg_pink_edge);
+                binding.btnDeActivate.setBackgroundResource(R.drawable.bg_bot_left);
                 binding.btnActivate.setBackgroundColor(Color.parseColor("#00FFB2B2"));
                 MyApplication.prefManager.setActivateStatus(false);
             } else {
