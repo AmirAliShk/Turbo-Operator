@@ -54,10 +54,10 @@ public class AddressAdapter extends ArrayAdapter<AddressArr> {
         return view;
     }
 
-    @Override
-    public int getCount() {
-        return addressModels.size();
-    }
+//    @Override
+//    public int getCount() {
+//        return addressModels.size();
+//    }
 
     private NameFilter nameFilter;
 
@@ -81,15 +81,19 @@ public class AddressAdapter extends ArrayAdapter<AddressArr> {
             if (constraint != null && constraint.length() > 0) {
 
                 ArrayList<AddressArr> filterList = new ArrayList<>();
-
+                String[] split = constraint.toString().split(" ");
+                Log.i("TAG", "performFiltering: " + constraint.toString());
                 for (int i = 0; i < addressFilterModels.size(); i++) {
-                    if (addressFilterModels.get(i).address.contentEquals(constraint)) {
-                        Log.i("TAG", "performFiltering: "+constraint.toString());
-                        Log.i("TAG", "performFiltering: "+addressFilterModels.get(i).address);
-                        AddressArr addressArr = new AddressArr();
-                        addressArr.address = addressFilterModels.get(i).address;
-                        filterList.add(addressArr);
+
+                    for (int j = 0; j < split.length; j++) {
+                        if (addressFilterModels.get(i).address.contains(split[j])) {
+                            Log.i("TAG", "performFiltering: " + addressFilterModels.get(i).address);
+                            AddressArr addressArr = new AddressArr();
+                            addressArr.address = addressFilterModels.get(i).address;
+                            filterList.add(addressArr);
+                        }
                     }
+
                 }
                 results.count = filterList.size();
                 results.values = filterList;
