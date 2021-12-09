@@ -3,6 +3,7 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="../../../../../Android/sdk/platforms/android-30/data/res/layout/simple_dropdown_item_1line.xml" value="0.3484375" />
         <entry key="..\:/AndroidProject/operatorAssistance/app/src/main/res/drawable/ic_call_dialog_disable.xml" value="0.22552083333333334" />
         <entry key="..\:/AndroidProject/operatorAssistance/app/src/main/res/layout/activity_trip_register.xml" value="0.2" />
         <entry key="..\:/AndroidProject/operatorAssistance/app/src/main/res/layout/dialog_address_list.xml" value="0.10182370820668693" />
@@ -62,7 +63,7 @@
         <entry key="app/src/main/res/layout/activity_main.xml" value="0.34010416666666665" />
         <entry key="app/src/main/res/layout/activity_splash.xml" value="0.34010416666666665" />
         <entry key="app/src/main/res/layout/activity_support.xml" value="0.16" />
-        <entry key="app/src/main/res/layout/activity_trip_register.xml" value="0.18608695652173912" />
+        <entry key="app/src/main/res/layout/activity_trip_register.xml" value="0.3484375" />
         <entry key="app/src/main/res/layout/dialog_address_list.xml" value="0.34010416666666665" />
         <entry key="app/src/main/res/layout/dialog_call.xml" value="0.34010416666666665" />
         <entry key="app/src/main/res/layout/dialog_cancelable_loder.xml" value="0.34010416666666665" />
@@ -113,6 +114,7 @@
         <entry key="app/src/main/res/layout/fragment_determination_page.xml" value="0.2" />
         <entry key="app/src/main/res/layout/fragment_driver_location.xml" value="0.34010416666666665" />
         <entry key="app/src/main/res/layout/fragment_driver_trip_details.xml" value="0.2" />
+        <entry key="app/src/main/res/layout/fragment_driver_trip_support.xml" value="0.3484375" />
         <entry key="app/src/main/res/layout/fragment_home.xml" value="0.34010416666666665" />
         <entry key="app/src/main/res/layout/fragment_login.xml" value="0.34010416666666665" />
         <entry key="app/src/main/res/layout/fragment_menu.xml" value="0.34010416666666665" />
@@ -137,7 +139,7 @@
         <entry key="app/src/main/res/layout/item_best.xml" value="0.34010416666666665" />
         <entry key="app/src/main/res/layout/item_city.xml" value="0.34010416666666665" />
         <entry key="app/src/main/res/layout/item_complaint_history.xml" value="0.2740740740740741" />
-        <entry key="app/src/main/res/layout/item_custom_auto_complete.xml" value="0.18" />
+        <entry key="app/src/main/res/layout/item_custom_auto_complete.xml" value="0.3484375" />
         <entry key="app/src/main/res/layout/item_driver_station_registration.xml" value="0.34010416666666665" />
         <entry key="app/src/main/res/layout/item_driver_turnover.xml" value="0.34010416666666665" />
         <entry key="app/src/main/res/layout/item_get_replacement.xml" value="0.34010416666666665" />
@@ -166,7 +168,6 @@
       </map>
     </option>
   </component>
-  <component name="ExternalStorageConfigurationManager" enabled="true" />
   <component name="ProjectRootManager" version="2" languageLevel="JDK_11" default="true" project-jdk-name="11" project-jdk-type="JavaSDK">
     <output url="file://$PROJECT_DIR$/build/classes" />
   </component>
