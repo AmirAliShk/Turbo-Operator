@@ -116,10 +116,10 @@ public class AddressAdapter extends ArrayAdapter<AddressArr> {
             return results;
         }
 
-        @RequiresApi(api = Build.VERSION_CODES.N)
         @Override
         protected void publishResults(CharSequence constraint, FilterResults results) {
 
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
             Set<AddressArr> setAddressArr = ((ArrayList<AddressArr>) results.values)
                     .stream()
                     .collect(Collectors.toCollection(() ->
@@ -129,8 +129,9 @@ public class AddressAdapter extends ArrayAdapter<AddressArr> {
                     .stream() // get stream for unique SET
                     .sorted(Comparator.comparing(AddressArr::getAddress)) // rank comparing
                     .collect(Collectors.toList());
-
-            addressModels = sortedList;
+                addressModels = sortedList;
+            }
+            addressModels = (ArrayList<AddressArr>) results.values;
             notifyDataSetChanged();
 
         }
