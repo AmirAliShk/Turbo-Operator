@@ -902,9 +902,11 @@ public class TripRegisterActivity extends AppCompatActivity {
                         binding.edtOriginAddress.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                             @Override
                             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                                originAddress = binding.edtOriginAddress.getText().toString().trim();
+//                                originAddress = binding.edtOriginAddress.getText().toString().trim();
+                                originAddress = originArrayAdapter.getAddress(position).getAddress();
                                 originAddressLength = originAddress.length();
                                 originAddressChangeCounter = 0;
+                                binding.edtOriginAddress.setText(originAddress);
 
                                 for (int i = 0; i < originAddresses.size(); i++) {
                                     if (originAddresses.get(i).getAddress().equals(originAddress)) {
@@ -939,9 +941,10 @@ public class TripRegisterActivity extends AppCompatActivity {
                         binding.edtDestinationAddress.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                             @Override
                             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                                destinationAddress = binding.edtDestinationAddress.getText().toString().trim();
+                                destinationAddress = destinationArrayAdapter.getAddress(position).getAddress();
                                 destAddressLength = destinationAddress.length();
                                 destAddressChangeCounter = 0;
+                                binding.edtDestinationAddress.setText(destinationAddress);
 
                                 for (int i = 0; i < destinationAddresses.size(); i++) {
                                     if (destinationAddresses.get(i).getAddress().trim().equals(destinationAddress)) {

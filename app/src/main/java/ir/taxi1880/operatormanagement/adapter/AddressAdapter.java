@@ -1,23 +1,27 @@
 package ir.taxi1880.operatormanagement.adapter;
 
 import android.content.Context;
+import android.os.Build;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.Filter;
-import android.widget.Filterable;
 import android.widget.TextView;
 
 import androidx.annotation.Nullable;
+import androidx.annotation.RequiresApi;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
+import java.util.Set;
+import java.util.TreeSet;
+import java.util.stream.Collectors;
 
 import ir.taxi1880.operatormanagement.R;
 import ir.taxi1880.operatormanagement.model.AddressArr;
-import ir.taxi1880.operatormanagement.model.OperatorModel;
 import ir.taxi1880.operatormanagement.push.AvaCrashReporter;
 
 public class AddressAdapter extends ArrayAdapter<AddressArr> {
@@ -66,28 +70,31 @@ public class AddressAdapter extends ArrayAdapter<AddressArr> {
         return addressModels.get(position);
     }
 
-    private NameFilter nameFilter;
+    private AddressFilter addressFilter;
 
 
     @Override
     public Filter getFilter() {
-        if (nameFilter == null) {
-            nameFilter = new NameFilter();
+        if (addressFilter == null) {
+            addressFilter = new AddressFilter();
         }
-        return nameFilter;
+        return addressFilter;
 
+    }
+
+    public AddressArr getAddress(int position){
+        return addressModels.get(position);
     }
 
     /**
      * Custom Filter implementation for custom suggestions we provide.
      */
-    private class NameFilter extends Filter {
+    private class AddressFilter extends Filter {
         @Override
         protected FilterResults performFiltering(CharSequence constraint) {
             FilterResults results = new FilterResults();
             if (constraint != null && constraint.length() > 0) {
-
-                ArrayList<AddressArr> filterList = new ArrayList<>();
+                List<AddressArr> filterList = new ArrayList<>();
                 String[] split = constraint.toString().split(" ");
                 for (int i = 0; i < addressFilterModels.size(); i++) {
                     for (int j = 0; j < split.length; j++){
@@ -97,7 +104,7 @@ public class AddressAdapter extends ArrayAdapter<AddressArr> {
                                 AddressArr addressArr = new AddressArr();
                                 addressArr.address = addressFilterModels.get(i).address;
                                 filterList.add(addressArr);
-                                Log.i("TAG0",addressArr.address);
+                                Log.i("TAF_AddressAdapter 0",addressArr.address);
                             }
                             else
                             {
@@ -105,7 +112,7 @@ public class AddressAdapter extends ArrayAdapter<AddressArr> {
                                     if (!filterList.get(h).address.contains(addressFilterModels.get(i).address)) {
                                         AddressArr addressArr = new AddressArr();
                                         addressArr.address = addressFilterModels.get(i).address;
-                                        Log.i("TAG" + j, addressArr.address);
+                                        Log.i("TAF_AddressAdapter " + j, addressArr.address);
                                         filterList.add(addressArr);
                                     }
                                 }
@@ -123,16 +130,25 @@ public class AddressAdapter extends ArrayAdapter<AddressArr> {
                 results.values = addressFilterModels;
             }
             return results;
-
         }
 
+        @RequiresApi(api = Build.VERSION_CODES.N)
         @Override
         protected void publishResults(CharSequence constraint, FilterResults results) {
-            addressModels = (ArrayList<AddressArr>) results.values;
+
+            Set<AddressArr> setAddressArr = ((ArrayList<AddressArr>) results.values)
+                    .stream()
+                    .collect(Collectors.toCollection(() ->
+                            new TreeSet<>(Comparator.comparing(AddressArr::getAddress))));
+
+            List<AddressArr> sortedList = setAddressArr
+                    .stream() // get stream for unique SET
+                    .sorted(Comparator.comparing(AddressArr::getAddress)) // rank comparing
+                    .collect(Collectors.toList());
+
+            addressModels = sortedList;
             notifyDataSetChanged();
 
         }
     }
-
-    ;
 }
