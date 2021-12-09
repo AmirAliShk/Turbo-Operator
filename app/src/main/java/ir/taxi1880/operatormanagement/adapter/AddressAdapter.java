@@ -99,25 +99,9 @@ public class AddressAdapter extends ArrayAdapter<AddressArr> {
                 for (int i = 0; i < addressFilterModels.size(); i++) {
                     for (int j = 0; j < split.length; j++){
                         if (addressFilterModels.get(i).address.contains(split[j])) {
-                            if (filterList.size() == 0)
-                            {
                                 AddressArr addressArr = new AddressArr();
                                 addressArr.address = addressFilterModels.get(i).address;
                                 filterList.add(addressArr);
-                                Log.i("TAF_AddressAdapter 0",addressArr.address);
-                            }
-                            else
-                            {
-                                for (int h = 0 ; h < filterList.size() ; h++) {
-                                    if (!filterList.get(h).address.contains(addressFilterModels.get(i).address)) {
-                                        AddressArr addressArr = new AddressArr();
-                                        addressArr.address = addressFilterModels.get(i).address;
-                                        Log.i("TAF_AddressAdapter " + j, addressArr.address);
-                                        filterList.add(addressArr);
-                                    }
-                                }
-                            }
-
                         }
 
                     }
