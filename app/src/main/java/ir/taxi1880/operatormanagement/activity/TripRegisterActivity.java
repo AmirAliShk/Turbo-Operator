@@ -897,29 +897,31 @@ public class TripRegisterActivity extends AppCompatActivity {
                                 originAddressChangeCounter = 0;
                             }
                         }
-                        AddressAdapter originArrayAdapter = new AddressAdapter(MyApplication.context, android.R.layout.simple_dropdown_item_1line, R.id.lbl_address,originAutoAddresses);
-                        binding.edtOriginAddress.setAdapter(originArrayAdapter);
-                        binding.edtOriginAddress.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-                            @Override
-                            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+                            AddressAdapter originArrayAdapter = new AddressAdapter(MyApplication.context, android.R.layout.simple_dropdown_item_1line, R.id.lbl_address, originAutoAddresses);
+                            binding.edtOriginAddress.setAdapter(originArrayAdapter);
+                            binding.edtOriginAddress.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                                @Override
+                                public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 //                                originAddress = binding.edtOriginAddress.getText().toString().trim();
-                                originAddress = originArrayAdapter.getAddress(position).getAddress();
-                                originAddressLength = originAddress.length();
-                                originAddressChangeCounter = 0;
-                                binding.edtOriginAddress.setText(originAddress);
+                                    originAddress = originArrayAdapter.getAddress(position).getAddress();
+                                    originAddressLength = originAddress.length();
+                                    originAddressChangeCounter = 0;
+                                    binding.edtOriginAddress.setText(originAddress);
 
-                                for (int i = 0; i < originAddresses.size(); i++) {
-                                    if (originAddresses.get(i).getAddress().equals(originAddress)) {
-                                        originStation = originAddresses.get(i).getStation();
-                                        originAddressId = originAddresses.get(i).getAddressId();
+                                    for (int i = 0; i < originAddresses.size(); i++) {
+                                        if (originAddresses.get(i).getAddress().equals(originAddress)) {
+                                            originStation = originAddresses.get(i).getStation();
+                                            originAddressId = originAddresses.get(i).getAddressId();
+                                        }
                                     }
-                                }
 
-                                Log.i("TAF", "TAF_onItemClick,originStation: " + originStation);
-                                Log.i("TAF", "TAF_onItemClick,addressLength: " + originAddressLength);
-                                Log.i("TAF", "TAF_onItemClick,originAddressId: " + originAddressId);
-                            }
-                        });
+                                    Log.i("TAF", "TAF_onItemClick,originStation: " + originStation);
+                                    Log.i("TAF", "TAF_onItemClick,addressLength: " + originAddressLength);
+                                    Log.i("TAF", "TAF_onItemClick,originAddressId: " + originAddressId);
+                                }
+                            });
+                        }
 
                         destinationAddresses = new ArrayList<>();
                         ArrayList<AddressArr> destinationAutoAddresses = new ArrayList<>();
@@ -936,29 +938,30 @@ public class TripRegisterActivity extends AppCompatActivity {
                             destinationAddresses.add(new AddressesModel(Address, AddressStation, AddressId));
                             destinationAutoAddresses.add(arr);
                         }
-                        AddressAdapter destinationArrayAdapter = new AddressAdapter(MyApplication.context, android.R.layout.simple_dropdown_item_1line, R.id.lbl_address,destinationAutoAddresses);
-                        binding.edtDestinationAddress.setAdapter(destinationArrayAdapter);
-                        binding.edtDestinationAddress.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-                            @Override
-                            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                                destinationAddress = destinationArrayAdapter.getAddress(position).getAddress();
-                                destAddressLength = destinationAddress.length();
-                                destAddressChangeCounter = 0;
-                                binding.edtDestinationAddress.setText(destinationAddress);
+                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+                            AddressAdapter destinationArrayAdapter = new AddressAdapter(MyApplication.context, android.R.layout.simple_dropdown_item_1line, R.id.lbl_address, destinationAutoAddresses);
+                            binding.edtDestinationAddress.setAdapter(destinationArrayAdapter);
+                            binding.edtDestinationAddress.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                                @Override
+                                public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                                    destinationAddress = destinationArrayAdapter.getAddress(position).getAddress();
+                                    destAddressLength = destinationAddress.length();
+                                    destAddressChangeCounter = 0;
+                                    binding.edtDestinationAddress.setText(destinationAddress);
 
-                                for (int i = 0; i < destinationAddresses.size(); i++) {
-                                    if (destinationAddresses.get(i).getAddress().trim().equals(destinationAddress)) {
-                                        destinationStation = destinationAddresses.get(i).getStation();
-                                        destinationAddressId = destinationAddresses.get(i).getAddressId();
+                                    for (int i = 0; i < destinationAddresses.size(); i++) {
+                                        if (destinationAddresses.get(i).getAddress().trim().equals(destinationAddress)) {
+                                            destinationStation = destinationAddresses.get(i).getStation();
+                                            destinationAddressId = destinationAddresses.get(i).getAddressId();
+                                        }
                                     }
+
+                                    Log.i("TAF", "TAF_onItemClick,destinationStation: " + destinationStation);
+                                    Log.i("TAF", "TAF_onItemClick,destAddressLength:" + destAddressLength);
+                                    Log.i("TAF", "TAF_onItemClick, destinationAddressId:" + destinationAddressId);
                                 }
-
-                                Log.i("TAF", "TAF_onItemClick,destinationStation: " + destinationStation);
-                                Log.i("TAF", "TAF_onItemClick,destAddressLength:" + destAddressLength);
-                                Log.i("TAF", "TAF_onItemClick, destinationAddressId:" + destinationAddressId);
-                            }
-                        });
-
+                            });
+                        }
                         ClipboardManager clipboard = (ClipboardManager) getSystemService(Context.CLIPBOARD_SERVICE);
                         ClipData clip = ClipData.newPlainText("passengerTell", getTellNumber());
                         clipboard.setPrimaryClip(clip);

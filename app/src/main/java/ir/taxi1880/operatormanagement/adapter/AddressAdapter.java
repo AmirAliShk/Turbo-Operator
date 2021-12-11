@@ -130,8 +130,14 @@ public class AddressAdapter extends ArrayAdapter<AddressArr> {
                     .sorted(Comparator.comparing(AddressArr::getAddress)) // rank comparing
                     .collect(Collectors.toList());
                 addressModels = sortedList;
+            }else {
+
+                ArrayList<AddressArr> empty = new ArrayList<>();
+                AddressArr arr = new AddressArr();
+                arr.address = "";
+                empty.add(arr);
+                addressModels = empty;
             }
-            addressModels = (ArrayList<AddressArr>) results.values;
             notifyDataSetChanged();
 
         }
