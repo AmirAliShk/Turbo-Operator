@@ -111,6 +111,7 @@ public class TripRegisterActivity extends AppCompatActivity {
     private Runnable mCallQualityUpdater = null;
     private int mDisplayedQuality = -1;
     String passengerId;
+    int moshId = 0;
 
     ArrayList<AddressesModel> originAddresses;
     ArrayList<AddressesModel> destinationAddresses;
@@ -591,9 +592,7 @@ public class TripRegisterActivity extends AppCompatActivity {
         @Override
         public void onTextChanged(CharSequence charSequence, int start, int before, int count) {
             originAddressChangeCounter = originAddressChangeCounter + 1;
-//            if (binding.edtOriginAddress.isFocused()) {
-//                originAddressId = "0";
-//            }
+
         }
 
         @Override
@@ -607,7 +606,6 @@ public class TripRegisterActivity extends AppCompatActivity {
 //            String result = editable.toString().replaceAll("  ", " ");
 //            if (!editable.toString().equals(result)) {
 //                binding.edtOriginAddress.setText(result);
-////                ed.setSelection(result.length());
 //            }
         }
     };
@@ -620,9 +618,6 @@ public class TripRegisterActivity extends AppCompatActivity {
         @Override
         public void onTextChanged(CharSequence charSequence, int start, int before, int count) {
             destAddressChangeCounter = destAddressChangeCounter + 1;
-//            if (binding.edtDestinationAddress.isFocused()) {
-//                destinationAddressId = "0";
-//            }
         }
 
         @Override
@@ -636,7 +631,6 @@ public class TripRegisterActivity extends AppCompatActivity {
 //            String result = editable.toString().replaceAll("  ", " ");
 //            if (!editable.toString().equals(result)) {
 //                binding.edtDestinationAddress.setText(result);
-////                ed.setSelection(result.length());
 //            }
         }
     };
@@ -857,7 +851,7 @@ public class TripRegisterActivity extends AppCompatActivity {
                         int callTimeInterval = lastTripStatus.getInt("callTimeInterval");
 
                         JSONObject passengerInfoObj = dataObj.getJSONObject("passengerInfo");
-//                    originAddressId = passengerInfoObj.getInt("callerCode");
+                       moshId = passengerInfoObj.getInt("callerCode");
 //                    originAddress = passengerInfoObj.getString("address");
 //                    int originStationFromSV = passengerInfoObj.getInt("staion");
                         String name = passengerInfoObj.getString("name");
@@ -882,19 +876,22 @@ public class TripRegisterActivity extends AppCompatActivity {
                             String AddressId = jsonAddress.getString("_id");
                             int AddressStation = jsonAddress.getInt("station");
 
-                            AddressArr arr  = new AddressArr();
+                            AddressArr arr = new AddressArr();
                             arr.address = Address;
 
                             originAddresses.add(new AddressesModel(Address, AddressStation, AddressId));
                             originAutoAddresses.add(arr);
 
-                            if (i == 0) {
-                                originAddress = Address;
-                                binding.edtOriginAddress.setText(originAddress);
-                                originAddressLength = originAddress.length();
-                                originStation = AddressStation;
-                                originAddressId = AddressId;
-                                originAddressChangeCounter = 0;
+                            if (originAddresses.size() >= 1) {
+                                if (i == 0) {
+                                    Log.i("TAF",originAddresses.size()+"");
+                                    originAddress = Address;
+                                    binding.edtOriginAddress.setText(originAddress);
+                                    originAddressLength = originAddress.length();
+                                    originStation = AddressStation;
+                                    originAddressId = AddressId;
+                                    originAddressChangeCounter = 0;
+                                }
                             }
                         }
                         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
@@ -932,7 +929,7 @@ public class TripRegisterActivity extends AppCompatActivity {
                             String AddressId = jsonAddress.getString("_id");
                             int AddressStation = jsonAddress.getInt("station");
 
-                            AddressArr arr  = new AddressArr();
+                            AddressArr arr = new AddressArr();
                             arr.address = Address;
 
                             destinationAddresses.add(new AddressesModel(Address, AddressStation, AddressId));
@@ -962,6 +959,7 @@ public class TripRegisterActivity extends AppCompatActivity {
                                 }
                             });
                         }
+
                         ClipboardManager clipboard = (ClipboardManager) getSystemService(Context.CLIPBOARD_SERVICE);
                         ClipData clip = ClipData.newPlainText("passengerTell", getTellNumber());
                         clipboard.setPrimaryClip(clip);
@@ -982,7 +980,6 @@ public class TripRegisterActivity extends AppCompatActivity {
                                     })
                                     .show();
                         }
-
                         binding.edtTell.setNextFocusDownId(R.id.edtFamily);
                         isEnableView = true;
                         initServiceCountSpinner();
@@ -1000,7 +997,7 @@ public class TripRegisterActivity extends AppCompatActivity {
                         }
 
 
-                        if (originAddressId.equals("0")) {
+                        if (moshId == 0) {
                             binding.txtNewPassenger.setVisibility(View.VISIBLE);
                             binding.txtLockPassenger.setVisibility(View.GONE);
                             binding.edtFamily.requestFocus();
@@ -1329,6 +1326,7 @@ public class TripRegisterActivity extends AppCompatActivity {
         public void onResponse(Runnable reCall, Object... args) {
             MyApplication.handler.post(() -> {
                 try {
+                    moshId =0;
                     binding.vfSubmit.setDisplayedChild(0);
                     LoadingDialog.dismissCancelableDialog();
                     JSONObject obj = new JSONObject(args[0].toString());
@@ -1372,6 +1370,7 @@ public class TripRegisterActivity extends AppCompatActivity {
         @Override
         public void onFailure(Runnable reCall, Exception e) {
             MyApplication.handler.post(() -> {
+                moshId =0;
                 LoadingDialog.dismissCancelableDialog();
                 binding.vfSubmit.setDisplayedChild(0);
             });
@@ -1395,6 +1394,7 @@ public class TripRegisterActivity extends AppCompatActivity {
     };
 
     private void clearData() {
+        moshId= 0;
         originStation = 0;
         destinationStation = 0;
         originAddressLength = 0;
