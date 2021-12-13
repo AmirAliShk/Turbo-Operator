@@ -57,6 +57,7 @@ import ir.taxi1880.operatormanagement.dialog.GeneralDialog;
 import ir.taxi1880.operatormanagement.dialog.LoadingDialog;
 import ir.taxi1880.operatormanagement.dialog.TripOptionDialog;
 import ir.taxi1880.operatormanagement.fragment.PassengerTripSupportFragment;
+import ir.taxi1880.operatormanagement.helper.AppVersionHelper;
 import ir.taxi1880.operatormanagement.helper.FragmentHelper;
 import ir.taxi1880.operatormanagement.helper.KeyBoardHelper;
 import ir.taxi1880.operatormanagement.helper.PhoneNumberValidation;
@@ -1317,6 +1318,7 @@ public class TripRegisterActivity extends AppCompatActivity {
                 .addParam("stopTime", stopTime)
                 .addParam("addressIdOrigin", originAddressId)
                 .addParam("addressIdDestination", destinationAddressId)
+                .addParam("versionCode",new AppVersionHelper(this).getVerionCode())
                 .listener(insertService)
                 .post();
     }
