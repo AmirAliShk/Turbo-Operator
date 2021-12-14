@@ -588,6 +588,7 @@ public class TripRegisterActivity extends AppCompatActivity {
     TextWatcher originAddressTW = new TextWatcher() {
         @Override
         public void beforeTextChanged(CharSequence charSequence, int start, int count, int after) {
+            binding.edtOriginAddress.setSelection(binding.edtOriginAddress.getText().length());
         }
 
         @Override
@@ -852,7 +853,7 @@ public class TripRegisterActivity extends AppCompatActivity {
                         int callTimeInterval = lastTripStatus.getInt("callTimeInterval");
 
                         JSONObject passengerInfoObj = dataObj.getJSONObject("passengerInfo");
-                       moshId = passengerInfoObj.getInt("callerCode");
+                        moshId = passengerInfoObj.getInt("callerCode");
 //                    originAddress = passengerInfoObj.getString("address");
 //                    int originStationFromSV = passengerInfoObj.getInt("staion");
                         String name = passengerInfoObj.getString("name");
@@ -885,7 +886,7 @@ public class TripRegisterActivity extends AppCompatActivity {
 
                             if (originAddresses.size() >= 1) {
                                 if (i == 0) {
-                                    Log.i("TAF",originAddresses.size()+"");
+                                    Log.i("TAF", originAddresses.size() + "");
                                     originAddress = Address;
                                     binding.edtOriginAddress.setText(originAddress);
                                     originAddressLength = originAddress.length();
@@ -913,6 +914,8 @@ public class TripRegisterActivity extends AppCompatActivity {
                                             originAddressId = originAddresses.get(i).getAddressId();
                                         }
                                     }
+
+                                    setCursorPosition();
 
                                     Log.i("TAF", "TAF_onItemClick,originStation: " + originStation);
                                     Log.i("TAF", "TAF_onItemClick,addressLength: " + originAddressLength);
@@ -953,6 +956,8 @@ public class TripRegisterActivity extends AppCompatActivity {
                                             destinationAddressId = destinationAddresses.get(i).getAddressId();
                                         }
                                     }
+
+                                    setCursorPosition();
 
                                     Log.i("TAF", "TAF_onItemClick,destinationStation: " + destinationStation);
                                     Log.i("TAF", "TAF_onItemClick,destAddressLength:" + destAddressLength);
@@ -1001,12 +1006,13 @@ public class TripRegisterActivity extends AppCompatActivity {
                         if (moshId == 0) {
                             binding.txtNewPassenger.setVisibility(View.VISIBLE);
                             binding.txtLockPassenger.setVisibility(View.GONE);
-                            binding.edtFamily.requestFocus();
+                            setCursorPosition();
                         } else {
                             switch (status) {
                                 case 0:
                                     binding.txtNewPassenger.setVisibility(View.GONE);
                                     binding.txtLockPassenger.setVisibility(View.GONE);
+                                    setCursorPosition();
                                     break;
                                 case 1:
                                     binding.txtNewPassenger.setVisibility(View.GONE);
@@ -1079,8 +1085,11 @@ public class TripRegisterActivity extends AppCompatActivity {
 
                 });
             }
+            setCursorPosition();
             binding.vfPassengerOriginAddress.setDisplayedChild(0);
         }, 500);
+
+
     }
 
     private void getPassengerDestAddress() {
@@ -1098,12 +1107,16 @@ public class TripRegisterActivity extends AppCompatActivity {
                     destinationStation = stationCode;
                     destinationAddressId = addressId;
 
+                    binding.edtDestinationAddress.setNextFocusDownId(R.id.edtFamily);
+                    binding.edtFamily.requestFocus();
+                    binding.edtFamily.setSelection(binding.edtFamily.getText().length());
+
                     Log.i("TAF", "TAF_getPassengerDestinationAddress,destinationStation: " + destinationStation);
                     Log.i("TAF", "TAF_getPassengerDestinationAddress,destAddressLength:" + destAddressLength);
                     Log.i("TAF", "TAF_getPassengerDestinationAddress, destinationAddressId:" + destinationAddressId);
                 });
             }
-
+            setCursorPosition();
             binding.vfPassengerDestAddress.setDisplayedChild(0);
         }, 500);
     }
@@ -1318,7 +1331,7 @@ public class TripRegisterActivity extends AppCompatActivity {
                 .addParam("stopTime", stopTime)
                 .addParam("addressIdOrigin", originAddressId)
                 .addParam("addressIdDestination", destinationAddressId)
-                .addParam("versionCode",new AppVersionHelper(this).getVerionCode())
+                .addParam("versionCode", new AppVersionHelper(this).getVerionCode())
                 .listener(insertService)
                 .post();
     }
@@ -1328,7 +1341,7 @@ public class TripRegisterActivity extends AppCompatActivity {
         public void onResponse(Runnable reCall, Object... args) {
             MyApplication.handler.post(() -> {
                 try {
-                    moshId =0;
+                    moshId = 0;
                     binding.vfSubmit.setDisplayedChild(0);
                     LoadingDialog.dismissCancelableDialog();
                     JSONObject obj = new JSONObject(args[0].toString());
@@ -1372,7 +1385,7 @@ public class TripRegisterActivity extends AppCompatActivity {
         @Override
         public void onFailure(Runnable reCall, Exception e) {
             MyApplication.handler.post(() -> {
-                moshId =0;
+                moshId = 0;
                 LoadingDialog.dismissCancelableDialog();
                 binding.vfSubmit.setDisplayedChild(0);
             });
@@ -1396,7 +1409,7 @@ public class TripRegisterActivity extends AppCompatActivity {
     };
 
     private void clearData() {
-        moshId= 0;
+        moshId = 0;
         originStation = 0;
         destinationStation = 0;
         originAddressLength = 0;
@@ -1816,6 +1829,24 @@ public class TripRegisterActivity extends AppCompatActivity {
         mRipplePulseLayout.stopRippleAnimation();
         binding.rlNewInComingCall.setVisibility(View.GONE);
         binding.rlActionBar.setVisibility(View.VISIBLE);
+    }
+
+    private void setCursorPosition() {
+
+        if (moshId == 0) {
+            binding.edtFamily.requestFocus();
+            return;
+        }
+        if (binding.edtOriginAddress.getText().toString().trim().isEmpty()) {
+            binding.edtOriginAddress.requestFocus();
+            return;
+        }
+        if (binding.edtDestinationAddress.getText().toString().isEmpty()) {
+            binding.edtDestinationAddress.requestFocus();
+            return;
+        }
+        binding.edtFamily.requestFocus();
+
     }
 
 }
