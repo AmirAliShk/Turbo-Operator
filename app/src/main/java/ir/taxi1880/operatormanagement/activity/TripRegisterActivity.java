@@ -886,7 +886,6 @@ public class TripRegisterActivity extends AppCompatActivity {
 
                             if (originAddresses.size() >= 1) {
                                 if (i == 0) {
-                                    Log.i("TAF", originAddresses.size() + "");
                                     originAddress = Address;
                                     binding.edtOriginAddress.setText(originAddress);
                                     originAddressLength = originAddress.length();
@@ -917,9 +916,9 @@ public class TripRegisterActivity extends AppCompatActivity {
 
                                     setCursorPosition();
 
-                                    Log.i("TAF", "TAF_onItemClick,originStation: " + originStation);
-                                    Log.i("TAF", "TAF_onItemClick,addressLength: " + originAddressLength);
-                                    Log.i("TAF", "TAF_onItemClick,originAddressId: " + originAddressId);
+//                                    Log.i("TAF", "TAF_onItemClick,originStation: " + originStation);
+//                                    Log.i("TAF", "TAF_onItemClick,addressLength: " + originAddressLength);
+//                                    Log.i("TAF", "TAF_onItemClick,originAddressId: " + originAddressId);
                                 }
                             });
                         }
@@ -959,9 +958,9 @@ public class TripRegisterActivity extends AppCompatActivity {
 
                                     setCursorPosition();
 
-                                    Log.i("TAF", "TAF_onItemClick,destinationStation: " + destinationStation);
-                                    Log.i("TAF", "TAF_onItemClick,destAddressLength:" + destAddressLength);
-                                    Log.i("TAF", "TAF_onItemClick, destinationAddressId:" + destinationAddressId);
+//                                    Log.i("TAF", "TAF_onItemClick,destinationStation: " + destinationStation);
+//                                    Log.i("TAF", "TAF_onItemClick,destAddressLength:" + destAddressLength);
+//                                    Log.i("TAF", "TAF_onItemClick, destinationAddressId:" + destinationAddressId);
                                 }
                             });
                         }
@@ -1078,14 +1077,15 @@ public class TripRegisterActivity extends AppCompatActivity {
                     originAddressChangeCounter = 0;
                     originStation = stationCode;
                     originAddressId = addressId;
+                    setCursorPosition();
 
-                    Log.i("TAF", "TAF_getPassengerOriginAddress,originStation: " + originStation);
-                    Log.i("TAF", "TAF_getPassengerOriginAddress,addressLength: " + originAddressLength);
-                    Log.i("TAF", "TAF_getPassengerOriginAddress,originAddressId: " + originAddressId);
+//                    Log.i("TAF", "TAF_getPassengerOriginAddress,originStation: " + originStation);
+//                    Log.i("TAF", "TAF_getPassengerOriginAddress,addressLength: " + originAddressLength);
+//                    Log.i("TAF", "TAF_getPassengerOriginAddress,originAddressId: " + originAddressId);
 
                 });
+
             }
-            setCursorPosition();
             binding.vfPassengerOriginAddress.setDisplayedChild(0);
         }, 500);
 
@@ -1106,17 +1106,13 @@ public class TripRegisterActivity extends AppCompatActivity {
                     destAddressChangeCounter = 0;
                     destinationStation = stationCode;
                     destinationAddressId = addressId;
+                    setCursorPosition();
 
-                    binding.edtDestinationAddress.setNextFocusDownId(R.id.edtFamily);
-                    binding.edtFamily.requestFocus();
-                    binding.edtFamily.setSelection(binding.edtFamily.getText().length());
-
-                    Log.i("TAF", "TAF_getPassengerDestinationAddress,destinationStation: " + destinationStation);
-                    Log.i("TAF", "TAF_getPassengerDestinationAddress,destAddressLength:" + destAddressLength);
-                    Log.i("TAF", "TAF_getPassengerDestinationAddress, destinationAddressId:" + destinationAddressId);
+//                    Log.i("TAF", "TAF_getPassengerDestinationAddress,destinationStation: " + destinationStation);
+//                    Log.i("TAF", "TAF_getPassengerDestinationAddress,destAddressLength:" + destAddressLength);
+//                    Log.i("TAF", "TAF_getPassengerDestinationAddress, destinationAddressId:" + destinationAddressId);
                 });
             }
-            setCursorPosition();
             binding.vfPassengerDestAddress.setDisplayedChild(0);
         }, 500);
     }
@@ -1837,7 +1833,7 @@ public class TripRegisterActivity extends AppCompatActivity {
             binding.edtFamily.requestFocus();
             return;
         }
-        if (binding.edtOriginAddress.getText().toString().trim().isEmpty()) {
+        if (binding.edtOriginAddress.getText().toString().isEmpty()) {
             binding.edtOriginAddress.requestFocus();
             return;
         }
