@@ -82,19 +82,40 @@
 
             </LinearLayout>
 
-            <Button
-                android:id="@+id/btnSubmit"
+
+            <ViewFlipper
+                android:id="@+id/vfSubmit"
                 android:layout_width="170dp"
                 android:layout_height="0dp"
                 android:layout_gravity="center"
                 android:layout_marginBottom="10dp"
                 android:layout_weight="1"
                 android:background="@drawable/bg_circle_green"
-                android:minHeight="35dp"
-                android:text="ثبت"
-                android:textAppearance="?android:attr/textAppearanceLarge"
-                android:textColor="?attr/colorPageTitle"
-                android:textStyle="bold" />
+                android:minHeight="35dp">
+
+
+                <Button
+                    android:id="@+id/btnSubmit"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:background="@drawable/bg_circle_green"
+                    android:text="ثبت"
+                    android:textAppearance="?android:attr/textAppearanceLarge"
+                    android:textColor="?attr/colorPageTitle"
+                    android:textStyle="bold" />
+
+
+                <com.wang.avi.AVLoadingIndicatorView
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="center"
+                    app:indicatorColor="@color/colorWhite" />
+
+
+
+
+            </ViewFlipper>
 
         </LinearLayout>
 

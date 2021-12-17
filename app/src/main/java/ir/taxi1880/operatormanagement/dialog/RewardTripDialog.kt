@@ -64,6 +64,7 @@ class RewardTripDialog {
                 MyApplication.Toast("مقدار انعام را مشخص کنید", 2)
                 return@setOnClickListener
             } else {
+                binding.vfSubmit.displayedChild = 1
                 RequestHelper.builder(EndPoints.REWARD_FOR_TRIP)
                     .addParam("amount", rewardPrice)
                     .addParam("tripId", serviceId)
@@ -90,10 +91,9 @@ class RewardTripDialog {
                         rewardBackListener.rewardBack(rewardPrice)
                     } else {
                         MyApplication.Toast("انعام با موفقیت اضافه نشد.", 2)
-
                     }
+                    binding.vfSubmit.displayedChild = 0
                     dialog.dismiss()
-
                 } catch (e: Exception) {
 
                     AvaCrashReporter.send(e, "RewardTripDialog, rewardListener")
