@@ -288,19 +288,20 @@ public class TripRegisterActivity extends AppCompatActivity {
             int addressPercent = originAddressLength * 50 / 100;
             if (originAddressChangeCounter >= addressPercent) {
                 originStation = 0;
-                originAddressId = "0";
             }
+
             int destAddressPercent = destAddressLength * 50 / 100;
             if (destAddressChangeCounter >= destAddressPercent) {
                 destinationStation = 0;
-                destinationAddressId = "0";
             }
 
-//            Log.i("TAF", "onPressSubmit: address length " + destAddressLength);
-//            Log.i("TAF", "onPressSubmit: address percent " + destAddressPercent);
-//            Log.i("TAF", "onPressSubmit: address change counter " + destAddressChangeCounter);
-//            Log.i("TAF", "onPressSubmit: originStation " + destAddressPercent);
+            if (!binding.edtOriginAddress.getText().toString().trim().equals(originAddress.trim())) {
+                originAddressId = "0";
+            }
 
+            if (!binding.edtDestinationAddress.getText().toString().trim().equals(destinationAddress.trim())) {
+                destinationAddressId = "0";
+            }
             if (cityCode == -1 || cityCode == 0) {
                 MyApplication.Toast("شهر را وارد نمایید", Toast.LENGTH_SHORT);
                 binding.spCity.performClick();
@@ -588,27 +589,29 @@ public class TripRegisterActivity extends AppCompatActivity {
     TextWatcher originAddressTW = new TextWatcher() {
         @Override
         public void beforeTextChanged(CharSequence charSequence, int start, int count, int after) {
-            binding.edtOriginAddress.setSelection(binding.edtOriginAddress.getText().length());
         }
 
         @Override
         public void onTextChanged(CharSequence charSequence, int start, int before, int count) {
             originAddressChangeCounter = originAddressChangeCounter + 1;
-
+//            if (binding.edtOriginAddress.isFocused()) {
+//                originAddressId = "0";
+//            }
         }
 
         @Override
-        public void afterTextChanged(Editable editable) {
-            if (editable.toString().isEmpty()) {
+        public void afterTextChanged(Editable s) {
+            String result = s.toString().replaceAll(" {2}", " ");
+            if (!s.toString().equals(result)) { // it remove the extra space in the text
+                binding.edtOriginAddress.setText(result);
+                binding.edtOriginAddress.setSelection(result.length());
+            }
+
+            if (s.toString().isEmpty()) {
                 originStation = 0;
                 originAddressLength = 0;
                 binding.edtOriginAddress.getText().clear();
             }
-
-//            String result = editable.toString().replaceAll("  ", " ");
-//            if (!editable.toString().equals(result)) {
-//                binding.edtOriginAddress.setText(result);
-//            }
         }
     };
 
@@ -620,20 +623,24 @@ public class TripRegisterActivity extends AppCompatActivity {
         @Override
         public void onTextChanged(CharSequence charSequence, int start, int before, int count) {
             destAddressChangeCounter = destAddressChangeCounter + 1;
+//            if (binding.edtDestinationAddress.isFocused()) {
+//                destinationAddressId = "0";
+//            }
         }
 
         @Override
-        public void afterTextChanged(Editable editable) {
-            if (editable.toString().isEmpty()) {
+        public void afterTextChanged(Editable s) {
+            if (s.toString().isEmpty()) {
                 destinationStation = 0;
                 destAddressLength = 0;
                 binding.edtDestinationAddress.getText().clear();
             }
+            String result = s.toString().replaceAll(" {2}", " ");
+            if (!s.toString().equals(result)) { // it remove the extra space in the text
+                binding.edtOriginAddress.setText(result);
+                binding.edtOriginAddress.setSelection(result.length());
+            }
 
-//            String result = editable.toString().replaceAll("  ", " ");
-//            if (!editable.toString().equals(result)) {
-//                binding.edtDestinationAddress.setText(result);
-//            }
         }
     };
 
@@ -1159,9 +1166,7 @@ public class TripRegisterActivity extends AppCompatActivity {
                 + "\nmobile: " + mobile
                 + "\ncityCode: " + cityCode
                 + "\nname: " + name
-                + "\noriginAddress: " + originAddress
                 + "\nfixedComment: " + fixedComment
-                + "\ndestinationAddress: " + destinationAddress
                 + "\nserviceType: " + serviceType
                 + "\ncarClass: " + carClass
                 + "\nnormalDescription: " + normalDescription
@@ -1171,9 +1176,11 @@ public class TripRegisterActivity extends AppCompatActivity {
                 + "\nqueue: " + queue
                 + "\npercentDiscount: " + percentDiscount
                 + "\nmaxDiscount: " + maxDiscount
+                + "\noriginAddress: " + originAddress
                 + "\naddressIdOrigin: " + originAddressId
-                + "\naddressIdDestination: " + destinationAddressId
                 + "\nstationCode: " + originStation
+                + "\ndestinationAddress: " + destinationAddress
+                + "\naddressIdDestination: " + destinationAddressId
                 + "\ndestinationStation: " + destinationStation);
 
         new GeneralDialog()
