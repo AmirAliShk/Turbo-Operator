@@ -137,20 +137,16 @@ public class SplashActivity extends AppCompatActivity {
     public void onBackPressed() {
         try {
             KeyBoardHelper.hideKeyboard();
-            if (getSupportFragmentManager().getBackStackEntryCount() > 0 || getFragmentManager().getBackStackEntryCount() > 0) {
+            if (doubleBackToExitPressedOnce) {
                 super.onBackPressed();
             } else {
-                if (doubleBackToExitPressedOnce) {
-                    super.onBackPressed();
-                } else {
-                    this.doubleBackToExitPressedOnce = true;
-                    MyApplication.Toast(getString(R.string.txt_please_for_exit_reenter_back), Toast.LENGTH_SHORT);
-                    new Handler().postDelayed(() -> doubleBackToExitPressedOnce = false, 1500);
-                }
+                this.doubleBackToExitPressedOnce = true;
+                MyApplication.Toast(getString(R.string.txt_please_for_exit_reenter_back), Toast.LENGTH_SHORT);
+                new Handler().postDelayed(() -> doubleBackToExitPressedOnce = false, 1500);
             }
         } catch (Exception e) {
             e.printStackTrace();
-            AvaCrashReporter.send(e, "SplashActivity class, onBackPressed method");
+            AvaCrashReporter.send(e, TAG + " class, onBackPressed method");
         }
     }
 }

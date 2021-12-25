@@ -19,6 +19,10 @@
         <entry key="app/src/main/res/drawable-v16/bg_dialog_body.xml" value="0.209375" />
         <entry key="app/src/main/res/drawable-v16/bg_edit_text.xml" value="0.35625" />
         <entry key="app/src/main/res/drawable-v16/bg_gray_lite_edge.xml" value="0.35625" />
+        <entry key="app/src/main/res/drawable-v16/red_shadow.xml" value="0.1015625" />
+        <entry key="app/src/main/res/drawable-v16/selector_enable_disable_btn.xml" value="0.1015625" />
+        <entry key="app/src/main/res/drawable-v16/selector_normal_btn.xml" value="0.3645833333333333" />
+        <entry key="app/src/main/res/drawable-v16/selector_top_left.xml" value="0.1015625" />
         <entry key="app/src/main/res/drawable-v21/badge_unselected.xml" value="0.35625" />
         <entry key="app/src/main/res/drawable-v21/bg_blue_border_edge.xml" value="0.35625" />
         <entry key="app/src/main/res/drawable-v21/bg_body.xml" value="0.209375" />
@@ -62,7 +66,7 @@
         <entry key="app/src/main/res/layout/activity_main.xml" value="0.34010416666666665" />
         <entry key="app/src/main/res/layout/activity_splash.xml" value="0.34010416666666665" />
         <entry key="app/src/main/res/layout/activity_support.xml" value="0.16" />
-        <entry key="app/src/main/res/layout/activity_trip_register.xml" value="0.18608695652173912" />
+        <entry key="app/src/main/res/layout/activity_trip_register.xml" value="0.3484375" />
         <entry key="app/src/main/res/layout/dialog_address_list.xml" value="0.34010416666666665" />
         <entry key="app/src/main/res/layout/dialog_call.xml" value="0.34010416666666665" />
         <entry key="app/src/main/res/layout/dialog_cancelable_loder.xml" value="0.34010416666666665" />
@@ -110,7 +114,7 @@
         <entry key="app/src/main/res/layout/fragment_complaint_detail.xml" value="0.34010416666666665" />
         <entry key="app/src/main/res/layout/fragment_complaint_save_result.xml" value="0.34010416666666665" />
         <entry key="app/src/main/res/layout/fragment_complaint_trip_details.xml" value="0.34010416666666665" />
-        <entry key="app/src/main/res/layout/fragment_determination_page.xml" value="0.2" />
+        <entry key="app/src/main/res/layout/fragment_determination_page.xml" value="0.3484375" />
         <entry key="app/src/main/res/layout/fragment_driver_location.xml" value="0.34010416666666665" />
         <entry key="app/src/main/res/layout/fragment_driver_trip_details.xml" value="0.2" />
         <entry key="app/src/main/res/layout/fragment_home.xml" value="0.34010416666666665" />

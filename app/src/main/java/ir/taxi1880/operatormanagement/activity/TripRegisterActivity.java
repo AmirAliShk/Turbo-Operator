@@ -17,9 +17,7 @@ import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.EditText;
-import android.widget.MultiAutoCompleteTextView;
 import android.widget.RadioButton;
 import android.widget.Toast;
 
@@ -1849,7 +1847,5 @@ public class TripRegisterActivity extends AppCompatActivity {
             return;
         }
         binding.edtFamily.requestFocus();
-
     }
-
 }
