@@ -635,8 +635,8 @@ public class TripRegisterActivity extends AppCompatActivity {
             }
             String result = s.toString().replaceAll(" {2}", " ");
             if (!s.toString().equals(result)) { // it remove the extra space in the text
-                binding.edtOriginAddress.setText(result);
-                binding.edtOriginAddress.setSelection(result.length());
+                binding.edtDestinationAddress.setText(result);
+                binding.edtDestinationAddress.setSelection(result.length());
             }
 
         }
