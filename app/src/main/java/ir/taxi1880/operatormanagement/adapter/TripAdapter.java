@@ -10,12 +10,12 @@ import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import java.util.ArrayList;
-
 import androidx.annotation.NonNull;
 import androidx.appcompat.content.res.AppCompatResources;
 import androidx.core.graphics.drawable.DrawableCompat;
 import androidx.recyclerview.widget.RecyclerView;
+
+import java.util.ArrayList;
 
 import ir.taxi1880.operatormanagement.R;
 import ir.taxi1880.operatormanagement.app.MyApplication;
@@ -72,7 +72,7 @@ public class TripAdapter extends RecyclerView.Adapter<TripAdapter.TripViewHolder
 
         holder.itemView.setOnClickListener(view -> {
             Bundle bundle = new Bundle();
-            bundle.putInt("id", Integer.parseInt(tripModel.getServiceId()));
+            bundle.putString("id", tripModel.getServiceId());
             FragmentHelper.toFragment(MyApplication.currentActivity, new PassengerTripSupportDetailsFragment()).setArguments(bundle).add();
             KeyBoardHelper.hideKeyboard();
         });

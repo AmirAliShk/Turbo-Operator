@@ -1126,9 +1126,9 @@ public class TripRegisterActivity extends AppCompatActivity {
         String mobile = isTellValidable && getMobileNumber().isEmpty() ? "0" : getMobileNumber();
         String tell = getTellNumber();
         String name = binding.edtFamily.getText().toString().trim();
-        originAddress = binding.edtOriginAddress.getText().toString().trim();
+        originAddress = StringHelper.toEnglishDigits(binding.edtOriginAddress.getText().toString().trim());
         String fixedComment = binding.txtDescription.getText().toString().trim();
-        destinationAddress = binding.edtDestinationAddress.getText().toString().trim();
+        destinationAddress = StringHelper.toEnglishDigits(binding.edtDestinationAddress.getText().toString().trim());
 
 
         if (binding.chbTraffic.isChecked())

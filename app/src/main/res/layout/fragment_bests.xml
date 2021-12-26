@@ -7,8 +7,7 @@
     android:background="?attr/colorActionBarBackground"
     android:clickable="true"
     android:layoutDirection="rtl"
-    android:orientation="vertical"
-    tools:context=".fragment.BestsFragment">
+    android:orientation="vertical">
 
     <RelativeLayout
         android:id="@+id/rlActionBar"
@@ -27,17 +26,17 @@
 
         <ImageView
             android:id="@+id/imgHeader"
-            android:layout_below="@id/imgBack"
             android:layout_width="match_parent"
             android:layout_height="@dimen/_50sdp"
+            android:layout_below="@id/imgBack"
             android:layout_marginTop="@dimen/_10sdp"
-            android:background="@drawable/header_main"/>
+            android:background="@drawable/header_main" />
 
         <View
-            android:layout_below="@id/imgHeader"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:background="?attr/colorPageBackground"/>
+            android:layout_below="@id/imgHeader"
+            android:background="?attr/colorPageBackground" />
 
     </RelativeLayout>
 
@@ -56,8 +55,8 @@
                 android:layout_width="50dp"
                 android:layout_height="50dp"
                 android:layout_gravity="center"
-                app:indicatorName="BallSpinFadeLoaderIndicator"
-                app:indicatorColor="?attr/colorIcon1" />
+                app:indicatorColor="?attr/colorIcon1"
+                app:indicatorName="BallSpinFadeLoaderIndicator" />
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -88,8 +87,8 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_margin="5dp"
-                        android:elevation="3dp"
                         android:background="@drawable/bg_silver"
+                        android:elevation="3dp"
                         android:paddingStart="10dp"
                         android:paddingEnd="10dp"
                         android:textColor="@color/colorBlack"
@@ -112,16 +111,16 @@
                         android:id="@+id/txtGolden"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:layout_marginLeft="5dp"
+                        android:layout_marginTop="20dp"
+                        android:layout_marginRight="5dp"
+                        android:layout_marginBottom="5dp"
                         android:background="@drawable/bg_golden"
+                        android:elevation="3dp"
                         android:paddingStart="10dp"
                         android:paddingEnd="10dp"
                         android:textColor="@color/colorBlack"
                         android:textSize="15sp"
-                        android:layout_marginTop="20dp"
-                        android:layout_marginLeft="5dp"
-                        android:layout_marginRight="5dp"
-                        android:layout_marginBottom="5dp"
-                        android:elevation="3dp"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toEndOf="@+id/imgGolden"
                         app:layout_constraintStart_toStartOf="@+id/imgGolden"
@@ -143,8 +142,8 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_margin="5dp"
-                        android:elevation="3dp"
                         android:background="@drawable/bg_bronze"
+                        android:elevation="3dp"
                         android:paddingStart="10dp"
                         android:paddingEnd="10dp"
                         android:textColor="@color/colorBlack"
@@ -159,9 +158,9 @@
                     android:id="@+id/recycleBest"
                     android:layout_width="match_parent"
                     android:layout_height="0dp"
-                    android:layout_weight="2"
-                    android:layout_marginRight="20dp"
                     android:layout_marginLeft="20dp"
+                    android:layout_marginRight="20dp"
+                    android:layout_weight="2"
                     app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                     tools:listitem="@layout/item_best" />
 
@@ -171,20 +170,20 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:gravity="center"
-                android:textSize="@dimen/text_title"
+                android:text="هنوز هیچی ثبت نشده!"
                 android:textColor="?attr/colorValue"
-                android:text="هنوز هیچی ثبت نشده!"/>
+                android:textSize="@dimen/text_title" />
 
             <TextView
                 android:id="@+id/txtNull"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
                 android:layout_centerInParent="true"
                 android:gravity="center"
-                android:textSize="@dimen/text_title"
-                android:textColor="?attr/colorValue"
-                android:visibility="gone"
                 android:text="متاسفانه هنگام دریافت اطلاعات از سرور به مشکل خوردیم \n لطفا مجدد تلاش کنید!"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"/>
+                android:textColor="?attr/colorValue"
+                android:textSize="@dimen/text_title"
+                android:visibility="gone" />
 
         </ViewFlipper>
 

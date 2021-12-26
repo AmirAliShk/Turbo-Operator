@@ -15,7 +15,6 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.ViewFlipper;
 
-import androidx.annotation.NonNull;
 import androidx.appcompat.content.res.AppCompatResources;
 import androidx.core.graphics.drawable.DrawableCompat;
 import androidx.fragment.app.Fragment;
@@ -376,7 +375,7 @@ public class PassengerTripSupportDetailsFragment extends Fragment {
 
         Bundle bundle = getArguments();
         if (bundle != null) {
-            serviceId = bundle.getInt("id");
+            serviceId = Integer.parseInt(bundle.getString("id"));
         }
 
         tripDetails();
