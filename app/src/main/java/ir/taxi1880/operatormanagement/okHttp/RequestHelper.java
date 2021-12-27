@@ -5,6 +5,7 @@ import static ir.taxi1880.operatormanagement.app.MyApplication.context;
 import android.content.Intent;
 import android.util.Log;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -325,7 +326,8 @@ public class RequestHelper implements okhttp3.Callback {
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }
-                    requestFailed(response.code(), new Exception(response.message() + bodyStr));
+                    newRequestFailed(new Exception(bodyStr) , bodyStr);
+//                    requestFailed(response.code(), new Exception(response.message() + bodyStr));
                 }
 
             } catch (final IOException e) {
@@ -432,6 +434,24 @@ public class RequestHelper implements okhttp3.Callback {
                 break;
         }
     }
+
+    private void newRequestFailed(Exception e , String jsonError) {
+
+        if (listener != null)
+            listener.onFailure(runnable, e);
+        Log.e(TAG, "requestFailed: ", e);
+        Log.i(TAG + "Hi==>",jsonError);
+
+        try {
+            String errorMessage = new JSONObject(jsonError).getJSONArray("data").getJSONObject(0).getString("message");
+            Log.i(TAG,"Hi==>" + errorMessage);
+            showError(errorMessage);
+
+        } catch (JSONException jsonException) {
+            jsonException.printStackTrace();
+        }
+    }
+
 
     private void showMessage() {
         MyApplication.handler.post(() -> {
