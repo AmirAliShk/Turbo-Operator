@@ -61,6 +61,7 @@ public class RequestHelper implements okhttp3.Callback {
     private boolean ignore422 = false;
     private boolean doNotSendHeader = false;
     private Headers.Builder headers = new Headers.Builder();
+    private String bodyStr; //This defined when we had failed response from Sv In 422 error
 
     public static abstract class Callback {
         public void onReloadPress(boolean v) {
@@ -326,8 +327,8 @@ public class RequestHelper implements okhttp3.Callback {
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }
-                    newRequestFailed(new Exception(bodyStr) , bodyStr);
-//                    requestFailed(response.code(), new Exception(response.message() + bodyStr));
+                    this.bodyStr = bodyStr;
+                    requestFailed(response.code(), new Exception(response.message() + bodyStr));
                 }
 
             } catch (final IOException e) {
@@ -423,7 +424,8 @@ public class RequestHelper implements okhttp3.Callback {
                 if (ignore422) {
                     showMessage();
                 } else {
-                    showError("خطای 422 : متاسفانه اطلاعات ارسالی ناقص است لطفا با پشتیبانی تماس بگیرد");
+                    newRequestFailed(e,bodyStr);
+//                   showError("خطای 422 : متاسفانه اطلاعات ارسالی ناقص است لطفا با پشتیبانی تماس بگیرد");
                 }
                 break;
             case 500:
@@ -435,12 +437,12 @@ public class RequestHelper implements okhttp3.Callback {
         }
     }
 
+
     private void newRequestFailed(Exception e , String jsonError) {
 
         if (listener != null)
             listener.onFailure(runnable, e);
         Log.e(TAG, "requestFailed: ", e);
-        Log.i(TAG + "Hi==>",jsonError);
 
         try {
             String errorMessage = new JSONObject(jsonError).getJSONArray("data").getJSONObject(0).getString("message");
@@ -451,8 +453,6 @@ public class RequestHelper implements okhttp3.Callback {
             jsonException.printStackTrace();
         }
     }
-
-
     private void showMessage() {
         MyApplication.handler.post(() -> {
             //TODO correct this in next version
