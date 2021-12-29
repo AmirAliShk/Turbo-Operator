@@ -10,6 +10,8 @@ import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
 import android.text.Editable;
+import android.text.InputFilter;
+import android.text.Spanned;
 import android.text.TextWatcher;
 import android.util.Log;
 import android.view.View;
@@ -17,6 +19,7 @@ import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.AdapterView;
+import android.widget.AutoCompleteTextView;
 import android.widget.EditText;
 import android.widget.RadioButton;
 import android.widget.Toast;
@@ -595,21 +598,22 @@ public class TripRegisterActivity extends AppCompatActivity {
 //            if (binding.edtOriginAddress.isFocused()) {
 //                originAddressId = "0";
 //            }
+            removeExtraSpace(binding.edtOriginAddress);
         }
 
         @Override
         public void afterTextChanged(Editable s) {
-            String result = s.toString().replaceAll(" {2}", " ");
-            if (!s.toString().equals(result)) { // it remove the extra space in the text
-                binding.edtOriginAddress.setText(result);
-                binding.edtOriginAddress.setSelection(result.length());
-            }
 
             if (s.toString().isEmpty()) {
                 originStation = 0;
                 originAddressLength = 0;
                 binding.edtOriginAddress.getText().clear();
             }
+//            String result = s.toString().replaceAll(" {2}", " ");
+//            if (!s.toString().equals(result)) { // it remove the extra space in the text
+//                binding.edtOriginAddress.setText(result);
+//                binding.edtOriginAddress.setSelection(result.length());
+//            }
         }
     };
 
@@ -624,6 +628,7 @@ public class TripRegisterActivity extends AppCompatActivity {
 //            if (binding.edtDestinationAddress.isFocused()) {
 //                destinationAddressId = "0";
 //            }
+            removeExtraSpace(binding.edtDestinationAddress);
         }
 
         @Override
@@ -633,14 +638,34 @@ public class TripRegisterActivity extends AppCompatActivity {
                 destAddressLength = 0;
                 binding.edtDestinationAddress.getText().clear();
             }
-            String result = s.toString().replaceAll(" {2}", " ");
-            if (!s.toString().equals(result)) { // it remove the extra space in the text
-                binding.edtDestinationAddress.setText(result);
-                binding.edtDestinationAddress.setSelection(result.length());
-            }
-
+//            String result = s.toString().replaceAll(" {2}", " ");
+//            if (!s.toString().equals(result)) { // it remove the extra space in the text
+//                binding.edtDestinationAddress.setText(result);
+//                binding.edtDestinationAddress.setSelection(result.length());
+//            }
         }
     };
+
+    private void removeExtraSpace(AutoCompleteTextView ACTextView)
+    {
+        InputFilter filter = new InputFilter() {
+            public CharSequence filter(CharSequence source, int start, int end,
+                                       Spanned dest, int dstart, int dend) {
+                String stringSource = source.toString();
+                String stringDest = dest.toString();
+                if (stringSource.equals(" ")) {
+                    if (stringDest.length() == 0)
+                        return "";
+                    if (stringDest.length() >= 1)
+                        if ((dstart > 0 && ACTextView.getText()
+                                .charAt(dstart - 1) == ' ') || (ACTextView.getText().length() >  dstart && ACTextView.getText().charAt(dstart) == ' ') || dstart == 0)
+                            return "";
+                }
+                return null;
+            }
+        };
+        ACTextView.setFilters(new InputFilter[]{filter});
+    }
 
     private void initServiceCountSpinner() {
         try {
