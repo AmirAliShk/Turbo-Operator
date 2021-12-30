@@ -245,24 +245,25 @@ public class PassengerTripSupportDetailsFragment extends Fragment {
     @OnClick(R.id.btnRewardTip)
     void onTripReward() {
         String liveNumber = MyApplication.prefManager.getLastCallerId();
-        if(liveNumber.equals(passengerPhone) || liveNumber.equals(customerMobile)){
+        if (liveNumber.equals(passengerPhone) || liveNumber.equals(customerMobile)) {
             new RewardTripDialog().show(serviceId, reward -> {
-                int rewardInt  = Integer.parseInt(reward);
-                int priceInt  = Integer.parseInt(price);
+                int rewardInt = Integer.parseInt(reward);
+                int priceInt = Integer.parseInt(price);
                 int total = priceInt + rewardInt;
-                price =  total + "";
+                price = total + "";
                 txtPrice.setText(price.equals("null") ? " " : StringHelper.toPersianDigits(StringHelper.setComma(price)));
             });
-        }else
-        {
-            MyApplication.Toast("سرویس به این مشتری تعلق ندارد",2);
+        } else {
+            MyApplication.Toast("سرویس به این مشتری تعلق ندارد", 2);
         }
 
     }
 
     @OnClick(R.id.btnEditAddress)
     void onEditAddress() {
-        new ErrorAddressDialog().show(passengerAddress, serviceId + "");
+        new ErrorAddressDialog().show(passengerAddress, serviceId + "", address -> {
+            txtCustomerAddress.setText(address);
+        });
     }
 
     @OnClick(R.id.btnDriverLocation)

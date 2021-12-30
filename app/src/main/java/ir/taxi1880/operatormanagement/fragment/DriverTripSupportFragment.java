@@ -373,7 +373,7 @@ public class DriverTripSupportFragment extends Fragment {
                 break;
 
             case 10: //search by destination address
-                destinationAddress=searchText;
+                destinationAddress = searchText;
                 break;
         }
 
@@ -404,7 +404,6 @@ public class DriverTripSupportFragment extends Fragment {
                     Boolean success = tripObject.getBoolean("success");
                     String message = tripObject.getString("message");
                     JSONArray data = tripObject.getJSONArray("data");
-                    Log.i("TAF",tripObject.toString());
 
                     if (success) {
                         for (int i = 0; i < data.length(); i++) {
@@ -509,7 +508,7 @@ public class DriverTripSupportFragment extends Fragment {
             MyApplication.handler.post(() -> {
                 try {
                     JSONObject object = new JSONObject(args[0].toString());
-                    Boolean success = object.getBoolean("success");
+                    boolean success = object.getBoolean("success");
                     String message = object.getString("message");
 
                     if (success) {
