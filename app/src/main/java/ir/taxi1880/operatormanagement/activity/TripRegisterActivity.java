@@ -1524,7 +1524,7 @@ public class TripRegisterActivity extends AppCompatActivity {
             String messageUserStatus = intent.getStringExtra(Keys.KEY_MESSAGE_USER_STATUS);
             boolean userStatus = intent.getBooleanExtra(Keys.KEY_USER_STATUS, false);
             if (!userStatus) {
-                binding.btnDeActivate.setBackgroundResource(R.drawable.bg_bot_left);
+                binding.btnDeActivate.setBackgroundResource(R.drawable.bg_pink_edge);
                 binding.btnActivate.setBackgroundColor(Color.parseColor("#00FFB2B2"));
                 MyApplication.prefManager.setActivateStatus(false);
             } else {

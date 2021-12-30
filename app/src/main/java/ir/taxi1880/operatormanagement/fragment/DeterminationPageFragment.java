@@ -9,16 +9,9 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.AnimationUtils;
-import android.widget.Button;
-import android.widget.ImageView;
-import android.widget.TextView;
 import android.widget.Toast;
-import android.widget.ViewFlipper;
 
 import androidx.fragment.app.Fragment;
-import androidx.gridlayout.widget.GridLayout;
-
-import com.chaos.view.PinView;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -28,9 +21,6 @@ import java.util.Calendar;
 import java.util.Timer;
 import java.util.TimerTask;
 
-import butterknife.BindView;
-import butterknife.ButterKnife;
-import butterknife.OnClick;
 import butterknife.Unbinder;
 import ir.taxi1880.operatormanagement.R;
 import ir.taxi1880.operatormanagement.app.EndPoints;
