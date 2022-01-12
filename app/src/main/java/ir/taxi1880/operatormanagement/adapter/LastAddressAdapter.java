@@ -5,7 +5,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import org.json.JSONObject;
@@ -18,7 +17,6 @@ import ir.taxi1880.operatormanagement.app.MyApplication;
 import ir.taxi1880.operatormanagement.dialog.GeneralDialog;
 import ir.taxi1880.operatormanagement.helper.TypefaceUtil;
 import ir.taxi1880.operatormanagement.model.AddressesModel;
-import ir.taxi1880.operatormanagement.model.PassengerAddressModel;
 import ir.taxi1880.operatormanagement.okHttp.RequestHelper;
 import ir.taxi1880.operatormanagement.push.AvaCrashReporter;
 
@@ -29,7 +27,7 @@ public class LastAddressAdapter extends BaseAdapter {
     boolean isFromOrigin;
     String passengerId;
 
-    public LastAddressAdapter(boolean isFromOrigin,String passengerId ,ArrayList<AddressesModel> addressModels) {
+    public LastAddressAdapter(boolean isFromOrigin, String passengerId, ArrayList<AddressesModel> addressModels) {
         this.addressModels = addressModels;
         this.isFromOrigin = isFromOrigin;
         this.passengerId = passengerId;
@@ -78,17 +76,17 @@ public class LastAddressAdapter extends BaseAdapter {
 //            }
 
             imgArchive.setOnClickListener(view -> {
-                    new GeneralDialog()
-                            .title("هشدار")
-                            .message("ایا از انجام عملیات فوق اطمینان دارید؟")
-                            .firstButton("بله", () -> {
-                                archiveOrigin(addressModels.get(position).getAddressId(),isFromOrigin);
-                                addressModels.remove(position);
-                                notifyDataSetChanged();
-                            })
-                            .secondButton("خیر", null)
-                            .cancelable(false)
-                            .show();
+                new GeneralDialog()
+                        .title("هشدار")
+                        .message("ایا از انجام عملیات فوق اطمینان دارید؟")
+                        .firstButton("بله", () -> {
+                            archiveOrigin(addressModels.get(position).getAddressId(), isFromOrigin);
+                            addressModels.remove(position);
+                            notifyDataSetChanged();
+                        })
+                        .secondButton("خیر", null)
+                        .cancelable(false)
+                        .show();
             });
 
         } catch (Exception e) {
@@ -99,15 +97,15 @@ public class LastAddressAdapter extends BaseAdapter {
         return myView;
     }
 
-    private void archiveOrigin(String addressId,boolean isOrigin) {
+    private void archiveOrigin(String addressId, boolean isOrigin) {
         String oOrd;
         if (isOrigin) oOrd = "origin";
         else oOrd = "destination";
 
         RequestHelper.builder(EndPoints.DELETE_ADDRESS)
-                .addParam("passengerId",passengerId)
+                .addParam("passengerId", passengerId)
                 .addParam("addressId", addressId)
-                .addParam("type",oOrd)
+                .addParam("type", oOrd)
                 .listener(onArchiveAddress)
                 .delete();
     }

@@ -146,5 +146,6 @@
     <string name="confirm_info">تایید اطلاعات</string>
     <string name="stationName">نام ایستگاه</string>
     <string name="logout">خروج از حساب</string>
+    <string name="setting">تنظیمات</string>
 
 </resources>

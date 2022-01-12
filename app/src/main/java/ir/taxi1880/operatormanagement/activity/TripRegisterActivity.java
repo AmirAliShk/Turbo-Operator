@@ -920,10 +920,6 @@ public class TripRegisterActivity extends AppCompatActivity {
                                     }
 
                                     setCursorPosition();
-
-//                                    Log.i("TAF", "TAF_onItemClick,originStation: " + originStation);
-//                                    Log.i("TAF", "TAF_onItemClick,addressLength: " + originAddressLength);
-//                                    Log.i("TAF", "TAF_onItemClick,originAddressId: " + originAddressId);
                                 }
                             });
                         }
@@ -962,10 +958,6 @@ public class TripRegisterActivity extends AppCompatActivity {
                                     }
 
                                     setCursorPosition();
-
-//                                    Log.i("TAF", "TAF_onItemClick,destinationStation: " + destinationStation);
-//                                    Log.i("TAF", "TAF_onItemClick,destAddressLength:" + destAddressLength);
-//                                    Log.i("TAF", "TAF_onItemClick, destinationAddressId:" + destinationAddressId);
                                 }
                             });
                         }
@@ -1083,18 +1075,10 @@ public class TripRegisterActivity extends AppCompatActivity {
                     originStation = stationCode;
                     originAddressId = addressId;
                     setCursorPosition();
-
-//                    Log.i("TAF", "TAF_getPassengerOriginAddress,originStation: " + originStation);
-//                    Log.i("TAF", "TAF_getPassengerOriginAddress,addressLength: " + originAddressLength);
-//                    Log.i("TAF", "TAF_getPassengerOriginAddress,originAddressId: " + originAddressId);
-
                 });
-
             }
             binding.vfPassengerOriginAddress.setDisplayedChild(0);
         }, 500);
-
-
     }
 
     private void getPassengerDestAddress() {
@@ -1112,10 +1096,6 @@ public class TripRegisterActivity extends AppCompatActivity {
                     destinationStation = stationCode;
                     destinationAddressId = addressId;
                     setCursorPosition();
-
-//                    Log.i("TAF", "TAF_getPassengerDestinationAddress,destinationStation: " + destinationStation);
-//                    Log.i("TAF", "TAF_getPassengerDestinationAddress,destAddressLength:" + destAddressLength);
-//                    Log.i("TAF", "TAF_getPassengerDestinationAddress, destinationAddressId:" + destinationAddressId);
                 });
             }
             binding.vfPassengerDestAddress.setDisplayedChild(0);
