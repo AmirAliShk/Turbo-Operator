@@ -1,6 +1,5 @@
 package ir.taxi1880.operatormanagement.dialog;
 
-
 import android.app.Dialog;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
@@ -14,13 +13,11 @@ import ir.taxi1880.operatormanagement.app.MyApplication;
 import ir.taxi1880.operatormanagement.helper.TypefaceUtil;
 import ir.taxi1880.operatormanagement.push.AvaCrashReporter;
 
-
 public class LoadingDialog {
 
     private static final String TAG = LoadingDialog.class.getSimpleName();
     private static Dialog ldialog;
     private static Dialog cancelableLoaderDialog;
-
 
     public static void makeLoader() {
         if (ldialog != null) return;

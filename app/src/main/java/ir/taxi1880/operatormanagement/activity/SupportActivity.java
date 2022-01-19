@@ -1,8 +1,9 @@
 package ir.taxi1880.operatormanagement.activity;
 
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.localbroadcastmanager.content.LocalBroadcastManager;
-import androidx.viewpager2.widget.ViewPager2;
+import static ir.taxi1880.operatormanagement.app.Keys.KEY_NEW_MISTAKE_COUNT;
+import static ir.taxi1880.operatormanagement.app.Keys.KEY_PENDING_MISTAKE_COUNT;
+import static ir.taxi1880.operatormanagement.app.Keys.NEW_MISTAKE_COUNT;
+import static ir.taxi1880.operatormanagement.app.Keys.PENDING_MISTAKE_COUNT;
 
 import android.content.BroadcastReceiver;
 import android.content.ClipData;
@@ -23,6 +24,10 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.localbroadcastmanager.content.LocalBroadcastManager;
+import androidx.viewpager2.widget.ViewPager2;
 
 import com.gauravbhola.ripplepulsebackground.RipplePulseLayout;
 import com.google.android.material.tabs.TabLayout;
@@ -47,8 +52,8 @@ import ir.taxi1880.operatormanagement.app.MyApplication;
 import ir.taxi1880.operatormanagement.dataBase.DataBase;
 import ir.taxi1880.operatormanagement.dialog.GeneralDialog;
 import ir.taxi1880.operatormanagement.dialog.LoadingDialog;
-import ir.taxi1880.operatormanagement.fragment.PendingMistakesFragment;
 import ir.taxi1880.operatormanagement.fragment.DriverTripSupportFragment;
+import ir.taxi1880.operatormanagement.fragment.PendingMistakesFragment;
 import ir.taxi1880.operatormanagement.helper.FragmentHelper;
 import ir.taxi1880.operatormanagement.helper.KeyBoardHelper;
 import ir.taxi1880.operatormanagement.helper.ThemeHelper;
@@ -56,11 +61,6 @@ import ir.taxi1880.operatormanagement.helper.TypefaceUtil;
 import ir.taxi1880.operatormanagement.okHttp.RequestHelper;
 import ir.taxi1880.operatormanagement.push.AvaCrashReporter;
 import ir.taxi1880.operatormanagement.services.LinphoneService;
-
-import static ir.taxi1880.operatormanagement.app.Keys.KEY_NEW_MISTAKE_COUNT;
-import static ir.taxi1880.operatormanagement.app.Keys.KEY_PENDING_MISTAKE_COUNT;
-import static ir.taxi1880.operatormanagement.app.Keys.NEW_MISTAKE_COUNT;
-import static ir.taxi1880.operatormanagement.app.Keys.PENDING_MISTAKE_COUNT;
 
 public class SupportActivity extends AppCompatActivity {
     public static final String TAG = SupportActivity.class.getSimpleName();
@@ -554,22 +554,20 @@ public class SupportActivity extends AppCompatActivity {
     RequestHelper.Callback getMistakeReasonsListener = new RequestHelper.Callback() {
         @Override
         public void onResponse(Runnable reCall, Object... args) {
-            MyApplication.handler.post(()->{
-               try {
-                   JSONObject rawContent = new JSONObject(args[0].toString());
-                   boolean status = rawContent.getBoolean("success");
-                   String message = rawContent.getString("message");
+            MyApplication.handler.post(() -> {
+                try {
+                    JSONObject rawContent = new JSONObject(args[0].toString());
+                    boolean status = rawContent.getBoolean("success");
+                    String message = rawContent.getString("message");
 
-                   if (status)
-                   {
-                       String JArr = rawContent.getJSONArray("data").toString();
-                       MyApplication.prefManager.setMistakeReason(JArr);
-                       Log.i("TAF",MyApplication.prefManager.getMistakeReason());
-                   }
-               }catch(Exception e)
-               {
-                   e.printStackTrace();
-               }
+                    if (status) {
+                        String JArr = rawContent.getJSONArray("data").toString();
+                        MyApplication.prefManager.setMistakeReason(JArr);
+                        Log.i("TAF", MyApplication.prefManager.getMistakeReason());
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
             });
 
         }

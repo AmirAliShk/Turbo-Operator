@@ -234,7 +234,9 @@ public class DriverTripSupportDetailsFragment extends Fragment {
 
     @OnClick(R.id.btnEditAddress)
     void onEditAddress() {
-        new ErrorAddressDialog().show(passengerAddress, serviceId+"");
+        new ErrorAddressDialog().show(passengerAddress, serviceId + "", address -> {
+            txtCustomerAddress.setText(address);
+        });
     }
 
     @OnClick(R.id.btnDriverLocation)
@@ -264,17 +266,17 @@ public class DriverTripSupportDetailsFragment extends Fragment {
     void onError() {
 //        String cityName= new DataBase(MyApplication.context).getCityName2(cityCode);
         new ErrorRegistrationDialog()
-                .show(serviceId+"", passengerPhone, customerMobile, passengerAddress, passengerName, voipId, cityCode, stationCode, userId, callTime, callDate, price, destinationStation, destination);
+                .show(serviceId + "", passengerPhone, customerMobile, passengerAddress, passengerName, voipId, cityCode, stationCode, userId, callTime, callDate, price, destinationStation, destination);
     }
 
     @OnClick(R.id.btnComplaintRegistration)
     void onComplaint() {
-        new ComplaintRegistrationDialog().show(serviceId+"", voipId);
+        new ComplaintRegistrationDialog().show(serviceId + "", voipId);
     }
 
     @OnClick(R.id.btnLost)
     void onLost() {
-        new LostDialog().show(serviceId+"", passengerName, passengerPhone, taxiCode, true);
+        new LostDialog().show(serviceId + "", passengerName, passengerPhone, taxiCode, true);
     }
 
     @OnClick(R.id.btnDriverLock)

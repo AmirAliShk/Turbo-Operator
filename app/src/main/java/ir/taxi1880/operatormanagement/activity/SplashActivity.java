@@ -4,9 +4,9 @@ import static ir.taxi1880.operatormanagement.app.MyApplication.context;
 
 import android.Manifest;
 import android.annotation.SuppressLint;
+import android.app.ActivityManager;
 import android.content.Intent;
 import android.content.pm.PackageManager;
-import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
@@ -30,6 +30,7 @@ import ir.taxi1880.operatormanagement.app.Constant;
 import ir.taxi1880.operatormanagement.app.MyApplication;
 import ir.taxi1880.operatormanagement.databinding.ActivitySplashBinding;
 import ir.taxi1880.operatormanagement.dialog.GeneralDialog;
+import ir.taxi1880.operatormanagement.dialog.OverlayPermissionDialog;
 import ir.taxi1880.operatormanagement.helper.AppVersionHelper;
 import ir.taxi1880.operatormanagement.helper.KeyBoardHelper;
 import ir.taxi1880.operatormanagement.helper.StringHelper;
@@ -78,23 +79,24 @@ public class SplashActivity extends AppCompatActivity {
     private static final int PERMISSION_CALLBACK_CONSTANT = 100;
 
     public void checkPermission() {
+        ActivityManager activityManager = (ActivityManager) context.getSystemService(ACTIVITY_SERVICE);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             if ((ContextCompat.checkSelfPermission(MyApplication.currentActivity, Manifest.permission.RECORD_AUDIO) != PackageManager.PERMISSION_GRANTED)
-                    || (ContextCompat.checkSelfPermission(MyApplication.currentActivity, Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED)
-                    || !Settings.canDrawOverlays(context)) {
+                    || (ContextCompat.checkSelfPermission(MyApplication.currentActivity, Manifest.permission.INTERNET) != PackageManager.PERMISSION_GRANTED)) {
                 new GeneralDialog()
                         .title("دسترسی")
                         .message("برای ورود به برنامه ضروری است تا دسترسی های لازم را برای عملکرد بهتر به برنامه داده شود لطفا جهت بهبود عملکرد دسترسی های لازم را اعمال نمایید")
                         .cancelable(false)
-                        .firstButton("باشه", () -> {
-                            ActivityCompat.requestPermissions(MyApplication.currentActivity, permissionsRequired, PERMISSION_CALLBACK_CONSTANT);
-
-                            int REQUEST_CODE = 101;
-                            Intent myIntent = new Intent(Settings.ACTION_MANAGE_OVERLAY_PERMISSION);
-                            myIntent.setData(Uri.parse("package:" + getPackageName()));
-                            startActivityForResult(myIntent, REQUEST_CODE);
-                        })
+                        .firstButton("باشه", () -> ActivityCompat.requestPermissions(MyApplication.currentActivity, permissionsRequired, PERMISSION_CALLBACK_CONSTANT))
                         .show();
+            } else if (activityManager.isLowRamDevice()) {
+                new GetAppInfo().callAppInfoAPI();
+            } else if (!Settings.canDrawOverlays(context)) {
+                new OverlayPermissionDialog().show(s -> {
+                    if (!s) {
+                        new GetAppInfo().callAppInfoAPI();
+                    }
+                });
             } else {
                 new GetAppInfo().callAppInfoAPI();
             }
@@ -131,6 +133,18 @@ public class SplashActivity extends AppCompatActivity {
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
         checkPermission();
+    }
+
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == 101) {
+            switch (resultCode) {
+                case RESULT_OK:
+                case RESULT_CANCELED:
+                    new GetAppInfo().callAppInfoAPI();
+                    break;
+            }
+        }
     }
 
     @Override

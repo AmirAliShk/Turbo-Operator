@@ -3,21 +3,18 @@ package ir.taxi1880.operatormanagement.dialog;
 import android.app.Dialog;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
-import android.util.Log;
 import android.view.Gravity;
+import android.view.LayoutInflater;
 import android.view.Window;
 import android.view.WindowManager;
-import android.widget.Button;
-import android.widget.EditText;
-import android.widget.ImageView;
 import android.widget.Toast;
-import android.widget.ViewFlipper;
 
 import org.json.JSONObject;
 
 import ir.taxi1880.operatormanagement.R;
 import ir.taxi1880.operatormanagement.app.EndPoints;
 import ir.taxi1880.operatormanagement.app.MyApplication;
+import ir.taxi1880.operatormanagement.databinding.DialogEditAddressBinding;
 import ir.taxi1880.operatormanagement.helper.KeyBoardHelper;
 import ir.taxi1880.operatormanagement.helper.TypefaceUtil;
 import ir.taxi1880.operatormanagement.okHttp.RequestHelper;
@@ -27,17 +24,23 @@ public class ErrorAddressDialog {
 
     private static final String TAG = ErrorAddressDialog.class.getSimpleName();
 
-    static Dialog dialog;
-    ViewFlipper vfLoader;
+    public interface Listener {
+        void address(String address);
+    }
 
-    public void show(String passengerAddress, String serviceId) {
+    DialogEditAddressBinding binding;
+    static Dialog dialog;
+    Listener listener;
+
+    public void show(String passengerAddress, String serviceId, Listener listener) {
         if (MyApplication.currentActivity == null || MyApplication.currentActivity.isFinishing())
             return;
         dialog = new Dialog(MyApplication.currentActivity);
+        binding = DialogEditAddressBinding.inflate(LayoutInflater.from(dialog.getContext()));
         dialog.getWindow().requestFeature(Window.FEATURE_NO_TITLE);
         dialog.getWindow().getAttributes().windowAnimations = R.style.ExpandAnimation;
-        dialog.setContentView(R.layout.dialog_edit_address);
-        TypefaceUtil.overrideFonts(dialog.getWindow().getDecorView());
+        dialog.setContentView(binding.getRoot());
+        TypefaceUtil.overrideFonts(binding.getRoot());
         dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         WindowManager.LayoutParams wlp = dialog.getWindow().getAttributes();
         wlp.gravity = Gravity.CENTER;
@@ -45,22 +48,18 @@ public class ErrorAddressDialog {
         wlp.windowAnimations = R.style.ExpandAnimation;
         dialog.getWindow().setAttributes(wlp);
         dialog.setCancelable(false);
+        this.listener = listener;
 
-        ImageView imgClose = dialog.findViewById(R.id.imgClose);
-        Button btnSubmit = dialog.findViewById(R.id.btnSubmit);
-        EditText edtAddress = dialog.findViewById(R.id.edtAddress);
-        vfLoader = dialog.findViewById(R.id.vfLoader);
+        binding.edtAddress.setText(passengerAddress);
 
-        edtAddress.setText(passengerAddress);
+        binding.imgClose.setOnClickListener(view -> dismiss());
 
-        imgClose.setOnClickListener(view -> dismiss());
-
-        btnSubmit.setOnClickListener(view -> {
+        binding.btnSubmit.setOnClickListener(view -> {
             KeyBoardHelper.hideKeyboard();
-            String address = edtAddress.getText().toString();
+            String address = binding.edtAddress.getText().toString();
 
             if (address.isEmpty()) {
-                edtAddress.setError("آدرس نباید خالی باشد");
+                binding.edtAddress.setError("آدرس نباید خالی باشد");
                 return;
             }
 
@@ -77,8 +76,8 @@ public class ErrorAddressDialog {
     }
 
     private void editAddress(String serviceId, String address) {
-        if (vfLoader != null) {
-            vfLoader.setDisplayedChild(1);
+        if (binding.vfLoader != null) {
+            binding.vfLoader.setDisplayedChild(1);
         }
         LoadingDialog.makeCancelableLoader();
         RequestHelper.builder(EndPoints.EDIT_ADDRESS)
@@ -101,6 +100,7 @@ public class ErrorAddressDialog {
                         JSONObject dataObj = object.getJSONObject("data");
                         boolean status = dataObj.getBoolean("status");
                         if (status) {
+                            listener.address(binding.edtAddress.getText().toString());
                             dismiss();
                             new GeneralDialog()
                                     .title("تایید شد")
@@ -125,8 +125,8 @@ public class ErrorAddressDialog {
                                 .show();
                     }
 
-                    if (vfLoader != null) {
-                        vfLoader.setDisplayedChild(0);
+                    if (binding.vfLoader != null) {
+                        binding.vfLoader.setDisplayedChild(0);
                     }
 
                     LoadingDialog.dismissCancelableDialog();
@@ -139,11 +139,8 @@ public class ErrorAddressDialog {
 
         @Override
         public void onFailure(Runnable reCall, Exception e) {
-            MyApplication.handler.post(() -> {
-                LoadingDialog.dismissCancelableDialog();
-            });
+            MyApplication.handler.post(LoadingDialog::dismissCancelableDialog);
         }
-
     };
 
     private static void dismiss() {
@@ -157,5 +154,4 @@ public class ErrorAddressDialog {
         }
         dialog = null;
     }
-
 }

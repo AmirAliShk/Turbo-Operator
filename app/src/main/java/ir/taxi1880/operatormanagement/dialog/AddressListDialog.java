@@ -13,6 +13,7 @@ import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.ViewFlipper;
+
 import java.util.ArrayList;
 
 import ir.taxi1880.operatormanagement.R;
@@ -32,7 +33,7 @@ public class AddressListDialog {
     private static Dialog dialog;
     private DialogAddressListBinding binding;
     private LastAddressAdapter lastAddressAdapter;
-    private ArrayList <AddressesModel> passengerAddressModels;
+    private ArrayList<AddressesModel> passengerAddressModels;
     private Listener listener;
     private String passengerId;
 
@@ -42,7 +43,7 @@ public class AddressListDialog {
 //    void selectedAddress(boolean b);
     }
 
-    public void show(boolean isFromOrigin,String passengerId,ArrayList <AddressesModel>passengerAddresses, Listener listener) {
+    public void show(boolean isFromOrigin, String passengerId, ArrayList<AddressesModel> passengerAddresses, Listener listener) {
         if (MyApplication.currentActivity == null || MyApplication.currentActivity.isFinishing())
             return;
         dialog = new Dialog(MyApplication.currentActivity);
@@ -62,7 +63,7 @@ public class AddressListDialog {
         this.passengerAddressModels = passengerAddresses;
         this.passengerId = passengerId;
 
-        lastAddressAdapter = new LastAddressAdapter(isFromOrigin,passengerId , passengerAddressModels);
+        lastAddressAdapter = new LastAddressAdapter(isFromOrigin, passengerId, passengerAddressModels);
         binding.listLastAddress.setAdapter(lastAddressAdapter);
 
         if (isFromOrigin) {
@@ -76,8 +77,7 @@ public class AddressListDialog {
         }
 
         binding.listLastAddress.setOnItemClickListener((parent, view, position, id) -> {
-            listener .description(passengerAddressModels.get(position).getAddress(), passengerAddressModels.get(position).getStation(),passengerAddressModels.get(position).getAddressId());
-////        listener.selectedAddress(true);
+            listener.description(passengerAddressModels.get(position).getAddress(), passengerAddressModels.get(position).getStation(), passengerAddressModels.get(position).getAddressId());
             dismiss();
         });
 

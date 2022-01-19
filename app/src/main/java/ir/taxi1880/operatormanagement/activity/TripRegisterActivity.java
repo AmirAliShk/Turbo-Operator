@@ -945,10 +945,6 @@ public class TripRegisterActivity extends AppCompatActivity {
                                     }
 
                                     setCursorPosition();
-
-//                                    Log.i("TAF", "TAF_onItemClick,originStation: " + originStation);
-//                                    Log.i("TAF", "TAF_onItemClick,addressLength: " + originAddressLength);
-//                                    Log.i("TAF", "TAF_onItemClick,originAddressId: " + originAddressId);
                                 }
                             });
                         }
@@ -987,10 +983,6 @@ public class TripRegisterActivity extends AppCompatActivity {
                                     }
 
                                     setCursorPosition();
-
-//                                    Log.i("TAF", "TAF_onItemClick,destinationStation: " + destinationStation);
-//                                    Log.i("TAF", "TAF_onItemClick,destAddressLength:" + destAddressLength);
-//                                    Log.i("TAF", "TAF_onItemClick, destinationAddressId:" + destinationAddressId);
                                 }
                             });
                         }
@@ -1108,18 +1100,10 @@ public class TripRegisterActivity extends AppCompatActivity {
                     originStation = stationCode;
                     originAddressId = addressId;
                     setCursorPosition();
-
-//                    Log.i("TAF", "TAF_getPassengerOriginAddress,originStation: " + originStation);
-//                    Log.i("TAF", "TAF_getPassengerOriginAddress,addressLength: " + originAddressLength);
-//                    Log.i("TAF", "TAF_getPassengerOriginAddress,originAddressId: " + originAddressId);
-
                 });
-
             }
             binding.vfPassengerOriginAddress.setDisplayedChild(0);
         }, 500);
-
-
     }
 
     private void getPassengerDestAddress() {
@@ -1137,10 +1121,6 @@ public class TripRegisterActivity extends AppCompatActivity {
                     destinationStation = stationCode;
                     destinationAddressId = addressId;
                     setCursorPosition();
-
-//                    Log.i("TAF", "TAF_getPassengerDestinationAddress,destinationStation: " + destinationStation);
-//                    Log.i("TAF", "TAF_getPassengerDestinationAddress,destAddressLength:" + destAddressLength);
-//                    Log.i("TAF", "TAF_getPassengerDestinationAddress, destinationAddressId:" + destinationAddressId);
                 });
             }
             binding.vfPassengerDestAddress.setDisplayedChild(0);
@@ -1549,7 +1529,7 @@ public class TripRegisterActivity extends AppCompatActivity {
             String messageUserStatus = intent.getStringExtra(Keys.KEY_MESSAGE_USER_STATUS);
             boolean userStatus = intent.getBooleanExtra(Keys.KEY_USER_STATUS, false);
             if (!userStatus) {
-                binding.btnDeActivate.setBackgroundResource(R.drawable.bg_bot_left);
+                binding.btnDeActivate.setBackgroundResource(R.drawable.bg_pink_edge);
                 binding.btnActivate.setBackgroundColor(Color.parseColor("#00FFB2B2"));
                 MyApplication.prefManager.setActivateStatus(false);
             } else {
