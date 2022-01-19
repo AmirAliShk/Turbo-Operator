@@ -5,7 +5,6 @@ import static ir.taxi1880.operatormanagement.app.MyApplication.context;
 import android.content.Intent;
 import android.util.Log;
 
-import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -374,7 +373,7 @@ public class RequestHelper implements okhttp3.Callback {
     }
 
     Call call;
-    Runnable runnable = () -> request();
+    Runnable runnable = this::request;
 
     private void requestSuccess(Object res) {
         if (listener != null) {
@@ -424,7 +423,7 @@ public class RequestHelper implements okhttp3.Callback {
                 if (ignore422) {
                     showMessage();
                 } else {
-                    newRequestFailed(e,bodyStr);
+                    newRequestFailed(e, bodyStr);
 //                   showError("خطای 422 : متاسفانه اطلاعات ارسالی ناقص است لطفا با پشتیبانی تماس بگیرد");
                 }
                 break;
@@ -437,8 +436,7 @@ public class RequestHelper implements okhttp3.Callback {
         }
     }
 
-
-    private void newRequestFailed(Exception e , String jsonError) {
+    private void newRequestFailed(Exception e, String jsonError) {
 
         if (listener != null)
             listener.onFailure(runnable, e);
@@ -446,13 +444,14 @@ public class RequestHelper implements okhttp3.Callback {
 
         try {
             String errorMessage = new JSONObject(jsonError).getJSONArray("data").getJSONObject(0).getString("message");
-            Log.i(TAG,"Hi==>" + errorMessage);
+            Log.i(TAG, "Hi==>" + errorMessage);
             showError(errorMessage);
 
         } catch (JSONException jsonException) {
             jsonException.printStackTrace();
         }
     }
+
     private void showMessage() {
         MyApplication.handler.post(() -> {
             //TODO correct this in next version

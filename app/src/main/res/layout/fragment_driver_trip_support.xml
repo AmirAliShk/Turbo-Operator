@@ -213,6 +213,7 @@
                 android:layout_marginTop="@dimen/_5sdp"
                 android:orientation="horizontal">
 
+
                 <ImageView
                     android:id="@+id/imgChangeDriverQueue"
                     android:layout_width="0dp"
@@ -304,6 +305,16 @@
                     android:background="@drawable/bg_body1"
                     android:padding="@dimen/_5sdp"
                     android:src="@drawable/ic_location" />
+
+                <ImageView
+                    android:id="@+id/imgEditFinancial"
+                    android:layout_width="0dp"
+                    android:layout_height="?android:attr/actionBarSize"
+                    android:layout_margin="@dimen/_5sdp"
+                    android:layout_weight="1"
+                    android:background="@drawable/bg_button_gray_edge"
+                    android:padding="@dimen/_5sdp"
+                    android:src="@drawable/ic_edit_financial" />
 
             </LinearLayout>
 

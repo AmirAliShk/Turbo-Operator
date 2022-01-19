@@ -93,24 +93,21 @@ public class MyApplication extends Application {
     }
 
     private void initACRA() {
-        Map<String, String> authHeaderMap = new HashMap<>();
-        authHeaderMap.put("Authorization", MyApplication.prefManager.getAuthorization());
-        authHeaderMap.put("id_token", MyApplication.prefManager.getIdToken());
-
         CoreConfigurationBuilder builder = new CoreConfigurationBuilder(this)
                 .setBuildConfigClass(BuildConfig.class)
                 .setReportFormat(StringFormat.JSON);
 
-        HttpSenderConfigurationBuilder httpPluginConfigBuilder
-                = builder.getPluginConfigurationBuilder(HttpSenderConfigurationBuilder.class)
+        Map<String, String> authHeaderMap = new HashMap<>();
+        authHeaderMap.put("Authorization", MyApplication.prefManager.getAuthorization());
+        authHeaderMap.put("id_token", MyApplication.prefManager.getIdToken());
+
+        builder.getPluginConfigurationBuilder(HttpSenderConfigurationBuilder.class)
                 .setUri(EndPoints.ACRA_PATH)
                 .setHttpMethod(HttpSender.Method.POST)
                 .setHttpHeaders(authHeaderMap)
                 .setEnabled(true);
 //        if (!BuildConfig.DEBUG)
         ACRA.init(this, builder);
-
-
     }
 
     public static void avaStart() {

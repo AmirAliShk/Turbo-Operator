@@ -18,15 +18,7 @@ public class AvaCrashReporter {
      * @param e
      * @param arg
      */
-    public static void send(Exception e, Object... arg
-    ) {
-
-//    try {
-//      if (!MyApplication.prefManager.isCatchCrashReportEnable()) return;
-//    } catch (Exception ee) {
-//      ee.printStackTrace();
-//    }
-
+    public static void send(Exception e, Object... arg) {
         String PUSH_PROJECT_ID = "5";
 
         try {

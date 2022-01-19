@@ -42,6 +42,7 @@ import ir.taxi1880.operatormanagement.dialog.ChangeDriverQueueDialog;
 import ir.taxi1880.operatormanagement.dialog.DriverInfoDialog;
 import ir.taxi1880.operatormanagement.dialog.DriverStationRegistrationDialog;
 import ir.taxi1880.operatormanagement.dialog.DriverTurnoverDialog;
+import ir.taxi1880.operatormanagement.dialog.EditFinancialDialog;
 import ir.taxi1880.operatormanagement.dialog.ExtendedTimeDialog;
 import ir.taxi1880.operatormanagement.dialog.GeneralDialog;
 import ir.taxi1880.operatormanagement.dialog.SearchFilterDialog;
@@ -256,6 +257,11 @@ public class DriverTripSupportFragment extends Fragment {
         });
     }
 
+    @OnClick(R.id.imgEditFinancial)
+    void onEditFinancial() {
+        new EditFinancialDialog().show(taxiCode, carCode);
+    }
+
     @BindView(R.id.edtSearchTrip)
     EditText edtSearchTrip;
 
@@ -401,7 +407,7 @@ public class DriverTripSupportFragment extends Fragment {
                     Log.i("TAG", "run: " + args[0].toString());
                     tripModels = new ArrayList<>();
                     JSONObject tripObject = new JSONObject(args[0].toString());
-                    Boolean success = tripObject.getBoolean("success");
+                    boolean success = tripObject.getBoolean("success");
                     String message = tripObject.getString("message");
                     JSONArray data = tripObject.getJSONArray("data");
 

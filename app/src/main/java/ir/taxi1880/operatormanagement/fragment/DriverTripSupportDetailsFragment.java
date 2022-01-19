@@ -375,7 +375,7 @@ public class DriverTripSupportDetailsFragment extends Fragment {
             MyApplication.handler.post(() -> {
                 try {
                     JSONObject tripObject = new JSONObject(args[0].toString());
-                    Boolean success = tripObject.getBoolean("success");
+                    boolean success = tripObject.getBoolean("success");
                     String message = tripObject.getString("message");
 
                     if (success) {

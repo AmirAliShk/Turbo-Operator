@@ -38,7 +38,8 @@
         android:theme="@style/AppThemeLite"
         android:usesCleartextTraffic="true">
 
-        <activity android:name=".activity.SupportActivity" />
+        <activity android:name=".activity.SupportActivity"
+            android:windowSoftInputMode="adjustResize|stateHidden" />
 
         <activity
             android:name=".activity.TripRegisterActivity"

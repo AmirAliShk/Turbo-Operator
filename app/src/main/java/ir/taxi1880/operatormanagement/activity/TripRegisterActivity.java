@@ -1110,7 +1110,7 @@ public class TripRegisterActivity extends AppCompatActivity {
         binding.vfPassengerDestAddress.setDisplayedChild(1);
         MyApplication.handler.postDelayed(() ->
         {
-            if (originAddresses.size() == 0) {
+            if (destinationAddresses.size() == 0) {
                 MyApplication.Toast("آدرسی موجود نیست", Toast.LENGTH_SHORT);
             } else {
                 new AddressListDialog().show(false, passengerId, destinationAddresses, (address, stationCode, addressId) -> {

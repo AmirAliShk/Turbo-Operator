@@ -52,11 +52,13 @@
         <entry key="app/src/main/res/drawable/ic_call_end.xml" value="0.35625" />
         <entry key="app/src/main/res/drawable/ic_call_status.xml" value="0.35625" />
         <entry key="app/src/main/res/drawable/ic_cancel.xml" value="0.29384615384615387" />
+        <entry key="app/src/main/res/drawable/ic_change.xml" value="0.3645833333333333" />
         <entry key="app/src/main/res/drawable/ic_close_black_24dp.xml" value="0.2948717948717949" />
         <entry key="app/src/main/res/drawable/ic_conclusion_status.xml" value="0.35625" />
         <entry key="app/src/main/res/drawable/ic_connected.xml" value="0.35625" />
         <entry key="app/src/main/res/drawable/ic_date.xml" value="0.35625" />
         <entry key="app/src/main/res/drawable/ic_error.xml" value="0.35625" />
+        <entry key="app/src/main/res/drawable/ic_images.xml" value="0.5" />
         <entry key="app/src/main/res/drawable/ic_info_status.xml" value="0.35625" />
         <entry key="app/src/main/res/drawable/ic_led_connected.xml" value="0.209375" />
         <entry key="app/src/main/res/drawable/ic_log_out.xml" value="0.3489583333333333" />
@@ -84,6 +86,7 @@
         <entry key="app/src/main/res/layout/dialog_driver_station_registration.xml" value="0.34010416666666665" />
         <entry key="app/src/main/res/layout/dialog_driver_turnover.xml" value="0.34010416666666665" />
         <entry key="app/src/main/res/layout/dialog_edit_address.xml" value="0.34010416666666665" />
+        <entry key="app/src/main/res/layout/dialog_edit_financial.xml" value="0.3484375" />
         <entry key="app/src/main/res/layout/dialog_edit_passenger_address.xml" value="0.34010416666666665" />
         <entry key="app/src/main/res/layout/dialog_error.xml" value="0.2" />
         <entry key="app/src/main/res/layout/dialog_error_registration.xml" value="0.34010416666666665" />
