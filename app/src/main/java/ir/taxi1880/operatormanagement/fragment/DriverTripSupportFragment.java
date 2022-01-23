@@ -4,20 +4,13 @@ import android.os.Bundle;
 import android.text.Editable;
 import android.text.InputType;
 import android.text.TextWatcher;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.EditorInfo;
-import android.widget.EditText;
-import android.widget.ImageView;
-import android.widget.LinearLayout;
-import android.widget.TextView;
 import android.widget.Toast;
-import android.widget.ViewFlipper;
 
 import androidx.fragment.app.Fragment;
-import androidx.recyclerview.widget.RecyclerView;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -28,15 +21,11 @@ import org.linphone.core.CoreListenerStub;
 
 import java.util.ArrayList;
 
-import butterknife.BindView;
-import butterknife.ButterKnife;
-import butterknife.OnClick;
-import butterknife.OnLongClick;
-import butterknife.Unbinder;
 import ir.taxi1880.operatormanagement.R;
 import ir.taxi1880.operatormanagement.adapter.DriverTripsAdapter;
 import ir.taxi1880.operatormanagement.app.EndPoints;
 import ir.taxi1880.operatormanagement.app.MyApplication;
+import ir.taxi1880.operatormanagement.databinding.FragmentDriverTripSupportBinding;
 import ir.taxi1880.operatormanagement.dialog.CallDialog;
 import ir.taxi1880.operatormanagement.dialog.ChangeDriverQueueDialog;
 import ir.taxi1880.operatormanagement.dialog.DriverInfoDialog;
@@ -56,8 +45,7 @@ import ir.taxi1880.operatormanagement.okHttp.RequestHelper;
 import ir.taxi1880.operatormanagement.services.LinphoneService;
 
 public class DriverTripSupportFragment extends Fragment {
-    Unbinder unbinder;
-    View view;
+    FragmentDriverTripSupportBinding binding;
     ArrayList<TripModel> tripModels;
     DriverTripsAdapter tripAdapter;
     int searchCase = 6;
@@ -70,246 +58,29 @@ public class DriverTripSupportFragment extends Fragment {
     String taxiCode = "";
     String carCode = "";
 
-    @OnClick(R.id.imgBack)
-    void onBackPress() {
-        KeyBoardHelper.hideKeyboard();
-        MyApplication.currentActivity.onBackPressed();
-    }
-
-    @BindView(R.id.vfTrip)
-    ViewFlipper vfTrip;
-
-    @OnClick(R.id.imgChangeDriverQueue)
-    void onPressChangeDriverQueue() {
-        KeyBoardHelper.showKeyboard(MyApplication.context);
-        new ChangeDriverQueueDialog().show(taxiCode);
-    }
-
-    @OnClick(R.id.imgStationInfo)
-    void onPressStationInfo() {
-        getRegistrationReport(taxiCode);
-    }
-
-    @OnClick(R.id.imgFinancial)
-    void onPressFinancial() {
-        getFinancial(taxiCode, carCode);
-    }
-
-    @OnClick(R.id.imgDriverInfo)
-    void onPressDriverInfo() {
-        new DriverInfoDialog().show(driverInfo);
-    }
-
-    @OnClick(R.id.imgDriverLocation)
-    void onPressDriverLocation() {
-        if (taxiCode.isEmpty()) {
-            MyApplication.Toast("خطا در دریافت اطلاعات لطفا بعدا تلاش کنید.", Toast.LENGTH_SHORT);
-        } else {
-            Bundle bundle = new Bundle();
-            bundle.putString("taxiCode", taxiCode);
-            bundle.putBoolean("isFromDriverSupport", true);
-            FragmentHelper.toFragment(MyApplication.currentActivity, new DriverLocationFragment()).setArguments(bundle).add();
-        }
-    }
-
-    @BindView(R.id.imgSearchType)
-    ImageView imgSearchType;
-
-    @BindView(R.id.imgEndCall)
-    ImageView imgEndCall;
-
-    @BindView(R.id.imgCallQuality)
-    ImageView imgCallQuality;
-
-    @BindView(R.id.imgExtendedTime)
-    ImageView imgExtendedTime;
-
-    @BindView(R.id.txtExtendTime)
-    TextView txtExtendTime;
-
-    @BindView(R.id.txtCancel)
-    TextView txtCancel;
-
-    @OnClick(R.id.txtCancel)
-    void txtCancel() {
-        if (vfTrip != null) {
-            vfTrip.setDisplayedChild(3);
-        }
-    }
-
-    @OnClick(R.id.imgEndCall)
-    void onPressEndCall() {
-        KeyBoardHelper.hideKeyboard();
-        if (MyApplication.prefManager.getConnectedCall()) {
-            new CallDialog().show(new CallDialog.CallBack() {
-                @Override
-                public void onDismiss() {
-                }
-
-                @Override
-                public void onCallReceived() {
-                }
-
-                @Override
-                public void onCallTransferred() {
-                }
-
-                @Override
-                public void onCallEnded() {
-                    if (imgEndCall != null)
-                        imgEndCall.setImageResource(R.drawable.ic_call_dialog_disable);
-                }
-            }, true);
-        } else {
-            new CallDialog().show(new CallDialog.CallBack() {
-                @Override
-                public void onDismiss() {
-                }
-
-                @Override
-                public void onCallReceived() {
-                }
-
-                @Override
-                public void onCallTransferred() {
-                }
-
-                @Override
-                public void onCallEnded() {
-                }
-            }, false);
-        }
-    }
-
-    @OnClick(R.id.imgSearch)
-    void onSearchPress() {
-        if (view != null) {
-            llDriverInfo.setVisibility(View.GONE);
-        }
-        searchText = StringHelper.toEnglishDigits(edtSearchTrip.getText().toString());
-        if (searchText.isEmpty()) {
-            MyApplication.Toast("موردی را برای جستو جو وارد کنید", Toast.LENGTH_SHORT);
-            return;
-        }
-        KeyBoardHelper.hideKeyboard();
-        searchService(searchText, searchCase);
-
-        if (searchCase == 8 || searchCase == 9) // 9=search by station code, 8=search by address
-            return;
-        getDriverInfo(searchText, searchCase);
-    }
-
-    @OnLongClick(R.id.imgClear)
-    boolean onLongPressClear() {
-        if (vfTrip != null) {
-            vfTrip.setDisplayedChild(0);
-            llDriverInfo.setVisibility(View.GONE);
-        }
-        if (edtSearchTrip != null)
-            edtSearchTrip.setText("");
-        return true;
-    }
-
-    @OnClick(R.id.imgSearchType)
-    void onSearchTypePress() {
-        new SearchFilterDialog().show("driver", searchCase -> {
-            if (edtSearchTrip == null) return;
-            if (vfTrip != null) {
-                vfTrip.setDisplayedChild(0);
-                llDriverInfo.setVisibility(View.GONE);
-            }
-            int imageType = R.drawable.ic_call;
-            switch (searchCase) {
-                case 6: // driver mobile
-                    imageType = R.drawable.ic_call;
-                    edtSearchTrip.setInputType(InputType.TYPE_CLASS_NUMBER);
-                    break;
-                case 7: // taxi code
-                    imageType = R.drawable.ic_taxi;
-                    edtSearchTrip.setInputType(InputType.TYPE_CLASS_NUMBER);
-                    break;
-                case 8: // driver address
-                    imageType = R.drawable.ic_origin;
-                    edtSearchTrip.setInputType(InputType.TYPE_CLASS_TEXT);
-                    break;
-                case 9: // station code
-                    imageType = R.drawable.ic_station_search;
-                    edtSearchTrip.setInputType(InputType.TYPE_CLASS_NUMBER);
-                    break;
-                case 10: // driver address
-                    imageType = R.drawable.ic_destination;
-                    edtSearchTrip.setInputType(InputType.TYPE_CLASS_TEXT);
-                    break;
-            }
-            imgSearchType.setImageResource(imageType);
-            if (edtSearchTrip != null)
-                edtSearchTrip.setText("");
-            this.searchCase = searchCase;
-        });
-    }
-
-    @OnClick(R.id.llExtendedTime)
-    void onExtendedTimePress() {
-        new ExtendedTimeDialog().show((type, title, icon) -> {
-            extendedTime = type;
-            txtExtendTime.setText(title);
-            imgExtendedTime.setImageResource(icon);
-        });
-    }
-
-    @OnClick(R.id.imgEditFinancial)
-    void onEditFinancial() {
-        new EditFinancialDialog().show(taxiCode, carCode);
-    }
-
-    @BindView(R.id.edtSearchTrip)
-    EditText edtSearchTrip;
-
-    @BindView(R.id.recycleTrip)
-    RecyclerView recycleTrip;
-
-    @BindView(R.id.llDriverInfo)
-    LinearLayout llDriverInfo;
-
-    @BindView(R.id.txtDriverName)
-    TextView txtDriverName;
-
-    @BindView(R.id.txtDriverCode)
-    TextView txtDriverCode;
-
-    @BindView(R.id.txtDriverQueue)
-    TextView txtDriverQueue;
-
-    @BindView(R.id.vfStationInfo)
-    ViewFlipper vfStationInfo;
-
-    @BindView(R.id.vfFinancial)
-    ViewFlipper vfFinancial;
-
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        view = inflater.inflate(R.layout.fragment_driver_trip_support, container, false);
-        unbinder = ButterKnife.bind(this, view);
-        TypefaceUtil.overrideFonts(view);
-        TypefaceUtil.overrideFonts(llDriverInfo, MyApplication.IraSanSMedume);
-        TypefaceUtil.overrideFonts(edtSearchTrip, MyApplication.IraSanSMedume);
+        binding = FragmentDriverTripSupportBinding.inflate(inflater, container, false);
+        TypefaceUtil.overrideFonts(binding.getRoot());
+        TypefaceUtil.overrideFonts(binding.llDriverInfo, MyApplication.IraSanSMedume);
+        TypefaceUtil.overrideFonts(binding.edtSearchTrip, MyApplication.IraSanSMedume);
 
         String tellNumber;
         Bundle bundle = getArguments();
         if (bundle != null) {
             tellNumber = bundle.getString("number");
-            edtSearchTrip.setText(tellNumber);
+            binding.edtSearchTrip.setText(tellNumber);
             onSearchPress();
         }
 
-        edtSearchTrip.requestFocus();
-        edtSearchTrip.setInputType(InputType.TYPE_CLASS_NUMBER);
+        binding.edtSearchTrip.requestFocus();
+        binding.edtSearchTrip.setInputType(InputType.TYPE_CLASS_NUMBER);
 
-        edtSearchTrip.addTextChangedListener(searchWatcher);
+        binding.edtSearchTrip.addTextChangedListener(searchWatcher);
 
-        edtSearchTrip.setOnEditorActionListener((v, actionId, event) -> {
+        binding.edtSearchTrip.setOnEditorActionListener((v, actionId, event) -> {
             if (actionId == EditorInfo.IME_ACTION_NEXT) {
-                searchText = StringHelper.toEnglishDigits(edtSearchTrip.getText().toString());
+                searchText = StringHelper.toEnglishDigits(binding.edtSearchTrip.getText().toString());
                 if (searchText.isEmpty()) {
                     MyApplication.Toast("موردی را برای جستو جو وارد کنید", Toast.LENGTH_SHORT);
                     return false;
@@ -323,12 +94,164 @@ public class DriverTripSupportFragment extends Fragment {
         });
 
         if (MyApplication.prefManager.getConnectedCall()) {
-            imgEndCall.setImageResource(R.drawable.ic_call_dialog_enable);
+            binding.imgEndCall.setImageResource(R.drawable.ic_call_dialog_enable);
         } else {
-            imgEndCall.setImageResource(R.drawable.ic_call_dialog_disable);
+            binding.imgEndCall.setImageResource(R.drawable.ic_call_dialog_disable);
         }
 
-        return view;
+        binding.imgEditFinancial.setOnClickListener(view -> new EditFinancialDialog().show(taxiCode, carCode));
+
+        binding.llExtendedTime.setOnClickListener(view -> new ExtendedTimeDialog().show((type, title, icon) -> {
+            extendedTime = type;
+            binding.txtExtendTime.setText(title);
+            binding.imgExtendedTime.setImageResource(icon);
+        }));
+
+        binding.imgSearchType.setOnClickListener(view -> new SearchFilterDialog().show("driver", searchCase -> {
+            if (binding.edtSearchTrip == null) return;
+            if (binding.vfTrip != null) {
+                binding.vfTrip.setDisplayedChild(0);
+            }
+            if (binding.vfDriverInfo != null) {
+                binding.vfDriverInfo.setVisibility(View.GONE);
+            }
+            int imageType = R.drawable.ic_call;
+            switch (searchCase) {
+                case 6: // driver mobile
+                    imageType = R.drawable.ic_call;
+                    binding.edtSearchTrip.setInputType(InputType.TYPE_CLASS_NUMBER);
+                    break;
+                case 7: // taxi code
+                    imageType = R.drawable.ic_taxi;
+                    binding.edtSearchTrip.setInputType(InputType.TYPE_CLASS_NUMBER);
+                    break;
+                case 8: // driver origin address
+                    imageType = R.drawable.ic_origin;
+                    binding.edtSearchTrip.setInputType(InputType.TYPE_CLASS_TEXT);
+                    break;
+                case 9: // station code
+                    imageType = R.drawable.ic_station_search;
+                    binding.edtSearchTrip.setInputType(InputType.TYPE_CLASS_NUMBER);
+                    break;
+                case 10: // driver destination address
+                    imageType = R.drawable.ic_destination;
+                    binding.edtSearchTrip.setInputType(InputType.TYPE_CLASS_TEXT);
+                    break;
+            }
+            binding.imgSearchType.setImageResource(imageType);
+            if (binding.edtSearchTrip != null)
+                binding.edtSearchTrip.setText("");
+            this.searchCase = searchCase;
+        }));
+
+        binding.imgClear.setOnLongClickListener(view -> {
+            if (binding.vfTrip != null) {
+                binding.vfTrip.setDisplayedChild(0);
+                binding.vfDriverInfo.setVisibility(View.GONE);
+            }
+            if (binding.edtSearchTrip != null)
+                binding.edtSearchTrip.setText("");
+            return true;
+        });
+
+        binding.imgSearch.setOnClickListener(view -> onSearchPress());
+
+        binding.imgEndCall.setOnClickListener(view -> {
+            KeyBoardHelper.hideKeyboard();
+            if (MyApplication.prefManager.getConnectedCall()) {
+                new CallDialog().show(new CallDialog.CallBack() {
+                    @Override
+                    public void onDismiss() {
+                    }
+
+                    @Override
+                    public void onCallReceived() {
+                    }
+
+                    @Override
+                    public void onCallTransferred() {
+                    }
+
+                    @Override
+                    public void onCallEnded() {
+                        if (binding.imgEndCall != null)
+                            binding.imgEndCall.setImageResource(R.drawable.ic_call_dialog_disable);
+                    }
+                }, true);
+            } else {
+                new CallDialog().show(new CallDialog.CallBack() {
+                    @Override
+                    public void onDismiss() {
+                    }
+
+                    @Override
+                    public void onCallReceived() {
+                    }
+
+                    @Override
+                    public void onCallTransferred() {
+                    }
+
+                    @Override
+                    public void onCallEnded() {
+                    }
+                }, false);
+            }
+        });
+
+        binding.txtCancel.setOnClickListener(view -> {
+            if (binding.vfTrip != null) {
+                binding.vfTrip.setDisplayedChild(3);
+            }
+        });
+
+        binding.imgDriverLocation.setOnClickListener(view -> {
+            if (taxiCode.isEmpty()) {
+                MyApplication.Toast("خطا در دریافت اطلاعات لطفا بعدا تلاش کنید.", Toast.LENGTH_SHORT);
+            } else {
+                Bundle bundle1 = new Bundle();
+                bundle1.putString("taxiCode", taxiCode);
+                bundle1.putBoolean("isFromDriverSupport", true);
+                FragmentHelper.toFragment(MyApplication.currentActivity, new DriverLocationFragment()).setArguments(bundle1).add();
+            }
+        });
+
+        binding.imgDriverInfo.setOnClickListener(view -> new DriverInfoDialog().show(driverInfo));
+
+        binding.imgFinancial.setOnClickListener(view -> getFinancial(taxiCode, carCode));
+
+        binding.imgStationInfo.setOnClickListener(view -> getRegistrationReport(taxiCode));
+
+        binding.imgChangeDriverQueue.setOnClickListener(view -> {
+            KeyBoardHelper.showKeyboard(MyApplication.context);
+            new ChangeDriverQueueDialog().show(taxiCode);
+        });
+
+        binding.imgBack.setOnClickListener(view -> {
+            KeyBoardHelper.hideKeyboard();
+            MyApplication.currentActivity.onBackPressed();
+        });
+
+        return binding.getRoot();
+    }
+
+    public void onSearchPress() {
+        if (binding.vfDriverInfo != null) {
+            binding.vfDriverInfo.setVisibility(View.GONE);
+        }
+
+        searchText = StringHelper.toEnglishDigits(binding.edtSearchTrip.getText().toString());
+        if (searchText.isEmpty()) {
+            MyApplication.Toast("موردی را برای جستو جو وارد کنید", Toast.LENGTH_SHORT);
+            return;
+        }
+        KeyBoardHelper.hideKeyboard();
+        searchService(searchText, searchCase);
+
+        if (searchCase == 8 || searchCase == 9 || searchCase == 10) // 9=search by station code, 8=search by origin address, 10=search by destination address
+            return;
+
+        getDriverInfo(searchText, searchCase);
     }
 
     TextWatcher searchWatcher = new TextWatcher() {
@@ -343,7 +266,7 @@ public class DriverTripSupportFragment extends Fragment {
         @Override
         public void afterTextChanged(Editable editable) {
             if (PhoneNumberValidation.havePrefix(editable.toString()))
-                edtSearchTrip.setText(PhoneNumberValidation.removePrefix(editable.toString()));
+                binding.edtSearchTrip.setText(PhoneNumberValidation.removePrefix(editable.toString()));
         }
     };
 
@@ -356,8 +279,8 @@ public class DriverTripSupportFragment extends Fragment {
         String stationCode = "0";
         String destinationAddress = "0";
 
-        if (vfTrip != null) {
-            vfTrip.setDisplayedChild(1);
+        if (binding.vfTrip != null) {
+            binding.vfTrip.setDisplayedChild(1);
         }
 
         switch (searchCase) {
@@ -395,16 +318,13 @@ public class DriverTripSupportFragment extends Fragment {
                 .addParam("searchInterval", extendedTime)
                 .listener(onGetTripList)
                 .post();
-
     }
 
     RequestHelper.Callback onGetTripList = new RequestHelper.Callback() {
-
         @Override
         public void onResponse(Runnable reCall, Object... args) {
             MyApplication.handler.post(() -> {
                 try {
-                    Log.i("TAG", "run: " + args[0].toString());
                     tripModels = new ArrayList<>();
                     JSONObject tripObject = new JSONObject(args[0].toString());
                     boolean success = tripObject.getBoolean("success");
@@ -442,15 +362,15 @@ public class DriverTripSupportFragment extends Fragment {
                         }
 
                         tripAdapter = new DriverTripsAdapter(tripModels);
-                        if (recycleTrip != null)
-                            recycleTrip.setAdapter(tripAdapter);
+                        if (binding.recycleTrip != null)
+                            binding.recycleTrip.setAdapter(tripAdapter);
 
                         if (tripModels.size() == 0) {
-                            if (vfTrip != null)
-                                vfTrip.setDisplayedChild(0);
+                            if (binding.vfTrip != null)
+                                binding.vfTrip.setDisplayedChild(0);
                         } else {
-                            if (vfTrip != null)
-                                vfTrip.setDisplayedChild(2);
+                            if (binding.vfTrip != null)
+                                binding.vfTrip.setDisplayedChild(2);
                         }
                     } else {
                         new GeneralDialog()
@@ -462,8 +382,8 @@ public class DriverTripSupportFragment extends Fragment {
 
                 } catch (JSONException e) {
                     e.printStackTrace();
-                    if (vfTrip != null) {
-                        vfTrip.setDisplayedChild(3);
+                    if (binding.vfTrip != null) {
+                        binding.vfTrip.setDisplayedChild(3);
                     }
                 }
             });
@@ -473,8 +393,8 @@ public class DriverTripSupportFragment extends Fragment {
         public void onFailure(Runnable reCall, Exception e) {
             MyApplication.handler.post(() -> {
 //       e = {"message":"Unprocessable Entity","data":[{"field":"stationCode","message":"کد ایستگاه صحیح نیست"}],"success":false}
-                if (vfTrip != null) {
-                    vfTrip.setDisplayedChild(3);
+                if (binding.vfTrip != null) {
+                    binding.vfTrip.setDisplayedChild(3);
                 }
             });
         }
@@ -482,8 +402,12 @@ public class DriverTripSupportFragment extends Fragment {
     };
 
     private void getDriverInfo(String searchText, int searchCase) {
-        if (vfTrip != null) {
-            vfTrip.setDisplayedChild(1);
+        if (binding.vfTrip != null) {
+            binding.vfTrip.setDisplayedChild(1);
+        }
+        if (binding.vfDriverInfo != null) {
+            binding.vfDriverInfo.setVisibility(View.VISIBLE);
+            binding.vfDriverInfo.setDisplayedChild(0);
         }
 
         switch (searchCase) {
@@ -508,7 +432,6 @@ public class DriverTripSupportFragment extends Fragment {
     }
 
     RequestHelper.Callback onGetDriverInfo = new RequestHelper.Callback() {
-
         @Override
         public void onResponse(Runnable reCall, Object... args) {
             MyApplication.handler.post(() -> {
@@ -518,9 +441,9 @@ public class DriverTripSupportFragment extends Fragment {
                     String message = object.getString("message");
 
                     if (success) {
-                        if (view != null) {
-                            if (llDriverInfo != null)
-                                llDriverInfo.setVisibility(View.VISIBLE);
+                        if (binding.vfDriverInfo != null) {
+                            binding.vfDriverInfo.setVisibility(View.VISIBLE);
+                            binding.vfDriverInfo.setDisplayedChild(1);
                         }
 
                         JSONObject dataObj = object.getJSONObject("data");
@@ -561,45 +484,43 @@ public class DriverTripSupportFragment extends Fragment {
 
                         String statusMessage = "";
 
-                        if (view != null) {
-                            if (txtDriverName != null)
-                                txtDriverName.setText(driverName);
-                            if (txtDriverCode != null)
-                                txtDriverCode.setText(StringHelper.toPersianDigits(taxiCode + ""));
+                        if (binding.txtDriverName != null)
+                            binding.txtDriverName.setText(driverName);
+                        if (binding.txtDriverCode != null)
+                            binding.txtDriverCode.setText(StringHelper.toPersianDigits(taxiCode + ""));
 
-                            if (isLock == 1) {
-                                statusMessage = "راننده قفل میباشد.";
-                            } else {
-                                switch (status) {
-                                    case 1:
-                                        statusMessage = " نفر " + turn + " در ایستگاه " + station;
-                                        break;
+                        if (isLock == 1) {
+                            statusMessage = "راننده قفل میباشد.";
+                        } else {
+                            switch (status) {
+                                case 1:
+                                    statusMessage = " نفر " + turn + " در ایستگاه " + station;
+                                    break;
 
-                                    case 2:
-                                        statusMessage = "ثبت آینده در ایستگاه " + station + " مدت زمان :" + futureTime;
-                                        break;
+                                case 2:
+                                    statusMessage = "ثبت آینده در ایستگاه " + station + " مدت زمان :" + futureTime;
+                                    break;
 
-                                    case 3:
-                                        statusMessage = "در حال سرویس دهی";
-                                        break;
+                                case 3:
+                                    statusMessage = "در حال سرویس دهی";
+                                    break;
 
-                                    case 4:
-                                        statusMessage = "ثبت ایستگاه نشده";
-                                        break;
+                                case 4:
+                                    statusMessage = "ثبت ایستگاه نشده";
+                                    break;
 
-                                    case 5:
-                                        statusMessage = "فعال نیست";
-                                        break;
-                                }
+                                case 5:
+                                    statusMessage = "فعال نیست";
+                                    break;
                             }
-                            if (txtDriverQueue != null)
-                                txtDriverQueue.setText(statusMessage);
                         }
+                        if (binding.txtDriverQueue != null)
+                            binding.txtDriverQueue.setText(statusMessage);
                     } else {
-                        if (view != null) {
-                            if (llDriverInfo != null)
-                                llDriverInfo.setVisibility(View.GONE);
+                        if (binding.vfDriverInfo != null) {
+                            binding.vfDriverInfo.setVisibility(View.GONE);
                         }
+
                         new GeneralDialog()
                                 .title("هشدار")
                                 .message(message)
@@ -609,11 +530,10 @@ public class DriverTripSupportFragment extends Fragment {
                     }
                 } catch (JSONException e) {
                     e.printStackTrace();
-                    if (view != null) {
-                        if (llDriverInfo != null)
-                            llDriverInfo.setVisibility(View.GONE);
-                        MyApplication.Toast("خطا در دریافت اطلاعات راننده", Toast.LENGTH_SHORT);
+                    if (binding.vfDriverInfo != null) {
+                        binding.vfDriverInfo.setVisibility(View.GONE);
                     }
+                    MyApplication.Toast("خطا در دریافت اطلاعات راننده", Toast.LENGTH_SHORT);
                 }
             });
         }
@@ -621,23 +541,20 @@ public class DriverTripSupportFragment extends Fragment {
         @Override
         public void onFailure(Runnable reCall, Exception e) {
             MyApplication.handler.post(() -> {
-                if (view != null) {
-                    if (llDriverInfo != null)
-                        llDriverInfo.setVisibility(View.GONE);
-                    MyApplication.Toast("خطا در دریافت اطلاعات راننده", Toast.LENGTH_SHORT);
-                }
+                if (binding.vfDriverInfo != null)
+                    binding.vfDriverInfo.setVisibility(View.GONE);
+                MyApplication.Toast("خطا در دریافت اطلاعات راننده", Toast.LENGTH_SHORT);
             });
         }
-
     };
 
     CoreListenerStub mCoreListener = new CoreListenerStub() {
         @Override
         public void onCallStateChanged(Core core, final Call call, Call.State state, String message) {
             if (state == Call.State.End) {
-                if (imgCallQuality != null)
-                    imgCallQuality.setVisibility(View.INVISIBLE);
-                imgEndCall.setImageResource(R.drawable.ic_call_dialog_disable);
+                if (binding.imgCallQuality != null)
+                    binding.imgCallQuality.setVisibility(View.INVISIBLE);
+                binding.imgEndCall.setImageResource(R.drawable.ic_call_dialog_disable);
                 if (mCallQualityUpdater != null) {
                     LinphoneService.removeFromUIThreadDispatcher(mCallQualityUpdater);
                     mCallQualityUpdater = null;
@@ -666,9 +583,9 @@ public class DriverTripSupportFragment extends Fragment {
         } else if (quality >= 1) { // Very low quality
             imageRes = (R.drawable.ic_quality_1);
         }
-        if (imgCallQuality != null) {
-            imgCallQuality.setVisibility(View.VISIBLE);
-            imgCallQuality.setImageResource(imageRes);
+        if (binding.imgCallQuality != null) {
+            binding.imgCallQuality.setVisibility(View.VISIBLE);
+            binding.imgCallQuality.setImageResource(imageRes);
         }
         mDisplayedQuality = iQuality;
     }
@@ -696,8 +613,8 @@ public class DriverTripSupportFragment extends Fragment {
     }
 
     public void getRegistrationReport(String driverCode) {
-        if (vfStationInfo != null)
-            vfStationInfo.setDisplayedChild(1);
+        if (binding.vfStationInfo != null)
+            binding.vfStationInfo.setDisplayedChild(1);
         RequestHelper.builder(EndPoints.DRIVER_STATION_REGISTRATION + "/" + driverCode)
                 .listener(onGetRegistrationReport)
                 .get();
@@ -715,8 +632,8 @@ public class DriverTripSupportFragment extends Fragment {
                         JSONArray data = listenObj.getJSONArray("data");
                         if (data.length() == 0) {
                             MyApplication.Toast("موردی ثبت نشده", Toast.LENGTH_SHORT);
-                            if (vfStationInfo != null)
-                                vfStationInfo.setDisplayedChild(0);
+                            if (binding.vfStationInfo != null)
+                                binding.vfStationInfo.setDisplayedChild(0);
                             return;
                         }
                         new DriverStationRegistrationDialog().show(data);
@@ -728,12 +645,12 @@ public class DriverTripSupportFragment extends Fragment {
                                 .firstButton("باشه", null)
                                 .show();
                     }
-                    if (vfStationInfo != null)
-                        vfStationInfo.setDisplayedChild(0);
+                    if (binding.vfStationInfo != null)
+                        binding.vfStationInfo.setDisplayedChild(0);
                 } catch (Exception e) {
                     e.printStackTrace();
-                    if (vfStationInfo != null)
-                        vfStationInfo.setDisplayedChild(0);
+                    if (binding.vfStationInfo != null)
+                        binding.vfStationInfo.setDisplayedChild(0);
                 }
             });
         }
@@ -741,15 +658,15 @@ public class DriverTripSupportFragment extends Fragment {
         @Override
         public void onFailure(Runnable reCall, Exception e) {
             MyApplication.handler.post(() -> {
-                if (vfStationInfo != null)
-                    vfStationInfo.setDisplayedChild(0);
+                if (binding.vfStationInfo != null)
+                    binding.vfStationInfo.setDisplayedChild(0);
             });
         }
     };
 
     public void getFinancial(String taxiCode, String carCode) {
-        if (vfFinancial != null)
-            vfFinancial.setDisplayedChild(1);
+        if (binding.vfFinancial != null)
+            binding.vfFinancial.setDisplayedChild(1);
 
         RequestHelper.builder(EndPoints.DRIVER_FINANCIAL)
                 .ignore422Error(true)
@@ -772,8 +689,8 @@ public class DriverTripSupportFragment extends Fragment {
                         JSONArray dataArr = listenObj.getJSONArray("data");
                         if (dataArr.length() == 0) {
                             MyApplication.Toast("موردی ثبت نشده", Toast.LENGTH_SHORT);
-                            if (vfFinancial != null)
-                                vfFinancial.setDisplayedChild(0);
+                            if (binding.vfFinancial != null)
+                                binding.vfFinancial.setDisplayedChild(0);
                             return;
                         }
                         new DriverTurnoverDialog().show(dataArr);
@@ -785,12 +702,12 @@ public class DriverTripSupportFragment extends Fragment {
                                 .firstButton("باشه", null)
                                 .show();
                     }
-                    if (vfFinancial != null)
-                        vfFinancial.setDisplayedChild(0);
+                    if (binding.vfFinancial != null)
+                        binding.vfFinancial.setDisplayedChild(0);
                 } catch (Exception e) {
                     e.printStackTrace();
-                    if (vfFinancial != null)
-                        vfFinancial.setDisplayedChild(0);
+                    if (binding.vfFinancial != null)
+                        binding.vfFinancial.setDisplayedChild(0);
                 }
             });
         }
@@ -798,8 +715,8 @@ public class DriverTripSupportFragment extends Fragment {
         @Override
         public void onFailure(Runnable reCall, Exception e) {
             MyApplication.handler.post(() -> {
-                if (vfFinancial != null)
-                    vfFinancial.setDisplayedChild(0);
+                if (binding.vfFinancial != null)
+                    binding.vfFinancial.setDisplayedChild(0);
             });
         }
     };
@@ -823,11 +740,5 @@ public class DriverTripSupportFragment extends Fragment {
         KeyBoardHelper.hideKeyboard();
         core.removeListener(mCoreListener);
         core = null;
-    }
-
-    @Override
-    public void onDestroyView() {
-        super.onDestroyView();
-        unbinder.unbind();
     }
 }
