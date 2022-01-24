@@ -1,5 +1,8 @@
 package ir.taxi1880.operatormanagement.fragment;
 
+import static ir.taxi1880.operatormanagement.app.Keys.KEY_PENDING_MISTAKE_COUNT;
+import static ir.taxi1880.operatormanagement.app.Keys.PENDING_MISTAKE_COUNT;
+
 import android.content.Intent;
 import android.media.MediaPlayer;
 import android.net.Uri;
@@ -52,11 +55,10 @@ import ir.taxi1880.operatormanagement.helper.TypefaceUtil;
 import ir.taxi1880.operatormanagement.model.AllMistakesModel;
 import ir.taxi1880.operatormanagement.okHttp.AuthenticationInterceptor;
 import ir.taxi1880.operatormanagement.okHttp.RequestHelper;
-
-import static ir.taxi1880.operatormanagement.app.Keys.KEY_PENDING_MISTAKE_COUNT;
-import static ir.taxi1880.operatormanagement.app.Keys.PENDING_MISTAKE_COUNT;
+import ir.taxi1880.operatormanagement.push.AvaCrashReporter;
 
 public class PendingMistakesFragment extends Fragment {
+    public static final String TAG = PendingMistakesFragment.class.getSimpleName();
     Unbinder unbinder;
     DataBase dataBase;
     MediaPlayer mediaPlayer;
@@ -270,8 +272,10 @@ public class PendingMistakesFragment extends Fragment {
 //        StartDownload.execute(downloadId, url.toString(), dirPathTemp + fileName);
         } catch (MalformedURLException e) {
             e.printStackTrace();
+            AvaCrashReporter.send(e, TAG + " class, startDownload method");
         } catch (Exception e) {
             e.printStackTrace();
+            AvaCrashReporter.send(e, TAG + " class, startDownload method1");
         }
     }
 
@@ -289,6 +293,7 @@ public class PendingMistakesFragment extends Fragment {
 
         } catch (Exception e) {
             e.printStackTrace();
+            AvaCrashReporter.send(e, TAG + " class, initVoice method");
         }
     }
 
@@ -299,6 +304,8 @@ public class PendingMistakesFragment extends Fragment {
             if (vfPlayPause != null)
                 vfPlayPause.setDisplayedChild(2);
         } catch (Exception e) {
+            e.printStackTrace();
+            AvaCrashReporter.send(e, TAG + " class, playVoice method");
         }
 
         startTimer();
@@ -314,6 +321,8 @@ public class PendingMistakesFragment extends Fragment {
             if (vfPlayPause != null)
                 vfPlayPause.setDisplayedChild(0);
         } catch (Exception e) {
+            e.printStackTrace();
+            AvaCrashReporter.send(e, TAG + " class, pauseVoice method");
         }
         cancelTimer();
     }
@@ -403,6 +412,8 @@ public class PendingMistakesFragment extends Fragment {
             pauseVoice();
             cancelTimer();
         } catch (Exception e) {
+            e.printStackTrace();
+            AvaCrashReporter.send(e, TAG + " class, onDestroyView method");
         }
         super.onDestroyView();
     }
@@ -413,6 +424,8 @@ public class PendingMistakesFragment extends Fragment {
             timer.cancel();
             timer = null;
         } catch (Exception e) {
+            e.printStackTrace();
+            AvaCrashReporter.send(e, TAG + " class, cancelTimer method");
         }
 
     }
@@ -427,13 +440,13 @@ public class PendingMistakesFragment extends Fragment {
                     });
                 } catch (Exception e) {
                     e.printStackTrace();
+                    AvaCrashReporter.send(e, TAG + " class, UpdateSeekBar method");
                 }
             }
         }
     }
 
     static class RefreshTokenAsyncTask extends AsyncTask<Void, Void, Boolean> {
-
         @Override
         protected Boolean doInBackground(Void... voids) {
             new AuthenticationInterceptor().refreshToken();
@@ -505,13 +518,9 @@ public class PendingMistakesFragment extends Fragment {
                     }
                 } catch (Exception e) {
                     e.printStackTrace();
+                    AvaCrashReporter.send(e, TAG + " class, getAccepted method");
                 }
             });
-        }
-
-        @Override
-        public void onFailure(Runnable reCall, Exception e) {
-            super.onFailure(reCall, e);
         }
     };
 
@@ -559,13 +568,9 @@ public class PendingMistakesFragment extends Fragment {
                         vfMissedCall.setDisplayedChild(0);
                     }
                     e.printStackTrace();
+                    AvaCrashReporter.send(e, TAG + " class, sendMissCall method");
                 }
             });
-        }
-
-        @Override
-        public void onFailure(Runnable reCall, Exception e) {
-            super.onFailure(reCall, e);
         }
     };
 
@@ -582,19 +587,14 @@ public class PendingMistakesFragment extends Fragment {
     }
 
     @Override
-    public void onResume() {
-        Log.i("TAG", "onResume: ");
-        super.onResume();
-    }
-
-    @Override
     public void onDestroy() {
         super.onDestroy();
         try {
             pauseVoice();
             cancelTimer();
         } catch (Exception e) {
-
+            e.printStackTrace();
+            AvaCrashReporter.send(e, TAG + " class, onDestroy method");
         }
     }
 }

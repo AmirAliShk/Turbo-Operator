@@ -1,5 +1,7 @@
 package ir.taxi1880.operatormanagement.dialog;
 
+import static ir.taxi1880.operatormanagement.adapter.RecentCallsAdapter.pauseVoice;
+
 import android.app.Dialog;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
@@ -31,8 +33,6 @@ import ir.taxi1880.operatormanagement.helper.KeyBoardHelper;
 import ir.taxi1880.operatormanagement.helper.TypefaceUtil;
 import ir.taxi1880.operatormanagement.push.AvaCrashReporter;
 import ir.taxi1880.operatormanagement.services.LinphoneService;
-
-import static ir.taxi1880.operatormanagement.adapter.RecentCallsAdapter.pauseVoice;
 
 public class CallDialog {
 
@@ -188,7 +188,7 @@ public class CallDialog {
             }
         } catch (Exception e) {
             e.printStackTrace();
-            AvaCrashReporter.send(e, "CallDialog class, onEndPress method");
+            AvaCrashReporter.send(e, TAG + " class, onEndPress method");
         }
         vfCall.setDisplayedChild(0);
         setCancelable(true);
@@ -303,7 +303,7 @@ public class CallDialog {
             }
         } catch (Exception e) {
             Log.e("TAG", "dismiss: " + e.getMessage());
-            AvaCrashReporter.send(e, "CallDialog class, dismiss method");
+            AvaCrashReporter.send(e, TAG + " class, dismiss method");
         }
 
         dialog = null;

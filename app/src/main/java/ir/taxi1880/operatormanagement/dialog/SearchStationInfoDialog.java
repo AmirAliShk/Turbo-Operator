@@ -208,6 +208,7 @@ public class SearchStationInfoDialog {
             });
         } catch (Exception e) {
             e.printStackTrace();
+            AvaCrashReporter.send(e, TAG + " class, initWaitingTimeSpinner method");
         }
     }
 
@@ -302,6 +303,7 @@ public class SearchStationInfoDialog {
                     }
                 } catch (JSONException e) {
                     e.printStackTrace();
+                    AvaCrashReporter.send(e, TAG + " class, getStationInfo method");
                     if (vfStationInfo != null)
                         vfStationInfo.setDisplayedChild(3);
                 }
@@ -321,10 +323,11 @@ public class SearchStationInfoDialog {
         try {
             if (dialog != null) {
                 dialog.dismiss();
-                MyApplication.handler.postDelayed(() -> KeyBoardHelper.hideKeyboard(), 200);
+                MyApplication.handler.postDelayed(KeyBoardHelper::hideKeyboard, 200);
             }
         } catch (Exception e) {
-            AvaCrashReporter.send(e, "SearchStationInfoDialog class, dismiss method");
+            e.printStackTrace();
+            AvaCrashReporter.send(e, TAG + " class, dismiss method");
         }
         dialog = null;
     }

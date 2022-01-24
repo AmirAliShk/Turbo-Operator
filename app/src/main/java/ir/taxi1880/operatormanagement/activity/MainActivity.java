@@ -78,9 +78,7 @@ public class MainActivity extends AppCompatActivity implements NotificationFragm
             binding.imgTheme.setImageResource(R.drawable.ic_light);
         }
 
-        new TabLayoutMediator(binding.tabMain, binding.vpMain, (tab, position) -> {
-            tab.setCustomView(mainViewPagerAdapter.getTabView(position));
-        }).attach();
+        new TabLayoutMediator(binding.tabMain, binding.vpMain, (tab, position) -> tab.setCustomView(mainViewPagerAdapter.getTabView(position))).attach();
 
         binding.tabMain.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
             @Override
@@ -120,7 +118,6 @@ public class MainActivity extends AppCompatActivity implements NotificationFragm
         binding.imgProfile.setOnClickListener(view -> FragmentHelper
                 .toFragment(MyApplication.currentActivity, new AccountFragment())
                 .replace());
-
     }
 
     @Override
@@ -157,12 +154,6 @@ public class MainActivity extends AppCompatActivity implements NotificationFragm
     }
 
     @Override
-    protected void onStop() {
-        super.onStop();
-
-    }
-
-    @Override
     protected void onPause() {
         super.onPause();
         MyApplication.prefManager.setAppRun(false);
@@ -172,11 +163,6 @@ public class MainActivity extends AppCompatActivity implements NotificationFragm
     protected void onStart() {
         super.onStart();
         MyApplication.currentActivity = this;
-    }
-
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
     }
 
     @Override
@@ -197,7 +183,7 @@ public class MainActivity extends AppCompatActivity implements NotificationFragm
             }
         } catch (Exception e) {
             e.printStackTrace();
-            AvaCrashReporter.send(e, "MainActivity class, onBackPressed method");
+            AvaCrashReporter.send(e, TAG + " class, onBackPressed method");
         }
     }
 

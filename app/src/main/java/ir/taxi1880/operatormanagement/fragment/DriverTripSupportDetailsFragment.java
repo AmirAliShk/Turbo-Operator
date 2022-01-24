@@ -46,6 +46,7 @@ import ir.taxi1880.operatormanagement.okHttp.RequestHelper;
 import ir.taxi1880.operatormanagement.push.AvaCrashReporter;
 
 public class DriverTripSupportDetailsFragment extends Fragment {
+    public static final String TAG = DriverTripSupportDetailsFragment.class.getSimpleName();
     Unbinder unbinder;
     int serviceId;
     String passengerPhone;
@@ -504,6 +505,7 @@ public class DriverTripSupportDetailsFragment extends Fragment {
 
                 } catch (JSONException e) {
                     e.printStackTrace();
+                    AvaCrashReporter.send(e, TAG + " class, onGetTripDetails method");
                     MyApplication.handler.post(() -> {
                         if (vfTripDetails != null) {
                             vfTripDetails.setDisplayedChild(2);
@@ -521,7 +523,6 @@ public class DriverTripSupportDetailsFragment extends Fragment {
                 }
             });
         }
-
     };
 
     private void disableControllerButtonWaitingState() {
@@ -601,17 +602,15 @@ public class DriverTripSupportDetailsFragment extends Fragment {
                     LoadingDialog.dismissCancelableDialog();
                 } catch (Exception e) {
                     e.printStackTrace();
+                    AvaCrashReporter.send(e, TAG + " class, onCancelService method");
                 }
             });
         }
 
         @Override
         public void onFailure(Runnable reCall, Exception e) {
-            MyApplication.handler.post(() -> {
-                LoadingDialog.dismissCancelableDialog();
-            });
+            MyApplication.handler.post(LoadingDialog::dismissCancelableDialog);
         }
-
     };
 
     private void trackingAgain() {
@@ -659,10 +658,10 @@ public class DriverTripSupportDetailsFragment extends Fragment {
                                 .show();
                     }
 
-
                     LoadingDialog.dismissCancelableDialog();
                 } catch (Exception e) {
                     e.printStackTrace();
+                    AvaCrashReporter.send(e, TAG + " class, inTrackingAgain method");
                     LoadingDialog.dismissCancelableDialog();
                 }
             });
@@ -670,11 +669,8 @@ public class DriverTripSupportDetailsFragment extends Fragment {
 
         @Override
         public void onFailure(Runnable reCall, Exception e) {
-            MyApplication.handler.post(() -> {
-                LoadingDialog.dismissCancelableDialog();
-            });
+            MyApplication.handler.post(LoadingDialog::dismissCancelableDialog);
         }
-
     };
 
     private void archiveAddress() {
@@ -717,6 +713,7 @@ public class DriverTripSupportDetailsFragment extends Fragment {
                     LoadingDialog.dismissCancelableDialog();
                 } catch (Exception e) {
                     e.printStackTrace();
+                    AvaCrashReporter.send(e, TAG + " class, onArchiveAddress method");
                     LoadingDialog.dismissCancelableDialog();
                 }
             });
@@ -724,9 +721,7 @@ public class DriverTripSupportDetailsFragment extends Fragment {
 
         @Override
         public void onFailure(Runnable reCall, Exception e) {
-            MyApplication.handler.post(() -> {
-                LoadingDialog.dismissCancelableDialog();
-            });
+            MyApplication.handler.post(LoadingDialog::dismissCancelableDialog);
         }
     };
 
@@ -740,6 +735,7 @@ public class DriverTripSupportDetailsFragment extends Fragment {
                     .post();
         } catch (Exception e) {
             e.printStackTrace();
+            AvaCrashReporter.send(e, TAG + " class, resendCancelService method");
         }
     }
 
@@ -773,6 +769,7 @@ public class DriverTripSupportDetailsFragment extends Fragment {
                     }
                 } catch (Exception e) {
                     e.printStackTrace();
+                    AvaCrashReporter.send(e, TAG + " class, onResendCancelService method");
                     LoadingDialog.dismissCancelableDialog();
                 }
             });
@@ -810,6 +807,7 @@ public class DriverTripSupportDetailsFragment extends Fragment {
                     .post();
         } catch (JSONException e) {
             e.printStackTrace();
+            AvaCrashReporter.send(e, TAG + " class, insertService method");
         }
     }
 
@@ -841,17 +839,15 @@ public class DriverTripSupportDetailsFragment extends Fragment {
                     //TODO  what to do? show error dialog?
                     LoadingDialog.dismissCancelableDialog();
                     e.printStackTrace();
-                    AvaCrashReporter.send(e, "TripRegisterActivity class, insertService onResponse method");
+                    AvaCrashReporter.send(e, TAG + " class, insertService onResponse method");
                 }
             });
         }
 
         @Override
         public void onFailure(Runnable reCall, Exception e) {
-            MyApplication.handler.post(() -> {
-                LoadingDialog.dismissCancelableDialog();
-                //TODO  what to do? show error dialog?
-            });
+            //TODO  what to do? show error dialog?
+            MyApplication.handler.post(LoadingDialog::dismissCancelableDialog);
         }
 
         @Override
@@ -907,15 +903,14 @@ public class DriverTripSupportDetailsFragment extends Fragment {
                     LoadingDialog.dismissCancelableDialog();
                 } catch (Exception e) {
                     e.printStackTrace();
+                    AvaCrashReporter.send(e, TAG + " class, makeDisposalCallBack onResponse method");
                 }
             });
         }
 
         @Override
         public void onFailure(Runnable reCall, Exception e) {
-            MyApplication.handler.post(() -> {
-                LoadingDialog.dismissCancelableDialog();
-            });
+            MyApplication.handler.post(LoadingDialog::dismissCancelableDialog);
         }
     };
 

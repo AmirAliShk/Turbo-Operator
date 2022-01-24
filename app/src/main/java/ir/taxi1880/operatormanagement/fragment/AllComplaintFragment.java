@@ -1,5 +1,8 @@
 package ir.taxi1880.operatormanagement.fragment;
 
+import static ir.taxi1880.operatormanagement.app.Keys.KEY_COUNT_ALL_COMPLAINT;
+import static ir.taxi1880.operatormanagement.app.Keys.VALUE_COUNT_ALL_COMPLAINT;
+
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -31,11 +34,10 @@ import ir.taxi1880.operatormanagement.app.MyApplication;
 import ir.taxi1880.operatormanagement.helper.TypefaceUtil;
 import ir.taxi1880.operatormanagement.model.AllComplaintsModel;
 import ir.taxi1880.operatormanagement.okHttp.RequestHelper;
-
-import static ir.taxi1880.operatormanagement.app.Keys.KEY_COUNT_ALL_COMPLAINT;
-import static ir.taxi1880.operatormanagement.app.Keys.VALUE_COUNT_ALL_COMPLAINT;
+import ir.taxi1880.operatormanagement.push.AvaCrashReporter;
 
 public class AllComplaintFragment extends Fragment {
+    public static final String TAG = AllComplaintFragment.class.getSimpleName();
     Unbinder unbinder;
     LocalBroadcastManager broadcaster;
 
@@ -68,7 +70,7 @@ public class AllComplaintFragment extends Fragment {
         unbinder = ButterKnife.bind(this, view);
         TypefaceUtil.overrideFonts(view);
 
-        refreshPage.setOnRefreshListener(() -> getAllComplaints());
+        refreshPage.setOnRefreshListener(this::getAllComplaints);
 
         return view;
     }
@@ -136,6 +138,7 @@ public class AllComplaintFragment extends Fragment {
                     if (vfAllComplaint != null)
                         vfAllComplaint.setDisplayedChild(2);
                     e.printStackTrace();
+                    AvaCrashReporter.send(e, TAG + " class, allComplaintsRequestCallBack method");
                 }
             });
         }
@@ -150,16 +153,6 @@ public class AllComplaintFragment extends Fragment {
             });
         }
     };
-
-    @Override
-    public void onStop() {
-        super.onStop();
-    }
-
-    @Override
-    public void onStart() {
-        super.onStart();
-    }
 
     @Override
     public void onResume() {

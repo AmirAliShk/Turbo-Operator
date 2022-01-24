@@ -1,5 +1,8 @@
 package ir.taxi1880.operatormanagement.fragment;
 
+import static ir.taxi1880.operatormanagement.app.Keys.KEY_COUNT_PENDING_COMPLAINT;
+import static ir.taxi1880.operatormanagement.app.Keys.VALUE_COUNT_PENDING_COMPLAINT;
+
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -31,11 +34,10 @@ import ir.taxi1880.operatormanagement.app.MyApplication;
 import ir.taxi1880.operatormanagement.helper.TypefaceUtil;
 import ir.taxi1880.operatormanagement.model.PendingComplaintsModel;
 import ir.taxi1880.operatormanagement.okHttp.RequestHelper;
-
-import static ir.taxi1880.operatormanagement.app.Keys.KEY_COUNT_PENDING_COMPLAINT;
-import static ir.taxi1880.operatormanagement.app.Keys.VALUE_COUNT_PENDING_COMPLAINT;
+import ir.taxi1880.operatormanagement.push.AvaCrashReporter;
 
 public class PendingComplaintFragment extends Fragment {
+    public static final String TAG = PendingComplaintFragment.class.getSimpleName();
     Unbinder unbinder;
     LocalBroadcastManager broadcaster;
     PendingComplaintAdapter mAdapter;
@@ -139,6 +141,7 @@ public class PendingComplaintFragment extends Fragment {
                     if (vfPendingComplaint != null)
                         vfPendingComplaint.setDisplayedChild(2);
                     e.printStackTrace();
+                    AvaCrashReporter.send(e, TAG + " class, PendingRequestsCallBack onResponse method");
                 }
             });
         }
@@ -153,11 +156,6 @@ public class PendingComplaintFragment extends Fragment {
             });
         }
     };
-
-    @Override
-    public void onStop() {
-        super.onStop();
-    }
 
     @Override
     public void onResume() {

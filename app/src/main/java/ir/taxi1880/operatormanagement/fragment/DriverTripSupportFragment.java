@@ -42,9 +42,11 @@ import ir.taxi1880.operatormanagement.helper.StringHelper;
 import ir.taxi1880.operatormanagement.helper.TypefaceUtil;
 import ir.taxi1880.operatormanagement.model.TripModel;
 import ir.taxi1880.operatormanagement.okHttp.RequestHelper;
+import ir.taxi1880.operatormanagement.push.AvaCrashReporter;
 import ir.taxi1880.operatormanagement.services.LinphoneService;
 
 public class DriverTripSupportFragment extends Fragment {
+    public static final String TAG = DriverTripSupportFragment.class.getSimpleName();
     FragmentDriverTripSupportBinding binding;
     ArrayList<TripModel> tripModels;
     DriverTripsAdapter tripAdapter;
@@ -284,7 +286,6 @@ public class DriverTripSupportFragment extends Fragment {
         }
 
         switch (searchCase) {
-
             case 6: // search by driver mobile
                 driverPhone = searchText;
                 break;
@@ -357,7 +358,9 @@ public class DriverTripSupportFragment extends Fragment {
                                 tripModel.setDestStation(dataObj.getString("destinationStation"));
                                 tripModel.setDestination(dataObj.getString("destinationAddress"));
                                 tripModels.add(tripModel);
-                            } catch (Exception ignored) {
+                            } catch (Exception e) {
+                                e.printStackTrace();
+                                AvaCrashReporter.send(e, TAG + " class, onGetTripList onResponse method");
                             }
                         }
 
@@ -382,6 +385,7 @@ public class DriverTripSupportFragment extends Fragment {
 
                 } catch (JSONException e) {
                     e.printStackTrace();
+                    AvaCrashReporter.send(e, TAG + " class, onGetTripList onResponse method2");
                     if (binding.vfTrip != null) {
                         binding.vfTrip.setDisplayedChild(3);
                     }
@@ -530,6 +534,7 @@ public class DriverTripSupportFragment extends Fragment {
                     }
                 } catch (JSONException e) {
                     e.printStackTrace();
+                    AvaCrashReporter.send(e, TAG + " class, onGetDriverInfo onResponse method");
                     if (binding.vfDriverInfo != null) {
                         binding.vfDriverInfo.setVisibility(View.GONE);
                     }
@@ -649,6 +654,7 @@ public class DriverTripSupportFragment extends Fragment {
                         binding.vfStationInfo.setDisplayedChild(0);
                 } catch (Exception e) {
                     e.printStackTrace();
+                    AvaCrashReporter.send(e, TAG + " class, onGetRegistrationReport onResponse method");
                     if (binding.vfStationInfo != null)
                         binding.vfStationInfo.setDisplayedChild(0);
                 }
@@ -706,6 +712,7 @@ public class DriverTripSupportFragment extends Fragment {
                         binding.vfFinancial.setDisplayedChild(0);
                 } catch (Exception e) {
                     e.printStackTrace();
+                    AvaCrashReporter.send(e, TAG + " class, onGetFinancial onResponse method");
                     if (binding.vfFinancial != null)
                         binding.vfFinancial.setDisplayedChild(0);
                 }

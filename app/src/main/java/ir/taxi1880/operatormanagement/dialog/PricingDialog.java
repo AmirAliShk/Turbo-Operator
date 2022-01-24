@@ -1,14 +1,14 @@
 package ir.taxi1880.operatormanagement.dialog;
 
+import static ir.taxi1880.operatormanagement.fragment.ComplaintDetailFragment.complaintDetailsModel;
+
 import android.app.Dialog;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
-import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
-import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.RadioButton;
@@ -29,10 +29,9 @@ import ir.taxi1880.operatormanagement.helper.TypefaceUtil;
 import ir.taxi1880.operatormanagement.okHttp.RequestHelper;
 import ir.taxi1880.operatormanagement.push.AvaCrashReporter;
 
-import static ir.taxi1880.operatormanagement.fragment.ComplaintDetailFragment.complaintDetailsModel;
-
 public class PricingDialog {
 
+    public static final String TAG = PricingDialog.class.getSimpleName();
     Unbinder unbinder;
     Dialog dialog;
 
@@ -178,6 +177,7 @@ public class PricingDialog {
 
                 } catch (Exception e) {
                     e.printStackTrace();
+                    AvaCrashReporter.send(e, TAG + " class, pricingCallBack method");
                     if (vfLoader != null) {
                         vfLoader.setDisplayedChild(0);
                         llPrice.setVisibility(View.GONE);
@@ -204,8 +204,8 @@ public class PricingDialog {
                 dialog.dismiss();
             }
         } catch (Exception e) {
-            Log.e("TAG", "dismiss: " + e.getMessage());
-            AvaCrashReporter.send(e, "ReserveDialog class, dismiss method");
+            e.printStackTrace();
+            AvaCrashReporter.send(e, TAG + " class, dismiss method");
         }
         dialog = null;
         unbinder.unbind();

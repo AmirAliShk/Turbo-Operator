@@ -92,7 +92,6 @@ public class AccountFragment extends Fragment {
         RequestHelper.builder(EndPoints.BALANCE)
                 .listener(getBalance)
                 .get();
-
     }
 
     RequestHelper.Callback getBalance = new RequestHelper.Callback() {
@@ -123,7 +122,7 @@ public class AccountFragment extends Fragment {
                     }
                 } catch (Exception e) {
                     e.printStackTrace();
-                    AvaCrashReporter.send(e, "AccountFragment class, getBalance onResponse method");
+                    AvaCrashReporter.send(e, TAG + " class, getBalance onResponse method");
                 }
             });
         }
@@ -132,7 +131,6 @@ public class AccountFragment extends Fragment {
         public void onFailure(Runnable reCall, Exception e) {
 //      vfBalance.setDisplayedChild(1);
         }
-
     };
 
     private void updateProfile(String accountNumber, String cardNumber, String sheba) {
@@ -143,7 +141,6 @@ public class AccountFragment extends Fragment {
                 .addParam("sheba", StringHelper.toEnglishDigits(sheba))
                 .listener(updateProfile)
                 .put();
-
     }
 
     RequestHelper.Callback updateProfile = new RequestHelper.Callback() {
@@ -183,16 +180,15 @@ public class AccountFragment extends Fragment {
                 } catch (JSONException e) {
                     e.printStackTrace();
                     LoadingDialog.dismissCancelableDialog();
-                    AvaCrashReporter.send(e, "AccountFragment class, updateProfile onResponse method");
+                    AvaCrashReporter.send(e, TAG + " class, updateProfile onResponse method");
                 }
             });
         }
 
         @Override
         public void onFailure(Runnable reCall, Exception e) {
-            MyApplication.handler.post(() -> LoadingDialog.dismissCancelableDialog());
+            MyApplication.handler.post(LoadingDialog::dismissCancelableDialog);
         }
-
     };
 
     private void payment() {
@@ -200,7 +196,6 @@ public class AccountFragment extends Fragment {
         RequestHelper.builder(EndPoints.PAYMENT)
                 .listener(Payment)
                 .post();
-
     }
 
     RequestHelper.Callback Payment = new RequestHelper.Callback() {
@@ -237,25 +232,18 @@ public class AccountFragment extends Fragment {
                                 .cancelable(false)
                                 .show();
                     }
-
                     LoadingDialog.dismissCancelableDialog();
                 } catch (JSONException e) {
                     LoadingDialog.dismissCancelableDialog();
                     e.printStackTrace();
-                    AvaCrashReporter.send(e, "AccountFragment class, Payment onResponse method");
+                    AvaCrashReporter.send(e, TAG + " class, Payment onResponse method");
                 }
             });
         }
 
         @Override
         public void onFailure(Runnable reCall, Exception e) {
-            MyApplication.handler.post(() -> LoadingDialog.dismissCancelableDialog());
+            MyApplication.handler.post(LoadingDialog::dismissCancelableDialog);
         }
-
     };
-
-    @Override
-    public void onDestroy() {
-        super.onDestroy();
-    }
 }

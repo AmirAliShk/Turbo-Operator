@@ -9,12 +9,12 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.ViewFlipper;
 
+import androidx.fragment.app.Fragment;
+
 import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
-
-import androidx.fragment.app.Fragment;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -29,10 +29,8 @@ import ir.taxi1880.operatormanagement.model.ReplacementModel;
 import ir.taxi1880.operatormanagement.okHttp.RequestHelper;
 import ir.taxi1880.operatormanagement.push.AvaCrashReporter;
 
-/**
- * A simple {@link Fragment} subclass.
- */
 public class SendReplacementReqFragment extends Fragment {
+    public static final String TAG = SendReplacementReqFragment.class.getSimpleName();
     Unbinder unbinder;
     ArrayList<ReplacementModel> replacementModels;
     SendReplacementAdapter sendReplacementAdapter;
@@ -68,7 +66,6 @@ public class SendReplacementReqFragment extends Fragment {
         RequestHelper.builder(EndPoints.GET_SHIFT_REPLACEMENT_REQUESTS)
                 .listener(onGetShiftReplacementRequest)
                 .get();
-
     }
 
     private RequestHelper.Callback onGetShiftReplacementRequest = new RequestHelper.Callback() {
@@ -109,13 +106,11 @@ public class SendReplacementReqFragment extends Fragment {
                         if (vfSendReq != null)
                             vfSendReq.setDisplayedChild(2);
                     }
-
                 } catch (Exception e) {
                     if (vfSendReq != null)
                         vfSendReq.setDisplayedChild(3);
                     e.printStackTrace();
-                    AvaCrashReporter.send(e, "SendReplacementReqFragment class, onGetShiftReplacementRequest onResponse method");
-
+                    AvaCrashReporter.send(e, TAG + " class, onGetShiftReplacementRequest onResponse method");
                 }
             });
         }
@@ -129,12 +124,9 @@ public class SendReplacementReqFragment extends Fragment {
         }
     };
 
-
     @Override
     public void onDestroyView() {
         super.onDestroyView();
         unbinder.unbind();
     }
-
-
 }

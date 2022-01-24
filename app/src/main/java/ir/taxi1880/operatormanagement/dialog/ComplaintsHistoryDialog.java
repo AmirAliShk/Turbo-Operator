@@ -3,7 +3,6 @@ package ir.taxi1880.operatormanagement.dialog;
 import android.app.Dialog;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
-import android.util.Log;
 import android.view.Gravity;
 import android.view.Window;
 import android.view.WindowManager;
@@ -32,6 +31,8 @@ import ir.taxi1880.operatormanagement.okHttp.RequestHelper;
 import ir.taxi1880.operatormanagement.push.AvaCrashReporter;
 
 public class ComplaintsHistoryDialog {
+
+    public static final String TAG = ComplaintsHistoryDialog.class.getSimpleName();
     Unbinder unbinder;
     static Dialog dialog;
     String historyOfWho;
@@ -67,7 +68,7 @@ public class ComplaintsHistoryDialog {
         } else if (customerTell.length() == 8) {
             customerTell = "51" + customerTell;
             complaintCustomerHistory(customerTell);
-        }else {
+        } else {
             complaintCustomerHistory(customerTell);
         }
     }
@@ -210,6 +211,7 @@ public class ComplaintsHistoryDialog {
                     if (vfComplaintHistory != null)
                         vfComplaintHistory.setDisplayedChild(3);
                     e.printStackTrace();
+                    AvaCrashReporter.send(e, TAG + " class, historyCallBack method");
                 }
             });
         }
@@ -229,8 +231,8 @@ public class ComplaintsHistoryDialog {
                 dialog.dismiss();
             }
         } catch (Exception e) {
-            Log.e("TAG", "dismiss: " + e.getMessage());
-            AvaCrashReporter.send(e, "ReserveDialog class, dismiss method");
+            e.printStackTrace();
+            AvaCrashReporter.send(e, TAG + " class, dismiss method");
         }
         dialog = null;
         unbinder.unbind();

@@ -3,7 +3,6 @@ package ir.taxi1880.operatormanagement.dialog;
 import android.app.Dialog;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
-import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
 import android.view.Window;
@@ -34,7 +33,6 @@ import ir.taxi1880.operatormanagement.helper.KeyBoardHelper;
 import ir.taxi1880.operatormanagement.helper.StringHelper;
 import ir.taxi1880.operatormanagement.helper.TypefaceUtil;
 import ir.taxi1880.operatormanagement.model.CityModel;
-import ir.taxi1880.operatormanagement.model.TypeServiceModel;
 import ir.taxi1880.operatormanagement.okHttp.RequestHelper;
 import ir.taxi1880.operatormanagement.push.AvaCrashReporter;
 
@@ -248,7 +246,7 @@ public class EditPassengerAddressDialog {
 
         } catch (JSONException e) {
             e.printStackTrace();
-            AvaCrashReporter.send(e, "EditPassengerAddressDialog class, initCitySpinner method");
+            AvaCrashReporter.send(e, TAG + " class, initCitySpinner method");
         }
     }
 
@@ -302,15 +300,14 @@ public class EditPassengerAddressDialog {
                 } catch (Exception e) {
                     e.printStackTrace();
                     LoadingDialog.dismissCancelableDialog();
+                    AvaCrashReporter.send(e, TAG + " class, onEditStation method");
                 }
             });
         }
 
         @Override
         public void onFailure(Runnable reCall, Exception e) {
-            MyApplication.handler.post(() -> {
-                LoadingDialog.dismissCancelableDialog();
-            });
+            MyApplication.handler.post(LoadingDialog::dismissCancelableDialog);
         }
     };
 
@@ -321,10 +318,9 @@ public class EditPassengerAddressDialog {
                 KeyBoardHelper.hideKeyboard();
             }
         } catch (Exception e) {
-            Log.e("TAG", "dismiss: " + e.getMessage());
-            AvaCrashReporter.send(e, "EditPassengerAddressDialog class, dismiss method");
+            e.printStackTrace();
+            AvaCrashReporter.send(e, TAG + " class, dismiss method");
         }
         dialog = null;
     }
-
 }

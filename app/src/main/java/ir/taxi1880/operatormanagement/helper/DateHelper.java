@@ -20,6 +20,7 @@ import ir.taxi1880.operatormanagement.push.AvaCrashReporter;
  */
 
 public class DateHelper {
+    public static final String TAG = DateHelper.class.getSimpleName();
 
     private class SolarCalendar {
 
@@ -488,7 +489,7 @@ public class DateHelper {
             return d;
         } catch (ParseException e) {
             e.printStackTrace();
-            AvaCrashReporter.send(e, "DateHelper class, parseFormat method");
+            AvaCrashReporter.send(e, TAG + " class, parseFormat method");
             return null;
         }
     }
@@ -535,7 +536,7 @@ public class DateHelper {
             return String.format(new Locale("en_US"), "%02d:%02d %s", date.getHours(), date.getMinutes(), sc.strWeekDay);
         } catch (Exception e) {
             e.printStackTrace();
-            AvaCrashReporter.send(e, "DateHelper class, strPersianFour method");
+            AvaCrashReporter.send(e, TAG + " class, strPersianFour method");
             return "";
         }
     }
@@ -551,7 +552,7 @@ public class DateHelper {
             return String.format(new Locale("en_US"), "%02d:%02d", date.getHours(), date.getMinutes());
         } catch (Exception e) {
             e.printStackTrace();
-            AvaCrashReporter.send(e, "DateHelper class, strPersianFour1 method");
+            AvaCrashReporter.send(e, TAG + " class, strPersianFour1 method");
             return "";
         }
     }
@@ -567,7 +568,7 @@ public class DateHelper {
             return String.format(new Locale("en_US"), "%04d/%02d/%02d", sc.year, sc.month, sc.date);
         } catch (Exception e) {
             e.printStackTrace();
-            AvaCrashReporter.send(e, "DateHelper class, strPersianSeven method");
+            AvaCrashReporter.send(e, TAG + " class, strPersianSeven method");
             return "";
         }
     }
@@ -583,7 +584,7 @@ public class DateHelper {
             return String.format(new Locale("en_US"), "%02d %s ساعت %02d:%02d", sc.date, sc.strMonth, date.getHours(), date.getMinutes());
         } catch (Exception e) {
             e.printStackTrace();
-            AvaCrashReporter.send(e, "DateHelper class, strPersianEghit method");
+            AvaCrashReporter.send(e, TAG + " class, strPersianEghit method");
             return "";
         }
     }
@@ -613,7 +614,7 @@ public class DateHelper {
 
         } catch (Exception e) {
             e.printStackTrace();
-            AvaCrashReporter.send(e, "DateHelper class, strPersianFive method");
+            AvaCrashReporter.send(e, TAG + " class, strPersianFive method");
             return "";
         }
     }
@@ -669,7 +670,7 @@ public class DateHelper {
                     , Integer.parseInt(time1[2])));
             return DateHelper.strPersianDate(d);
         } catch (Exception e) {
-            AvaCrashReporter.send(e, "DateHelper class, parseStrDate method");
+            AvaCrashReporter.send(e, TAG + " class, parseStrDate method");
             return DateHelper.strPersianDate(new Date());
         }
     }

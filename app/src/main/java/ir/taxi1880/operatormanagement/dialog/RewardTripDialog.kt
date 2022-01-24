@@ -18,15 +18,15 @@ import ir.taxi1880.operatormanagement.okHttp.RequestHelper
 import ir.taxi1880.operatormanagement.push.AvaCrashReporter
 import org.json.JSONObject
 
-
 class RewardTripDialog {
+
+    val TAG = RewardTripDialog::class.java.simpleName
     lateinit var binding: DialogRewardTripBinding
     lateinit var dialog: Dialog
     lateinit var rewardPrice: String
     private lateinit var rewardArr: List<String>
 
     lateinit var rewardBackListener: RewardBackListener
-
 
     interface RewardBackListener {
         fun rewardBack(reward: String)
@@ -90,13 +90,13 @@ class RewardTripDialog {
                             MyApplication.Toast("انعام با موفقیت اضافه شد.", 2)
                         rewardBackListener.rewardBack(rewardPrice)
                     } else {
-                        MyApplication.Toast("انعام با موفقیت اضافه نشد.", 2)
+                        MyApplication.Toast(message, 2)
                     }
                     binding.vfSubmit.displayedChild = 0
                     dialog.dismiss()
                 } catch (e: Exception) {
-
-                    AvaCrashReporter.send(e, "RewardTripDialog, rewardListener")
+                    e.printStackTrace()
+                    AvaCrashReporter.send(e, "$TAG class, rewardListener")
                     dialog.dismiss()
                 }
             }
@@ -107,7 +107,6 @@ class RewardTripDialog {
                 dialog.dismiss()
             }
         }
-
     }
 
     private fun initSpinner() {
@@ -135,6 +134,7 @@ class RewardTripDialog {
                 }
         } catch (e: Exception) {
             e.printStackTrace()
+            AvaCrashReporter.send(e, "$TAG class, initSpinner method")
         }
     }
 }

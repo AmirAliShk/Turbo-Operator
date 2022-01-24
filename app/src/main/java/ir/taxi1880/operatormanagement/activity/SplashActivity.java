@@ -68,7 +68,7 @@ public class SplashActivity extends AppCompatActivity {
         ACRA.getErrorReporter().putCustomData("projectId", Constant.PUSH_PROJECT_ID);
         ACRA.getErrorReporter().putCustomData("LineCode", MyApplication.prefManager.getUserCode() + "");
 
-        binding.txtVersion.setText(StringHelper.toPersianDigits("نسخه " + new AppVersionHelper(context).getVerionName() + ""));
+        binding.txtVersion.setText(StringHelper.toPersianDigits("نسخه " + new AppVersionHelper(context).getVersionName() + ""));
 
         MyApplication.handler.postDelayed(this::checkPermission, 1500);
 
@@ -116,11 +116,6 @@ public class SplashActivity extends AppCompatActivity {
     protected void onPause() {
         super.onPause();
         MyApplication.prefManager.setAppRun(false);
-    }
-
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
     }
 
     @Override

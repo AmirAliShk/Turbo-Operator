@@ -1,5 +1,7 @@
 package ir.taxi1880.operatormanagement.dialog;
 
+import static ir.taxi1880.operatormanagement.adapter.RecentCallsAdapter.pauseVoice;
+
 import android.app.Dialog;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
@@ -18,9 +20,9 @@ import ir.taxi1880.operatormanagement.app.MyApplication;
 import ir.taxi1880.operatormanagement.helper.TypefaceUtil;
 import ir.taxi1880.operatormanagement.push.AvaCrashReporter;
 
-import static ir.taxi1880.operatormanagement.adapter.RecentCallsAdapter.pauseVoice;
-
 public class ComplaintOptionsDialog {
+
+    public static final String TAG = ComplaintOptionsDialog.class.getSimpleName();
     Unbinder unbinder;
     Dialog dialog;
     String customerTell;
@@ -108,7 +110,7 @@ public class ComplaintOptionsDialog {
             }
         } catch (Exception e) {
             Log.e("TAG", "dismiss: " + e.getMessage());
-            AvaCrashReporter.send(e, "ReserveDialog class, dismiss method");
+            AvaCrashReporter.send(e, TAG + " class, dismiss method");
         }
         dialog = null;
         unbinder.unbind();

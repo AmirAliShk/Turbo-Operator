@@ -34,8 +34,10 @@ import ir.taxi1880.operatormanagement.app.MyApplication;
 import ir.taxi1880.operatormanagement.helper.TypefaceUtil;
 import ir.taxi1880.operatormanagement.model.AllMistakesModel;
 import ir.taxi1880.operatormanagement.okHttp.RequestHelper;
+import ir.taxi1880.operatormanagement.push.AvaCrashReporter;
 
 public class AllMistakesFragment extends Fragment {
+    public static final String TAG = AllMistakesFragment.class.getSimpleName();
     Unbinder unbinder;
     LocalBroadcastManager broadcaster;
 
@@ -155,6 +157,7 @@ public class AllMistakesFragment extends Fragment {
                     if (vfAllMistake != null)
                         vfAllMistake.setDisplayedChild(2);
                     e.printStackTrace();
+                    AvaCrashReporter.send(e, TAG + " class, listenCallBack method");
                 }
             });
         }

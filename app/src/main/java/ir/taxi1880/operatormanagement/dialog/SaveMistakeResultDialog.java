@@ -1,5 +1,8 @@
 package ir.taxi1880.operatormanagement.dialog;
 
+import static ir.taxi1880.operatormanagement.app.Keys.KEY_PENDING_MISTAKE_COUNT;
+import static ir.taxi1880.operatormanagement.app.Keys.PENDING_MISTAKE_COUNT;
+
 import android.app.Dialog;
 import android.content.Intent;
 import android.graphics.Color;
@@ -38,10 +41,8 @@ import ir.taxi1880.operatormanagement.model.MistakeReasonsModel;
 import ir.taxi1880.operatormanagement.okHttp.RequestHelper;
 import ir.taxi1880.operatormanagement.push.AvaCrashReporter;
 
-import static ir.taxi1880.operatormanagement.app.Keys.KEY_PENDING_MISTAKE_COUNT;
-import static ir.taxi1880.operatormanagement.app.Keys.PENDING_MISTAKE_COUNT;
-
 public class SaveMistakeResultDialog {
+    public static final String TAG = SaveMistakeResultDialog.class.getSimpleName();
     static Dialog dialog;
     private Dialog staticDialog = null;
     Unbinder unbinder;
@@ -54,7 +55,6 @@ public class SaveMistakeResultDialog {
     private boolean singleInstance = true;
     View view;
     int reasonId;
-
 
     public interface MistakesResult {
         void onSuccess(boolean success);
@@ -286,6 +286,7 @@ public class SaveMistakeResultDialog {
 
         } catch (JSONException e) {
             e.printStackTrace();
+            AvaCrashReporter.send(e, TAG + " class, initMistakeReasonsSpinner method");
         }
     }
 
@@ -343,6 +344,7 @@ public class SaveMistakeResultDialog {
                     if (vfLoader != null)
                         vfLoader.setDisplayedChild(0);
                     e.printStackTrace();
+                    AvaCrashReporter.send(e, TAG + " class, sendResult method");
                 }
             });
         }
@@ -372,7 +374,8 @@ public class SaveMistakeResultDialog {
                         dialog.dismiss();
             }
         } catch (Exception e) {
-            AvaCrashReporter.send(e, "SaveResultDialog class, dismiss method");
+            e.printStackTrace();
+            AvaCrashReporter.send(e, TAG + " class, dismiss method");
         }
         dialog = null;
         unbinder.unbind();

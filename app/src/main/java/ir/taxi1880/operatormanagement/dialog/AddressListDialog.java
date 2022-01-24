@@ -6,13 +6,8 @@ import android.graphics.drawable.ColorDrawable;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
-import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
-import android.widget.AdapterView;
-import android.widget.ListView;
-import android.widget.TextView;
-import android.widget.ViewFlipper;
 
 import java.util.ArrayList;
 
@@ -23,7 +18,6 @@ import ir.taxi1880.operatormanagement.databinding.DialogAddressListBinding;
 import ir.taxi1880.operatormanagement.helper.KeyBoardHelper;
 import ir.taxi1880.operatormanagement.helper.TypefaceUtil;
 import ir.taxi1880.operatormanagement.model.AddressesModel;
-import ir.taxi1880.operatormanagement.model.PassengerAddressModel;
 import ir.taxi1880.operatormanagement.push.AvaCrashReporter;
 
 public class AddressListDialog {
@@ -81,13 +75,9 @@ public class AddressListDialog {
             dismiss();
         });
 
-        binding.blrView.setOnClickListener(v ->
-        {
-            dialog.dismiss();
-        });
+        binding.blrView.setOnClickListener(v -> dialog.dismiss());
 
         dialog.show();
-
     }
 
     private static void dismiss() {
@@ -98,9 +88,8 @@ public class AddressListDialog {
             }
         } catch (Exception e) {
             Log.e("TAG", "dismiss: " + e.getMessage());
-            AvaCrashReporter.send(e, "AddressListDialog class, dismiss method");
+            AvaCrashReporter.send(e, TAG + " class, dismiss method");
         }
         dialog = null;
     }
-
 }

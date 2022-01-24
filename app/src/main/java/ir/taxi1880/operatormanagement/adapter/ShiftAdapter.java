@@ -23,6 +23,7 @@ import ir.taxi1880.operatormanagement.push.AvaCrashReporter;
 
 public class ShiftAdapter extends BaseAdapter {
 
+    public static final String TAG = ShiftAdapter.class.getSimpleName();
     private ArrayList<ShiftModel> shiftModels;
     private LayoutInflater layoutInflater;
 
@@ -107,7 +108,7 @@ public class ShiftAdapter extends BaseAdapter {
 
         } catch (Exception e) {
             e.printStackTrace();
-            AvaCrashReporter.send(e, "ShiftAdapter class, getView method");
+            AvaCrashReporter.send(e, TAG + " class, getView method");
         }
         return convertView;
     }
@@ -129,5 +130,4 @@ public class ShiftAdapter extends BaseAdapter {
             btnReplacementRequest = convertView.findViewById(R.id.btnReplacementRequest);
         }
     }
-
 }

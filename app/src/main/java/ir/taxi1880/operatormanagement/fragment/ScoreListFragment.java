@@ -6,13 +6,13 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ViewFlipper;
 
+import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.RecyclerView;
+
 import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
-
-import androidx.fragment.app.Fragment;
-import androidx.recyclerview.widget.RecyclerView;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -29,6 +29,7 @@ import ir.taxi1880.operatormanagement.okHttp.RequestHelper;
 import ir.taxi1880.operatormanagement.push.AvaCrashReporter;
 
 public class ScoreListFragment extends Fragment {
+    public static final String TAG = ScoreListFragment.class.getSimpleName();
 
     private Unbinder unbinder;
     private ArrayList<ScoreModel> scoreModels;
@@ -105,7 +106,7 @@ public class ScoreListFragment extends Fragment {
                     if (vfScore != null)
                         vfScore.setDisplayedChild(3);
                     e.printStackTrace();
-                    AvaCrashReporter.send(e, "ScoreListFragment class, onScore onResponse method");
+                    AvaCrashReporter.send(e, TAG + " class, onScore onResponse method");
                 }
 
             });
@@ -118,7 +119,6 @@ public class ScoreListFragment extends Fragment {
                     vfScore.setDisplayedChild(3);
             });
         }
-
     };
 
     @Override
@@ -127,4 +127,3 @@ public class ScoreListFragment extends Fragment {
         unbinder.unbind();
     }
 }
-

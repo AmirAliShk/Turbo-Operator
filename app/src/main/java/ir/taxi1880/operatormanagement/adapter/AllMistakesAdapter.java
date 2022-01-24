@@ -1,5 +1,11 @@
 package ir.taxi1880.operatormanagement.adapter;
 
+import static ir.taxi1880.operatormanagement.app.Keys.KEY_NEW_MISTAKE_COUNT;
+import static ir.taxi1880.operatormanagement.app.Keys.KEY_PENDING_MISTAKE_COUNT;
+import static ir.taxi1880.operatormanagement.app.Keys.NEW_MISTAKE_COUNT;
+import static ir.taxi1880.operatormanagement.app.Keys.PENDING_MISTAKE_COUNT;
+import static ir.taxi1880.operatormanagement.app.MyApplication.context;
+
 import android.content.Intent;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -18,6 +24,7 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 
 import ir.taxi1880.operatormanagement.R;
+import ir.taxi1880.operatormanagement.activity.CallIncomingActivity;
 import ir.taxi1880.operatormanagement.app.EndPoints;
 import ir.taxi1880.operatormanagement.app.MyApplication;
 import ir.taxi1880.operatormanagement.dataBase.DataBase;
@@ -28,13 +35,9 @@ import ir.taxi1880.operatormanagement.model.AllMistakesModel;
 import ir.taxi1880.operatormanagement.okHttp.RequestHelper;
 import ir.taxi1880.operatormanagement.push.AvaCrashReporter;
 
-import static ir.taxi1880.operatormanagement.app.Keys.KEY_NEW_MISTAKE_COUNT;
-import static ir.taxi1880.operatormanagement.app.Keys.KEY_PENDING_MISTAKE_COUNT;
-import static ir.taxi1880.operatormanagement.app.Keys.NEW_MISTAKE_COUNT;
-import static ir.taxi1880.operatormanagement.app.Keys.PENDING_MISTAKE_COUNT;
-import static ir.taxi1880.operatormanagement.app.MyApplication.context;
-
 public class AllMistakesAdapter extends RecyclerView.Adapter<AllMistakesAdapter.ViewHolder> {
+
+    public static final String TAG = AllMistakesAdapter.class.getSimpleName();
     LocalBroadcastManager broadcaster;
     private ArrayList<AllMistakesModel> allMistakesModels;
     DataBase dataBase;
@@ -145,7 +148,7 @@ public class AllMistakesAdapter extends RecyclerView.Adapter<AllMistakesAdapter.
                     }
                 } catch (Exception e) {
                     e.printStackTrace();
-                    AvaCrashReporter.send(e, "AllMistakesAdapter,getAccept");
+                    AvaCrashReporter.send(e, TAG + ", getAccept");
                 }
                 if (viewFlipper != null) {
                     viewFlipper.setDisplayedChild(0);

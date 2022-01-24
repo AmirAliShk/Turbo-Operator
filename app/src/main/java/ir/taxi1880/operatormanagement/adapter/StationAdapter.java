@@ -17,6 +17,7 @@ import ir.taxi1880.operatormanagement.push.AvaCrashReporter;
 
 public class StationAdapter extends BaseAdapter {
 
+    public static final String TAG = StationAdapter.class.getSimpleName();
     private ArrayList<StationModel> stationModels;
     private LayoutInflater layoutInflater;
 
@@ -67,7 +68,7 @@ public class StationAdapter extends BaseAdapter {
 
         } catch (Exception e) {
             e.printStackTrace();
-            AvaCrashReporter.send(e, "getView class, getView method");
+            AvaCrashReporter.send(e, TAG + " class, getView method");
         }
 
         return myView;

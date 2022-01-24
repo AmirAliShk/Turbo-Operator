@@ -133,6 +133,7 @@ public class ErrorAddressDialog {
                 } catch (Exception e) {
                     LoadingDialog.dismissCancelableDialog();
                     e.printStackTrace();
+                    AvaCrashReporter.send(e, TAG + " class, onEditAddress method");
                 }
             });
         }
@@ -150,7 +151,8 @@ public class ErrorAddressDialog {
                 KeyBoardHelper.hideKeyboard();
             }
         } catch (Exception e) {
-            AvaCrashReporter.send(e, "ErrorAddressDialog class, dismiss method");
+            e.printStackTrace();
+            AvaCrashReporter.send(e, TAG + " class, dismiss method");
         }
         dialog = null;
     }

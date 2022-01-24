@@ -3,7 +3,6 @@ package ir.taxi1880.operatormanagement.dialog;
 import android.app.Dialog;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
-import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
 import android.view.Window;
@@ -11,6 +10,7 @@ import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
+
 import ir.taxi1880.operatormanagement.R;
 import ir.taxi1880.operatormanagement.app.MyApplication;
 import ir.taxi1880.operatormanagement.helper.KeyBoardHelper;
@@ -23,6 +23,7 @@ public class DescriptionDialog {
 
     public interface Listener {
         void description(String description);
+
         void fixedDescription(String fixedDescription);
 
     }
@@ -31,8 +32,9 @@ public class DescriptionDialog {
 
     static Dialog dialog;
 
-    public void show(Listener listener,String description,String normalDescription) {
-        if (MyApplication.currentActivity==null|| MyApplication.currentActivity.isFinishing())return;
+    public void show(Listener listener, String description, String normalDescription) {
+        if (MyApplication.currentActivity == null || MyApplication.currentActivity.isFinishing())
+            return;
         dialog = new Dialog(MyApplication.currentActivity);
         dialog.getWindow().requestFeature(Window.FEATURE_NO_TITLE);
         dialog.getWindow().getAttributes().windowAnimations = R.style.ExpandAnimation;
@@ -53,7 +55,9 @@ public class DescriptionDialog {
         LinearLayout llDescription = dialog.findViewById(R.id.llDescription);
         blrView = dialog.findViewById(R.id.blrView);
 
-        llDescription.setOnClickListener(view -> {return;});
+        llDescription.setOnClickListener(view -> {
+            return;
+        });
         edtAlwaysDescription.setText(description);
         edtDescription.setText(normalDescription);
 
@@ -73,23 +77,20 @@ public class DescriptionDialog {
 //        };
 //        edtAlwaysDescription.setFilters(new InputFilter[]{filter});
 
-        btnSubmit.setOnClickListener(new View.OnClickListener() {
-          @Override
-          public void onClick(View v) {
-              String description=edtDescription.getText().toString();
-              String fixedDescription=edtAlwaysDescription.getText().toString();
+        btnSubmit.setOnClickListener(v -> {
+            String description1 = edtDescription.getText().toString();
+            String fixedDescription = edtAlwaysDescription.getText().toString();
 
 //              if (description.isEmpty()){
 //                  MyApplication.Toast("حداقل یکی از فیلدهای توضیحات را پر کنید", Toast.LENGTH_SHORT);
 //                  return;
 //              }
 
-              listener.description(description);
-              listener.fixedDescription(fixedDescription);
-              dismiss();
+            listener.description(description1);
+            listener.fixedDescription(fixedDescription);
+            dismiss();
 
-          }
-      });
+        });
         MyApplication.handler.postDelayed(() -> KeyBoardHelper.showKeyboard(MyApplication.context), 200);
 
         dialog.show();
@@ -97,15 +98,14 @@ public class DescriptionDialog {
 
     private static void dismiss() {
         try {
-            if (dialog != null){
+            if (dialog != null) {
                 dialog.dismiss();
                 KeyBoardHelper.hideKeyboard();
             }
         } catch (Exception e) {
-            Log.e("TAG", "dismiss: " + e.getMessage());
-            AvaCrashReporter.send(e,"DescriptionDialog class, dismiss method");
+            e.printStackTrace();
+            AvaCrashReporter.send(e, TAG + " class, dismiss method");
         }
         dialog = null;
     }
-
 }

@@ -8,11 +8,11 @@ import android.view.Gravity;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
-import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
+
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -86,7 +86,7 @@ public class CityDialog {
                 }
             } catch (JSONException e) {
                 e.printStackTrace();
-                AvaCrashReporter.send(e, "CityDialog class, show method");
+                AvaCrashReporter.send(e, TAG + " class, show method");
             }
             cityAdapter = new CityAdapter(cityModels);
             listCity.setAdapter(cityAdapter);
@@ -109,10 +109,8 @@ public class CityDialog {
             dialog.show();
         } catch (Exception e) {
             e.printStackTrace();
-            AvaCrashReporter.send(e, "CityDialog: Crash in show dialog line 89");
-
+            AvaCrashReporter.send(e, TAG + ": Crash in show dialog");
         }
-
     }
 
     public CityDialog setTitle(String title) {
@@ -128,9 +126,8 @@ public class CityDialog {
             }
         } catch (Exception e) {
             Log.e("TAG", "dismiss: " + e.getMessage());
-            AvaCrashReporter.send(e, "CityDialog class, dismiss method");
+            AvaCrashReporter.send(e, TAG + " class, dismiss method");
         }
         dialog = null;
     }
-
 }

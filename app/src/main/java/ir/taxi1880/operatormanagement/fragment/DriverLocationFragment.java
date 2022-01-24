@@ -3,7 +3,6 @@ package ir.taxi1880.operatormanagement.fragment;
 import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,6 +10,10 @@ import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.fragment.app.Fragment;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -25,10 +28,6 @@ import com.google.android.gms.maps.model.MarkerOptions;
 
 import org.json.JSONObject;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.fragment.app.Fragment;
-
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
@@ -39,8 +38,11 @@ import ir.taxi1880.operatormanagement.app.MyApplication;
 import ir.taxi1880.operatormanagement.dialog.GeneralDialog;
 import ir.taxi1880.operatormanagement.helper.TypefaceUtil;
 import ir.taxi1880.operatormanagement.okHttp.RequestHelper;
+import ir.taxi1880.operatormanagement.push.AvaCrashReporter;
 
 public class DriverLocationFragment extends Fragment implements OnMapReadyCallback {
+
+    public static final String TAG = DriverLocationFragment.class.getSimpleName();
     Unbinder unbinder;
     double lat = 0;
     double lng = 0;
@@ -99,9 +101,7 @@ public class DriverLocationFragment extends Fragment implements OnMapReadyCallba
     @Override
     public void onMapReady(GoogleMap googleMap) {
         myGoogleMap = googleMap;
-
         animateToLocation(lat, lng);
-
     }
 
     private void animateToLocation(final double latitude, final double longitude) {
@@ -132,11 +132,9 @@ public class DriverLocationFragment extends Fragment implements OnMapReadyCallba
 //                      .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_MAGENTA))
                             .position(latlng));
         }
-
     }
 
     private void getLastLocation() {
-
         RequestHelper.builder(EndPoints.LAST_DRIVER_POSITION)
                 .addParam("taxiCode", carCode)
                 .listener(onGetLastLocation)
@@ -175,6 +173,7 @@ public class DriverLocationFragment extends Fragment implements OnMapReadyCallba
 
                 } catch (Exception e) {
                     e.printStackTrace();
+                    AvaCrashReporter.send(e, TAG + " class, onGetLastLocation method");
                 }
             });
         }
@@ -186,7 +185,6 @@ public class DriverLocationFragment extends Fragment implements OnMapReadyCallba
                     imgRefresh.clearAnimation();
             });
         }
-
     };
 
     @Override

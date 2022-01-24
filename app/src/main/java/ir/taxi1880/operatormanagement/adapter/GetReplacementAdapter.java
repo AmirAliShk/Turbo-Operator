@@ -24,6 +24,7 @@ import ir.taxi1880.operatormanagement.push.AvaCrashReporter;
 
 public class GetReplacementAdapter extends BaseAdapter {
 
+    public static final String TAG = GetReplacementAdapter.class.getSimpleName();
     private ArrayList<ReplacementModel> replacementModels;
     private LayoutInflater layoutInflater;
     int positionn;
@@ -73,19 +74,17 @@ public class GetReplacementAdapter extends BaseAdapter {
             LinearLayout llConfirm = myView.findViewById(R.id.llConfirm);
             LinearLayout llReject = myView.findViewById(R.id.llReject);
 
-            llConfirm.setOnClickListener(v -> {
-                new GeneralDialog()
-                        .title("هشدار")
-                        .message("آیا از انجام عملیات فوق اطمینان دارید؟")
-                        .cancelable(false)
-                        .firstButton("بله", () -> {
-                            answer = 1;
-                            replaceId = replacementModel.getReplaceId();
-                            answerShiftReplacementRequest();
-                            notifyDataSetChanged();
-                        }).secondButton("خیر", null)
-                        .show();
-            });
+            llConfirm.setOnClickListener(v -> new GeneralDialog()
+                    .title("هشدار")
+                    .message("آیا از انجام عملیات فوق اطمینان دارید؟")
+                    .cancelable(false)
+                    .firstButton("بله", () -> {
+                        answer = 1;
+                        replaceId = replacementModel.getReplaceId();
+                        answerShiftReplacementRequest();
+                        notifyDataSetChanged();
+                    }).secondButton("خیر", null)
+                    .show());
 
             llReject.setOnClickListener(v -> new GeneralDialog()
                     .title("هشدار")
@@ -105,7 +104,7 @@ public class GetReplacementAdapter extends BaseAdapter {
 
         } catch (Exception e) {
             e.printStackTrace();
-            AvaCrashReporter.send(e, "GetReplacementAdapter class, getView method");
+            AvaCrashReporter.send(e, TAG + " class, getView method");
         }
         return myView;
     }
@@ -141,13 +140,9 @@ public class GetReplacementAdapter extends BaseAdapter {
                     }
                 } catch (Exception e) {
                     e.printStackTrace();
-                    AvaCrashReporter.send(e, "ReplacementWaitingAdapter class, onAnswerShiftReplacementRequest onResponse method");
+                    AvaCrashReporter.send(e, TAG + " class, onAnswerShiftReplacementRequest onResponse method");
                 }
             });
-        }
-
-        @Override
-        public void onFailure(Runnable reCall, Exception e) {
         }
     };
 }

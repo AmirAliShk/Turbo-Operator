@@ -14,17 +14,19 @@ import ir.taxi1880.operatormanagement.databinding.FragmentOperatorMistakeListBin
 import ir.taxi1880.operatormanagement.helper.TypefaceUtil
 import ir.taxi1880.operatormanagement.model.OperatorMistakeModel
 import ir.taxi1880.operatormanagement.okHttp.RequestHelper
+import ir.taxi1880.operatormanagement.push.AvaCrashReporter
 import org.json.JSONObject
 
 class OperatorMistakesFragment : Fragment() {
 
+    val TAG = OperatorMistakesFragment::class.java.simpleName
 
     @SuppressLint("StaticFieldLeak")
     lateinit var binding: FragmentOperatorMistakeListBinding
     lateinit var adapter: OperatorMistakesAdapter
     lateinit var mistakeArr: ArrayList<OperatorMistakeModel>
 
-    fun getOperatorMistakes() {
+    private fun getOperatorMistakes() {
         binding.vfOpMistake.displayedChild = 0
         RequestHelper.builder(EndPoints.GET_OPERATOR_MISTAKE)
             .listener(operatorMistakesListener)
@@ -81,6 +83,10 @@ class OperatorMistakesFragment : Fragment() {
                 } catch (e: Exception) {
                     binding.vfOpMistake.displayedChild = 2
                     e.printStackTrace()
+                    AvaCrashReporter.send(
+                        e,
+                        "$TAG class, operatorMistakesListener onResponse method"
+                    )
                 }
             }
         }
@@ -92,12 +98,11 @@ class OperatorMistakesFragment : Fragment() {
         }
     }
 
-
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         binding = FragmentOperatorMistakeListBinding.inflate(inflater, container, false)
         TypefaceUtil.overrideFonts(binding.root)
 

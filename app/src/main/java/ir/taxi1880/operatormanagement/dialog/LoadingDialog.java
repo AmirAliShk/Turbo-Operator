@@ -3,7 +3,6 @@ package ir.taxi1880.operatormanagement.dialog;
 import android.app.Dialog;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
-import android.util.Log;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.Button;
@@ -37,8 +36,8 @@ public class LoadingDialog {
             ldialog.show();
 
         } catch (Exception e) {
-            Log.e(TAG, "makeLoader: " + e);
-            AvaCrashReporter.send(e, "LoadingDialog class, makeLoader method");
+            e.printStackTrace();
+            AvaCrashReporter.send(e, TAG + " class, makeLoader method");
         }
     }
 
@@ -64,7 +63,7 @@ public class LoadingDialog {
             cancelableLoaderDialog.show();
 
         } catch (Exception e) {
-            Log.e(TAG, "makeLoader: " + e);
+            e.printStackTrace();
             AvaCrashReporter.send(e, "cancelableLoaderDialog class, makeCancelableLoader method");
         }
     }
@@ -76,8 +75,7 @@ public class LoadingDialog {
                     ldialog.dismiss();
         } catch (Exception e) {
             e.printStackTrace();
-            Log.e(TAG, "dismiss: " + e.getMessage());
-            AvaCrashReporter.send(e, "LoadingDialog class, dismiss method");
+            AvaCrashReporter.send(e, TAG + " class, dismiss method");
         }
         ldialog = null;
     }
@@ -89,10 +87,8 @@ public class LoadingDialog {
                     cancelableLoaderDialog.dismiss();
         } catch (Exception e) {
             e.printStackTrace();
-            Log.e(TAG, "dismiss: " + e.getMessage());
-            AvaCrashReporter.send(e, "LoadingDialog class, dismissCancelableDialog method");
+            AvaCrashReporter.send(e, TAG + " class, dismissCancelableDialog method");
         }
         cancelableLoaderDialog = null;
     }
-
 }

@@ -1,5 +1,7 @@
 package ir.taxi1880.operatormanagement.fragment;
 
+import static ir.taxi1880.operatormanagement.fragment.ComplaintDetailFragment.complaintDetailsModel;
+
 import android.media.MediaPlayer;
 import android.net.Uri;
 import android.os.AsyncTask;
@@ -45,10 +47,11 @@ import ir.taxi1880.operatormanagement.helper.StringHelper;
 import ir.taxi1880.operatormanagement.helper.TypefaceUtil;
 import ir.taxi1880.operatormanagement.okHttp.AuthenticationInterceptor;
 import ir.taxi1880.operatormanagement.okHttp.RequestHelper;
-
-import static ir.taxi1880.operatormanagement.fragment.ComplaintDetailFragment.complaintDetailsModel;
+import ir.taxi1880.operatormanagement.push.AvaCrashReporter;
 
 public class ComplaintCallFragment extends Fragment {
+
+    public static final String TAG = ComplaintCallFragment.class.getSimpleName();
     Unbinder unbinder;
     MediaPlayer mediaPlayer;
 
@@ -221,8 +224,10 @@ public class ComplaintCallFragment extends Fragment {
 //        StartDownload.execute(downloadId, url.toString(), dirPathTemp + fileName);
         } catch (MalformedURLException e) {
             e.printStackTrace();
+            AvaCrashReporter.send(e, TAG + " class, startDownload method");
         } catch (Exception e) {
             e.printStackTrace();
+            AvaCrashReporter.send(e, TAG + " class, startDownload method");
         }
     }
 
@@ -240,6 +245,7 @@ public class ComplaintCallFragment extends Fragment {
 
         } catch (Exception e) {
             e.printStackTrace();
+            AvaCrashReporter.send(e, TAG + " class, initVoice method");
         }
     }
 
@@ -250,6 +256,8 @@ public class ComplaintCallFragment extends Fragment {
             if (vfPlayPause != null)
                 vfPlayPause.setDisplayedChild(2);
         } catch (Exception e) {
+            e.printStackTrace();
+            AvaCrashReporter.send(e, TAG + " class, playVoice method");
         }
 
         startTimer();
@@ -265,6 +273,8 @@ public class ComplaintCallFragment extends Fragment {
             if (vfPlayPause != null)
                 vfPlayPause.setDisplayedChild(0);
         } catch (Exception e) {
+            e.printStackTrace();
+            AvaCrashReporter.send(e, TAG + " class, pauseVoice method");
         }
         cancelTimer();
     }
@@ -290,6 +300,8 @@ public class ComplaintCallFragment extends Fragment {
             pauseVoice();
             cancelTimer();
         } catch (Exception e) {
+            e.printStackTrace();
+            AvaCrashReporter.send(e, TAG + " class, onDestroyView method");
         }
         super.onDestroyView();
         unbinder.unbind();
@@ -301,8 +313,9 @@ public class ComplaintCallFragment extends Fragment {
             timer.cancel();
             timer = null;
         } catch (Exception e) {
+            e.printStackTrace();
+            AvaCrashReporter.send(e, TAG + " class, cancelTimer method");
         }
-
     }
 
     private class UpdateSeekBar extends TimerTask {
@@ -315,6 +328,7 @@ public class ComplaintCallFragment extends Fragment {
                     });
                 } catch (Exception e) {
                     e.printStackTrace();
+                    AvaCrashReporter.send(e, TAG + " class, UpdateSeekBar class");
                 }
             }
         }
@@ -372,6 +386,7 @@ public class ComplaintCallFragment extends Fragment {
                     }
                 } catch (JSONException e) {
                     e.printStackTrace();
+                    AvaCrashReporter.send(e, TAG + " class, missCall callBAck");
                     if (vfMissedCallDriver != null)
                         vfMissedCallDriver.setDisplayedChild(0);
                     if (vfMissedCallCustomer != null)
@@ -390,5 +405,4 @@ public class ComplaintCallFragment extends Fragment {
             });
         }
     };
-
 }

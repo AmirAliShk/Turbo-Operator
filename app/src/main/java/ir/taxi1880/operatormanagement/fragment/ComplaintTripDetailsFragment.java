@@ -39,8 +39,10 @@ import ir.taxi1880.operatormanagement.helper.FileHelper;
 import ir.taxi1880.operatormanagement.helper.StringHelper;
 import ir.taxi1880.operatormanagement.helper.TypefaceUtil;
 import ir.taxi1880.operatormanagement.okHttp.AuthenticationInterceptor;
+import ir.taxi1880.operatormanagement.push.AvaCrashReporter;
 
 public class ComplaintTripDetailsFragment extends Fragment {
+    public static final String TAG = ComplaintTripDetailsFragment.class.getSimpleName();
     Unbinder unbinder;
     static MediaPlayer mediaPlayer;
     static IndicatorSeekBar skbTimer;
@@ -169,8 +171,10 @@ public class ComplaintTripDetailsFragment extends Fragment {
 //        StartDownload.execute(downloadId, url.toString(), dirPathTemp + fileName);
         } catch (MalformedURLException e) {
             e.printStackTrace();
+            AvaCrashReporter.send(e, TAG + " class, startDownload method");
         } catch (Exception e) {
             e.printStackTrace();
+            AvaCrashReporter.send(e, TAG + " class, startDownload method");
         }
     }
 
@@ -188,6 +192,7 @@ public class ComplaintTripDetailsFragment extends Fragment {
 
         } catch (Exception e) {
             e.printStackTrace();
+            AvaCrashReporter.send(e, TAG + " class, initVoice method");
         }
     }
 
@@ -198,6 +203,8 @@ public class ComplaintTripDetailsFragment extends Fragment {
             if (vfPlayPause != null)
                 vfPlayPause.setDisplayedChild(2);
         } catch (Exception e) {
+            e.printStackTrace();
+            AvaCrashReporter.send(e, TAG + " class, playVoice method");
         }
 
         startTimer();
@@ -213,6 +220,8 @@ public class ComplaintTripDetailsFragment extends Fragment {
             if (vfPlayPause != null)
                 vfPlayPause.setDisplayedChild(0);
         } catch (Exception e) {
+            e.printStackTrace();
+            AvaCrashReporter.send(e, TAG + " class, pauseVoice method");
         }
         cancelTimer();
     }
@@ -229,7 +238,6 @@ public class ComplaintTripDetailsFragment extends Fragment {
         timer = new Timer();
         UpdateSeekBar task = new UpdateSeekBar();
         timer.scheduleAtFixedRate(task, 500, 1000);
-
     }
 
     @Override
@@ -238,6 +246,8 @@ public class ComplaintTripDetailsFragment extends Fragment {
             pauseVoice();
             cancelTimer();
         } catch (Exception e) {
+            e.printStackTrace();
+            AvaCrashReporter.send(e, TAG + " class, onDestroyView method");
         }
         super.onDestroyView();
         unbinder.unbind();
@@ -249,6 +259,8 @@ public class ComplaintTripDetailsFragment extends Fragment {
             timer.cancel();
             timer = null;
         } catch (Exception e) {
+            e.printStackTrace();
+            AvaCrashReporter.send(e, TAG + " class, cancelTimer method");
         }
 
     }
@@ -263,13 +275,13 @@ public class ComplaintTripDetailsFragment extends Fragment {
                     });
                 } catch (Exception e) {
                     e.printStackTrace();
+                    AvaCrashReporter.send(e, TAG + " class, UpdateSeekBar class");
                 }
             }
         }
     }
 
     static class RefreshTokenAsyncTask extends AsyncTask<Void, Void, Boolean> {
-
         @Override
         protected Boolean doInBackground(Void... voids) {
             new AuthenticationInterceptor().refreshToken();

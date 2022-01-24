@@ -9,6 +9,7 @@ import java.io.IOException;
 
 import ir.taxi1880.operatormanagement.app.EndPoints;
 import ir.taxi1880.operatormanagement.app.MyApplication;
+import ir.taxi1880.operatormanagement.push.AvaCrashReporter;
 import okhttp3.Interceptor;
 import okhttp3.MediaType;
 import okhttp3.OkHttpClient;
@@ -59,6 +60,7 @@ public class AuthenticationInterceptor implements Interceptor {
                     object.put("refreshTokenError", true);
                 } catch (JSONException e) {
                     e.printStackTrace();
+                    AvaCrashReporter.send(e, TAG + " class, intercept method");
                 }
                 MediaType contentType = response.body().contentType();
                 ResponseBody body = ResponseBody.create(contentType, object.toString());
@@ -85,6 +87,7 @@ public class AuthenticationInterceptor implements Interceptor {
                 json.put("token", MyApplication.prefManager.getRefreshToken());
             } catch (JSONException e) {
                 e.printStackTrace();
+                AvaCrashReporter.send(e, TAG + " class, refreshToken method");
             }
             RequestBody body = RequestBody.create(jsonType, json.toString());
             Request request = new Request.Builder()
@@ -123,12 +126,14 @@ public class AuthenticationInterceptor implements Interceptor {
                             }
 
                         } catch (JSONException e) {
-                            e.getMessage();
+                            e.printStackTrace();
+                            AvaCrashReporter.send(e, TAG + " class, refreshToken method1");
                         }
                     }
                 }
             } catch (IOException e) {
                 e.printStackTrace();
+                AvaCrashReporter.send(e, TAG + " class, refreshToken method2");
             }
             return statusCode;
         }

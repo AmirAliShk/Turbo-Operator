@@ -15,6 +15,9 @@ import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.ViewFlipper;
 
+import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.RecyclerView;
+
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -23,9 +26,6 @@ import org.linphone.core.Core;
 import org.linphone.core.CoreListenerStub;
 
 import java.util.ArrayList;
-
-import androidx.fragment.app.Fragment;
-import androidx.recyclerview.widget.RecyclerView;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -46,9 +46,11 @@ import ir.taxi1880.operatormanagement.helper.StringHelper;
 import ir.taxi1880.operatormanagement.helper.TypefaceUtil;
 import ir.taxi1880.operatormanagement.model.TripModel;
 import ir.taxi1880.operatormanagement.okHttp.RequestHelper;
+import ir.taxi1880.operatormanagement.push.AvaCrashReporter;
 import ir.taxi1880.operatormanagement.services.LinphoneService;
 
 public class PassengerTripSupportFragment extends Fragment {
+    public static final String TAG = PassengerTripSupportFragment.class.getSimpleName();
     Unbinder unbinder;
     ArrayList<TripModel> tripModels;
     TripAdapter tripAdapter;
@@ -321,7 +323,7 @@ public class PassengerTripSupportFragment extends Fragment {
                     Log.i("TAG", "run: " + args[0].toString());
                     tripModels = new ArrayList<>();
                     JSONObject tripObject = new JSONObject(args[0].toString());
-                    Boolean success = tripObject.getBoolean("success");
+                    boolean success = tripObject.getBoolean("success");
                     String message = tripObject.getString("message");
                     JSONArray data = tripObject.getJSONArray("data");
 
@@ -373,6 +375,7 @@ public class PassengerTripSupportFragment extends Fragment {
 
                 } catch (JSONException e) {
                     e.printStackTrace();
+                    AvaCrashReporter.send(e, TAG + " class, onGetTripList onResponse method");
                 }
             });
         }
@@ -386,7 +389,6 @@ public class PassengerTripSupportFragment extends Fragment {
                 }
             });
         }
-
     };
 
     CoreListenerStub mCoreListener = new CoreListenerStub() {

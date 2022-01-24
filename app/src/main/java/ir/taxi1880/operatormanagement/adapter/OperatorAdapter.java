@@ -18,6 +18,7 @@ import ir.taxi1880.operatormanagement.push.AvaCrashReporter;
 
 public class OperatorAdapter extends BaseAdapter implements Filterable {
 
+    public static final String TAG = OperatorAdapter.class.getSimpleName();
     private ArrayList<OperatorModel> operatorModels;
     private ArrayList<OperatorModel> operatorFilteredModels;
     private LayoutInflater layoutInflater;
@@ -64,7 +65,7 @@ public class OperatorAdapter extends BaseAdapter implements Filterable {
 
         } catch (Exception e) {
             e.printStackTrace();
-            AvaCrashReporter.send(e, "OperatorAdapter class, getView method");
+            AvaCrashReporter.send(e, TAG + " class, getView method");
         }
 
         return myView;
@@ -115,5 +116,4 @@ public class OperatorAdapter extends BaseAdapter implements Filterable {
     public OperatorModel getOperator(int position) {
         return operatorModels.get(position);
     }
-
 }

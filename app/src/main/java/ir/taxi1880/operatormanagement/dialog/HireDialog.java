@@ -17,7 +17,6 @@ import android.widget.Spinner;
 import android.widget.ViewFlipper;
 
 import org.json.JSONArray;
-import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
@@ -100,8 +99,8 @@ public class HireDialog {
                 KeyBoardHelper.hideKeyboard();
             }
         } catch (Exception e) {
-            Log.e("TAG", "dismiss: " + e.getMessage());
-            AvaCrashReporter.send(e, "HireDialog class, dismiss method");
+            e.printStackTrace();
+            AvaCrashReporter.send(e, TAG + " class, dismiss method");
         }
         dialog = null;
     }
@@ -118,7 +117,6 @@ public class HireDialog {
                 .addParam("type", hireType)
                 .listener(setHire)
                 .post();
-
     }
 
     RequestHelper.Callback setHire = new RequestHelper.Callback() {
@@ -162,12 +160,12 @@ public class HireDialog {
                     if (vfLoader != null) {
                         vfLoader.setDisplayedChild(0);
                     }
-                } catch (JSONException e) {
+                } catch (Exception e) {
                     e.printStackTrace();
                     if (vfLoader != null) {
                         vfLoader.setDisplayedChild(0);
                     }
-                    AvaCrashReporter.send(e, "HireDialog class, setHire onResponse method");
+                    AvaCrashReporter.send(e, TAG + " class, setHire onResponse method");
                 }
             });
         }
@@ -180,7 +178,6 @@ public class HireDialog {
                 }
             });
         }
-
     };
 
     private void getHireType() {
@@ -235,18 +232,11 @@ public class HireDialog {
                                 .cancelable(false)
                                 .show();
                     }
-                } catch (JSONException e) {
+                } catch (Exception e) {
                     e.printStackTrace();
-                    AvaCrashReporter.send(e, "HireDialog class, getHireType onResponse method");
+                    AvaCrashReporter.send(e, TAG + " class, getHireType onResponse method");
                 }
             });
         }
-
-        @Override
-        public void onFailure(Runnable reCall, Exception e) {
-            MyApplication.handler.post(() -> {
-            });
-        }
     };
-
 }

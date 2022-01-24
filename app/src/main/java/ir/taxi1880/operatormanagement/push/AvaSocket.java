@@ -3,7 +3,6 @@ package ir.taxi1880.operatormanagement.push;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.provider.Settings;
-import android.util.Log;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -30,6 +29,7 @@ import okhttp3.OkHttpClient;
  */
 public class AvaSocket {
 
+    public static final String TAG = AvaSocket.class.getSimpleName();
     @SuppressLint("StaticFieldLeak")
     private static AvaSocket instance;
     private Socket socket;
@@ -180,12 +180,11 @@ public class AvaSocket {
 //      }
 
         } catch (Exception e1) {
-            AvaCrashReporter.send(e1, 102);
             AvaLog.e("Ava Connection Failed", e1);
+            AvaCrashReporter.send(e1, TAG + " class, getServerSocket method");
         }
         return null;
     }
-
 
     private final Emitter.Listener onReConnectedListener = args -> {
 
@@ -204,8 +203,8 @@ public class AvaSocket {
             } else
                 AvaLog.i("Ava Reconnect no message");
         } catch (Exception e) {
-            AvaCrashReporter.send(e, 103);
-
+            e.printStackTrace();
+            AvaCrashReporter.send(e, TAG + " class, onReConnectedListener method");
         }
     };
 
@@ -214,8 +213,8 @@ public class AvaSocket {
             AvaLog.i("PONG");
             getPrefInstance().setPongReceived();
         } catch (Exception e) {
-            AvaCrashReporter.send(e, 104);
             e.printStackTrace();
+            AvaCrashReporter.send(e, TAG + " class, onPING method");
         }
     };
 
@@ -232,8 +231,8 @@ public class AvaSocket {
             getPrefInstance().setMissingApiUrl(config.getString("missingApiUrl"));
             AvaLog.i("Config set successfully :) ");
         } catch (Exception e) {
-            AvaCrashReporter.send(e, 105);
             e.printStackTrace();
+            AvaCrashReporter.send(e, TAG + " class, onConfigListener method");
         }
     };
 
@@ -246,6 +245,7 @@ public class AvaSocket {
                 getPrefInstance().setIpRow(0);
             } catch (Exception e) {
                 e.printStackTrace();
+                AvaCrashReporter.send(e, TAG + " class, onConnectedListener method");
             }
         }
     };
@@ -269,9 +269,8 @@ public class AvaSocket {
                     AvaReporter.Message(instance.context, Keys.DISCONNECT, args[0].toString());
                 }
             } catch (Exception e1) {
-                AvaCrashReporter.send(e1, 107);
-
                 e1.printStackTrace();
+                AvaCrashReporter.send(e1, TAG + " class, onErrorListener method");
             }
         }
     };
@@ -286,12 +285,11 @@ public class AvaSocket {
             try {
                 socket.emit(Keys.EVENT_PUSH, new JSONObject(result));
             } catch (JSONException e) {
-                AvaCrashReporter.send(e, 108);
                 e.printStackTrace();
+                AvaCrashReporter.send(e, TAG + " class, pushListener method");
             }
         }
     };
-
 
     void openListener(Socket socket) {
         if (!socket.hasListeners(Socket.EVENT_RECONNECT_ATTEMPT))
@@ -326,14 +324,8 @@ public class AvaSocket {
             }
         } catch (Exception e) {
             e.printStackTrace();
+            AvaCrashReporter.send(e, TAG + " class, getSocketParams method");
         }
         return params;
     }
-
-
 }
-
-
-
-
-

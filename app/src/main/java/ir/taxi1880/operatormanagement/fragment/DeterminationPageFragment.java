@@ -39,6 +39,7 @@ import ir.taxi1880.operatormanagement.helper.KeyBoardHelper;
 import ir.taxi1880.operatormanagement.helper.StringHelper;
 import ir.taxi1880.operatormanagement.helper.TypefaceUtil;
 import ir.taxi1880.operatormanagement.okHttp.RequestHelper;
+import ir.taxi1880.operatormanagement.push.AvaCrashReporter;
 
 public class DeterminationPageFragment extends Fragment {
     FragmentDeterminationPageBinding binding;
@@ -308,6 +309,7 @@ public class DeterminationPageFragment extends Fragment {
                                 } catch (Exception e) {
                                     e.printStackTrace();
                                     binding.imgRefresh.clearAnimation();
+                                    AvaCrashReporter.send(e, TAG + " class, withoutStationCallBack method");
                                 }
                             }
 
@@ -350,6 +352,7 @@ public class DeterminationPageFragment extends Fragment {
                     }
                 } catch (JSONException e) {
                     e.printStackTrace();
+                    AvaCrashReporter.send(e, TAG + " class, withoutStationCallBack method2");
                     isFinished = false;
                     pressedRefresh = false;
                     binding.imgRefresh.clearAnimation();
@@ -363,10 +366,8 @@ public class DeterminationPageFragment extends Fragment {
                 isFinished = false;
                 pressedRefresh = false;
                 binding.imgRefresh.clearAnimation();
-
             });
         }
-
     };
 
     private void changeStatus(boolean status) {
@@ -436,14 +437,8 @@ public class DeterminationPageFragment extends Fragment {
 
                 } catch (Exception e) {
                     e.printStackTrace();
+                    AvaCrashReporter.send(e, TAG + " class, setStationCode method");
                 }
-            });
-        }
-
-        @Override
-        public void onFailure(Runnable reCall, Exception e) {
-            MyApplication.handler.post(() -> {
-
             });
         }
     };
@@ -505,6 +500,7 @@ public class DeterminationPageFragment extends Fragment {
 
                 } catch (JSONException e) {
                     e.printStackTrace();
+                    AvaCrashReporter.send(e, TAG + " class, setMistake method");
                     LoadingDialog.dismissCancelableDialog();
                 }
             });
@@ -512,11 +508,8 @@ public class DeterminationPageFragment extends Fragment {
 
         @Override
         public void onFailure(Runnable reCall, Exception e) {
-            MyApplication.handler.post(() -> {
-                LoadingDialog.dismissCancelableDialog();
-            });
+            MyApplication.handler.post(LoadingDialog::dismissCancelableDialog);
         }
-
     };
 
     private void getStationInfo(String stationCode) {
@@ -558,6 +551,7 @@ public class DeterminationPageFragment extends Fragment {
 
                 } catch (JSONException e) {
                     e.printStackTrace();
+                    AvaCrashReporter.send(e, TAG + " class, getStationInfo method");
                     binding.vfStationInfo.setDisplayedChild(0);
                 }
             });
@@ -565,9 +559,7 @@ public class DeterminationPageFragment extends Fragment {
 
         @Override
         public void onFailure(Runnable reCall, Exception e) {
-            MyApplication.handler.post(() -> {
-                binding.vfStationInfo.setDisplayedChild(0);
-            });
+            MyApplication.handler.post(() -> binding.vfStationInfo.setDisplayedChild(0));
         }
     };
 
@@ -615,6 +607,7 @@ public class DeterminationPageFragment extends Fragment {
             }
         } catch (Exception e) {
             e.printStackTrace();
+            AvaCrashReporter.send(e, TAG + " class, showAddress method");
         }
         return "";
     }
@@ -636,6 +629,7 @@ public class DeterminationPageFragment extends Fragment {
             }, 0, 10000);
         } catch (Exception e) {
             e.printStackTrace();
+            AvaCrashReporter.send(e, TAG + " class, startGetAddressTimer method");
         }
     }
 
@@ -647,6 +641,7 @@ public class DeterminationPageFragment extends Fragment {
             }
         } catch (Exception e) {
             e.printStackTrace();
+            AvaCrashReporter.send(e, TAG + " class, stopGetAddressTimer method");
         }
     }
 
@@ -654,11 +649,6 @@ public class DeterminationPageFragment extends Fragment {
     public void onDestroy() {
         stopGetAddressTimer();
         super.onDestroy();
-    }
-
-    @Override
-    public void onDestroyView() {
-        super.onDestroyView();
     }
 
     @Override

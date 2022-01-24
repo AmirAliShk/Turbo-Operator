@@ -24,14 +24,15 @@ import ir.taxi1880.operatormanagement.helper.TypefaceUtil
 import ir.taxi1880.operatormanagement.model.OperatorMistakeModel
 import ir.taxi1880.operatormanagement.okHttp.AuthenticationInterceptor
 import ir.taxi1880.operatormanagement.okHttp.RequestHelper
+import ir.taxi1880.operatormanagement.push.AvaCrashReporter
 import org.json.JSONObject
 import java.io.File
 import java.net.MalformedURLException
 import java.net.URL
-import kotlin.collections.ArrayList
 
 class OperatorMistakesAdapter() : RecyclerView.Adapter<OperatorMistakesAdapter.OpMistakeHolder>() {
 
+    val TAG = OperatorMistakesAdapter::class.java.simpleName
     private var opMistakesA: ArrayList<OperatorMistakeModel> = ArrayList()
     lateinit var aHolder: OpMistakeHolder
 
@@ -145,7 +146,8 @@ class OperatorMistakesAdapter() : RecyclerView.Adapter<OperatorMistakesAdapter.O
 
             Log.i("URL", "show: ${EndPoints.CALL_VOICE}${opMistake.voipId}")
             val voiceName = "${opMistake.voipId}.mp3"
-            val file = File(MyApplication.DIR_MAIN_FOLDER + MyApplication.VOICE_FOLDER_NAME + voiceName)
+            val file =
+                File(MyApplication.DIR_MAIN_FOLDER + MyApplication.VOICE_FOLDER_NAME + voiceName)
 
             val voipId = opMistake.voipId
             when {
@@ -210,18 +212,16 @@ class OperatorMistakesAdapter() : RecyclerView.Adapter<OperatorMistakesAdapter.O
                     }
                 } catch (e: Exception) {
                     e.printStackTrace()
+                    AvaCrashReporter.send(e, "$TAG class, recheckListener method")
                 }
             }
         }
 
         override fun onFailure(reCall: Runnable?, e: Exception?) {
             MyApplication.handler.post {
-
                 aHolder.binding.vfRecheck.displayedChild = 0
-
             }
         }
-
     }
 
     private fun startDownload(urlString: String, fileName: String) {
@@ -265,8 +265,10 @@ class OperatorMistakesAdapter() : RecyclerView.Adapter<OperatorMistakesAdapter.O
                 })
         } catch (e: MalformedURLException) {
             e.printStackTrace()
+            AvaCrashReporter.send(e, "$TAG class, startDownload method")
         } catch (e: Exception) {
             e.printStackTrace()
+            AvaCrashReporter.send(e, "$TAG class, startDownload method2")
         }
     }
 
@@ -281,6 +283,7 @@ class OperatorMistakesAdapter() : RecyclerView.Adapter<OperatorMistakesAdapter.O
             aHolder.binding.skbTimer.max = Companion.TOTAL_VOICE_DURATION as Float
         } catch (e: Exception) {
             e.printStackTrace()
+            AvaCrashReporter.send(e, "$TAG class, initVoice method")
         }
     }
 
@@ -289,6 +292,8 @@ class OperatorMistakesAdapter() : RecyclerView.Adapter<OperatorMistakesAdapter.O
             mediaPlayer?.start()
             aHolder.binding.vfPlayPause.displayedChild = 2
         } catch (e: Exception) {
+            e.printStackTrace()
+            AvaCrashReporter.send(e, "$TAG class, playVoice method")
         }
 
 //        startTimer()
@@ -308,7 +313,8 @@ class OperatorMistakesAdapter() : RecyclerView.Adapter<OperatorMistakesAdapter.O
             aHolder.binding.skbTimer.setProgress(0f)
             aHolder.binding.vfPlayPause.displayedChild = 0
         } catch (e: Exception) {
-
+            e.printStackTrace()
+            AvaCrashReporter.send(e, "$TAG class, pauseVoice method")
         }
 //        cancelTimer()
     }

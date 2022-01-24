@@ -32,6 +32,8 @@ import ir.taxi1880.operatormanagement.push.AvaCrashReporter;
 import ir.taxi1880.operatormanagement.services.LinphoneService;
 
 public class GetAppInfo {
+
+    public static final String TAG = GetAppInfo.class.getSimpleName();
     DataBase dataBase;
 
     public void callAppInfoAPI() {
@@ -58,13 +60,14 @@ public class GetAppInfo {
                 deviceInfo.put("ANDROID_ID", android_id);
 
                 RequestHelper.builder(EndPoints.GET_APP_INFO)
-                        .addParam("versionCode", new AppVersionHelper(context).getVerionCode())
+                        .addParam("versionCode", new AppVersionHelper(context).getVersionCode())
                         .addParam("deviceInfo", deviceInfo)
                         .listener(onAppInfo)
                         .post();
             }
         } catch (JSONException e) {
             e.printStackTrace();
+            AvaCrashReporter.send(e, TAG + " class, callAppInfoAPI method");
         }
     }
 
@@ -195,15 +198,8 @@ public class GetAppInfo {
 
                 } catch (JSONException e) {
                     e.printStackTrace();
-                    AvaCrashReporter.send(e, "SplashActivity class, onAppInfo onResponse method");
+                    AvaCrashReporter.send(e, TAG + " class, onAppInfo onResponse method");
                 }
-
-            });
-        }
-
-        @Override
-        public void onFailure(Runnable reCall, Exception e) {
-            MyApplication.handler.post(() -> {
             });
         }
     };

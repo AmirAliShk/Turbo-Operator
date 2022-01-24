@@ -1,5 +1,9 @@
 package ir.taxi1880.operatormanagement.push;
 
+import static android.content.Context.ALARM_SERVICE;
+import static ir.taxi1880.operatormanagement.app.Keys.KEY_BROADCAST_PUSH;
+import static ir.taxi1880.operatormanagement.app.Keys.KEY_MESSAGE;
+
 import android.app.AlarmManager;
 import android.app.PendingIntent;
 import android.content.Context;
@@ -10,11 +14,10 @@ import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 import ir.taxi1880.operatormanagement.app.MyApplication;
 import ir.taxi1880.operatormanagement.receiver.PushReceiver;
 
-import static android.content.Context.ALARM_SERVICE;
-import static ir.taxi1880.operatormanagement.app.Keys.KEY_BROADCAST_PUSH;
-import static ir.taxi1880.operatormanagement.app.Keys.KEY_MESSAGE;
-
 public class AvaReporter {
+
+    public static final String TAG = AvaReporter.class.getSimpleName();
+
     public static void Message(Context context, int type, String msg) {
         if (context == null) return;
         try {
@@ -35,12 +38,11 @@ public class AvaReporter {
             AvaLog.i("Message receive : " + msg);
 
             MyApplication.prefManager.setLastNotification(msg);
-
         } catch (Exception e1) {
-            AvaCrashReporter.send(e1, 109);
+            e1.printStackTrace();
+            AvaCrashReporter.send(e1, TAG + " class, Message method");
         }
     }
-
 
     public static void MessageLog(String msg) {
 //    try {
@@ -52,5 +54,4 @@ public class AvaReporter {
 //      AvaCrashReporter.send(e1,110);
 //    }
     }
-
 }

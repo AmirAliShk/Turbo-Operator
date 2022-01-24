@@ -16,6 +16,7 @@ import ir.taxi1880.operatormanagement.push.AvaCrashReporter;
 
 public class CityAdapter extends BaseAdapter {
 
+    public static final String TAG = CityAdapter.class.getSimpleName();
     private ArrayList<CityModel> cityModels;
     private LayoutInflater layoutInflater;
 
@@ -56,7 +57,7 @@ public class CityAdapter extends BaseAdapter {
 
         } catch (Exception e) {
             e.printStackTrace();
-            AvaCrashReporter.send(e, "TripRegisterActivity class, getView method");
+            AvaCrashReporter.send(e, TAG + " class, getView method");
         }
 
         return myView;

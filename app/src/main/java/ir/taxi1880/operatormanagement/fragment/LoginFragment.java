@@ -30,6 +30,7 @@ import ir.taxi1880.operatormanagement.helper.FragmentHelper;
 import ir.taxi1880.operatormanagement.helper.KeyBoardHelper;
 import ir.taxi1880.operatormanagement.helper.TypefaceUtil;
 import ir.taxi1880.operatormanagement.okHttp.RequestHelper;
+import ir.taxi1880.operatormanagement.push.AvaCrashReporter;
 import ir.taxi1880.operatormanagement.webServices.GetAppInfo;
 
 public class LoginFragment extends Fragment {
@@ -131,7 +132,6 @@ public class LoginFragment extends Fragment {
                 .doNotSendHeader(true)
                 .listener(onLogIn)
                 .post();
-
     }
 
     RequestHelper.Callback onLogIn = new RequestHelper.Callback() {
@@ -171,6 +171,7 @@ public class LoginFragment extends Fragment {
                         binding.vfEnter.setDisplayedChild(0);
                     }
                     e.printStackTrace();
+                    AvaCrashReporter.send(e, TAG + " class, onLogIn method");
                 }
             });
         }
@@ -184,10 +185,4 @@ public class LoginFragment extends Fragment {
             });
         }
     };
-
-    @Override
-    public void onDestroyView() {
-        super.onDestroyView();
-    }
-
 }

@@ -3,14 +3,10 @@ package ir.taxi1880.operatormanagement.dialog;
 import android.app.Dialog;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
-import android.util.Log;
 import android.view.Gravity;
 import android.view.Window;
 import android.view.WindowManager;
-import android.widget.ImageView;
-import android.widget.LinearLayout;
 
-import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import butterknife.Unbinder;
@@ -25,6 +21,7 @@ import ir.taxi1880.operatormanagement.push.AvaCrashReporter;
 
 public class RequestDialog {
 
+    public static final String TAG = RequestDialog.class.getSimpleName();
     Unbinder unbinder;
     static Dialog dialog;
 
@@ -84,8 +81,8 @@ public class RequestDialog {
 
             }
         } catch (Exception e) {
-            Log.e("TAG", "dismiss: " + e.getMessage());
-            AvaCrashReporter.send(e, "OptionDialog class, dismiss method");
+            e.printStackTrace();
+            AvaCrashReporter.send(e, TAG + " class, dismiss method");
         }
         dialog = null;
     }

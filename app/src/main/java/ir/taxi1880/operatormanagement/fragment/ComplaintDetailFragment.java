@@ -1,5 +1,7 @@
 package ir.taxi1880.operatormanagement.fragment;
 
+import static ir.taxi1880.operatormanagement.fragment.ComplaintTripDetailsFragment.pauseVoice;
+
 import android.annotation.SuppressLint;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -33,10 +35,10 @@ import ir.taxi1880.operatormanagement.helper.FragmentHelper;
 import ir.taxi1880.operatormanagement.helper.TypefaceUtil;
 import ir.taxi1880.operatormanagement.model.ComplaintDetailsModel;
 import ir.taxi1880.operatormanagement.okHttp.RequestHelper;
-
-import static ir.taxi1880.operatormanagement.fragment.ComplaintTripDetailsFragment.pauseVoice;
+import ir.taxi1880.operatormanagement.push.AvaCrashReporter;
 
 public class ComplaintDetailFragment extends Fragment {
+    public static final String TAG = ComplaintDetailFragment.class.getSimpleName();
     Unbinder unbinder;
     int statusModel;
     public static ComplaintDetailsModel complaintDetailsModel;
@@ -103,7 +105,7 @@ public class ComplaintDetailFragment extends Fragment {
         new GeneralDialog()
                 .message("ثبت نتیجه‌ی شکایت؟")
                 .cancelable(false)
-                .firstButton("بله", () -> complaintSaveResult())
+                .firstButton("بله", this::complaintSaveResult)
                 .secondButton("خیر", () -> {
                     if (vfNextStep != null) {
                         vfNextStep.setDisplayedChild(2);
@@ -159,7 +161,6 @@ public class ComplaintDetailFragment extends Fragment {
     int statusParam;
 
     private void refreshStep(int statusId) {
-
         switch (statusId) {
             case 1: //accepted request
                 if (indicator != null)
@@ -262,6 +263,7 @@ public class ComplaintDetailFragment extends Fragment {
                     }
                 } catch (JSONException e) {
                     e.printStackTrace();
+                    AvaCrashReporter.send(e, TAG + " class, updateStatus callBAck");
                     if (statusModel == 3) {
                         if (vfNextStep != null)
                             vfNextStep.setDisplayedChild(2);
@@ -346,6 +348,7 @@ public class ComplaintDetailFragment extends Fragment {
                     }
                 } catch (Exception e) {
                     e.printStackTrace();
+                    AvaCrashReporter.send(e, TAG + " class, saveResultCallBack callBAck");
                 }
             });
         }

@@ -32,6 +32,7 @@ import java.util.Timer;
 import java.util.TimerTask;
 
 import ir.taxi1880.operatormanagement.R;
+import ir.taxi1880.operatormanagement.activity.CallIncomingActivity;
 import ir.taxi1880.operatormanagement.app.EndPoints;
 import ir.taxi1880.operatormanagement.app.MyApplication;
 import ir.taxi1880.operatormanagement.helper.DateHelper;
@@ -42,6 +43,7 @@ import ir.taxi1880.operatormanagement.okHttp.AuthenticationInterceptor;
 import ir.taxi1880.operatormanagement.push.AvaCrashReporter;
 
 public class RecentCallsAdapter extends RecyclerView.Adapter<RecentCallsAdapter.ViewHolder> {
+    public static final String TAG = RecentCallsAdapter.class.getSimpleName();
     private ArrayList<RecentCallsModel> recentCallsModels;
     static ViewFlipper vfPlayPause;
     ViewFlipper vfVoiceStatus;
@@ -245,8 +247,10 @@ public class RecentCallsAdapter extends RecyclerView.Adapter<RecentCallsAdapter.
 //        StartDownload.execute(downloadId, url.toString(), dirPathTemp + fileName);
         } catch (MalformedURLException e) {
             e.printStackTrace();
+            AvaCrashReporter.send(e, TAG + " class, startDownload method");
         } catch (Exception e) {
             e.printStackTrace();
+            AvaCrashReporter.send(e, TAG + " class, startDownload method2");
         }
     }
 
@@ -266,6 +270,7 @@ public class RecentCallsAdapter extends RecyclerView.Adapter<RecentCallsAdapter.
 
         } catch (Exception e) {
             e.printStackTrace();
+            AvaCrashReporter.send(e, TAG + " class, initVoice method");
         }
     }
 
@@ -278,7 +283,8 @@ public class RecentCallsAdapter extends RecyclerView.Adapter<RecentCallsAdapter.
             }
 
         } catch (Exception e) {
-            AvaCrashReporter.send(e, "RecentCallsAdapter in playVoice");
+            e.printStackTrace();
+            AvaCrashReporter.send(e, TAG + ", playVoice");
         }
 
     }
@@ -293,6 +299,8 @@ public class RecentCallsAdapter extends RecyclerView.Adapter<RecentCallsAdapter.
             if (vfPlayPause != null)
                 vfPlayPause.setDisplayedChild(0);
         } catch (Exception e) {
+            e.printStackTrace();
+            AvaCrashReporter.send(e, TAG + " class, pauseVoice method");
         }
         cancelTimer();
     }
@@ -312,6 +320,8 @@ public class RecentCallsAdapter extends RecyclerView.Adapter<RecentCallsAdapter.
             timer.cancel();
             timer = null;
         } catch (Exception e) {
+            e.printStackTrace();
+            AvaCrashReporter.send(e, TAG + " class, cancelTimer method");
         }
     }
 
@@ -328,6 +338,7 @@ public class RecentCallsAdapter extends RecyclerView.Adapter<RecentCallsAdapter.
                     });
                 } catch (Exception e) {
                     e.printStackTrace();
+                    AvaCrashReporter.send(e, TAG + " class, UpdateSeekBar method ");
                 }
             }
         }

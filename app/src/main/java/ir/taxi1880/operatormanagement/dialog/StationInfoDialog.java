@@ -3,34 +3,29 @@ package ir.taxi1880.operatormanagement.dialog;
 import android.app.Dialog;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
-import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
+
 import org.json.JSONArray;
-import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
 
 import ir.taxi1880.operatormanagement.R;
-import ir.taxi1880.operatormanagement.adapter.DriverTurnoverAdapter;
 import ir.taxi1880.operatormanagement.adapter.StationInfoAdapter;
-import ir.taxi1880.operatormanagement.app.EndPoints;
 import ir.taxi1880.operatormanagement.app.MyApplication;
 import ir.taxi1880.operatormanagement.helper.KeyBoardHelper;
 import ir.taxi1880.operatormanagement.helper.StringHelper;
 import ir.taxi1880.operatormanagement.helper.TypefaceUtil;
 import ir.taxi1880.operatormanagement.model.StationInfoModel;
-import ir.taxi1880.operatormanagement.okHttp.RequestHelper;
 import ir.taxi1880.operatormanagement.push.AvaCrashReporter;
 
 public class StationInfoDialog {
@@ -77,7 +72,6 @@ public class StationInfoDialog {
         llCLose.setOnClickListener(view -> dismiss());
 
         dialog.show();
-
     }
 
     private void getStationInfo(JSONArray dataArr) {
@@ -127,7 +121,8 @@ public class StationInfoDialog {
                 }
             }
         } catch (Exception e) {
-
+            e.printStackTrace();
+            AvaCrashReporter.send(e, TAG + " class, getStationInfo method");
         }
     }
 
@@ -138,10 +133,9 @@ public class StationInfoDialog {
                 KeyBoardHelper.hideKeyboard();
             }
         } catch (Exception e) {
-            Log.e("TAG", "dismiss: " + e.getMessage());
-            AvaCrashReporter.send(e, "StationInfoDialog class, dismiss method");
+            e.printStackTrace();
+            AvaCrashReporter.send(e, TAG + " class, dismiss method");
         }
         dialog = null;
     }
-
 }

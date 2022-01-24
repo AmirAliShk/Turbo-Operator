@@ -5,13 +5,13 @@ import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.EditText;
 import android.widget.ListView;
+
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -24,6 +24,7 @@ import ir.taxi1880.operatormanagement.app.MyApplication;
 import ir.taxi1880.operatormanagement.helper.KeyBoardHelper;
 import ir.taxi1880.operatormanagement.helper.TypefaceUtil;
 import ir.taxi1880.operatormanagement.model.OperatorModel;
+import ir.taxi1880.operatormanagement.push.AvaCrashReporter;
 
 public class OperatorDialog {
 
@@ -44,7 +45,8 @@ public class OperatorDialog {
     String opName;
 
     public void show(Listener listener) {
-        if (MyApplication.currentActivity==null|| MyApplication.currentActivity.isFinishing())return;
+        if (MyApplication.currentActivity == null || MyApplication.currentActivity.isFinishing())
+            return;
         dialog = new Dialog(MyApplication.currentActivity);
         dialog.getWindow().requestFeature(Window.FEATURE_NO_TITLE);
         dialog.getWindow().getAttributes().windowAnimations = R.style.ExpandAnimation;
@@ -94,12 +96,13 @@ public class OperatorDialog {
 
     private static void dismiss() {
         try {
-            if (dialog != null){
+            if (dialog != null) {
                 dialog.dismiss();
                 KeyBoardHelper.hideKeyboard();
             }
         } catch (Exception e) {
-            Log.e("TAG", "dismiss: " + e.getMessage());
+            e.printStackTrace();
+            AvaCrashReporter.send(e, TAG + " class, dismiss method");
         }
         dialog = null;
     }
@@ -118,10 +121,10 @@ public class OperatorDialog {
             }
         } catch (JSONException e) {
             e.printStackTrace();
+            AvaCrashReporter.send(e, TAG + " class, getOperatorList method");
         }
         operatorAdapter = new OperatorAdapter(operatorModels);
         listOperator.setAdapter(operatorAdapter);
         return operatorModels;
     }
-
 }

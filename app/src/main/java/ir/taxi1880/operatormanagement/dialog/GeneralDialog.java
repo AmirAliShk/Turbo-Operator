@@ -3,33 +3,26 @@ package ir.taxi1880.operatormanagement.dialog;
 import android.app.Dialog;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
-import android.media.Image;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-
-import ir.taxi1880.operatormanagement.R;
-import ir.taxi1880.operatormanagement.app.MyApplication;
-import ir.taxi1880.operatormanagement.helper.TypefaceUtil;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import butterknife.Unbinder;
+import ir.taxi1880.operatormanagement.R;
+import ir.taxi1880.operatormanagement.app.MyApplication;
+import ir.taxi1880.operatormanagement.helper.TypefaceUtil;
 import ir.taxi1880.operatormanagement.push.AvaCrashReporter;
-
-/***
- * Created by Amirreza Erfanian on 2018/July/26.
- * v : 1.0.0
- */
 
 public class GeneralDialog {
 
+    public static final String TAG = GeneralDialog.class.getSimpleName();
     private Runnable bodyRunnable = null;
     private Runnable dismissBody = null;
     private ButtonModel firstBtn = null;
@@ -296,7 +289,7 @@ public class GeneralDialog {
             }
         } catch (Exception e) {
             e.printStackTrace();
-            AvaCrashReporter.send(e, "GeneralDialog class, dismiss method");
+            AvaCrashReporter.send(e, TAG + " class, dismiss method");
         }
         dialog = null;
     }

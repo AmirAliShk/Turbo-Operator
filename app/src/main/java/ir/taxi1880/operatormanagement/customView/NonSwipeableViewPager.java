@@ -14,6 +14,8 @@ import ir.taxi1880.operatormanagement.push.AvaCrashReporter;
 
 public class NonSwipeableViewPager extends ViewPager {
 
+    public static final String TAG = NonSwipeableViewPager.class.getSimpleName();
+
     public NonSwipeableViewPager(Context context) {
         super(context);
         setMyScroller();
@@ -46,7 +48,7 @@ public class NonSwipeableViewPager extends ViewPager {
             scroller.set(this, new MyScroller(getContext()));
         } catch (Exception e) {
             e.printStackTrace();
-            AvaCrashReporter.send(e,"NonSwipeableViewPager class, setMyScroller method");
+            AvaCrashReporter.send(e, TAG + " class, setMyScroller method");
         }
     }
 

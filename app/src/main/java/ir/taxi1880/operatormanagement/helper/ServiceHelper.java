@@ -11,6 +11,8 @@ import ir.taxi1880.operatormanagement.push.AvaLog;
 
 public class ServiceHelper {
 
+    public static final String TAG = ServiceHelper.class.getSimpleName();
+
     // Method to start the service
     public static void start(Context activity, Class<?> serviceClass) {
         try {
@@ -23,8 +25,8 @@ public class ServiceHelper {
                         activity.startService(new Intent(activity, serviceClass));
                 }
         } catch (Exception e) {
-            AvaCrashReporter.send(e, 114);
             e.printStackTrace();
+            AvaCrashReporter.send(e, TAG + " class, start method");
         }
     }
 
@@ -36,8 +38,7 @@ public class ServiceHelper {
             AvaLog.e("must close service " + activity.getClass().getSimpleName() + " GoodBye :'(");
         } catch (Exception e) {
             e.printStackTrace();
-            AvaCrashReporter.send(e, 113);
-
+            AvaCrashReporter.send(e, TAG + " class, stop method");
         }
     }
 
@@ -58,5 +59,4 @@ public class ServiceHelper {
         }
         return false;
     }
-
 }

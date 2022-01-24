@@ -10,6 +10,9 @@ import java.util.Calendar;
 import ir.taxi1880.operatormanagement.okHttp.RequestHelper;
 
 public class ReadUnreadMessage {
+
+    public static final String TAG = ReadUnreadMessage.class.getSimpleName();
+
     public void getUnreadPush(boolean force, Context context) {
         AvaPref avaPref = new AvaPref();
         if (!avaPref.isMissingApiEnable()) return;
@@ -41,15 +44,8 @@ public class ReadUnreadMessage {
                 }
             } catch (Exception e) {
                 e.printStackTrace();
-                AvaCrashReporter.send(e, 101);
-
+                AvaCrashReporter.send(e, TAG + " class, onGetMissingPush method");
             }
         }
-
-        @Override
-        public void onFailure(Runnable reCall, Exception e) {
-
-        }
     };
-
 }

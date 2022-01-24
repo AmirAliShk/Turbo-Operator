@@ -10,12 +10,12 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.ViewFlipper;
 
+import androidx.fragment.app.Fragment;
+
 import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
-
-import androidx.fragment.app.Fragment;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -30,9 +30,6 @@ import ir.taxi1880.operatormanagement.model.ShiftModel;
 import ir.taxi1880.operatormanagement.okHttp.RequestHelper;
 import ir.taxi1880.operatormanagement.push.AvaCrashReporter;
 
-/**
- * A simple {@link Fragment} subclass.
- */
 public class ShiftListFragment extends Fragment {
     public static final String TAG = ShiftListFragment.class.getSimpleName();
     private Unbinder unbinder;
@@ -73,7 +70,6 @@ public class ShiftListFragment extends Fragment {
         RequestHelper.builder(EndPoints.GET_SHIFTS)
                 .listener(onGetShifts)
                 .get();
-
     }
 
     private RequestHelper.Callback onGetShifts = new RequestHelper.Callback() {
@@ -104,12 +100,11 @@ public class ShiftListFragment extends Fragment {
                         if (vfShift != null)
                             vfShift.setDisplayedChild(1);
                     }
-
                 } catch (Exception e) {
                     if (vfShift != null)
                         vfShift.setDisplayedChild(3);
                     e.printStackTrace();
-                    AvaCrashReporter.send(e, "ShiftListFragment class, onGetShifts onResponse method");
+                    AvaCrashReporter.send(e, TAG + " class, onGetShifts onResponse method");
                 }
             });
         }
@@ -128,5 +123,4 @@ public class ShiftListFragment extends Fragment {
         super.onDestroyView();
         unbinder.unbind();
     }
-
 }

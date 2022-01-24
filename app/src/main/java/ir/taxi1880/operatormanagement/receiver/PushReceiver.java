@@ -1,5 +1,9 @@
 package ir.taxi1880.operatormanagement.receiver;
 
+import static ir.taxi1880.operatormanagement.app.Keys.KEY_MESSAGE_USER_STATUS;
+import static ir.taxi1880.operatormanagement.app.Keys.KEY_REFRESH_USER_STATUS;
+import static ir.taxi1880.operatormanagement.app.Keys.KEY_USER_STATUS;
+
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
@@ -12,11 +16,11 @@ import android.os.Bundle;
 import android.util.Log;
 import android.widget.RemoteViews;
 
-import org.json.JSONException;
-import org.json.JSONObject;
-
 import androidx.core.app.NotificationCompat;
 import androidx.localbroadcastmanager.content.LocalBroadcastManager;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import ir.taxi1880.operatormanagement.R;
 import ir.taxi1880.operatormanagement.activity.SplashActivity;
@@ -24,11 +28,8 @@ import ir.taxi1880.operatormanagement.app.Constant;
 import ir.taxi1880.operatormanagement.app.DataHolder;
 import ir.taxi1880.operatormanagement.app.MyApplication;
 import ir.taxi1880.operatormanagement.dialog.GeneralDialog;
+import ir.taxi1880.operatormanagement.push.AvaCrashReporter;
 import ir.taxi1880.operatormanagement.push.Keys;
-
-import static ir.taxi1880.operatormanagement.app.Keys.KEY_MESSAGE_USER_STATUS;
-import static ir.taxi1880.operatormanagement.app.Keys.KEY_REFRESH_USER_STATUS;
-import static ir.taxi1880.operatormanagement.app.Keys.KEY_USER_STATUS;
 
 public class PushReceiver extends BroadcastReceiver {
     public static final String TAG = PushReceiver.class.getSimpleName();
@@ -114,6 +115,7 @@ public class PushReceiver extends BroadcastReceiver {
 
         } catch (JSONException e) {
             e.printStackTrace();
+            AvaCrashReporter.send(e, TAG + " class, onReceive method");
         }
     }
 
@@ -153,7 +155,6 @@ public class PushReceiver extends BroadcastReceiver {
             mBuilder.setChannelId(CHANNEL);
         }
         mNotificationManager.notify(Constant.PUSH_NOTIFICATION_ID, mBuilder.build());
-
     }
 
     public void createUserStatusNotification(Context context, String value) {
@@ -181,7 +182,5 @@ public class PushReceiver extends BroadcastReceiver {
             mBuilder.setChannelId(CHANNEL);
         }
         mNotificationManager.notify(Constant.USER_STATUS_NOTIFICATION_ID, mBuilder.build());
-
     }
-
 }

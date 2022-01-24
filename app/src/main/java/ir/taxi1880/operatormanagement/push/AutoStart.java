@@ -9,9 +9,11 @@ import ir.taxi1880.operatormanagement.helper.NetworkUtil;
 import ir.taxi1880.operatormanagement.helper.ServiceHelper;
 
 public class AutoStart extends BroadcastReceiver {
+
+    public static final String TAG = AutoStart.class.getSimpleName();
+
     public void onReceive(Context context, Intent intent) {
         try {
-
             int status = NetworkUtil.getConnectivityStatusString(context);
 
             if (intent == null) return;
@@ -32,7 +34,6 @@ public class AutoStart extends BroadcastReceiver {
                         if (!ServiceHelper.isRunning(context, AvaService.class)) {
                             ServiceHelper.start(context, AvaService.class);
                             AvaLog.i("start push service by on destroy listener");
-
                         }
                     }, 15000);
                     break;
@@ -40,10 +41,7 @@ public class AutoStart extends BroadcastReceiver {
             }
         } catch (Exception e) {
             e.printStackTrace();
-            AvaCrashReporter.send(e, 112);
-
+            AvaCrashReporter.send(e, TAG + " class, onReceive method");
         }
     }
-
 }
-

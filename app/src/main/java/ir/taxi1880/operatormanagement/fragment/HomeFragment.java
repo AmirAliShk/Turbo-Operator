@@ -1,7 +1,6 @@
 package ir.taxi1880.operatormanagement.fragment;
 
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -122,6 +121,7 @@ public class HomeFragment extends Fragment {
                             });
                 } catch (IllegalStateException ise) {
                     ise.printStackTrace();
+                    AvaCrashReporter.send(ise, TAG + " class, onCreateView method");
                 }
             }
         };
@@ -142,6 +142,7 @@ public class HomeFragment extends Fragment {
             }
         } catch (Exception e) {
             e.printStackTrace();
+            AvaCrashReporter.send(e, TAG + " class, getStatusIconResource method");
         }
 
         return R.drawable.ic_error;
@@ -184,7 +185,7 @@ public class HomeFragment extends Fragment {
 
                 } catch (Exception e) {
                     e.printStackTrace();
-                    AvaCrashReporter.send(e, "HomeFragment class, getBalance onResponse method");
+                    AvaCrashReporter.send(e, TAG + " class, getBalance onResponse method");
                 }
             });
         }
@@ -231,5 +232,4 @@ public class HomeFragment extends Fragment {
         super.onDestroy();
         unbinder.unbind();
     }
-
 }

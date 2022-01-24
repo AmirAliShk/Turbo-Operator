@@ -2,7 +2,6 @@ package ir.taxi1880.operatormanagement.adapter;
 
 import android.content.Context;
 import android.os.Build;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,7 +10,6 @@ import android.widget.Filter;
 import android.widget.TextView;
 
 import androidx.annotation.Nullable;
-import androidx.annotation.RequiresApi;
 
 import java.util.ArrayList;
 import java.util.Comparator;
@@ -25,6 +23,8 @@ import ir.taxi1880.operatormanagement.model.AddressArr;
 import ir.taxi1880.operatormanagement.push.AvaCrashReporter;
 
 public class AddressAdapter extends ArrayAdapter<AddressArr> {
+
+    public static final String TAG = AddressAdapter.class.getSimpleName();
     Context context;
     int resource;
     List<AddressArr> addressModels, addressFilterModels;
@@ -54,7 +54,7 @@ public class AddressAdapter extends ArrayAdapter<AddressArr> {
             }
         } catch (Exception e) {
             e.printStackTrace();
-            AvaCrashReporter.send(e, "AddressAdapter class, getView method");
+            AvaCrashReporter.send(e, TAG + " class, getView method");
         }
         return view;
     }
@@ -82,7 +82,7 @@ public class AddressAdapter extends ArrayAdapter<AddressArr> {
 
     }
 
-    public AddressArr getAddress(int position){
+    public AddressArr getAddress(int position) {
         return addressModels.get(position);
     }
 
@@ -97,11 +97,11 @@ public class AddressAdapter extends ArrayAdapter<AddressArr> {
                 List<AddressArr> filterList = new ArrayList<>();
                 String[] split = constraint.toString().split(" ");
                 for (int i = 0; i < addressFilterModels.size(); i++) {
-                    for (int j = 0; j < split.length; j++){
+                    for (int j = 0; j < split.length; j++) {
                         if (addressFilterModels.get(i).address.contains(split[j])) {
-                                AddressArr addressArr = new AddressArr();
-                                addressArr.address = addressFilterModels.get(i).address;
-                                filterList.add(addressArr);
+                            AddressArr addressArr = new AddressArr();
+                            addressArr.address = addressFilterModels.get(i).address;
+                            filterList.add(addressArr);
                         }
 
                     }
@@ -120,18 +120,17 @@ public class AddressAdapter extends ArrayAdapter<AddressArr> {
         protected void publishResults(CharSequence constraint, FilterResults results) {
 
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-            Set<AddressArr> setAddressArr = ((ArrayList<AddressArr>) results.values)
-                    .stream()
-                    .collect(Collectors.toCollection(() ->
-                            new TreeSet<>(Comparator.comparing(AddressArr::getAddress))));
+                Set<AddressArr> setAddressArr = ((ArrayList<AddressArr>) results.values)
+                        .stream()
+                        .collect(Collectors.toCollection(() ->
+                                new TreeSet<>(Comparator.comparing(AddressArr::getAddress))));
 
-            List<AddressArr> sortedList = setAddressArr
-                    .stream() // get stream for unique SET
-                    .sorted(Comparator.comparing(AddressArr::getAddress)) // rank comparing
-                    .collect(Collectors.toList());
+                List<AddressArr> sortedList = setAddressArr
+                        .stream() // get stream for unique SET
+                        .sorted(Comparator.comparing(AddressArr::getAddress)) // rank comparing
+                        .collect(Collectors.toList());
                 addressModels = sortedList;
-            }else {
-
+            } else {
                 ArrayList<AddressArr> empty = new ArrayList<>();
                 AddressArr arr = new AddressArr();
                 arr.address = "";

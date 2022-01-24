@@ -30,7 +30,6 @@ import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 import com.gauravbhola.ripplepulsebackground.RipplePulseLayout;
 
 import org.json.JSONArray;
-import org.json.JSONException;
 import org.json.JSONObject;
 import org.linphone.core.Address;
 import org.linphone.core.Call;
@@ -455,7 +454,7 @@ public class TripRegisterActivity extends AppCompatActivity {
                         }
                     } catch (Exception e) {
                         e.printStackTrace();
-                        AvaCrashReporter.send(e, "callIncomingActivity");
+                        AvaCrashReporter.send(e, TAG + "callIncomingActivity");
                     }
                 }
             }
@@ -513,8 +512,7 @@ public class TripRegisterActivity extends AppCompatActivity {
             }
         } catch (Exception e) {
             e.printStackTrace();
-            AvaCrashReporter.send(e, "TripRegisterActivity class, setCursorEnd method");
-            // ignore
+            AvaCrashReporter.send(e, TAG + " class, setCursorEnd method");
         }
     }
 
@@ -646,8 +644,7 @@ public class TripRegisterActivity extends AppCompatActivity {
         }
     };
 
-    private void removeExtraSpace(AutoCompleteTextView ACTextView)
-    {
+    private void removeExtraSpace(AutoCompleteTextView ACTextView) {
         InputFilter filter = new InputFilter() {
             public CharSequence filter(CharSequence source, int start, int end,
                                        Spanned dest, int dstart, int dend) {
@@ -658,7 +655,7 @@ public class TripRegisterActivity extends AppCompatActivity {
                         return "";
                     if (stringDest.length() >= 1)
                         if ((dstart > 0 && ACTextView.getText()
-                                .charAt(dstart - 1) == ' ') || (ACTextView.getText().length() >  dstart && ACTextView.getText().charAt(dstart) == ' ') || dstart == 0)
+                                .charAt(dstart - 1) == ' ') || (ACTextView.getText().length() > dstart && ACTextView.getText().charAt(dstart) == ' ') || dstart == 0)
                             return "";
                 }
                 return null;
@@ -689,11 +686,10 @@ public class TripRegisterActivity extends AppCompatActivity {
                 }
             });
 
-        } catch (ArrayIndexOutOfBoundsException e) {
+        } catch (Exception e) {
             e.printStackTrace();
-            AvaCrashReporter.send(e, "TripRegisterActivity class, initServiceCountSpinner method");
+            AvaCrashReporter.send(e, TAG + " class, initServiceCountSpinner method");
         }
-
     }
 
     private void initServiceTypeSpinner() {
@@ -732,9 +728,9 @@ public class TripRegisterActivity extends AppCompatActivity {
                 }
             });
 
-        } catch (JSONException e) {
+        } catch (Exception e) {
             e.printStackTrace();
-            AvaCrashReporter.send(e, "TripRegisterActivity class, initServiceTypeSpinner method");
+            AvaCrashReporter.send(e, TAG + " class, initServiceTypeSpinner method");
         }
     }
 
@@ -794,6 +790,7 @@ public class TripRegisterActivity extends AppCompatActivity {
             });
         } catch (Exception e) {
             e.printStackTrace();
+            AvaCrashReporter.send(e, TAG + " class, initWaitingTimeSpinner method ");
         }
     }
 
@@ -837,9 +834,9 @@ public class TripRegisterActivity extends AppCompatActivity {
                 }
             });
 
-        } catch (JSONException e) {
+        } catch (Exception e) {
             e.printStackTrace();
-            AvaCrashReporter.send(e, "TripRegisterActivity class, initCitySpinner method");
+            AvaCrashReporter.send(e, TAG + " class, initCitySpinner method");
         }
     }
 
@@ -1071,10 +1068,10 @@ public class TripRegisterActivity extends AppCompatActivity {
                     }
                     MyApplication.handler.postDelayed(() -> binding.vfPassengerInfo.setDisplayedChild(0), 500);
 
-                } catch (JSONException e) {
+                } catch (Exception e) {
                     e.printStackTrace();
                     binding.vfPassengerInfo.setDisplayedChild(0);
-                    AvaCrashReporter.send(e, "TripRegisterActivity class, getPassengerInfo onResponse method");
+                    AvaCrashReporter.send(e, TAG + " class, getPassengerInfo onResponse method");
                 }
             });
         }
@@ -1231,12 +1228,11 @@ public class TripRegisterActivity extends AppCompatActivity {
                                 .show();
                     }
                     LoadingDialog.dismiss();
-                } catch (JSONException e) {
+                } catch (Exception e) {
                     LoadingDialog.dismiss();
                     e.printStackTrace();
-                    AvaCrashReporter.send(e, "TripRegisterActivity class, setActivate onResponse method");
+                    AvaCrashReporter.send(e, TAG + " class, setActivate onResponse method");
                 }
-
             });
         }
 
@@ -1244,7 +1240,6 @@ public class TripRegisterActivity extends AppCompatActivity {
         public void onFailure(Runnable reCall, Exception e) {
             MyApplication.handler.post(LoadingDialog::dismiss);
         }
-
     };
 
     private void setDeActivate(int sipNumber) {
@@ -1260,10 +1255,9 @@ public class TripRegisterActivity extends AppCompatActivity {
                     .addParam("sipNumber", sipNumber)
                     .listener(setDeActivate)
                     .post();
-        } catch (JSONException e) {
+        } catch (Exception e) {
             e.printStackTrace();
-            AvaCrashReporter.send(e, "TripRegisterActivity class, setDeActivate method");
-
+            AvaCrashReporter.send(e, TAG + " class, setDeActivate method");
         }
     }
 
@@ -1293,10 +1287,10 @@ public class TripRegisterActivity extends AppCompatActivity {
                                 .show();
                     }
                     LoadingDialog.dismiss();
-                } catch (JSONException e) {
+                } catch (Exception e) {
                     e.printStackTrace();
                     LoadingDialog.dismiss();
-                    AvaCrashReporter.send(e, "TripRegisterActivity class, setDeActivate onResponse method");
+                    AvaCrashReporter.send(e, TAG + " class, setDeActivate onResponse method");
                 }
             });
         }
@@ -1304,7 +1298,6 @@ public class TripRegisterActivity extends AppCompatActivity {
         @Override
         public void onFailure(Runnable reCall, Exception e) {
             MyApplication.handler.post(LoadingDialog::dismiss);
-
         }
     };
 
@@ -1337,7 +1330,7 @@ public class TripRegisterActivity extends AppCompatActivity {
                 .addParam("stopTime", stopTime)
                 .addParam("addressIdOrigin", originAddressId)
                 .addParam("addressIdDestination", destinationAddressId)
-                .addParam("versionCode", new AppVersionHelper(this).getVerionCode())
+                .addParam("versionCode", new AppVersionHelper(this).getVersionCode())
                 .listener(insertService)
                 .post();
     }
@@ -1380,10 +1373,10 @@ public class TripRegisterActivity extends AppCompatActivity {
                     }
                     LoadingDialog.dismissCancelableDialog();
 
-                } catch (JSONException e) {
+                } catch (Exception e) {
                     LoadingDialog.dismissCancelableDialog();
                     e.printStackTrace();
-                    AvaCrashReporter.send(e, "TripRegisterActivity class, insertService onResponse method");
+                    AvaCrashReporter.send(e, TAG + " class, insertService onResponse method");
                 }
             });
         }
@@ -1409,7 +1402,7 @@ public class TripRegisterActivity extends AppCompatActivity {
 
             } catch (Exception e) {
                 e.printStackTrace();
-                AvaCrashReporter.send(e, "TripRegisterActivity class, onReloadPress method");
+                AvaCrashReporter.send(e, TAG + " class, onReloadPress method");
             }
         }
     };
@@ -1557,7 +1550,7 @@ public class TripRegisterActivity extends AppCompatActivity {
             }
         } catch (Exception e) {
             e.printStackTrace();
-            AvaCrashReporter.send(e, "TripRegisterActivity class, handleCallerInfo method");
+            AvaCrashReporter.send(e, TAG + " class, handleCallerInfo method");
         }
     }
 
@@ -1584,9 +1577,9 @@ public class TripRegisterActivity extends AppCompatActivity {
                 return callModel;
             }
 
-        } catch (JSONException e) {
+        } catch (Exception e) {
             e.printStackTrace();
-            AvaCrashReporter.send(e, "TripRegisterActivity class, parseNotification method ,info : " + info);
+            AvaCrashReporter.send(e, TAG + " class, parseNotification method ,info : " + info);
             return null;
         }
         return null;
@@ -1687,8 +1680,9 @@ public class TripRegisterActivity extends AppCompatActivity {
                                 core.refreshRegisters();
                             }
                         });
-            } catch (IllegalStateException ise) {
+            } catch (Exception ise) {
                 ise.printStackTrace();
+                AvaCrashReporter.send(ise, TAG + " class, sipStatusListener method ");
             }
         }
     };
@@ -1706,6 +1700,7 @@ public class TripRegisterActivity extends AppCompatActivity {
             }
         } catch (Exception e) {
             e.printStackTrace();
+            AvaCrashReporter.send(e, TAG + " class, getStatusIconResource method ");
         }
 
         return R.drawable.ic_error;
@@ -1810,7 +1805,7 @@ public class TripRegisterActivity extends AppCompatActivity {
                                 finish();
                             } catch (Exception e) {
                                 e.printStackTrace();
-                                AvaCrashReporter.send(e, "TripRegisterActivity class, onBackPressed method");
+                                AvaCrashReporter.send(e, TAG + " class, onBackPressed method");
                             }
                         })
                         .secondButton("خیر", null)
@@ -1818,7 +1813,7 @@ public class TripRegisterActivity extends AppCompatActivity {
             }
         } catch (Exception e) {
             e.printStackTrace();
-            AvaCrashReporter.send(e, "TripRegister class, onBackPressed method");
+            AvaCrashReporter.send(e, TAG + " class, onBackPressed method");
         }
     }
 

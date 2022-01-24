@@ -12,7 +12,6 @@ import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.Spinner;
-import android.widget.TextView;
 import android.widget.ViewFlipper;
 
 import org.json.JSONArray;
@@ -138,17 +137,15 @@ public class ComplaintRegistrationDialog {
                 } catch (Exception e) {
                     LoadingDialog.dismissCancelableDialog();
                     e.printStackTrace();
+                    AvaCrashReporter.send(e, TAG + " class, onSetComplaint method");
                 }
             });
         }
 
         @Override
         public void onFailure(Runnable reCall, Exception e) {
-            MyApplication.handler.post(() -> {
-                LoadingDialog.dismissCancelableDialog();
-            });
+            MyApplication.handler.post(LoadingDialog::dismissCancelableDialog);
         }
-
     };
 
     private void initSpinner() {
@@ -185,6 +182,7 @@ public class ComplaintRegistrationDialog {
             });
         } catch (JSONException e) {
             e.printStackTrace();
+            AvaCrashReporter.send(e, TAG + " class, initSpinner method");
         }
     }
 
@@ -196,9 +194,8 @@ public class ComplaintRegistrationDialog {
             }
         } catch (Exception e) {
             Log.e("TAG", "dismiss: " + e.getMessage());
-            AvaCrashReporter.send(e, "ComplaintRegistrationDialog class, dismiss method");
+            AvaCrashReporter.send(e, TAG + " class, dismiss method");
         }
         dialog = null;
     }
-
 }

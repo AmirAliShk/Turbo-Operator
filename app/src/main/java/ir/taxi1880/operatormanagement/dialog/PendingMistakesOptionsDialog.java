@@ -1,10 +1,11 @@
 package ir.taxi1880.operatormanagement.dialog;
 
+import static ir.taxi1880.operatormanagement.adapter.RecentCallsAdapter.pauseVoice;
+
 import android.app.Dialog;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.Gravity;
 import android.view.Window;
 import android.view.WindowManager;
@@ -24,14 +25,12 @@ import ir.taxi1880.operatormanagement.helper.FragmentHelper;
 import ir.taxi1880.operatormanagement.helper.TypefaceUtil;
 import ir.taxi1880.operatormanagement.push.AvaCrashReporter;
 
-import static ir.taxi1880.operatormanagement.adapter.RecentCallsAdapter.pauseVoice;
-
 public class PendingMistakesOptionsDialog {
+    public static final String TAG = PendingMistakesOptionsDialog.class.getSimpleName();
     Unbinder unbinder;
     static Dialog dialog;
     String tell;
     String mobile;
-
 
     @OnClick(R.id.blrView)
     void onBlur() {
@@ -84,6 +83,7 @@ public class PendingMistakesOptionsDialog {
         }, 0, false, "", false);
         dismiss();
     }
+
     @BindView(R.id.llGuestCalls)
     LinearLayout llGuestCall;
 
@@ -115,8 +115,8 @@ public class PendingMistakesOptionsDialog {
                 dialog.dismiss();
             }
         } catch (Exception e) {
-            Log.e("TAG", "dismiss: " + e.getMessage());
-            AvaCrashReporter.send(e, "ReserveDialog class, dismiss method");
+            e.printStackTrace();
+            AvaCrashReporter.send(e, TAG + " class, dismiss method");
         }
         dialog = null;
         unbinder.unbind();

@@ -1,5 +1,10 @@
 package ir.taxi1880.operatormanagement.services;
 
+import static android.media.AudioManager.MODE_RINGTONE;
+import static android.media.AudioManager.STREAM_RING;
+import static android.media.AudioManager.STREAM_VOICE_CALL;
+import static java.lang.Thread.sleep;
+
 import android.Manifest;
 import android.annotation.SuppressLint;
 import android.app.NotificationChannel;
@@ -27,6 +32,10 @@ import android.provider.Settings;
 import android.telephony.TelephonyManager;
 import android.view.KeyEvent;
 
+import androidx.annotation.Nullable;
+import androidx.annotation.RequiresApi;
+import androidx.core.app.NotificationCompat;
+
 import org.acra.ACRA;
 import org.linphone.core.Address;
 import org.linphone.core.Call;
@@ -50,10 +59,6 @@ import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
 
-import androidx.annotation.Nullable;
-import androidx.annotation.RequiresApi;
-import androidx.core.app.NotificationCompat;
-
 import ir.taxi1880.operatormanagement.R;
 import ir.taxi1880.operatormanagement.activity.CallIncomingActivity;
 import ir.taxi1880.operatormanagement.activity.SplashActivity;
@@ -68,12 +73,9 @@ import ir.taxi1880.operatormanagement.push.AvaFactory;
 import ir.taxi1880.operatormanagement.receiver.BluetoothReceiver;
 import ir.taxi1880.operatormanagement.receiver.HeadsetReceiver;
 
-import static android.media.AudioManager.MODE_RINGTONE;
-import static android.media.AudioManager.STREAM_RING;
-import static android.media.AudioManager.STREAM_VOICE_CALL;
-import static java.lang.Thread.sleep;
-
 public class LinphoneService extends Service {
+
+    public static final String TAG = LinphoneService.class.getSimpleName();
     private static final String START_LINPHONE_LOGS = " ==== Device information dump ====";
     // Keep a static reference to the Service so we can access it from anywhere in the app
     private static LinphoneService sInstance;
@@ -104,7 +106,8 @@ public class LinphoneService extends Service {
                 try {
                     sleep(30);
                 } catch (InterruptedException e) {
-                    AvaCrashReporter.send(e, "LinphoneService class, getCore method ");
+                    e.printStackTrace();
+                    AvaCrashReporter.send(e, TAG + " class, getCore method ");
                     throw new RuntimeException("waiting thread sleep() has been interrupted");
                 }
             }
@@ -284,7 +287,8 @@ public class LinphoneService extends Service {
             copyFromPackage(R.raw.linphonerc_factory, "linphonerc");
         } catch (IOException ioe) {
             Log.e(ioe);
-            AvaCrashReporter.send(ioe, "LinphoneService class, getCore method ");
+            ioe.printStackTrace();
+            AvaCrashReporter.send(ioe, TAG + " class, getCore method ");
         }
 
         // Create the Core and add our listener
@@ -292,7 +296,6 @@ public class LinphoneService extends Service {
         mCore.addListener(mCoreListener);
         // Core is ready to be configured
         configureCore();
-
     }
 
     @Override
@@ -416,8 +419,9 @@ public class LinphoneService extends Service {
         try {
             info = getPackageManager().getPackageInfo(getPackageName(), 0);
         } catch (PackageManager.NameNotFoundException nnfe) {
-            AvaCrashReporter.send(nnfe, "LinphoneService class, dumpInstalledLinphoneInformation method ");
+            AvaCrashReporter.send(nnfe, TAG + " class, dumpInstalledLinphoneInformation method ");
             Log.e(nnfe);
+            nnfe.printStackTrace();
         }
 
         if (info != null) {
@@ -659,7 +663,8 @@ public class LinphoneService extends Service {
                     }
                 } catch (IOException ioe) {
                     Log.e(ioe);
-                    AvaCrashReporter.send(ioe, "LinphoneService class, getConfig method ");
+                    ioe.printStackTrace();
+                    AvaCrashReporter.send(ioe, TAG + " class, getConfig method ");
                 }
                 return Factory.instance().createConfigFromString(text.toString());
             }
@@ -729,7 +734,7 @@ public class LinphoneService extends Service {
                         mRingerPlayer.setLooping(true);
                         mRingerPlayer.start();
                     } catch (Exception e) {
-                        AvaCrashReporter.send(ex, "LinphoneService class, startRinging method internal SecurityException");
+                        AvaCrashReporter.send(ex, TAG + " class, startRinging method internal SecurityException");
                     }
                 } catch (IOException e) {
                     try {
@@ -738,7 +743,7 @@ public class LinphoneService extends Service {
                         mRingerPlayer.setLooping(true);
                         mRingerPlayer.start();
                     } catch (IOException ex) {
-                        AvaCrashReporter.send(e, "LinphoneService class, startRinging method internal IOException");
+                        AvaCrashReporter.send(e, TAG + " class, startRinging method internal IOException");
                     }
                 }
             } else {
@@ -747,8 +752,7 @@ public class LinphoneService extends Service {
         } catch (Exception e) {
             e.printStackTrace();
             Log.e(e, "[Audio Manager] Cannot handle incoming call");
-            AvaCrashReporter.send(e, "LinphoneService class, startRinging method");
-
+            AvaCrashReporter.send(e, TAG + " class, startRinging method");
         }
         mIsRinging = true;
     }
@@ -858,7 +862,8 @@ public class LinphoneService extends Service {
                         Thread.sleep(200);
                     } catch (InterruptedException e) {
                         Log.e(e);
-                        AvaCrashReporter.send(e, "LinphoneService class, changeBluetoothSco method");
+                        e.printStackTrace();
+                        AvaCrashReporter.send(e, TAG + " class, changeBluetoothSco method");
                     }
 
                     synchronized (LinphoneService.this) {
@@ -952,7 +957,7 @@ public class LinphoneService extends Service {
             }
         } catch (Exception e) {
             e.printStackTrace();
-            AvaCrashReporter.send(e, "Bluetooth receiver Crash");
+            AvaCrashReporter.send(e, TAG + " class, Bluetooth receiver Crash");
         }
     }
 

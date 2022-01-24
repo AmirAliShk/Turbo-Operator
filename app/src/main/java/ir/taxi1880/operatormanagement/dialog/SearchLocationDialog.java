@@ -1,21 +1,8 @@
 package ir.taxi1880.operatormanagement.dialog;
 
 import android.app.Dialog;
-import android.graphics.Color;
-import android.graphics.drawable.ColorDrawable;
-import android.util.Log;
-import android.view.Gravity;
-import android.view.KeyEvent;
-import android.view.View;
-import android.view.Window;
-import android.view.WindowManager;
-import android.view.inputmethod.EditorInfo;
-import android.widget.AdapterView;
 import android.widget.EditText;
-import android.widget.ImageView;
 import android.widget.ListView;
-import android.widget.TextView;
-import android.widget.Toast;
 import android.widget.ViewFlipper;
 
 import org.json.JSONArray;
@@ -24,13 +11,9 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 
-import ir.taxi1880.operatormanagement.R;
 import ir.taxi1880.operatormanagement.adapter.StationAdapter;
-import ir.taxi1880.operatormanagement.app.EndPoints;
 import ir.taxi1880.operatormanagement.app.MyApplication;
 import ir.taxi1880.operatormanagement.helper.KeyBoardHelper;
-import ir.taxi1880.operatormanagement.helper.StringHelper;
-import ir.taxi1880.operatormanagement.helper.TypefaceUtil;
 import ir.taxi1880.operatormanagement.model.StationModel;
 import ir.taxi1880.operatormanagement.okHttp.RequestHelper;
 import ir.taxi1880.operatormanagement.push.AvaCrashReporter;
@@ -132,8 +115,8 @@ public class SearchLocationDialog {
                 KeyBoardHelper.hideKeyboard();
             }
         } catch (Exception e) {
-            Log.e("TAG", "dismiss: " + e.getMessage());
-            AvaCrashReporter.send(e, "SearchLocationDialog class, dismiss method");
+            e.printStackTrace();
+            AvaCrashReporter.send(e, TAG + " class, dismiss method");
         }
         dialog = null;
     }
@@ -183,7 +166,7 @@ public class SearchLocationDialog {
 
                     } catch (JSONException e) {
                         e.printStackTrace();
-                        AvaCrashReporter.send(e, "SearchLocationDialog class, onFindWay onResponse method");
+                        AvaCrashReporter.send(e, TAG + " class, onFindWay onResponse method");
                     }
                 }
             });
@@ -191,18 +174,15 @@ public class SearchLocationDialog {
 
         @Override
         public void onReloadPress(boolean v) {
-
             super.onReloadPress(v);
             try {
-
                 if (v)
                     vfLocation.setDisplayedChild(1);
                 else
                     vfLocation.setDisplayedChild(2);
-
             } catch (Exception e) {
                 e.printStackTrace();
-                AvaCrashReporter.send(e, "SearchLocationDialog class, onReloadPress onResponse method");
+                AvaCrashReporter.send(e, TAG + " class, onReloadPress onResponse method");
             }
         }
     };

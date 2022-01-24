@@ -22,8 +22,11 @@ import ir.taxi1880.operatormanagement.app.MyApplication;
 import ir.taxi1880.operatormanagement.helper.KeyBoardHelper;
 import ir.taxi1880.operatormanagement.helper.TypefaceUtil;
 import ir.taxi1880.operatormanagement.okHttp.RequestHelper;
+import ir.taxi1880.operatormanagement.push.AvaCrashReporter;
 
 public class ChangeDriverQueueDialog {
+
+    public static final String TAG = ChangeDriverQueueDialog.class.getSimpleName();
     Dialog dialog;
     Unbinder unbinder;
     String driverCode;
@@ -87,7 +90,7 @@ public class ChangeDriverQueueDialog {
                 try {
                     LoadingDialog.dismissCancelableDialog();
                     JSONObject object = new JSONObject(args[0].toString());
-                    Boolean success = object.getBoolean("success");
+                    boolean success = object.getBoolean("success");
                     String message = object.getString("message");
 
                     if (success) {
@@ -109,6 +112,7 @@ public class ChangeDriverQueueDialog {
                     LoadingDialog.dismissCancelableDialog();
                     MyApplication.Toast("خطا در ثبت اولویت", Toast.LENGTH_SHORT);
                     e.printStackTrace();
+                    AvaCrashReporter.send(e, TAG + " class, onChangeQueue method");
                 }
             });
 //                {"success": true,
@@ -127,21 +131,16 @@ public class ChangeDriverQueueDialog {
     };
 
     private void dismiss() {
-        MyApplication.handler.postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                KeyBoardHelper.hideKeyboard();
-            }
-        }, 30);
+        MyApplication.handler.postDelayed(KeyBoardHelper::hideKeyboard, 30);
         try {
             if (dialog != null) {
                 dialog.dismiss();
             }
         } catch (Exception e) {
-            e.getMessage();
+            e.printStackTrace();
+            AvaCrashReporter.send(e, TAG + " class, dismiss method");
         }
 
         dialog = null;
     }
-
 }

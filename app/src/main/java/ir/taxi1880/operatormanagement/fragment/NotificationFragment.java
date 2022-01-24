@@ -1,6 +1,5 @@
 package ir.taxi1880.operatormanagement.fragment;
 
-
 import android.app.NotificationManager;
 import android.content.Context;
 import android.os.Bundle;
@@ -11,12 +10,12 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.ViewFlipper;
 
+import androidx.fragment.app.Fragment;
+
 import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
-
-import androidx.fragment.app.Fragment;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -32,9 +31,6 @@ import ir.taxi1880.operatormanagement.model.NotificationModel;
 import ir.taxi1880.operatormanagement.okHttp.RequestHelper;
 import ir.taxi1880.operatormanagement.push.AvaCrashReporter;
 
-/**
- * A simple {@link Fragment} subclass.
- */
 public class NotificationFragment extends Fragment {
     Unbinder unbinder;
     public static final String TAG = NotificationFragment.class.getSimpleName();
@@ -107,7 +103,7 @@ public class NotificationFragment extends Fragment {
                     }
                 } catch (Exception e) {
                     e.printStackTrace();
-                    AvaCrashReporter.send(e, "NotificationFragment class, onGetNews onResponse method");
+                    AvaCrashReporter.send(e, TAG + " class, onGetNews onResponse method");
                 }
             });
         }
@@ -119,7 +115,6 @@ public class NotificationFragment extends Fragment {
                     vfNoti.setDisplayedChild(3);
             });
         }
-
     };
 
     @Override

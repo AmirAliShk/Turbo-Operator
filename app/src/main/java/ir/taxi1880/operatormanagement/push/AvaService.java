@@ -3,16 +3,12 @@ package ir.taxi1880.operatormanagement.push;
 import static ir.taxi1880.operatormanagement.services.LinphoneService.CHANNEL_ID;
 
 import android.annotation.SuppressLint;
-import android.app.Notification;
 import android.app.NotificationChannel;
-import android.app.NotificationChannelGroup;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.app.Service;
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.os.Build;
 import android.os.IBinder;
 
@@ -26,12 +22,6 @@ import ir.taxi1880.operatormanagement.R;
 import ir.taxi1880.operatormanagement.activity.SplashActivity;
 import ir.taxi1880.operatormanagement.app.MyApplication;
 import ir.taxi1880.operatormanagement.helper.NotificationSingleton;
-
-//import ir.efsp.ava.io.core.client.Socket;
-
-/***
- * Created by Amirreza Erfanian on 30/march/2019.
- */
 
 public class AvaService extends Service {
 
@@ -56,7 +46,6 @@ public class AvaService extends Service {
         context = this;
         AvaLog.i("Push Service CREATE");
     }
-
 
     AvaPref avaPref;
 
@@ -89,8 +78,9 @@ public class AvaService extends Service {
             }
 
         } catch (Exception e) {
+            e.printStackTrace();
             AvaLog.e("Push Service CRASH", e);
-            AvaCrashReporter.send(e, 100);
+            AvaCrashReporter.send(e, TAG + " class, onStartCommand method");
         }
 
         return START_STICKY;

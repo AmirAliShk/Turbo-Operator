@@ -15,6 +15,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import org.acra.ACRA;
+import org.acra.BuildConfig;
 import org.acra.config.CoreConfigurationBuilder;
 import org.acra.config.HttpSenderConfigurationBuilder;
 import org.acra.data.StringFormat;
@@ -30,7 +31,6 @@ import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
 
-import ir.taxi1880.operatormanagement.BuildConfig;
 import ir.taxi1880.operatormanagement.R;
 import ir.taxi1880.operatormanagement.helper.TypefaceUtil;
 import ir.taxi1880.operatormanagement.push.AvaCrashReporter;
@@ -70,6 +70,7 @@ public class MyApplication extends Application {
             file.createNewFile();
         } catch (IOException e) {
             e.printStackTrace();
+            AvaCrashReporter.send(e, TAG + " class, onCreate method ");
         }
 
         String languageToLoad = "fa_";
@@ -190,7 +191,7 @@ public class MyApplication extends Application {
             // At least the 3 below values are required
         } catch (Exception e) {
             e.printStackTrace();
-            AvaCrashReporter.send(e, "MyApplication class, configureAccount method");
+            AvaCrashReporter.send(e, TAG + " class, configureAccount method");
         }
     }
 }

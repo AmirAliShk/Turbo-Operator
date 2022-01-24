@@ -1,5 +1,8 @@
 package ir.taxi1880.operatormanagement.adapter;
 
+import static ir.taxi1880.operatormanagement.app.Keys.KEY_COUNT_ALL_COMPLAINT;
+import static ir.taxi1880.operatormanagement.app.Keys.VALUE_COUNT_ALL_COMPLAINT;
+
 import android.content.Context;
 import android.content.Intent;
 import android.view.LayoutInflater;
@@ -19,6 +22,7 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 
 import ir.taxi1880.operatormanagement.R;
+import ir.taxi1880.operatormanagement.activity.CallIncomingActivity;
 import ir.taxi1880.operatormanagement.app.EndPoints;
 import ir.taxi1880.operatormanagement.app.MyApplication;
 import ir.taxi1880.operatormanagement.dialog.GeneralDialog;
@@ -27,13 +31,11 @@ import ir.taxi1880.operatormanagement.helper.StringHelper;
 import ir.taxi1880.operatormanagement.helper.TypefaceUtil;
 import ir.taxi1880.operatormanagement.model.AllComplaintsModel;
 import ir.taxi1880.operatormanagement.okHttp.RequestHelper;
-
-import static ir.taxi1880.operatormanagement.app.Keys.KEY_COUNT_ALL_COMPLAINT;
-import static ir.taxi1880.operatormanagement.app.Keys.KEY_COUNT_PENDING_COMPLAINT;
-import static ir.taxi1880.operatormanagement.app.Keys.VALUE_COUNT_ALL_COMPLAINT;
-import static ir.taxi1880.operatormanagement.app.Keys.VALUE_COUNT_PENDING_COMPLAINT;
+import ir.taxi1880.operatormanagement.push.AvaCrashReporter;
 
 public class AllComplaintAdapter extends RecyclerView.Adapter<AllComplaintAdapter.ViewHolder> {
+
+    public static final String TAG = AllComplaintAdapter.class.getSimpleName();
     private Context mContext;
     LocalBroadcastManager broadcaster;
     private ArrayList<AllComplaintsModel> allComplaintsModels;
@@ -83,7 +85,6 @@ public class AllComplaintAdapter extends RecyclerView.Adapter<AllComplaintAdapte
             viewFlipper = itemView.findViewById(R.id.vfAccept);
             btn = itemView.findViewById(R.id.btnAccept);
             txtComplaintDate = itemView.findViewById(R.id.txtComplaintDate);
-
         }
     }
 
@@ -139,12 +140,11 @@ public class AllComplaintAdapter extends RecyclerView.Adapter<AllComplaintAdapte
                 } catch (Exception e) {
                     e.printStackTrace();
                     MyApplication.Toast("لطفا دوباره امتحان کنید", Toast.LENGTH_SHORT);
-
+                    AvaCrashReporter.send(e, TAG + " class, getAccept method ");
                 }
                 if (viewFlipper != null) {
                     viewFlipper.setDisplayedChild(0);
                 }
-
             });
         }
 

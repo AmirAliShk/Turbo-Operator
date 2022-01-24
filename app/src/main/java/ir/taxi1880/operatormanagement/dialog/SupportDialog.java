@@ -23,6 +23,7 @@ import ir.taxi1880.operatormanagement.push.AvaCrashReporter;
 
 public class SupportDialog {
 
+    public static final String TAG = SupportDialog.class.getSimpleName();
     private static Dialog dialog;
     Unbinder unbinder;
     String tellNumber;
@@ -70,7 +71,6 @@ public class SupportDialog {
         this.tellNumber = tellNumber;
 
         dialog.show();
-
     }
 
     private static void dismiss() {
@@ -80,7 +80,8 @@ public class SupportDialog {
                 dialog.dismiss();
             }
         } catch (Exception e) {
-            AvaCrashReporter.send(e, "SupportDialog class, dismiss method");
+            e.printStackTrace();
+            AvaCrashReporter.send(e, TAG + " class, dismiss method");
         }
         dialog = null;
     }

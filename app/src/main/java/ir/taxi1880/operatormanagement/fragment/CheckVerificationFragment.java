@@ -124,7 +124,7 @@ public class CheckVerificationFragment extends Fragment {
                         binding.vfTime.setDisplayedChild(1);
                     }
                     e.printStackTrace();
-                    AvaCrashReporter.send(e, "CheckVerificationFragment class, CheckVerificationFragment onResponse method");
+                    AvaCrashReporter.send(e, TAG + " class, onVerificationCallBack method");
                 }
             });
         }
@@ -150,7 +150,6 @@ public class CheckVerificationFragment extends Fragment {
                 .addParam("code", code)
                 .listener(onCheckVerificationCallBack)
                 .post();
-
     }
 
     private RequestHelper.Callback onCheckVerificationCallBack = new RequestHelper.Callback() {
@@ -182,7 +181,7 @@ public class CheckVerificationFragment extends Fragment {
                         binding.vfEnter.setDisplayedChild(0);
                     }
                     e.printStackTrace();
-                    AvaCrashReporter.send(e, "CheckVerificationFragment class, CheckVerificationFragment onResponse method");
+                    AvaCrashReporter.send(e, TAG + " class, onCheckVerificationCallBack method");
                 }
             });
         }
@@ -223,10 +222,5 @@ public class CheckVerificationFragment extends Fragment {
                 }
             }
         }.start();
-    }
-
-    @Override
-    public void onDestroyView() {
-        super.onDestroyView();
     }
 }

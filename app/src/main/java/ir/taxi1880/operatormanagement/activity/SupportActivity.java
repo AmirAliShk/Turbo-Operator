@@ -108,7 +108,6 @@ public class SupportActivity extends AppCompatActivity {
                 })
                 .secondButton("نیستم", null)
                 .show();
-
     }
 
     @OnClick(R.id.btnDeActivate)
@@ -171,7 +170,6 @@ public class SupportActivity extends AppCompatActivity {
         ClipboardManager clipboard = (ClipboardManager) getSystemService(Context.CLIPBOARD_SERVICE);
         ClipData clip = ClipData.newPlainText("passengerTell", txtCallerNum.getText().toString());
         clipboard.setPrimaryClip(clip);
-
     }
 
     @OnClick(R.id.imgReject)
@@ -304,11 +302,11 @@ public class SupportActivity extends AppCompatActivity {
                                 .show();
                     }
                     LoadingDialog.dismiss();
-                } catch (JSONException e) {
+                } catch (Exception e) {
                     LoadingDialog.dismiss();
                     e.printStackTrace();
+                    AvaCrashReporter.send(e, TAG + " class, setActivate method ");
                 }
-
             });
         }
 
@@ -316,11 +314,9 @@ public class SupportActivity extends AppCompatActivity {
         public void onFailure(Runnable reCall, Exception e) {
             MyApplication.handler.post(LoadingDialog::dismiss);
         }
-
     };
 
     private void setDeActivate(int sipNumber) {
-
         JSONObject params = new JSONObject();
         try {
             params.put("sipNumber", sipNumber);
@@ -334,8 +330,7 @@ public class SupportActivity extends AppCompatActivity {
                     .post();
         } catch (JSONException e) {
             e.printStackTrace();
-            AvaCrashReporter.send(e, "TripRegisterActivity class, setDeActivate method");
-
+            AvaCrashReporter.send(e, TAG + " class, setDeActivate method");
         }
     }
 
@@ -373,9 +368,10 @@ public class SupportActivity extends AppCompatActivity {
                                 .show();
                     }
                     LoadingDialog.dismiss();
-                } catch (JSONException e) {
+                } catch (Exception e) {
                     e.printStackTrace();
                     LoadingDialog.dismiss();
+                    AvaCrashReporter.send(e, TAG + " class, setDeActivate method ");
                 }
             });
         }
@@ -383,7 +379,6 @@ public class SupportActivity extends AppCompatActivity {
         @Override
         public void onFailure(Runnable reCall, Exception e) {
             MyApplication.handler.post(LoadingDialog::dismiss);
-
         }
     };
 
@@ -483,7 +478,6 @@ public class SupportActivity extends AppCompatActivity {
                 }
             }
         }
-
     }
 
     @Override
@@ -544,7 +538,6 @@ public class SupportActivity extends AppCompatActivity {
         }
     }
 
-
     private void getMistakeReason() {
         RequestHelper.builder(EndPoints.GET_REASON_OPERATOR_MISTAKE)
                 .listener(getMistakeReasonsListener)
@@ -567,15 +560,9 @@ public class SupportActivity extends AppCompatActivity {
                     }
                 } catch (Exception e) {
                     e.printStackTrace();
+                    AvaCrashReporter.send(e, TAG + " class, getMistakeReasonsListener method ");
                 }
             });
-
-        }
-
-        @Override
-        public void onFailure(Runnable reCall, Exception e) {
-            super.onFailure(reCall, e);
         }
     };
-
 }

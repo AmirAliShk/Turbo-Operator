@@ -138,17 +138,15 @@ public class ErrorRegistrationDialog {
                 } catch (Exception e) {
                     LoadingDialog.dismissCancelableDialog();
                     e.printStackTrace();
+                    AvaCrashReporter.send(e, TAG + " class, onSetMistake method");
                 }
             });
         }
 
         @Override
         public void onFailure(Runnable reCall, Exception e) {
-            MyApplication.handler.post(() -> {
-                LoadingDialog.dismissCancelableDialog();
-            });
+            MyApplication.handler.post(LoadingDialog::dismissCancelableDialog);
         }
-
     };
 
     private static void dismiss() {
@@ -158,9 +156,9 @@ public class ErrorRegistrationDialog {
                 KeyBoardHelper.hideKeyboard();
             }
         } catch (Exception e) {
-            AvaCrashReporter.send(e, "ErrorRegistrationDialog class, dismiss method");
+            e.printStackTrace();
+            AvaCrashReporter.send(e, TAG + " class, dismiss method");
         }
         dialog = null;
     }
-
 }

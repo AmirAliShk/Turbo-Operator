@@ -28,6 +28,7 @@ import ir.taxi1880.operatormanagement.okHttp.RequestHelper;
 import ir.taxi1880.operatormanagement.push.AvaCrashReporter;
 
 public class VerificationFragment extends Fragment {
+    public static final String TAG = VerificationFragment.class.getSimpleName();
     FragmentVerificationBinding binding;
     String mobileNumber;
 
@@ -124,7 +125,7 @@ public class VerificationFragment extends Fragment {
                         binding.vfSend.setDisplayedChild(0);
                     }
                     e.printStackTrace();
-                    AvaCrashReporter.send(e, "VerificationFragment class, onVerificationCallBack onResponse method");
+                    AvaCrashReporter.send(e, TAG + " class, onVerificationCallBack onResponse method");
                 }
             });
         }
@@ -138,9 +139,4 @@ public class VerificationFragment extends Fragment {
             });
         }
     };
-
-    @Override
-    public void onDestroyView() {
-        super.onDestroyView();
-    }
 }

@@ -26,6 +26,7 @@ import ir.taxi1880.operatormanagement.push.AvaCrashReporter;
 
 public class SendReplacementAdapter extends BaseAdapter {
 
+    public static final String TAG = SendReplacementAdapter.class.getSimpleName();
     private ArrayList<ReplacementModel> replacementModels = new ArrayList<>();
     private LayoutInflater layoutInflater;
     int replaceId = 0;
@@ -111,7 +112,7 @@ public class SendReplacementAdapter extends BaseAdapter {
 
         } catch (Exception e) {
             e.printStackTrace();
-            AvaCrashReporter.send(e, "SendReplacementAdapter class, getView method");
+            AvaCrashReporter.send(e, TAG + " class, getView method");
         }
         return convertView;
     }
@@ -138,12 +139,10 @@ public class SendReplacementAdapter extends BaseAdapter {
     }
 
     private void cancelRequest() {
-
         RequestHelper.builder(EndPoints.CANCEL_REPLACEMENT_REQUEST)
                 .addParam("requestId", replaceId)
                 .listener(onCancel)
                 .put();
-
     }
 
     RequestHelper.Callback onCancel = new RequestHelper.Callback() {
@@ -161,15 +160,9 @@ public class SendReplacementAdapter extends BaseAdapter {
                     }
                 } catch (Exception e) {
                     e.printStackTrace();
-                    AvaCrashReporter.send(e, "SendReplacementAdapter class, onCancel onResponse method");
+                    AvaCrashReporter.send(e, TAG + " class, onCancel onResponse method");
                 }
             });
         }
-
-
-        @Override
-        public void onFailure(Runnable reCall, Exception e) {
-        }
-
     };
 }

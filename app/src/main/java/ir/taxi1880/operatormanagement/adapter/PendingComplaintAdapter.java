@@ -1,6 +1,8 @@
 package ir.taxi1880.operatormanagement.adapter;
 
-import android.content.Context;
+import static ir.taxi1880.operatormanagement.app.Keys.KEY_COUNT_PENDING_COMPLAINT;
+import static ir.taxi1880.operatormanagement.app.Keys.VALUE_COUNT_PENDING_COMPLAINT;
+
 import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -29,11 +31,10 @@ import ir.taxi1880.operatormanagement.helper.TypefaceUtil;
 import ir.taxi1880.operatormanagement.model.ComplaintDetailsModel;
 import ir.taxi1880.operatormanagement.model.PendingComplaintsModel;
 import ir.taxi1880.operatormanagement.okHttp.RequestHelper;
-
-import static ir.taxi1880.operatormanagement.app.Keys.KEY_COUNT_PENDING_COMPLAINT;
-import static ir.taxi1880.operatormanagement.app.Keys.VALUE_COUNT_PENDING_COMPLAINT;
+import ir.taxi1880.operatormanagement.push.AvaCrashReporter;
 
 public class PendingComplaintAdapter extends RecyclerView.Adapter<PendingComplaintAdapter.ViewHolder> {
+    public static final String TAG = PendingComplaintAdapter.class.getSimpleName();
     private ArrayList<PendingComplaintsModel> pendingComplaintsModels;
     private ArrayList<ComplaintDetailsModel> complaintDetailsModel;
     ViewFlipper vfDetail;
@@ -179,6 +180,7 @@ public class PendingComplaintAdapter extends RecyclerView.Adapter<PendingComplai
                     if (vfDetail != null)
                         vfDetail.setDisplayedChild(0);
                     MyApplication.Toast("لطفا دوباره امتحان کنید", Toast.LENGTH_SHORT);
+                    AvaCrashReporter.send(e, TAG + " class, getAccept method ");
 
                 }
             });

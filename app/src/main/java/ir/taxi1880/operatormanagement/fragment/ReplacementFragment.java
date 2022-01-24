@@ -1,23 +1,20 @@
 package ir.taxi1880.operatormanagement.fragment;
 
-
 import android.annotation.SuppressLint;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
-import android.widget.ViewFlipper;
-
-import org.json.JSONArray;
-import org.json.JSONObject;
 
 import androidx.fragment.app.Fragment;
 
 import com.wang.avi.AVLoadingIndicatorView;
+
+import org.json.JSONArray;
+import org.json.JSONObject;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -32,9 +29,6 @@ import ir.taxi1880.operatormanagement.helper.TypefaceUtil;
 import ir.taxi1880.operatormanagement.okHttp.RequestHelper;
 import ir.taxi1880.operatormanagement.push.AvaCrashReporter;
 
-/**
- * A simple {@link Fragment} subclass.
- */
 public class ReplacementFragment extends Fragment {
     public static final String TAG = ReplacementFragment.class.getSimpleName();
     Unbinder unbinder;
@@ -124,7 +118,6 @@ public class ReplacementFragment extends Fragment {
                 .addParam("date", shiftDate)
                 .listener(onShiftReplacementRequest)
                 .post();
-
     }
 
     RequestHelper.Callback onShiftReplacementRequest = new RequestHelper.Callback() {
@@ -135,21 +128,15 @@ public class ReplacementFragment extends Fragment {
                     JSONObject object = new JSONObject(args[0].toString());
                     int status = object.getInt("status");
                     String msgStatus = object.getString("messageStatus");
-                        generalDialog.firstButton("باشه", () -> generalDialog.dismiss());
-                        generalDialog.message(msgStatus);
-                        generalDialog.title("تایید");
-                        generalDialog.show();
-
+                    generalDialog.firstButton("باشه", () -> generalDialog.dismiss());
+                    generalDialog.message(msgStatus);
+                    generalDialog.title("تایید");
+                    generalDialog.show();
                 } catch (Exception e) {
                     e.printStackTrace();
-                    AvaCrashReporter.send(e, "ReplacementFragment class, onShiftReplacementRequest onResponse method");
+                    AvaCrashReporter.send(e, TAG + " class, onShiftReplacementRequest onResponse method");
                 }
-
             });
-        }
-
-        @Override
-        public void onFailure(Runnable reCall, Exception e) {
         }
     };
 
@@ -162,7 +149,6 @@ public class ReplacementFragment extends Fragment {
                 .addParam("shiftId", shiftId + "")
                 .listener(onGetOnlineOperator)
                 .post();
-
     }
 
     RequestHelper.Callback onGetOnlineOperator = new RequestHelper.Callback() {
@@ -184,13 +170,9 @@ public class ReplacementFragment extends Fragment {
 
                 } catch (Exception e) {
                     e.printStackTrace();
-                    AvaCrashReporter.send(e, "ReplacementFragment class, onGetOnlineOperator onResponse method");
+                    AvaCrashReporter.send(e, TAG + " class, onGetOnlineOperator onResponse method");
                 }
             });
-        }
-
-        @Override
-        public void onFailure(Runnable reCall, Exception e) {
         }
     };
 
@@ -199,5 +181,4 @@ public class ReplacementFragment extends Fragment {
         super.onDestroyView();
         unbinder.unbind();
     }
-
 }

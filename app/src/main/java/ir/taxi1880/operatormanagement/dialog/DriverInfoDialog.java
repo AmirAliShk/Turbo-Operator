@@ -3,39 +3,28 @@ package ir.taxi1880.operatormanagement.dialog;
 import android.app.Dialog;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
-import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
-import android.widget.Button;
-import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 import android.widget.ViewFlipper;
 
-import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-
-import java.util.ArrayList;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import butterknife.Unbinder;
 import ir.taxi1880.operatormanagement.R;
-import ir.taxi1880.operatormanagement.adapter.DriverTurnoverAdapter;
 import ir.taxi1880.operatormanagement.app.EndPoints;
 import ir.taxi1880.operatormanagement.app.MyApplication;
 import ir.taxi1880.operatormanagement.dataBase.DataBase;
-import ir.taxi1880.operatormanagement.helper.KeyBoardHelper;
 import ir.taxi1880.operatormanagement.helper.StringHelper;
 import ir.taxi1880.operatormanagement.helper.TypefaceUtil;
-import ir.taxi1880.operatormanagement.model.DriverTurnoverModel;
 import ir.taxi1880.operatormanagement.okHttp.RequestHelper;
 import ir.taxi1880.operatormanagement.push.AvaCrashReporter;
 
@@ -160,7 +149,6 @@ public class DriverInfoDialog {
             String lockFromDate = StringHelper.toPersianDigits(driverInfoObj.getString("lockFromDate").substring(5));
             String lockFromTime = StringHelper.toPersianDigits(driverInfoObj.getString("lockFromTime").substring(0, 5));
 
-
 //                         String outDate = driverStationRegistrationModels.getOutDate().substring(5);
 //            String outTime = driverStationRegistrationModels.getOutTime().substring(0,5);
 //                        "lockFromDate": "1400/01/07",
@@ -199,6 +187,7 @@ public class DriverInfoDialog {
             txtStartDate.setText(StringHelper.toPersianDigits(driverInfoObj.getString("startActiveDate")));
         } catch (JSONException e) {
             e.printStackTrace();
+            AvaCrashReporter.send(e, TAG + " class, show method");
         }
 
         dialog.show();
@@ -209,7 +198,7 @@ public class DriverInfoDialog {
             vfLoader.setDisplayedChild(1);
         RequestHelper.builder(EndPoints.DRIVER_SEND_APP_LINK)
                 .ignore422Error(true)
-                .addParam("mobile", mobile) // mobile
+                .addParam("mobile", mobile)
                 .listener(sendLinkCallBack)
                 .post();
     }
@@ -246,6 +235,7 @@ public class DriverInfoDialog {
 
                 } catch (Exception e) {
                     e.printStackTrace();
+                    AvaCrashReporter.send(e, TAG + " class, sendLinkCallBack method");
                     if (vfLoader != null)
                         vfLoader.setDisplayedChild(0);
                 }
@@ -267,8 +257,9 @@ public class DriverInfoDialog {
                 dialog.dismiss();
             }
         } catch (Exception e) {
+            e.printStackTrace();
+            AvaCrashReporter.send(e, TAG + " class, dismiss method");
         }
         dialog = null;
     }
-
 }

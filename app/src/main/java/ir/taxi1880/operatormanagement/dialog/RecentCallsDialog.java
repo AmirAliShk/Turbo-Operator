@@ -1,10 +1,10 @@
 package ir.taxi1880.operatormanagement.dialog;
 
+import static ir.taxi1880.operatormanagement.adapter.RecentCallsAdapter.pauseVoice;
+
 import android.app.Dialog;
-import android.content.DialogInterface;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
-import android.util.Log;
 import android.view.Gravity;
 import android.view.Window;
 import android.view.WindowManager;
@@ -20,9 +20,7 @@ import com.downloader.PRDownloader;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -32,15 +30,13 @@ import ir.taxi1880.operatormanagement.R;
 import ir.taxi1880.operatormanagement.adapter.RecentCallsAdapter;
 import ir.taxi1880.operatormanagement.app.EndPoints;
 import ir.taxi1880.operatormanagement.app.MyApplication;
-import ir.taxi1880.operatormanagement.helper.DateHelper;
 import ir.taxi1880.operatormanagement.helper.TypefaceUtil;
 import ir.taxi1880.operatormanagement.model.RecentCallsModel;
 import ir.taxi1880.operatormanagement.okHttp.RequestHelper;
 import ir.taxi1880.operatormanagement.push.AvaCrashReporter;
 
-import static ir.taxi1880.operatormanagement.adapter.RecentCallsAdapter.pauseVoice;
-
 public class RecentCallsDialog {
+    public static final String TAG = RecentCallsDialog.class.getSimpleName();
 
     Dialog dialog;
     Unbinder unbinder;
@@ -217,6 +213,7 @@ public class RecentCallsDialog {
                     if (vfDownload != null)
                         vfDownload.setDisplayedChild(3);
                     e.printStackTrace();
+                    AvaCrashReporter.send(e, TAG + " class, recentCallsCallBack method");
                 }
             });
         }
@@ -238,8 +235,8 @@ public class RecentCallsDialog {
                 dialog.dismiss();
             }
         } catch (Exception e) {
-            Log.e("TAG", "dismiss: " + e.getMessage());
-            AvaCrashReporter.send(e, "ReserveDialog class, dismiss method");
+            e.printStackTrace();
+            AvaCrashReporter.send(e, TAG + " class, dismiss method");
         }
         dialog = null;
         PRDownloader.cancelAll();

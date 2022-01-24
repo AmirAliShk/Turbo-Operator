@@ -41,7 +41,6 @@ public class AvaCrashReportBuilder {
     }
 
     public void send(Exception exception) {
-
         JSONObject customData = new JSONObject();
         try {
             customData.put("LineCode", MyApplication.prefManager.getUserCode());
@@ -51,8 +50,8 @@ public class AvaCrashReportBuilder {
             customData.put("CATCH_INPUT_PARAMS", inputParams);
             customData.put("CATCH_LINE_NUMBER", AvaSocket.getSocketParams());
             RequestHelper.builder("http://turbotaxi.ir:6061/api/crashReport")
-                    .addParam("APP_VERSION_CODE", new AppVersionHelper(MyApplication.context).getVerionCode())
-                    .addParam("APP_VERSION_NAME", new AppVersionHelper(MyApplication.context).getVerionName())
+                    .addParam("APP_VERSION_CODE", new AppVersionHelper(MyApplication.context).getVersionCode())
+                    .addParam("APP_VERSION_NAME", new AppVersionHelper(MyApplication.context).getVersionName())
                     .addParam("PACKAGE_NAME", MyApplication.context.getPackageName())
                     .addParam("PHONE_MODEL", Build.MODEL)
                     .addParam("BRAND", Build.BRAND)
@@ -67,12 +66,9 @@ public class AvaCrashReportBuilder {
                     .addParam("USER_CRASH_DATE", "")
                     .addParam("DEVICE_FEATURES", "")
                     .post();
-
-
         } catch (JSONException e) {
             e.printStackTrace();
+            AvaCrashReporter.send(e, TAG + " class, send method");
         }
-
     }
-
 }

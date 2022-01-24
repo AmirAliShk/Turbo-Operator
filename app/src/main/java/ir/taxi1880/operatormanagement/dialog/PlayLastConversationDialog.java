@@ -43,6 +43,7 @@ import ir.taxi1880.operatormanagement.okHttp.AuthenticationInterceptor;
 import ir.taxi1880.operatormanagement.push.AvaCrashReporter;
 
 public class PlayLastConversationDialog {
+    public static final String TAG = PlayLastConversationDialog.class.getSimpleName();
     static Dialog dialog;
     Unbinder unbinder;
     MediaPlayer mediaPlayer;
@@ -244,8 +245,10 @@ public class PlayLastConversationDialog {
 //        StartDownload.execute(downloadId, url.toString(), dirPathTemp + fileName);
         } catch (MalformedURLException e) {
             e.printStackTrace();
+            AvaCrashReporter.send(e, TAG + " class, startDownload method");
         } catch (Exception e) {
             e.printStackTrace();
+            AvaCrashReporter.send(e, TAG + " class, startDownload method2");
         }
     }
 
@@ -263,6 +266,7 @@ public class PlayLastConversationDialog {
 
         } catch (Exception e) {
             e.printStackTrace();
+            AvaCrashReporter.send(e, TAG + " class, initVoice method");
         }
     }
 
@@ -273,6 +277,8 @@ public class PlayLastConversationDialog {
             if (vfPlayPause != null)
                 vfPlayPause.setDisplayedChild(1);
         } catch (Exception e) {
+            e.printStackTrace();
+            AvaCrashReporter.send(e, TAG + " class, playVoice method");
         }
 
         startTimer();
@@ -288,6 +294,8 @@ public class PlayLastConversationDialog {
             if (vfPlayPause != null)
                 vfPlayPause.setDisplayedChild(0);
         } catch (Exception e) {
+            e.printStackTrace();
+            AvaCrashReporter.send(e, TAG + " class, pauseVoice method");
         }
         cancelTimer();
     }
@@ -312,7 +320,8 @@ public class PlayLastConversationDialog {
             pauseVoice();
             cancelTimer();
         } catch (Exception e) {
-
+            e.printStackTrace();
+            AvaCrashReporter.send(e, TAG + " class, onDestroy method");
         }
     }
 
@@ -322,9 +331,9 @@ public class PlayLastConversationDialog {
             timer.cancel();
             timer = null;
         } catch (Exception e) {
-
+            e.printStackTrace();
+            AvaCrashReporter.send(e, TAG + " class, cancelTimer method");
         }
-
     }
 
     private void dismiss() {
@@ -334,8 +343,8 @@ public class PlayLastConversationDialog {
                 KeyBoardHelper.hideKeyboard();
             }
         } catch (Exception e) {
-            Log.e("TAG", "dismiss: " + e.getMessage());
-            AvaCrashReporter.send(e, "PlayLastConversationDialog class, dismiss method");
+            e.printStackTrace();
+            AvaCrashReporter.send(e, TAG + " class, dismiss method");
         }
         dialog = null;
     }
@@ -353,18 +362,17 @@ public class PlayLastConversationDialog {
                     });
                 } catch (Exception e) {
                     e.printStackTrace();
+                    AvaCrashReporter.send(e, TAG + " class, UpdateSeekBar method");
                 }
             }
         }
     }
 
     static class RefreshTokenAsyncTask extends AsyncTask<Void, Void, Boolean> {
-
         @Override
         protected Boolean doInBackground(Void... voids) {
             new AuthenticationInterceptor().refreshToken();
             return null;
-        }
-    }
+        }}
 
 }

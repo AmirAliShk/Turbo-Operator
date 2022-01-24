@@ -12,14 +12,14 @@ import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
 
+import androidx.appcompat.app.AppCompatActivity;
+
 import com.gauravbhola.ripplepulsebackground.RipplePulseLayout;
 
 import org.linphone.core.Address;
 import org.linphone.core.Call;
 import org.linphone.core.Core;
 import org.linphone.core.CoreListenerStub;
-
-import androidx.appcompat.app.AppCompatActivity;
 
 import ir.taxi1880.operatormanagement.R;
 import ir.taxi1880.operatormanagement.app.MyApplication;
@@ -80,7 +80,7 @@ public class CallIncomingActivity extends AppCompatActivity {
 
             } catch (Exception e) {
                 e.printStackTrace();
-                AvaCrashReporter.send(e, "CallIncomingActivity class, onAcceptPress");
+                AvaCrashReporter.send(e, TAG + " class, onAcceptPress");
             }
         });
 
@@ -164,9 +164,8 @@ public class CallIncomingActivity extends AppCompatActivity {
             }
         } catch (Exception e) {
             e.printStackTrace();
-            AvaCrashReporter.send(e, "callIncomingActivity class, onResume method");
+            AvaCrashReporter.send(e, TAG + " class, onResume method");
         }
-
     }
 
     @Override

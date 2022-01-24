@@ -12,8 +12,11 @@ import java.util.ArrayList;
 
 import ir.taxi1880.operatormanagement.model.AllMistakesModel;
 import ir.taxi1880.operatormanagement.model.CityModel;
+import ir.taxi1880.operatormanagement.push.AvaCrashReporter;
 
 public class DataBase extends SQLiteOpenHelper {
+
+    public static final String TAG = DataBase.class.getSimpleName();
     // TODO when you change the entitys structure, please increase the version of dataBase.
     private static int VERSION = 6;
     //TODO Do not change names any way
@@ -131,6 +134,7 @@ public class DataBase extends SQLiteOpenHelper {
             sqLiteDatabase.insertWithOnConflict(TRIP_TABLE, COLUMN_TRIP_ID, contentValues, SQLiteDatabase.CONFLICT_REPLACE);
         } catch (Exception e) {
             e.printStackTrace();
+            AvaCrashReporter.send(e, TAG + " class, insertTripRow method");
         }
     }
 
@@ -158,6 +162,7 @@ public class DataBase extends SQLiteOpenHelper {
             }
         } catch (Exception e) {
             e.printStackTrace();
+            AvaCrashReporter.send(e, TAG + " class, getTripRow method");
         }
         return DBTripModels;
     }
@@ -197,6 +202,7 @@ public class DataBase extends SQLiteOpenHelper {
             }
         } catch (Exception e) {
             e.printStackTrace();
+            AvaCrashReporter.send(e, TAG + " class, getTopAddress method");
         }
         return null;
     }
@@ -295,6 +301,7 @@ public class DataBase extends SQLiteOpenHelper {
             sqLiteDatabase.insertWithOnConflict(CITY_TABLE, COLUMN_CITY_ID, contentValues, SQLiteDatabase.CONFLICT_REPLACE);
         } catch (Exception e) {
             e.printStackTrace();
+            AvaCrashReporter.send(e, TAG + " class, insertCity method");
         }
     }
 
@@ -391,12 +398,13 @@ public class DataBase extends SQLiteOpenHelper {
             contentValues.put(COLUMN_MISTAKES_SEND_TIME, mistakesModel.getSendTime());
             contentValues.put(COLUMN_MISTAKES_DESTINATION_CODE, mistakesModel.getDestStation());
             contentValues.put(COLUMN_MISTAKE_DESTINATION, mistakesModel.getDestination());
-            contentValues.put(COLUMN_MISTAKES_REASONS,mistakesModel.getMistakeReason());
+            contentValues.put(COLUMN_MISTAKES_REASONS, mistakesModel.getMistakeReason());
             contentValues.put(COLUMN_MISTAKES_PRICE, mistakesModel.getPrice());
             contentValues.put(COLUMN_MISTAKES_PASSENGER_VOICE, mistakesModel.getVoipId());
             sqLiteDatabase.insertWithOnConflict(MISTAKES_TABLE, COLUMN_MISTAKES_ID, contentValues, SQLiteDatabase.CONFLICT_REPLACE);
         } catch (Exception e) {
             e.printStackTrace();
+            AvaCrashReporter.send(e, TAG + " class, insertMistakes method");
         }
     }
 

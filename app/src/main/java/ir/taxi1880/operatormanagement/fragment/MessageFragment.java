@@ -12,16 +12,16 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.ViewFlipper;
 
+import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.DefaultItemAnimator;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+
 import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.List;
-
-import androidx.fragment.app.Fragment;
-import androidx.recyclerview.widget.DefaultItemAnimator;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -38,9 +38,6 @@ import ir.taxi1880.operatormanagement.model.MessageModel;
 import ir.taxi1880.operatormanagement.okHttp.RequestHelper;
 import ir.taxi1880.operatormanagement.push.AvaCrashReporter;
 
-/**
- * A simple {@link Fragment} subclass.
- */
 public class MessageFragment extends Fragment {
     public static final String TAG = MessageFragment.class.getSimpleName();
     Unbinder unbinder;
@@ -147,22 +144,18 @@ public class MessageFragment extends Fragment {
                             }
                         }, 200);
                     }
-
                 } catch (Exception e) {
                     e.printStackTrace();
-                    AvaCrashReporter.send(e, "MessageFragment class, onGetMessages onResponse method");
+                    AvaCrashReporter.send(e, TAG + " class, onGetMessages onResponse method");
                 }
             });
         }
 
         @Override
         public void onFailure(Runnable reCall, Exception e) {
-            MyApplication.handler.post(new Runnable() {
-                @Override
-                public void run() {
-                    if (vfMessage != null) {
-                        vfMessage.setDisplayedChild(2);
-                    }
+            MyApplication.handler.post(() -> {
+                if (vfMessage != null) {
+                    vfMessage.setDisplayedChild(2);
                 }
             });
         }
@@ -192,14 +185,9 @@ public class MessageFragment extends Fragment {
                     }
                 } catch (Exception e) {
                     e.printStackTrace();
-                    AvaCrashReporter.send(e, "MessageFragment class, onSendMessage onResponse method");
+                    AvaCrashReporter.send(e, TAG + " class, onSendMessage onResponse method");
                 }
             });
         }
-
-        @Override
-        public void onFailure(Runnable reCall, Exception e) {
-        }
     };
-
 }

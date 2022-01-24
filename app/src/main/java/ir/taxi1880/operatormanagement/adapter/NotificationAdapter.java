@@ -26,6 +26,7 @@ import ir.taxi1880.operatormanagement.push.AvaCrashReporter;
 
 public class NotificationAdapter extends BaseAdapter {
 
+    public static final String TAG = NotificationAdapter.class.getSimpleName();
     ArrayList<NotificationModel> notificationModels;
     LayoutInflater layoutInflater;
     int notifId;
@@ -84,7 +85,7 @@ public class NotificationAdapter extends BaseAdapter {
 
         } catch (Exception e) {
             e.printStackTrace();
-            AvaCrashReporter.send(e, "NotificationAdapter class, getView method");
+            AvaCrashReporter.send(e, TAG + " class, getView method");
         }
         return convertView;
     }
@@ -94,9 +95,6 @@ public class NotificationAdapter extends BaseAdapter {
         TextView txtDate;
         ImageView imgNotify;
         Button btnSeenNotify;
-
-        public ViewHolder() {
-        }
 
         ViewHolder(View convertView) {
             txtNotification = convertView.findViewById(R.id.txtNotification);
@@ -134,13 +132,9 @@ public class NotificationAdapter extends BaseAdapter {
                     }
                 } catch (Exception e) {
                     e.printStackTrace();
-                    AvaCrashReporter.send(e, "NotificationAdapter class, onSetNewsSeen onResponse method");
+                    AvaCrashReporter.send(e, TAG + " class, onSetNewsSeen onResponse method");
                 }
             });
-        }
-
-        @Override
-        public void onFailure(Runnable reCall, Exception e) {
         }
     };
 }

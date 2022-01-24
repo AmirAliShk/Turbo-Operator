@@ -4,7 +4,6 @@ import android.app.Dialog;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.util.Log;
-import android.view.Gravity;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
@@ -18,6 +17,8 @@ import ir.taxi1880.operatormanagement.helper.TypefaceUtil;
 import ir.taxi1880.operatormanagement.push.AvaCrashReporter;
 
 public class ErrorDialog {
+
+    public static final String TAG = ErrorDialog.class.getSimpleName();
     static Dialog dialog;
     private Runnable closeRunnable;
     private Runnable tryAgainRunnable;
@@ -134,9 +135,9 @@ public class ErrorDialog {
                 if (dialog.isShowing())
                     dialog.dismiss();
         } catch (Exception e) {
-            AvaCrashReporter.send(e, "ErrorDialog class, dismiss method");
+            e.printStackTrace();
+            AvaCrashReporter.send(e, TAG + " class, dismiss method");
         }
         dialog = null;
     }
-
 }

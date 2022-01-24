@@ -1,6 +1,5 @@
 package ir.taxi1880.operatormanagement.fragment;
 
-import android.graphics.Color;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -9,7 +8,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.widget.AdapterView;
-import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -30,8 +28,10 @@ import ir.taxi1880.operatormanagement.app.MyApplication;
 import ir.taxi1880.operatormanagement.databinding.FragmentComplaintSaveResultBinding;
 import ir.taxi1880.operatormanagement.helper.TypefaceUtil;
 import ir.taxi1880.operatormanagement.model.TypeServiceModel;
+import ir.taxi1880.operatormanagement.push.AvaCrashReporter;
 
 public class ComplaintSaveResultFragment extends Fragment {
+    public static final String TAG = ComplaintSaveResultFragment.class.getSimpleName();
     Unbinder unbinder;
     FragmentComplaintSaveResultBinding binding;
 
@@ -108,6 +108,7 @@ public class ComplaintSaveResultFragment extends Fragment {
             });
         } catch (JSONException e) {
             e.printStackTrace();
+            AvaCrashReporter.send(e, TAG + " class, initSpinner method");
         }
     }
 
@@ -219,5 +220,4 @@ public class ComplaintSaveResultFragment extends Fragment {
         binding.chbOutDriver.setSelected(false);
         binding.chbLockCustomer.setSelected(false);
     }
-
 }

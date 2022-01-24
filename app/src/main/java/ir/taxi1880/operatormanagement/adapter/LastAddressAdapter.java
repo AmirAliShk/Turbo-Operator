@@ -22,6 +22,7 @@ import ir.taxi1880.operatormanagement.push.AvaCrashReporter;
 
 public class LastAddressAdapter extends BaseAdapter {
 
+    public static final String TAG = LastAddressAdapter.class.getSimpleName();
     private ArrayList<AddressesModel> addressModels;
     private LayoutInflater layoutInflater;
     boolean isFromOrigin;
@@ -68,7 +69,6 @@ public class LastAddressAdapter extends BaseAdapter {
             txtAddress.setText(addressModel.getAddress());
             txtStation.setText(addressModel.getStation() + "");
 
-
 //            if (addressModel.getStatus() == 1) {
 //                llStation.setBackgroundColor(MyApplication.currentActivity.getResources().getColor(R.color.colorRedLight));
 //            } else {
@@ -91,7 +91,7 @@ public class LastAddressAdapter extends BaseAdapter {
 
         } catch (Exception e) {
             e.printStackTrace();
-            AvaCrashReporter.send(e, "LastAddressAdapter class, getView method");
+            AvaCrashReporter.send(e, TAG + " class, getView method");
         }
 
         return myView;
@@ -123,15 +123,9 @@ public class LastAddressAdapter extends BaseAdapter {
                     // just call the API
                 } catch (Exception e) {
                     e.printStackTrace();
+                    AvaCrashReporter.send(e, TAG + " class, onArchiveAddress method ");
                 }
             });
         }
-
-        @Override
-        public void onFailure(Runnable reCall, Exception e) {
-            MyApplication.handler.post(() -> {
-            });
-        }
     };
-
 }

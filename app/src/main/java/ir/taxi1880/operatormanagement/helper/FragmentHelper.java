@@ -1,6 +1,5 @@
 package ir.taxi1880.operatormanagement.helper;
 
-
 import android.app.Activity;
 import android.app.Fragment;
 import android.app.FragmentManager;
@@ -9,7 +8,6 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.util.Log;
-import android.view.View;
 import android.view.Window;
 
 import androidx.annotation.AnimRes;
@@ -159,43 +157,38 @@ public class FragmentHelper {
     public void add() {
         try {
             Handler handler = new Handler();
-            handler.postDelayed(new Runnable() {
-                @Override
-                public void run() {
-                    if (instance.fragment != null) {
-                        FragmentTransaction fragmentTransaction = instance.fragmentManager.beginTransaction();
-                        if (isAddToBackStack()) {
-                            fragmentTransaction.addToBackStack(null);
-                        }
-                        if (instance.fragment.isAdded()) {
-                            return;
-                        }
-                        fragmentTransaction.add(instance.frame, instance.fragment, instance.flag);
-                        fragmentTransaction.commitAllowingStateLoss();
-                    } else if (instance.fragmentV4 != null) {
-                        androidx.fragment.app.FragmentTransaction fragmentTransaction = instance.fragmentManagerV4.beginTransaction();
-                        if (isAddToBackStack()) {
-                            fragmentTransaction.addToBackStack(null);
-                        }
-                        fragmentTransaction.setCustomAnimations(instance.enterAnim, instance.exitAnim, instance.popEnterAnim, instance.popExitAnim);
-                        if (instance.fragmentV4.isAdded()) {
-                            return;
-                        }
-                        fragmentTransaction.add(instance.frame, instance.fragmentV4, instance.flag);
-                        fragmentTransaction.commitAllowingStateLoss();
-                    } else {
-                        Log.e(TAG, "can't add " + flag + " to " + frame);
+            handler.postDelayed(() -> {
+                if (instance.fragment != null) {
+                    FragmentTransaction fragmentTransaction = instance.fragmentManager.beginTransaction();
+                    if (isAddToBackStack()) {
+                        fragmentTransaction.addToBackStack(null);
                     }
-
+                    if (instance.fragment.isAdded()) {
+                        return;
+                    }
+                    fragmentTransaction.add(instance.frame, instance.fragment, instance.flag);
+                    fragmentTransaction.commitAllowingStateLoss();
+                } else if (instance.fragmentV4 != null) {
+                    androidx.fragment.app.FragmentTransaction fragmentTransaction = instance.fragmentManagerV4.beginTransaction();
+                    if (isAddToBackStack()) {
+                        fragmentTransaction.addToBackStack(null);
+                    }
+                    fragmentTransaction.setCustomAnimations(instance.enterAnim, instance.exitAnim, instance.popEnterAnim, instance.popExitAnim);
+                    if (instance.fragmentV4.isAdded()) {
+                        return;
+                    }
+                    fragmentTransaction.add(instance.frame, instance.fragmentV4, instance.flag);
+                    fragmentTransaction.commitAllowingStateLoss();
+                } else {
+                    Log.e(TAG, "can't add " + flag + " to " + frame);
                 }
             }, 100);
             setWindowStyle();
         } catch (Exception e) {
             e.printStackTrace();
-            AvaCrashReporter.send(e, "FragmentHelper class, add method");
+            AvaCrashReporter.send(e, TAG + " class, add method");
             Log.e(TAG, "can't add " + flag + " to " + frame);
         }
-
     }
 
     /**
@@ -226,10 +219,9 @@ public class FragmentHelper {
             setWindowStyle();
         } catch (Exception e) {
             e.printStackTrace();
-            AvaCrashReporter.send(e, "FragmentHelper class, replace method");
+            AvaCrashReporter.send(e, TAG + " class, replace method");
             Log.e(TAG, "can't replace " + flag + " to " + frame);
         }
-
     }
 
     public static FragmentHelper taskFragment(Activity activity, String tag) {
@@ -273,10 +265,9 @@ public class FragmentHelper {
                 instance.fragmentManagerV4.popBackStack();
             }
         } catch (Exception e) {
-            AvaCrashReporter.send(e, "FragmentHelper class, remove method");
+            AvaCrashReporter.send(e, TAG + " class, remove method");
             e.printStackTrace();
         }
-
     }
 
     public FragmentHelper setNavigationBarColor(@ColorInt int color) {
@@ -305,8 +296,7 @@ public class FragmentHelper {
             }
         } catch (Exception e) {
             e.printStackTrace();
-            AvaCrashReporter.send(e, "FragmentHelper class, setWindowStyle method");
+            AvaCrashReporter.send(e, TAG + " class, setWindowStyle method");
         }
     }
-
 }

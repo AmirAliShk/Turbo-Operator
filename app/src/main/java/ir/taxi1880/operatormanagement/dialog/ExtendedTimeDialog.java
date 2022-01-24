@@ -3,16 +3,9 @@ package ir.taxi1880.operatormanagement.dialog;
 import android.app.Dialog;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
-import android.os.Build;
-import android.util.Log;
 import android.view.Gravity;
-import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
-
-import androidx.core.content.ContextCompat;
-
-import com.google.android.material.appbar.AppBarLayout;
 
 import butterknife.ButterKnife;
 import butterknife.OnClick;
@@ -25,74 +18,72 @@ import ir.taxi1880.operatormanagement.push.AvaCrashReporter;
 
 public class ExtendedTimeDialog {
 
-  private static final String TAG = ExtendedTimeDialog.class.getSimpleName();
-  private static Dialog dialog;
-  static Unbinder unbinder;
-  ExtendedTimeListener extendedTime;
+    private static final String TAG = ExtendedTimeDialog.class.getSimpleName();
+    private static Dialog dialog;
+    static Unbinder unbinder;
+    ExtendedTimeListener extendedTime;
 
-  public interface ExtendedTimeListener {
-    void extendTime(int type, String title, int icon);
-  }
-
-  @OnClick(R.id.blrView)
-  void onBlur() {
-    dismiss();
-  }
-
-  @OnClick(R.id.llToday)
-  void onPressName() {
-    extendedTime.extendTime(1, "امروز",R.drawable.ic_today); // today
-    dismiss();
-  }
-
-  @OnClick(R.id.llYesterday)
-  void onPressTell() {
-    extendedTime.extendTime(2, "دیروز",R.drawable.ic_yesterday); // yesterday
-    dismiss();
-  }
-
-  @OnClick(R.id.llTwoDayAgo)
-  void onPressAddress() {
-    extendedTime.extendTime(3, "دوروز قبل",R.drawable.ic_twodaysago); // two day ago
-    dismiss();
-  }
-
-  public void show(ExtendedTimeListener searchCaseListener) {
-    if (MyApplication.currentActivity == null || MyApplication.currentActivity.isFinishing())
-      return;
-    dialog = new Dialog(MyApplication.currentActivity);
-    dialog.getWindow().requestFeature(Window.FEATURE_NO_TITLE);
-    dialog.getWindow().getAttributes().windowAnimations = R.style.ExpandAnimation;
-    dialog.setContentView(R.layout.dialog_extended_time);
-    unbinder = ButterKnife.bind(this, dialog);
-    TypefaceUtil.overrideFonts(dialog.getWindow().getDecorView(),MyApplication.IraSanSMedume);
-    dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
-    WindowManager.LayoutParams wlp = dialog.getWindow().getAttributes();
-    wlp.gravity = Gravity.TOP | Gravity.RIGHT;
-    wlp.width = WindowManager.LayoutParams.MATCH_PARENT;
-    wlp.windowAnimations = R.style.ExpandAnimation;
-    dialog.getWindow().setAttributes(wlp);
-    dialog.setCancelable(true);
-    KeyBoardHelper.hideKeyboard();
-    this.extendedTime = searchCaseListener;
-
-    dialog.show();
-
-  }
-
-  private static void dismiss() {
-    try {
-      if (dialog != null) {
-        if (dialog.isShowing())
-          dialog.dismiss();
-        unbinder.unbind();
-        KeyBoardHelper.hideKeyboard();
-      }
-      dialog = null;
-    } catch (Exception e) {
-      Log.e("TAG", "dismiss: " + e.getMessage());
-      AvaCrashReporter.send(e, "ExtendedTimeDialog class, dismiss method");
+    public interface ExtendedTimeListener {
+        void extendTime(int type, String title, int icon);
     }
-  }
 
+    @OnClick(R.id.blrView)
+    void onBlur() {
+        dismiss();
+    }
+
+    @OnClick(R.id.llToday)
+    void onPressName() {
+        extendedTime.extendTime(1, "امروز", R.drawable.ic_today); // today
+        dismiss();
+    }
+
+    @OnClick(R.id.llYesterday)
+    void onPressTell() {
+        extendedTime.extendTime(2, "دیروز", R.drawable.ic_yesterday); // yesterday
+        dismiss();
+    }
+
+    @OnClick(R.id.llTwoDayAgo)
+    void onPressAddress() {
+        extendedTime.extendTime(3, "دوروز قبل", R.drawable.ic_twodaysago); // two day ago
+        dismiss();
+    }
+
+    public void show(ExtendedTimeListener searchCaseListener) {
+        if (MyApplication.currentActivity == null || MyApplication.currentActivity.isFinishing())
+            return;
+        dialog = new Dialog(MyApplication.currentActivity);
+        dialog.getWindow().requestFeature(Window.FEATURE_NO_TITLE);
+        dialog.getWindow().getAttributes().windowAnimations = R.style.ExpandAnimation;
+        dialog.setContentView(R.layout.dialog_extended_time);
+        unbinder = ButterKnife.bind(this, dialog);
+        TypefaceUtil.overrideFonts(dialog.getWindow().getDecorView(), MyApplication.IraSanSMedume);
+        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        WindowManager.LayoutParams wlp = dialog.getWindow().getAttributes();
+        wlp.gravity = Gravity.TOP | Gravity.RIGHT;
+        wlp.width = WindowManager.LayoutParams.MATCH_PARENT;
+        wlp.windowAnimations = R.style.ExpandAnimation;
+        dialog.getWindow().setAttributes(wlp);
+        dialog.setCancelable(true);
+        KeyBoardHelper.hideKeyboard();
+        this.extendedTime = searchCaseListener;
+
+        dialog.show();
+    }
+
+    private static void dismiss() {
+        try {
+            if (dialog != null) {
+                if (dialog.isShowing())
+                    dialog.dismiss();
+                unbinder.unbind();
+                KeyBoardHelper.hideKeyboard();
+            }
+            dialog = null;
+        } catch (Exception e) {
+            e.printStackTrace();
+            AvaCrashReporter.send(e, TAG + " class, dismiss method");
+        }
+    }
 }
