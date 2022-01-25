@@ -82,14 +82,7 @@ public class DriverTripSupportFragment extends Fragment {
 
         binding.edtSearchTrip.setOnEditorActionListener((v, actionId, event) -> {
             if (actionId == EditorInfo.IME_ACTION_NEXT) {
-                searchText = StringHelper.toEnglishDigits(binding.edtSearchTrip.getText().toString());
-                if (searchText.isEmpty()) {
-                    MyApplication.Toast("موردی را برای جستو جو وارد کنید", Toast.LENGTH_SHORT);
-                    return false;
-                }
-                KeyBoardHelper.hideKeyboard();
-                getDriverInfo(searchText, searchCase);
-                searchService(searchText, searchCase);
+                onSearchPress();
                 return true;
             }
             return false;
