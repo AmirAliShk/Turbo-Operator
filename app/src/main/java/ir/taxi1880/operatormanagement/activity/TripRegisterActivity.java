@@ -11,7 +11,6 @@ import android.os.Build;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.InputFilter;
-import android.text.Spanned;
 import android.text.TextWatcher;
 import android.util.Log;
 import android.view.View;
@@ -645,21 +644,18 @@ public class TripRegisterActivity extends AppCompatActivity {
     };
 
     private void removeExtraSpace(AutoCompleteTextView ACTextView) {
-        InputFilter filter = new InputFilter() {
-            public CharSequence filter(CharSequence source, int start, int end,
-                                       Spanned dest, int dstart, int dend) {
-                String stringSource = source.toString();
-                String stringDest = dest.toString();
-                if (stringSource.equals(" ")) {
-                    if (stringDest.length() == 0)
+        InputFilter filter = (source, start, end, dest, dstart, dend) -> {
+            String stringSource = source.toString();
+            String stringDest = dest.toString();
+            if (stringSource.equals(" ")) {
+                if (stringDest.length() == 0)
+                    return "";
+                if (stringDest.length() >= 1)
+                    if ((dstart > 0 && ACTextView.getText()
+                            .charAt(dstart - 1) == ' ') || (ACTextView.getText().length() > dstart && ACTextView.getText().charAt(dstart) == ' ') || dstart == 0)
                         return "";
-                    if (stringDest.length() >= 1)
-                        if ((dstart > 0 && ACTextView.getText()
-                                .charAt(dstart - 1) == ' ') || (ACTextView.getText().length() > dstart && ACTextView.getText().charAt(dstart) == ' ') || dstart == 0)
-                            return "";
-                }
-                return null;
             }
+            return null;
         };
         ACTextView.setFilters(new InputFilter[]{filter});
     }

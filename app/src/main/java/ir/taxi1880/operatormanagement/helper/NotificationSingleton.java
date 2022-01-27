@@ -30,8 +30,8 @@ public class NotificationSingleton {
             PendingIntent pendingIntent = PendingIntent.getActivity(context, 0, intent, 0);
 
             NotificationManager notificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
-            notificationManager.createNotificationChannelGroup(new NotificationChannelGroup("TorboOperatorGroupId", "TorboOperatorGroupName"));
-            NotificationChannel notificationChannel = new NotificationChannel(CHANNEL_ID, "TorboOperatorChannelName",
+            notificationManager.createNotificationChannelGroup(new NotificationChannelGroup("TurboOperatorGroupId", "TurboOperatorGroupName"));
+            NotificationChannel notificationChannel = new NotificationChannel(CHANNEL_ID, "TurboOperatorChannelName",
                     NotificationManager.IMPORTANCE_MIN);
 
             notificationManager.createNotificationChannel(notificationChannel);

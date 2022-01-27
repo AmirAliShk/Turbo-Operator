@@ -101,7 +101,6 @@ public class RecentCallsAdapter extends RecyclerView.Adapter<RecentCallsAdapter.
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         RecentCallsModel model = recentCallsModels.get(position);
-
         holder.txtDate.setText(DateHelper.parseFormatToString(model.getTxtDate()));
         holder.txtTime.setText(DateHelper.parseFormat(model.getTxtDate()));
         if (model.getPhone() == null) {
@@ -167,9 +166,7 @@ public class RecentCallsAdapter extends RecyclerView.Adapter<RecentCallsAdapter.
             });
         });
 
-        imgPause.setOnClickListener(view -> {
-            pauseVoice();
-        });
+        imgPause.setOnClickListener(view -> pauseVoice());
 
     }
 
@@ -205,12 +202,8 @@ public class RecentCallsAdapter extends RecyclerView.Adapter<RecentCallsAdapter.
                     .build()
                     .setOnStartOrResumeListener(() -> {
                     })
-                    .setOnPauseListener(() -> {
-                        isDownloading = false;
-                    })
-                    .setOnCancelListener(() -> {
-                        isDownloading = false;
-                    })
+                    .setOnPauseListener(() -> isDownloading = false)
+                    .setOnCancelListener(() -> isDownloading = false)
                     .setOnProgressListener(progress -> {
                         isDownloading = true;
                         Log.i("TAG", "startDownload: " + progress);
@@ -345,12 +338,10 @@ public class RecentCallsAdapter extends RecyclerView.Adapter<RecentCallsAdapter.
     }
 
     static class RefreshTokenAsyncTask extends AsyncTask<Void, Void, Boolean> {
-
         @Override
         protected Boolean doInBackground(Void... voids) {
             new AuthenticationInterceptor().refreshToken();
             return null;
         }
     }
-
 }
