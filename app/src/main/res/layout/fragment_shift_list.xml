@@ -1,79 +1,80 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:background="?attr/colorPageBackground"
     android:clickable="true"
+    android:layoutDirection="rtl"
     android:orientation="vertical"
     tools:context="ir.taxi1880.operatormanagement.fragment.ShiftListFragment">
 
-   <RelativeLayout
-       android:id="@+id/rlActionBar"
-       android:layout_width="match_parent"
-       android:layout_height="?android:attr/actionBarSize"
-       android:layoutDirection="ltr"
-       android:background="?attr/colorActionBarBackground">
+    <RelativeLayout
+        android:id="@+id/rlActionBar"
+        android:layout_width="match_parent"
+        android:layout_height="?android:attr/actionBarSize"
+        android:background="?attr/colorActionBarBackground">
 
-      <ImageView
-          android:id="@+id/imgBack"
-          android:padding="15dp"
-          android:src="@drawable/ic_back"
-          android:layout_width="?android:attr/actionBarSize"
-          android:layout_height="match_parent"/>
+        <ImageView
+            android:id="@+id/imgBack"
+            android:layout_width="?android:attr/actionBarSize"
+            android:layout_height="match_parent"
+            android:layout_alignParentLeft="true"
+            android:padding="@dimen/_15sdp"
+            android:src="@drawable/ic_back" />
 
-      <TextView
-          android:layout_width="wrap_content"
-          android:layout_height="wrap_content"
-          android:layout_centerInParent="true"
-          android:text="@string/shifts"
-          style="@style/pageTitle"/>
+        <TextView
+            style="@style/pageTitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:text="@string/shifts" />
 
-   </RelativeLayout>
+    </RelativeLayout>
 
-   <ViewFlipper
-       android:id="@+id/vfShift"
-       android:layout_below="@id/rlActionBar"
-       android:layout_width="match_parent"
-       android:layout_height="match_parent">
+    <ViewFlipper
+        android:id="@+id/vfShift"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@id/rlActionBar">
 
-      <com.wang.avi.AVLoadingIndicatorView
-          android:layout_width="50dp"
-          android:layout_height="50dp"
-          app:indicatorName="BallSpinFadeLoaderIndicator"
-          android:layout_gravity="center"
-          app:indicatorColor="?attr/colorIcon1" />
+        <com.wang.avi.AVLoadingIndicatorView
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_gravity="center"
+            app:indicatorColor="?attr/colorIcon1"
+            app:indicatorName="BallSpinFadeLoaderIndicator" />
 
-      <ListView
-          android:id="@+id/listShift"
-          android:divider="@null"
-          android:listSelector="@android:color/transparent"
-          android:layout_below="@id/rlActionBar"
-          android:layout_width="match_parent"
-          android:layout_height="match_parent"/>
+        <ListView
+            android:id="@+id/listShift"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_below="@id/rlActionBar"
+            android:divider="@null"
+            android:listSelector="@android:color/transparent" />
 
-      <TextView
-          android:id="@+id/txtNull"
-          android:layout_centerInParent="true"
-          android:gravity="center"
-          android:textSize="@dimen/text_title"
-          android:textColor="?attr/colorValue"
-          android:visibility="gone"
-          android:text="هنوز هیچ شیفتی ثبت نشده!"
-          android:layout_width="match_parent"
-          android:layout_height="match_parent"/>
+        <TextView
+            android:id="@+id/txtNull"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_centerInParent="true"
+            android:gravity="center"
+            android:text="هنوز هیچ شیفتی ثبت نشده!"
+            android:textColor="?attr/colorValue"
+            android:textSize="@dimen/text_title"
+            android:visibility="gone" />
 
-      <TextView
-          android:layout_centerInParent="true"
-          android:gravity="center"
-          android:textSize="@dimen/text_title"
-          android:textColor="?attr/colorValue"
-          android:visibility="gone"
-          android:text="متاسفانه هنگام دریافت اطلاعات از سرور به مشکل خوردیم \n لطفا مجدد تلاش کنید!"
-          android:layout_width="match_parent"
-          android:layout_height="match_parent"/>
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_centerInParent="true"
+            android:gravity="center"
+            android:text="متاسفانه هنگام دریافت اطلاعات از سرور به مشکل خوردیم \n لطفا مجدد تلاش کنید!"
+            android:textColor="?attr/colorValue"
+            android:textSize="@dimen/text_title"
+            android:visibility="gone" />
 
-   </ViewFlipper>
+    </ViewFlipper>
 
 </RelativeLayout>

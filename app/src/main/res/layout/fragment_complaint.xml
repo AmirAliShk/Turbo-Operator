@@ -6,6 +6,7 @@
     android:layout_height="match_parent"
     android:background="?attr/colorPageBackground"
     android:clickable="true"
+    android:layoutDirection="rtl"
     android:orientation="vertical"
     tools:context=".activity.SupportActivity">
 
@@ -33,9 +34,10 @@
 
         <ImageView
             android:id="@+id/imgBack"
-            android:layout_width="50dp"
+            android:layout_width="?android:attr/actionBarSize"
             android:layout_height="match_parent"
-            android:padding="12dp"
+            android:layout_alignParentLeft="true"
+            android:padding="@dimen/_15sdp"
             android:src="@drawable/ic_back" />
 
     </LinearLayout>

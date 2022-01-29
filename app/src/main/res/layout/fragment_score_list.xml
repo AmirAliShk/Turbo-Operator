@@ -1,42 +1,43 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:background="?attr/colorPageBackground"
     android:layout_height="match_parent"
+    android:background="?attr/colorPageBackground"
     android:clickable="true"
+    android:layoutDirection="rtl"
     tools:context=".fragment.ScoreListFragment">
 
     <RelativeLayout
         android:id="@+id/rlActionBar"
         android:layout_width="match_parent"
-        android:layoutDirection="ltr"
         android:layout_height="?android:attr/actionBarSize"
         android:background="?attr/colorActionBarBackground">
 
         <ImageView
             android:id="@+id/imgBack"
-            android:padding="15dp"
-            android:src="@drawable/ic_back"
             android:layout_width="?android:attr/actionBarSize"
-            android:layout_height="match_parent"/>
+            android:layout_height="match_parent"
+            android:layout_alignParentLeft="true"
+            android:padding="@dimen/_15sdp"
+            android:src="@drawable/ic_back" />
 
         <TextView
             android:id="@+id/txtConnectionStatus"
+            style="@style/pageTitle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
-            android:text="@string/scoreList"
-            style="@style/pageTitle"/>
+            android:text="@string/scoreList" />
 
     </RelativeLayout>
 
     <ViewFlipper
         android:id="@+id/vfScore"
-        android:layout_below="@id/rlActionBar"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:layout_below="@id/rlActionBar">
 
         <com.wang.avi.AVLoadingIndicatorView
             android:layout_width="50dp"
@@ -49,27 +50,27 @@
             android:id="@+id/recycleScore"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            tools:listitem="@layout/item_score"
-            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"/>
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+            tools:listitem="@layout/item_score" />
 
         <TextView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:gravity="center"
-            android:textSize="@dimen/text_title"
+            android:text="هنوز هیچی ثبت نشده!"
             android:textColor="?attr/colorValue"
-            android:text="هنوز هیچی ثبت نشده!"/>
+            android:textSize="@dimen/text_title" />
 
         <TextView
             android:id="@+id/txtNull"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
             android:layout_centerInParent="true"
             android:gravity="center"
-            android:textSize="@dimen/text_title"
-            android:textColor="?attr/colorValue"
-            android:visibility="gone"
             android:text="متاسفانه هنگام دریافت اطلاعات از سرور به مشکل خوردیم \n لطفا مجدد تلاش کنید!"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"/>
+            android:textColor="?attr/colorValue"
+            android:textSize="@dimen/text_title"
+            android:visibility="gone" />
 
     </ViewFlipper>
 

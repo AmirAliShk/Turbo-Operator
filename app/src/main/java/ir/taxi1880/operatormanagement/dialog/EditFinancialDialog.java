@@ -4,25 +4,24 @@ import android.app.Dialog;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.view.Gravity;
-import android.view.View;
+import android.view.LayoutInflater;
 import android.view.Window;
 import android.view.WindowManager;
-import android.widget.Button;
-import android.widget.EditText;
 
 import org.json.JSONObject;
 
 import ir.taxi1880.operatormanagement.R;
 import ir.taxi1880.operatormanagement.app.EndPoints;
 import ir.taxi1880.operatormanagement.app.MyApplication;
+import ir.taxi1880.operatormanagement.databinding.DialogEditFinancialBinding;
 import ir.taxi1880.operatormanagement.helper.KeyBoardHelper;
 import ir.taxi1880.operatormanagement.helper.TypefaceUtil;
 import ir.taxi1880.operatormanagement.okHttp.RequestHelper;
 import ir.taxi1880.operatormanagement.push.AvaCrashReporter;
 
 public class EditFinancialDialog {
-    View blrView;
     private static final String TAG = EditFinancialDialog.class.getSimpleName();
+    DialogEditFinancialBinding binding;
 
     static Dialog dialog;
 
@@ -30,9 +29,10 @@ public class EditFinancialDialog {
         if (MyApplication.currentActivity == null || MyApplication.currentActivity.isFinishing())
             return;
         dialog = new Dialog(MyApplication.currentActivity);
+        binding = DialogEditFinancialBinding.inflate(LayoutInflater.from(dialog.getContext()));
         dialog.getWindow().requestFeature(Window.FEATURE_NO_TITLE);
         dialog.getWindow().getAttributes().windowAnimations = R.style.ExpandAnimation;
-        dialog.setContentView(R.layout.dialog_edit_financial);
+        dialog.setContentView(binding.getRoot());
         TypefaceUtil.overrideFonts(dialog.getWindow().getDecorView());
         dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         WindowManager.LayoutParams wlp = dialog.getWindow().getAttributes();
@@ -42,14 +42,11 @@ public class EditFinancialDialog {
         dialog.getWindow().setAttributes(wlp);
         dialog.setCancelable(true);
 
-        EditText edtDescription = dialog.findViewById(R.id.edtDescription);
-        Button btnSubmit = dialog.findViewById(R.id.btnSubmit);
-        blrView = dialog.findViewById(R.id.blrView);
-        edtDescription.requestFocus();
-        blrView.setOnClickListener(view -> dismiss());
+        binding.edtDescription.requestFocus();
+        binding.blrView.setOnClickListener(view -> dismiss());
 
-        btnSubmit.setOnClickListener(v -> {
-            String description = edtDescription.getText().toString();
+        binding.btnSubmit.setOnClickListener(v -> {
+            String description = binding.edtDescription.getText().toString();
 
             EditFinancial(driverId, description, carCode);
             dismiss();
@@ -120,5 +117,4 @@ public class EditFinancialDialog {
         }
         dialog = null;
     }
-
 }

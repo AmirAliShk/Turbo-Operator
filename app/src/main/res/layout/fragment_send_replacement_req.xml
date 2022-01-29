@@ -6,20 +6,21 @@
     android:layout_height="match_parent"
     android:background="?attr/colorPageBackground"
     android:clickable="true"
+    android:layoutDirection="rtl"
     tools:context="ir.taxi1880.operatormanagement.fragment.SendReplacementReqFragment">
 
     <RelativeLayout
         android:id="@+id/rlActionBar"
         android:layout_width="match_parent"
         android:layout_height="?android:attr/actionBarSize"
-        android:background="?attr/colorActionBarBackground"
-        android:layoutDirection="ltr">
+        android:background="?attr/colorActionBarBackground">
 
         <ImageView
             android:id="@+id/imgBack"
             android:layout_width="?android:attr/actionBarSize"
             android:layout_height="match_parent"
-            android:padding="15dp"
+            android:layout_alignParentLeft="true"
+            android:padding="@dimen/_15sdp"
             android:src="@drawable/ic_back" />
 
         <TextView

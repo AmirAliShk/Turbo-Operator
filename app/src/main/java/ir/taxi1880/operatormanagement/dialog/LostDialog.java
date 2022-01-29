@@ -4,16 +4,12 @@ import android.app.Dialog;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.view.Gravity;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.AdapterView;
-import android.widget.Button;
-import android.widget.EditText;
-import android.widget.ImageView;
-import android.widget.Spinner;
 import android.widget.Toast;
-import android.widget.ViewFlipper;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -25,6 +21,7 @@ import ir.taxi1880.operatormanagement.R;
 import ir.taxi1880.operatormanagement.adapter.SpinnerAdapter;
 import ir.taxi1880.operatormanagement.app.EndPoints;
 import ir.taxi1880.operatormanagement.app.MyApplication;
+import ir.taxi1880.operatormanagement.databinding.DialogLostBinding;
 import ir.taxi1880.operatormanagement.helper.KeyBoardHelper;
 import ir.taxi1880.operatormanagement.helper.TypefaceUtil;
 import ir.taxi1880.operatormanagement.model.TypeServiceModel;
@@ -34,20 +31,18 @@ import ir.taxi1880.operatormanagement.push.AvaCrashReporter;
 public class LostDialog {
 
     private static final String TAG = LostDialog.class.getSimpleName();
-
-    private Spinner spType;
+    DialogLostBinding binding;
     int type;
-    ViewFlipper vfLoader;
-
     static Dialog dialog;
 
     public void show(String serviceId, String name, String phone, String carCode, boolean isDriverSupport) {
         if (MyApplication.currentActivity == null || MyApplication.currentActivity.isFinishing())
             return;
         dialog = new Dialog(MyApplication.currentActivity);
+        binding = DialogLostBinding.inflate(LayoutInflater.from(dialog.getContext()));
         dialog.getWindow().requestFeature(Window.FEATURE_NO_TITLE);
         dialog.getWindow().getAttributes().windowAnimations = R.style.ExpandAnimation;
-        dialog.setContentView(R.layout.dialog_lost);
+        dialog.setContentView(binding.getRoot());
         TypefaceUtil.overrideFonts(dialog.getWindow().getDecorView());
         dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         WindowManager.LayoutParams wlp = dialog.getWindow().getAttributes();
@@ -57,21 +52,14 @@ public class LostDialog {
         dialog.getWindow().setAttributes(wlp);
         dialog.setCancelable(false);
 
-        ImageView imgClose = dialog.findViewById(R.id.imgClose);
-        Button btnSubmit = dialog.findViewById(R.id.btnSubmit);
-        EditText edtComment = dialog.findViewById(R.id.edtComment);
-        EditText edtAddress = dialog.findViewById(R.id.edtAddress);
-        spType = dialog.findViewById(R.id.spType);
-        vfLoader = dialog.findViewById(R.id.vfLoader);
-
         initSpinner();
-        imgClose.setOnClickListener(view -> dismiss());
+        binding.imgClose.setOnClickListener(view -> dismiss());
 
-        btnSubmit.setOnClickListener(view -> {
+        binding.btnSubmit.setOnClickListener(view -> {
             KeyBoardHelper.hideKeyboard();
 
-            String address = edtAddress.getText().toString();
-            String comment = edtComment.getText().toString();
+            String address = binding.edtAddress.getText().toString();
+            String comment = binding.edtComment.getText().toString();
 
             if (address.isEmpty()) {
                 MyApplication.Toast("لطفا آدرس را وارد کنید", Toast.LENGTH_SHORT);
@@ -95,8 +83,8 @@ public class LostDialog {
     }
 
     private void setLostObject(String serviceId, String carCode, String passengerPhone, String passengerName, String address, String description) {
-        if (vfLoader != null) {
-            vfLoader.setDisplayedChild(1);
+        if (binding.vfLoader != null) {
+            binding.vfLoader.setDisplayedChild(1);
         }
         LoadingDialog.makeCancelableLoader();
         RequestHelper.builder(EndPoints.INSERT_LOST_OBJECT)
@@ -147,8 +135,8 @@ public class LostDialog {
                                 .show();
                     }
 
-                    if (vfLoader != null) {
-                        vfLoader.setDisplayedChild(0);
+                    if (binding.vfLoader != null) {
+                        binding.vfLoader.setDisplayedChild(0);
                     }
 
                     LoadingDialog.dismissCancelableDialog();
@@ -162,7 +150,11 @@ public class LostDialog {
 
         @Override
         public void onFailure(Runnable reCall, Exception e) {
-            MyApplication.handler.post(LoadingDialog::dismissCancelableDialog);
+            MyApplication.handler.post(() -> {
+                LoadingDialog.dismissCancelableDialog();
+                if (binding.vfLoader != null)
+                    binding.vfLoader.setDisplayedChild(0);
+            });
         }
     };
 
@@ -179,14 +171,14 @@ public class LostDialog {
                 typeServiceModels.add(typeServiceModel);
                 serviceList.add(serviceObj.getString("KTypeSharh"));
             }
-            if (spType == null)
+            if (binding.spType == null)
                 return;
 
-            spType.setEnabled(true);
+            binding.spType.setEnabled(true);
 
-            spType.setAdapter(new SpinnerAdapter(MyApplication.currentActivity, R.layout.item_spinner, serviceList));
+            binding.spType.setAdapter(new SpinnerAdapter(MyApplication.currentActivity, R.layout.item_spinner, serviceList));
 
-            spType.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            binding.spType.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
                 @Override
                 public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
 //                    if (spType != null)

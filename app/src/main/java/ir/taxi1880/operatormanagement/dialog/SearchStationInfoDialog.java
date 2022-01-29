@@ -6,20 +6,14 @@ import android.graphics.drawable.ColorDrawable;
 import android.text.InputType;
 import android.util.Log;
 import android.view.Gravity;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
 import android.view.inputmethod.EditorInfo;
 import android.widget.AdapterView;
-import android.widget.EditText;
-import android.widget.ImageView;
-import android.widget.LinearLayout;
-import android.widget.ListView;
 import android.widget.RelativeLayout;
-import android.widget.Spinner;
-import android.widget.TextView;
 import android.widget.Toast;
-import android.widget.ViewFlipper;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -33,6 +27,7 @@ import ir.taxi1880.operatormanagement.adapter.SpinnerAdapter;
 import ir.taxi1880.operatormanagement.adapter.StationInfoAdapter;
 import ir.taxi1880.operatormanagement.app.EndPoints;
 import ir.taxi1880.operatormanagement.app.MyApplication;
+import ir.taxi1880.operatormanagement.databinding.DialogSearchStationInfoBinding;
 import ir.taxi1880.operatormanagement.helper.KeyBoardHelper;
 import ir.taxi1880.operatormanagement.helper.StringHelper;
 import ir.taxi1880.operatormanagement.helper.TypefaceUtil;
@@ -41,22 +36,12 @@ import ir.taxi1880.operatormanagement.okHttp.RequestHelper;
 import ir.taxi1880.operatormanagement.push.AvaCrashReporter;
 
 public class SearchStationInfoDialog {
+    private static final String TAG = SearchStationInfoDialog.class.getSimpleName();
+    DialogSearchStationInfoBinding binding;
     private StationInfoAdapter stationInfoAdapter;
     ArrayList<StationInfoModel> stationInfoModels;
     StationInfoModel stationInfoModel;
-    private static final String TAG = SearchStationInfoDialog.class.getSimpleName();
     private static Dialog dialog;
-    private ListView listStationInfo;
-    TextView txtStationCode;
-    TextView txtStationName;
-    EditText edtStationCode;
-    LinearLayout llSuburbs;
-    LinearLayout llSearchStation;
-    LinearLayout llStationHeader;
-    ViewFlipper vfStationInfo;
-    ImageView imgClear;
-    ImageView imgSearch;
-    Spinner spSearchType;
     int city;
     RelativeLayout rlSearchType;
     String stationCode = "0";
@@ -72,6 +57,7 @@ public class SearchStationInfoDialog {
         if (MyApplication.currentActivity == null || MyApplication.currentActivity.isFinishing())
             return;
         dialog = new Dialog(MyApplication.currentActivity);
+        binding = DialogSearchStationInfoBinding.inflate(LayoutInflater.from(dialog.getContext()));
         dialog.getWindow().requestFeature(Window.FEATURE_NO_TITLE);
         dialog.getWindow().getAttributes().windowAnimations = R.style.ExpandAnimation;
         dialog.setContentView(R.layout.dialog_search_station_info);
@@ -84,63 +70,51 @@ public class SearchStationInfoDialog {
         dialog.getWindow().setAttributes(wlp);
         dialog.setCancelable(false);
         this.city = city;
-        listStationInfo = dialog.findViewById(R.id.listStationInfo);
-        llSearchStation = dialog.findViewById(R.id.llSearchStation);
-        txtStationName = dialog.findViewById(R.id.txtStationName);
-        llSuburbs = dialog.findViewById(R.id.llSuburbs);
-        edtStationCode = dialog.findViewById(R.id.edtStationCode);
-        txtStationCode = dialog.findViewById(R.id.txtStationCode);
-        LinearLayout llCLose = dialog.findViewById(R.id.llCLose);
-        imgSearch = dialog.findViewById(R.id.imgSearch);
-        imgClear = dialog.findViewById(R.id.imgClear);
-        vfStationInfo = dialog.findViewById(R.id.vfStationInfo);
-        spSearchType = dialog.findViewById(R.id.spSearchType);
-        rlSearchType = dialog.findViewById(R.id.rlSearchType);
-        llStationHeader = dialog.findViewById(R.id.llStationHeader);
         this.listener = listener;
-        imgSearch.setOnClickListener(view -> {
-            String origin = edtStationCode.getText().toString();
+
+        binding.imgSearch.setOnClickListener(view -> {
+            String origin = binding.edtStationCode.getText().toString();
             if (origin.isEmpty()) {
                 MyApplication.Toast("لطفا آدرس یا شماره ایستگاه را وارد کنید.", Toast.LENGTH_SHORT);
                 return;
             }
-            if (spSearchType.getSelectedItemPosition() == 0) {
-                stationCode = StringHelper.toEnglishDigits(edtStationCode.getText().toString());
+            if (binding.spSearchType.getSelectedItemPosition() == 0) {
+                stationCode = StringHelper.toEnglishDigits(binding.edtStationCode.getText().toString());
                 address = "0";
-            } else if (spSearchType.getSelectedItemPosition() == 1) {
+            } else if (binding.spSearchType.getSelectedItemPosition() == 1) {
                 stationCode = "0";
-                address = edtStationCode.getText().toString() + "";
+                address = binding.edtStationCode.getText().toString() + "";
             }
 
             getStationInfo(city, stationCode, address);
             KeyBoardHelper.hideKeyboard();
         });
 
-        imgClear.setOnClickListener(view -> {
-            edtStationCode.setText("");
-            if (vfStationInfo != null)
-                vfStationInfo.setDisplayedChild(0);
+        binding.imgClear.setOnClickListener(view -> {
+            binding.edtStationCode.setText("");
+            if (binding.vfStationInfo != null)
+                binding.vfStationInfo.setDisplayedChild(0);
         });
 
-        llCLose.setOnClickListener(view -> dismiss());
+        binding.llCLose.setOnClickListener(view -> dismiss());
 
         rlSearchType.setOnClickListener(view -> {
-            spSearchType.performClick();
+            binding.spSearchType.performClick();
         });
 
-        edtStationCode.setOnEditorActionListener((v, actionId, event) -> {
+        binding.edtStationCode.setOnEditorActionListener((v, actionId, event) -> {
             if (actionId == EditorInfo.IME_ACTION_DONE) {
-                String origin = edtStationCode.getText().toString();
+                String origin = binding.edtStationCode.getText().toString();
                 if (origin.isEmpty()) {
                     MyApplication.Toast("لطفا نام یا شماره ایستگاه را وارد کنید.", Toast.LENGTH_SHORT);
                     return false;
                 }
-                if (spSearchType.getSelectedItemPosition() == 0) {
-                    stationCode = StringHelper.toEnglishDigits(edtStationCode.getText().toString());
+                if (binding.spSearchType.getSelectedItemPosition() == 0) {
+                    stationCode = StringHelper.toEnglishDigits(binding.edtStationCode.getText().toString());
                     address = "0";
-                } else if (spSearchType.getSelectedItemPosition() == 1) {
+                } else if (binding.spSearchType.getSelectedItemPosition() == 1) {
                     stationCode = "0";
-                    address = edtStationCode.getText().toString() + "";
+                    address = binding.edtStationCode.getText().toString() + "";
                 }
 
                 getStationInfo(city, stationCode, address);
@@ -153,18 +127,18 @@ public class SearchStationInfoDialog {
         initWaitingTimeSpinner();
 
         if (isFromAddress) {
-            spSearchType.setSelection(1);
+            binding.spSearchType.setSelection(1);
         }
 
         if (!station.equals("")) {
             stationCode = station;
-            edtStationCode.setText(station);
-            spSearchType.setSelection(0);
+            binding.edtStationCode.setText(station);
+            binding.spSearchType.setSelection(0);
             getStationInfo(city, station, address);
             KeyBoardHelper.hideKeyboard();
         }
         if (isFromDetermination) {
-            listStationInfo.setOnItemClickListener((adapterView, view, i, l) -> {
+            binding.listStationInfo.setOnItemClickListener((adapterView, view, i, l) -> {
                 listener.stationCode(stationInfoModels.get(i).getStcode() + "");
                 Log.i(TAG, "show: " + stationInfoModels.get(i).getStcode() + "");
                 dismiss();
@@ -179,26 +153,26 @@ public class SearchStationInfoDialog {
         ArrayList<String> searchType = new ArrayList<String>(Arrays.asList("کد ایستگاه", "آدرس"));
         try {
 
-            if (spSearchType == null)
+            if (binding.spSearchType == null)
                 return;
 
-            spSearchType.setAdapter(new SpinnerAdapter(MyApplication.currentActivity, R.layout.item_spinner, searchType));
+            binding.spSearchType.setAdapter(new SpinnerAdapter(MyApplication.currentActivity, R.layout.item_spinner, searchType));
 
-            spSearchType.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            binding.spSearchType.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
                 @Override
                 public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
 //                    if (spSearchType != null)
 //                        ((TextView) parent.getChildAt(0)).setTextColor(Color.GRAY);
                     if (firstTime) {
-                        edtStationCode.setText("");
+                        binding.edtStationCode.setText("");
                     }
                     firstTime = true;
 
-                    if (spSearchType.getSelectedItemPosition() == 0) {
-                        edtStationCode.setInputType(InputType.TYPE_CLASS_NUMBER);
+                    if (binding.spSearchType.getSelectedItemPosition() == 0) {
+                        binding.edtStationCode.setInputType(InputType.TYPE_CLASS_NUMBER);
                     }
-                    if (spSearchType.getSelectedItemPosition() == 1) {
-                        edtStationCode.setInputType(InputType.TYPE_CLASS_TEXT);
+                    if (binding.spSearchType.getSelectedItemPosition() == 1) {
+                        binding.edtStationCode.setInputType(InputType.TYPE_CLASS_TEXT);
                     }
                 }
 
@@ -213,8 +187,8 @@ public class SearchStationInfoDialog {
     }
 
     private void getStationInfo(int city, String stationCode, String address) {
-        if (vfStationInfo != null)
-            vfStationInfo.setDisplayedChild(1);
+        if (binding.vfStationInfo != null)
+            binding.vfStationInfo.setDisplayedChild(1);
         KeyBoardHelper.hideKeyboard();
         RequestHelper.builder(EndPoints.STATION_INFO)
 //                .addPath(StringHelper.toEnglishDigits(stationCode) + "")
@@ -230,9 +204,9 @@ public class SearchStationInfoDialog {
         public void onResponse(Runnable reCall, Object... args) {
             MyApplication.handler.post(() -> {
                 try {
-                    MyApplication.handler.postDelayed(() -> KeyBoardHelper.hideKeyboard(), 100);
-                    if (vfStationInfo != null)
-                        vfStationInfo.setDisplayedChild(2);
+                    MyApplication.handler.postDelayed(KeyBoardHelper::hideKeyboard, 100);
+                    if (binding.vfStationInfo != null)
+                        binding.vfStationInfo.setDisplayedChild(2);
                     boolean isCountrySide = false;
                     String stationName = "";
                     stationInfoModels = new ArrayList<>();
@@ -257,15 +231,15 @@ public class SearchStationInfoDialog {
                                 stationName = dataObj.getString("stationName");
                             }
 
-                            txtStationCode.setText(StringHelper.toPersianDigits(dataObj.getString("stcode") + ""));
+                            binding.txtStationCode.setText(StringHelper.toPersianDigits(dataObj.getString("stcode") + ""));
 
                             if (stationInfoModel.getStreet().isEmpty()) continue;
 
                             if (stationCode.equals("0")) {
-                                llStationHeader.setVisibility(View.GONE);
+                                binding.llStationHeader.setVisibility(View.GONE);
                                 stationInfoModel.setAddressOrNot("address");
                             } else {
-                                llStationHeader.setVisibility(View.VISIBLE);
+                                binding.llStationHeader.setVisibility(View.VISIBLE);
                                 stationInfoModel.setAddressOrNot("stationCode");
                             }
 
@@ -273,23 +247,23 @@ public class SearchStationInfoDialog {
                         }
 
                         if (stationInfoModels.size() == 0) {
-                            if (vfStationInfo != null)
-                                vfStationInfo.setDisplayedChild(4);
+                            if (binding.vfStationInfo != null)
+                                binding.vfStationInfo.setDisplayedChild(4);
                         } else {
-                            if (txtStationCode == null) return;
+                            if (binding.txtStationCode == null) return;
                             stationInfoAdapter = new StationInfoAdapter(stationInfoModels);
-                            listStationInfo.setAdapter(stationInfoAdapter);
+                            binding.listStationInfo.setAdapter(stationInfoAdapter);
 
                             if (stationName.equals("")) {
-                                txtStationName.setText("ثبت نشده");
+                                binding.txtStationName.setText("ثبت نشده");
                             } else {
-                                txtStationName.setText(StringHelper.toPersianDigits(stationName));
+                                binding.txtStationName.setText(StringHelper.toPersianDigits(stationName));
                             }
 
                             if (isCountrySide) {
-                                llSuburbs.setVisibility(View.VISIBLE);
+                                binding.llSuburbs.setVisibility(View.VISIBLE);
                             } else {
-                                llSuburbs.setVisibility(View.GONE);
+                                binding.llSuburbs.setVisibility(View.GONE);
                             }
                         }
 
@@ -304,8 +278,8 @@ public class SearchStationInfoDialog {
                 } catch (JSONException e) {
                     e.printStackTrace();
                     AvaCrashReporter.send(e, TAG + " class, getStationInfo method");
-                    if (vfStationInfo != null)
-                        vfStationInfo.setDisplayedChild(3);
+                    if (binding.vfStationInfo != null)
+                        binding.vfStationInfo.setDisplayedChild(3);
                 }
             });
         }
@@ -313,8 +287,8 @@ public class SearchStationInfoDialog {
         @Override
         public void onFailure(Runnable reCall, Exception e) {
             MyApplication.handler.post(() -> {
-                if (vfStationInfo != null)
-                    vfStationInfo.setDisplayedChild(3);
+                if (binding.vfStationInfo != null)
+                    binding.vfStationInfo.setDisplayedChild(3);
             });
         }
     };
@@ -331,5 +305,4 @@ public class SearchStationInfoDialog {
         }
         dialog = null;
     }
-
 }

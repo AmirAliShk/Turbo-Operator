@@ -4,15 +4,15 @@ import android.app.Dialog;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.view.Gravity;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
-import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import ir.taxi1880.operatormanagement.R;
 import ir.taxi1880.operatormanagement.app.MyApplication;
+import ir.taxi1880.operatormanagement.databinding.DialogTripOptionBinding;
 import ir.taxi1880.operatormanagement.fragment.PassengerTripSupportFragment;
 import ir.taxi1880.operatormanagement.helper.FragmentHelper;
 import ir.taxi1880.operatormanagement.helper.KeyBoardHelper;
@@ -22,22 +22,23 @@ import ir.taxi1880.operatormanagement.push.AvaCrashReporter;
 public class TripOptionDialog {
 
     private static final String TAG = TripOptionDialog.class.getSimpleName();
+    DialogTripOptionBinding binding;
 
     public interface Listener {
         void onClose(boolean b);
     }
 
     Listener listener;
-    View blrView;
     static Dialog dialog;
 
     public void show(Listener listener, String mobile, String name, int cityCode) {
         if (MyApplication.currentActivity == null || MyApplication.currentActivity.isFinishing())
             return;
         dialog = new Dialog(MyApplication.currentActivity);
+        binding = DialogTripOptionBinding.inflate(LayoutInflater.from(dialog.getContext()));
         dialog.getWindow().requestFeature(Window.FEATURE_NO_TITLE);
         dialog.getWindow().getAttributes().windowAnimations = R.style.ExpandAnimation;
-        dialog.setContentView(R.layout.dialog_trip_option);
+        dialog.setContentView(binding.getRoot());
         TypefaceUtil.overrideFonts(dialog.getWindow().getDecorView());
         dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         WindowManager.LayoutParams wlp = dialog.getWindow().getAttributes();
@@ -48,30 +49,23 @@ public class TripOptionDialog {
         dialog.setCancelable(true);
         this.listener = listener;
 
-        LinearLayout llHire = dialog.findViewById(R.id.llHire);
-        LinearLayout llSupport = dialog.findViewById(R.id.llSupport);
-        LinearLayout llReserve = dialog.findViewById(R.id.llReserve);
-        LinearLayout llTripOption = dialog.findViewById(R.id.llTripOption);
-        ImageView imgClose = dialog.findViewById(R.id.imgClose);
-        blrView = dialog.findViewById(R.id.blrView);
+        binding.blrView.setOnClickListener(view -> dismiss());
 
-        blrView.setOnClickListener(view -> dismiss());
-
-        llTripOption.setOnClickListener(view -> {
+        binding. llTripOption.setOnClickListener(view -> {
             return;
         });
 
         if (MyApplication.prefManager.getCustomerSupport() == 1) {
-            llSupport.setVisibility(View.VISIBLE);
-            llSupport.setOnClickListener(view -> {
+            binding.llSupport.setVisibility(View.VISIBLE);
+            binding.llSupport.setOnClickListener(view -> {
                 FragmentHelper.toFragment(MyApplication.currentActivity, new PassengerTripSupportFragment()).replace();
                 dismiss();
             });
         } else {
-            llSupport.setVisibility(View.GONE);
+            binding.llSupport.setVisibility(View.GONE);
         }
 
-        llHire.setOnClickListener(view -> {
+        binding.llHire.setOnClickListener(view -> {
             if (mobile.isEmpty()) {
                 MyApplication.Toast("لطفا شماره موبایل را وارد کنید", Toast.LENGTH_SHORT);
                 dismiss();
@@ -93,12 +87,12 @@ public class TripOptionDialog {
             dismiss();
         });
 
-        llReserve.setOnClickListener(view -> {
+        binding. llReserve.setOnClickListener(view -> {
             new ReserveDialog().show();
             dismiss();
         });
 
-        imgClose.setOnClickListener(view -> dismiss());
+        binding.imgClose.setOnClickListener(view -> dismiss());
 
         dialog.show();
     }

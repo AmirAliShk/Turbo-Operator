@@ -23,7 +23,8 @@
             android:id="@+id/imgBack"
             android:layout_width="?android:attr/actionBarSize"
             android:layout_height="match_parent"
-            android:padding="15dp"
+            android:layout_alignParentLeft="true"
+            android:padding="@dimen/_15sdp"
             android:src="@drawable/ic_back" />
 
         <ImageView
@@ -325,7 +326,7 @@
                         android:layout_height="?android:attr/actionBarSize"
                         android:layout_margin="@dimen/_5sdp"
                         android:layout_weight="1"
-                        android:background="@drawable/bg_button_gray_edge"
+                        android:background="@drawable/bg_body1"
                         android:padding="@dimen/_5sdp"
                         android:src="@drawable/ic_edit_financial" />
 

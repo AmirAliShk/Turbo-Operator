@@ -19,9 +19,8 @@
             android:id="@+id/imgBack"
             android:layout_width="?attr/actionBarSize"
             android:layout_height="?attr/actionBarSize"
-            android:layout_alignParentEnd="true"
-            android:layout_alignParentRight="true"
-            android:padding="15dp"
+            android:layout_alignParentLeft="true"
+            android:padding="@dimen/_15sdp"
             android:src="@drawable/ic_back" />
 
         <ImageView

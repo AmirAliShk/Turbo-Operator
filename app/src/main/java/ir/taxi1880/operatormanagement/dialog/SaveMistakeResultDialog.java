@@ -7,17 +7,12 @@ import android.app.Dialog;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.AdapterView;
-import android.widget.Button;
-import android.widget.EditText;
-import android.widget.RadioButton;
-import android.widget.RadioGroup;
-import android.widget.Spinner;
 import android.widget.Toast;
-import android.widget.ViewFlipper;
 
 import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 
@@ -27,15 +22,12 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 
-import butterknife.BindView;
-import butterknife.ButterKnife;
-import butterknife.OnClick;
-import butterknife.Unbinder;
 import ir.taxi1880.operatormanagement.R;
 import ir.taxi1880.operatormanagement.adapter.SpinnerAdapter;
 import ir.taxi1880.operatormanagement.app.EndPoints;
 import ir.taxi1880.operatormanagement.app.MyApplication;
 import ir.taxi1880.operatormanagement.dataBase.DataBase;
+import ir.taxi1880.operatormanagement.databinding.DialogSaveMistakeResultBinding;
 import ir.taxi1880.operatormanagement.helper.TypefaceUtil;
 import ir.taxi1880.operatormanagement.model.MistakeReasonsModel;
 import ir.taxi1880.operatormanagement.okHttp.RequestHelper;
@@ -45,7 +37,7 @@ public class SaveMistakeResultDialog {
     public static final String TAG = SaveMistakeResultDialog.class.getSimpleName();
     static Dialog dialog;
     private Dialog staticDialog = null;
-    Unbinder unbinder;
+    DialogSaveMistakeResultBinding binding;
     String culprit;
     String result;
     String sipNumber = "0";
@@ -64,122 +56,6 @@ public class SaveMistakeResultDialog {
 
     MistakesResult mistakesResult;
 
-    @BindView(R.id.rgResult)
-    RadioGroup rgResult;
-
-    @BindView(R.id.rbAnotherOperator)
-    RadioButton rbAnotherOperator;
-
-    @BindView(R.id.rbUnknown)
-    RadioButton rbUnknown;
-
-    @BindView(R.id.rbStationRegistrationDestinationOperatorBlame)
-    RadioButton rbStationRegistrationDestinationOperatorBlame;
-
-    @BindView(R.id.rbStationRegistrationOriginOperatorBlame)
-    RadioButton rbStationRegistrationOriginOperatorBlame;
-
-    @BindView(R.id.rbTripRegistrationOperatorBlame)
-    RadioButton rbTripRegistrationOperatorBlame;
-
-    @BindView(R.id.rgCulprit)
-    RadioGroup rgCulprit;
-
-    @BindView(R.id.vfLoader)
-    ViewFlipper vfLoader;
-
-    @BindView(R.id.edtAnotherOperator)
-    EditText edtAnotherOperator;
-
-    @BindView(R.id.spinnerSaveMisRes)
-    Spinner reasonSpinner;
-
-    @OnClick(R.id.lLMainSaveMistake)
-    void onOpenSpinner() {
-        reasonSpinner.performClick();
-    }
-
-    @OnClick(R.id.btnSubmit)
-    void onSubmit() {
-        if (rgCulprit.getCheckedRadioButtonId() == -1 && !rbAnotherOperator.isChecked()) {
-            MyApplication.Toast("لطفا مقصر را مشخص کنید.", Toast.LENGTH_SHORT);
-            return;
-        }
-
-        if (rgResult.getCheckedRadioButtonId() == -1) {
-            MyApplication.Toast("لطفا نتیجه را مشخص کنید.", Toast.LENGTH_SHORT);
-            return;
-        }
-
-        if (reasonId == 0) {
-            MyApplication.Toast("لطفا دلیل را انتخاب کنید.", Toast.LENGTH_SHORT);
-            return;
-        }
-        switch (rgCulprit.getCheckedRadioButtonId()) {
-            case R.id.rbTripRegistrationOperatorBlame:
-                culprit = "1";
-                break;
-            case R.id.rbStationRegistrationOriginOperatorBlame:
-                culprit = "2";
-                break;
-            case R.id.rbStationRegistrationDestinationOperatorBlame:
-                culprit = "4";
-                break;
-            case R.id.rbChecker:
-                culprit = "6";
-                break;
-            case R.id.rbUnknown:
-                culprit = "3";
-                break;
-
-        }
-        if (rbAnotherOperator.isChecked()) {
-            culprit = "5";
-        }
-        if (rbAnotherOperator.isChecked() && (edtAnotherOperator.getText().toString().isEmpty() || edtAnotherOperator.getText().toString().equals("0"))) {
-            MyApplication.Toast("لطفا سیپ اپراتور را وارد کنید.", Toast.LENGTH_SHORT);
-            return;
-        }
-
-        switch (rgResult.getCheckedRadioButtonId()) {
-            case R.id.rbDeleteOriginAddress:
-                result = "1";
-                break;
-            case R.id.rbDeleteDestinationAddress:
-                result = "6";
-                break;
-            case R.id.rbDeleteOriginStation:
-                result = "2";
-                break;
-            case R.id.rbDeleteDestinationStation:
-                result = "5";
-                break;
-            case R.id.rbDeleteCity:
-                result = "3";
-                break;
-            case R.id.rbOtherCases:
-                result = "4";
-                break;
-        }
-
-        int listenId = dataBase.getMistakesRow().getId();
-        if (edtAnotherOperator.getText().toString().isEmpty()) {
-            sipNumber = "0";
-        } else {
-            sipNumber = edtAnotherOperator.getText().toString();
-        }
-
-        sendResult(culprit, result, listenId, sipNumber);
-    }
-
-    @BindView(R.id.btnSubmit)
-    Button btnSubmit;
-
-    @OnClick(R.id.imgClose)
-    void onClose() {
-        dismiss();
-    }
-
     public void show(int complaintId, MistakesResult mistakesResult) {
         if (MyApplication.currentActivity == null || MyApplication.currentActivity.isFinishing())
             return;
@@ -194,12 +70,12 @@ public class SaveMistakeResultDialog {
         } else {
             dialog = new Dialog(MyApplication.currentActivity);
             tempDialog = dialog;
+            binding = DialogSaveMistakeResultBinding.inflate(LayoutInflater.from(dialog.getContext()));
         }
         tempDialog.getWindow().requestFeature(Window.FEATURE_NO_TITLE);
-        tempDialog.setContentView(R.layout.dialog_save_mistake_result);
+        tempDialog.setContentView(binding.getRoot());
         tempDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         tempDialog.setCancelable(false);
-        unbinder = ButterKnife.bind(this, tempDialog);
         TypefaceUtil.overrideFonts(tempDialog.getWindow().getDecorView(), MyApplication.IraSanSMedume);
         tempDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         WindowManager.LayoutParams wlp = tempDialog.getWindow().getAttributes();
@@ -211,42 +87,117 @@ public class SaveMistakeResultDialog {
         dataBase = new DataBase(MyApplication.context);
         this.mistakesId = complaintId;
         this.mistakesResult = mistakesResult;
-        edtAnotherOperator.setEnabled(false);
-        rbAnotherOperator.setOnCheckedChangeListener((compoundButton, b) -> {
-            if (rbAnotherOperator.isChecked()) {
-                rgCulprit.clearCheck();
-                edtAnotherOperator.setEnabled(true);
-                if (!edtAnotherOperator.getText().toString().isEmpty()) {
-                    sipNumber = edtAnotherOperator.getText().toString();
+        binding.edtAnotherOperator.setEnabled(false);
+        binding.rbAnotherOperator.setOnCheckedChangeListener((compoundButton, b) -> {
+            if (binding.rbAnotherOperator.isChecked()) {
+                binding.rgCulprit.clearCheck();
+                binding.edtAnotherOperator.setEnabled(true);
+                if (!binding.edtAnotherOperator.getText().toString().isEmpty()) {
+                    sipNumber = binding.edtAnotherOperator.getText().toString();
                 }
             } else {
-                edtAnotherOperator.setEnabled(false);
+                binding.edtAnotherOperator.setEnabled(false);
             }
         });
 
-        rbStationRegistrationDestinationOperatorBlame.setOnCheckedChangeListener((compoundButton, b) -> {
-            if (rbStationRegistrationDestinationOperatorBlame.isChecked()) {
-                rbAnotherOperator.setChecked(false);
+        binding.rbStationRegistrationDestinationOperatorBlame.setOnCheckedChangeListener((compoundButton, b) -> {
+            if (binding.rbStationRegistrationDestinationOperatorBlame.isChecked()) {
+                binding.rbAnotherOperator.setChecked(false);
             }
         });
 
-        rbStationRegistrationOriginOperatorBlame.setOnCheckedChangeListener((compoundButton, b) -> {
-            if (rbStationRegistrationOriginOperatorBlame.isChecked()) {
-                rbAnotherOperator.setChecked(false);
+        binding.rbStationRegistrationOriginOperatorBlame.setOnCheckedChangeListener((compoundButton, b) -> {
+            if (binding.rbStationRegistrationOriginOperatorBlame.isChecked()) {
+                binding.rbAnotherOperator.setChecked(false);
             }
         });
 
-        rbTripRegistrationOperatorBlame.setOnCheckedChangeListener((compoundButton, b) -> {
-            if (rbTripRegistrationOperatorBlame.isChecked()) {
-                rbAnotherOperator.setChecked(false);
+        binding.rbTripRegistrationOperatorBlame.setOnCheckedChangeListener((compoundButton, b) -> {
+            if (binding.rbTripRegistrationOperatorBlame.isChecked()) {
+                binding.rbAnotherOperator.setChecked(false);
             }
         });
 
-        rbUnknown.setOnCheckedChangeListener((compoundButton, b) -> {
-            if (rbUnknown.isChecked()) {
-                rbAnotherOperator.setChecked(false);
+        binding.rbUnknown.setOnCheckedChangeListener((compoundButton, b) -> {
+            if (binding.rbUnknown.isChecked()) {
+                binding.rbAnotherOperator.setChecked(false);
             }
         });
+
+        binding.lLMainSaveMistake.setOnClickListener(view1 -> binding.spinnerSaveMisRes.performClick());
+
+        binding.btnSubmit.setOnClickListener(view1 -> {
+            if (binding.rgCulprit.getCheckedRadioButtonId() == -1 && !binding.rbAnotherOperator.isChecked()) {
+                MyApplication.Toast("لطفا مقصر را مشخص کنید.", Toast.LENGTH_SHORT);
+                return;
+            }
+
+            if (binding.rgResult.getCheckedRadioButtonId() == -1) {
+                MyApplication.Toast("لطفا نتیجه را مشخص کنید.", Toast.LENGTH_SHORT);
+                return;
+            }
+
+            if (reasonId == 0) {
+                MyApplication.Toast("لطفا دلیل را انتخاب کنید.", Toast.LENGTH_SHORT);
+                return;
+            }
+            switch (binding.rgCulprit.getCheckedRadioButtonId()) {
+                case R.id.rbTripRegistrationOperatorBlame:
+                    culprit = "1";
+                    break;
+                case R.id.rbStationRegistrationOriginOperatorBlame:
+                    culprit = "2";
+                    break;
+                case R.id.rbStationRegistrationDestinationOperatorBlame:
+                    culprit = "4";
+                    break;
+                case R.id.rbChecker:
+                    culprit = "6";
+                    break;
+                case R.id.rbUnknown:
+                    culprit = "3";
+                    break;
+            }
+            if (binding.rbAnotherOperator.isChecked()) {
+                culprit = "5";
+            }
+            if (binding.rbAnotherOperator.isChecked() && (binding.edtAnotherOperator.getText().toString().isEmpty() || binding.edtAnotherOperator.getText().toString().equals("0"))) {
+                MyApplication.Toast("لطفا سیپ اپراتور را وارد کنید.", Toast.LENGTH_SHORT);
+                return;
+            }
+
+            switch (binding.rgResult.getCheckedRadioButtonId()) {
+                case R.id.rbDeleteOriginAddress:
+                    result = "1";
+                    break;
+                case R.id.rbDeleteDestinationAddress:
+                    result = "6";
+                    break;
+                case R.id.rbDeleteOriginStation:
+                    result = "2";
+                    break;
+                case R.id.rbDeleteDestinationStation:
+                    result = "5";
+                    break;
+                case R.id.rbDeleteCity:
+                    result = "3";
+                    break;
+                case R.id.rbOtherCases:
+                    result = "4";
+                    break;
+            }
+
+            int listenId = dataBase.getMistakesRow().getId();
+            if (binding.edtAnotherOperator.getText().toString().isEmpty()) {
+                sipNumber = "0";
+            } else {
+                sipNumber = binding.edtAnotherOperator.getText().toString();
+            }
+
+            sendResult(culprit, result, listenId, sipNumber);
+        });
+
+        binding.imgClose.setOnClickListener(view -> dismiss());
 
         tempDialog.show();
     }
@@ -267,8 +218,8 @@ public class SaveMistakeResultDialog {
                 mistakeReasons.add(mistakeReason);
                 reasons.add(i + 1, reasonObj.getString("reason"));
             }
-            reasonSpinner.setAdapter(new SpinnerAdapter(MyApplication.context, R.layout.item_spinner, reasons));
-            reasonSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            binding.spinnerSaveMisRes.setAdapter(new SpinnerAdapter(MyApplication.context, R.layout.item_spinner, reasons));
+            binding.spinnerSaveMisRes.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
                 @Override
                 public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                     if (position == 0) {
@@ -292,8 +243,8 @@ public class SaveMistakeResultDialog {
 
     private void sendResult(String culprit, String result, int listenId, String sipNumber) {
         LoadingDialog.makeCancelableLoader();
-        if (vfLoader != null)
-            vfLoader.setDisplayedChild(1);
+        if (binding.vfLoader != null)
+            binding.vfLoader.setDisplayedChild(1);
 //        api/operator/v3/support/v3/listen
         RequestHelper.builder(EndPoints.V2_LISTEN)
                 .addParam("culprit", culprit)
@@ -335,14 +286,14 @@ public class SaveMistakeResultDialog {
                                     })
                                     .show();
                         }
-                        if (vfLoader != null)
-                            vfLoader.setDisplayedChild(0);
+                        if (binding.vfLoader != null)
+                            binding.vfLoader.setDisplayedChild(0);
                     }
                 } catch (Exception e) {
                     LoadingDialog.dismissCancelableDialog();
                     mistakesResult.onSuccess(false);
-                    if (vfLoader != null)
-                        vfLoader.setDisplayedChild(0);
+                    if (binding.vfLoader != null)
+                        binding.vfLoader.setDisplayedChild(0);
                     e.printStackTrace();
                     AvaCrashReporter.send(e, TAG + " class, sendResult method");
                 }
@@ -354,8 +305,8 @@ public class SaveMistakeResultDialog {
             MyApplication.handler.post(() -> {
                 LoadingDialog.dismissCancelableDialog();
                 mistakesResult.onSuccess(false);
-                if (vfLoader != null)
-                    vfLoader.setDisplayedChild(0);
+                if (binding.vfLoader != null)
+                    binding.vfLoader.setDisplayedChild(0);
             });
         }
     };
@@ -378,6 +329,5 @@ public class SaveMistakeResultDialog {
             AvaCrashReporter.send(e, TAG + " class, dismiss method");
         }
         dialog = null;
-        unbinder.unbind();
     }
 }

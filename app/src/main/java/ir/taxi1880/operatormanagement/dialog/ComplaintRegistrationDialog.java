@@ -5,14 +5,12 @@ import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.util.Log;
 import android.view.Gravity;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.AdapterView;
-import android.widget.Button;
-import android.widget.ImageView;
 import android.widget.Spinner;
-import android.widget.ViewFlipper;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -25,6 +23,7 @@ import ir.taxi1880.operatormanagement.adapter.SpinnerAdapter;
 import ir.taxi1880.operatormanagement.app.DataHolder;
 import ir.taxi1880.operatormanagement.app.EndPoints;
 import ir.taxi1880.operatormanagement.app.MyApplication;
+import ir.taxi1880.operatormanagement.databinding.DialogComplaintRegistreationBinding;
 import ir.taxi1880.operatormanagement.helper.KeyBoardHelper;
 import ir.taxi1880.operatormanagement.helper.TypefaceUtil;
 import ir.taxi1880.operatormanagement.model.TypeServiceModel;
@@ -34,10 +33,10 @@ import ir.taxi1880.operatormanagement.push.AvaCrashReporter;
 public class ComplaintRegistrationDialog {
 
     private static final String TAG = ComplaintRegistrationDialog.class.getSimpleName();
+    DialogComplaintRegistreationBinding binding;
 
     private Spinner spComplaintType;
     private int complaintType;
-    ViewFlipper vfLoader;
 
     static Dialog dialog;
 
@@ -45,9 +44,10 @@ public class ComplaintRegistrationDialog {
         if (MyApplication.currentActivity == null || MyApplication.currentActivity.isFinishing())
             return;
         dialog = new Dialog(MyApplication.currentActivity);
+        binding = DialogComplaintRegistreationBinding.inflate(LayoutInflater.from(dialog.getContext()));
         dialog.getWindow().requestFeature(Window.FEATURE_NO_TITLE);
         dialog.getWindow().getAttributes().windowAnimations = R.style.ExpandAnimation;
-        dialog.setContentView(R.layout.dialog_complaint_registreation);
+        dialog.setContentView(binding.getRoot());
         TypefaceUtil.overrideFonts(dialog.getWindow().getDecorView());
         dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         WindowManager.LayoutParams wlp = dialog.getWindow().getAttributes();
@@ -57,18 +57,13 @@ public class ComplaintRegistrationDialog {
         dialog.getWindow().setAttributes(wlp);
         dialog.setCancelable(false);
 
-        ImageView imgClose = dialog.findViewById(R.id.imgClose);
-        Button btnSubmit = dialog.findViewById(R.id.btnSubmit);
-        spComplaintType = dialog.findViewById(R.id.spComplaintType);
-        vfLoader = dialog.findViewById(R.id.vfLoader);
-
         initSpinner();
-        imgClose.setOnClickListener(view -> {
+        binding.imgClose.setOnClickListener(view -> {
             KeyBoardHelper.hideKeyboard();
             dismiss();
         });
 
-        btnSubmit.setOnClickListener(view -> {
+        binding.btnSubmit.setOnClickListener(view -> {
             KeyBoardHelper.hideKeyboard();
 
             setComplaint(serviceId, voipId);
@@ -79,8 +74,8 @@ public class ComplaintRegistrationDialog {
     }
 
     private void setComplaint(String serviceId, String voipId) {
-        if (vfLoader != null) {
-            vfLoader.setDisplayedChild(1);
+        if (binding.vfLoader != null) {
+            binding.vfLoader.setDisplayedChild(1);
         }
         LoadingDialog.makeCancelableLoader();
         RequestHelper.builder(EndPoints.INSERT_COMPLAINT)
@@ -129,8 +124,8 @@ public class ComplaintRegistrationDialog {
                                 .show();
                     }
 
-                    if (vfLoader != null) {
-                        vfLoader.setDisplayedChild(0);
+                    if (binding.vfLoader != null) {
+                        binding.vfLoader.setDisplayedChild(0);
                     }
 
                     LoadingDialog.dismissCancelableDialog();
@@ -144,7 +139,12 @@ public class ComplaintRegistrationDialog {
 
         @Override
         public void onFailure(Runnable reCall, Exception e) {
-            MyApplication.handler.post(LoadingDialog::dismissCancelableDialog);
+            MyApplication.handler.post(() -> {
+                LoadingDialog.dismissCancelableDialog();
+                if (binding.vfLoader != null) {
+                    binding.vfLoader.setDisplayedChild(0);
+                }
+            });
         }
     };
 

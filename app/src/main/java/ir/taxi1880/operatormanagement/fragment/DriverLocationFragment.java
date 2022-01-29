@@ -7,8 +7,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.AnimationUtils;
-import android.widget.ImageView;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -17,7 +15,6 @@ import androidx.fragment.app.Fragment;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
-import com.google.android.gms.maps.MapView;
 import com.google.android.gms.maps.MapsInitializer;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
@@ -28,13 +25,10 @@ import com.google.android.gms.maps.model.MarkerOptions;
 
 import org.json.JSONObject;
 
-import butterknife.BindView;
-import butterknife.ButterKnife;
-import butterknife.OnClick;
-import butterknife.Unbinder;
 import ir.taxi1880.operatormanagement.R;
 import ir.taxi1880.operatormanagement.app.EndPoints;
 import ir.taxi1880.operatormanagement.app.MyApplication;
+import ir.taxi1880.operatormanagement.databinding.FragmentDriverLocationBinding;
 import ir.taxi1880.operatormanagement.dialog.GeneralDialog;
 import ir.taxi1880.operatormanagement.helper.TypefaceUtil;
 import ir.taxi1880.operatormanagement.okHttp.RequestHelper;
@@ -43,50 +37,28 @@ import ir.taxi1880.operatormanagement.push.AvaCrashReporter;
 public class DriverLocationFragment extends Fragment implements OnMapReadyCallback {
 
     public static final String TAG = DriverLocationFragment.class.getSimpleName();
-    Unbinder unbinder;
+    FragmentDriverLocationBinding binding;
     double lat = 0;
     double lng = 0;
     String carCode;
     String time;
     boolean isFromDriverSupport;
-
-    @OnClick(R.id.imgBack)
-    void onBack() {
-        MyApplication.currentActivity.onBackPressed();
-    }
-
-    @OnClick(R.id.imgRefresh)
-    void imgRefresh() {
-        imgRefresh.startAnimation(AnimationUtils.loadAnimation(MyApplication.context, R.anim.rotate));
-        getLastLocation();
-    }
-
-    @BindView(R.id.imgRefresh)
-    ImageView imgRefresh;
-
-    @BindView(R.id.map)
-    MapView map;
-
-    @BindView(R.id.txtLastTime)
-    TextView txtLastTime;
-
     GoogleMap myGoogleMap;
     Marker myLocationMarker;
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_driver_location, container, false);
-        unbinder = ButterKnife.bind(this, view);
-        TypefaceUtil.overrideFonts(view);
-        map.onCreate(savedInstanceState);
+        binding = FragmentDriverLocationBinding.inflate(inflater, container, false);
+        TypefaceUtil.overrideFonts(binding.getRoot());
+        binding.map.onCreate(savedInstanceState);
         MapsInitializer.initialize(getActivity().getApplicationContext());
-        map.getMapAsync(this);
+        binding.map.getMapAsync(this);
 
         Bundle bundle = getArguments();
         if (bundle != null) {
             lat = bundle.getDouble("lat");
             lng = bundle.getDouble("lng");
-            txtLastTime.setText(bundle.getString("time"));
+            binding.txtLastTime.setText(bundle.getString("time"));
             bundle.getString("date");
             carCode = bundle.getString("taxiCode");
             isFromDriverSupport = bundle.getBoolean("isFromDriverSupport");
@@ -95,7 +67,14 @@ public class DriverLocationFragment extends Fragment implements OnMapReadyCallba
             }
         }
 
-        return view;
+        binding.imgRefresh.setOnClickListener(view -> {
+            binding.imgRefresh.startAnimation(AnimationUtils.loadAnimation(MyApplication.context, R.anim.rotate));
+            getLastLocation();
+        });
+
+        binding.imgBack.setOnClickListener(view -> MyApplication.currentActivity.onBackPressed());
+
+        return binding.getRoot();
     }
 
     @Override
@@ -147,8 +126,8 @@ public class DriverLocationFragment extends Fragment implements OnMapReadyCallba
             MyApplication.handler.post(() -> {
                 try {
 //            {"success":true,"message":"","data":{"lat":"35.2510216","lon":"60.6222999","r_time":"11:24:11","r_date":"1399/08/24","bearing":2.03999}}
-                    if (imgRefresh != null)
-                        imgRefresh.clearAnimation();
+                    if (binding.imgRefresh != null)
+                        binding.imgRefresh.clearAnimation();
                     JSONObject object = new JSONObject(args[0].toString());
                     boolean success = object.getBoolean("success");
                     String message = object.getString("message");
@@ -158,8 +137,8 @@ public class DriverLocationFragment extends Fragment implements OnMapReadyCallba
                         lat = dataObj.getDouble("lat");
                         lng = dataObj.getDouble("long");
                         time = dataObj.getString("r_time");
-                        if (txtLastTime != null) {
-                            txtLastTime.setText(time);
+                        if (binding.txtLastTime != null) {
+                            binding.txtLastTime.setText(time);
                         }
                         animateToLocation(lat, lng);
                     } else {
@@ -181,8 +160,8 @@ public class DriverLocationFragment extends Fragment implements OnMapReadyCallba
         @Override
         public void onFailure(Runnable reCall, Exception e) {
             MyApplication.handler.post(() -> {
-                if (imgRefresh != null)
-                    imgRefresh.clearAnimation();
+                if (binding.imgRefresh != null)
+                    binding.imgRefresh.clearAnimation();
             });
         }
     };
@@ -190,22 +169,21 @@ public class DriverLocationFragment extends Fragment implements OnMapReadyCallba
     @Override
     public void onDestroyView() {
         super.onDestroyView();
-        if (map != null)
-            map.onDestroy();
-        unbinder.unbind();
+        if (binding.map != null)
+            binding.map.onDestroy();
     }
 
     @Override
     public void onPause() {
         super.onPause();
-        if (map != null)
-            map.onPause();
+        if (binding.map != null)
+            binding.map.onPause();
     }
 
     @Override
     public void onResume() {
         super.onResume();
-        if (map != null)
-            map.onResume();
+        if (binding.map != null)
+            binding.map.onResume();
     }
 }

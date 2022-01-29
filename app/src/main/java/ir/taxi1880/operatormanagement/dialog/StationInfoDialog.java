@@ -4,14 +4,10 @@ import android.app.Dialog;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.view.Gravity;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
-import android.widget.EditText;
-import android.widget.ImageView;
-import android.widget.LinearLayout;
-import android.widget.ListView;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import org.json.JSONArray;
@@ -22,6 +18,7 @@ import java.util.ArrayList;
 import ir.taxi1880.operatormanagement.R;
 import ir.taxi1880.operatormanagement.adapter.StationInfoAdapter;
 import ir.taxi1880.operatormanagement.app.MyApplication;
+import ir.taxi1880.operatormanagement.databinding.DialogStationInfoBinding;
 import ir.taxi1880.operatormanagement.helper.KeyBoardHelper;
 import ir.taxi1880.operatormanagement.helper.StringHelper;
 import ir.taxi1880.operatormanagement.helper.TypefaceUtil;
@@ -29,27 +26,23 @@ import ir.taxi1880.operatormanagement.model.StationInfoModel;
 import ir.taxi1880.operatormanagement.push.AvaCrashReporter;
 
 public class StationInfoDialog {
+    private static final String TAG = StationInfoDialog.class.getSimpleName();
+    DialogStationInfoBinding binding;
     private StationInfoAdapter stationInfoAdapter;
     ArrayList<StationInfoModel> stationInfoModels;
-    private static final String TAG = StationInfoDialog.class.getSimpleName();
     int stationCode;
     String stationName;
     boolean isCountrySide = false;
     private static Dialog dialog;
-    private ListView listStationInfo;
-    TextView txtStationCode;
-    TextView txtStationName;
-    EditText edtStationCode;
-    LinearLayout llSuburbs;
-    ImageView imgClear;
 
     public void show(JSONArray dataArr) {
         if (MyApplication.currentActivity == null || MyApplication.currentActivity.isFinishing())
             return;
         dialog = new Dialog(MyApplication.currentActivity);
+        binding = DialogStationInfoBinding.inflate(LayoutInflater.from(dialog.getContext()));
         dialog.getWindow().requestFeature(Window.FEATURE_NO_TITLE);
         dialog.getWindow().getAttributes().windowAnimations = R.style.ExpandAnimation;
-        dialog.setContentView(R.layout.dialog_station_info);
+        dialog.setContentView(binding.getRoot());
         TypefaceUtil.overrideFonts(dialog.getWindow().getDecorView(), MyApplication.IraSanSMedume);
         dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         WindowManager.LayoutParams wlp = dialog.getWindow().getAttributes();
@@ -59,17 +52,9 @@ public class StationInfoDialog {
         dialog.getWindow().setAttributes(wlp);
         dialog.setCancelable(false);
 
-        listStationInfo = dialog.findViewById(R.id.listStationInfo);
-        txtStationName = dialog.findViewById(R.id.txtStationName);
-        llSuburbs = dialog.findViewById(R.id.llSuburbs);
-        edtStationCode = dialog.findViewById(R.id.edtStationCode);
-        txtStationCode = dialog.findViewById(R.id.txtStationCode);
-        LinearLayout llCLose = dialog.findViewById(R.id.llCLose);
-        imgClear = dialog.findViewById(R.id.imgClear);
-
         getStationInfo(dataArr);
 
-        llCLose.setOnClickListener(view -> dismiss());
+        binding.llCLose.setOnClickListener(view -> dismiss());
 
         dialog.show();
     }
@@ -102,22 +87,22 @@ public class StationInfoDialog {
                 MyApplication.Toast("اطلاعاتی موجود نیست", Toast.LENGTH_SHORT);
             } else {
 
-                if (txtStationCode == null) return;
+                if (binding.txtStationCode == null) return;
 
                 stationInfoAdapter = new StationInfoAdapter(stationInfoModels);
-                listStationInfo.setAdapter(stationInfoAdapter);
+                binding.listStationInfo.setAdapter(stationInfoAdapter);
 
-                txtStationCode.setText(StringHelper.toEnglishDigits(stationCode + ""));
+                binding.txtStationCode.setText(StringHelper.toEnglishDigits(stationCode + ""));
                 if (stationName.equals("")) {
-                    txtStationName.setText("ثبت نشده");
+                    binding.txtStationName.setText("ثبت نشده");
                 } else {
-                    txtStationName.setText(stationName);
+                    binding.txtStationName.setText(stationName);
                 }
 
                 if (isCountrySide) {
-                    llSuburbs.setVisibility(View.VISIBLE);
+                    binding.llSuburbs.setVisibility(View.VISIBLE);
                 } else {
-                    llSuburbs.setVisibility(View.GONE);
+                    binding.llSuburbs.setVisibility(View.GONE);
                 }
             }
         } catch (Exception e) {

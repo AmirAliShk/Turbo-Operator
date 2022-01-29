@@ -4,19 +4,13 @@ import android.app.Dialog;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.view.Gravity;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.AdapterView;
-import android.widget.Button;
-import android.widget.EditText;
-import android.widget.ImageView;
-import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
 import android.widget.Spinner;
-import android.widget.TextView;
 import android.widget.Toast;
-import android.widget.ViewFlipper;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -29,6 +23,7 @@ import ir.taxi1880.operatormanagement.adapter.SpinnerAdapter;
 import ir.taxi1880.operatormanagement.app.EndPoints;
 import ir.taxi1880.operatormanagement.app.MyApplication;
 import ir.taxi1880.operatormanagement.dataBase.DBTripModel;
+import ir.taxi1880.operatormanagement.databinding.DialogEditPassengerAddressBinding;
 import ir.taxi1880.operatormanagement.helper.KeyBoardHelper;
 import ir.taxi1880.operatormanagement.helper.StringHelper;
 import ir.taxi1880.operatormanagement.helper.TypefaceUtil;
@@ -39,6 +34,7 @@ import ir.taxi1880.operatormanagement.push.AvaCrashReporter;
 public class EditPassengerAddressDialog {
 
     private static final String TAG = EditPassengerAddressDialog.class.getSimpleName();
+    DialogEditPassengerAddressBinding binding;
 
     public interface EditationCallBack {
         void onEdited(boolean success, String message);
@@ -51,7 +47,6 @@ public class EditPassengerAddressDialog {
     private String cityLatinName = "";
     private int cityCode;
     int type;
-    ViewFlipper vfLoader;
 
     static Dialog dialog;
 
@@ -59,9 +54,10 @@ public class EditPassengerAddressDialog {
         if (MyApplication.currentActivity == null || MyApplication.currentActivity.isFinishing())
             return;
         dialog = new Dialog(MyApplication.currentActivity);
+        binding = DialogEditPassengerAddressBinding.inflate(LayoutInflater.from(dialog.getContext()));
         dialog.getWindow().requestFeature(Window.FEATURE_NO_TITLE);
         dialog.getWindow().getAttributes().windowAnimations = R.style.ExpandAnimation;
-        dialog.setContentView(R.layout.dialog_edit_passenger_address);
+        dialog.setContentView(binding.getRoot());
         TypefaceUtil.overrideFonts(dialog.getWindow().getDecorView());
         dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         WindowManager.LayoutParams wlp = dialog.getWindow().getAttributes();
@@ -74,54 +70,36 @@ public class EditPassengerAddressDialog {
         this.editationCallBack = callBack;
         cityCode = tripModel.getCity();
 
-        ImageView imgClose = dialog.findViewById(R.id.imgClose);
-        Button btnSubmit = dialog.findViewById(R.id.btnSubmit);
-        EditText edtOriginStation = dialog.findViewById(R.id.edtOriginStation);
-        EditText edtOriginAddress = dialog.findViewById(R.id.edtOriginAddress);
-        EditText edtDestinationAddress = dialog.findViewById(R.id.edtDestinationAddress);
-        EditText edtDestinationStation = dialog.findViewById(R.id.edtDestinationStation);
-        TextView txtOriginTitle = dialog.findViewById(R.id.txtOriginTitle);
-        TextView txtOriginStTitle = dialog.findViewById(R.id.txtOriginStTitle);
-        TextView txtDestinationTitle = dialog.findViewById(R.id.txtDestinationTitle);
-        TextView txtDestinationStTitle = dialog.findViewById(R.id.txtDestinationStTitle);
-        RelativeLayout llParent = dialog.findViewById(R.id.llParent);
-        LinearLayout llOriginAddress = dialog.findViewById(R.id.llOriginAddress);
-        LinearLayout llOriginStation = dialog.findViewById(R.id.llOriginStation);
-        LinearLayout llDestinationAddress = dialog.findViewById(R.id.llDestinationAddress);
-        LinearLayout llDestinationStation = dialog.findViewById(R.id.llDestinationStation);
-        spCity = dialog.findViewById(R.id.spCity);
-        vfLoader = dialog.findViewById(R.id.vfLoader);
-
         MyApplication.handler.postDelayed(() -> initSpinner(cityCode), 500);
 
         if (tripModel.getOriginStation() == 0 && tripModel.getDestinationStation() == 0 && tripModel.getPriceable() != 0) {
-            edtDestinationAddress.setText(tripModel.getDestination());
-            edtOriginAddress.setText(tripModel.getOriginText());
+            binding.edtDestinationAddress.setText(tripModel.getDestination());
+            binding.edtOriginAddress.setText(tripModel.getOriginText());
         } else if (tripModel.getOriginStation() == 0) {
-            llDestinationAddress.setVisibility(View.GONE);
-            llDestinationStation.setVisibility(View.GONE);
-            txtOriginTitle.setText("آدرس");
-            txtOriginStTitle.setText("ایستگاه");
-            edtOriginAddress.setText(tripModel.getOriginText());
+            binding.llDestinationAddress.setVisibility(View.GONE);
+            binding.llDestinationStation.setVisibility(View.GONE);
+            binding.txtOriginTitle.setText("آدرس");
+            binding.txtOriginStTitle.setText("ایستگاه");
+            binding.edtOriginAddress.setText(tripModel.getOriginText());
         } else if (tripModel.getDestinationStation() == 0) {
             if (tripModel.getPriceable() == 0) {
-                llDestinationAddress.setVisibility(View.GONE);
-                llDestinationStation.setVisibility(View.GONE);
-                txtOriginTitle.setText("آدرس");
-                txtOriginStTitle.setText("ایستگاه");
+                binding.llDestinationAddress.setVisibility(View.GONE);
+                binding.llDestinationStation.setVisibility(View.GONE);
+                binding.txtOriginTitle.setText("آدرس");
+                binding.txtOriginStTitle.setText("ایستگاه");
             } else {
-                llOriginAddress.setVisibility(View.GONE);
-                llOriginStation.setVisibility(View.GONE);
-                txtDestinationTitle.setText("آدرس");
-                txtDestinationStTitle.setText("ایستگاه");
-                edtDestinationAddress.setText(tripModel.getDestination());
+                binding.llOriginAddress.setVisibility(View.GONE);
+                binding.llOriginStation.setVisibility(View.GONE);
+                binding.txtDestinationTitle.setText("آدرس");
+                binding.txtDestinationStTitle.setText("ایستگاه");
+                binding.edtDestinationAddress.setText(tripModel.getDestination());
             }
         }
 
-        imgClose.setOnClickListener(view -> dismiss());
-        llParent.setOnClickListener(view -> KeyBoardHelper.hideKeyboard());
+        binding.imgClose.setOnClickListener(view -> dismiss());
+        binding.llParent.setOnClickListener(view -> KeyBoardHelper.hideKeyboard());
 
-        btnSubmit.setOnClickListener(view -> {
+        binding.btnSubmit.setOnClickListener(view -> {
             String destStationCode;
             String destAddress;
             String originStationCode;
@@ -135,10 +113,10 @@ public class EditPassengerAddressDialog {
                 return;
             }
             if (tripModel.getOriginStation() == 0 && tripModel.getDestinationStation() == 0 && tripModel.getPriceable() != 0) {
-                destAddress = edtDestinationAddress.getText().toString();
-                destStationCode = edtDestinationStation.getText().toString();
-                originAddress = edtOriginAddress.getText().toString();
-                originStationCode = edtOriginStation.getText().toString();
+                destAddress = binding.edtDestinationAddress.getText().toString();
+                destStationCode = binding.edtDestinationStation.getText().toString();
+                originAddress = binding.edtOriginAddress.getText().toString();
+                originStationCode = binding.edtOriginStation.getText().toString();
 
                 if (originAddress.isEmpty()) {
                     MyApplication.Toast("لطفا آدرس مبدا را وارد کنید.", Toast.LENGTH_SHORT);
@@ -156,14 +134,12 @@ public class EditPassengerAddressDialog {
                     MyApplication.Toast("لطفا ایستگاه مقصد را وارد کنید.", Toast.LENGTH_SHORT);
                     return;
                 }
-                dialog.firstButton("بله", () -> {
-                    editStation(cityCode, originAddress, destAddress, tripModel.getId() + "",
-                            originStationCode, tripModel.getPriceable(), tripModel.getOperatorId(), destStationCode);
-                });
+                dialog.firstButton("بله", () -> editStation(cityCode, originAddress, destAddress, tripModel.getId() + "",
+                        originStationCode, tripModel.getPriceable(), tripModel.getOperatorId(), destStationCode));
 
             } else if (tripModel.getOriginStation() == 0) {
-                originAddress = edtOriginAddress.getText().toString();
-                originStationCode = edtOriginStation.getText().toString();
+                originAddress = binding.edtOriginAddress.getText().toString();
+                originStationCode = binding.edtOriginStation.getText().toString();
                 if (originAddress.isEmpty()) {
                     MyApplication.Toast("لطفا آدرس را وارد کنید.", Toast.LENGTH_SHORT);
                     return;
@@ -173,13 +149,11 @@ public class EditPassengerAddressDialog {
                     return;
                 }
 
-                dialog.firstButton("بله", () -> {
-                    editStation(cityCode, originAddress, tripModel.getDestination(), tripModel.getId() + "", originStationCode, tripModel.getPriceable(), tripModel.getOperatorId(), tripModel.getDestinationStation() + "");
-                });
+                dialog.firstButton("بله", () -> editStation(cityCode, originAddress, tripModel.getDestination(), tripModel.getId() + "", originStationCode, tripModel.getPriceable(), tripModel.getOperatorId(), tripModel.getDestinationStation() + ""));
 
             } else if (tripModel.getDestinationStation() == 0) {
-                destAddress = edtDestinationAddress.getText().toString();
-                destStationCode = edtDestinationStation.getText().toString();
+                destAddress = binding.edtDestinationAddress.getText().toString();
+                destStationCode = binding.edtDestinationStation.getText().toString();
                 if (destAddress.isEmpty()) {
                     MyApplication.Toast("لطفا آدرس را وارد کنید.", Toast.LENGTH_SHORT);
                     return;
@@ -189,10 +163,8 @@ public class EditPassengerAddressDialog {
                     return;
                 }
 
-                dialog.firstButton("بله", () -> {
-                    editStation(cityCode, tripModel.getOriginText(), destAddress, tripModel.getId() + "",
-                            tripModel.getOriginStation() + "", tripModel.getPriceable(), tripModel.getOperatorId(), destStationCode);
-                });
+                dialog.firstButton("بله", () -> editStation(cityCode, tripModel.getOriginText(), destAddress, tripModel.getId() + "",
+                        tripModel.getOriginStation() + "", tripModel.getPriceable(), tripModel.getOperatorId(), destStationCode));
 
             }
             dialog.secondButton("خیر", null);
@@ -252,8 +224,8 @@ public class EditPassengerAddressDialog {
 
     private void editStation(int cityCode, String address, String destAddress, String serviceId, String stationCode, int priceable, int operatorId, String destStation) {
 
-        if (vfLoader != null) {
-            vfLoader.setDisplayedChild(1);
+        if (binding.vfLoader != null) {
+            binding.vfLoader.setDisplayedChild(1);
         }
 
         LoadingDialog.makeCancelableLoader();
@@ -292,8 +264,8 @@ public class EditPassengerAddressDialog {
                         editationCallBack.onEdited(false, message);
                     }
 
-                    if (vfLoader != null) {
-                        vfLoader.setDisplayedChild(0);
+                    if (binding.vfLoader != null) {
+                        binding.vfLoader.setDisplayedChild(0);
                     }
 
                     LoadingDialog.dismissCancelableDialog();

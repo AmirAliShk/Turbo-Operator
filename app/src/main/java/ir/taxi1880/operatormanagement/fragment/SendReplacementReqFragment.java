@@ -5,9 +5,6 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ListView;
-import android.widget.TextView;
-import android.widget.ViewFlipper;
 
 import androidx.fragment.app.Fragment;
 
@@ -16,14 +13,10 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 
-import butterknife.BindView;
-import butterknife.ButterKnife;
-import butterknife.OnClick;
-import butterknife.Unbinder;
-import ir.taxi1880.operatormanagement.R;
 import ir.taxi1880.operatormanagement.adapter.SendReplacementAdapter;
 import ir.taxi1880.operatormanagement.app.EndPoints;
 import ir.taxi1880.operatormanagement.app.MyApplication;
+import ir.taxi1880.operatormanagement.databinding.FragmentSendReplacementReqBinding;
 import ir.taxi1880.operatormanagement.helper.TypefaceUtil;
 import ir.taxi1880.operatormanagement.model.ReplacementModel;
 import ir.taxi1880.operatormanagement.okHttp.RequestHelper;
@@ -31,38 +24,25 @@ import ir.taxi1880.operatormanagement.push.AvaCrashReporter;
 
 public class SendReplacementReqFragment extends Fragment {
     public static final String TAG = SendReplacementReqFragment.class.getSimpleName();
-    Unbinder unbinder;
+    FragmentSendReplacementReqBinding binding;
     ArrayList<ReplacementModel> replacementModels;
     SendReplacementAdapter sendReplacementAdapter;
 
-    @BindView(R.id.listReplacement)
-    ListView listReplacement;
-
-    @BindView(R.id.vfSendReq)
-    ViewFlipper vfSendReq;
-
-    @BindView(R.id.txtNull)
-    TextView txtNull;
-
-    @OnClick(R.id.imgBack)
-    void onBack() {
-        MyApplication.currentActivity.onBackPressed();
-    }
-
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_send_replacement_req, container, false);
-        unbinder = ButterKnife.bind(this, view);
-        TypefaceUtil.overrideFonts(view);
+        binding = FragmentSendReplacementReqBinding.inflate(inflater, container, false);
+        TypefaceUtil.overrideFonts(binding.getRoot());
 
         getShiftReplacementRequest();
 
-        return view;
+        binding.imgBack.setOnClickListener(view -> MyApplication.currentActivity.onBackPressed());
+
+        return binding.getRoot();
     }
 
     private void getShiftReplacementRequest() {
-        if (vfSendReq != null)
-            vfSendReq.setDisplayedChild(0);
+        if (binding.vfSendReq != null)
+            binding.vfSendReq.setDisplayedChild(0);
         RequestHelper.builder(EndPoints.GET_SHIFT_REPLACEMENT_REQUESTS)
                 .listener(onGetShiftReplacementRequest)
                 .get();
@@ -92,23 +72,22 @@ public class SendReplacementReqFragment extends Fragment {
                             replacementModel.setReplaceOperatorNameChange(object.getString("lastnameChange"));
                             replacementModels.add(replacementModel);
                         }
-
                     }
-                    if (vfSendReq != null)
-                        vfSendReq.setDisplayedChild(1);
+                    if (binding.vfSendReq != null)
+                        binding.vfSendReq.setDisplayedChild(1);
                     sendReplacementAdapter = new SendReplacementAdapter(replacementModels, position -> {
                         replacementModels.remove(position);
                         sendReplacementAdapter.notifyDataSetChanged();
                     });
-                    if (listReplacement != null)
-                        listReplacement.setAdapter(sendReplacementAdapter);
+                    if (binding.listReplacement != null)
+                        binding.listReplacement.setAdapter(sendReplacementAdapter);
                     if (replacementModels.size() == 0) {
-                        if (vfSendReq != null)
-                            vfSendReq.setDisplayedChild(2);
+                        if (binding.vfSendReq != null)
+                            binding.vfSendReq.setDisplayedChild(2);
                     }
                 } catch (Exception e) {
-                    if (vfSendReq != null)
-                        vfSendReq.setDisplayedChild(3);
+                    if (binding.vfSendReq != null)
+                        binding.vfSendReq.setDisplayedChild(3);
                     e.printStackTrace();
                     AvaCrashReporter.send(e, TAG + " class, onGetShiftReplacementRequest onResponse method");
                 }
@@ -118,15 +97,9 @@ public class SendReplacementReqFragment extends Fragment {
         @Override
         public void onFailure(Runnable reCall, Exception e) {
             MyApplication.handler.post(() -> {
-                if (vfSendReq != null)
-                    vfSendReq.setDisplayedChild(3);
+                if (binding.vfSendReq != null)
+                    binding.vfSendReq.setDisplayedChild(3);
             });
         }
     };
-
-    @Override
-    public void onDestroyView() {
-        super.onDestroyView();
-        unbinder.unbind();
-    }
 }

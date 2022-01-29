@@ -38,7 +38,6 @@ class OperatorMistakesAdapter() : RecyclerView.Adapter<OperatorMistakesAdapter.O
 
     var mediaPlayer: MediaPlayer? = null
 
-
     constructor(opMistakes: ArrayList<OperatorMistakeModel>) : this() {
         opMistakesA = opMistakes
     }
@@ -55,7 +54,7 @@ class OperatorMistakesAdapter() : RecyclerView.Adapter<OperatorMistakesAdapter.O
     }
 
     class OpMistakeHolder(val binding: ItemOperatorMistakeListBinding) :
-        RecyclerView.ViewHolder(binding.root) {}
+        RecyclerView.ViewHolder(binding.root)
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): OpMistakeHolder {
         val binding = ItemOperatorMistakeListBinding.inflate(
@@ -130,12 +129,9 @@ class OperatorMistakesAdapter() : RecyclerView.Adapter<OperatorMistakesAdapter.O
                         .addParam("mistakeId", opMistake.id)
                         .listener(recheckListener)
                         .put()
-
-
                 }
             }
         }
-
 
         holder.binding.imgplay.setOnClickListener {
             aHolder = OpMistakeHolder(holder.binding)

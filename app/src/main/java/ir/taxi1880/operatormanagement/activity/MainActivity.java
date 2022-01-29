@@ -3,7 +3,6 @@ package ir.taxi1880.operatormanagement.activity;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.Window;
@@ -41,7 +40,6 @@ public class MainActivity extends AppCompatActivity implements NotificationFragm
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        Log.i(TAG, "onCreate=========: ");
         super.onCreate(savedInstanceState);
         ThemeHelper.onActivityCreateSetTheme(this);
         binding = ActivityMainBinding.inflate(LayoutInflater.from(this));

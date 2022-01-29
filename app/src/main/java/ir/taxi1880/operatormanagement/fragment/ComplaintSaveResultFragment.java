@@ -19,8 +19,6 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 
-import butterknife.ButterKnife;
-import butterknife.Unbinder;
 import ir.taxi1880.operatormanagement.R;
 import ir.taxi1880.operatormanagement.adapter.SpinnerAdapter;
 import ir.taxi1880.operatormanagement.app.DataHolder;
@@ -32,7 +30,6 @@ import ir.taxi1880.operatormanagement.push.AvaCrashReporter;
 
 public class ComplaintSaveResultFragment extends Fragment {
     public static final String TAG = ComplaintSaveResultFragment.class.getSimpleName();
-    Unbinder unbinder;
     FragmentComplaintSaveResultBinding binding;
 
     @Nullable
@@ -40,7 +37,6 @@ public class ComplaintSaveResultFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         binding = FragmentComplaintSaveResultBinding.inflate(getLayoutInflater());
         getActivity().getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE);
-        unbinder = ButterKnife.bind(this, binding.getRoot());
         TypefaceUtil.overrideFonts(binding.getRoot());
 
         initSpinner();

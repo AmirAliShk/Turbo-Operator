@@ -4,23 +4,19 @@ import android.app.Dialog;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.view.Gravity;
+import android.view.LayoutInflater;
 import android.view.Window;
 import android.view.WindowManager;
-import android.widget.ListView;
-import android.widget.ViewFlipper;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
 
-import butterknife.BindView;
-import butterknife.ButterKnife;
-import butterknife.OnClick;
-import butterknife.Unbinder;
 import ir.taxi1880.operatormanagement.R;
 import ir.taxi1880.operatormanagement.adapter.DriverTurnoverAdapter;
 import ir.taxi1880.operatormanagement.app.MyApplication;
+import ir.taxi1880.operatormanagement.databinding.DialogDriverTurnoverBinding;
 import ir.taxi1880.operatormanagement.helper.TypefaceUtil;
 import ir.taxi1880.operatormanagement.model.DriverTurnoverModel;
 import ir.taxi1880.operatormanagement.push.AvaCrashReporter;
@@ -29,30 +25,18 @@ public class DriverTurnoverDialog {
 
     public static final String TAG = DriverTurnoverDialog.class.getSimpleName();
     Dialog dialog;
-    Unbinder unbinder;
-
+    DialogDriverTurnoverBinding binding;
     ArrayList<DriverTurnoverModel> driverTurnoverModels;
     DriverTurnoverAdapter adapter;
-
-    @BindView(R.id.vfFinancial)
-    ViewFlipper vfFinancial;
-
-    @BindView(R.id.listDriverTurnover)
-    ListView listDriverTurnover;
-
-    @OnClick(R.id.imgClose)
-    void onPressClose() {
-        dismiss();
-    }
 
     public void show(JSONArray data) {
         if (MyApplication.currentActivity == null || MyApplication.currentActivity.isFinishing())
             return;
         dialog = new Dialog(MyApplication.currentActivity);
+        binding = DialogDriverTurnoverBinding.inflate(LayoutInflater.from(dialog.getContext()));
         dialog.getWindow().requestFeature(Window.FEATURE_NO_TITLE);
         dialog.getWindow().getAttributes().windowAnimations = R.style.ExpandAnimation;
-        dialog.setContentView(R.layout.dialog_driver_turnover);
-        unbinder = ButterKnife.bind(this, dialog.getWindow().getDecorView());
+        dialog.setContentView(binding.getRoot());
         TypefaceUtil.overrideFonts(dialog.getWindow().getDecorView());
         dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         WindowManager.LayoutParams wlp = dialog.getWindow().getAttributes();
@@ -63,6 +47,8 @@ public class DriverTurnoverDialog {
         dialog.setCancelable(false);
 
         fillList(data);
+
+        binding.imgClose.setOnClickListener(view -> dismiss());
 
         dialog.show();
     }
@@ -82,13 +68,13 @@ public class DriverTurnoverDialog {
             }
 
             if (driverTurnoverModels.size() == 0) {
-                if (vfFinancial != null)
-                    vfFinancial.setDisplayedChild(1);
+                if (binding.vfFinancial != null)
+                    binding.vfFinancial.setDisplayedChild(1);
             } else {
-                if (vfFinancial != null)
-                    vfFinancial.setDisplayedChild(0);
+                if (binding.vfFinancial != null)
+                    binding.vfFinancial.setDisplayedChild(0);
                 adapter = new DriverTurnoverAdapter(driverTurnoverModels);
-                listDriverTurnover.setAdapter(adapter);
+                binding.listDriverTurnover.setAdapter(adapter);
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -106,6 +92,5 @@ public class DriverTurnoverDialog {
             AvaCrashReporter.send(e, TAG + " class, dismiss method");
         }
         dialog = null;
-        unbinder.unbind();
     }
 }

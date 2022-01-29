@@ -27,9 +27,9 @@
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:layout_weight="1"
-                    android:layout_marginEnd="20dp"
                     android:layout_marginStart="20dp"
+                    android:layout_marginEnd="20dp"
+                    android:layout_weight="1"
                     android:gravity="center"
                     android:orientation="horizontal">
 
@@ -45,8 +45,8 @@
                             android:id="@+id/imgProfile"
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
-                            android:padding="@dimen/_6sdp"
                             android:background="@drawable/bg_circle"
+                            android:padding="@dimen/_6sdp"
                             android:src="@drawable/ic_operator_user" />
 
                     </RelativeLayout>
@@ -59,6 +59,7 @@
 
                         <TextView
                             android:id="@+id/tvName"
+                            style="@style/pageTitle"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:ellipsize="end"
@@ -68,8 +69,7 @@
                             android:minLines="1"
                             android:paddingLeft="10dp"
                             android:paddingRight="10dp"
-                            android:text="ارتباط با مدیر"
-                            style="@style/pageTitle"/>
+                            android:text="ارتباط با مدیر" />
 
                         <TextView
                             android:id="@+id/tvStatus"
@@ -95,12 +95,11 @@
 
                 <ImageView
                     android:id="@+id/imgBack"
-                    android:layout_width="55dp"
+                    android:layout_width="?android:attr/actionBarSize"
                     android:layout_height="match_parent"
                     android:layout_alignParentLeft="true"
-                    android:paddingTop="15dp"
-                    android:paddingBottom="15dp"
-                    android:src="@drawable/ic_back"/>
+                    android:padding="@dimen/_15sdp"
+                    android:src="@drawable/ic_back" />
 
             </LinearLayout>
 
@@ -126,9 +125,9 @@
                 <com.wang.avi.AVLoadingIndicatorView
                     android:layout_width="50dp"
                     android:layout_height="50dp"
-                    app:indicatorName="BallSpinFadeLoaderIndicator"
                     android:layout_gravity="center"
-                    app:indicatorColor="?attr/colorIcon1" />
+                    app:indicatorColor="?attr/colorIcon1"
+                    app:indicatorName="BallSpinFadeLoaderIndicator" />
 
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/listMessage"
@@ -139,14 +138,14 @@
 
                 <TextView
                     android:id="@+id/txtNull"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
                     android:layout_centerInParent="true"
                     android:gravity="center"
-                    android:textSize="@dimen/text_title"
-                    android:textColor="?attr/colorValue"
-                    android:visibility="gone"
                     android:text="متاسفانه هنگام دریافت اطلاعات از سرور به مشکل خوردیم \n لطفا مجدد تلاش کنید!"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"/>
+                    android:textColor="?attr/colorValue"
+                    android:textSize="@dimen/text_title"
+                    android:visibility="gone" />
 
             </ViewFlipper>
 
@@ -156,9 +155,9 @@
             android:id="@+id/llMessage"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layoutDirection="ltr"
             android:layout_margin="@dimen/_5sdp"
             android:background="@drawable/bg_strock_corner"
+            android:layoutDirection="ltr"
             android:orientation="horizontal">
 
             <EditText
@@ -189,7 +188,7 @@
                         android:id="@+id/imSend"
                         android:layout_width="30dp"
                         android:layout_height="30dp"
-                        android:src="@drawable/ic_send_message"/>
+                        android:src="@drawable/ic_send_message" />
 
                 </LinearLayout>
 

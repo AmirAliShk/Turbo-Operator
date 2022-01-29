@@ -4,21 +4,22 @@ import android.app.Dialog;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
-import android.widget.Button;
 import android.widget.LinearLayout;
-import android.widget.TextView;
 
 import ir.taxi1880.operatormanagement.R;
 import ir.taxi1880.operatormanagement.app.MyApplication;
+import ir.taxi1880.operatormanagement.databinding.DialogErrorBinding;
 import ir.taxi1880.operatormanagement.helper.TypefaceUtil;
 import ir.taxi1880.operatormanagement.push.AvaCrashReporter;
 
 public class ErrorDialog {
 
     public static final String TAG = ErrorDialog.class.getSimpleName();
+    DialogErrorBinding binding;
     static Dialog dialog;
     private Runnable closeRunnable;
     private Runnable tryAgainRunnable;
@@ -71,9 +72,10 @@ public class ErrorDialog {
         if (MyApplication.currentActivity == null || MyApplication.currentActivity.isFinishing())
             return;
         dialog = new Dialog(MyApplication.currentActivity);
+        binding = DialogErrorBinding.inflate(LayoutInflater.from(dialog.getContext()));
         dialog.getWindow().requestFeature(Window.FEATURE_NO_TITLE);
         dialog.getWindow().getAttributes().windowAnimations = R.style.ExpandAnimation;
-        dialog.setContentView(R.layout.dialog_error);
+        dialog.setContentView(binding.getRoot());
 
         TypefaceUtil.overrideFonts(dialog.getWindow().getDecorView());
         dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
@@ -87,34 +89,29 @@ public class ErrorDialog {
 //    LinearLayout llParent=dialog.findViewById(R.id.llParent);
 //    llParent.setLayoutParams(new LinearLayout.LayoutParams(300, 150));
 
-        TextView txtMessage = (TextView) dialog.findViewById(R.id.txtMessage);
-        txtMessage.setText(messageText);
+        binding.txtMessage.setText(messageText);
 
-        TextView title = (TextView) dialog.findViewById(R.id.txtTitle);
         if (titleText == null || titleText.isEmpty()) {
-            title.setVisibility(View.GONE);
+            binding.txtTitle.setVisibility(View.GONE);
         } else {
-            title.setVisibility(View.VISIBLE);
-            title.setText(titleText);
+            binding.txtTitle.setVisibility(View.VISIBLE);
+            binding.txtTitle.setText(titleText);
         }
 
-        Button btnClose = dialog.findViewById(R.id.btnClose);
-        Button btnTryAgain = dialog.findViewById(R.id.btnTryAgain);
-
-        btnClose.setText(closeText);
-        btnTryAgain.setText(tryAgainText);
+        binding.btnClose.setText(closeText);
+        binding.btnTryAgain.setText(tryAgainText);
 
         if (bodyRunnable != null)
             bodyRunnable.run();
 
-        btnClose.setOnClickListener(v -> {
+        binding.btnClose.setOnClickListener(v -> {
             if (closeRunnable != null)
                 closeRunnable.run();
             else
                 dismiss();
         });
 
-        btnTryAgain.setOnClickListener(v -> {
+        binding.btnTryAgain.setOnClickListener(v -> {
             if (tryAgainRunnable != null)
                 tryAgainRunnable.run();
             dismiss();

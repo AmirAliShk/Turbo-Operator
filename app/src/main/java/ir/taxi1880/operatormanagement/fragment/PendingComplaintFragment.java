@@ -8,29 +8,21 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ViewFlipper;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.localbroadcastmanager.content.LocalBroadcastManager;
-import androidx.recyclerview.widget.RecyclerView;
-
-import com.dinuscxj.refresh.RecyclerRefreshLayout;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
 
-import butterknife.BindView;
-import butterknife.ButterKnife;
-import butterknife.OnClick;
-import butterknife.Unbinder;
-import ir.taxi1880.operatormanagement.R;
 import ir.taxi1880.operatormanagement.adapter.PendingComplaintAdapter;
 import ir.taxi1880.operatormanagement.app.EndPoints;
 import ir.taxi1880.operatormanagement.app.MyApplication;
+import ir.taxi1880.operatormanagement.databinding.FragmentPendingComplaintsBinding;
 import ir.taxi1880.operatormanagement.helper.TypefaceUtil;
 import ir.taxi1880.operatormanagement.model.PendingComplaintsModel;
 import ir.taxi1880.operatormanagement.okHttp.RequestHelper;
@@ -38,45 +30,31 @@ import ir.taxi1880.operatormanagement.push.AvaCrashReporter;
 
 public class PendingComplaintFragment extends Fragment {
     public static final String TAG = PendingComplaintFragment.class.getSimpleName();
-    Unbinder unbinder;
+    FragmentPendingComplaintsBinding binding;
     LocalBroadcastManager broadcaster;
     PendingComplaintAdapter mAdapter;
     ArrayList<PendingComplaintsModel> pendingComplaintsModels;
 
-    @BindView(R.id.refreshPage)
-    RecyclerRefreshLayout refreshPage;
-
-    @BindView(R.id.pendingComplaintsList)
-    RecyclerView complaintsList;
-
-    @BindView(R.id.vfPendingComplaint)
-    ViewFlipper vfPendingComplaint;
-
-    @OnClick(R.id.imgRefresh)
-    void onRefresh() {
-        getPendingRequests();
-    }
-
-    @OnClick(R.id.imgRefreshFail)
-    void onRefreshFail() {
-        getPendingRequests();
-    }
-
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_pending_complaints, container, false);
-        unbinder = ButterKnife.bind(this, view);
-        TypefaceUtil.overrideFonts(view);
-        getPendingRequests();
-        refreshPage.setOnRefreshListener(this::getPendingRequests);
+        binding = FragmentPendingComplaintsBinding.inflate(inflater, container, false);
+        TypefaceUtil.overrideFonts(binding.getRoot());
 
-        return view;
+        getPendingRequests();
+
+        binding.refreshPage.setOnRefreshListener(this::getPendingRequests);
+
+        binding.imgRefreshFail.setOnClickListener(view -> getPendingRequests());
+
+        binding.imgRefresh.setOnClickListener(view -> getPendingRequests());
+
+        return binding.getRoot();
     }
 
     private void getPendingRequests() {
-        if (vfPendingComplaint != null)
-            vfPendingComplaint.setDisplayedChild(0);
+        if (binding.vfPendingComplaint != null)
+            binding.vfPendingComplaint.setDisplayedChild(0);
         RequestHelper.builder(EndPoints.COMPLAINT_WEBSERVICE_PATH + 1)// Status = New 0 , admission 1
                 .listener(PendingRequestsCallBack)
                 .get();
@@ -87,8 +65,8 @@ public class PendingComplaintFragment extends Fragment {
         public void onResponse(Runnable reCall, Object... args) {
             MyApplication.handler.post(() -> {
                 try {
-                    if (refreshPage != null)
-                        refreshPage.setRefreshing(false);
+                    if (binding.refreshPage != null)
+                        binding.refreshPage.setRefreshing(false);
                     pendingComplaintsModels = new ArrayList<>();
                     JSONObject listenObj = new JSONObject(args[0].toString());
                     boolean success = listenObj.getBoolean("success");
@@ -114,13 +92,13 @@ public class PendingComplaintFragment extends Fragment {
                         }
 
                         if (pendingComplaintsModels.size() == 0) {
-                            if (vfPendingComplaint != null)
-                                vfPendingComplaint.setDisplayedChild(3);
+                            if (binding.vfPendingComplaint != null)
+                                binding.vfPendingComplaint.setDisplayedChild(3);
                         } else {
-                            if (vfPendingComplaint != null) {
-                                vfPendingComplaint.setDisplayedChild(1);
+                            if (binding.vfPendingComplaint != null) {
+                                binding.vfPendingComplaint.setDisplayedChild(1);
                                 mAdapter = new PendingComplaintAdapter(pendingComplaintsModels);
-                                complaintsList.setAdapter(mAdapter);
+                                binding.pendingComplaintsList.setAdapter(mAdapter);
                             }
                         }
 
@@ -129,17 +107,15 @@ public class PendingComplaintFragment extends Fragment {
                         Intent broadcastIntent2 = new Intent(KEY_COUNT_PENDING_COMPLAINT);
                         broadcastIntent2.putExtra(VALUE_COUNT_PENDING_COMPLAINT, pendingComplaintsModels.size());
                         broadcaster.sendBroadcast(broadcastIntent2);
-
                     } else {
-                        if (vfPendingComplaint != null)
-                            vfPendingComplaint.setDisplayedChild(2);
+                        if (binding.vfPendingComplaint != null)
+                            binding.vfPendingComplaint.setDisplayedChild(2);
                     }
-
                 } catch (Exception e) {
-                    if (refreshPage != null)
-                        refreshPage.setRefreshing(false);
-                    if (vfPendingComplaint != null)
-                        vfPendingComplaint.setDisplayedChild(2);
+                    if (binding.refreshPage != null)
+                        binding.refreshPage.setRefreshing(false);
+                    if (binding.vfPendingComplaint != null)
+                        binding.vfPendingComplaint.setDisplayedChild(2);
                     e.printStackTrace();
                     AvaCrashReporter.send(e, TAG + " class, PendingRequestsCallBack onResponse method");
                 }
@@ -149,10 +125,10 @@ public class PendingComplaintFragment extends Fragment {
         @Override
         public void onFailure(Runnable reCall, Exception e) {
             MyApplication.handler.post(() -> {
-                if (refreshPage != null)
-                    refreshPage.setRefreshing(false);
-                if (vfPendingComplaint != null)
-                    vfPendingComplaint.setDisplayedChild(2);
+                if (binding.refreshPage != null)
+                    binding.refreshPage.setRefreshing(false);
+                if (binding.vfPendingComplaint != null)
+                    binding.vfPendingComplaint.setDisplayedChild(2);
             });
         }
     };
@@ -161,11 +137,5 @@ public class PendingComplaintFragment extends Fragment {
     public void onResume() {
         super.onResume();
         getPendingRequests();
-    }
-
-    @Override
-    public void onDestroyView() {
-        super.onDestroyView();
-        unbinder.unbind();
     }
 }

@@ -1,29 +1,21 @@
-
-
 package ir.taxi1880.operatormanagement.fragment;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ViewFlipper;
 
 import androidx.fragment.app.Fragment;
-import androidx.recyclerview.widget.RecyclerView;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
 
-import butterknife.BindView;
-import butterknife.ButterKnife;
-import butterknife.OnClick;
-import butterknife.Unbinder;
-import ir.taxi1880.operatormanagement.R;
 import ir.taxi1880.operatormanagement.adapter.RewardAdapter;
 import ir.taxi1880.operatormanagement.app.EndPoints;
 import ir.taxi1880.operatormanagement.app.MyApplication;
+import ir.taxi1880.operatormanagement.databinding.FragmentRewardsBinding;
 import ir.taxi1880.operatormanagement.dialog.GeneralDialog;
 import ir.taxi1880.operatormanagement.helper.TypefaceUtil;
 import ir.taxi1880.operatormanagement.model.RewardsModel;
@@ -31,35 +23,24 @@ import ir.taxi1880.operatormanagement.okHttp.RequestHelper;
 import ir.taxi1880.operatormanagement.push.AvaCrashReporter;
 
 public class RewardsFragment extends Fragment {
-    public static final String TAG = RewardsFragment.class.getSimpleName();
 
-    private Unbinder unbinder;
+    public static final String TAG = RewardsFragment.class.getSimpleName();
+    FragmentRewardsBinding binding;
     private ArrayList<RewardsModel> rewardsModels;
     private RewardAdapter rewardAdapter;
 
-    @OnClick(R.id.imgBack)
-    void onBack() {
-        MyApplication.currentActivity.onBackPressed();
-    }
-
-    @BindView(R.id.recycleRewards)
-    RecyclerView recycleRewards;
-
-    @BindView(R.id.vfReward)
-    ViewFlipper vfReward;
-
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_rewards, container, false);
-        TypefaceUtil.overrideFonts(view);
-        unbinder = ButterKnife.bind(this, view);
+        binding = FragmentRewardsBinding.inflate(inflater, container, false);
+        TypefaceUtil.overrideFonts(binding.getRoot());
         getRewards();
-        return view;
+        binding.imgBack.setOnClickListener(view -> MyApplication.currentActivity.onBackPressed());
+        return binding.getRoot();
     }
 
     private void getRewards() {
-        if (vfReward != null)
-            vfReward.setDisplayedChild(0);
+        if (binding.vfReward != null)
+            binding.vfReward.setDisplayedChild(0);
         RequestHelper.builder(EndPoints.REWARDS)
                 .listener(onRewards)
                 .get();
@@ -88,9 +69,8 @@ public class RewardsFragment extends Fragment {
                             rewardsModels.add(rewardsModel);
                         }
                         rewardAdapter = new RewardAdapter(rewardsModels);
-                        if (recycleRewards != null)
-                            recycleRewards.setAdapter(rewardAdapter);
-
+                        if (binding.recycleRewards != null)
+                            binding.recycleRewards.setAdapter(rewardAdapter);
                     } else {
                         new GeneralDialog()
                                 .title("هشدار")
@@ -101,15 +81,15 @@ public class RewardsFragment extends Fragment {
                     }
 
                     if (rewardsModels.size() == 0) {
-                        if (vfReward != null)
-                            vfReward.setDisplayedChild(2);
+                        if (binding.vfReward != null)
+                            binding.vfReward.setDisplayedChild(2);
                     } else {
-                        if (vfReward != null)
-                            vfReward.setDisplayedChild(1);
+                        if (binding.vfReward != null)
+                            binding.vfReward.setDisplayedChild(1);
                     }
                 } catch (Exception e) {
-                    if (vfReward != null)
-                        vfReward.setDisplayedChild(3);
+                    if (binding.vfReward != null)
+                        binding.vfReward.setDisplayedChild(3);
                     e.printStackTrace();
                     AvaCrashReporter.send(e, TAG + " class, onRewards onResponse method");
                 }
@@ -119,15 +99,9 @@ public class RewardsFragment extends Fragment {
         @Override
         public void onFailure(Runnable reCall, Exception e) {
             MyApplication.handler.post(() -> {
-                if (vfReward != null)
-                    vfReward.setDisplayedChild(3);
+                if (binding.vfReward != null)
+                    binding.vfReward.setDisplayedChild(3);
             });
         }
     };
-
-    @Override
-    public void onDestroy() {
-        super.onDestroy();
-        unbinder.unbind();
-    }
 }

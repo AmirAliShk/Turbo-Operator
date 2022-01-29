@@ -4,6 +4,7 @@ import static ir.taxi1880.operatormanagement.app.Keys.KEY_NEW_MISTAKE_COUNT;
 import static ir.taxi1880.operatormanagement.app.Keys.KEY_PENDING_MISTAKE_COUNT;
 import static ir.taxi1880.operatormanagement.app.Keys.NEW_MISTAKE_COUNT;
 import static ir.taxi1880.operatormanagement.app.Keys.PENDING_MISTAKE_COUNT;
+import static ir.taxi1880.operatormanagement.app.MyApplication.context;
 
 import android.content.BroadcastReceiver;
 import android.content.ClipData;
@@ -15,19 +16,14 @@ import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
-import android.widget.Button;
-import android.widget.ImageView;
-import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.localbroadcastmanager.content.LocalBroadcastManager;
-import androidx.viewpager2.widget.ViewPager2;
 
 import com.gauravbhola.ripplepulsebackground.RipplePulseLayout;
 import com.google.android.material.tabs.TabLayout;
@@ -40,16 +36,13 @@ import org.linphone.core.Call;
 import org.linphone.core.Core;
 import org.linphone.core.CoreListenerStub;
 
-import butterknife.BindView;
-import butterknife.ButterKnife;
-import butterknife.OnClick;
-import butterknife.Unbinder;
 import ir.taxi1880.operatormanagement.R;
 import ir.taxi1880.operatormanagement.adapter.SupportViewPagerAdapter;
 import ir.taxi1880.operatormanagement.app.EndPoints;
 import ir.taxi1880.operatormanagement.app.Keys;
 import ir.taxi1880.operatormanagement.app.MyApplication;
 import ir.taxi1880.operatormanagement.dataBase.DataBase;
+import ir.taxi1880.operatormanagement.databinding.ActivitySupportBinding;
 import ir.taxi1880.operatormanagement.dialog.GeneralDialog;
 import ir.taxi1880.operatormanagement.dialog.LoadingDialog;
 import ir.taxi1880.operatormanagement.fragment.DriverTripSupportFragment;
@@ -64,7 +57,7 @@ import ir.taxi1880.operatormanagement.services.LinphoneService;
 
 public class SupportActivity extends AppCompatActivity {
     public static final String TAG = SupportActivity.class.getSimpleName();
-    Unbinder unbinder;
+    ActivitySupportBinding binding;
     SupportViewPagerAdapter supportViewPagerAdapter;
     RipplePulseLayout mRipplePulseLayout;
     private Runnable mCallQualityUpdater = null;
@@ -78,133 +71,11 @@ public class SupportActivity extends AppCompatActivity {
     DataBase dataBase;
     LocalBroadcastManager broadcaster;
 
-    @BindView(R.id.vpSupport)
-    ViewPager2 vpSupport;
-
-    @BindView(R.id.tbLayout)
-    TabLayout tbLayout;
-
-    @OnClick(R.id.imgBack)
-    void onBack() {
-        MyApplication.currentActivity.onBackPressed();
-    }
-
-    @BindView(R.id.btnActivate)
-    Button btnActivate;
-
-    @BindView(R.id.btnDeActivate)
-    Button btnDeActivate;
-
-    @OnClick(R.id.btnActivate)
-    void onActivePress() {
-        KeyBoardHelper.hideKeyboard();
-        new GeneralDialog()
-                .title("هشدار")
-                .cancelable(false)
-                .message("مطمئنی میخوای وارد صف بشی؟")
-                .firstButton("مطمئنم", () -> {
-                    setActivate(MyApplication.prefManager.getSipNumber());
-//                MyApplication.Toast("activated",Toast.LENGTH_SHORT);
-                })
-                .secondButton("نیستم", null)
-                .show();
-    }
-
-    @OnClick(R.id.btnDeActivate)
-    void onDeActivePress() {
-        KeyBoardHelper.hideKeyboard();
-        new GeneralDialog()
-                .title("هشدار")
-                .cancelable(false)
-                .message("مطمئنی میخوای خارج بشی؟")
-                .firstButton("مطمئنم", () -> {
-                    if (MyApplication.prefManager.isCallIncoming()) {
-                        MyApplication.Toast(getString(R.string.exit), Toast.LENGTH_SHORT);
-                    } else {
-                        setDeActivate(MyApplication.prefManager.getSipNumber());
-                    }
-                })
-                .secondButton("نیستم", null)
-                .show();
-    }
-
-    @BindView(R.id.rlNewInComingCall)
-    RelativeLayout rlNewInComingCall;
-
-    @BindView(R.id.llActionBar)
-    LinearLayout llActionBar;
-
-    @BindView(R.id.txtCallerNum)
-    TextView txtCallerNum;
-
-    @BindView(R.id.imgOpenDriverSupport)
-    ImageView imgOpenDriverSupport;
-
-    @OnClick(R.id.imgOpenDriverSupport)
-    void onPressOpenDriverSupport() {
-        new PendingMistakesFragment().pauseVoice();
-        FragmentHelper.toFragment(MyApplication.currentActivity, new DriverTripSupportFragment()).replace();
-    }
-
-    @BindView(R.id.imgHelpWarning)
-    ImageView imgHelpWarning;
-
-    @OnClick(R.id.imgAccept)
-    void onAcceptPress() {
-        call = core.getCurrentCall();
-        Call[] calls = core.getCalls();
-        int i = calls.length;
-        Log.i(TAG, "onRejectPress: " + i);
-        if (call != null) {
-            call.accept();
-            Address address = call.getRemoteAddress();
-            Bundle b = new Bundle();
-            b.putString("number", address.getUsername());
-            FragmentHelper.toFragment(MyApplication.currentActivity, new DriverTripSupportFragment()).setArguments(b).replace();
-//      if (getMobileNumber().isEmpty() && isTellValidable)
-//        MyApplication.handler.postDelayed(() -> onPressDownload(), 400);
-        } else if (calls.length > 0) {
-            calls[0].accept();
-        }
-
-        ClipboardManager clipboard = (ClipboardManager) getSystemService(Context.CLIPBOARD_SERVICE);
-        ClipData clip = ClipData.newPlainText("passengerTell", txtCallerNum.getText().toString());
-        clipboard.setPrimaryClip(clip);
-    }
-
-    @OnClick(R.id.imgReject)
-    void onRejectPress() {
-        Core mCore = LinphoneService.getCore();
-        Call currentCall = mCore.getCurrentCall();
-        for (Call call : mCore.getCalls()) {
-            if (call != null && call.getConference() != null) {
-//        if (mCore.isInConference()) {
-//          displayConferenceCall(call);
-//          conferenceDisplayed = true;
-//        } else if (!pausedConferenceDisplayed) {
-//          displayPausedConference();
-//          pausedConferenceDisplayed = true;
-//        }
-            } else if (call != null && call != currentCall) {
-                Call.State state = call.getState();
-                if (state == Call.State.Paused
-                        || state == Call.State.PausedByRemote
-                        || state == Call.State.Pausing) {
-                    call.terminate();
-                }
-            } else if (call != null && call == currentCall) {
-                call.terminate();
-            }
-        }
-    }
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         ThemeHelper.onActivityCreateSetTheme(this);
 
-        setContentView(R.layout.activity_support);
-        View view = getWindow().getDecorView();
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             Window window = getWindow();
             window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
@@ -218,30 +89,32 @@ public class SupportActivity extends AppCompatActivity {
                 window.setStatusBarColor(getResources().getColor(R.color.colorPrimaryDark));
             }
         }
+
+        binding = ActivitySupportBinding.inflate(LayoutInflater.from(this));
+        setContentView(binding.getRoot());
+        TypefaceUtil.overrideFonts(binding.getRoot());
         MyApplication.configureAccount();
-        unbinder = ButterKnife.bind(this, view);
-        TypefaceUtil.overrideFonts(view);
         getMistakeReason();
         mRipplePulseLayout = findViewById(R.id.layout_ripplepulse);
 
         supportViewPagerAdapter = new SupportViewPagerAdapter(this);
-        vpSupport.setAdapter(supportViewPagerAdapter);
-        vpSupport.setUserInputEnabled(false);
+        binding.vpSupport.setAdapter(supportViewPagerAdapter);
+        binding.vpSupport.setUserInputEnabled(false);
 
-        dataBase = new DataBase(MyApplication.context);
-        broadcaster = LocalBroadcastManager.getInstance(MyApplication.context);
+        dataBase = new DataBase(context);
+        broadcaster = LocalBroadcastManager.getInstance(context);
 
-        new TabLayoutMediator(tbLayout, vpSupport, (tab, position) -> tab.setCustomView(supportViewPagerAdapter.getTabView(position, 0, dataBase.getMistakesCount()))).attach();
+        new TabLayoutMediator(binding.tbLayout, binding.vpSupport, (tab, position) -> tab.setCustomView(supportViewPagerAdapter.getTabView(position, 0, dataBase.getMistakesCount()))).attach();
 
-        tbLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
+        binding.tbLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
             @Override
             public void onTabSelected(TabLayout.Tab tab) {
-                supportViewPagerAdapter.setSelectView(tbLayout, tab.getPosition(), "select");
+                supportViewPagerAdapter.setSelectView(binding.tbLayout, tab.getPosition(), "select");
             }
 
             @Override
             public void onTabUnselected(TabLayout.Tab tab) {
-                supportViewPagerAdapter.setSelectView(tbLayout, tab.getPosition(), "unSelect");
+                supportViewPagerAdapter.setSelectView(binding.tbLayout, tab.getPosition(), "unSelect");
             }
 
             @Override
@@ -256,12 +129,97 @@ public class SupportActivity extends AppCompatActivity {
         }
 
         if (MyApplication.prefManager.isActiveInSupport()) {
-            btnActivate.setBackgroundResource(R.drawable.bg_green_edge);
-            btnDeActivate.setBackgroundColor(Color.parseColor("#00FFB2B2"));
+            binding.btnActivate.setBackgroundResource(R.drawable.bg_green_edge);
+            binding.btnDeActivate.setBackgroundColor(Color.parseColor("#00FFB2B2"));
         } else {
-            btnDeActivate.setBackgroundResource(R.drawable.bg_pink_edge);
-            btnActivate.setBackgroundColor(Color.parseColor("#00FFB2B2"));
+            binding.btnDeActivate.setBackgroundResource(R.drawable.bg_pink_edge);
+            binding.btnActivate.setBackgroundColor(Color.parseColor("#00FFB2B2"));
         }
+
+        binding.imgReject.setOnClickListener(view -> {
+            Core mCore = LinphoneService.getCore();
+            Call currentCall = mCore.getCurrentCall();
+            for (Call call : mCore.getCalls()) {
+                if (call != null && call.getConference() != null) {
+//        if (mCore.isInConference()) {
+//          displayConferenceCall(call);
+//          conferenceDisplayed = true;
+//        } else if (!pausedConferenceDisplayed) {
+//          displayPausedConference();
+//          pausedConferenceDisplayed = true;
+//        }
+                } else if (call != null && call != currentCall) {
+                    Call.State state = call.getState();
+                    if (state == Call.State.Paused
+                            || state == Call.State.PausedByRemote
+                            || state == Call.State.Pausing) {
+                        call.terminate();
+                    }
+                } else if (call != null && call == currentCall) {
+                    call.terminate();
+                }
+            }
+        });
+
+        binding.imgAccept.setOnClickListener(view -> {
+            call = core.getCurrentCall();
+            Call[] calls = core.getCalls();
+            int i = calls.length;
+            Log.i(TAG, "onRejectPress: " + i);
+            if (call != null) {
+                call.accept();
+                Address address = call.getRemoteAddress();
+                Bundle b = new Bundle();
+                b.putString("number", address.getUsername());
+                FragmentHelper.toFragment(MyApplication.currentActivity, new DriverTripSupportFragment()).setArguments(b).replace();
+//      if (getMobileNumber().isEmpty() && isTellValidable)
+//        MyApplication.handler.postDelayed(() -> onPressDownload(), 400);
+            } else if (calls.length > 0) {
+                calls[0].accept();
+            }
+
+            ClipboardManager clipboard = (ClipboardManager) getSystemService(Context.CLIPBOARD_SERVICE);
+            ClipData clip = ClipData.newPlainText("passengerTell", binding.txtCallerNum.getText().toString());
+            clipboard.setPrimaryClip(clip);
+        });
+
+        binding.imgOpenDriverSupport.setOnClickListener(view -> {
+            new PendingMistakesFragment().pauseVoice();
+            FragmentHelper.toFragment(MyApplication.currentActivity, new DriverTripSupportFragment()).replace();
+        });
+
+        binding.btnDeActivate.setOnClickListener(view -> {
+            KeyBoardHelper.hideKeyboard();
+            new GeneralDialog()
+                    .title("هشدار")
+                    .cancelable(false)
+                    .message("مطمئنی میخوای خارج بشی؟")
+                    .firstButton("مطمئنم", () -> {
+                        if (MyApplication.prefManager.isCallIncoming()) {
+                            MyApplication.Toast(getString(R.string.exit), Toast.LENGTH_SHORT);
+                        } else {
+                            setDeActivate(MyApplication.prefManager.getSipNumber());
+                        }
+                    })
+                    .secondButton("نیستم", null)
+                    .show();
+        });
+
+        binding.btnActivate.setOnClickListener(view -> {
+            KeyBoardHelper.hideKeyboard();
+            new GeneralDialog()
+                    .title("هشدار")
+                    .cancelable(false)
+                    .message("مطمئنی میخوای وارد صف بشی؟")
+                    .firstButton("مطمئنم", () -> {
+                        setActivate(MyApplication.prefManager.getSipNumber());
+//                MyApplication.Toast("activated",Toast.LENGTH_SHORT);
+                    })
+                    .secondButton("نیستم", null)
+                    .show();
+        });
+
+        binding.imgBack.setOnClickListener(view -> MyApplication.currentActivity.onBackPressed());
     }
 
     private void setActivate(int sipNumber) {
@@ -286,12 +244,12 @@ public class SupportActivity extends AppCompatActivity {
                         MyApplication.prefManager.activeInSupport(true);
                         MyApplication.prefManager.setActivityStatus(2);
                         MyApplication.Toast("شما باموفقیت وارد صف شدید", Toast.LENGTH_SHORT);
-                        if (btnActivate != null)
-                            btnActivate.setBackgroundResource(R.drawable.bg_green_edge);
+                        if (binding.btnActivate != null)
+                            binding.btnActivate.setBackgroundResource(R.drawable.bg_green_edge);
                         MyApplication.prefManager.activeInSupport(true);
-                        if (btnDeActivate != null) {
-                            btnDeActivate.setBackgroundColor(Color.parseColor("#00FFB2B2"));
-                            btnDeActivate.setTextColor(Color.parseColor("#ffffff"));
+                        if (binding.btnDeActivate != null) {
+                            binding.btnDeActivate.setBackgroundColor(Color.parseColor("#00FFB2B2"));
+                            binding.btnDeActivate.setTextColor(Color.parseColor("#ffffff"));
                         }
                     } else {
                         new GeneralDialog()
@@ -353,11 +311,11 @@ public class SupportActivity extends AppCompatActivity {
                         MyApplication.prefManager.setActivityStatus(0);
                         MyApplication.Toast("شما باموفقیت از صف خارج شدید", Toast.LENGTH_SHORT);
                         MyApplication.prefManager.activeInSupport(false);
-                        if (btnActivate != null)
-                            btnActivate.setBackgroundColor(Color.parseColor("#00FFB2B2"));
-                        if (btnDeActivate != null) {
-                            btnDeActivate.setBackgroundResource(R.drawable.bg_pink_edge);
-                            btnDeActivate.setTextColor(Color.parseColor("#ffffff"));
+                        if (binding.btnActivate != null)
+                            binding.btnActivate.setBackgroundColor(Color.parseColor("#00FFB2B2"));
+                        if (binding.btnDeActivate != null) {
+                            binding.btnDeActivate.setBackgroundResource(R.drawable.bg_pink_edge);
+                            binding.btnDeActivate.setTextColor(Color.parseColor("#ffffff"));
                         }
                     } else {
                         new GeneralDialog()
@@ -386,15 +344,15 @@ public class SupportActivity extends AppCompatActivity {
         mRipplePulseLayout.startRippleAnimation();
         call = core.getCurrentCall();
         Address address = call.getRemoteAddress();
-        txtCallerNum.setText(address.getUsername());
-        rlNewInComingCall.setVisibility(View.VISIBLE);
-        llActionBar.setVisibility(View.GONE);
+        binding.txtCallerNum.setText(address.getUsername());
+        binding.rlNewInComingCall.setVisibility(View.VISIBLE);
+        binding.llActionBar.setVisibility(View.GONE);
     }
 
     private void showTitleBar() {
         mRipplePulseLayout.stopRippleAnimation();
-        rlNewInComingCall.setVisibility(View.GONE);
-        llActionBar.setVisibility(View.VISIBLE);
+        binding.rlNewInComingCall.setVisibility(View.GONE);
+        binding.llActionBar.setVisibility(View.VISIBLE);
     }
 
     //receive userStatus from local broadcast
@@ -403,14 +361,14 @@ public class SupportActivity extends AppCompatActivity {
         public void onReceive(Context context, Intent intent) {
             boolean userStatus = intent.getBooleanExtra(Keys.KEY_USER_STATUS, false);
             if (!userStatus) {
-                btnDeActivate.setBackgroundResource(R.drawable.bg_pink_edge);
-                btnActivate.setBackgroundColor(Color.parseColor("#00FFB2B2"));
-                btnDeActivate.setTextColor(Color.parseColor("#ffffff"));
+                binding.btnDeActivate.setBackgroundResource(R.drawable.bg_pink_edge);
+                binding.btnActivate.setBackgroundColor(Color.parseColor("#00FFB2B2"));
+                binding.btnDeActivate.setTextColor(Color.parseColor("#ffffff"));
                 MyApplication.prefManager.activeInSupport(false);
             } else {
-                btnActivate.setBackgroundResource(R.drawable.bg_green_edge);
-                btnDeActivate.setBackgroundColor(Color.parseColor("#00FFB2B2"));
-                btnDeActivate.setTextColor(Color.parseColor("#ffffff"));
+                binding.btnActivate.setBackgroundResource(R.drawable.bg_green_edge);
+                binding.btnDeActivate.setBackgroundColor(Color.parseColor("#00FFB2B2"));
+                binding.btnDeActivate.setTextColor(Color.parseColor("#ffffff"));
                 MyApplication.prefManager.activeInSupport(true);
             }
         }
@@ -448,8 +406,8 @@ public class SupportActivity extends AppCompatActivity {
         @Override
         public void onReceive(Context context, Intent intent) {
             mistakeCountNew = intent.getIntExtra(NEW_MISTAKE_COUNT, 0);
-            if (vpSupport != null) {
-                new TabLayoutMediator(tbLayout, vpSupport, (tab, position) -> tab.setCustomView(supportViewPagerAdapter.getTabView(position, mistakeCountNew, dataBase.getMistakesCount()))).attach();
+            if (binding.vpSupport != null) {
+                new TabLayoutMediator(binding.tbLayout, binding.vpSupport, (tab, position) -> tab.setCustomView(supportViewPagerAdapter.getTabView(position, mistakeCountNew, dataBase.getMistakesCount()))).attach();
             }
         }
     };
@@ -458,8 +416,8 @@ public class SupportActivity extends AppCompatActivity {
         @Override
         public void onReceive(Context context, Intent intent) {
             mistakeCountPending = intent.getIntExtra(PENDING_MISTAKE_COUNT, 0);
-            if (vpSupport != null) {
-                new TabLayoutMediator(tbLayout, vpSupport, (tab, position) -> tab.setCustomView(supportViewPagerAdapter.getTabView(position, mistakeCountNew, mistakeCountPending))).attach();
+            if (binding.vpSupport != null) {
+                new TabLayoutMediator(binding.tbLayout, binding.vpSupport, (tab, position) -> tab.setCustomView(supportViewPagerAdapter.getTabView(position, mistakeCountNew, mistakeCountPending))).attach();
             }
         }
     };
@@ -520,7 +478,6 @@ public class SupportActivity extends AppCompatActivity {
     protected void onDestroy() {
         super.onDestroy();
         MyApplication.prefManager.setAppRun(false);
-        unbinder.unbind();
         core.removeListener(mCoreListener);
 //    MyApplication.prefManager.setLastCallerId("");// set empty, because I don't want save this permanently .
         core = null;

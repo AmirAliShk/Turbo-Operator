@@ -21,7 +21,6 @@ import java.util.Calendar;
 import java.util.Timer;
 import java.util.TimerTask;
 
-import butterknife.Unbinder;
 import ir.taxi1880.operatormanagement.R;
 import ir.taxi1880.operatormanagement.app.EndPoints;
 import ir.taxi1880.operatormanagement.app.MyApplication;
@@ -46,7 +45,6 @@ public class DeterminationPageFragment extends Fragment {
     String TAG = DeterminationPageFragment.class.getSimpleName();
     String LOG = "STATION_REGISTER --> ";
     boolean doubleBackPressedOnce = false;
-    Unbinder unbinder;
     boolean pressedRefresh = false;
     boolean isEnable = false;
     boolean isFinished = false;
@@ -59,7 +57,6 @@ public class DeterminationPageFragment extends Fragment {
     long lastFiveSecond;
     Timer timer;
     DBTripModel tripModel;
-
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -157,7 +154,7 @@ public class DeterminationPageFragment extends Fragment {
                     .title("هشدار")
                     .message("آیا از اشتباه بودن آدرس اطمینان دارید؟")
                     .cancelable(false)
-                    .firstButton("بله", () -> setMistake())
+                    .firstButton("بله", this::setMistake)
                     .secondButton("خیر", null)
                     .show();
 
@@ -338,7 +335,6 @@ public class DeterminationPageFragment extends Fragment {
                                 binding.txtAddress.setText(showAddress());
                                 pressedRefresh = false;
                             }
-
                         }
                     } else {
                         if (isFragmentOpen) {
@@ -497,7 +493,6 @@ public class DeterminationPageFragment extends Fragment {
                                     .show();
                         }
                     }
-
                 } catch (JSONException e) {
                     e.printStackTrace();
                     AvaCrashReporter.send(e, TAG + " class, setMistake method");
@@ -548,7 +543,6 @@ public class DeterminationPageFragment extends Fragment {
                                 .cancelable(false)
                                 .show();
                     }
-
                 } catch (JSONException e) {
                     e.printStackTrace();
                     AvaCrashReporter.send(e, TAG + " class, getStationInfo method");
@@ -603,7 +597,6 @@ public class DeterminationPageFragment extends Fragment {
                         " DestinationStation= " + dataBase.getTopAddress().getDestinationStation() +
                         " Priceable= " + dataBase.getTopAddress().getPriceable() +
                         " serviceId= " + dataBase.getTopAddress().getId());
-
             }
         } catch (Exception e) {
             e.printStackTrace();

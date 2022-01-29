@@ -9,7 +9,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
-import android.widget.TextView;
 import android.widget.ViewFlipper;
 
 import androidx.annotation.NonNull;
@@ -27,13 +26,9 @@ import java.net.URL;
 import java.util.Timer;
 import java.util.TimerTask;
 
-import butterknife.BindView;
-import butterknife.ButterKnife;
-import butterknife.OnClick;
-import butterknife.Unbinder;
-import ir.taxi1880.operatormanagement.R;
 import ir.taxi1880.operatormanagement.app.EndPoints;
 import ir.taxi1880.operatormanagement.app.MyApplication;
+import ir.taxi1880.operatormanagement.databinding.FragmentComplaintTripDetailsBinding;
 import ir.taxi1880.operatormanagement.helper.DateHelper;
 import ir.taxi1880.operatormanagement.helper.FileHelper;
 import ir.taxi1880.operatormanagement.helper.StringHelper;
@@ -43,72 +38,52 @@ import ir.taxi1880.operatormanagement.push.AvaCrashReporter;
 
 public class ComplaintTripDetailsFragment extends Fragment {
     public static final String TAG = ComplaintTripDetailsFragment.class.getSimpleName();
-    Unbinder unbinder;
+    FragmentComplaintTripDetailsBinding binding;
     static MediaPlayer mediaPlayer;
     static IndicatorSeekBar skbTimer;
     static ViewFlipper vfPlayPause;
 
-    @BindView(R.id.txtComplaintType)
-    TextView txtComplaintType;
-
-    @BindView(R.id.txtServiceDate)
-    TextView txtServiceDate;
-
-    @BindView(R.id.txtOrigin)
-    TextView txtOrigin;
-
-    @BindView(R.id.txtPrice)
-    TextView txtPrice;
-
-    @BindView(R.id.vfVoiceStatus)
-    ViewFlipper vfVoiceStatus;
-
-    @OnClick(R.id.imgPlay)
-    void onPlay() {
-        if (vfPlayPause != null)
-            vfPlayPause.setDisplayedChild(1);
-
-        Log.i("URL", "show: " + EndPoints.CALL_VOICE + ComplaintDetailFragment.complaintDetailsModel.getComplaintVoipId());
-        String voiceName = ComplaintDetailFragment.complaintDetailsModel.getComplaintId() + ".mp3";
-        File file = new File(MyApplication.DIR_MAIN_FOLDER + MyApplication.VOICE_FOLDER_NAME + voiceName);
-        String voipId = ComplaintDetailFragment.complaintDetailsModel.getComplaintVoipId();
-        if (file.exists()) {
-            initVoice(Uri.fromFile(file));
-            playVoice();
-        } else if (voipId.equals("0")) {
-            if (vfVoiceStatus != null)
-                vfVoiceStatus.setDisplayedChild(1);
-            if (vfPlayPause != null)
-                vfPlayPause.setDisplayedChild(0);
-        } else {
-            startDownload(EndPoints.CALL_VOICE + ComplaintDetailFragment.complaintDetailsModel.getComplaintVoipId(), voiceName);
-        }
-    }
-
-    @OnClick(R.id.imgPause)
-    void onImgPause() {
-        pauseVoice();
-    }
-
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_complaint_trip_details, container, false);
+        binding = FragmentComplaintTripDetailsBinding.inflate(inflater, container, false);
         getActivity().getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE);
-        unbinder = ButterKnife.bind(this, view);
-        TypefaceUtil.overrideFonts(view);
+        TypefaceUtil.overrideFonts(binding.getRoot());
 
-        skbTimer = view.findViewById(R.id.skbTimer);
-        vfPlayPause = view.findViewById(R.id.vfPlayPause);
+        skbTimer = binding.skbTimer;
+        vfPlayPause = binding.vfPlayPause;
 
-        txtComplaintType.setText(StringHelper.toPersianDigits(ComplaintDetailFragment.complaintDetailsModel.getComplaintType()));
+        binding.txtComplaintType.setText(StringHelper.toPersianDigits(ComplaintDetailFragment.complaintDetailsModel.getComplaintType()));
 
         String date = DateHelper.strPersianTree(DateHelper.parseDate(ComplaintDetailFragment.complaintDetailsModel.getServiceDate()));
-        txtServiceDate.setText(StringHelper.toPersianDigits(date));
-        txtOrigin.setText(StringHelper.toPersianDigits(ComplaintDetailFragment.complaintDetailsModel.getAddress()));
-        txtPrice.setText(StringHelper.toPersianDigits(StringHelper.setComma(ComplaintDetailFragment.complaintDetailsModel.getPrice() + "") + " تومان"));
+        binding.txtServiceDate.setText(StringHelper.toPersianDigits(date));
+        binding.txtOrigin.setText(StringHelper.toPersianDigits(ComplaintDetailFragment.complaintDetailsModel.getAddress()));
+        binding.txtPrice.setText(StringHelper.toPersianDigits(StringHelper.setComma(ComplaintDetailFragment.complaintDetailsModel.getPrice() + "") + " تومان"));
 
-        return view;
+        binding.imgPause.setOnClickListener(view -> pauseVoice());
+
+        binding.imgPlay.setOnClickListener(view -> {
+            if (vfPlayPause != null)
+                vfPlayPause.setDisplayedChild(1);
+
+            Log.i("URL", "show: " + EndPoints.CALL_VOICE + ComplaintDetailFragment.complaintDetailsModel.getComplaintVoipId());
+            String voiceName = ComplaintDetailFragment.complaintDetailsModel.getComplaintId() + ".mp3";
+            File file = new File(MyApplication.DIR_MAIN_FOLDER + MyApplication.VOICE_FOLDER_NAME + voiceName);
+            String voipId = ComplaintDetailFragment.complaintDetailsModel.getComplaintVoipId();
+            if (file.exists()) {
+                initVoice(Uri.fromFile(file));
+                playVoice();
+            } else if (voipId.equals("0")) {
+                if (binding.vfVoiceStatus != null)
+                    binding.vfVoiceStatus.setDisplayedChild(1);
+                if (vfPlayPause != null)
+                    vfPlayPause.setDisplayedChild(0);
+            } else {
+                startDownload(EndPoints.CALL_VOICE + ComplaintDetailFragment.complaintDetailsModel.getComplaintVoipId(), voiceName);
+            }
+        });
+
+        return binding.getRoot();
     }
 
     long lastTime = 0;
@@ -164,7 +139,7 @@ public class ComplaintTripDetailsFragment extends Fragment {
                             if (error.getResponseCode() == 401)
                                 new RefreshTokenAsyncTask().execute();
                             if (error.getResponseCode() == 404)
-                                vfVoiceStatus.setDisplayedChild(1);
+                                binding.vfVoiceStatus.setDisplayedChild(1);
                         }
                     });
 
@@ -174,7 +149,7 @@ public class ComplaintTripDetailsFragment extends Fragment {
             AvaCrashReporter.send(e, TAG + " class, startDownload method");
         } catch (Exception e) {
             e.printStackTrace();
-            AvaCrashReporter.send(e, TAG + " class, startDownload method");
+            AvaCrashReporter.send(e, TAG + " class, startDownload method1");
         }
     }
 
@@ -250,7 +225,6 @@ public class ComplaintTripDetailsFragment extends Fragment {
             AvaCrashReporter.send(e, TAG + " class, onDestroyView method");
         }
         super.onDestroyView();
-        unbinder.unbind();
     }
 
     private static void cancelTimer() {

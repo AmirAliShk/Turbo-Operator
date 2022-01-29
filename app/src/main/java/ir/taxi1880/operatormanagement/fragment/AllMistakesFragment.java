@@ -8,29 +8,21 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ViewFlipper;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.localbroadcastmanager.content.LocalBroadcastManager;
-import androidx.recyclerview.widget.RecyclerView;
-
-import com.dinuscxj.refresh.RecyclerRefreshLayout;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
 
-import butterknife.BindView;
-import butterknife.ButterKnife;
-import butterknife.OnClick;
-import butterknife.Unbinder;
-import ir.taxi1880.operatormanagement.R;
 import ir.taxi1880.operatormanagement.adapter.AllMistakesAdapter;
 import ir.taxi1880.operatormanagement.app.EndPoints;
 import ir.taxi1880.operatormanagement.app.MyApplication;
+import ir.taxi1880.operatormanagement.databinding.FragmentAllMistakesBinding;
 import ir.taxi1880.operatormanagement.helper.TypefaceUtil;
 import ir.taxi1880.operatormanagement.model.AllMistakesModel;
 import ir.taxi1880.operatormanagement.okHttp.RequestHelper;
@@ -38,48 +30,31 @@ import ir.taxi1880.operatormanagement.push.AvaCrashReporter;
 
 public class AllMistakesFragment extends Fragment {
     public static final String TAG = AllMistakesFragment.class.getSimpleName();
-    Unbinder unbinder;
+    FragmentAllMistakesBinding binding;
     LocalBroadcastManager broadcaster;
-
-    @BindView(R.id.refreshPage)
-    RecyclerRefreshLayout refreshPage;
-
-    @BindView(R.id.mistakesList)
-    RecyclerView mistakesList;
-
-    @BindView(R.id.vfAllMistake)
-    ViewFlipper vfAllMistake;
-
-    @OnClick(R.id.imgRefresh)
-    void onRefresh() {
-        getListen();
-    }
-
-    @OnClick(R.id.imgRefreshFail)
-    void onRefreshFail() {
-        getListen();
-    }
-
     AllMistakesAdapter mAdapter;
     ArrayList<AllMistakesModel> allMistakesModels;
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_all_mistakes, container, false);
-        unbinder = ButterKnife.bind(this, view);
-        TypefaceUtil.overrideFonts(view);
+        binding = FragmentAllMistakesBinding.inflate(inflater, container, false);
+        TypefaceUtil.overrideFonts(binding.getRoot());
 
         getListen();
 
-        refreshPage.setOnRefreshListener(this::getListen);
+        binding.refreshPage.setOnRefreshListener(this::getListen);
 
-        return view;
+        binding.imgRefreshFail.setOnClickListener(view -> getListen());
+
+        binding.imgRefresh.setOnClickListener(view -> getListen());
+
+        return binding.getRoot();
     }
 
     private void getListen() {
-        if (vfAllMistake != null)
-            vfAllMistake.setDisplayedChild(0);
+        if (binding.vfAllMistake != null)
+            binding.vfAllMistake.setDisplayedChild(0);
         RequestHelper.builder(EndPoints.LISTEN)
                 .listener(listenCallBack)
                 .get();
@@ -90,15 +65,15 @@ public class AllMistakesFragment extends Fragment {
         public void onResponse(Runnable reCall, Object... args) {
             MyApplication.handler.post(() -> {
                 try {
-                    if (refreshPage != null)
-                        refreshPage.setRefreshing(false);
+                    if (binding.refreshPage != null)
+                        binding.refreshPage.setRefreshing(false);
                     allMistakesModels = new ArrayList<>();
                     JSONObject listenObj = new JSONObject(args[0].toString());
                     boolean success = listenObj.getBoolean("success");
                     String message = listenObj.getString("message");
                     if (success) {
-                        if (vfAllMistake != null)
-                            vfAllMistake.setDisplayedChild(1);
+                        if (binding.vfAllMistake != null)
+                            binding.vfAllMistake.setDisplayedChild(1);
                         JSONArray dataArr = listenObj.getJSONArray("data");
                         for (int i = 0; i < dataArr.length(); i++) {
                             JSONObject dataObj = dataArr.getJSONObject(i);
@@ -131,13 +106,13 @@ public class AllMistakesFragment extends Fragment {
                         }
 
                         if (allMistakesModels.size() == 0) {
-                            if (vfAllMistake != null)
-                                vfAllMistake.setDisplayedChild(3);
+                            if (binding.vfAllMistake != null)
+                                binding.vfAllMistake.setDisplayedChild(3);
                         } else {
-                            if (vfAllMistake != null) {
-                                vfAllMistake.setDisplayedChild(1);
+                            if (binding.vfAllMistake != null) {
+                                binding.vfAllMistake.setDisplayedChild(1);
                                 mAdapter = new AllMistakesAdapter(allMistakesModels);
-                                mistakesList.setAdapter(mAdapter);
+                                binding.mistakesList.setAdapter(mAdapter);
                             }
                         }
 
@@ -147,15 +122,15 @@ public class AllMistakesFragment extends Fragment {
                         broadcaster.sendBroadcast(broadcastIntent);
 
                     } else {
-                        if (vfAllMistake != null)
-                            vfAllMistake.setDisplayedChild(2);
+                        if (binding.vfAllMistake != null)
+                            binding.vfAllMistake.setDisplayedChild(2);
                     }
 
                 } catch (Exception e) {
-                    if (refreshPage != null)
-                        refreshPage.setRefreshing(false);
-                    if (vfAllMistake != null)
-                        vfAllMistake.setDisplayedChild(2);
+                    if (binding.refreshPage != null)
+                        binding.refreshPage.setRefreshing(false);
+                    if (binding.vfAllMistake != null)
+                        binding.vfAllMistake.setDisplayedChild(2);
                     e.printStackTrace();
                     AvaCrashReporter.send(e, TAG + " class, listenCallBack method");
                 }
@@ -165,17 +140,11 @@ public class AllMistakesFragment extends Fragment {
         @Override
         public void onFailure(Runnable reCall, Exception e) {
             MyApplication.handler.post(() -> {
-                if (refreshPage != null)
-                    refreshPage.setRefreshing(false);
-                if (vfAllMistake != null)
-                    vfAllMistake.setDisplayedChild(2);
+                if (binding.refreshPage != null)
+                    binding.refreshPage.setRefreshing(false);
+                if (binding.vfAllMistake != null)
+                    binding.vfAllMistake.setDisplayedChild(2);
             });
         }
     };
-
-    @Override
-    public void onDestroyView() {
-        super.onDestroyView();
-        unbinder.unbind();
-    }
 }

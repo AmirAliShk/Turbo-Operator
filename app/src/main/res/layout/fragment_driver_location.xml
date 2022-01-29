@@ -6,27 +6,29 @@
     android:layout_height="match_parent"
     android:background="@color/colorPrimaryLighter"
     android:clickable="true"
+    android:layoutDirection="rtl"
     tools:context=".fragment.DriverLocationFragment">
 
     <RelativeLayout
         android:id="@+id/rlActionBar"
         android:layout_width="match_parent"
         android:layout_height="?android:attr/actionBarSize"
-        android:background="?attr/colorActionBarBackground"
-        android:layoutDirection="ltr">
+        android:background="?attr/colorActionBarBackground">
 
         <ImageView
             android:id="@+id/imgBack"
             android:layout_width="?android:attr/actionBarSize"
             android:layout_height="match_parent"
-            android:padding="15dp"
+            android:layout_alignParentLeft="true"
+            android:padding="@dimen/_15sdp"
             android:src="@drawable/ic_back" />
 
         <TextView
             style="@style/pageTitle"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:layout_centerInParent="true"
+            android:gravity="center_vertical"
             android:text="@string/driverLocation" />
 
         <ImageView
@@ -44,37 +46,36 @@
         android:layout_height="wrap_content"
         android:layout_below="@id/rlActionBar"
         android:layout_margin="10dp"
-        android:background="@drawable/bg_yellow_strok"
+        android:background="@drawable/bg_yellow_stroke"
         android:elevation="5dp"
         android:gravity="center"
         android:orientation="horizontal"
         android:padding="5dp">
 
-        <TextView
-            android:id="@+id/txtLastTime"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="10dp"
-            android:gravity="center"
-            android:textAppearance="?android:attr/textAppearanceLarge"
-            android:textColor="@color/colorBlack" />
+        <ImageView
+            android:layout_width="25dp"
+            android:layout_height="25dp"
+            android:layout_marginHorizontal="@dimen/_10sdp"
+            android:src="@drawable/ic_timer"
+            app:tint="@color/colorBlack" />
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:gravity="right"
-            android:text="زمان آخرین موقعیت راننده:"
+            android:text="زمان آخرین موقعیت راننده :"
             android:textAppearance="?android:attr/textAppearanceMedium"
             android:textColor="@color/colorBlack" />
 
-        <ImageView
-            android:layout_width="25dp"
-            android:layout_height="25dp"
-            android:layout_marginStart="10dp"
-            android:layout_marginLeft="10dp"
-            android:src="@drawable/ic_timer"
-            app:tint="@color/colorBlack" />
+        <TextView
+            android:id="@+id/txtLastTime"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/_10sdp"
+            android:gravity="center"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:textColor="@color/colorBlack" />
 
     </LinearLayout>
 

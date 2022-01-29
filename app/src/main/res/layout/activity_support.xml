@@ -6,6 +6,7 @@
     android:layout_height="match_parent"
     android:background="?attr/colorPageBackground"
     android:orientation="vertical"
+    android:layoutDirection="rtl"
     tools:context=".activity.SupportActivity">
 
     <RelativeLayout
@@ -173,11 +174,10 @@
 
         <ImageView
             android:id="@+id/imgBack"
-            android:layout_width="0dp"
+            android:layout_width="?android:attr/actionBarSize"
             android:layout_height="match_parent"
             android:layout_alignParentLeft="true"
-            android:layout_weight="0.5"
-            android:padding="12dp"
+            android:padding="@dimen/_15sdp"
             android:src="@drawable/ic_back" />
 
     </LinearLayout>
@@ -187,7 +187,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="?attr/colorHederSwitch"
-        app:tabIndicatorColor="?attr/colorpinkPurple">
+        app:tabIndicatorColor="?attr/colorpinkPurple"
+        android:layoutDirection="rtl">
 
         <com.google.android.material.tabs.TabItem
             android:layout_width="wrap_content"

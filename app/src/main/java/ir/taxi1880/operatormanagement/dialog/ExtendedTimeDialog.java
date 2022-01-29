@@ -4,14 +4,13 @@ import android.app.Dialog;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.view.Gravity;
+import android.view.LayoutInflater;
 import android.view.Window;
 import android.view.WindowManager;
 
-import butterknife.ButterKnife;
-import butterknife.OnClick;
-import butterknife.Unbinder;
 import ir.taxi1880.operatormanagement.R;
 import ir.taxi1880.operatormanagement.app.MyApplication;
+import ir.taxi1880.operatormanagement.databinding.DialogExtendedTimeBinding;
 import ir.taxi1880.operatormanagement.helper.KeyBoardHelper;
 import ir.taxi1880.operatormanagement.helper.TypefaceUtil;
 import ir.taxi1880.operatormanagement.push.AvaCrashReporter;
@@ -20,44 +19,21 @@ public class ExtendedTimeDialog {
 
     private static final String TAG = ExtendedTimeDialog.class.getSimpleName();
     private static Dialog dialog;
-    static Unbinder unbinder;
+    DialogExtendedTimeBinding binding;
     ExtendedTimeListener extendedTime;
 
     public interface ExtendedTimeListener {
         void extendTime(int type, String title, int icon);
     }
 
-    @OnClick(R.id.blrView)
-    void onBlur() {
-        dismiss();
-    }
-
-    @OnClick(R.id.llToday)
-    void onPressName() {
-        extendedTime.extendTime(1, "امروز", R.drawable.ic_today); // today
-        dismiss();
-    }
-
-    @OnClick(R.id.llYesterday)
-    void onPressTell() {
-        extendedTime.extendTime(2, "دیروز", R.drawable.ic_yesterday); // yesterday
-        dismiss();
-    }
-
-    @OnClick(R.id.llTwoDayAgo)
-    void onPressAddress() {
-        extendedTime.extendTime(3, "دوروز قبل", R.drawable.ic_twodaysago); // two day ago
-        dismiss();
-    }
-
     public void show(ExtendedTimeListener searchCaseListener) {
         if (MyApplication.currentActivity == null || MyApplication.currentActivity.isFinishing())
             return;
         dialog = new Dialog(MyApplication.currentActivity);
+        binding = DialogExtendedTimeBinding.inflate(LayoutInflater.from(dialog.getContext()));
         dialog.getWindow().requestFeature(Window.FEATURE_NO_TITLE);
         dialog.getWindow().getAttributes().windowAnimations = R.style.ExpandAnimation;
-        dialog.setContentView(R.layout.dialog_extended_time);
-        unbinder = ButterKnife.bind(this, dialog);
+        dialog.setContentView(binding.getRoot());
         TypefaceUtil.overrideFonts(dialog.getWindow().getDecorView(), MyApplication.IraSanSMedume);
         dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         WindowManager.LayoutParams wlp = dialog.getWindow().getAttributes();
@@ -69,6 +45,23 @@ public class ExtendedTimeDialog {
         KeyBoardHelper.hideKeyboard();
         this.extendedTime = searchCaseListener;
 
+        binding.llToday.setOnClickListener(view -> {
+            extendedTime.extendTime(1, "امروز", R.drawable.ic_today); // today
+            dismiss();
+        });
+
+        binding.llYesterday.setOnClickListener(view -> {
+            extendedTime.extendTime(2, "دیروز", R.drawable.ic_yesterday); // yesterday
+            dismiss();
+        });
+
+        binding.llTwoDayAgo.setOnClickListener(view -> {
+            extendedTime.extendTime(3, "دوروز قبل", R.drawable.ic_twodaysago); // two day ago
+            dismiss();
+        });
+
+        binding.blrView.setOnClickListener(view -> dismiss());
+
         dialog.show();
     }
 
@@ -77,7 +70,6 @@ public class ExtendedTimeDialog {
             if (dialog != null) {
                 if (dialog.isShowing())
                     dialog.dismiss();
-                unbinder.unbind();
                 KeyBoardHelper.hideKeyboard();
             }
             dialog = null;

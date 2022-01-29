@@ -9,14 +9,9 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.EditorInfo;
-import android.widget.EditText;
-import android.widget.ImageView;
-import android.widget.TextView;
 import android.widget.Toast;
-import android.widget.ViewFlipper;
 
 import androidx.fragment.app.Fragment;
-import androidx.recyclerview.widget.RecyclerView;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -27,15 +22,11 @@ import org.linphone.core.CoreListenerStub;
 
 import java.util.ArrayList;
 
-import butterknife.BindView;
-import butterknife.ButterKnife;
-import butterknife.OnClick;
-import butterknife.OnLongClick;
-import butterknife.Unbinder;
 import ir.taxi1880.operatormanagement.R;
 import ir.taxi1880.operatormanagement.adapter.TripAdapter;
 import ir.taxi1880.operatormanagement.app.EndPoints;
 import ir.taxi1880.operatormanagement.app.MyApplication;
+import ir.taxi1880.operatormanagement.databinding.FragmentPassengerTripSupportBinding;
 import ir.taxi1880.operatormanagement.dialog.CallDialog;
 import ir.taxi1880.operatormanagement.dialog.ExtendedTimeDialog;
 import ir.taxi1880.operatormanagement.dialog.GeneralDialog;
@@ -51,7 +42,7 @@ import ir.taxi1880.operatormanagement.services.LinphoneService;
 
 public class PassengerTripSupportFragment extends Fragment {
     public static final String TAG = PassengerTripSupportFragment.class.getSimpleName();
-    Unbinder unbinder;
+    FragmentPassengerTripSupportBinding binding;
     ArrayList<TripModel> tripModels;
     TripAdapter tripAdapter;
     int searchCase = 2;
@@ -59,163 +50,28 @@ public class PassengerTripSupportFragment extends Fragment {
     Core core;
     String searchText;
 
-    @OnClick(R.id.imgBack)
-    void onBackPress() {
-        KeyBoardHelper.hideKeyboard();
-        MyApplication.currentActivity.onBackPressed();
-    }
-
-    @BindView(R.id.vfTrip)
-    ViewFlipper vfTrip;
-
-    @BindView(R.id.imgSearchType)
-    ImageView imgSearchType;
-
-    @BindView(R.id.imgEndCall)
-    ImageView imgEndCall;
-
-    @BindView(R.id.imgExtendedTime)
-    ImageView imgExtendedTime;
-
-    @BindView(R.id.txtExtendTime)
-    TextView txtExtendTime;
-
-    @BindView(R.id.txtCancel)
-    TextView txtCancel;
-
-    @OnClick(R.id.txtCancel)
-    void txtCancel() {
-        if (vfTrip != null) {
-            vfTrip.setDisplayedChild(3);
-        }
-    }
-
-    @OnClick(R.id.imgEndCall)
-    void onPressEndCall() {
-        KeyBoardHelper.hideKeyboard();
-        if (MyApplication.prefManager.getConnectedCall()) {
-            new CallDialog().show(new CallDialog.CallBack() {
-                @Override
-                public void onDismiss() {
-                }
-
-                @Override
-                public void onCallReceived() {
-                }
-
-                @Override
-                public void onCallTransferred() {
-                }
-
-                @Override
-                public void onCallEnded() {
-                    if (imgEndCall != null)
-                        imgEndCall.setBackgroundResource(0);
-                }
-            }, true);
-        } else {
-            MyApplication.Toast("در حال حاضر تماسی برقرار نیست", Toast.LENGTH_SHORT);
-        }
-    }
-
-    @OnClick(R.id.imgSearch)
-    void onSearchPress() {
-        searchText = StringHelper.toEnglishDigits(edtSearchTrip.getText().toString());
-        if (searchText.isEmpty()) {
-            MyApplication.Toast("موردی را برای جستو جو وارد کنید", Toast.LENGTH_SHORT);
-            return;
-        }
-        KeyBoardHelper.hideKeyboard();
-        searchService(searchText, searchCase);
-    }
-
-    @OnLongClick(R.id.imgClear)
-    boolean onLongPressClear() {
-        edtSearchTrip.setText("");
-        return true;
-    }
-
-//  @OnClick(R.id.imgClear)
-//  void onClearPress() {
-//  }
-
-    @OnClick(R.id.imgSearchType)
-    void onSearchTypePress() {
-        new SearchFilterDialog().show("passenger", searchCase -> {
-            if (edtSearchTrip == null) return;
-            int imageType = R.drawable.ic_call;
-            switch (searchCase) {
-                case 1: //search by name
-                    imageType = R.drawable.ic_user;
-                    edtSearchTrip.setInputType(InputType.TYPE_CLASS_TEXT);
-                    break;
-                case 2: //search by tell
-                    imageType = R.drawable.ic_call;
-                    edtSearchTrip.setInputType(InputType.TYPE_CLASS_NUMBER);
-                    break;
-                case 3: //search by address
-                    imageType = R.drawable.ic_origin;
-                    edtSearchTrip.setInputType(InputType.TYPE_CLASS_TEXT);
-                    break;
-                case 4: //search by taxi code
-                    imageType = R.drawable.ic_taxi;
-                    edtSearchTrip.setInputType(InputType.TYPE_CLASS_NUMBER);
-                    break;
-                case 5: //search by station code
-                    imageType = R.drawable.ic_station_search;
-                    edtSearchTrip.setInputType(InputType.TYPE_CLASS_NUMBER);
-                    break;
-                case 11: //search by address
-                    imageType = R.drawable.ic_destination;
-                    edtSearchTrip.setInputType(InputType.TYPE_CLASS_TEXT);
-                    break;
-            }
-            imgSearchType.setImageResource(imageType);
-            edtSearchTrip.setText("");
-            this.searchCase = searchCase;
-        });
-    }
-
-    @OnClick(R.id.llExtendedTime)
-    void onExtendedTimePress() {
-        new ExtendedTimeDialog().show((type, title, icon) -> {
-            if (txtExtendTime != null) {
-                extendedTime = type;
-                txtExtendTime.setText(title);
-                imgExtendedTime.setImageResource(icon);
-            }
-        });
-    }
-
-    @BindView(R.id.edtSearchTrip)
-    EditText edtSearchTrip;
-
-    @BindView(R.id.recycleTrip)
-    RecyclerView recycleTrip;
-
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_passenger_trip_support, container, false);
-        unbinder = ButterKnife.bind(this, view);
-        TypefaceUtil.overrideFonts(view);
-        TypefaceUtil.overrideFonts(edtSearchTrip, MyApplication.IraSanSMedume);
+        binding = FragmentPassengerTripSupportBinding.inflate(inflater, container, false);
+        TypefaceUtil.overrideFonts(binding.getRoot());
+        TypefaceUtil.overrideFonts(binding.edtSearchTrip, MyApplication.IraSanSMedume);
 
         String tellNumber;
         Bundle bundle = getArguments();
         if (bundle != null) {
             tellNumber = bundle.getString("tellNumber");
-            edtSearchTrip.setText(tellNumber);
+            binding.edtSearchTrip.setText(tellNumber);
             onSearchPress();
         }
 
-        edtSearchTrip.requestFocus();
-        edtSearchTrip.setInputType(InputType.TYPE_CLASS_NUMBER);
+        binding.edtSearchTrip.requestFocus();
+        binding.edtSearchTrip.setInputType(InputType.TYPE_CLASS_NUMBER);
 
-        edtSearchTrip.addTextChangedListener(searchWatcher);
+        binding.edtSearchTrip.addTextChangedListener(searchWatcher);
 
-        edtSearchTrip.setOnEditorActionListener((v, actionId, event) -> {
+        binding.edtSearchTrip.setOnEditorActionListener((v, actionId, event) -> {
             if (actionId == EditorInfo.IME_ACTION_NEXT) {
-                searchText = StringHelper.toEnglishDigits(edtSearchTrip.getText().toString());
+                searchText = StringHelper.toEnglishDigits(binding.edtSearchTrip.getText().toString());
                 if (searchText.isEmpty()) {
                     MyApplication.Toast("موردی را برای جستو جو وارد کنید", Toast.LENGTH_SHORT);
                     return false;
@@ -228,12 +84,109 @@ public class PassengerTripSupportFragment extends Fragment {
         });
 
         if (MyApplication.prefManager.getConnectedCall()) {
-            imgEndCall.setBackgroundResource(R.drawable.bg_pink_edge);
+            binding.imgEndCall.setBackgroundResource(R.drawable.bg_pink_edge);
         } else {
-            imgEndCall.setBackgroundResource(0);
+            binding.imgEndCall.setBackgroundResource(0);
         }
 
-        return view;
+        binding.llExtendedTime.setOnClickListener(view -> new ExtendedTimeDialog().show((type, title, icon) -> {
+            if (binding.txtExtendTime != null) {
+                extendedTime = type;
+                binding.txtExtendTime.setText(title);
+                binding.imgExtendedTime.setImageResource(icon);
+            }
+        }));
+
+        binding.imgSearchType.setOnClickListener(view -> new SearchFilterDialog().show("passenger", searchCase -> {
+            if (binding.edtSearchTrip == null) return;
+            int imageType = R.drawable.ic_call;
+            switch (searchCase) {
+                case 1: //search by name
+                    imageType = R.drawable.ic_user;
+                    binding.edtSearchTrip.setInputType(InputType.TYPE_CLASS_TEXT);
+                    break;
+                case 2: //search by tell
+                    imageType = R.drawable.ic_call;
+                    binding.edtSearchTrip.setInputType(InputType.TYPE_CLASS_NUMBER);
+                    break;
+                case 3: //search by address
+                    imageType = R.drawable.ic_origin;
+                    binding.edtSearchTrip.setInputType(InputType.TYPE_CLASS_TEXT);
+                    break;
+                case 4: //search by taxi code
+                    imageType = R.drawable.ic_taxi;
+                    binding.edtSearchTrip.setInputType(InputType.TYPE_CLASS_NUMBER);
+                    break;
+                case 5: //search by station code
+                    imageType = R.drawable.ic_station_search;
+                    binding.edtSearchTrip.setInputType(InputType.TYPE_CLASS_NUMBER);
+                    break;
+                case 11: //search by address
+                    imageType = R.drawable.ic_destination;
+                    binding.edtSearchTrip.setInputType(InputType.TYPE_CLASS_TEXT);
+                    break;
+            }
+            binding.imgSearchType.setImageResource(imageType);
+            binding.edtSearchTrip.setText("");
+            this.searchCase = searchCase;
+        }));
+
+        binding.imgClear.setOnLongClickListener(view -> {
+            binding.edtSearchTrip.setText("");
+            return true;
+        });
+
+        binding.imgSearch.setOnClickListener(view -> onSearchPress());
+
+        binding.imgEndCall.setOnClickListener(view -> {
+            KeyBoardHelper.hideKeyboard();
+            if (MyApplication.prefManager.getConnectedCall()) {
+                new CallDialog().show(new CallDialog.CallBack() {
+                    @Override
+                    public void onDismiss() {
+                    }
+
+                    @Override
+                    public void onCallReceived() {
+                    }
+
+                    @Override
+                    public void onCallTransferred() {
+                    }
+
+                    @Override
+                    public void onCallEnded() {
+                        if (binding.imgEndCall != null)
+                            binding.imgEndCall.setBackgroundResource(0);
+                    }
+                }, true);
+            } else {
+                MyApplication.Toast("در حال حاضر تماسی برقرار نیست", Toast.LENGTH_SHORT);
+            }
+        });
+
+        binding.txtCancel.setOnClickListener(view -> {
+            if (binding.vfTrip != null) {
+                binding.vfTrip.setDisplayedChild(3);
+            }
+        });
+
+        binding.imgBack.setOnClickListener(view -> {
+            KeyBoardHelper.hideKeyboard();
+            MyApplication.currentActivity.onBackPressed();
+        });
+
+        return binding.getRoot();
+    }
+
+    public void onSearchPress() {
+        searchText = StringHelper.toEnglishDigits(binding.edtSearchTrip.getText().toString());
+        if (searchText.isEmpty()) {
+            MyApplication.Toast("موردی را برای جستو جو وارد کنید", Toast.LENGTH_SHORT);
+            return;
+        }
+        KeyBoardHelper.hideKeyboard();
+        searchService(searchText, searchCase);
     }
 
     TextWatcher searchWatcher = new TextWatcher() {
@@ -248,7 +201,7 @@ public class PassengerTripSupportFragment extends Fragment {
         @Override
         public void afterTextChanged(Editable editable) {
             if (PhoneNumberValidation.havePrefix(editable.toString()))
-                edtSearchTrip.setText(PhoneNumberValidation.removePrefix(editable.toString()));
+                binding.edtSearchTrip.setText(PhoneNumberValidation.removePrefix(editable.toString()));
         }
     };
 
@@ -261,8 +214,8 @@ public class PassengerTripSupportFragment extends Fragment {
         String stationCode = "0";
         String destinationAddress = "0";
 
-        if (vfTrip != null) {
-            vfTrip.setDisplayedChild(1);
+        if (binding.vfTrip != null) {
+            binding.vfTrip.setDisplayedChild(1);
         }
 //        {post} /api/operator/v3/support/trip/v1/search
 //
@@ -355,15 +308,15 @@ public class PassengerTripSupportFragment extends Fragment {
                         }
 
                         tripAdapter = new TripAdapter(tripModels);
-                        if (recycleTrip != null)
-                            recycleTrip.setAdapter(tripAdapter);
+                        if (binding.recycleTrip != null)
+                            binding.recycleTrip.setAdapter(tripAdapter);
 
                         if (tripModels.size() == 0) {
-                            if (vfTrip != null)
-                                vfTrip.setDisplayedChild(0);
+                            if (binding.vfTrip != null)
+                                binding.vfTrip.setDisplayedChild(0);
                         } else {
-                            if (vfTrip != null)
-                                vfTrip.setDisplayedChild(2);
+                            if (binding.vfTrip != null)
+                                binding.vfTrip.setDisplayedChild(2);
                         }
                     } else {
                         new GeneralDialog()
@@ -384,8 +337,8 @@ public class PassengerTripSupportFragment extends Fragment {
         public void onFailure(Runnable reCall, Exception e) {
             MyApplication.handler.post(() -> {
 //       e = {"message":"Unprocessable Entity","data":[{"field":"stationCode","message":"کد ایستگاه صحیح نیست"}],"success":false}
-                if (vfTrip != null) {
-                    vfTrip.setDisplayedChild(3);
+                if (binding.vfTrip != null) {
+                    binding.vfTrip.setDisplayedChild(3);
                 }
             });
         }
@@ -395,7 +348,7 @@ public class PassengerTripSupportFragment extends Fragment {
         @Override
         public void onCallStateChanged(Core core, final Call call, Call.State state, String message) {
             if (state == Call.State.End) {
-                imgEndCall.setBackgroundResource(0);
+                binding.imgEndCall.setBackgroundResource(0);
             }
         }
     };
@@ -412,11 +365,5 @@ public class PassengerTripSupportFragment extends Fragment {
         super.onDestroy();
         core.removeListener(mCoreListener);
         core = null;
-    }
-
-    @Override
-    public void onDestroyView() {
-        super.onDestroyView();
-        unbinder.unbind();
     }
 }

@@ -4,25 +4,19 @@ import android.app.Dialog;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.view.Gravity;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
-import android.widget.ImageView;
-import android.widget.RelativeLayout;
-import android.widget.TextView;
-import android.widget.ViewFlipper;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import butterknife.BindView;
-import butterknife.ButterKnife;
-import butterknife.OnClick;
-import butterknife.Unbinder;
 import ir.taxi1880.operatormanagement.R;
 import ir.taxi1880.operatormanagement.app.EndPoints;
 import ir.taxi1880.operatormanagement.app.MyApplication;
 import ir.taxi1880.operatormanagement.dataBase.DataBase;
+import ir.taxi1880.operatormanagement.databinding.DialogDriverInfoBinding;
 import ir.taxi1880.operatormanagement.helper.StringHelper;
 import ir.taxi1880.operatormanagement.helper.TypefaceUtil;
 import ir.taxi1880.operatormanagement.okHttp.RequestHelper;
@@ -32,78 +26,17 @@ public class DriverInfoDialog {
 
     private static final String TAG = DriverInfoDialog.class.getSimpleName();
     static Dialog dialog;
-    Unbinder unbinder;
+    DialogDriverInfoBinding binding;
     String driverMobile;
-
-    @BindView(R.id.txtFullName)
-    TextView txtFullName;
-
-    @BindView(R.id.txtFatherName)
-    TextView txtFatherName;
-
-    @BindView(R.id.txtNationalCode)
-    TextView txtNationalCode;
-
-    @BindView(R.id.txtCity)
-    TextView txtCity;
-
-    @BindView(R.id.txtGender)
-    TextView txtGender;
-
-    @BindView(R.id.txtBirthCertificate)
-    TextView txtBirthCertificate;
-
-    @BindView(R.id.txtDriverCode)
-    TextView txtDriverCode;
-
-    @BindView(R.id.txtStartDate)
-    TextView txtStartDate;
-
-    @BindView(R.id.txtCarClass)
-    TextView txtCarClass;
-
-    @BindView(R.id.txtIbenNo)
-    TextView txtIbenNo;
-
-    @BindView(R.id.txtVinNo)
-    TextView txtVinNo;
-
-    @BindView(R.id.imgSmartTaxiMeter)
-    ImageView imgSmartTaxiMeter;
-
-    @BindView(R.id.imgFuelQuota)
-    ImageView imgFuelQuota;
-
-    @BindView(R.id.imgConfirmInfo)
-    ImageView imgConfirmInfo;
-
-    @BindView(R.id.txtLockStatus)
-    TextView txtLockStatus;
-
-    @BindView(R.id.rlLockStatus)
-    RelativeLayout llLockStatus;
-
-    @BindView(R.id.vfLoader)
-    ViewFlipper vfLoader;
-
-    @OnClick(R.id.imgClose)
-    void onPressCLose() {
-        dismiss();
-    }
-
-    @OnClick(R.id.llSendLinkToDriver)
-    void onPressSendLinkToDriver() {
-        sendAppLink(driverMobile);
-    }
 
     public void show(String driverInfo) {
         if (MyApplication.currentActivity == null || MyApplication.currentActivity.isFinishing())
             return;
         dialog = new Dialog(MyApplication.currentActivity);
+        binding = DialogDriverInfoBinding.inflate(LayoutInflater.from(dialog.getContext()));
         dialog.getWindow().requestFeature(Window.FEATURE_NO_TITLE);
         dialog.getWindow().getAttributes().windowAnimations = R.style.ExpandAnimation;
-        dialog.setContentView(R.layout.dialog_driver_info);
-        unbinder = ButterKnife.bind(this, dialog);
+        dialog.setContentView(binding.getRoot());
         TypefaceUtil.overrideFonts(dialog.getWindow().getDecorView(), MyApplication.IraSanSMedume);
         dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         WindowManager.LayoutParams wlp = dialog.getWindow().getAttributes();
@@ -118,11 +51,11 @@ public class DriverInfoDialog {
         try {
             JSONObject driverInfoObj = new JSONObject(driverInfo);
             String city = dataBase.getCityName(driverInfoObj.getInt("cityCode"));
-            txtCity.setText(city);
-            txtDriverCode.setText(StringHelper.toPersianDigits(driverInfoObj.getInt("driverCode") + ""));
+            binding.txtCity.setText(city);
+            binding.txtDriverCode.setText(StringHelper.toPersianDigits(driverInfoObj.getInt("driverCode") + ""));
             int carCode = driverInfoObj.getInt("carCode");
             int smartCode = driverInfoObj.getInt("smartCode");
-            txtFullName.setText(driverInfoObj.getString("driverName"));
+            binding.txtFullName.setText(driverInfoObj.getString("driverName"));
             driverMobile = driverInfoObj.getString("driverMobile");
             String carClass = "ثبت نشده";
             switch (driverInfoObj.getInt("carClass")) {
@@ -142,7 +75,7 @@ public class DriverInfoDialog {
                     carClass = "تاکسی";
                     break;
             }
-            txtCarClass.setText(carClass);
+            binding.txtCarClass.setText(carClass);
             String gender = driverInfoObj.getInt("gender") == 1 ? "مرد" : "زن";
             int isLock = driverInfoObj.getInt("isLock");
             String lockDes = driverInfoObj.getString("lockDes");
@@ -153,49 +86,53 @@ public class DriverInfoDialog {
 //            String outTime = driverStationRegistrationModels.getOutTime().substring(0,5);
 //                        "lockFromDate": "1400/01/07",
 //                                "lockFromTime": "17:23:54",
-            txtGender.setText(gender);
-            txtNationalCode.setText(StringHelper.toPersianDigits(driverInfoObj.getString("nationalCode")));
-            txtFatherName.setText(driverInfoObj.getString("fatherName"));
-            txtVinNo.setText(StringHelper.toPersianDigits(driverInfoObj.getString("vin")));
-            txtIbenNo.setText(StringHelper.toPersianDigits(driverInfoObj.getString("sheba")));
-            txtBirthCertificate.setText(StringHelper.toPersianDigits(driverInfoObj.getString("shenasname")));
-            imgSmartTaxiMeter.setImageResource(driverInfoObj.getInt("smartTaximeter") == 1 ? R.drawable.ic_true : R.drawable.ic_false);
-            imgConfirmInfo.setImageResource(driverInfoObj.getInt("confirmation") == 1 ? R.drawable.ic_true : R.drawable.ic_false);
+            binding.txtGender.setText(gender);
+            binding.txtNationalCode.setText(StringHelper.toPersianDigits(driverInfoObj.getString("nationalCode")));
+            binding.txtFatherName.setText(driverInfoObj.getString("fatherName"));
+            binding.txtVinNo.setText(StringHelper.toPersianDigits(driverInfoObj.getString("vin")));
+            binding.txtIbenNo.setText(StringHelper.toPersianDigits(driverInfoObj.getString("sheba")));
+            binding.txtBirthCertificate.setText(StringHelper.toPersianDigits(driverInfoObj.getString("shenasname")));
+            binding.imgSmartTaxiMeter.setImageResource(driverInfoObj.getInt("smartTaximeter") == 1 ? R.drawable.ic_true : R.drawable.ic_false);
+            binding.imgConfirmInfo.setImageResource(driverInfoObj.getInt("confirmation") == 1 ? R.drawable.ic_true : R.drawable.ic_false);
             int cancelFuel = driverInfoObj.getInt("cancelFuel");
             int fuelRationing = driverInfoObj.getInt("fuelRationing");
             if (fuelRationing == 1) {
                 if (cancelFuel == 1) {
-                    imgFuelQuota.setImageResource(R.drawable.ic_false);
+                    binding.imgFuelQuota.setImageResource(R.drawable.ic_false);
                 } else {
-                    imgFuelQuota.setImageResource(R.drawable.ic_true);
+                    binding.imgFuelQuota.setImageResource(R.drawable.ic_true);
                 }
             } else {
-                imgFuelQuota.setImageResource(R.drawable.ic_false);
+                binding.imgFuelQuota.setImageResource(R.drawable.ic_false);
             }
 
             String statusMessage = "";
 
             if (isLock == 2) {
-                llLockStatus.setVisibility(View.VISIBLE);
+                binding.rlLockStatus.setVisibility(View.VISIBLE);
                 statusMessage = "راننده به دلیل " + lockDes + " از تاریخ " + lockFromDate + " ساعت " + lockFromTime + " قفل خواهد شد.";
             } else if (isLock == 1) {
-                llLockStatus.setVisibility(View.VISIBLE);
+                binding.rlLockStatus.setVisibility(View.VISIBLE);
                 statusMessage = "راننده به دلیل " + lockDes + " قفل میباشد.";
             }
-            txtLockStatus.setText(statusMessage);
+            binding.txtLockStatus.setText(statusMessage);
 
-            txtStartDate.setText(StringHelper.toPersianDigits(driverInfoObj.getString("startActiveDate")));
+            binding.txtStartDate.setText(StringHelper.toPersianDigits(driverInfoObj.getString("startActiveDate")));
         } catch (JSONException e) {
             e.printStackTrace();
             AvaCrashReporter.send(e, TAG + " class, show method");
         }
 
+        binding.llSendLinkToDriver.setOnClickListener(view -> sendAppLink(driverMobile));
+
+        binding.imgClose.setOnClickListener(view -> dismiss());
+
         dialog.show();
     }
 
     public void sendAppLink(String mobile) {
-        if (vfLoader != null)
-            vfLoader.setDisplayedChild(1);
+        if (binding.vfLoader != null)
+            binding.vfLoader.setDisplayedChild(1);
         RequestHelper.builder(EndPoints.DRIVER_SEND_APP_LINK)
                 .ignore422Error(true)
                 .addParam("mobile", mobile)
@@ -208,8 +145,8 @@ public class DriverInfoDialog {
         public void onResponse(Runnable reCall, Object... args) {
             MyApplication.handler.post(() -> {
                 try {
-                    if (vfLoader != null)
-                        vfLoader.setDisplayedChild(0);
+                    if (binding.vfLoader != null)
+                        binding.vfLoader.setDisplayedChild(0);
                     JSONObject object = new JSONObject(args[0].toString());
                     boolean success = object.getBoolean("success");
                     String message = object.getString("message");
@@ -236,8 +173,8 @@ public class DriverInfoDialog {
                 } catch (Exception e) {
                     e.printStackTrace();
                     AvaCrashReporter.send(e, TAG + " class, sendLinkCallBack method");
-                    if (vfLoader != null)
-                        vfLoader.setDisplayedChild(0);
+                    if (binding.vfLoader != null)
+                        binding.vfLoader.setDisplayedChild(0);
                 }
             });
         }
@@ -245,8 +182,8 @@ public class DriverInfoDialog {
         @Override
         public void onFailure(Runnable reCall, Exception e) {
             MyApplication.handler.post(() -> {
-                if (vfLoader != null)
-                    vfLoader.setDisplayedChild(0);
+                if (binding.vfLoader != null)
+                    binding.vfLoader.setDisplayedChild(0);
             });
         }
     };

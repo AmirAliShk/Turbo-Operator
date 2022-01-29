@@ -23,14 +23,12 @@ import ir.taxi1880.operatormanagement.push.AvaCrashReporter;
 public class AddressListDialog {
 
     private static final String TAG = AddressListDialog.class.getSimpleName();
-
     private static Dialog dialog;
     private DialogAddressListBinding binding;
     private LastAddressAdapter lastAddressAdapter;
     private ArrayList<AddressesModel> passengerAddressModels;
     private Listener listener;
     private String passengerId;
-
 
     public interface Listener {
         void description(String address, int stationCode, String addressId);

@@ -6,9 +6,6 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ListView;
-import android.widget.TextView;
-import android.widget.ViewFlipper;
 
 import androidx.fragment.app.Fragment;
 
@@ -17,45 +14,27 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 
-import butterknife.BindView;
-import butterknife.ButterKnife;
-import butterknife.OnClick;
-import butterknife.Unbinder;
-import ir.taxi1880.operatormanagement.R;
 import ir.taxi1880.operatormanagement.adapter.NotificationAdapter;
 import ir.taxi1880.operatormanagement.app.Constant;
 import ir.taxi1880.operatormanagement.app.EndPoints;
 import ir.taxi1880.operatormanagement.app.MyApplication;
+import ir.taxi1880.operatormanagement.databinding.FragmentNotificationBinding;
 import ir.taxi1880.operatormanagement.helper.TypefaceUtil;
 import ir.taxi1880.operatormanagement.model.NotificationModel;
 import ir.taxi1880.operatormanagement.okHttp.RequestHelper;
 import ir.taxi1880.operatormanagement.push.AvaCrashReporter;
 
 public class NotificationFragment extends Fragment {
-    Unbinder unbinder;
+
     public static final String TAG = NotificationFragment.class.getSimpleName();
+    FragmentNotificationBinding binding;
     ArrayList<NotificationModel> notificationModels;
     NotificationAdapter notificationAdapter;
 
-    @BindView(R.id.listNotification)
-    ListView listNotification;
-
-    @BindView(R.id.txtNull)
-    TextView txtNull;
-
-    @BindView(R.id.vfNoti)
-    ViewFlipper vfNoti;
-
-    @OnClick(R.id.imgBack)
-    void onBack() {
-        MyApplication.currentActivity.onBackPressed();
-    }
-
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_notification, container, false);
-        unbinder = ButterKnife.bind(this, view);
-        TypefaceUtil.overrideFonts(view);
+        binding = FragmentNotificationBinding.inflate(inflater, container, false);
+        TypefaceUtil.overrideFonts(binding.getRoot());
 
         NotificationManager notificationManager = (NotificationManager) MyApplication.currentActivity.getSystemService(Context.NOTIFICATION_SERVICE);
         notificationManager.cancel(Constant.PUSH_NOTIFICATION_ID);
@@ -63,13 +42,17 @@ public class NotificationFragment extends Fragment {
         notificationModels = new ArrayList<>();
         getNews();
 
-        return view;
+        binding.imgBack.setOnClickListener(view -> {
+            MyApplication.currentActivity.onBackPressed();
+        });
+
+        return binding.getRoot();
     }
 
     private void getNews() {
         MyApplication.currentActivity.runOnUiThread(() -> {
-            if (vfNoti != null)
-                vfNoti.setDisplayedChild(0);
+            if (binding.vfNoti != null)
+                binding.vfNoti.setDisplayedChild(0);
         });
 
         RequestHelper.builder(EndPoints.GET_NEWS)
@@ -92,14 +75,14 @@ public class NotificationFragment extends Fragment {
                         notificationModel.setSeen(object.getInt("seen"));
                         notificationModels.add(notificationModel);
                     }
-                    if (vfNoti != null)
-                        vfNoti.setDisplayedChild(1);
+                    if (binding.vfNoti != null)
+                        binding.vfNoti.setDisplayedChild(1);
                     notificationAdapter = new NotificationAdapter(notificationModels);
-                    if (listNotification != null)
-                        listNotification.setAdapter(notificationAdapter);
+                    if (binding.listNotification != null)
+                        binding.listNotification.setAdapter(notificationAdapter);
                     if (notificationModels.size() == 0) {
-                        if (vfNoti != null)
-                            vfNoti.setDisplayedChild(2);
+                        if (binding.vfNoti != null)
+                            binding.vfNoti.setDisplayedChild(2);
                     }
                 } catch (Exception e) {
                     e.printStackTrace();
@@ -111,17 +94,11 @@ public class NotificationFragment extends Fragment {
         @Override
         public void onFailure(Runnable reCall, Exception e) {
             MyApplication.handler.post(() -> {
-                if (vfNoti != null)
-                    vfNoti.setDisplayedChild(3);
+                if (binding.vfNoti != null)
+                    binding.vfNoti.setDisplayedChild(3);
             });
         }
     };
-
-    @Override
-    public void onDestroyView() {
-        super.onDestroyView();
-        unbinder.unbind();
-    }
 
     private RefreshNotificationCount refreshListener;
 

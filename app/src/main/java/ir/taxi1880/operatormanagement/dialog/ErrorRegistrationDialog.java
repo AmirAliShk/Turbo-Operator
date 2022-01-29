@@ -4,18 +4,16 @@ import android.app.Dialog;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.view.Gravity;
+import android.view.LayoutInflater;
 import android.view.Window;
 import android.view.WindowManager;
-import android.widget.Button;
-import android.widget.EditText;
-import android.widget.ImageView;
-import android.widget.ViewFlipper;
 
 import org.json.JSONObject;
 
 import ir.taxi1880.operatormanagement.R;
 import ir.taxi1880.operatormanagement.app.EndPoints;
 import ir.taxi1880.operatormanagement.app.MyApplication;
+import ir.taxi1880.operatormanagement.databinding.DialogErrorRegistrationBinding;
 import ir.taxi1880.operatormanagement.helper.KeyBoardHelper;
 import ir.taxi1880.operatormanagement.helper.TypefaceUtil;
 import ir.taxi1880.operatormanagement.okHttp.RequestHelper;
@@ -24,18 +22,19 @@ import ir.taxi1880.operatormanagement.push.AvaCrashReporter;
 public class ErrorRegistrationDialog {
 
     private static final String TAG = ErrorRegistrationDialog.class.getSimpleName();
+    DialogErrorRegistrationBinding binding;
 
     static Dialog dialog;
-    ViewFlipper vfLoader;
 
     public void show(String ServiceId, String phone, String mobile, String address, String customerName, String voipId,
                      int cityCode, String stationCode, int userCodeContact, String conTime, String conDate, String price, String destinationStation, String destinationAddress) {
         if (MyApplication.currentActivity == null || MyApplication.currentActivity.isFinishing())
             return;
         dialog = new Dialog(MyApplication.currentActivity);
+        binding = DialogErrorRegistrationBinding.inflate(LayoutInflater.from(dialog.getContext()));
         dialog.getWindow().requestFeature(Window.FEATURE_NO_TITLE);
         dialog.getWindow().getAttributes().windowAnimations = R.style.ExpandAnimation;
-        dialog.setContentView(R.layout.dialog_error_registration);
+        dialog.setContentView(binding.getRoot());
         TypefaceUtil.overrideFonts(dialog.getWindow().getDecorView());
         dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         WindowManager.LayoutParams wlp = dialog.getWindow().getAttributes();
@@ -45,19 +44,14 @@ public class ErrorRegistrationDialog {
         dialog.getWindow().setAttributes(wlp);
         dialog.setCancelable(false);
 
-        ImageView imgClose = dialog.findViewById(R.id.imgClose);
-        Button btnSubmit = dialog.findViewById(R.id.btnSubmit);
-        EditText edtErrorText = dialog.findViewById(R.id.edtErrorText);
-        vfLoader = dialog.findViewById(R.id.vfLoader);
+        binding.imgClose.setOnClickListener(view -> dismiss());
 
-        imgClose.setOnClickListener(view -> dismiss());
-
-        btnSubmit.setOnClickListener(view -> {
+        binding.btnSubmit.setOnClickListener(view -> {
             KeyBoardHelper.hideKeyboard();
-            String description = edtErrorText.getText().toString();
+            String description = binding.edtErrorText.getText().toString();
 
             if (description.isEmpty()) {
-                edtErrorText.setError("متن خطا را وارد کنید");
+                binding.edtErrorText.setError("متن خطا را وارد کنید");
                 return;
             }
 
@@ -70,8 +64,8 @@ public class ErrorRegistrationDialog {
 
     private void setMistake(String ServiceId, String phone, String mobile, String address, String customerName, String voipId, String desc,
                             int cityCode, String stationCode, int userCodeContact, String conTime, String conDate, String price, String destinationStation, String destinationAddress) {
-        if (vfLoader != null) {
-            vfLoader.setDisplayedChild(1);
+        if (binding.vfLoader != null) {
+            binding.vfLoader.setDisplayedChild(1);
         }
         LoadingDialog.makeCancelableLoader();
         RequestHelper.builder(EndPoints.MISTAKE)
@@ -130,8 +124,8 @@ public class ErrorRegistrationDialog {
                                 .show();
                     }
 
-                    if (vfLoader != null) {
-                        vfLoader.setDisplayedChild(0);
+                    if (binding.vfLoader != null) {
+                        binding.vfLoader.setDisplayedChild(0);
                     }
 
                     LoadingDialog.dismissCancelableDialog();
@@ -145,7 +139,12 @@ public class ErrorRegistrationDialog {
 
         @Override
         public void onFailure(Runnable reCall, Exception e) {
-            MyApplication.handler.post(LoadingDialog::dismissCancelableDialog);
+            MyApplication.handler.post(() -> {
+                LoadingDialog.dismissCancelableDialog();
+                if (binding.vfLoader != null) {
+                    binding.vfLoader.setDisplayedChild(0);
+                }
+            });
         }
     };
 

@@ -3,26 +3,20 @@ package ir.taxi1880.operatormanagement.dialog;
 import android.app.Dialog;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
-import android.widget.Button;
-import android.widget.EditText;
-import android.widget.LinearLayout;
-import android.widget.TextView;
 
-import butterknife.BindView;
-import butterknife.ButterKnife;
-import butterknife.OnClick;
-import butterknife.Unbinder;
-import ir.taxi1880.operatormanagement.R;
 import ir.taxi1880.operatormanagement.app.MyApplication;
+import ir.taxi1880.operatormanagement.databinding.DialogGeneralBinding;
 import ir.taxi1880.operatormanagement.helper.TypefaceUtil;
 import ir.taxi1880.operatormanagement.push.AvaCrashReporter;
 
 public class GeneralDialog {
 
     public static final String TAG = GeneralDialog.class.getSimpleName();
+    DialogGeneralBinding binding;
     private Runnable bodyRunnable = null;
     private Runnable dismissBody = null;
     private ButtonModel firstBtn = null;
@@ -132,68 +126,6 @@ public class GeneralDialog {
         return this;
     }
 
-    Unbinder unbinder;
-
-    @BindView(R.id.txtTitle)
-    TextView txtTitle;
-
-    @BindView(R.id.llTitle)
-    LinearLayout llTitle;
-
-    @BindView(R.id.txtMessage)
-    TextView txtMessage;
-
-    @BindView(R.id.imgSpace)
-    View imgSpace;
-
-    @BindView(R.id.llBtnView)
-    LinearLayout llBtnView;
-
-    @BindView(R.id.btnFirst)
-    Button btnFirst;
-
-    @BindView(R.id.edtMessage)
-    EditText edtMessage;
-
-    @BindView(R.id.btnSecond)
-    Button btnSecond;
-
-    @BindView(R.id.btnThird)
-    Button btnThird;
-
-    @OnClick(R.id.btnFirst)
-    void onFirstPress() {
-        dismiss();
-        if (edtMessage.getVisibility() == View.VISIBLE) {
-            descListener.onDescription(edtMessage.getText().toString());
-        }
-        if (firstBtn != null) {
-            if (firstBtn.getBody() != null) {
-                firstBtn.getBody().run();
-            }
-        }
-    }
-
-    @OnClick(R.id.btnSecond)
-    void onSecondPress() {
-        dismiss();
-
-        if (secondBtn != null) {
-            if (secondBtn.getBody() != null)
-                secondBtn.getBody().run();
-        }
-    }
-
-    @OnClick(R.id.btnThird)
-    void onThirdPress() {
-        dismiss();
-
-        if (thirdBtn != null) {
-            if (thirdBtn.getBody() != null)
-                thirdBtn.getBody().run();
-        }
-    }
-
     private Dialog dialog;
     private Dialog staticDialog = null;
 
@@ -213,56 +145,84 @@ public class GeneralDialog {
             tempDialog = dialog;
         }
         tempDialog.getWindow().requestFeature(Window.FEATURE_NO_TITLE);
-        tempDialog.setContentView(R.layout.dialog_general);
+        binding = DialogGeneralBinding.inflate(LayoutInflater.from(dialog.getContext()));
+        tempDialog.setContentView(binding.getRoot());
         tempDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         WindowManager.LayoutParams wlp = tempDialog.getWindow().getAttributes();
         tempDialog.getWindow().setAttributes(wlp);
         wlp.width = WindowManager.LayoutParams.MATCH_PARENT;
         tempDialog.setCancelable(cancelable);
-        unbinder = ButterKnife.bind(this, tempDialog);
         TypefaceUtil.overrideFonts(tempDialog.getWindow().getDecorView());
 
-        txtMessage.setText(messageText);
-        txtTitle.setText(titleText);
+        binding.txtMessage.setText(messageText);
+        binding.txtTitle.setText(titleText);
         if (titleText.isEmpty()) {
-            txtTitle.setVisibility(View.GONE);
-            llTitle.setVisibility(View.GONE);
+            binding.txtTitle.setVisibility(View.GONE);
+            binding.llTitle.setVisibility(View.GONE);
         }
         if (titleText.isEmpty()) {
-            txtTitle.setVisibility(View.GONE);
-            txtMessage.setTextSize(20);
+            binding.txtTitle.setVisibility(View.GONE);
+            binding.txtMessage.setTextSize(20);
         }
         if (messageText.isEmpty()) {
-            txtMessage.setVisibility(View.GONE);
+            binding.txtMessage.setVisibility(View.GONE);
         }
         if (firstBtn == null) {
-            btnFirst.setVisibility(View.GONE);
+            binding.btnFirst.setVisibility(View.GONE);
         } else {
-            btnFirst.setText(firstBtn.getText());
+            binding.btnFirst.setText(firstBtn.getText());
         }
         if (secondBtn == null) {
-            btnSecond.setVisibility(View.GONE);
-            imgSpace.setVisibility(View.GONE);
+            binding.btnSecond.setVisibility(View.GONE);
+            binding.imgSpace.setVisibility(View.GONE);
         } else {
-            btnSecond.setText(secondBtn.getText());
-            imgSpace.setVisibility(View.VISIBLE);
+            binding.btnSecond.setText(secondBtn.getText());
+            binding.imgSpace.setVisibility(View.VISIBLE);
         }
         if (thirdBtn == null) {
-            btnThird.setVisibility(View.GONE);
+            binding.btnThird.setVisibility(View.GONE);
         } else {
-            btnThird.setText(thirdBtn.getText());
+            binding.btnThird.setText(thirdBtn.getText());
         }
 
         if (firstBtn == null && secondBtn == null && thirdBtn == null) {
-            llBtnView.setVisibility(View.GONE);
+            binding.llBtnView.setVisibility(View.GONE);
         }
         if (visibility == 1) {
-            edtMessage.setVisibility(View.VISIBLE);
+            binding.edtMessage.setVisibility(View.VISIBLE);
         } else {
-            edtMessage.setVisibility(View.GONE);
+            binding.edtMessage.setVisibility(View.GONE);
         }
         if (bodyRunnable != null)
             bodyRunnable.run();
+
+        binding.btnFirst.setOnClickListener(view -> {
+            dismiss();
+            if (binding.edtMessage.getVisibility() == View.VISIBLE) {
+                descListener.onDescription(binding.edtMessage.getText().toString());
+            }
+            if (firstBtn != null) {
+                if (firstBtn.getBody() != null) {
+                    firstBtn.getBody().run();
+                }
+            }
+        });
+
+        binding.btnSecond.setOnClickListener(view -> {
+            dismiss();
+            if (secondBtn != null) {
+                if (secondBtn.getBody() != null)
+                    secondBtn.getBody().run();
+            }
+        });
+
+        binding.btnThird.setOnClickListener(view -> {
+            dismiss();
+            if (thirdBtn != null) {
+                if (thirdBtn.getBody() != null)
+                    thirdBtn.getBody().run();
+            }
+        });
 
         tempDialog.setOnDismissListener(dialog -> {
             if (dismissBody != null)

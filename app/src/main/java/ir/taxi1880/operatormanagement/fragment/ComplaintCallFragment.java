@@ -11,8 +11,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
-import android.widget.TextView;
-import android.widget.ViewFlipper;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -21,7 +19,6 @@ import androidx.fragment.app.Fragment;
 import com.downloader.Error;
 import com.downloader.OnDownloadListener;
 import com.downloader.PRDownloader;
-import com.warkiz.widget.IndicatorSeekBar;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -32,13 +29,9 @@ import java.net.URL;
 import java.util.Timer;
 import java.util.TimerTask;
 
-import butterknife.BindView;
-import butterknife.ButterKnife;
-import butterknife.OnClick;
-import butterknife.Unbinder;
-import ir.taxi1880.operatormanagement.R;
 import ir.taxi1880.operatormanagement.app.EndPoints;
 import ir.taxi1880.operatormanagement.app.MyApplication;
+import ir.taxi1880.operatormanagement.databinding.FragmentComplaintCallBinding;
 import ir.taxi1880.operatormanagement.dialog.GeneralDialog;
 import ir.taxi1880.operatormanagement.dialog.NumbersDialog;
 import ir.taxi1880.operatormanagement.helper.DateHelper;
@@ -52,117 +45,68 @@ import ir.taxi1880.operatormanagement.push.AvaCrashReporter;
 public class ComplaintCallFragment extends Fragment {
 
     public static final String TAG = ComplaintCallFragment.class.getSimpleName();
-    Unbinder unbinder;
+    FragmentComplaintCallBinding binding;
     MediaPlayer mediaPlayer;
-
-    @BindView(R.id.txtComplaintType)
-    TextView txtComplaintType;
-
-    @BindView(R.id.txtServiceDate)
-    TextView txtServiceDate;
-
-    @BindView(R.id.txtOrigin)
-    TextView txtOrigin;
-
-    @BindView(R.id.txtPrice)
-    TextView txtPrice;
-
-    @BindView(R.id.vfPlayPause)
-    ViewFlipper vfPlayPause;
-
-    @BindView(R.id.vfVoiceStatus)
-    ViewFlipper vfVoiceStatus;
-
-    @BindView(R.id.vfMissedCallCustomer)
-    ViewFlipper vfMissedCallCustomer;
-
-    @BindView(R.id.vfMissedCallDriver)
-    ViewFlipper vfMissedCallDriver;
-
-    @BindView(R.id.skbTimer)
-    IndicatorSeekBar skbTimer;
-
-    @BindView(R.id.txtCustomerName)
-    TextView txtCustomerName;
-
-    @BindView(R.id.txtDriverName)
-    TextView txtDriverName;
-
-    @BindView(R.id.txtCountCallPassenger)
-    TextView txtCountCallPassenger;
-
-    @OnClick(R.id.imgPlay)
-    void onPlay() {
-        if (vfPlayPause != null)
-            vfPlayPause.setDisplayedChild(1);
-
-        Log.i("URL", "show: " + EndPoints.CALL_VOICE + complaintDetailsModel.getComplaintVoipId());
-        String voiceName = complaintDetailsModel.getComplaintId() + ".mp3";
-        File file = new File(MyApplication.DIR_MAIN_FOLDER + MyApplication.VOICE_FOLDER_NAME + voiceName);
-        String voipId = complaintDetailsModel.getComplaintVoipId();
-        if (file.exists()) {
-            initVoice(Uri.fromFile(file));
-            playVoice();
-        } else if (voipId.equals("0")) {
-            if (vfVoiceStatus != null)
-                vfVoiceStatus.setDisplayedChild(1);
-            if (vfPlayPause != null)
-                vfPlayPause.setDisplayedChild(0);
-        } else {
-            startDownload(EndPoints.CALL_VOICE + complaintDetailsModel.getComplaintVoipId(), voiceName);
-        }
-    }
-
-    @OnClick(R.id.imgPause)
-    void onImgPause() {
-        pauseVoice();
-    }
-
-    @OnClick(R.id.imgMissedCallDriver)
-    void onMissedCallDriver() {
-        if (vfMissedCallDriver != null)
-            vfMissedCallDriver.setDisplayedChild(1);
-        missedCall(1);
-    }
-
-    @OnClick(R.id.imgMissedCallCustomer)
-    void onMissedCallCustomer() {
-        if (vfMissedCallCustomer != null)
-            vfMissedCallCustomer.setDisplayedChild(1);
-        missedCall(2);
-    }
-
-    @OnClick({R.id.vfCallCustomer})
-    void onCallCustomer() {
-        new NumbersDialog()
-                .show(complaintDetailsModel.getCustomerMobileNumber(), complaintDetailsModel.getCustomerPhoneNumber());
-    }
-
-    @OnClick({R.id.vfCallDriver})
-    void onCallDriver() {
-        new NumbersDialog()
-                .show(complaintDetailsModel.getDriverMobile(), complaintDetailsModel.getDriverMobile2());
-    }
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_complaint_call, container, false);
+        binding = FragmentComplaintCallBinding.inflate(inflater, container, false);
         getActivity().getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE);
-        unbinder = ButterKnife.bind(this, view);
-        TypefaceUtil.overrideFonts(view);
+        TypefaceUtil.overrideFonts(binding.getRoot());
 
-        txtComplaintType.setText(StringHelper.toPersianDigits(complaintDetailsModel.getComplaintType()));
+        binding.txtComplaintType.setText(StringHelper.toPersianDigits(complaintDetailsModel.getComplaintType()));
 
         String date = DateHelper.strPersianTree(DateHelper.parseDate(complaintDetailsModel.getServiceDate()));
-        txtServiceDate.setText(StringHelper.toPersianDigits(date));
-        txtOrigin.setText(StringHelper.toPersianDigits(complaintDetailsModel.getAddress()));
-        txtPrice.setText(StringHelper.toPersianDigits(StringHelper.setComma(complaintDetailsModel.getPrice() + "") + " تومان"));
-        txtCustomerName.setText(StringHelper.toPersianDigits(complaintDetailsModel.getCustomerName()));
-        txtDriverName.setText(StringHelper.toPersianDigits(complaintDetailsModel.getDriverName() + " " + complaintDetailsModel.getDriverLastName()));
-        txtCountCallPassenger.setText(StringHelper.toPersianDigits(complaintDetailsModel.getCountCallCustomer() + " بار"));
+        binding.txtServiceDate.setText(StringHelper.toPersianDigits(date));
+        binding.txtOrigin.setText(StringHelper.toPersianDigits(complaintDetailsModel.getAddress()));
+        binding.txtPrice.setText(StringHelper.toPersianDigits(StringHelper.setComma(complaintDetailsModel.getPrice() + "") + " تومان"));
+        binding.txtCustomerName.setText(StringHelper.toPersianDigits(complaintDetailsModel.getCustomerName()));
+        binding.txtDriverName.setText(StringHelper.toPersianDigits(complaintDetailsModel.getDriverName() + " " + complaintDetailsModel.getDriverLastName()));
+        binding.txtCountCallPassenger.setText(StringHelper.toPersianDigits(complaintDetailsModel.getCountCallCustomer() + " بار"));
 
-        return view;
+        binding.vfCallDriver.setOnClickListener(view -> new NumbersDialog()
+                .show(complaintDetailsModel.getDriverMobile(), complaintDetailsModel.getDriverMobile2()));
+
+        binding.vfCallCustomer.setOnClickListener(view -> new NumbersDialog()
+                .show(complaintDetailsModel.getCustomerMobileNumber(), complaintDetailsModel.getCustomerPhoneNumber()));
+
+        binding.imgMissedCallCustomer.setOnClickListener(view -> {
+            if (binding.vfMissedCallCustomer != null)
+                binding.vfMissedCallCustomer.setDisplayedChild(1);
+            missedCall(2);
+        });
+
+        binding.imgMissedCallDriver.setOnClickListener(view -> {
+            if (binding.vfMissedCallDriver != null)
+                binding.vfMissedCallDriver.setDisplayedChild(1);
+            missedCall(1);
+        });
+
+        binding.imgPause.setOnClickListener(view -> pauseVoice());
+
+        binding.imgPlay.setOnClickListener(view -> {
+            if (binding.vfPlayPause != null)
+                binding.vfPlayPause.setDisplayedChild(1);
+
+            Log.i("URL", "show: " + EndPoints.CALL_VOICE + complaintDetailsModel.getComplaintVoipId());
+            String voiceName = complaintDetailsModel.getComplaintId() + ".mp3";
+            File file = new File(MyApplication.DIR_MAIN_FOLDER + MyApplication.VOICE_FOLDER_NAME + voiceName);
+            String voipId = complaintDetailsModel.getComplaintVoipId();
+            if (file.exists()) {
+                initVoice(Uri.fromFile(file));
+                playVoice();
+            } else if (voipId.equals("0")) {
+                if (binding.vfVoiceStatus != null)
+                    binding.vfVoiceStatus.setDisplayedChild(1);
+                if (binding.vfPlayPause != null)
+                    binding.vfPlayPause.setDisplayedChild(0);
+            } else {
+                startDownload(EndPoints.CALL_VOICE + complaintDetailsModel.getComplaintVoipId(), voiceName);
+            }
+        });
+
+        return binding.getRoot();
     }
 
     long lastTime = 0;
@@ -217,7 +161,7 @@ public class ComplaintCallFragment extends Fragment {
                             if (error.getResponseCode() == 401)
                                 new RefreshTokenAsyncTask().execute();
                             if (error.getResponseCode() == 404)
-                                vfVoiceStatus.setDisplayedChild(1);
+                                binding.vfVoiceStatus.setDisplayedChild(1);
                         }
                     });
 
@@ -235,13 +179,13 @@ public class ComplaintCallFragment extends Fragment {
         try {
             mediaPlayer = MediaPlayer.create(MyApplication.context, uri);
             mediaPlayer.setOnCompletionListener(mp -> {
-                if (vfPlayPause != null) {
-                    vfPlayPause.setDisplayedChild(0);
+                if (binding.vfPlayPause != null) {
+                    binding.vfPlayPause.setDisplayedChild(0);
                 }
             });
             TOTAL_VOICE_DURATION = mediaPlayer.getDuration();
 
-            skbTimer.setMax(TOTAL_VOICE_DURATION);
+            binding.skbTimer.setMax(TOTAL_VOICE_DURATION);
 
         } catch (Exception e) {
             e.printStackTrace();
@@ -253,8 +197,8 @@ public class ComplaintCallFragment extends Fragment {
         try {
             if (mediaPlayer != null)
                 mediaPlayer.start();
-            if (vfPlayPause != null)
-                vfPlayPause.setDisplayedChild(2);
+            if (binding.vfPlayPause != null)
+                binding.vfPlayPause.setDisplayedChild(2);
         } catch (Exception e) {
             e.printStackTrace();
             AvaCrashReporter.send(e, TAG + " class, playVoice method");
@@ -268,10 +212,10 @@ public class ComplaintCallFragment extends Fragment {
             if (mediaPlayer != null)
                 mediaPlayer.pause();
 
-            skbTimer.setProgress(0);
+            binding.skbTimer.setProgress(0);
 
-            if (vfPlayPause != null)
-                vfPlayPause.setDisplayedChild(0);
+            if (binding.vfPlayPause != null)
+                binding.vfPlayPause.setDisplayedChild(0);
         } catch (Exception e) {
             e.printStackTrace();
             AvaCrashReporter.send(e, TAG + " class, pauseVoice method");
@@ -304,7 +248,6 @@ public class ComplaintCallFragment extends Fragment {
             AvaCrashReporter.send(e, TAG + " class, onDestroyView method");
         }
         super.onDestroyView();
-        unbinder.unbind();
     }
 
     private void cancelTimer() {
@@ -324,7 +267,7 @@ public class ComplaintCallFragment extends Fragment {
                 try {
                     MyApplication.handler.post(() -> {
                         Log.i("PlayConversationDialog", "onStopTrackingTouch run: " + mediaPlayer.getCurrentPosition());
-                        skbTimer.setProgress(mediaPlayer.getCurrentPosition());
+                        binding.skbTimer.setProgress(mediaPlayer.getCurrentPosition());
                     });
                 } catch (Exception e) {
                     e.printStackTrace();
@@ -335,7 +278,6 @@ public class ComplaintCallFragment extends Fragment {
     }
 
     static class RefreshTokenAsyncTask extends AsyncTask<Void, Void, Boolean> {
-
         @Override
         protected Boolean doInBackground(Void... voids) {
             new AuthenticationInterceptor().refreshToken();
@@ -379,18 +321,18 @@ public class ComplaintCallFragment extends Fragment {
                                     .firstButton("تایید", null)
                                     .show();
                         }
-                        if (vfMissedCallDriver != null)
-                            vfMissedCallDriver.setDisplayedChild(0);
-                        if (vfMissedCallCustomer != null)
-                            vfMissedCallCustomer.setDisplayedChild(0);
+                        if (binding.vfMissedCallDriver != null)
+                            binding.vfMissedCallDriver.setDisplayedChild(0);
+                        if (binding.vfMissedCallCustomer != null)
+                            binding.vfMissedCallCustomer.setDisplayedChild(0);
                     }
                 } catch (JSONException e) {
                     e.printStackTrace();
                     AvaCrashReporter.send(e, TAG + " class, missCall callBAck");
-                    if (vfMissedCallDriver != null)
-                        vfMissedCallDriver.setDisplayedChild(0);
-                    if (vfMissedCallCustomer != null)
-                        vfMissedCallCustomer.setDisplayedChild(0);
+                    if (binding.vfMissedCallDriver != null)
+                        binding.vfMissedCallDriver.setDisplayedChild(0);
+                    if (binding.vfMissedCallCustomer != null)
+                        binding.vfMissedCallCustomer.setDisplayedChild(0);
                 }
             });
         }
@@ -398,10 +340,10 @@ public class ComplaintCallFragment extends Fragment {
         @Override
         public void onFailure(Runnable reCall, Exception e) {
             MyApplication.handler.post(() -> {
-                if (vfMissedCallDriver != null)
-                    vfMissedCallDriver.setDisplayedChild(0);
-                if (vfMissedCallCustomer != null)
-                    vfMissedCallCustomer.setDisplayedChild(0);
+                if (binding.vfMissedCallDriver != null)
+                    binding.vfMissedCallDriver.setDisplayedChild(0);
+                if (binding.vfMissedCallCustomer != null)
+                    binding.vfMissedCallCustomer.setDisplayedChild(0);
             });
         }
     };

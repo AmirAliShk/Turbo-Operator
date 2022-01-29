@@ -4,9 +4,6 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
-import android.widget.TextView;
-import android.widget.ViewFlipper;
 
 import androidx.fragment.app.Fragment;
 
@@ -16,13 +13,10 @@ import org.linphone.core.CoreListenerStub;
 import org.linphone.core.ProxyConfig;
 import org.linphone.core.RegistrationState;
 
-import butterknife.BindView;
-import butterknife.ButterKnife;
-import butterknife.OnClick;
-import butterknife.Unbinder;
 import ir.taxi1880.operatormanagement.R;
 import ir.taxi1880.operatormanagement.app.EndPoints;
 import ir.taxi1880.operatormanagement.app.MyApplication;
+import ir.taxi1880.operatormanagement.databinding.FragmentHomeBinding;
 import ir.taxi1880.operatormanagement.dialog.GeneralDialog;
 import ir.taxi1880.operatormanagement.helper.FragmentHelper;
 import ir.taxi1880.operatormanagement.helper.StringHelper;
@@ -31,88 +25,47 @@ import ir.taxi1880.operatormanagement.okHttp.RequestHelper;
 import ir.taxi1880.operatormanagement.push.AvaCrashReporter;
 import ir.taxi1880.operatormanagement.services.LinphoneService;
 
-/**
- * A simple {@link Fragment} subclass.
- */
 public class HomeFragment extends Fragment {
     public final String TAG = HomeFragment.class.getSimpleName();
-    private Unbinder unbinder;
+    FragmentHomeBinding binding;
     private CoreListenerStub mListener;
     private Core core;
 
-    @BindView(R.id.txtOperatorName)
-    TextView txtOperatorName;
-
-    @BindView(R.id.txtCharge)
-    TextView txtCharge;
-
-    @BindView(R.id.txtDayScore)
-    TextView txtDayScore;
-
-    @BindView(R.id.txtMonthScore)
-    TextView txtMonthScore;
-
-    @BindView(R.id.txtDayForm)
-    TextView txtDayForm;
-
-    @BindView(R.id.txtMonthForm)
-    TextView txtMonthForm;
-
-    @BindView(R.id.txtDayWrong)
-    TextView txtDayWrong;
-
-    @BindView(R.id.txtMonthWrong)
-    TextView txtMonthWrong;
-
-    @BindView(R.id.vfBalance)
-    ViewFlipper vfBalance;
-
-    @BindView(R.id.imgSipStatus)
-    ImageView imgSipStatus;
-
-    @OnClick(R.id.llCharge)
-    void onCharge() {
-        FragmentHelper
-                .toFragment(MyApplication.currentActivity, new AccountFragment())
-                .replace();
-    }
-
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_home, container, false);
-        unbinder = ButterKnife.bind(this, view);
-        TypefaceUtil.overrideFonts(view);
-        TypefaceUtil.overrideFonts(txtOperatorName, MyApplication.IraSanSBold);
-        TypefaceUtil.overrideFonts(txtCharge, MyApplication.IraSanSBold);
-        TypefaceUtil.overrideFonts(txtDayScore, MyApplication.IraSanSBold);
-        TypefaceUtil.overrideFonts(txtMonthScore, MyApplication.IraSanSBold);
-        TypefaceUtil.overrideFonts(txtDayForm, MyApplication.IraSanSBold);
-        TypefaceUtil.overrideFonts(txtMonthForm, MyApplication.IraSanSBold);
-        TypefaceUtil.overrideFonts(txtDayWrong, MyApplication.IraSanSBold);
-        TypefaceUtil.overrideFonts(txtMonthWrong, MyApplication.IraSanSBold);
+        binding = FragmentHomeBinding.inflate(inflater, container, false);
+        TypefaceUtil.overrideFonts(binding.getRoot());
+        TypefaceUtil.overrideFonts(binding.txtOperatorName, MyApplication.IraSanSBold);
+        TypefaceUtil.overrideFonts(binding.txtCharge, MyApplication.IraSanSBold);
+        TypefaceUtil.overrideFonts(binding.txtDayScore, MyApplication.IraSanSBold);
+        TypefaceUtil.overrideFonts(binding.txtMonthScore, MyApplication.IraSanSBold);
+        TypefaceUtil.overrideFonts(binding.txtDayForm, MyApplication.IraSanSBold);
+        TypefaceUtil.overrideFonts(binding.txtMonthForm, MyApplication.IraSanSBold);
+        TypefaceUtil.overrideFonts(binding.txtDayWrong, MyApplication.IraSanSBold);
+        TypefaceUtil.overrideFonts(binding.txtMonthWrong, MyApplication.IraSanSBold);
         core = LinphoneService.getCore();
         getBalance();
 
-        txtOperatorName.setText(MyApplication.prefManager.getOperatorName());
+        binding.txtOperatorName.setText(MyApplication.prefManager.getOperatorName());
 
-        txtDayScore.setText(StringHelper.toPersianDigits(MyApplication.prefManager.getDailyScore()));
-        txtMonthScore.setText(StringHelper.toPersianDigits(MyApplication.prefManager.getMonthScore()));
-        txtDayForm.setText(StringHelper.toPersianDigits(MyApplication.prefManager.getServiceCountToday()));
-        txtMonthForm.setText(StringHelper.toPersianDigits(MyApplication.prefManager.getServiceCountMonth()));
-        txtDayWrong.setText(StringHelper.toPersianDigits("46"));
-        txtMonthWrong.setText(StringHelper.toPersianDigits("466"));
+        binding.txtDayScore.setText(StringHelper.toPersianDigits(MyApplication.prefManager.getDailyScore()));
+        binding.txtMonthScore.setText(StringHelper.toPersianDigits(MyApplication.prefManager.getMonthScore()));
+        binding.txtDayForm.setText(StringHelper.toPersianDigits(MyApplication.prefManager.getServiceCountToday()));
+        binding.txtMonthForm.setText(StringHelper.toPersianDigits(MyApplication.prefManager.getServiceCountMonth()));
+        binding.txtDayWrong.setText(StringHelper.toPersianDigits("46"));
+        binding.txtMonthWrong.setText(StringHelper.toPersianDigits("466"));
 
         mListener = new CoreListenerStub() {
             @Override
             public void onRegistrationStateChanged(Core lc, ProxyConfig proxy, RegistrationState state, String message) {
                 if (core.getDefaultProxyConfig() != null && core.getDefaultProxyConfig().equals(proxy)) {
-                    imgSipStatus.setImageResource(getStatusIconResource(state));
+                    binding.imgSipStatus.setImageResource(getStatusIconResource(state));
                 } else if (core.getDefaultProxyConfig() == null) {
-                    imgSipStatus.setImageResource(getStatusIconResource(state));
+                    binding.imgSipStatus.setImageResource(getStatusIconResource(state));
                 }
 
                 try {
-                    imgSipStatus.setOnClickListener(
+                    binding.imgSipStatus.setOnClickListener(
                             v -> {
                                 Core core = LinphoneService.getCore();
                                 if (core != null) {
@@ -126,7 +79,11 @@ public class HomeFragment extends Fragment {
             }
         };
 
-        return view;
+        binding.llCharge.setOnClickListener(view -> FragmentHelper
+                .toFragment(MyApplication.currentActivity, new AccountFragment())
+                .replace());
+
+        return binding.getRoot();
     }
 
     private int getStatusIconResource(RegistrationState state) {
@@ -149,8 +106,8 @@ public class HomeFragment extends Fragment {
     }
 
     private void getBalance() {
-        if (vfBalance != null)
-            vfBalance.setDisplayedChild(0);
+        if (binding.vfBalance != null)
+            binding.vfBalance.setDisplayedChild(0);
 
         RequestHelper.builder(EndPoints.BALANCE)
                 .listener(getBalance)
@@ -170,10 +127,10 @@ public class HomeFragment extends Fragment {
                         JSONObject dataObj = obj.getJSONObject("data");
                         String accountBalance = dataObj.getString("accountBalance");
                         String balance = StringHelper.setComma(accountBalance);
-                        if (txtCharge != null)
-                            txtCharge.setText(StringHelper.toPersianDigits(balance + " تومان "));
-                        if (vfBalance != null)
-                            vfBalance.setDisplayedChild(1);
+                        if (binding.txtCharge != null)
+                            binding.txtCharge.setText(StringHelper.toPersianDigits(balance + " تومان "));
+                        if (binding.vfBalance != null)
+                            binding.vfBalance.setDisplayedChild(1);
                     } else {
                         new GeneralDialog()
                                 .title("هشدار")
@@ -193,8 +150,8 @@ public class HomeFragment extends Fragment {
         @Override
         public void onFailure(Runnable reCall, Exception e) {
             MyApplication.handler.post(() -> {
-                if (vfBalance != null)
-                    vfBalance.setDisplayedChild(1);
+                if (binding.vfBalance != null)
+                    binding.vfBalance.setDisplayedChild(1);
             });
         }
 
@@ -225,11 +182,5 @@ public class HomeFragment extends Fragment {
         if (core != null) {
             core.removeListener(mListener);
         }
-    }
-
-    @Override
-    public void onDestroy() {
-        super.onDestroy();
-        unbinder.unbind();
     }
 }

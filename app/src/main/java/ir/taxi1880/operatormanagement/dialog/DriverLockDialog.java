@@ -4,16 +4,12 @@ import android.app.Dialog;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.view.Gravity;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.AdapterView;
-import android.widget.Button;
-import android.widget.EditText;
-import android.widget.ImageView;
-import android.widget.Spinner;
 import android.widget.Toast;
-import android.widget.ViewFlipper;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -25,6 +21,7 @@ import ir.taxi1880.operatormanagement.R;
 import ir.taxi1880.operatormanagement.adapter.SpinnerAdapter;
 import ir.taxi1880.operatormanagement.app.EndPoints;
 import ir.taxi1880.operatormanagement.app.MyApplication;
+import ir.taxi1880.operatormanagement.databinding.DialogDriverLockBinding;
 import ir.taxi1880.operatormanagement.helper.KeyBoardHelper;
 import ir.taxi1880.operatormanagement.helper.TypefaceUtil;
 import ir.taxi1880.operatormanagement.model.TypeServiceModel;
@@ -34,19 +31,18 @@ import ir.taxi1880.operatormanagement.push.AvaCrashReporter;
 public class DriverLockDialog {
 
     private static final String TAG = DriverLockDialog.class.getSimpleName();
-
-    private Spinner spReason;
+    DialogDriverLockBinding binding;
     int reason;
-    ViewFlipper vfLoader;
     static Dialog dialog;
 
     public void show(String taxiCode) {
         if (MyApplication.currentActivity == null || MyApplication.currentActivity.isFinishing())
             return;
         dialog = new Dialog(MyApplication.currentActivity);
+        binding = DialogDriverLockBinding.inflate(LayoutInflater.from(dialog.getContext()));
         dialog.getWindow().requestFeature(Window.FEATURE_NO_TITLE);
         dialog.getWindow().getAttributes().windowAnimations = R.style.ExpandAnimation;
-        dialog.setContentView(R.layout.dialog_driver_lock);
+        dialog.setContentView(binding.getRoot());
         TypefaceUtil.overrideFonts(dialog.getWindow().getDecorView());
         dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         WindowManager.LayoutParams wlp = dialog.getWindow().getAttributes();
@@ -56,19 +52,13 @@ public class DriverLockDialog {
         dialog.getWindow().setAttributes(wlp);
         dialog.setCancelable(false);
 
-        ImageView imgClose = dialog.findViewById(R.id.imgClose);
-        Button btnSubmit = dialog.findViewById(R.id.btnSubmit);
-        EditText edtHour = dialog.findViewById(R.id.edtHour);
-        spReason = dialog.findViewById(R.id.spReason);
-        vfLoader = dialog.findViewById(R.id.vfLoader);
-
         initSpinner();
-        imgClose.setOnClickListener(view -> dismiss());
+        binding.imgClose.setOnClickListener(view -> dismiss());
 
-        btnSubmit.setOnClickListener(view -> {
+        binding.btnSubmit.setOnClickListener(view -> {
             KeyBoardHelper.hideKeyboard();
 
-            String hours = edtHour.getText().toString();
+            String hours = binding.edtHour.getText().toString();
 
             if (hours.isEmpty()) {
                 MyApplication.Toast("تعداد ساعت های قفل راننده را وارد کنید.", Toast.LENGTH_SHORT);
@@ -77,7 +67,7 @@ public class DriverLockDialog {
 
             if (Integer.parseInt(hours) < 6) {
                 MyApplication.Toast("زمان قفل راننده نباید کمتر از 6 ساعت باشد.", Toast.LENGTH_SHORT);
-                edtHour.setText("");
+                binding.edtHour.setText("");
                 return;
             }
 
@@ -89,8 +79,8 @@ public class DriverLockDialog {
     }
 
     private void lockTaxi(String taxiCode, String hours) {
-        if (vfLoader != null) {
-            vfLoader.setDisplayedChild(1);
+        if (binding.vfLoader != null) {
+            binding.vfLoader.setDisplayedChild(1);
         }
         LoadingDialog.makeCancelableLoader();
         RequestHelper.builder(EndPoints.LOCK_TAXI)
@@ -138,8 +128,8 @@ public class DriverLockDialog {
                                 .show();
                     }
 
-                    if (vfLoader != null) {
-                        vfLoader.setDisplayedChild(0);
+                    if (binding.vfLoader != null) {
+                        binding.vfLoader.setDisplayedChild(0);
                     }
 
                     LoadingDialog.dismissCancelableDialog();
@@ -153,7 +143,10 @@ public class DriverLockDialog {
 
         @Override
         public void onFailure(Runnable reCall, Exception e) {
-            MyApplication.handler.post(LoadingDialog::dismissCancelableDialog);
+            MyApplication.handler.post(() -> {
+                if (binding.vfLoader != null)
+                    binding.vfLoader.setDisplayedChild(0);
+            });
         }
     };
 
@@ -170,14 +163,14 @@ public class DriverLockDialog {
                 typeServiceModels.add(typeServiceModel);
                 serviceList.add(serviceObj.getString("Subject"));
             }
-            if (spReason == null)
+            if (binding.spReason == null)
                 return;
 
-            spReason.setEnabled(true);
+            binding.spReason.setEnabled(true);
 
-            spReason.setAdapter(new SpinnerAdapter(MyApplication.currentActivity, R.layout.item_spinner, serviceList));
+            binding.spReason.setAdapter(new SpinnerAdapter(MyApplication.currentActivity, R.layout.item_spinner, serviceList));
 
-            spReason.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            binding.spReason.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
                 @Override
                 public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
 //                    if (spReason != null)

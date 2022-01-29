@@ -5,16 +5,11 @@ import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.util.Log;
 import android.view.Gravity;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.AdapterView;
-import android.widget.Button;
-import android.widget.EditText;
-import android.widget.ImageView;
-import android.widget.LinearLayout;
-import android.widget.Spinner;
-import android.widget.ViewFlipper;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -25,6 +20,7 @@ import ir.taxi1880.operatormanagement.R;
 import ir.taxi1880.operatormanagement.adapter.SpinnerAdapter;
 import ir.taxi1880.operatormanagement.app.EndPoints;
 import ir.taxi1880.operatormanagement.app.MyApplication;
+import ir.taxi1880.operatormanagement.databinding.DialogHireBinding;
 import ir.taxi1880.operatormanagement.helper.KeyBoardHelper;
 import ir.taxi1880.operatormanagement.helper.TypefaceUtil;
 import ir.taxi1880.operatormanagement.model.HireTypeModel;
@@ -34,26 +30,23 @@ import ir.taxi1880.operatormanagement.push.AvaCrashReporter;
 public class HireDialog {
 
     private static final String TAG = HireDialog.class.getSimpleName();
+    DialogHireBinding binding;
 
     public interface Listener {
         void onClose(boolean b);
     }
-
     Listener listener;
-
-    private Spinner spHireType;
     private int hireType;
-    ViewFlipper vfLoader;
-    View blrView;
     static Dialog dialog;
 
     public void show(Listener listener, String mobile, String name, int cityCode) {
         if (MyApplication.currentActivity == null || MyApplication.currentActivity.isFinishing())
             return;
         dialog = new Dialog(MyApplication.currentActivity);
+        binding = DialogHireBinding.inflate(LayoutInflater.from(dialog.getContext()));
         dialog.getWindow().requestFeature(Window.FEATURE_NO_TITLE);
         dialog.getWindow().getAttributes().windowAnimations = R.style.ExpandAnimation;
-        dialog.setContentView(R.layout.dialog_hire);
+        dialog.setContentView(binding.getRoot());
         TypefaceUtil.overrideFonts(dialog.getWindow().getDecorView());
         dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         WindowManager.LayoutParams wlp = dialog.getWindow().getAttributes();
@@ -65,27 +58,19 @@ public class HireDialog {
         this.listener = listener;
 
         getHireType();
-        LinearLayout llHire = dialog.findViewById(R.id.llHire);
-        ImageView imgClose = dialog.findViewById(R.id.imgClose);
-        Button btnSubmit = dialog.findViewById(R.id.btnSubmit);
-        EditText edtComment = dialog.findViewById(R.id.edtComment);
-        LinearLayout llParent = dialog.findViewById(R.id.llParent);
-        blrView = dialog.findViewById(R.id.blrView);
-        vfLoader = dialog.findViewById(R.id.vfLoader);
-        spHireType = dialog.findViewById(R.id.spHireType);
 
-        llHire.setOnClickListener(view -> {
+        binding.llHire.setOnClickListener(view -> {
             return;
         });
-        blrView.setOnClickListener(view -> dismiss());
+        binding.blrView.setOnClickListener(view -> dismiss());
 
-        imgClose.setOnClickListener(view -> dismiss());
+        binding.imgClose.setOnClickListener(view -> dismiss());
 
-        btnSubmit.setOnClickListener(view -> new GeneralDialog()
+        binding.btnSubmit.setOnClickListener(view -> new GeneralDialog()
                 .title("استخدامی")
                 .message("آیا از ثبت درخواست اطمینان دارید؟")
                 .firstButton("بله", () ->
-                        setHire(name, mobile, edtComment.getText().toString(), hireType, cityCode))
+                        setHire(name, mobile, binding.edtComment.getText().toString(), hireType, cityCode))
                 .secondButton("خیر", null)
                 .show());
 
@@ -106,8 +91,8 @@ public class HireDialog {
     }
 
     private void setHire(String name, String phoneNumber, String comment, int hireType, int cityCode) {
-        if (vfLoader != null) {
-            vfLoader.setDisplayedChild(1);
+        if (binding.vfLoader != null) {
+            binding.vfLoader.setDisplayedChild(1);
         }
         RequestHelper.builder(EndPoints.HIRE)
                 .addParam("phoneNumber", phoneNumber)
@@ -157,13 +142,13 @@ public class HireDialog {
                                 .cancelable(false)
                                 .show();
                     }
-                    if (vfLoader != null) {
-                        vfLoader.setDisplayedChild(0);
+                    if (binding.vfLoader != null) {
+                        binding.vfLoader.setDisplayedChild(0);
                     }
                 } catch (Exception e) {
                     e.printStackTrace();
-                    if (vfLoader != null) {
-                        vfLoader.setDisplayedChild(0);
+                    if (binding.vfLoader != null) {
+                        binding.vfLoader.setDisplayedChild(0);
                     }
                     AvaCrashReporter.send(e, TAG + " class, setHire onResponse method");
                 }
@@ -173,8 +158,8 @@ public class HireDialog {
         @Override
         public void onFailure(Runnable reCall, Exception e) {
             MyApplication.handler.post(() -> {
-                if (vfLoader != null) {
-                    vfLoader.setDisplayedChild(0);
+                if (binding.vfLoader != null) {
+                    binding.vfLoader.setDisplayedChild(0);
                 }
             });
         }
@@ -209,9 +194,9 @@ public class HireDialog {
                             hireTypeModels.add(hireTypeModel);
                             hireTypes.add(obj.getString("name"));
                         }
-                        if (spHireType != null) {
-                            spHireType.setAdapter(new SpinnerAdapter(MyApplication.currentActivity, R.layout.item_spinner_right, hireTypes));
-                            spHireType.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                        if (binding.spHireType != null) {
+                            binding.spHireType.setAdapter(new SpinnerAdapter(MyApplication.currentActivity, R.layout.item_spinner_right, hireTypes));
+                            binding.spHireType.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
                                 @Override
                                 public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
 //                                    if (spHireType != null)

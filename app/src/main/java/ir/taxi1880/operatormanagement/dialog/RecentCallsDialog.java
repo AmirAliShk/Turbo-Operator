@@ -6,14 +6,9 @@ import android.app.Dialog;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.view.Gravity;
+import android.view.LayoutInflater;
 import android.view.Window;
 import android.view.WindowManager;
-import android.widget.ProgressBar;
-import android.widget.RadioGroup;
-import android.widget.TextView;
-import android.widget.ViewFlipper;
-
-import androidx.recyclerview.widget.RecyclerView;
 
 import com.downloader.PRDownloader;
 
@@ -22,14 +17,11 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 
-import butterknife.BindView;
-import butterknife.ButterKnife;
-import butterknife.OnClick;
-import butterknife.Unbinder;
 import ir.taxi1880.operatormanagement.R;
 import ir.taxi1880.operatormanagement.adapter.RecentCallsAdapter;
 import ir.taxi1880.operatormanagement.app.EndPoints;
 import ir.taxi1880.operatormanagement.app.MyApplication;
+import ir.taxi1880.operatormanagement.databinding.DialogRecentCallsBinding;
 import ir.taxi1880.operatormanagement.helper.TypefaceUtil;
 import ir.taxi1880.operatormanagement.model.RecentCallsModel;
 import ir.taxi1880.operatormanagement.okHttp.RequestHelper;
@@ -37,9 +29,8 @@ import ir.taxi1880.operatormanagement.push.AvaCrashReporter;
 
 public class RecentCallsDialog {
     public static final String TAG = RecentCallsDialog.class.getSimpleName();
-
     Dialog dialog;
-    Unbinder unbinder;
+    DialogRecentCallsBinding binding;
     boolean fromPassengerCalls;
     String tell;
     String mobile;
@@ -50,50 +41,6 @@ public class RecentCallsDialog {
 
     DismissInterface dismissInterface;
 
-    @BindView(R.id.vfHeader)
-    ViewFlipper vfHeader;
-
-    @BindView(R.id.listRecentCalls)
-    RecyclerView listRecentCalls;
-
-    @OnClick(R.id.imgClose)
-    void onClose() {
-        dismiss();
-    }
-
-    @BindView(R.id.vfDownload)
-    ViewFlipper vfDownload;
-
-    @BindView(R.id.progressDownload)
-    ProgressBar progressDownload;
-
-    @BindView(R.id.textProgress)
-    TextView textProgress;
-
-    @BindView(R.id.rgSearchType)
-    RadioGroup rgSearchType;
-
-    @OnClick(R.id.rbTell)
-    void onTell() {
-        if (tell.length() == 10 && !tell.startsWith("0")) {
-            tell = "0" + tell;
-            getRecentCalls("/src", tell, "/4");
-        } else if (tell.length() == 8) {
-            tell = "051" + tell;
-            getRecentCalls("/src", tell, "/4");
-        } else {
-            if (vfDownload != null)
-                vfDownload.setDisplayedChild(2);
-        }
-    }
-
-    @OnClick(R.id.rbMobile)
-    void onMobile() {
-        if (rgSearchType.getCheckedRadioButtonId() == R.id.rbMobile) {
-            getRecentCalls("/src", mobile.startsWith("0") ? mobile : "0" + mobile, "/4");
-        }
-    }
-
     RecentCallsAdapter mAdapter;
     ArrayList<RecentCallsModel> recentCallsModels;
 
@@ -101,10 +48,10 @@ public class RecentCallsDialog {
         if (MyApplication.currentActivity == null || MyApplication.currentActivity.isFinishing())
             return;
         dialog = new Dialog(MyApplication.currentActivity);
+        binding = DialogRecentCallsBinding.inflate(LayoutInflater.from(dialog.getContext()));
         dialog.getWindow().requestFeature(Window.FEATURE_NO_TITLE);
         dialog.getWindow().getAttributes().windowAnimations = R.style.ExpandAnimation;
-        dialog.setContentView(R.layout.dialog_recent_calls);
-        unbinder = ButterKnife.bind(this, dialog.getWindow().getDecorView());
+        dialog.setContentView(binding.getRoot());
         TypefaceUtil.overrideFonts(dialog.getWindow().getDecorView());
         dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         WindowManager.LayoutParams wlp = dialog.getWindow().getAttributes();
@@ -120,9 +67,9 @@ public class RecentCallsDialog {
         this.dismissInterface = dismissInterface;
 
         if (fromPassengerCalls) {
-            if (vfHeader != null)
-                vfHeader.setDisplayedChild(1);
-            if (rgSearchType.getCheckedRadioButtonId() == R.id.rbTell) {
+            if (binding.vfHeader != null)
+                binding.vfHeader.setDisplayedChild(1);
+            if (binding.rgSearchType.getCheckedRadioButtonId() == R.id.rbTell) {
                 if (tell.length() == 10 && !tell.startsWith("0")) {
                     tell = "0" + tell;
                     getRecentCalls("/src", tell, "/4");
@@ -130,24 +77,45 @@ public class RecentCallsDialog {
                     tell = "051" + tell;
                     getRecentCalls("/src", tell, "/4");
                 } else {
-                    if (vfDownload != null)
-                        vfDownload.setDisplayedChild(2);
+                    if (binding.vfDownload != null)
+                        binding.vfDownload.setDisplayedChild(2);
                 }
-            } else if (rgSearchType.getCheckedRadioButtonId() == R.id.rbMobile) {
+            } else if (binding.rgSearchType.getCheckedRadioButtonId() == R.id.rbMobile) {
                 getRecentCalls("/src", mobile.startsWith("0") ? mobile : "0" + mobile, "/4");
             }
         } else {
-            if (vfHeader != null)
-                vfHeader.setDisplayedChild(0);
+            if (binding.vfHeader != null)
+                binding.vfHeader.setDisplayedChild(0);
             getRecentCalls("/dst", sip + "", "/1");
         }
+
+        binding.rbTell.setOnClickListener(view -> {
+            if (this.tell.length() == 10 && !this.tell.startsWith("0")) {
+                this.tell = "0" + this.tell;
+                getRecentCalls("/src", this.tell, "/4");
+            } else if (this.tell.length() == 8) {
+                this.tell = "051" + this.tell;
+                getRecentCalls("/src", this.tell, "/4");
+            } else {
+                if (binding.vfDownload != null)
+                    binding.vfDownload.setDisplayedChild(2);
+            }
+        });
+
+        binding.rbMobile.setOnClickListener(view -> {
+            if (binding.rgSearchType.getCheckedRadioButtonId() == R.id.rbMobile) {
+                getRecentCalls("/src", mobile.startsWith("0") ? mobile : "0" + mobile, "/4");
+            }
+        });
+
+        binding.imgClose.setOnClickListener(view -> dismiss());
 
         dialog.show();
     }
 
     public void getRecentCalls(String type, String num, String dateInterval) {
-        if (vfDownload != null)
-            vfDownload.setDisplayedChild(0);
+        if (binding.vfDownload != null)
+            binding.vfDownload.setDisplayedChild(0);
         RequestHelper.builder(EndPoints.RECENT_CALLS + num.trim() + type + dateInterval)
                 .listener(recentCallsCallBack)
                 .get();
@@ -163,8 +131,8 @@ public class RecentCallsDialog {
                     boolean success = listenObj.getBoolean("success");
                     String message = listenObj.getString("message");
                     if (success) {
-                        if (vfDownload != null)
-                            vfDownload.setDisplayedChild(1);
+                        if (binding.vfDownload != null)
+                            binding.vfDownload.setDisplayedChild(1);
                         JSONArray dataArr = listenObj.getJSONArray("data");
                         for (int i = 0; i < dataArr.length(); i++) {
                             JSONObject dataObj = dataArr.getJSONObject(i);
@@ -186,17 +154,17 @@ public class RecentCallsDialog {
                         }
 
                         if (recentCallsModels.size() == 0) {
-                            if (vfDownload != null)
-                                vfDownload.setDisplayedChild(2);
+                            if (binding.vfDownload != null)
+                                binding.vfDownload.setDisplayedChild(2);
                         } else {
-                            if (vfDownload != null)
-                                vfDownload.setDisplayedChild(1);
+                            if (binding.vfDownload != null)
+                                binding.vfDownload.setDisplayedChild(1);
                             mAdapter = new RecentCallsAdapter(recentCallsModels);
-                            listRecentCalls.setAdapter(mAdapter);
+                            binding.listRecentCalls.setAdapter(mAdapter);
                         }
                     } else {
-                        if (vfDownload != null)
-                            vfDownload.setDisplayedChild(3);
+                        if (binding.vfDownload != null)
+                            binding.vfDownload.setDisplayedChild(3);
                     }
 //                    "id": "6044cfee3214a60468e2a298",
 //                     "src": "09376148583",
@@ -210,8 +178,8 @@ public class RecentCallsDialog {
 //                     "endtime": "2021-03-07T13:06:54.890Z"
 
                 } catch (Exception e) {
-                    if (vfDownload != null)
-                        vfDownload.setDisplayedChild(3);
+                    if (binding.vfDownload != null)
+                        binding.vfDownload.setDisplayedChild(3);
                     e.printStackTrace();
                     AvaCrashReporter.send(e, TAG + " class, recentCallsCallBack method");
                 }
@@ -221,8 +189,8 @@ public class RecentCallsDialog {
         @Override
         public void onFailure(Runnable reCall, Exception e) {
             MyApplication.handler.post(() -> {
-                if (vfDownload != null)
-                    vfDownload.setDisplayedChild(3);
+                if (binding.vfDownload != null)
+                    binding.vfDownload.setDisplayedChild(3);
             });
             super.onFailure(reCall, e);
         }
@@ -242,6 +210,5 @@ public class RecentCallsDialog {
         PRDownloader.cancelAll();
         PRDownloader.shutDown();
         pauseVoice();
-        unbinder.unbind();
     }
 }

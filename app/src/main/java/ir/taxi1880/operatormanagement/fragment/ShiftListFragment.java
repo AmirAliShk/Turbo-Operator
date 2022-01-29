@@ -1,14 +1,10 @@
 package ir.taxi1880.operatormanagement.fragment;
 
-
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ListView;
-import android.widget.TextView;
-import android.widget.ViewFlipper;
 
 import androidx.fragment.app.Fragment;
 
@@ -17,14 +13,10 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 
-import butterknife.BindView;
-import butterknife.ButterKnife;
-import butterknife.OnClick;
-import butterknife.Unbinder;
-import ir.taxi1880.operatormanagement.R;
 import ir.taxi1880.operatormanagement.adapter.ShiftAdapter;
 import ir.taxi1880.operatormanagement.app.EndPoints;
 import ir.taxi1880.operatormanagement.app.MyApplication;
+import ir.taxi1880.operatormanagement.databinding.FragmentShiftListBinding;
 import ir.taxi1880.operatormanagement.helper.TypefaceUtil;
 import ir.taxi1880.operatormanagement.model.ShiftModel;
 import ir.taxi1880.operatormanagement.okHttp.RequestHelper;
@@ -32,40 +24,27 @@ import ir.taxi1880.operatormanagement.push.AvaCrashReporter;
 
 public class ShiftListFragment extends Fragment {
     public static final String TAG = ShiftListFragment.class.getSimpleName();
-    private Unbinder unbinder;
+    FragmentShiftListBinding binding;
     private ArrayList<ShiftModel> shiftModels;
     private ShiftAdapter shiftAdapter;
 
-    @OnClick(R.id.imgBack)
-    void onBack() {
-        MyApplication.currentActivity.onBackPressed();
-    }
-
-    @BindView(R.id.listShift)
-    ListView listShift;
-
-    @BindView(R.id.txtNull)
-    TextView txtNull;
-
-    @BindView(R.id.vfShift)
-    ViewFlipper vfShift;
-
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_shift_list, container, false);
-        unbinder = ButterKnife.bind(this, view);
-        TypefaceUtil.overrideFonts(view);
+        binding = FragmentShiftListBinding.inflate(inflater, container, false);
+        TypefaceUtil.overrideFonts(binding.getRoot());
 
         shiftModels = new ArrayList<>();
 
         getShifts();
 
-        return view;
+        binding.imgBack.setOnClickListener(view -> MyApplication.currentActivity.onBackPressed());
+
+        return binding.getRoot();
     }
 
     private void getShifts() {
-        if (vfShift != null)
-            vfShift.setDisplayedChild(0);
+        if (binding.vfShift != null)
+            binding.vfShift.setDisplayedChild(0);
 
         RequestHelper.builder(EndPoints.GET_SHIFTS)
                 .listener(onGetShifts)
@@ -90,19 +69,19 @@ public class ShiftListFragment extends Fragment {
                     }
 
                     shiftAdapter = new ShiftAdapter(shiftModels);
-                    if (listShift != null)
-                        listShift.setAdapter(shiftAdapter);
+                    if (binding.listShift != null)
+                        binding.listShift.setAdapter(shiftAdapter);
 
                     if (shiftModels.size() == 0) {
-                        if (vfShift != null)
-                            vfShift.setDisplayedChild(2);
+                        if (binding.vfShift != null)
+                            binding.vfShift.setDisplayedChild(2);
                     } else {
-                        if (vfShift != null)
-                            vfShift.setDisplayedChild(1);
+                        if (binding.vfShift != null)
+                            binding.vfShift.setDisplayedChild(1);
                     }
                 } catch (Exception e) {
-                    if (vfShift != null)
-                        vfShift.setDisplayedChild(3);
+                    if (binding.vfShift != null)
+                        binding.vfShift.setDisplayedChild(3);
                     e.printStackTrace();
                     AvaCrashReporter.send(e, TAG + " class, onGetShifts onResponse method");
                 }
@@ -112,15 +91,9 @@ public class ShiftListFragment extends Fragment {
         @Override
         public void onFailure(Runnable reCall, Exception e) {
             MyApplication.handler.post(() -> {
-                if (vfShift != null)
-                    vfShift.setDisplayedChild(3);
+                if (binding.vfShift != null)
+                    binding.vfShift.setDisplayedChild(3);
             });
         }
     };
-
-    @Override
-    public void onDestroyView() {
-        super.onDestroyView();
-        unbinder.unbind();
-    }
 }

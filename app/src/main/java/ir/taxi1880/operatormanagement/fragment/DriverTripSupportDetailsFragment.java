@@ -9,11 +9,6 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
-import android.widget.ImageView;
-import android.widget.LinearLayout;
-import android.widget.TextView;
-import android.widget.ViewFlipper;
 
 import androidx.appcompat.content.res.AppCompatResources;
 import androidx.core.graphics.drawable.DrawableCompat;
@@ -22,13 +17,10 @@ import androidx.fragment.app.Fragment;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import butterknife.BindView;
-import butterknife.ButterKnife;
-import butterknife.OnClick;
-import butterknife.Unbinder;
 import ir.taxi1880.operatormanagement.R;
 import ir.taxi1880.operatormanagement.app.EndPoints;
 import ir.taxi1880.operatormanagement.app.MyApplication;
+import ir.taxi1880.operatormanagement.databinding.FragmentDriverTripSupportDetailsBinding;
 import ir.taxi1880.operatormanagement.dialog.CallDialog;
 import ir.taxi1880.operatormanagement.dialog.ComplaintRegistrationDialog;
 import ir.taxi1880.operatormanagement.dialog.DriverLockDialog;
@@ -47,7 +39,7 @@ import ir.taxi1880.operatormanagement.push.AvaCrashReporter;
 
 public class DriverTripSupportDetailsFragment extends Fragment {
     public static final String TAG = DriverTripSupportDetailsFragment.class.getSimpleName();
-    Unbinder unbinder;
+    FragmentDriverTripSupportDetailsBinding binding;
     int serviceId;
     String passengerPhone;
     String customerMobile;
@@ -73,281 +65,12 @@ public class DriverTripSupportDetailsFragment extends Fragment {
     String destinationStation;
     String destination;
 
-    @OnClick(R.id.imgBack)
-    void onBackPress() {
-        MyApplication.currentActivity.onBackPressed();
-    }
-
-    @BindView(R.id.txtStatus)
-    TextView txtStatus;
-
-    @BindView(R.id.txtTimeToCome)
-    TextView txtTimeToCome;
-
-    @BindView(R.id.txtUserCodeDestination)
-    TextView txtUserCodeDestination;
-
-    @BindView(R.id.txtUserCodeOrigin)
-    TextView txtUserCodeOrigin;
-    @BindView(R.id.llHeaderStatus)
-    LinearLayout llHeaderStatus;
-
-    @BindView(R.id.txtCustomerName)
-    TextView txtCustomerName;
-
-    @BindView(R.id.txtDate)
-    TextView txtDate;
-
-    @BindView(R.id.txtTime)
-    TextView txtTime;
-
-    @BindView(R.id.txtTripType)
-    TextView txtTripType;
-
-    @BindView(R.id.txtCity)
-    TextView txtCity;
-
-    @BindView(R.id.txtCustomerAddress)
-    TextView txtCustomerAddress;
-
-    @BindView(R.id.txtCustomerTell)
-    TextView txtCustomerTell;
-
-    @BindView(R.id.txtCustomerMobile)
-    TextView txtCustomerMobile;
-
-    @BindView(R.id.txtPercent)
-    TextView txtPercent;
-
-    @BindView(R.id.txtMaxPercent)
-    TextView txtMaxPercent;
-
-    @BindView(R.id.txtSendDate)
-    TextView txtSendDate;
-
-    @BindView(R.id.txtSendTime)
-    TextView txtSendTime;
-
-    @BindView(R.id.txtDriverCode)
-    TextView txtDriverCode;
-
-    @BindView(R.id.txtDriverName)
-    TextView txtDriverName;
-
-    @BindView(R.id.txtDriverMob)
-    TextView txtDriverMob;
-
-    @BindView(R.id.txtCarType)
-    TextView txtCarType;
-
-    @BindView(R.id.txtPrice)
-    TextView txtPrice;
-
-    @BindView(R.id.txtEndTime)
-    TextView txtEndTime;
-
-    @BindView(R.id.txtPlaque)
-    TextView txtPlaque;
-
-    @BindView(R.id.txtTitle)
-    TextView txtTitle;
-
-    @BindView(R.id.txtStationCode)
-    TextView txtStationCode;
-
-    @BindView(R.id.txtTrafficPlan)
-    TextView txtTrafficPlan;
-
-    @BindView(R.id.txtServiceComment)
-    TextView txtServiceComment;
-
-    @BindView(R.id.txtNull)
-    TextView txtNull;
-
-    @BindView(R.id.txtDestStation)
-    TextView txtDestStation;
-
-    @BindView(R.id.txtDestAddress)
-    TextView txtDestAddress;
-
-    @BindView(R.id.txtServiceFixedComment)
-    TextView txtServiceFixedComment;
-
-    @BindView(R.id.vfTripDetails)
-    ViewFlipper vfTripDetails;
-
-    @BindView(R.id.btnDriverLock)
-    Button btnDriverLock;
-
-    @BindView(R.id.btnComplaintRegistration)
-    Button btnComplaintRegistration;
-
-    @BindView(R.id.btnLost)
-    Button btnLost;
-
-    @BindView(R.id.btnReFollow)
-    Button btnReFollow;
-
-    @BindView(R.id.btnErrorRegistration)
-    Button btnErrorRegistration;
-
-    @BindView(R.id.btnCancelTrip)
-    Button btnCancelTrip;
-
-    @BindView(R.id.btnDriverLocation)
-    Button btnDriverLocation;
-
-    @BindView(R.id.imgEndCall)
-    ImageView imgEndCall;
-
-    @OnClick(R.id.btnDisposal)
-    void onDisposal() {
-        new GeneralDialog()
-                .title("تبدیل به در اختیار")
-                .message("آیا از در اختیار کردن این سفر اطمینان دارید؟")
-                .cancelable(false)
-                .firstButton("بله", () -> makeDisposal())
-                .secondButton("خیر", null)
-                .show();
-    }
-
-    @OnClick(R.id.btnCancelTrip)
-    void onCancel() {
-        new GeneralDialog()
-                .title("لغو سفر")
-                .message("آیا از کنسل کردن این سفر اطمینان دارید؟")
-                .cancelable(false)
-                .firstButton("بله", () -> cancelService())
-                .secondButton("خیر", null)
-                .show();
-    }
-
-    @OnClick(R.id.btnArchiveAddress)
-    void onArchiveAddress() {
-        new GeneralDialog()
-                .title("بایگانی آدرس")
-                .message("آیا اطمینان دارید؟")
-                .cancelable(false)
-                .firstButton("بله", this::archiveAddress)
-                .secondButton("خیر", null)
-                .show();
-    }
-
-    @OnClick(R.id.btnEditAddress)
-    void onEditAddress() {
-        new ErrorAddressDialog().show(passengerAddress, serviceId + "", address -> {
-            txtCustomerAddress.setText(address);
-        });
-    }
-
-    @OnClick(R.id.btnDriverLocation)
-    void onLocation() {
-        Bundle bundle = new Bundle();
-        bundle.putDouble("lat", lat);
-        bundle.putDouble("lng", lng);
-        bundle.putString("time", lastPositionTime);
-        bundle.putString("date", lastPositionDate);
-        bundle.putString("taxiCode", taxiCode);
-        bundle.putBoolean("isFromDriverSupport", false);
-        FragmentHelper.toFragment(MyApplication.currentActivity, new DriverLocationFragment()).setArguments(bundle).add();
-    }
-
-    @OnClick(R.id.btnReFollow)
-    void onReFollow() {
-        new GeneralDialog()
-                .title("پیگیری مجدد")
-                .message("آیا از پیگیری مجدد این سفر اطمینان دارید؟")
-                .cancelable(false)
-                .firstButton("بله", () -> trackingAgain())
-                .secondButton("خیر", null)
-                .show();
-    }
-
-    @OnClick(R.id.btnErrorRegistration)
-    void onError() {
-//        String cityName= new DataBase(MyApplication.context).getCityName2(cityCode);
-        new ErrorRegistrationDialog()
-                .show(serviceId + "", passengerPhone, customerMobile, passengerAddress, passengerName, voipId, cityCode, stationCode, userId, callTime, callDate, price, destinationStation, destination);
-    }
-
-    @OnClick(R.id.btnComplaintRegistration)
-    void onComplaint() {
-        new ComplaintRegistrationDialog().show(serviceId + "", voipId);
-    }
-
-    @OnClick(R.id.btnLost)
-    void onLost() {
-        new LostDialog().show(serviceId + "", passengerName, passengerPhone, taxiCode, true);
-    }
-
-    @OnClick(R.id.btnDriverLock)
-    void onLock() {
-        new DriverLockDialog().show(taxiCode);
-    }
-
-    @OnClick(R.id.btnResendService)
-    void onResendService() {
-        new GeneralDialog()
-                .message("آیا میخواهید سرویس را مجدد ارسال کنید؟")
-                .firstButton("بله", this::resendCancelService)
-                .secondButton("خیر ", null)
-                .show();
-    }
-
-    @OnClick(R.id.rlEndCall)
-    void onPressEndCall() {
-
-        KeyBoardHelper.hideKeyboard();
-        if (MyApplication.prefManager.getConnectedCall()) {
-            new CallDialog().show(new CallDialog.CallBack() {
-                @Override
-                public void onDismiss() {
-                }
-
-                @Override
-                public void onCallReceived() {
-                }
-
-                @Override
-                public void onCallTransferred() {
-                }
-
-                @Override
-                public void onCallEnded() {
-                    if (imgEndCall != null)
-                        imgEndCall.setBackgroundResource(0);
-                }
-            }, true);
-        } else {
-            new CallDialog().show(new CallDialog.CallBack() {
-                @Override
-                public void onDismiss() {
-                }
-
-                @Override
-                public void onCallReceived() {
-                }
-
-                @Override
-                public void onCallTransferred() {
-                }
-
-                @Override
-                public void onCallEnded() {
-                }
-            }, false);
-        }
-//    Call call = LinphoneService.getCore().getCurrentCall();
-//    call.terminate();
-    }
-
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_driver_trip_support_details, container, false);
-        unbinder = ButterKnife.bind(this, view);
-        TypefaceUtil.overrideFonts(view, MyApplication.IraSanSMedume);
-        TypefaceUtil.overrideFonts(txtTitle);
-        TypefaceUtil.overrideFonts(txtNull);
+        binding = FragmentDriverTripSupportDetailsBinding.inflate(inflater, container, false);
+        TypefaceUtil.overrideFonts(binding.getRoot(), MyApplication.IraSanSMedume);
+        TypefaceUtil.overrideFonts(binding.txtTitle);
+        TypefaceUtil.overrideFonts(binding.txtNull);
 
         Bundle bundle = getArguments();
         if (bundle != null) {
@@ -356,12 +79,122 @@ public class DriverTripSupportDetailsFragment extends Fragment {
 
         tripDetails();
 
-        return view;
+        binding.rlEndCall.setOnClickListener(view -> {
+            KeyBoardHelper.hideKeyboard();
+            if (MyApplication.prefManager.getConnectedCall()) {
+                new CallDialog().show(new CallDialog.CallBack() {
+                    @Override
+                    public void onDismiss() {
+                    }
+
+                    @Override
+                    public void onCallReceived() {
+                    }
+
+                    @Override
+                    public void onCallTransferred() {
+                    }
+
+                    @Override
+                    public void onCallEnded() {
+                        if (binding.imgEndCall != null)
+                            binding.imgEndCall.setBackgroundResource(0);
+                    }
+                }, true);
+            } else {
+                new CallDialog().show(new CallDialog.CallBack() {
+                    @Override
+                    public void onDismiss() {
+                    }
+
+                    @Override
+                    public void onCallReceived() {
+                    }
+
+                    @Override
+                    public void onCallTransferred() {
+                    }
+
+                    @Override
+                    public void onCallEnded() {
+                    }
+                }, false);
+            }
+            //    Call call = LinphoneService.getCore().getCurrentCall();
+            //    call.terminate();
+        });
+
+        binding.btnResendService.setOnClickListener(view -> new GeneralDialog()
+                .message("آیا میخواهید سرویس را مجدد ارسال کنید؟")
+                .firstButton("بله", this::resendCancelService)
+                .secondButton("خیر ", null)
+                .show());
+
+        binding.btnDriverLock.setOnClickListener(view -> new DriverLockDialog().show(taxiCode));
+
+        binding.btnLost.setOnClickListener(view -> new LostDialog().show(serviceId + "", passengerName, passengerPhone, taxiCode, true));
+
+        binding.btnComplaintRegistration.setOnClickListener(view -> new ComplaintRegistrationDialog().show(serviceId + "", voipId));
+
+        binding.btnErrorRegistration.setOnClickListener(view -> {
+//        String cityName= new DataBase(MyApplication.context).getCityName2(cityCode);
+            new ErrorRegistrationDialog()
+                    .show(serviceId + "", passengerPhone, customerMobile, passengerAddress, passengerName, voipId, cityCode, stationCode, userId, callTime, callDate, price, destinationStation, destination);
+        });
+
+        binding.btnReFollow.setOnClickListener(view -> new GeneralDialog()
+                .title("پیگیری مجدد")
+                .message("آیا از پیگیری مجدد این سفر اطمینان دارید؟")
+                .cancelable(false)
+                .firstButton("بله", this::trackingAgain)
+                .secondButton("خیر", null)
+                .show());
+
+        binding.btnDriverLocation.setOnClickListener(view -> {
+            Bundle bundle1 = new Bundle();
+            bundle1.putDouble("lat", lat);
+            bundle1.putDouble("lng", lng);
+            bundle1.putString("time", lastPositionTime);
+            bundle1.putString("date", lastPositionDate);
+            bundle1.putString("taxiCode", taxiCode);
+            bundle1.putBoolean("isFromDriverSupport", false);
+            FragmentHelper.toFragment(MyApplication.currentActivity, new DriverLocationFragment()).setArguments(bundle1).add();
+        });
+
+        binding.btnEditAddress.setOnClickListener(view -> new ErrorAddressDialog().show(passengerAddress, serviceId + "", address -> binding.txtCustomerAddress.setText(address)));
+
+        binding.btnArchiveAddress.setOnClickListener(view -> new GeneralDialog()
+                .title("بایگانی آدرس")
+                .message("آیا اطمینان دارید؟")
+                .cancelable(false)
+                .firstButton("بله", this::archiveAddress)
+                .secondButton("خیر", null)
+                .show());
+
+        binding.btnCancelTrip.setOnClickListener(view -> new GeneralDialog()
+                .title("لغو سفر")
+                .message("آیا از کنسل کردن این سفر اطمینان دارید؟")
+                .cancelable(false)
+                .firstButton("بله", this::cancelService)
+                .secondButton("خیر", null)
+                .show());
+
+        binding.btnDisposal.setOnClickListener(view -> new GeneralDialog()
+                .title("تبدیل به در اختیار")
+                .message("آیا از در اختیار کردن این سفر اطمینان دارید؟")
+                .cancelable(false)
+                .firstButton("بله", this::makeDisposal)
+                .secondButton("خیر", null)
+                .show());
+
+        binding.imgBack.setOnClickListener(view -> MyApplication.currentActivity.onBackPressed());
+
+        return binding.getRoot();
     }
 
     private void tripDetails() {
-        if (vfTripDetails != null) {
-            vfTripDetails.setDisplayedChild(0);
+        if (binding.vfTripDetails != null) {
+            binding.vfTripDetails.setDisplayedChild(0);
         }
 
         RequestHelper.builder(EndPoints.SERVICE_DETAIL)
@@ -448,53 +281,53 @@ public class DriverTripSupportDetailsFragment extends Fragment {
                             disableControllerButtonFinishedState();
                         }
 
-                        if (txtCustomerName == null) return;
+                        if (binding.txtCustomerName == null) return;
 
-                        txtUserCodeDestination.setText(StringHelper.toPersianDigits(stationRegisterUser + ""));
-                        txtUserCodeOrigin.setText(StringHelper.toPersianDigits(destStationRegisterUser + ""));
-                        txtCustomerName.setText(StringHelper.toPersianDigits(passengerName));
-                        txtDate.setText(StringHelper.toPersianDigits(callDate));
-                        txtTime.setText(StringHelper.toPersianDigits(callTime));
-                        txtTripType.setText(StringHelper.toPersianDigits(typeService));
-                        txtCity.setText(cityName);
-                        txtStationCode.setText(StringHelper.toPersianDigits(stationCode + ""));
-                        txtCustomerAddress.setText(StringHelper.toPersianDigits(passengerAddress));
-                        txtCustomerTell.setText(StringHelper.toPersianDigits(passengerPhone));
-                        txtCustomerMobile.setText(StringHelper.toPersianDigits(customerMobile));
-                        txtServiceComment.setText(serviceComment.equals("null") ? " " : StringHelper.toPersianDigits(serviceComment));
-                        txtTrafficPlan.setText(TrafficPlan == 0 ? "نیست" : "هست");
-                        txtMaxPercent.setText(maxDiscount.equals("null") ? " " : StringHelper.toPersianDigits(StringHelper.setComma(maxDiscount)));
-                        txtPercent.setText(discountAmount.equals("null") ? " " : StringHelper.toPersianDigits(StringHelper.setComma(discountAmount)));
-                        txtSendDate.setText(sendDate.equals("null") ? " " : StringHelper.toPersianDigits(sendDate));
-                        txtSendTime.setText(sendTime.equals("null") ? " " : StringHelper.toPersianDigits(sendTime));
-                        txtDriverCode.setText(taxiCode.equals("null") ? " " : StringHelper.toPersianDigits(taxiCode));
-                        txtDriverName.setText(deriverName.equals("null") ? " " : StringHelper.toPersianDigits(deriverName + " " + deriverFamily));
-                        txtDriverMob.setText(carMobile.equals("null") ? " " : StringHelper.toPersianDigits(carMobile));
-                        txtCarType.setText(carType.equals("null") ? " " : carType);
-                        txtPrice.setText(price.equals("null") ? " " : StringHelper.toPersianDigits(StringHelper.setComma(price)));
-                        txtEndTime.setText(finishTime.equals("null") ? " " : StringHelper.toPersianDigits(finishTime));
-                        txtPlaque.setText(plak.equals("null") ? " " : StringHelper.toPersianDigits(plak));
-                        txtServiceFixedComment.setText(customerFixedDes.equals("null") ? " " : StringHelper.toPersianDigits(customerFixedDes));
-                        txtDestAddress.setText(StringHelper.toPersianDigits(destination));
-                        txtDestStation.setText(StringHelper.toPersianDigits(destinationStation));
+                        binding.txtUserCodeDestination.setText(StringHelper.toPersianDigits(stationRegisterUser + ""));
+                        binding.txtUserCodeOrigin.setText(StringHelper.toPersianDigits(destStationRegisterUser + ""));
+                        binding.txtCustomerName.setText(StringHelper.toPersianDigits(passengerName));
+                        binding.txtDate.setText(StringHelper.toPersianDigits(callDate));
+                        binding.txtTime.setText(StringHelper.toPersianDigits(callTime));
+                        binding.txtTripType.setText(StringHelper.toPersianDigits(typeService));
+                        binding.txtCity.setText(cityName);
+                        binding.txtStationCode.setText(StringHelper.toPersianDigits(stationCode + ""));
+                        binding.txtCustomerAddress.setText(StringHelper.toPersianDigits(passengerAddress));
+                        binding.txtCustomerTell.setText(StringHelper.toPersianDigits(passengerPhone));
+                        binding.txtCustomerMobile.setText(StringHelper.toPersianDigits(customerMobile));
+                        binding.txtServiceComment.setText(serviceComment.equals("null") ? " " : StringHelper.toPersianDigits(serviceComment));
+                        binding.txtTrafficPlan.setText(TrafficPlan == 0 ? "نیست" : "هست");
+                        binding.txtMaxPercent.setText(maxDiscount.equals("null") ? " " : StringHelper.toPersianDigits(StringHelper.setComma(maxDiscount)));
+                        binding.txtPercent.setText(discountAmount.equals("null") ? " " : StringHelper.toPersianDigits(StringHelper.setComma(discountAmount)));
+                        binding.txtSendDate.setText(sendDate.equals("null") ? " " : StringHelper.toPersianDigits(sendDate));
+                        binding.txtSendTime.setText(sendTime.equals("null") ? " " : StringHelper.toPersianDigits(sendTime));
+                        binding.txtDriverCode.setText(taxiCode.equals("null") ? " " : StringHelper.toPersianDigits(taxiCode));
+                        binding.txtDriverName.setText(deriverName.equals("null") ? " " : StringHelper.toPersianDigits(deriverName + " " + deriverFamily));
+                        binding.txtDriverMob.setText(carMobile.equals("null") ? " " : StringHelper.toPersianDigits(carMobile));
+                        binding.txtCarType.setText(carType.equals("null") ? " " : carType);
+                        binding.txtPrice.setText(price.equals("null") ? " " : StringHelper.toPersianDigits(StringHelper.setComma(price)));
+                        binding.txtEndTime.setText(finishTime.equals("null") ? " " : StringHelper.toPersianDigits(finishTime));
+                        binding.txtPlaque.setText(plak.equals("null") ? " " : StringHelper.toPersianDigits(plak));
+                        binding.txtServiceFixedComment.setText(customerFixedDes.equals("null") ? " " : StringHelper.toPersianDigits(customerFixedDes));
+                        binding.txtDestAddress.setText(StringHelper.toPersianDigits(destination));
+                        binding.txtDestStation.setText(StringHelper.toPersianDigits(destinationStation));
 
                         if (!dateToCome.isEmpty()) {
                             String date = DateHelper.strPersianTree(DateHelper.parseDate(dateToCome));
-                            txtTimeToCome.setText(StringHelper.toPersianDigits(date) + " ساعت " + StringHelper.toPersianDigits(timeToCome.substring(0, 5)));
+                            binding.txtTimeToCome.setText(StringHelper.toPersianDigits(date) + " ساعت " + StringHelper.toPersianDigits(timeToCome.substring(0, 5)));
                         }
 
                         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
                             Drawable bg_blue_border_edge = AppCompatResources.getDrawable(context, R.drawable.bg_blue_border_edge);
-                            llHeaderStatus.setBackground(bg_blue_border_edge);
+                            binding.llHeaderStatus.setBackground(bg_blue_border_edge);
                             DrawableCompat.setTint(bg_blue_border_edge, Color.parseColor(statusColor));
                         } else {
-                            llHeaderStatus.setBackgroundColor(Color.parseColor(statusColor));
+                            binding.llHeaderStatus.setBackgroundColor(Color.parseColor(statusColor));
                         }
 
-                        txtStatus.setText(statusText);
+                        binding.txtStatus.setText(statusText);
 
-                        if (vfTripDetails != null)
-                            vfTripDetails.setDisplayedChild(1);
+                        if (binding.vfTripDetails != null)
+                            binding.vfTripDetails.setDisplayedChild(1);
                     } else {
                         new GeneralDialog()
                                 .title("هشدار")
@@ -507,8 +340,8 @@ public class DriverTripSupportDetailsFragment extends Fragment {
                     e.printStackTrace();
                     AvaCrashReporter.send(e, TAG + " class, onGetTripDetails method");
                     MyApplication.handler.post(() -> {
-                        if (vfTripDetails != null) {
-                            vfTripDetails.setDisplayedChild(2);
+                        if (binding.vfTripDetails != null) {
+                            binding.vfTripDetails.setDisplayedChild(2);
                         }
                     });
                 }
@@ -518,39 +351,39 @@ public class DriverTripSupportDetailsFragment extends Fragment {
         @Override
         public void onFailure(Runnable reCall, Exception e) {
             MyApplication.handler.post(() -> {
-                if (vfTripDetails != null) {
-                    vfTripDetails.setDisplayedChild(2);
+                if (binding.vfTripDetails != null) {
+                    binding.vfTripDetails.setDisplayedChild(2);
                 }
             });
         }
     };
 
     private void disableControllerButtonWaitingState() {
-        if (btnDriverLocation == null) return;
-        btnDriverLocation.setEnabled(false);
-        btnReFollow.setEnabled(false);
-        btnComplaintRegistration.setEnabled(false);
-        btnLost.setEnabled(false);
-        btnDriverLock.setEnabled(false);
+        if (binding.btnDriverLocation == null) return;
+        binding.btnDriverLocation.setEnabled(false);
+        binding.btnReFollow.setEnabled(false);
+        binding.btnComplaintRegistration.setEnabled(false);
+        binding.btnLost.setEnabled(false);
+        binding.btnDriverLock.setEnabled(false);
     }
 
     private void disableControllerButtonCancelState(boolean isBefore) {
-        if (btnDriverLocation == null) return;
-        btnDriverLocation.setEnabled(false);
-        btnReFollow.setEnabled(false);
-        btnCancelTrip.setEnabled(false);
+        if (binding.btnDriverLocation == null) return;
+        binding.btnDriverLocation.setEnabled(false);
+        binding.btnReFollow.setEnabled(false);
+        binding.btnCancelTrip.setEnabled(false);
         if (isBefore) {
-            btnComplaintRegistration.setEnabled(false);
-            btnDriverLock.setEnabled(false);
-            btnLost.setEnabled(false);
+            binding.btnComplaintRegistration.setEnabled(false);
+            binding.btnDriverLock.setEnabled(false);
+            binding.btnLost.setEnabled(false);
         }
 //    MyApplication.prefManager.setLastCallerId("");// set empty, because I don't want save this permanently .
     }
 
     private void disableControllerButtonFinishedState() {
-        if (btnCancelTrip == null) return;
+        if (binding.btnCancelTrip == null) return;
 //    MyApplication.prefManager.setLastCallerId("");// set empty, because I don't want save this permanently .
-        btnReFollow.setEnabled(false);
+        binding.btnReFollow.setEnabled(false);
     }
 
     private void cancelService() {
@@ -913,10 +746,4 @@ public class DriverTripSupportDetailsFragment extends Fragment {
             MyApplication.handler.post(LoadingDialog::dismissCancelableDialog);
         }
     };
-
-    @Override
-    public void onDestroyView() {
-        super.onDestroyView();
-        unbinder.unbind();
-    }
 }

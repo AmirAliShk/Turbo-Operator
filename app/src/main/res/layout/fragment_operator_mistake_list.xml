@@ -20,7 +20,8 @@
             android:id="@+id/imgBack"
             android:layout_width="?android:attr/actionBarSize"
             android:layout_height="match_parent"
-            android:padding="15dp"
+            android:layout_alignParentLeft="true"
+            android:padding="@dimen/_15sdp"
             android:src="@drawable/ic_back" />
 
         <TextView

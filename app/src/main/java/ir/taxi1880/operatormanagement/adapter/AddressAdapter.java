@@ -48,7 +48,7 @@ public class AddressAdapter extends ArrayAdapter<AddressArr> {
                 view = inflater.inflate(R.layout.item_custom_auto_complete, parent, false);
             }
             if (addressArr != null) {
-                TextView lblName = (TextView) view.findViewById(R.id.lbl_address);
+                TextView lblName = view.findViewById(R.id.lbl_address);
                 if (lblName != null)
                     lblName.setText(addressArr.address);
             }
@@ -71,7 +71,6 @@ public class AddressAdapter extends ArrayAdapter<AddressArr> {
     }
 
     private AddressFilter addressFilter;
-
 
     @Override
     public Filter getFilter() {

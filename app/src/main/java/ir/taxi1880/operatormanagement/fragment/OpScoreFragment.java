@@ -5,44 +5,27 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
 
 import androidx.fragment.app.Fragment;
 
 import org.json.JSONObject;
 
-import butterknife.BindView;
-import butterknife.ButterKnife;
-import butterknife.Unbinder;
-import ir.taxi1880.operatormanagement.R;
 import ir.taxi1880.operatormanagement.app.EndPoints;
 import ir.taxi1880.operatormanagement.app.MyApplication;
+import ir.taxi1880.operatormanagement.databinding.FragmentOpScoreBinding;
 import ir.taxi1880.operatormanagement.dialog.GeneralDialog;
 import ir.taxi1880.operatormanagement.okHttp.RequestHelper;
 import ir.taxi1880.operatormanagement.push.AvaCrashReporter;
 
 public class OpScoreFragment extends Fragment {
     public final String TAG = OpScoreFragment.class.getSimpleName();
-    private Unbinder unbinder;
-
-    @BindView(R.id.txtTotalScore)
-    TextView txtTotalScore;
-
-    @BindView(R.id.txtMonthScore)
-    TextView txtMonthScore;
-
-    @BindView(R.id.txtWeekScore)
-    TextView txtWeekScore;
-
-    @BindView(R.id.txtTodayScore)
-    TextView txtTodayScore;
+    FragmentOpScoreBinding binding;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_op_score, container, false);
-        unbinder = ButterKnife.bind(this, view);
+        binding = FragmentOpScoreBinding.inflate(inflater, container, false);
         getSingle();
-        return view;
+        return binding.getRoot();
     }
 
     private void getSingle() {
@@ -67,14 +50,14 @@ public class OpScoreFragment extends Fragment {
                         String monthScore = bestObj.getString("monthScore");
                         String weekScore = bestObj.getString("weekScore");
                         String todayScore = bestObj.getString("todayScore");
-                        if (txtTotalScore != null)
-                            txtTotalScore.setText(totalScore + " totalScore");
-                        if (txtMonthScore != null)
-                            txtMonthScore.setText(monthScore + " monthScore");
-                        if (txtWeekScore != null)
-                            txtWeekScore.setText(weekScore + " weekScore");
-                        if (txtTodayScore != null)
-                            txtTodayScore.setText(todayScore + " todayScore");
+                        if (binding.txtTotalScore != null)
+                            binding.txtTotalScore.setText(totalScore + " totalScore");
+                        if (binding.txtMonthScore != null)
+                            binding.txtMonthScore.setText(monthScore + " monthScore");
+                        if (binding.txtWeekScore != null)
+                            binding.txtWeekScore.setText(weekScore + " weekScore");
+                        if (binding.txtTodayScore != null)
+                            binding.txtTodayScore.setText(todayScore + " todayScore");
                     } else {
                         new GeneralDialog()
                                 .title("هشدار")
@@ -83,7 +66,6 @@ public class OpScoreFragment extends Fragment {
                                 .cancelable(false)
                                 .show();
                     }
-
                 } catch (Exception e) {
                     e.printStackTrace();
                     AvaCrashReporter.send(e, TAG + " class, getSingle onResponse method");
@@ -91,10 +73,4 @@ public class OpScoreFragment extends Fragment {
             });
         }
     };
-
-    @Override
-    public void onDestroy() {
-        super.onDestroy();
-        unbinder.unbind();
-    }
 }

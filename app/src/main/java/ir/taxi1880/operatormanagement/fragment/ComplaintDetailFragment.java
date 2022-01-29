@@ -8,27 +8,19 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
-import android.widget.LinearLayout;
 import android.widget.Toast;
-import android.widget.ViewFlipper;
 
 import androidx.fragment.app.Fragment;
-
-import com.rakshakhegde.stepperindicator.StepperIndicator;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import butterknife.BindView;
-import butterknife.ButterKnife;
-import butterknife.OnClick;
-import butterknife.Unbinder;
-import ir.taxi1880.operatormanagement.R;
 import ir.taxi1880.operatormanagement.adapter.ComplaintPagerAdapter;
 import ir.taxi1880.operatormanagement.app.DataHolder;
 import ir.taxi1880.operatormanagement.app.EndPoints;
 import ir.taxi1880.operatormanagement.app.MyApplication;
 import ir.taxi1880.operatormanagement.customView.NonSwipeableViewPager;
+import ir.taxi1880.operatormanagement.databinding.FragmentComplaintDetailBinding;
 import ir.taxi1880.operatormanagement.dialog.ComplaintOptionsDialog;
 import ir.taxi1880.operatormanagement.dialog.GeneralDialog;
 import ir.taxi1880.operatormanagement.helper.FragmentHelper;
@@ -39,97 +31,10 @@ import ir.taxi1880.operatormanagement.push.AvaCrashReporter;
 
 public class ComplaintDetailFragment extends Fragment {
     public static final String TAG = ComplaintDetailFragment.class.getSimpleName();
-    Unbinder unbinder;
+    FragmentComplaintDetailBinding binding;
     int statusModel;
     public static ComplaintDetailsModel complaintDetailsModel;
     public static NonSwipeableViewPager vpRegisterDriver;
-
-    @BindView(R.id.indicator)
-    StepperIndicator indicator;
-
-    @BindView(R.id.vfNextStep)
-    ViewFlipper vfNextStep;
-
-    @BindView(R.id.vfTripDetails)
-    ViewFlipper vfTripDetails;
-
-    @BindView(R.id.vfOptions)
-    ViewFlipper vfOptions;
-
-    @BindView(R.id.llButtons)
-    LinearLayout llButtons;
-
-    @OnClick(R.id.btnNext)
-    void onNext() {
-        if (vfNextStep != null)
-            vfNextStep.setDisplayedChild(1);
-        pauseVoice();
-        new GeneralDialog()
-                .message("آیا میخواهید به مرحله بعد بروید؟")
-                .cancelable(false)
-                .firstButton("بله", () -> updateStatus())
-                .secondButton("خیر", () -> {
-                    if (vfNextStep != null) {
-                        vfNextStep.setDisplayedChild(0);
-                    }
-                })
-                .show();
-    }
-
-    @OnClick(R.id.btnSaveResult)
-    void onConfirm() {
-//        complaintId	int
-//        typeResult	tinyint
-//        lockDriver	tinyint
-//        lockDay	    tinyint
-//        unlockDriver	tinyint
-//        fined	        tinyint
-//        customerLock	tinyint
-//        outDriver	    tinyint
-
-        if (DataHolder.getInstance().getComplaintResult() == 0) {
-            MyApplication.Toast("لطفا مقصر را مشخص کنید", Toast.LENGTH_SHORT);
-            return;
-        }
-
-        if (DataHolder.getInstance().isLockDriver() && DataHolder.getInstance().getLockDay().isEmpty()) {
-            MyApplication.Toast("لطفا تعداد روزهای قفل راننده را انتخاب کنید", Toast.LENGTH_SHORT);
-            return;
-        }
-
-        if (DataHolder.getInstance().isLockDriver() && DataHolder.getInstance().getLockReason() == 0) {
-            MyApplication.Toast("لطفا دلیل قفل را انتخاب نمایید.", Toast.LENGTH_SHORT);
-            return;
-        }
-
-        new GeneralDialog()
-                .message("ثبت نتیجه‌ی شکایت؟")
-                .cancelable(false)
-                .firstButton("بله", this::complaintSaveResult)
-                .secondButton("خیر", () -> {
-                    if (vfNextStep != null) {
-                        vfNextStep.setDisplayedChild(2);
-                    }
-                })
-                .show();
-
-    }
-
-    @OnClick(R.id.btnTripDetails)
-    void onMissCall() {
-        if (vfTripDetails != null)
-            vfTripDetails.setDisplayedChild(1);
-
-        Bundle bundle = new Bundle();
-        bundle.putString("id", complaintDetailsModel.getServiceId() + "");
-        FragmentHelper.toFragment(MyApplication.currentActivity, new PassengerTripSupportDetailsFragment()).setArguments(bundle).replace();
-    }
-
-    @OnClick(R.id.btnOptions)
-    void onOptions() {
-        new ComplaintOptionsDialog()
-                .show(complaintDetailsModel.getCustomerPhoneNumber(), complaintDetailsModel.getCustomerMobileNumber(), complaintDetailsModel.getTaxicode());
-    }
 
     public ComplaintDetailFragment(ComplaintDetailsModel complaintsModel) {
         this.complaintDetailsModel = complaintsModel;
@@ -138,24 +43,88 @@ public class ComplaintDetailFragment extends Fragment {
     @SuppressLint("ClickableViewAccessibility")
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_complaint_detail, container, false);
+        binding = FragmentComplaintDetailBinding.inflate(inflater, container, false);
         getActivity().getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE);
-        unbinder = ButterKnife.bind(this, view);
-        TypefaceUtil.overrideFonts(view);
+        TypefaceUtil.overrideFonts(binding.getRoot());
 
-        vpRegisterDriver = view.findViewById(R.id.vpRegisterDriver);
+        vpRegisterDriver = binding.vpRegisterDriver;
 
         statusModel = complaintDetailsModel.getStatus();
 
         setupViewPager(vpRegisterDriver);
 
-        if (indicator != null) {
-            indicator.setCurrentStep(complaintDetailsModel.getStatus());
+        if (binding.indicator != null) {
+            binding.indicator.setCurrentStep(complaintDetailsModel.getStatus());
         }
 
         refreshStep(complaintDetailsModel.getStatus());
 
-        return view;
+        binding.btnOptions.setOnClickListener(view -> new ComplaintOptionsDialog()
+                .show(complaintDetailsModel.getCustomerPhoneNumber(), complaintDetailsModel.getCustomerMobileNumber(), complaintDetailsModel.getTaxicode()));
+
+        binding.btnTripDetails.setOnClickListener(view -> {
+            if (binding.vfTripDetails != null)
+                binding.vfTripDetails.setDisplayedChild(1);
+
+            Bundle bundle = new Bundle();
+            bundle.putString("id", complaintDetailsModel.getServiceId() + "");
+            FragmentHelper.toFragment(MyApplication.currentActivity, new PassengerTripSupportDetailsFragment()).setArguments(bundle).replace();
+        });
+
+        binding.btnSaveResult.setOnClickListener(view -> {
+            //        complaintId	int
+            //        typeResult	tinyint
+            //        lockDriver	tinyint
+            //        lockDay	    tinyint
+            //        unlockDriver	tinyint
+            //        fined	        tinyint
+            //        customerLock	tinyint
+            //        outDriver	    tinyint
+
+            if (DataHolder.getInstance().getComplaintResult() == 0) {
+                MyApplication.Toast("لطفا مقصر را مشخص کنید", Toast.LENGTH_SHORT);
+                return;
+            }
+
+            if (DataHolder.getInstance().isLockDriver() && DataHolder.getInstance().getLockDay().isEmpty()) {
+                MyApplication.Toast("لطفا تعداد روزهای قفل راننده را انتخاب کنید", Toast.LENGTH_SHORT);
+                return;
+            }
+
+            if (DataHolder.getInstance().isLockDriver() && DataHolder.getInstance().getLockReason() == 0) {
+                MyApplication.Toast("لطفا دلیل قفل را انتخاب نمایید.", Toast.LENGTH_SHORT);
+                return;
+            }
+
+            new GeneralDialog()
+                    .message("ثبت نتیجه‌ی شکایت؟")
+                    .cancelable(false)
+                    .firstButton("بله", this::complaintSaveResult)
+                    .secondButton("خیر", () -> {
+                        if (binding.vfNextStep != null) {
+                            binding.vfNextStep.setDisplayedChild(2);
+                        }
+                    })
+                    .show();
+        });
+
+        binding.btnNext.setOnClickListener(view -> {
+            if (binding.vfNextStep != null)
+                binding.vfNextStep.setDisplayedChild(1);
+            pauseVoice();
+            new GeneralDialog()
+                    .message("آیا میخواهید به مرحله بعد بروید؟")
+                    .cancelable(false)
+                    .firstButton("بله", this::updateStatus)
+                    .secondButton("خیر", () -> {
+                        if (binding.vfNextStep != null) {
+                            binding.vfNextStep.setDisplayedChild(0);
+                        }
+                    })
+                    .show();
+        });
+
+        return binding.getRoot();
     }
 
     int statusParam;
@@ -163,22 +132,22 @@ public class ComplaintDetailFragment extends Fragment {
     private void refreshStep(int statusId) {
         switch (statusId) {
             case 1: //accepted request
-                if (indicator != null)
-                    indicator.setCurrentStep(statusId - 1);
+                if (binding.indicator != null)
+                    binding.indicator.setCurrentStep(statusId - 1);
                 vpRegisterDriver.setCurrentItem(statusId - 1);
                 statusParam = 2;
                 break;
             case 2: //waiting for call
-                if (indicator != null)
-                    indicator.setCurrentStep(statusId - 1);
+                if (binding.indicator != null)
+                    binding.indicator.setCurrentStep(statusId - 1);
                 vpRegisterDriver.setCurrentItem(statusId - 1);
                 statusParam = 3;
                 break;
             case 3: //waiting for saveResult
-                if (indicator != null)
-                    indicator.setCurrentStep(statusId - 1);
-                if (vfNextStep != null) {
-                    vfNextStep.setDisplayedChild(2);
+                if (binding.indicator != null)
+                    binding.indicator.setCurrentStep(statusId - 1);
+                if (binding.vfNextStep != null) {
+                    binding.vfNextStep.setDisplayedChild(2);
                 }
                 vpRegisterDriver.setCurrentItem(statusId - 1);
                 statusParam = 4;
@@ -233,11 +202,11 @@ public class ComplaintDetailFragment extends Fragment {
                                     .show();
 
                             if (statusModel == 3) {
-                                if (vfNextStep != null)
-                                    vfNextStep.setDisplayedChild(2);
+                                if (binding.vfNextStep != null)
+                                    binding.vfNextStep.setDisplayedChild(2);
                             } else {
-                                if (vfNextStep != null)
-                                    vfNextStep.setDisplayedChild(0);
+                                if (binding.vfNextStep != null)
+                                    binding.vfNextStep.setDisplayedChild(0);
                             }
                         } else {
                             if (statusParam == 4) {
@@ -254,22 +223,22 @@ public class ComplaintDetailFragment extends Fragment {
                         }
 
                         if (statusModel == 3) {
-                            if (vfNextStep != null)
-                                vfNextStep.setDisplayedChild(2);
+                            if (binding.vfNextStep != null)
+                                binding.vfNextStep.setDisplayedChild(2);
                         } else {
-                            if (vfNextStep != null)
-                                vfNextStep.setDisplayedChild(0);
+                            if (binding.vfNextStep != null)
+                                binding.vfNextStep.setDisplayedChild(0);
                         }
                     }
                 } catch (JSONException e) {
                     e.printStackTrace();
                     AvaCrashReporter.send(e, TAG + " class, updateStatus callBAck");
                     if (statusModel == 3) {
-                        if (vfNextStep != null)
-                            vfNextStep.setDisplayedChild(2);
+                        if (binding.vfNextStep != null)
+                            binding.vfNextStep.setDisplayedChild(2);
                     } else {
-                        if (vfNextStep != null)
-                            vfNextStep.setDisplayedChild(0);
+                        if (binding.vfNextStep != null)
+                            binding.vfNextStep.setDisplayedChild(0);
                     }
                 }
             });
@@ -280,19 +249,19 @@ public class ComplaintDetailFragment extends Fragment {
             MyApplication.handler.post(() ->
             {
                 if (statusModel == 3) {
-                    if (vfNextStep != null)
-                        vfNextStep.setDisplayedChild(2);
+                    if (binding.vfNextStep != null)
+                        binding.vfNextStep.setDisplayedChild(2);
                 } else {
-                    if (vfNextStep != null)
-                        vfNextStep.setDisplayedChild(0);
+                    if (binding.vfNextStep != null)
+                        binding.vfNextStep.setDisplayedChild(0);
                 }
             });
         }
     };
 
     private void complaintSaveResult() {
-        if (vfNextStep != null)
-            vfNextStep.setDisplayedChild(1);
+        if (binding.vfNextStep != null)
+            binding.vfNextStep.setDisplayedChild(1);
         RequestHelper.builder(EndPoints.COMPLAINT_FINISH)
                 .addParam("complaintId", complaintDetailsModel.getComplaintId())
                 .addParam("typeResult", DataHolder.getInstance().getComplaintResult())
@@ -334,8 +303,8 @@ public class ComplaintDetailFragment extends Fragment {
                                     .secondButton("برگشت", null)
                                     .show();
 
-                            if (vfNextStep != null)
-                                vfNextStep.setDisplayedChild(2);
+                            if (binding.vfNextStep != null)
+                                binding.vfNextStep.setDisplayedChild(2);
                         } else {
                             new GeneralDialog()
                                     .message(message)
@@ -343,8 +312,8 @@ public class ComplaintDetailFragment extends Fragment {
                                     .firstButton("تایید", () -> MyApplication.currentActivity.onBackPressed())
                                     .show();
                         }
-                        if (vfNextStep != null)
-                            vfNextStep.setDisplayedChild(2);
+                        if (binding.vfNextStep != null)
+                            binding.vfNextStep.setDisplayedChild(2);
                     }
                 } catch (Exception e) {
                     e.printStackTrace();
@@ -356,15 +325,9 @@ public class ComplaintDetailFragment extends Fragment {
         @Override
         public void onFailure(Runnable reCall, Exception e) {
             MyApplication.handler.post(() -> {
-                if (vfNextStep != null)
-                    vfNextStep.setDisplayedChild(2);
+                if (binding.vfNextStep != null)
+                    binding.vfNextStep.setDisplayedChild(2);
             });
         }
     };
-
-    @Override
-    public void onDestroyView() {
-        super.onDestroyView();
-        unbinder.unbind();
-    }
 }

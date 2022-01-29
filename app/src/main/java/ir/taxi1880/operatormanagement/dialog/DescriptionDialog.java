@@ -4,28 +4,25 @@ import android.app.Dialog;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.view.Gravity;
-import android.view.View;
+import android.view.LayoutInflater;
 import android.view.Window;
 import android.view.WindowManager;
-import android.widget.Button;
-import android.widget.EditText;
-import android.widget.LinearLayout;
 
 import ir.taxi1880.operatormanagement.R;
 import ir.taxi1880.operatormanagement.app.MyApplication;
+import ir.taxi1880.operatormanagement.databinding.DialogDescriptionBinding;
 import ir.taxi1880.operatormanagement.helper.KeyBoardHelper;
 import ir.taxi1880.operatormanagement.helper.TypefaceUtil;
 import ir.taxi1880.operatormanagement.push.AvaCrashReporter;
 
 public class DescriptionDialog {
-    View blrView;
     private static final String TAG = DescriptionDialog.class.getSimpleName();
+    DialogDescriptionBinding binding;
 
     public interface Listener {
         void description(String description);
 
         void fixedDescription(String fixedDescription);
-
     }
 
     private Listener listener;
@@ -36,9 +33,10 @@ public class DescriptionDialog {
         if (MyApplication.currentActivity == null || MyApplication.currentActivity.isFinishing())
             return;
         dialog = new Dialog(MyApplication.currentActivity);
+        binding = DialogDescriptionBinding.inflate(LayoutInflater.from(dialog.getContext()));
         dialog.getWindow().requestFeature(Window.FEATURE_NO_TITLE);
         dialog.getWindow().getAttributes().windowAnimations = R.style.ExpandAnimation;
-        dialog.setContentView(R.layout.dialog_description);
+        dialog.setContentView(binding.getRoot());
         TypefaceUtil.overrideFonts(dialog.getWindow().getDecorView());
         dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         WindowManager.LayoutParams wlp = dialog.getWindow().getAttributes();
@@ -49,19 +47,13 @@ public class DescriptionDialog {
         dialog.setCancelable(true);
         this.listener = listener;
 
-        EditText edtAlwaysDescription = dialog.findViewById(R.id.edtAlwaysDescription);
-        EditText edtDescription = dialog.findViewById(R.id.edtDescription);
-        Button btnSubmit = dialog.findViewById(R.id.btnSubmit);
-        LinearLayout llDescription = dialog.findViewById(R.id.llDescription);
-        blrView = dialog.findViewById(R.id.blrView);
-
-        llDescription.setOnClickListener(view -> {
+        binding.llDescription.setOnClickListener(view -> {
             return;
         });
-        edtAlwaysDescription.setText(description);
-        edtDescription.setText(normalDescription);
+        binding.edtAlwaysDescription.setText(description);
+        binding.edtDescription.setText(normalDescription);
 
-        blrView.setOnClickListener(view -> dismiss());
+        binding.blrView.setOnClickListener(view -> dismiss());
 //        InputFilter filter = new InputFilter() {
 //            public CharSequence filter(CharSequence source, int start, int end, Spanned dest, int dstart, int dend) {
 //                boolean temp = false;
@@ -77,9 +69,9 @@ public class DescriptionDialog {
 //        };
 //        edtAlwaysDescription.setFilters(new InputFilter[]{filter});
 
-        btnSubmit.setOnClickListener(v -> {
-            String description1 = edtDescription.getText().toString();
-            String fixedDescription = edtAlwaysDescription.getText().toString();
+        binding.btnSubmit.setOnClickListener(v -> {
+            String description1 = binding.edtDescription.getText().toString();
+            String fixedDescription = binding.edtAlwaysDescription.getText().toString();
 
 //              if (description.isEmpty()){
 //                  MyApplication.Toast("حداقل یکی از فیلدهای توضیحات را پر کنید", Toast.LENGTH_SHORT);
@@ -89,7 +81,6 @@ public class DescriptionDialog {
             listener.description(description1);
             listener.fixedDescription(fixedDescription);
             dismiss();
-
         });
         MyApplication.handler.postDelayed(() -> KeyBoardHelper.showKeyboard(MyApplication.context), 200);
 

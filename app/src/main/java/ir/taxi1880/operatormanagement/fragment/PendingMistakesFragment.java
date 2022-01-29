@@ -12,9 +12,6 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.LinearLayout;
-import android.widget.TextView;
-import android.widget.ViewFlipper;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -37,14 +34,10 @@ import java.net.URL;
 import java.util.Timer;
 import java.util.TimerTask;
 
-import butterknife.BindView;
-import butterknife.ButterKnife;
-import butterknife.OnClick;
-import butterknife.Unbinder;
-import ir.taxi1880.operatormanagement.R;
 import ir.taxi1880.operatormanagement.app.EndPoints;
 import ir.taxi1880.operatormanagement.app.MyApplication;
 import ir.taxi1880.operatormanagement.dataBase.DataBase;
+import ir.taxi1880.operatormanagement.databinding.FragmentPendingMistakesBinding;
 import ir.taxi1880.operatormanagement.dialog.GeneralDialog;
 import ir.taxi1880.operatormanagement.dialog.PendingMistakesOptionsDialog;
 import ir.taxi1880.operatormanagement.dialog.SaveMistakeResultDialog;
@@ -59,156 +52,79 @@ import ir.taxi1880.operatormanagement.push.AvaCrashReporter;
 
 public class PendingMistakesFragment extends Fragment {
     public static final String TAG = PendingMistakesFragment.class.getSimpleName();
-    Unbinder unbinder;
+    FragmentPendingMistakesBinding binding;
     DataBase dataBase;
     MediaPlayer mediaPlayer;
     AllMistakesModel model;
     LocalBroadcastManager broadcaster;
 
-    @OnClick(R.id.btnSaveResult)
-    void onSaveResult() {
-        if (vfSaveResult != null)
-            vfSaveResult.setDisplayedChild(1);
-        pauseVoice();
-        new SaveMistakeResultDialog()
-                .show(model.getId(), new SaveMistakeResultDialog.MistakesResult() {
-                    @Override
-                    public void onSuccess(boolean success) {
-                        MyApplication.handler.postDelayed(() -> {
-                            getMistakesFromDB();
-                            if (vfVoiceStatus != null)
-                                vfVoiceStatus.setDisplayedChild(0);
-                        }, 200);
-                    }
-
-                    @Override
-                    public void dismiss() {
-                        if (vfSaveResult != null)
-                            vfSaveResult.setDisplayedChild(0);
-                    }
-                });
-    }
-
-    @OnClick(R.id.btnOptions)
-    void onOptions() {
-        pauseVoice();
-        String tell = dataBase.getMistakesRow().getTell();
-        String mobile = dataBase.getMistakesRow().getMobile();
-        new PendingMistakesOptionsDialog()
-                .show(tell, mobile);
-    }
-
-    @BindView(R.id.txtUserCode)
-    TextView txtUserCode;
-
-    @BindView(R.id.txtUserCodeOrigin)
-    TextView txtUserCodeOrigin;
-    @BindView(R.id.txtUserCodeDestination)
-    TextView txtUserCodeDestination;
-
-    @BindView(R.id.txtTripDate)
-    TextView txtTripDate;
-
-    @BindView(R.id.vfSaveResult)
-    ViewFlipper vfSaveResult;
-
-    @BindView(R.id.txtPassengerName)
-    TextView txtPassengerName;
-
-    @BindView(R.id.txtPassengerPhone)
-    TextView txtPassengerPhone;
-
-    @BindView(R.id.vfPending)
-    ViewFlipper vfPending;
-
-    @BindView(R.id.vfVoiceStatus)
-    ViewFlipper vfVoiceStatus;
-
-    @BindView(R.id.txtDescription)
-    TextView txtDescription;
-
-    @BindView(R.id.txtCity)
-    TextView txtCity;
-
-    @BindView(R.id.txtOriginAddress)
-    TextView txtOriginAddress;
-
-    @BindView(R.id.txtOriginStation)
-    TextView txtOriginStation;
-
-    @BindView(R.id.txtPrice)
-    TextView txtPrice;
-
-    @BindView(R.id.txtDestAddress)
-    TextView txtDestAddress;
-
-    @BindView(R.id.txtDestStation)
-    TextView txtDestStation;
-
-    @BindView(R.id.txtMistakeReason)
-    TextView txtMistakeReason;
-
-    @BindView(R.id.llMistakeReason)
-    LinearLayout llMistakeReason;
-
-    @OnClick(R.id.imgPlay)
-    void onPlay() {
-        if (vfPlayPause != null)
-            vfPlayPause.setDisplayedChild(1);
-        Log.i("URL", "show: " + EndPoints.CALL_VOICE + dataBase.getMistakesRow().getVoipId());
-        String voiceName = dataBase.getMistakesRow().getId() + ".mp3";
-        File file;
-        file = new File(MyApplication.DIR_MAIN_FOLDER + MyApplication.VOICE_FOLDER_NAME + voiceName);
-
-        String voipId = dataBase.getMistakesRow().getVoipId();
-        if (file.exists()) {
-            initVoice(Uri.fromFile(file));
-            playVoice();
-        } else if (voipId.equals("0")) {
-            if (vfVoiceStatus != null)
-                vfVoiceStatus.setDisplayedChild(1);
-            if (vfPlayPause != null)
-                vfPlayPause.setDisplayedChild(0);
-        } else {
-            startDownload(EndPoints.CALL_VOICE + dataBase.getMistakesRow().getVoipId(), voiceName);
-        }
-    }
-
-    // {"success":true,"message":"عملیات با موفقیت انجام شد","data":{"status":true}}
-    @OnClick(R.id.imgPause)
-    void onImgPause() {
-        pauseVoice();
-    }
-
-    @BindView(R.id.skbTimer)
-    IndicatorSeekBar skbTimer;
-
-    @BindView(R.id.vfPlayPause)
-    ViewFlipper vfPlayPause;
-
-    @BindView(R.id.vfMissedCall)
-    ViewFlipper vfMissedCall;
-
-    @BindView(R.id.txtEmpty)
-    TextView txtEmpty;
-
-    @OnClick(R.id.llMissedCall)
-    void onMissCall() {
-        missCall();
-    }
-
-
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_pending_mistakes, container, false);
-        unbinder = ButterKnife.bind(this, view);
-        TypefaceUtil.overrideFonts(view, MyApplication.IraSanSMedume);
-        TypefaceUtil.overrideFonts(txtEmpty);
+        binding = FragmentPendingMistakesBinding.inflate(inflater, container, false);
+        TypefaceUtil.overrideFonts(binding.getRoot(), MyApplication.IraSanSMedume);
+        TypefaceUtil.overrideFonts(binding.txtEmpty);
 
         dataBase = new DataBase(MyApplication.context);
 
-        return view;
+        binding.llMissedCall.setOnClickListener(view -> missCall());
+
+        binding.imgPause.setOnClickListener(view -> pauseVoice());
+
+        binding.imgPlay.setOnClickListener(view -> {
+            if (binding.vfPlayPause != null)
+                binding.vfPlayPause.setDisplayedChild(1);
+            Log.i("URL", "show: " + EndPoints.CALL_VOICE + dataBase.getMistakesRow().getVoipId());
+            String voiceName = dataBase.getMistakesRow().getId() + ".mp3";
+            File file;
+            file = new File(MyApplication.DIR_MAIN_FOLDER + MyApplication.VOICE_FOLDER_NAME + voiceName);
+
+            String voipId = dataBase.getMistakesRow().getVoipId();
+            if (file.exists()) {
+                initVoice(Uri.fromFile(file));
+                playVoice();
+            } else if (voipId.equals("0")) {
+                if (binding.vfVoiceStatus != null)
+                    binding.vfVoiceStatus.setDisplayedChild(1);
+                if (binding.vfPlayPause != null)
+                    binding.vfPlayPause.setDisplayedChild(0);
+            } else {
+                startDownload(EndPoints.CALL_VOICE + dataBase.getMistakesRow().getVoipId(), voiceName);
+            }
+        });
+
+        binding.btnOptions.setOnClickListener(view -> {
+            pauseVoice();
+            String tell = dataBase.getMistakesRow().getTell();
+            String mobile = dataBase.getMistakesRow().getMobile();
+            new PendingMistakesOptionsDialog()
+                    .show(tell, mobile);
+        });
+
+        binding.btnSaveResult.setOnClickListener(view -> {
+            if (binding.vfSaveResult != null)
+                binding.vfSaveResult.setDisplayedChild(1);
+            pauseVoice();
+            new SaveMistakeResultDialog()
+                    .show(model.getId(), new SaveMistakeResultDialog.MistakesResult() {
+                        @Override
+                        public void onSuccess(boolean success) {
+                            MyApplication.handler.postDelayed(() -> {
+                                getMistakesFromDB();
+                                if (binding.vfVoiceStatus != null)
+                                    binding.vfVoiceStatus.setDisplayedChild(0);
+                            }, 200);
+                        }
+
+                        @Override
+                        public void dismiss() {
+                            if (binding.vfSaveResult != null)
+                                binding.vfSaveResult.setDisplayedChild(0);
+                        }
+                    });
+        });
+
+        return binding.getRoot();
     }
 
     long lastTime = 0;
@@ -265,7 +181,7 @@ public class PendingMistakesFragment extends Fragment {
                             if (error.getResponseCode() == 401)
                                 new RefreshTokenAsyncTask().execute();
                             if (error.getResponseCode() == 404)
-                                vfVoiceStatus.setDisplayedChild(1);
+                                binding.vfVoiceStatus.setDisplayedChild(1);
                         }
                     });
 
@@ -283,13 +199,13 @@ public class PendingMistakesFragment extends Fragment {
         try {
             mediaPlayer = MediaPlayer.create(MyApplication.context, uri);
             mediaPlayer.setOnCompletionListener(mp -> {
-                if (vfPlayPause != null) {
-                    vfPlayPause.setDisplayedChild(0);
+                if (binding.vfPlayPause != null) {
+                    binding.vfPlayPause.setDisplayedChild(0);
                 }
             });
             TOTAL_VOICE_DURATION = mediaPlayer.getDuration();
 
-            skbTimer.setMax(TOTAL_VOICE_DURATION);
+            binding.skbTimer.setMax(TOTAL_VOICE_DURATION);
 
         } catch (Exception e) {
             e.printStackTrace();
@@ -301,8 +217,8 @@ public class PendingMistakesFragment extends Fragment {
         try {
             if (mediaPlayer != null)
                 mediaPlayer.start();
-            if (vfPlayPause != null)
-                vfPlayPause.setDisplayedChild(2);
+            if (binding.vfPlayPause != null)
+                binding.vfPlayPause.setDisplayedChild(2);
         } catch (Exception e) {
             e.printStackTrace();
             AvaCrashReporter.send(e, TAG + " class, playVoice method");
@@ -316,10 +232,10 @@ public class PendingMistakesFragment extends Fragment {
             if (mediaPlayer != null)
                 mediaPlayer.pause();
 
-            skbTimer.setProgress(0);
+            binding.skbTimer.setProgress(0);
 
-            if (vfPlayPause != null)
-                vfPlayPause.setDisplayedChild(0);
+            if (binding.vfPlayPause != null)
+                binding.vfPlayPause.setDisplayedChild(0);
         } catch (Exception e) {
             e.printStackTrace();
             AvaCrashReporter.send(e, TAG + " class, pauseVoice method");
@@ -353,30 +269,30 @@ public class PendingMistakesFragment extends Fragment {
     void getMistakesFromDB() {
         if (dataBase.getMistakesCount() > 0) {
             model = dataBase.getMistakesRow();
-            txtOriginAddress.setText(StringHelper.toPersianDigits(model.getAddress()));
-            txtPassengerName.setText(StringHelper.toPersianDigits(model.getCustomerName()));
-            txtPassengerPhone.setText(StringHelper.toPersianDigits(model.getTell()));
-            txtOriginStation.setText(StringHelper.toPersianDigits(model.getStationCode() + ""));
-            txtCity.setText(StringHelper.toPersianDigits(dataBase.getCityName(model.getCity())));
-            txtDescription.setText(StringHelper.toPersianDigits(model.getDescription()));
-            txtTripDate.setText(StringHelper.toPersianDigits(DateHelper.strPersianTen(DateHelper.parseDate(model.getDate())) + " " + model.getTime().substring(0, 5)));
-            txtDestAddress.setText(StringHelper.toPersianDigits(model.getDestination()));
-            txtDestStation.setText(StringHelper.toPersianDigits(model.getDestStation()));
-            txtDestStation.setText(StringHelper.toPersianDigits(model.getDestStation()));
+            binding.txtOriginAddress.setText(StringHelper.toPersianDigits(model.getAddress()));
+            binding.txtPassengerName.setText(StringHelper.toPersianDigits(model.getCustomerName()));
+            binding.txtPassengerPhone.setText(StringHelper.toPersianDigits(model.getTell()));
+            binding.txtOriginStation.setText(StringHelper.toPersianDigits(model.getStationCode() + ""));
+            binding.txtCity.setText(StringHelper.toPersianDigits(dataBase.getCityName(model.getCity())));
+            binding.txtDescription.setText(StringHelper.toPersianDigits(model.getDescription()));
+            binding.txtTripDate.setText(StringHelper.toPersianDigits(DateHelper.strPersianTen(DateHelper.parseDate(model.getDate())) + " " + model.getTime().substring(0, 5)));
+            binding.txtDestAddress.setText(StringHelper.toPersianDigits(model.getDestination()));
+            binding.txtDestStation.setText(StringHelper.toPersianDigits(model.getDestStation()));
+            binding.txtDestStation.setText(StringHelper.toPersianDigits(model.getDestStation()));
             if (model.getMistakeReason() == null || model.getMistakeReason().isEmpty()) {
-                llMistakeReason.setVisibility(View.GONE);
+                binding.llMistakeReason.setVisibility(View.GONE);
             } else {
-                vfMissedCall.setVisibility(View.GONE);
-                txtMistakeReason.setText(StringHelper.toPersianDigits(model.getMistakeReason()));
+                binding.vfMissedCall.setVisibility(View.GONE);
+                binding.txtMistakeReason.setText(StringHelper.toPersianDigits(model.getMistakeReason()));
             }
-            txtPrice.setText(StringHelper.toPersianDigits(StringHelper.setComma(model.getPrice())));
-            txtUserCode.setText(StringHelper.toPersianDigits(model.getUserCode() + ""));
-            txtUserCodeOrigin.setText(StringHelper.toPersianDigits(model.getStationRegisterUser() + ""));
-            txtUserCodeDestination.setText(StringHelper.toPersianDigits(model.getDestStationRegisterUser() + ""));
+            binding.txtPrice.setText(StringHelper.toPersianDigits(StringHelper.setComma(model.getPrice())));
+            binding.txtUserCode.setText(StringHelper.toPersianDigits(model.getUserCode() + ""));
+            binding.txtUserCodeOrigin.setText(StringHelper.toPersianDigits(model.getStationRegisterUser() + ""));
+            binding.txtUserCodeDestination.setText(StringHelper.toPersianDigits(model.getDestStationRegisterUser() + ""));
 
-            skbTimer.setProgress(0);
+            binding.skbTimer.setProgress(0);
 
-            skbTimer.setOnSeekChangeListener(new OnSeekChangeListener() {
+            binding.skbTimer.setOnSeekChangeListener(new OnSeekChangeListener() {
                 @Override
                 public void onSeeking(SeekParams seekParams) {
                     int timeRemaining = seekParams.progress / 1000;
@@ -397,11 +313,11 @@ public class PendingMistakesFragment extends Fragment {
                     }
                 }
             });
-            if (vfPending != null)
-                vfPending.setDisplayedChild(1);
+            if (binding.vfPending != null)
+                binding.vfPending.setDisplayedChild(1);
         } else {
-            if (vfPending != null)
-                vfPending.setDisplayedChild(2);
+            if (binding.vfPending != null)
+                binding.vfPending.setDisplayedChild(2);
         }
 
     }
@@ -436,7 +352,7 @@ public class PendingMistakesFragment extends Fragment {
                 try {
                     MyApplication.handler.post(() -> {
                         Log.i("pendingMistakeFragment", "onStopTrackingTouch run: " + mediaPlayer.getCurrentPosition());
-                        skbTimer.setProgress(mediaPlayer.getCurrentPosition());
+                        binding.skbTimer.setProgress(mediaPlayer.getCurrentPosition());
                     });
                 } catch (Exception e) {
                     e.printStackTrace();
@@ -506,8 +422,8 @@ public class PendingMistakesFragment extends Fragment {
                         }
 
                         if (dataBase.getMistakesCount() == 0) {
-                            if (vfPending != null)
-                                vfPending.setDisplayedChild(2);
+                            if (binding.vfPending != null)
+                                binding.vfPending.setDisplayedChild(2);
                         } else {
                             getMistakesFromDB();
                         }
@@ -525,8 +441,8 @@ public class PendingMistakesFragment extends Fragment {
     };
 
     public void missCall() {
-        if (vfMissedCall != null) {
-            vfMissedCall.setDisplayedChild(1);
+        if (binding.vfMissedCall != null) {
+            binding.vfMissedCall.setDisplayedChild(1);
         }
         RequestHelper.builder(EndPoints.MISSED_CALL)
                 .addParam("listenId", model.getId())
@@ -559,13 +475,13 @@ public class PendingMistakesFragment extends Fragment {
                                     .firstButton("تایید", null)
                                     .show();
                         }
-                        if (vfMissedCall != null) {
-                            vfMissedCall.setDisplayedChild(0);
+                        if (binding.vfMissedCall != null) {
+                            binding.vfMissedCall.setDisplayedChild(0);
                         }
                     }
                 } catch (Exception e) {
-                    if (vfMissedCall != null) {
-                        vfMissedCall.setDisplayedChild(0);
+                    if (binding.vfMissedCall != null) {
+                        binding.vfMissedCall.setDisplayedChild(0);
                     }
                     e.printStackTrace();
                     AvaCrashReporter.send(e, TAG + " class, sendMissCall method");

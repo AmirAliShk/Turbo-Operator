@@ -5,16 +5,13 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
+import android.view.LayoutInflater;
 import android.view.Window;
 import android.view.WindowManager;
-import android.widget.TextView;
 
-import butterknife.BindView;
-import butterknife.ButterKnife;
-import butterknife.OnClick;
-import butterknife.Unbinder;
 import ir.taxi1880.operatormanagement.R;
 import ir.taxi1880.operatormanagement.app.MyApplication;
+import ir.taxi1880.operatormanagement.databinding.DialogNumbersBinding;
 import ir.taxi1880.operatormanagement.helper.KeyBoardHelper;
 import ir.taxi1880.operatormanagement.helper.StringHelper;
 import ir.taxi1880.operatormanagement.helper.TypefaceUtil;
@@ -22,40 +19,29 @@ import ir.taxi1880.operatormanagement.push.AvaCrashReporter;
 
 public class NumbersDialog {
     public static final String TAG = NumbersDialog.class.getSimpleName();
-    Unbinder unbinder;
+    DialogNumbersBinding binding;
     Dialog dialog;
-
-    @BindView(R.id.txtMobileNumber)
-    TextView txtMobileNumber;
-
-    @BindView(R.id.txtTellNumber)
-    TextView txtTellNumber;
-
-    @OnClick(R.id.imgClose)
-    void onClose() {
-        dismiss();
-    }
 
     public void show(String mobile, String tell) {
         if (MyApplication.currentActivity == null || MyApplication.currentActivity.isFinishing())
             return;
         dialog = new Dialog(MyApplication.currentActivity);
+        binding = DialogNumbersBinding.inflate(LayoutInflater.from(dialog.getContext()));
         dialog.getWindow().requestFeature(Window.FEATURE_NO_TITLE);
         dialog.getWindow().getAttributes().windowAnimations = R.style.ExpandAnimation;
-        dialog.setContentView(R.layout.dialog_numbers);
+        dialog.setContentView(binding.getRoot());
         TypefaceUtil.overrideFonts(dialog.getWindow().getDecorView());
         dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         WindowManager.LayoutParams wlp = dialog.getWindow().getAttributes();
         wlp.width = WindowManager.LayoutParams.MATCH_PARENT;
         wlp.windowAnimations = R.style.ExpandAnimation;
         dialog.getWindow().setAttributes(wlp);
-        unbinder = ButterKnife.bind(this, dialog);
         dialog.setCancelable(true);
 
-        txtMobileNumber.setText(StringHelper.toPersianDigits(mobile));
-        txtTellNumber.setText(StringHelper.toPersianDigits(tell));
+        binding.txtMobileNumber.setText(StringHelper.toPersianDigits(mobile));
+        binding.txtTellNumber.setText(StringHelper.toPersianDigits(tell));
 
-        txtMobileNumber.setOnClickListener(view -> {
+        binding.txtMobileNumber.setOnClickListener(view -> {
             Intent intent = new Intent(Intent.ACTION_DIAL);
             intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
             intent.setData(Uri.parse("tel:0" + mobile));
@@ -63,13 +49,15 @@ public class NumbersDialog {
             dismiss();
         });
 
-        txtTellNumber.setOnClickListener(view -> {
+        binding.txtTellNumber.setOnClickListener(view -> {
             Intent intent = new Intent(Intent.ACTION_DIAL);
             intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
             intent.setData(Uri.parse("tel:0" + tell));
             MyApplication.context.startActivity(intent);
             dismiss();
         });
+
+        binding.imgClose.setOnClickListener(view -> dismiss());
 
         dialog.show();
     }
@@ -85,7 +73,6 @@ public class NumbersDialog {
             e.printStackTrace();
             AvaCrashReporter.send(e, TAG + " class, dismiss method");
         }
-
         dialog = null;
     }
 }

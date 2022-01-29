@@ -5,24 +5,16 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.fragment.app.Fragment;
 
-import com.wang.avi.AVLoadingIndicatorView;
-
 import org.json.JSONArray;
 import org.json.JSONObject;
 
-import butterknife.BindView;
-import butterknife.ButterKnife;
-import butterknife.OnClick;
-import butterknife.Unbinder;
-import ir.taxi1880.operatormanagement.R;
 import ir.taxi1880.operatormanagement.app.EndPoints;
 import ir.taxi1880.operatormanagement.app.MyApplication;
+import ir.taxi1880.operatormanagement.databinding.FragmentReplacementBinding;
 import ir.taxi1880.operatormanagement.dialog.GeneralDialog;
 import ir.taxi1880.operatormanagement.dialog.OperatorDialog;
 import ir.taxi1880.operatormanagement.helper.TypefaceUtil;
@@ -31,76 +23,19 @@ import ir.taxi1880.operatormanagement.push.AvaCrashReporter;
 
 public class ReplacementFragment extends Fragment {
     public static final String TAG = ReplacementFragment.class.getSimpleName();
-    Unbinder unbinder;
+    FragmentReplacementBinding binding;
     String[] shift = {"صبح", "عصر", "شب", "استراحت"};
     GeneralDialog generalDialog = new GeneralDialog();
     int shiftId;
     String shiftDate;
     String shiftName;
-
-    @OnClick(R.id.imgBack)
-    void onBack() {
-        MyApplication.currentActivity.onBackPressed();
-    }
-
-    @BindView(R.id.txtOperator)
-    TextView txtOperator;
-
-    @BindView(R.id.loader)
-    AVLoadingIndicatorView loader;
-
     int opId = 0;
-
-    @OnClick(R.id.llOperator)
-    void onOperator() {
-
-        switch (shiftName) {
-            case "صبح":
-                shiftId = 1;
-                break;
-            case "عصر":
-                shiftId = 2;
-                break;
-            case "شب":
-                shiftId = 3;
-                break;
-            case "استراحت":
-                shiftId = 4;
-                break;
-            default:
-                shiftId = 0;
-                break;
-        }
-        getOnlineOperator();
-    }
-
-    @BindView(R.id.btnSubmit)
-    Button btnSubmit;
-
-    @OnClick(R.id.btnSubmit)
-    void onSubmit() {
-        if (txtOperator.getText().equals("")) {
-            MyApplication.Toast("اپراتور مورد نظر را انتخاب کنید", Toast.LENGTH_SHORT);
-            return;
-        }
-
-        new GeneralDialog()
-                .title("ثبت درخواست")
-                .message(" شما میخواهید خانم " + txtOperator.getText() + " در تاریخ " + shiftDate + " در شیفت " + shiftName + " به جای شما حضور یابد.")
-                .firstButton("بله", () -> {
-                    shiftReplacementRequest();
-                    txtOperator.setText("");
-                })
-                .secondButton("خیر", null)
-                .show();
-    }
 
     @SuppressLint("Clickab leViewAccessibility")
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_replacement, container, false);
-        unbinder = ButterKnife.bind(this, view);
-        TypefaceUtil.overrideFonts(view);
+        binding = FragmentReplacementBinding.inflate(inflater, container, false);
+        TypefaceUtil.overrideFonts(binding.getRoot());
 
         Bundle bundle = getArguments();
         if (bundle != null) {
@@ -108,7 +43,47 @@ public class ReplacementFragment extends Fragment {
             shiftName = bundle.getString("shiftName");
         }
 
-        return view;
+        binding.btnSubmit.setOnClickListener(view -> {
+            if (binding.txtOperator.getText().equals("")) {
+                MyApplication.Toast("اپراتور مورد نظر را انتخاب کنید", Toast.LENGTH_SHORT);
+                return;
+            }
+
+            new GeneralDialog()
+                    .title("ثبت درخواست")
+                    .message(" شما میخواهید خانم " + binding.txtOperator.getText() + " در تاریخ " + shiftDate + " در شیفت " + shiftName + " به جای شما حضور یابد.")
+                    .firstButton("بله", () -> {
+                        shiftReplacementRequest();
+                        binding.txtOperator.setText("");
+                    })
+                    .secondButton("خیر", null)
+                    .show();
+        });
+
+        binding.llOperator.setOnClickListener(view -> {
+            switch (shiftName) {
+                case "صبح":
+                    shiftId = 1;
+                    break;
+                case "عصر":
+                    shiftId = 2;
+                    break;
+                case "شب":
+                    shiftId = 3;
+                    break;
+                case "استراحت":
+                    shiftId = 4;
+                    break;
+                default:
+                    shiftId = 0;
+                    break;
+            }
+            getOnlineOperator();
+        });
+
+        binding.imgBack.setOnClickListener(view -> MyApplication.currentActivity.onBackPressed());
+
+        return binding.getRoot();
     }
 
     private void shiftReplacementRequest() {
@@ -141,8 +116,8 @@ public class ReplacementFragment extends Fragment {
     };
 
     private void getOnlineOperator() {
-        if (loader != null)
-            loader.setVisibility(View.VISIBLE);
+        if (binding.loader != null)
+            binding.loader.setVisibility(View.VISIBLE);
 
         RequestHelper.builder(EndPoints.GET_SHIFT_OPERATOR)
                 .addParam("shiftDate", shiftDate)
@@ -159,12 +134,12 @@ public class ReplacementFragment extends Fragment {
                     JSONArray operatorArr = new JSONArray(args[0].toString());
                     MyApplication.prefManager.setOperatorList(operatorArr.toString());
 
-                    if (loader != null)
-                        loader.setVisibility(View.GONE);
+                    if (binding.loader != null)
+                        binding.loader.setVisibility(View.GONE);
 
                     new OperatorDialog().show((op) -> {
-                        if (txtOperator != null)
-                            txtOperator.setText(op.getOperatorName());
+                        if (binding.txtOperator != null)
+                            binding.txtOperator.setText(op.getOperatorName());
                         opId = op.getOperatorId();
                     });
 
@@ -175,10 +150,4 @@ public class ReplacementFragment extends Fragment {
             });
         }
     };
-
-    @Override
-    public void onDestroyView() {
-        super.onDestroyView();
-        unbinder.unbind();
-    }
 }

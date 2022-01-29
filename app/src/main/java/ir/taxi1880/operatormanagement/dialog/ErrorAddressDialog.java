@@ -140,7 +140,11 @@ public class ErrorAddressDialog {
 
         @Override
         public void onFailure(Runnable reCall, Exception e) {
-            MyApplication.handler.post(LoadingDialog::dismissCancelableDialog);
+            MyApplication.handler.post(() -> {
+                LoadingDialog.dismissCancelableDialog();
+                if (binding.vfLoader != null)
+                    binding.vfLoader.setDisplayedChild(0);
+            });
         }
     };
 
