@@ -1,7 +1,5 @@
 package ir.taxi1880.operatormanagement.dialog;
 
-import static ir.taxi1880.operatormanagement.adapter.RecentCallsAdapter.pauseVoice;
-
 import android.app.Dialog;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
@@ -28,6 +26,7 @@ import butterknife.OnClick;
 import butterknife.Unbinder;
 import ir.taxi1880.operatormanagement.R;
 import ir.taxi1880.operatormanagement.adapter.RecentCallsAdapter;
+import ir.taxi1880.operatormanagement.adapter.RecentCallsAdapterK;
 import ir.taxi1880.operatormanagement.app.EndPoints;
 import ir.taxi1880.operatormanagement.app.MyApplication;
 import ir.taxi1880.operatormanagement.helper.TypefaceUtil;
@@ -94,7 +93,7 @@ public class RecentCallsDialog {
         }
     }
 
-    RecentCallsAdapter mAdapter;
+    RecentCallsAdapterK mAdapter;
     ArrayList<RecentCallsModel> recentCallsModels;
 
     public void show(String tell, String mobile, int sip, boolean fromPassengerCalls, DismissInterface dismissInterface) {
@@ -191,7 +190,7 @@ public class RecentCallsDialog {
                         } else {
                             if (vfDownload != null)
                                 vfDownload.setDisplayedChild(1);
-                            mAdapter = new RecentCallsAdapter(recentCallsModels);
+                            mAdapter = new RecentCallsAdapterK(recentCallsModels);
                             listRecentCalls.setAdapter(mAdapter);
                         }
                     } else {
@@ -241,7 +240,8 @@ public class RecentCallsDialog {
         dialog = null;
         PRDownloader.cancelAll();
         PRDownloader.shutDown();
-        pauseVoice();
+//        pauseVoice();
+        RecentCallsAdapterK.Companion.pauseVoice();
         unbinder.unbind();
     }
 }

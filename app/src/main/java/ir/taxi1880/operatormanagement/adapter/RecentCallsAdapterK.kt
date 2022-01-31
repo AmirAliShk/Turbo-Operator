@@ -33,20 +33,20 @@ import java.util.*
 class RecentCallsAdapterK() : RecyclerView.Adapter<RecentCallsAdapterK.RecentCallsHolder>() {
 
     private var recentCallsList: ArrayList<RecentCallsModel> = ArrayList()
-    lateinit var requireHolder: RecentCallsHolder
+//    lateinit var requireHolder: RecentCallsHolder
     var isDownloading = false
     private var TOTAL_VOICE_DURATION = 0
 
-    constructor(recentCallsList: ArrayList<RecentCallsModel>) : this() {
+    constructor(recentCallsList: ArrayList<RecentCallsModel>)
+            : this() {
         this.recentCallsList = recentCallsList
     }
 
-
     companion object {
-        lateinit var mediaPlayer: MediaPlayer
-        val TAG = RecentCallsAdapterK.javaClass.simpleName!!
+        val TAG = RecentCallsAdapterK::class.java.simpleName
+        lateinit var requireHolder: RecentCallsHolder
+        var mediaPlayer: MediaPlayer? = null
         private var timer: Timer? = null
-
 
         class RefreshTokenAsyncTask : AsyncTask<Void?, Void?, Boolean?>() {
             override fun doInBackground(vararg p0: Void?): Boolean? {
@@ -54,8 +54,19 @@ class RecentCallsAdapterK() : RecyclerView.Adapter<RecentCallsAdapterK.RecentCal
                 return null
             }
         }
+        fun pauseVoice() {
+            try {
+                if (mediaPlayer != null) mediaPlayer?.pause()
+                requireHolder.binding.skbTimer.setProgress(0f)
+                requireHolder.binding.vfPlayPause.displayedChild = 0
+            } catch (e: java.lang.Exception) {
+                e.printStackTrace()
+                AvaCrashReporter.send(e, "$TAG class, pauseVoice method")
+            }
+            cancelTimer()
+        }
 
-        fun cancelTimer() {
+        private fun cancelTimer() {
             try {
                 if (timer == null) return
                 timer!!.cancel()
@@ -72,7 +83,7 @@ class RecentCallsAdapterK() : RecyclerView.Adapter<RecentCallsAdapterK.RecentCal
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecentCallsHolder {
         val binding = ItemRecentCallsBinding.inflate(
-            LayoutInflater.from(MyApplication.context),
+            LayoutInflater.from(MyApplication.currentActivity),
             parent,
             false
         )
@@ -99,11 +110,11 @@ class RecentCallsAdapterK() : RecyclerView.Adapter<RecentCallsAdapterK.RecentCal
 
         holder.binding.imgPlay.setOnClickListener {
             requireHolder = holder
-            if (mediaPlayer != null && mediaPlayer.isPlaying) {
+            if (mediaPlayer != null && mediaPlayer?.isPlaying!!) {
                 pauseVoice()
             }
             holder.binding.vfPlayPause.displayedChild = 1
-            Log.i("URL", "show: " + EndPoints.CALL_VOICE + recentCall.voipId)
+            Log.i("URL", "show: ${EndPoints.CALL_VOICE}${recentCall.voipId}")
             val voiceName = "${recentCall.voipId}.mp3"
             val file =
                 File("${MyApplication.DIR_MAIN_FOLDER}${MyApplication.VOICE_FOLDER_NAME}$voiceName")
@@ -117,7 +128,7 @@ class RecentCallsAdapterK() : RecyclerView.Adapter<RecentCallsAdapterK.RecentCal
                     MyApplication.Toast("صوتی برای این تماس وجود ندارد", Toast.LENGTH_SHORT)
                 }
                 else -> {
-                    startDownload("${EndPoints.CALL_VOICE}${recentCall.voipId}", voiceName)
+                    startDownload("${EndPoints.CALL_VOICE}${recentCall.voipId}",voiceName)
                 }
             }
 
@@ -140,13 +151,16 @@ class RecentCallsAdapterK() : RecyclerView.Adapter<RecentCallsAdapterK.RecentCal
                 override fun onStopTrackingTouch(seekBar: IndicatorSeekBar?) {
                     if (mediaPlayer != null) {
                         if (seekBar != null) {
-                            mediaPlayer.seekTo(seekBar.progress)
+                            mediaPlayer?.seekTo(seekBar.progress)
                         }
                     }
                 }
             }
         }
-        holder.binding.imgPause.setOnClickListener { pauseVoice() }
+        holder.binding.imgPause.setOnClickListener {
+            requireHolder = holder
+            pauseVoice()
+        }
     }
 
     override fun getItemCount(): Int {
@@ -202,25 +216,20 @@ class RecentCallsAdapterK() : RecyclerView.Adapter<RecentCallsAdapterK.RecentCal
                         isDownloading = false
                         Log.e("PlayConversationDialog", "onError: " + error.responseCode + "")
                         Log.e("getServerErrorMessage", "onError: " + error.serverErrorMessage + "")
-                        Log.e(
-                            "getConnectionException",
-                            "onError: " + error.connectionException + ""
-                        )
+                        Log.e("getConnectionException", "onError: " + error.connectionException + "")
                         FileHelper.deleteFile(dirPath, fileName)
-                        if (error.responseCode == 401) RefreshTokenAsyncTask()
-                            .execute()
-                        if (error.responseCode == 404) requireHolder.binding.vfVoiceStatus.displayedChild =
-                            1
+                        if (error.responseCode == 401) RefreshTokenAsyncTask().execute()
+                        if (error.responseCode == 404) requireHolder.binding.vfVoiceStatus.displayedChild = 1
                     }
                 })
 
 //        StartDownload.execute(downloadId, url.toString(), dirPathTemp + fileName);
         } catch (e: MalformedURLException) {
             e.printStackTrace()
-            AvaCrashReporter.send(e, TAG + " class, startDownload method")
+            AvaCrashReporter.send(e, "$TAG class, startDownload method")
         } catch (e: Exception) {
             e.printStackTrace()
-            AvaCrashReporter.send(e, TAG + " class, startDownload method2")
+            AvaCrashReporter.send(e, "$TAG class, startDownload method2")
         }
     }
 
@@ -228,30 +237,30 @@ class RecentCallsAdapterK() : RecyclerView.Adapter<RecentCallsAdapterK.RecentCal
         try {
 //            if (view != null) {
             mediaPlayer = MediaPlayer.create(MyApplication.context, uri)
-            mediaPlayer.setOnCompletionListener { mp: MediaPlayer? ->
+            mediaPlayer?.setOnCompletionListener { mp: MediaPlayer? ->
 //                if (requireHolder.binding.vfPlayPause != null) {
-                    requireHolder.binding.vfPlayPause.displayedChild = 0
+                requireHolder.binding.vfPlayPause.displayedChild = 0
 //                }
             }
-            TOTAL_VOICE_DURATION = mediaPlayer.duration
+            TOTAL_VOICE_DURATION = mediaPlayer?.duration!!
             requireHolder.binding.skbTimer.max = TOTAL_VOICE_DURATION.toFloat()
 
         } catch (e: java.lang.Exception) {
             e.printStackTrace()
-            AvaCrashReporter.send(e, TAG + " class, initVoice method")
+            AvaCrashReporter.send(e, "$TAG, initVoice method")
         }
     }
 
     private fun playVoice() {
         try {
             if (mediaPlayer != null) {
-                mediaPlayer.start()
+                mediaPlayer!!.start()
                 requireHolder.binding.vfPlayPause.displayedChild = 2
                 startTimer()
             }
         } catch (e: java.lang.Exception) {
             e.printStackTrace()
-            AvaCrashReporter.send(e, TAG + ", playVoice")
+            AvaCrashReporter.send(e, "$TAG, playVoice")
         }
     }
 
@@ -263,28 +272,16 @@ class RecentCallsAdapterK() : RecyclerView.Adapter<RecentCallsAdapterK.RecentCal
         timer!!.scheduleAtFixedRate(task, 500, 1000)
     }
 
-    private fun pauseVoice() {
-        try {
-            if (mediaPlayer != null) mediaPlayer.pause()
-            requireHolder.binding.skbTimer.setProgress(0f)
-            requireHolder.binding.vfPlayPause.displayedChild = 0
-        } catch (e: java.lang.Exception) {
-            e.printStackTrace()
-            AvaCrashReporter.send(e, TAG + " class, pauseVoice method")
-        }
-        cancelTimer()
-    }
-
     inner class UpdateSeekBar : TimerTask() {
         override fun run() {
             if (mediaPlayer != null) {
                 try {
                     MyApplication.handler.post {
                         requireHolder.binding.skbTimer.setProgress(
-                            mediaPlayer.currentPosition.toFloat()
+                            mediaPlayer?.currentPosition!!.toFloat()
                         )
                         val timeRemaining =
-                            mediaPlayer.currentPosition / 1000
+                            mediaPlayer?.currentPosition!! / 1000
                         val strTimeRemaining = String.format(
                             Locale("en_US"),
                             "%02d:%02d",
@@ -298,7 +295,7 @@ class RecentCallsAdapterK() : RecyclerView.Adapter<RecentCallsAdapterK.RecentCal
                     e.printStackTrace()
                     AvaCrashReporter.send(
                         e,
-                        TAG + " class, UpdateSeekBar method "
+                        "$TAG class, UpdateSeekBar method "
                     )
                 }
             }
