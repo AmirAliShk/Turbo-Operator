@@ -1,6 +1,5 @@
 package ir.taxi1880.operatormanagement.dialog;
 
-import static ir.taxi1880.operatormanagement.adapter.RecentCallsAdapter.pauseVoice;
 
 import android.app.Dialog;
 import android.graphics.Color;
@@ -19,6 +18,7 @@ import java.util.ArrayList;
 
 import ir.taxi1880.operatormanagement.R;
 import ir.taxi1880.operatormanagement.adapter.RecentCallsAdapter;
+import ir.taxi1880.operatormanagement.adapter.RecentCallsAdapterK;
 import ir.taxi1880.operatormanagement.app.EndPoints;
 import ir.taxi1880.operatormanagement.app.MyApplication;
 import ir.taxi1880.operatormanagement.databinding.DialogRecentCallsBinding;
@@ -209,6 +209,7 @@ public class RecentCallsDialog {
         dialog = null;
         PRDownloader.cancelAll();
         PRDownloader.shutDown();
-        pauseVoice();
+//        pauseVoice();
+        RecentCallsAdapterK.Companion.pauseVoice();
     }
 }

@@ -1,6 +1,5 @@
 package ir.taxi1880.operatormanagement.dialog;
 
-import static ir.taxi1880.operatormanagement.adapter.RecentCallsAdapter.pauseVoice;
 
 import android.app.Dialog;
 import android.graphics.Color;
@@ -21,6 +20,7 @@ import org.linphone.core.Core;
 import org.linphone.core.CoreListenerStub;
 
 import ir.taxi1880.operatormanagement.R;
+import ir.taxi1880.operatormanagement.adapter.RecentCallsAdapterK;
 import ir.taxi1880.operatormanagement.app.MyApplication;
 import ir.taxi1880.operatormanagement.databinding.DialogCallBinding;
 import ir.taxi1880.operatormanagement.helper.KeyBoardHelper;
@@ -104,7 +104,8 @@ public class CallDialog {
                 if (b) {
                     PRDownloader.cancelAll();
                     PRDownloader.shutDown();
-                    pauseVoice();
+//                    pauseVoice();
+                    RecentCallsAdapterK.Companion.pauseVoice();
                 }
             });
         });
@@ -115,7 +116,9 @@ public class CallDialog {
                 if (b) {
                     PRDownloader.cancelAll();
                     PRDownloader.shutDown();
-                    pauseVoice();
+//                    pauseVoice();
+                    RecentCallsAdapterK.Companion.pauseVoice();
+
                 }
             });
         });

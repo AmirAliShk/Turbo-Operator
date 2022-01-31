@@ -1,6 +1,5 @@
 package ir.taxi1880.operatormanagement.dialog;
 
-import static ir.taxi1880.operatormanagement.adapter.RecentCallsAdapter.pauseVoice;
 
 import android.app.Dialog;
 import android.graphics.Color;
@@ -15,6 +14,7 @@ import android.widget.Toast;
 import com.downloader.PRDownloader;
 
 import ir.taxi1880.operatormanagement.R;
+import ir.taxi1880.operatormanagement.adapter.RecentCallsAdapterK;
 import ir.taxi1880.operatormanagement.app.MyApplication;
 import ir.taxi1880.operatormanagement.databinding.DialogPendingMistakesOptionsBinding;
 import ir.taxi1880.operatormanagement.fragment.PassengerTripSupportFragment;
@@ -60,7 +60,8 @@ public class PendingMistakesOptionsDialog {
                             MyApplication.handler.postDelayed(() -> {
                                 PRDownloader.cancelAll();
                                 PRDownloader.shutDown();
-                                pauseVoice();
+//                                pauseVoice();
+                                RecentCallsAdapterK.Companion.pauseVoice();
                             }, 500);
                         }
                     });

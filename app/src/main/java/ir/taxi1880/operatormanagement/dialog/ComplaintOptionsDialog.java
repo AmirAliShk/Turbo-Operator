@@ -1,6 +1,5 @@
 package ir.taxi1880.operatormanagement.dialog;
 
-import static ir.taxi1880.operatormanagement.adapter.RecentCallsAdapter.pauseVoice;
 
 import android.app.Dialog;
 import android.graphics.Color;
@@ -14,6 +13,7 @@ import android.view.WindowManager;
 import com.downloader.PRDownloader;
 
 import ir.taxi1880.operatormanagement.R;
+import ir.taxi1880.operatormanagement.adapter.RecentCallsAdapterK;
 import ir.taxi1880.operatormanagement.app.MyApplication;
 import ir.taxi1880.operatormanagement.databinding.DialogComplaintOptionsBinding;
 import ir.taxi1880.operatormanagement.helper.TypefaceUtil;
@@ -74,7 +74,8 @@ public class ComplaintOptionsDialog {
                             MyApplication.handler.postDelayed(() -> {
                                 PRDownloader.cancelAll();
                                 PRDownloader.shutDown();
-                                pauseVoice();
+                                RecentCallsAdapterK.Companion.pauseVoice();
+//                                pauseVoice();
                             }, 500);
                         }
                     });
