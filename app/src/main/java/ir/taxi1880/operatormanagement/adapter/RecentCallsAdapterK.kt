@@ -29,6 +29,7 @@ import java.io.File
 import java.net.MalformedURLException
 import java.net.URL
 import java.util.*
+import kotlin.math.log
 
 class RecentCallsAdapterK() : RecyclerView.Adapter<RecentCallsAdapterK.RecentCallsHolder>() {
 
@@ -56,6 +57,7 @@ class RecentCallsAdapterK() : RecyclerView.Adapter<RecentCallsAdapterK.RecentCal
         }
         fun pauseVoice() {
             try {
+                Log.i("TAF","HI GO PAUSE")
                 if (mediaPlayer != null) mediaPlayer?.pause()
                 requireHolder.binding.skbTimer.setProgress(0f)
                 requireHolder.binding.vfPlayPause.displayedChild = 0
@@ -73,7 +75,7 @@ class RecentCallsAdapterK() : RecyclerView.Adapter<RecentCallsAdapterK.RecentCal
                 timer = null
             } catch (e: java.lang.Exception) {
                 e.printStackTrace()
-                AvaCrashReporter.send(e, TAG + " class, cancelTimer method")
+                AvaCrashReporter.send(e,  "$TAG class, cancelTimer method")
             }
         }
     }

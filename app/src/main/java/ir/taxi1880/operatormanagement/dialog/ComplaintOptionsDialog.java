@@ -71,12 +71,10 @@ public class ComplaintOptionsDialog {
             new RecentCallsDialog()
                     .show(customerTell, customerMobile, 0, true, (b) -> {
                         if (b) {
-                            MyApplication.handler.postDelayed(() -> {
                                 PRDownloader.cancelAll();
                                 PRDownloader.shutDown();
                                 RecentCallsAdapterK.Companion.pauseVoice();
 //                                pauseVoice();
-                            }, 500);
                         }
                     });
         });

@@ -104,7 +104,6 @@ public class CallDialog {
                 if (b) {
                     PRDownloader.cancelAll();
                     PRDownloader.shutDown();
-//                    pauseVoice();
                     RecentCallsAdapterK.Companion.pauseVoice();
                 }
             });
@@ -116,7 +115,6 @@ public class CallDialog {
                 if (b) {
                     PRDownloader.cancelAll();
                     PRDownloader.shutDown();
-//                    pauseVoice();
                     RecentCallsAdapterK.Companion.pauseVoice();
 
                 }

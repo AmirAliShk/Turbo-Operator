@@ -23,6 +23,9 @@ import ir.taxi1880.operatormanagement.app.MyApplication
 import ir.taxi1880.operatormanagement.dataBase.DataBase
 import ir.taxi1880.operatormanagement.databinding.FragmentPendingMistakesBinding
 import ir.taxi1880.operatormanagement.dialog.GeneralDialog
+import ir.taxi1880.operatormanagement.dialog.PendingMistakesOptionsDialog
+import ir.taxi1880.operatormanagement.dialog.SaveMistakeResultDialog
+import ir.taxi1880.operatormanagement.dialog.SaveMistakeResultDialog.MistakesResult
 import ir.taxi1880.operatormanagement.helper.DateHelper
 import ir.taxi1880.operatormanagement.helper.FileHelper
 import ir.taxi1880.operatormanagement.helper.StringHelper
@@ -95,6 +98,31 @@ class PendingMistakesFragmentK : Fragment() {
                     )
                 }
             }
+        }
+        binding.btnOptions.setOnClickListener {
+            pauseVoice()
+            val tell = dataBase.mistakesRow.tell
+            val mobile = dataBase.mistakesRow.mobile
+            PendingMistakesOptionsDialog()
+                .show(tell, mobile)
+        }
+
+        binding.btnSaveResult.setOnClickListener {
+            binding.vfSaveResult.displayedChild = 1
+            pauseVoice()
+            SaveMistakeResultDialog()
+                .show(model.id, object : MistakesResult {
+                    override fun onSuccess(success: Boolean) {
+                        MyApplication.handler.postDelayed({
+                            getMistakesFromDB()
+                             binding.vfVoiceStatus.displayedChild = 0
+                        }, 200)
+                    }
+
+                    override fun dismiss() {
+                        binding.vfSaveResult.displayedChild = 0
+                    }
+                })
         }
         return binding.root
     }
@@ -296,7 +324,6 @@ class PendingMistakesFragmentK : Fragment() {
                             model.price = dataObj.getString("servicePrice")
                             dataBase.insertMistakes(model)
                         }
-                        Log.i("TAF",dataBase.mistakesCount.toString())
                         if (dataBase.mistakesCount == 0) {
                             binding.vfPending.displayedChild = 2
                         } else {
@@ -324,16 +351,13 @@ class PendingMistakesFragmentK : Fragment() {
     fun getMistakesFromDB() {
         if (dataBase.mistakesCount > 0) {
             model = dataBase.mistakesRow
-            Log.i("TAF", dataBase.mistakesCount.toString())
             binding.txtOriginAddress.text = StringHelper.toPersianDigits(model.address)
             binding.txtPassengerName.text = StringHelper.toPersianDigits(model.customerName)
             binding.txtPassengerPhone.text = StringHelper.toPersianDigits(model.tell)
             binding.txtOriginStation.text =
                 StringHelper.toPersianDigits(model.stationCode.toString() + "")
-            Log.i("TAF", model.stationCode.toString())
 
             binding.txtCity.text = StringHelper.toPersianDigits(dataBase.getCityName(model.city))
-            Log.i("TAF", model.city.toString())
             binding.txtDescription.text = StringHelper.toPersianDigits(model.description)
             binding.txtTripDate.text = StringHelper.toPersianDigits(
                 DateHelper.strPersianTen(DateHelper.parseDate(model.date)) + " " + model.time.substring(
@@ -343,7 +367,6 @@ class PendingMistakesFragmentK : Fragment() {
             )
             binding.txtDestAddress.text = StringHelper.toPersianDigits(model.destination)
             binding.txtDestStation.text = StringHelper.toPersianDigits(model.destStation)
-            Log.i("TAF", model.destStation.toString())
 
             if (model.mistakeReason == null || model.mistakeReason.isEmpty()) {
                 binding.llMistakeReason.visibility = View.GONE

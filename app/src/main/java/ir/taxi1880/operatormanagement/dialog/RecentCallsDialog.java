@@ -4,6 +4,7 @@ package ir.taxi1880.operatormanagement.dialog;
 import android.app.Dialog;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.Window;
@@ -197,7 +198,9 @@ public class RecentCallsDialog {
     };
 
     private void dismiss() {
+        Log.i("Taf","Hi before True");
         dismissInterface.onDismiss(true);
+        Log.i("Taf","Hi after True");
         try {
             if (dialog != null) {
                 dialog.dismiss();
