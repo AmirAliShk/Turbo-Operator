@@ -2,6 +2,7 @@ package ir.taxi1880.operatormanagement.dialog;
 
 
 import android.app.Dialog;
+import android.content.DialogInterface;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.util.Log;
@@ -110,6 +111,14 @@ public class RecentCallsDialog {
         });
 
         binding.imgClose.setOnClickListener(view -> dismiss());
+        dialog.setOnDismissListener(new DialogInterface.OnDismissListener() {
+            @Override
+            public void onDismiss(DialogInterface dialogInterface) {
+                PRDownloader.cancelAll();
+                PRDownloader.shutDown();
+                RecentCallsAdapterK.Companion.pauseVoice();
+            }
+        });
 
         dialog.show();
     }
@@ -210,9 +219,5 @@ public class RecentCallsDialog {
             AvaCrashReporter.send(e, TAG + " class, dismiss method");
         }
         dialog = null;
-        PRDownloader.cancelAll();
-        PRDownloader.shutDown();
-//        pauseVoice();
-        RecentCallsAdapterK.Companion.pauseVoice();
     }
 }
