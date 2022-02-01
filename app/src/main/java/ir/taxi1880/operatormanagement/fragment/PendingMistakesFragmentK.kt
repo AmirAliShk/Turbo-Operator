@@ -43,8 +43,8 @@ class PendingMistakesFragmentK : Fragment() {
     private lateinit var dataBase: DataBase
     private lateinit var broadcaster: LocalBroadcastManager
     private lateinit var model: AllMistakesModel
-    private lateinit var mediaPlayer: MediaPlayer
-    var timer: Timer? = null
+    private var mediaPlayer: MediaPlayer? = null
+    private var timer: Timer? = null
     private var TOTAL_VOICE_DURATION: Int = 0
 
     companion object {
@@ -66,7 +66,7 @@ class PendingMistakesFragmentK : Fragment() {
     ): View? {
         binding = FragmentPendingMistakesBinding.inflate(inflater, container, false)
         TypefaceUtil.overrideFonts(binding.root, MyApplication.IraSanSMedume)
-        TypefaceUtil.overrideFonts(binding.txtEmpty)
+//        TypefaceUtil.overrideFonts(binding.txtEmpty)
 
         dataBase = DataBase(MyApplication.context)
         binding.llMissedCall.setOnClickListener { missCall() }
@@ -96,7 +96,7 @@ class PendingMistakesFragmentK : Fragment() {
                 }
             }
         }
-        return super.onCreateView(inflater, container, savedInstanceState)
+        return binding.root
     }
 
     private fun startDownload(urlString: String, fileName: String) {
@@ -166,10 +166,10 @@ class PendingMistakesFragmentK : Fragment() {
     private fun initVoice(uri: Uri) {
         try {
             mediaPlayer = MediaPlayer.create(MyApplication.context, uri)
-            mediaPlayer.setOnCompletionListener {
+            mediaPlayer?.setOnCompletionListener {
                 binding.vfPlayPause.displayedChild = 0
             }
-            TOTAL_VOICE_DURATION = mediaPlayer.duration
+            TOTAL_VOICE_DURATION = mediaPlayer?.duration!!
             binding.skbTimer.max = TOTAL_VOICE_DURATION.toFloat()
         } catch (e: Exception) {
             e.printStackTrace()
@@ -180,7 +180,7 @@ class PendingMistakesFragmentK : Fragment() {
     private fun playVoice() {
         try {
             if (mediaPlayer != null)
-                mediaPlayer.start()
+                mediaPlayer?.start()
             binding.vfPlayPause.displayedChild = 2
         } catch (e: Exception) {
             e.printStackTrace()
@@ -200,7 +200,7 @@ class PendingMistakesFragmentK : Fragment() {
 
     fun pauseVoice() {
         try {
-            if (mediaPlayer != null) mediaPlayer.pause()
+            if (mediaPlayer != null) mediaPlayer?.pause()
 
             binding.skbTimer.setProgress(0f)
             binding.vfPlayPause.displayedChild = 0
@@ -230,9 +230,9 @@ class PendingMistakesFragmentK : Fragment() {
                     MyApplication.handler.post {
                         Log.i(
                             "pendingMistakeFragment",
-                            "onStopTrackingTouch run: " + mediaPlayer.currentPosition
+                            "onStopTrackingTouch run: " + mediaPlayer?.currentPosition
                         )
-                        binding.skbTimer.setProgress(mediaPlayer.currentPosition.toFloat())
+                        binding.skbTimer.setProgress(mediaPlayer?.currentPosition!!.toFloat())
                     }
                 } catch (e: java.lang.Exception) {
                     e.printStackTrace()
@@ -296,8 +296,9 @@ class PendingMistakesFragmentK : Fragment() {
                             model.price = dataObj.getString("servicePrice")
                             dataBase.insertMistakes(model)
                         }
+                        Log.i("TAF",dataBase.mistakesCount.toString())
                         if (dataBase.mistakesCount == 0) {
-                            if (binding.vfPending != null) binding.vfPending.displayedChild = 2
+                            binding.vfPending.displayedChild = 2
                         } else {
                             getMistakesFromDB()
                         }
@@ -323,12 +324,16 @@ class PendingMistakesFragmentK : Fragment() {
     fun getMistakesFromDB() {
         if (dataBase.mistakesCount > 0) {
             model = dataBase.mistakesRow
+            Log.i("TAF", dataBase.mistakesCount.toString())
             binding.txtOriginAddress.text = StringHelper.toPersianDigits(model.address)
             binding.txtPassengerName.text = StringHelper.toPersianDigits(model.customerName)
             binding.txtPassengerPhone.text = StringHelper.toPersianDigits(model.tell)
             binding.txtOriginStation.text =
                 StringHelper.toPersianDigits(model.stationCode.toString() + "")
+            Log.i("TAF", model.stationCode.toString())
+
             binding.txtCity.text = StringHelper.toPersianDigits(dataBase.getCityName(model.city))
+            Log.i("TAF", model.city.toString())
             binding.txtDescription.text = StringHelper.toPersianDigits(model.description)
             binding.txtTripDate.text = StringHelper.toPersianDigits(
                 DateHelper.strPersianTen(DateHelper.parseDate(model.date)) + " " + model.time.substring(
@@ -338,7 +343,8 @@ class PendingMistakesFragmentK : Fragment() {
             )
             binding.txtDestAddress.text = StringHelper.toPersianDigits(model.destination)
             binding.txtDestStation.text = StringHelper.toPersianDigits(model.destStation)
-            binding.txtDestStation.text = StringHelper.toPersianDigits(model.destStation)
+            Log.i("TAF", model.destStation.toString())
+
             if (model.mistakeReason == null || model.mistakeReason.isEmpty()) {
                 binding.llMistakeReason.visibility = View.GONE
             } else {
@@ -361,13 +367,14 @@ class PendingMistakesFragmentK : Fragment() {
                 override fun onStopTrackingTouch(seekBar: IndicatorSeekBar) {
                     if (mediaPlayer != null) {
                         if (seekBar != null) {
-                            mediaPlayer.seekTo(seekBar.progress)
+                            mediaPlayer!!.seekTo(seekBar.progress)
                         }
                     }
                 }
             }
             binding.vfPending.displayedChild = 1
-        } else {
+        } else
+        {
             binding.vfPending.displayedChild = 2
         }
     }
