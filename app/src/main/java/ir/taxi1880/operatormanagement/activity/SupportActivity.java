@@ -46,7 +46,7 @@ import ir.taxi1880.operatormanagement.databinding.ActivitySupportBinding;
 import ir.taxi1880.operatormanagement.dialog.GeneralDialog;
 import ir.taxi1880.operatormanagement.dialog.LoadingDialog;
 import ir.taxi1880.operatormanagement.fragment.DriverTripSupportFragment;
-import ir.taxi1880.operatormanagement.fragment.PendingMistakesFragment;
+import ir.taxi1880.operatormanagement.fragment.PendingMistakesFragmentK;
 import ir.taxi1880.operatormanagement.helper.FragmentHelper;
 import ir.taxi1880.operatormanagement.helper.KeyBoardHelper;
 import ir.taxi1880.operatormanagement.helper.ThemeHelper;
@@ -184,7 +184,7 @@ public class SupportActivity extends AppCompatActivity {
         });
 
         binding.imgOpenDriverSupport.setOnClickListener(view -> {
-            new PendingMistakesFragment().pauseVoice();
+            new PendingMistakesFragmentK().pauseVoice();
             FragmentHelper.toFragment(MyApplication.currentActivity, new DriverTripSupportFragment()).replace();
         });
 

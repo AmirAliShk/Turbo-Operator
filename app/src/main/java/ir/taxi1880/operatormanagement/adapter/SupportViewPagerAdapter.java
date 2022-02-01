@@ -15,8 +15,7 @@ import com.google.android.material.tabs.TabLayout;
 import ir.taxi1880.operatormanagement.R;
 import ir.taxi1880.operatormanagement.app.MyApplication;
 import ir.taxi1880.operatormanagement.fragment.AllMistakesFragment;
-import ir.taxi1880.operatormanagement.fragment.PendingMistakesFragment;
-import ir.taxi1880.operatormanagement.helper.ResourceHelper;
+import ir.taxi1880.operatormanagement.fragment.PendingMistakesFragmentK;
 import ir.taxi1880.operatormanagement.helper.TypefaceUtil;
 
 public class SupportViewPagerAdapter extends FragmentStateAdapter {
@@ -34,7 +33,7 @@ public class SupportViewPagerAdapter extends FragmentStateAdapter {
                 fragment = new AllMistakesFragment();
                 break;
             case 1:
-                fragment = new PendingMistakesFragment();
+                fragment = new PendingMistakesFragmentK();
                 break;
         }
         return fragment;
