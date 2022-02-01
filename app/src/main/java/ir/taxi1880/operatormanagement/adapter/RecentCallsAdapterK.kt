@@ -57,10 +57,11 @@ class RecentCallsAdapterK() : RecyclerView.Adapter<RecentCallsAdapterK.RecentCal
         }
         fun pauseVoice() {
             try {
-                Log.i("TAF","HI GO PAUSE")
-                if (mediaPlayer != null) mediaPlayer?.pause()
-                requireHolder.binding.skbTimer.setProgress(0f)
-                requireHolder.binding.vfPlayPause.displayedChild = 0
+                mediaPlayer?.pause()
+                if(::requireHolder.isInitialized){
+                    requireHolder.binding.skbTimer.setProgress(0f)
+                    requireHolder.binding.vfPlayPause.displayedChild = 0
+                }
             } catch (e: java.lang.Exception) {
                 e.printStackTrace()
                 AvaCrashReporter.send(e, "$TAG class, pauseVoice method")
@@ -255,11 +256,9 @@ class RecentCallsAdapterK() : RecyclerView.Adapter<RecentCallsAdapterK.RecentCal
 
     private fun playVoice() {
         try {
-            if (mediaPlayer != null) {
-                mediaPlayer!!.start()
+                mediaPlayer?.start()
                 requireHolder.binding.vfPlayPause.displayedChild = 2
                 startTimer()
-            }
         } catch (e: java.lang.Exception) {
             e.printStackTrace()
             AvaCrashReporter.send(e, "$TAG, playVoice")
