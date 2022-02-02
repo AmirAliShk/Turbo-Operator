@@ -44,7 +44,7 @@ class RecentCallsAdapterK() : RecyclerView.Adapter<RecentCallsAdapterK.RecentCal
     }
 
     companion object {
-        val TAG = RecentCallsAdapterK::class.java.simpleName
+        val TAG: String = RecentCallsAdapterK::class.java.simpleName
         lateinit var requireHolder: RecentCallsHolder
         var mediaPlayer: MediaPlayer? = null
         private var timer: Timer? = null

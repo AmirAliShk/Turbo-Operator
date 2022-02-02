@@ -60,7 +60,7 @@ public class SearchStationInfoDialog {
         binding = DialogSearchStationInfoBinding.inflate(LayoutInflater.from(dialog.getContext()));
         dialog.getWindow().requestFeature(Window.FEATURE_NO_TITLE);
         dialog.getWindow().getAttributes().windowAnimations = R.style.ExpandAnimation;
-        dialog.setContentView(R.layout.dialog_search_station_info);
+        dialog.setContentView(binding.getRoot());
         TypefaceUtil.overrideFonts(dialog.getWindow().getDecorView(), MyApplication.IraSanSMedume);
         dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         WindowManager.LayoutParams wlp = dialog.getWindow().getAttributes();
@@ -93,9 +93,7 @@ public class SearchStationInfoDialog {
 
         binding.imgClear.setOnClickListener(view -> {
             binding.edtStationCode.setText("");
-            if (binding.vfStationInfo != null) {
                 binding.vfStationInfo.setDisplayedChild(0);
-            }
         });
 
         binding.llCLose.setOnClickListener(view -> dismiss());
@@ -153,12 +151,7 @@ public class SearchStationInfoDialog {
     private void initWaitingTimeSpinner() {
         ArrayList<String> searchType = new ArrayList<>(Arrays.asList("کد ایستگاه", "آدرس"));
         try {
-
-            if (binding.spSearchType == null)
-                return;
-
             binding.spSearchType.setAdapter(new SpinnerAdapter(MyApplication.currentActivity, R.layout.item_spinner, searchType));
-
             binding.spSearchType.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
                 @Override
                 public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
@@ -206,7 +199,6 @@ public class SearchStationInfoDialog {
             MyApplication.handler.post(() -> {
                 try {
                     MyApplication.handler.postDelayed(KeyBoardHelper::hideKeyboard, 100);
-                    if (binding.vfStationInfo != null)
                         binding.vfStationInfo.setDisplayedChild(2);
                     boolean isCountrySide = false;
                     String stationName = "";
