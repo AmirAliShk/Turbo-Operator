@@ -19,7 +19,6 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 
 import ir.taxi1880.operatormanagement.R;
-import ir.taxi1880.operatormanagement.adapter.RecentCallsAdapter;
 import ir.taxi1880.operatormanagement.adapter.RecentCallsAdapterK;
 import ir.taxi1880.operatormanagement.app.EndPoints;
 import ir.taxi1880.operatormanagement.app.MyApplication;
@@ -43,7 +42,7 @@ public class RecentCallsDialog {
 
     DismissInterface dismissInterface;
 
-    RecentCallsAdapter mAdapter;
+    RecentCallsAdapterK mAdapter;
     ArrayList<RecentCallsModel> recentCallsModels;
 
     public void show(String tell, String mobile, int sip, boolean fromPassengerCalls, DismissInterface dismissInterface) {
@@ -169,7 +168,7 @@ public class RecentCallsDialog {
                         } else {
                             if (binding.vfDownload != null)
                                 binding.vfDownload.setDisplayedChild(1);
-                            mAdapter = new RecentCallsAdapter(recentCallsModels);
+                            mAdapter = new RecentCallsAdapterK(recentCallsModels);
                             binding.listRecentCalls.setAdapter(mAdapter);
                         }
                     } else {

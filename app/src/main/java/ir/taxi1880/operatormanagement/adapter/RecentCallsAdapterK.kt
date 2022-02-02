@@ -34,7 +34,7 @@ import kotlin.math.log
 class RecentCallsAdapterK() : RecyclerView.Adapter<RecentCallsAdapterK.RecentCallsHolder>() {
 
     private var recentCallsList: ArrayList<RecentCallsModel> = ArrayList()
-//    lateinit var requireHolder: RecentCallsHolder
+
     var isDownloading = false
     private var TOTAL_VOICE_DURATION = 0
 
@@ -55,18 +55,21 @@ class RecentCallsAdapterK() : RecyclerView.Adapter<RecentCallsAdapterK.RecentCal
                 return null
             }
         }
+
         fun pauseVoice() {
-            try {
-                mediaPlayer?.pause()
-                if(::requireHolder.isInitialized){
-                    requireHolder.binding.skbTimer.setProgress(0f)
-                    requireHolder.binding.vfPlayPause.displayedChild = 0
+            MyApplication.handler.post {
+                try {
+                    mediaPlayer?.pause()
+                    if (::requireHolder.isInitialized) {
+                        requireHolder.binding.skbTimer.setProgress(0f)
+                        requireHolder.binding.vfPlayPause.displayedChild = 0
+                    }
+                } catch (e: java.lang.Exception) {
+                    e.printStackTrace()
+                    AvaCrashReporter.send(e, "$TAG class, pauseVoice method")
                 }
-            } catch (e: java.lang.Exception) {
-                e.printStackTrace()
-                AvaCrashReporter.send(e, "$TAG class, pauseVoice method")
+                cancelTimer()
             }
-            cancelTimer()
         }
 
         private fun cancelTimer() {
@@ -76,7 +79,7 @@ class RecentCallsAdapterK() : RecyclerView.Adapter<RecentCallsAdapterK.RecentCal
                 timer = null
             } catch (e: java.lang.Exception) {
                 e.printStackTrace()
-                AvaCrashReporter.send(e,  "$TAG class, cancelTimer method")
+                AvaCrashReporter.send(e, "$TAG class, cancelTimer method")
             }
         }
     }
@@ -131,7 +134,7 @@ class RecentCallsAdapterK() : RecyclerView.Adapter<RecentCallsAdapterK.RecentCal
                     MyApplication.Toast("صوتی برای این تماس وجود ندارد", Toast.LENGTH_SHORT)
                 }
                 else -> {
-                    startDownload("${EndPoints.CALL_VOICE}${recentCall.voipId}",voiceName)
+                    startDownload("${EndPoints.CALL_VOICE}${recentCall.voipId}", voiceName)
                 }
             }
 
@@ -219,10 +222,14 @@ class RecentCallsAdapterK() : RecyclerView.Adapter<RecentCallsAdapterK.RecentCal
                         isDownloading = false
                         Log.e("PlayConversationDialog", "onError: " + error.responseCode + "")
                         Log.e("getServerErrorMessage", "onError: " + error.serverErrorMessage + "")
-                        Log.e("getConnectionException", "onError: " + error.connectionException + "")
+                        Log.e(
+                            "getConnectionException",
+                            "onError: " + error.connectionException + ""
+                        )
                         FileHelper.deleteFile(dirPath, fileName)
                         if (error.responseCode == 401) RefreshTokenAsyncTask().execute()
-                        if (error.responseCode == 404) requireHolder.binding.vfVoiceStatus.displayedChild = 1
+                        if (error.responseCode == 404) requireHolder.binding.vfVoiceStatus.displayedChild =
+                            1
                     }
                 })
 
@@ -256,9 +263,9 @@ class RecentCallsAdapterK() : RecyclerView.Adapter<RecentCallsAdapterK.RecentCal
 
     private fun playVoice() {
         try {
-                mediaPlayer?.start()
-                requireHolder.binding.vfPlayPause.displayedChild = 2
-                startTimer()
+            mediaPlayer?.start()
+            requireHolder.binding.vfPlayPause.displayedChild = 2
+            startTimer()
         } catch (e: java.lang.Exception) {
             e.printStackTrace()
             AvaCrashReporter.send(e, "$TAG, playVoice")

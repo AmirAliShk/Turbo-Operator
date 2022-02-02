@@ -72,6 +72,7 @@ public class SearchStationInfoDialog {
         this.city = city;
         this.listener = listener;
 
+        initWaitingTimeSpinner();
         binding.imgSearch.setOnClickListener(view -> {
             String origin = binding.edtStationCode.getText().toString();
             if (origin.isEmpty()) {
@@ -92,13 +93,14 @@ public class SearchStationInfoDialog {
 
         binding.imgClear.setOnClickListener(view -> {
             binding.edtStationCode.setText("");
-            if (binding.vfStationInfo != null)
+            if (binding.vfStationInfo != null) {
                 binding.vfStationInfo.setDisplayedChild(0);
+            }
         });
 
         binding.llCLose.setOnClickListener(view -> dismiss());
 
-        rlSearchType.setOnClickListener(view -> {
+        binding.rlSearchType.setOnClickListener(view -> {
             binding.spSearchType.performClick();
         });
 
@@ -124,7 +126,6 @@ public class SearchStationInfoDialog {
             return false;
         });
 
-        initWaitingTimeSpinner();
 
         if (isFromAddress) {
             binding.spSearchType.setSelection(1);
@@ -150,7 +151,7 @@ public class SearchStationInfoDialog {
     }
 
     private void initWaitingTimeSpinner() {
-        ArrayList<String> searchType = new ArrayList<String>(Arrays.asList("کد ایستگاه", "آدرس"));
+        ArrayList<String> searchType = new ArrayList<>(Arrays.asList("کد ایستگاه", "آدرس"));
         try {
 
             if (binding.spSearchType == null)
