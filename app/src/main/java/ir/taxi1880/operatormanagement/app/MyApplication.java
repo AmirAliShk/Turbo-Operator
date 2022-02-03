@@ -30,6 +30,7 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
+import java.util.Objects;
 
 import ir.taxi1880.operatormanagement.R;
 import ir.taxi1880.operatormanagement.helper.TypefaceUtil;
@@ -67,7 +68,11 @@ public class MyApplication extends Application {
 
         File file = new File(DIR_MAIN_FOLDER + VOICE_FOLDER_NAME + ".nomedia");
         try {
-            file.createNewFile();
+            if (!file.getParentFile().exists())
+                file.getParentFile().mkdirs();
+            if (!file.exists())
+                file.createNewFile();
+//            file.createNewFile();
         } catch (IOException e) {
             e.printStackTrace();
             AvaCrashReporter.send(e, TAG + " class, onCreate method ");
