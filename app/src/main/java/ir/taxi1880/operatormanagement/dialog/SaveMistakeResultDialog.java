@@ -70,8 +70,9 @@ public class SaveMistakeResultDialog {
         } else {
             dialog = new Dialog(MyApplication.currentActivity);
             tempDialog = dialog;
-            binding = DialogSaveMistakeResultBinding.inflate(LayoutInflater.from(dialog.getContext()));
         }
+        binding = DialogSaveMistakeResultBinding.inflate(LayoutInflater.from(tempDialog.getContext()));
+
         tempDialog.getWindow().requestFeature(Window.FEATURE_NO_TITLE);
         tempDialog.setContentView(binding.getRoot());
         tempDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
