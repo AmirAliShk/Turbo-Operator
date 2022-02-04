@@ -102,11 +102,6 @@ public class CallDialog {
             dismiss();
             new RecentCallsDialog().show("0", "0", MyApplication.prefManager.getSipNumber(), false, (b) -> {
                 if (b) {
-                    MyApplication.handler.post(()->{
-                        PRDownloader.cancelAll();
-                        PRDownloader.shutDown();
-                        RecentCallsAdapterK.Companion.pauseVoice();
-                    });
                 }
             });
         });
@@ -115,11 +110,6 @@ public class CallDialog {
             dismiss();
             new RecentCallsDialog().show("0", "0", MyApplication.prefManager.getSipNumber(), false, (b) -> {
                 if (b) {
-                   MyApplication.handler.post(()->{
-                       PRDownloader.cancelAll();
-                       PRDownloader.shutDown();
-                       RecentCallsAdapterK.Companion.pauseVoice();
-                   });
                 }
             });
         });

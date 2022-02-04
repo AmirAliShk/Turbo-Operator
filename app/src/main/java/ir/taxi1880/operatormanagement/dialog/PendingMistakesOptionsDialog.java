@@ -55,21 +55,13 @@ public class PendingMistakesOptionsDialog {
 
         binding.llGuestCalls.setOnClickListener(view -> {
             dismiss();
-            new RecentCallsDialog()
-                    .show(tell, mobile, 0, true, (b) -> {
-                        if (b) {
-                            MyApplication.handler.postDelayed(() -> {
-                                PRDownloader.cancelAll();
-                                PRDownloader.shutDown();
-                                RecentCallsAdapterK.Companion.pauseVoice();
-                            }, 500);
-                        }
+            new RecentCallsDialog().show(tell, mobile, 0, true, (b) -> {
+                        if (b) { }
                     });
         });
 
         binding.llSearchService.setOnClickListener(view -> {
             dismiss();
-
             Bundle bundle = new Bundle();
             bundle.putString("tellNumber", tell);
             FragmentHelper.toFragment(MyApplication.currentActivity, new PassengerTripSupportFragment()).setArguments(bundle).replace();

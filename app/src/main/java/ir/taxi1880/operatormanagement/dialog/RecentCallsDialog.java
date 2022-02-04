@@ -91,6 +91,7 @@ public class RecentCallsDialog {
         }
 
         binding.rbTell.setOnClickListener(view -> {
+            RecentCallsAdapterK.Companion.pauseVoice();
             if (this.tell.length() == 10 && !this.tell.startsWith("0")) {
                 this.tell = "0" + this.tell;
                 getRecentCalls("/src", this.tell, "/4");
@@ -104,6 +105,7 @@ public class RecentCallsDialog {
         });
 
         binding.rbMobile.setOnClickListener(view -> {
+            RecentCallsAdapterK.Companion.pauseVoice();
             if (binding.rgSearchType.getCheckedRadioButtonId() == R.id.rbMobile) {
                 getRecentCalls("/src", mobile.startsWith("0") ? mobile : "0" + mobile, "/4");
             }

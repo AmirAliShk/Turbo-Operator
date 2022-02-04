@@ -68,14 +68,8 @@ public class ComplaintOptionsDialog {
 
         binding.llCustomerCalls.setOnClickListener(view -> {
             dismiss();
-            new RecentCallsDialog()
-                    .show(customerTell, customerMobile, 0, true, (b) -> {
-                        if (b) {
-                                PRDownloader.cancelAll();
-                                PRDownloader.shutDown();
-                                RecentCallsAdapterK.Companion.pauseVoice();
-//                                pauseVoice();
-                        }
+            new RecentCallsDialog().show(customerTell, customerMobile, 0, true, (b) -> {
+                        if (b) { }
                     });
         });
 
