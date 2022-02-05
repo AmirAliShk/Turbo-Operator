@@ -79,9 +79,9 @@ public class DriverLockDialog {
     }
 
     private void lockTaxi(String taxiCode, String hours) {
-        if (binding.vfLoader != null) {
+//        if (binding.vfLoader != null) {
             binding.vfLoader.setDisplayedChild(1);
-        }
+
         LoadingDialog.makeCancelableLoader();
         RequestHelper.builder(EndPoints.LOCK_TAXI)
                 .addParam("taxiCode", taxiCode)
@@ -128,9 +128,9 @@ public class DriverLockDialog {
                                 .show();
                     }
 
-                    if (binding.vfLoader != null) {
+//                    if (binding.vfLoader != null) {
                         binding.vfLoader.setDisplayedChild(0);
-                    }
+
 
                     LoadingDialog.dismissCancelableDialog();
                 } catch (Exception e) {
@@ -144,7 +144,7 @@ public class DriverLockDialog {
         @Override
         public void onFailure(Runnable reCall, Exception e) {
             MyApplication.handler.post(() -> {
-                if (binding.vfLoader != null)
+//                if (binding.vfLoader != null)
                     binding.vfLoader.setDisplayedChild(0);
             });
         }
@@ -163,8 +163,8 @@ public class DriverLockDialog {
                 typeServiceModels.add(typeServiceModel);
                 serviceList.add(serviceObj.getString("Subject"));
             }
-            if (binding.spReason == null)
-                return;
+//            if (binding.spReason == null)
+//                return;
 
             binding.spReason.setEnabled(true);
 

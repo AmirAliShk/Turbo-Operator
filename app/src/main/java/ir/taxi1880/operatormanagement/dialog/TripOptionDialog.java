@@ -87,7 +87,7 @@ public class TripOptionDialog {
             dismiss();
         });
 
-        binding. llReserve.setOnClickListener(view -> {
+        binding.llReserve.setOnClickListener(view -> {
             new ReserveDialog().show();
             dismiss();
         });

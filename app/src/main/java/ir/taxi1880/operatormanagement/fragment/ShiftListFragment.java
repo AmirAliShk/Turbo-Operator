@@ -43,7 +43,7 @@ public class ShiftListFragment extends Fragment {
     }
 
     private void getShifts() {
-        if (binding.vfShift != null)
+//        if (binding.vfShift != null)
             binding.vfShift.setDisplayedChild(0);
 
         RequestHelper.builder(EndPoints.GET_SHIFTS)
@@ -69,18 +69,18 @@ public class ShiftListFragment extends Fragment {
                     }
 
                     shiftAdapter = new ShiftAdapter(shiftModels);
-                    if (binding.listShift != null)
+//                    if (binding.listShift != null)
                         binding.listShift.setAdapter(shiftAdapter);
 
                     if (shiftModels.size() == 0) {
-                        if (binding.vfShift != null)
+//                        if (binding.vfShift != null)
                             binding.vfShift.setDisplayedChild(2);
                     } else {
-                        if (binding.vfShift != null)
+//                        if (binding.vfShift != null)
                             binding.vfShift.setDisplayedChild(1);
                     }
                 } catch (Exception e) {
-                    if (binding.vfShift != null)
+//                    if (binding.vfShift != null)
                         binding.vfShift.setDisplayedChild(3);
                     e.printStackTrace();
                     AvaCrashReporter.send(e, TAG + " class, onGetShifts onResponse method");
@@ -91,7 +91,7 @@ public class ShiftListFragment extends Fragment {
         @Override
         public void onFailure(Runnable reCall, Exception e) {
             MyApplication.handler.post(() -> {
-                if (binding.vfShift != null)
+//                if (binding.vfShift != null)
                     binding.vfShift.setDisplayedChild(3);
             });
         }

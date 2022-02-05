@@ -71,10 +71,10 @@ public class DriverStationRegistrationDialog {
             }
 
             if (driverStationRegistrationModels.size() == 0) {
-                if (binding.vfStationRegistration != null)
+//                if (binding.vfStationRegistration != null)
                     binding.vfStationRegistration.setDisplayedChild(1);
             } else {
-                if (binding.vfStationRegistration != null)
+//                if (binding.vfStationRegistration != null)
                     binding.vfStationRegistration.setDisplayedChild(0);
                 adapter = new DriverStationRegistrationAdapter(driverStationRegistrationModels);
                 binding.listDriverStationRegistration.setAdapter(adapter);

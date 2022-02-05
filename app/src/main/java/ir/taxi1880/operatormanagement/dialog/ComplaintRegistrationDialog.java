@@ -35,7 +35,7 @@ public class ComplaintRegistrationDialog {
     private static final String TAG = ComplaintRegistrationDialog.class.getSimpleName();
     DialogComplaintRegistreationBinding binding;
 
-    private Spinner spComplaintType;
+//    private Spinner spComplaintType;
     private int complaintType;
 
     static Dialog dialog;
@@ -65,7 +65,6 @@ public class ComplaintRegistrationDialog {
 
         binding.btnSubmit.setOnClickListener(view -> {
             KeyBoardHelper.hideKeyboard();
-
             setComplaint(serviceId, voipId);
             dismiss();
         });
@@ -74,9 +73,9 @@ public class ComplaintRegistrationDialog {
     }
 
     private void setComplaint(String serviceId, String voipId) {
-        if (binding.vfLoader != null) {
+//        if (binding.vfLoader != null)
             binding.vfLoader.setDisplayedChild(1);
-        }
+
         LoadingDialog.makeCancelableLoader();
         RequestHelper.builder(EndPoints.INSERT_COMPLAINT)
                 .addParam("serviceId", serviceId)
@@ -124,9 +123,9 @@ public class ComplaintRegistrationDialog {
                                 .show();
                     }
 
-                    if (binding.vfLoader != null) {
+//                    if (binding.vfLoader != null) {
                         binding.vfLoader.setDisplayedChild(0);
-                    }
+
 
                     LoadingDialog.dismissCancelableDialog();
                 } catch (Exception e) {
@@ -141,9 +140,8 @@ public class ComplaintRegistrationDialog {
         public void onFailure(Runnable reCall, Exception e) {
             MyApplication.handler.post(() -> {
                 LoadingDialog.dismissCancelableDialog();
-                if (binding.vfLoader != null) {
+//                if (binding.vfLoader != null) {
                     binding.vfLoader.setDisplayedChild(0);
-                }
             });
         }
     };
@@ -161,14 +159,14 @@ public class ComplaintRegistrationDialog {
                 typeServiceModels.add(typeServiceModel);
                 serviceList.add(serviceObj.getString("ShektypeSharh"));
             }
-            if (spComplaintType == null)
-                return;
+//            if (binding.spComplaintType == null)
+//                return;
 
-            spComplaintType.setEnabled(true);
+            binding.spComplaintType.setEnabled(true);
 
-            spComplaintType.setAdapter(new SpinnerAdapter(MyApplication.currentActivity, R.layout.item_spinner, serviceList));
+            binding.spComplaintType.setAdapter(new SpinnerAdapter(MyApplication.currentActivity, R.layout.item_spinner, serviceList));
 
-            spComplaintType.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            binding.spComplaintType.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
                 @Override
                 public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
 //                    if (spComplaintType != null)

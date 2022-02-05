@@ -224,9 +224,9 @@ public class EditPassengerAddressDialog {
 
     private void editStation(int cityCode, String address, String destAddress, String serviceId, String stationCode, int priceable, int operatorId, String destStation) {
 
-        if (binding.vfLoader != null) {
+//        if (binding.vfLoader != null) {
             binding.vfLoader.setDisplayedChild(1);
-        }
+
 
         LoadingDialog.makeCancelableLoader();
         RequestHelper.builder(EndPoints.STATION)
@@ -264,9 +264,9 @@ public class EditPassengerAddressDialog {
                         editationCallBack.onEdited(false, message);
                     }
 
-                    if (binding.vfLoader != null) {
+//                    if (binding.vfLoader != null) {
                         binding.vfLoader.setDisplayedChild(0);
-                    }
+
 
                     LoadingDialog.dismissCancelableDialog();
                 } catch (Exception e) {

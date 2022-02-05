@@ -6,6 +6,7 @@ import android.app.Dialog;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.view.Gravity;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
@@ -31,6 +32,7 @@ public class PricingDialog {
         if (MyApplication.currentActivity == null || MyApplication.currentActivity.isFinishing())
             return;
         dialog = new Dialog(MyApplication.currentActivity);
+        binding = DialogPricingBinding.inflate(LayoutInflater.from(dialog.getContext()));
         dialog.getWindow().requestFeature(Window.FEATURE_NO_TITLE);
         dialog.getWindow().getAttributes().windowAnimations = R.style.ExpandAnimation;
         dialog.setContentView(binding.getRoot());
@@ -88,9 +90,8 @@ public class PricingDialog {
             if (!binding.rbByTime.isChecked() && !binding.rbByStation.isChecked()) {
                 MyApplication.Toast("لطفا یکی از حالت‌ها را انتخاب کنید.", Toast.LENGTH_SHORT);
             }
-            if (binding.vfLoader != null) {
-                binding.vfLoader.setDisplayedChild(1);
-            }
+//            if (binding.vfLoader != null)
+            binding.vfLoader.setDisplayedChild(1);
             getPricing();
         });
 
@@ -125,9 +126,9 @@ public class PricingDialog {
         public void onResponse(Runnable reCall, Object... args) {
             MyApplication.handler.post(() -> {
                 try {
-                    if (binding.vfLoader != null) {
+//                    if (binding.vfLoader != null)
                         binding.vfLoader.setDisplayedChild(0);
-                    }
+
 //{"success":true,"message":"عملیات با موفقیت انجام شد","data":{"duration":20.25,"distance":8542,"stopTime":0,"tripPrice":21000,"finalPrice":21000,"discount":0,"distancePrice":11958.8,"stopTimePrice":2025,"incomePrice":7000}}
                     JSONObject obj = new JSONObject(args[0].toString());
                     boolean success = obj.getBoolean("success");
@@ -141,10 +142,9 @@ public class PricingDialog {
                 } catch (Exception e) {
                     e.printStackTrace();
                     AvaCrashReporter.send(e, TAG + " class, pricingCallBack method");
-                    if (binding.vfLoader != null) {
+//                    if (binding.vfLoader != null)
                         binding.vfLoader.setDisplayedChild(0);
                         binding.llPrice.setVisibility(View.GONE);
-                    }
                 }
             });
         }
@@ -153,10 +153,9 @@ public class PricingDialog {
         public void onFailure(Runnable reCall, Exception e) {
             super.onFailure(reCall, e);
             MyApplication.handler.post(() -> {
-                if (binding.vfLoader != null) {
+//                if (binding.vfLoader != null)
                     binding.vfLoader.setDisplayedChild(0);
                     binding.llPrice.setVisibility(View.GONE);
-                }
             });
         }
     };

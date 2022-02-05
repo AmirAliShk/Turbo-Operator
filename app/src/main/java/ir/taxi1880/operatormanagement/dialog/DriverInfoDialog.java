@@ -131,7 +131,7 @@ public class DriverInfoDialog {
     }
 
     public void sendAppLink(String mobile) {
-        if (binding.vfLoader != null)
+//        if (binding.vfLoader != null)
             binding.vfLoader.setDisplayedChild(1);
         RequestHelper.builder(EndPoints.DRIVER_SEND_APP_LINK)
                 .ignore422Error(true)
@@ -145,7 +145,7 @@ public class DriverInfoDialog {
         public void onResponse(Runnable reCall, Object... args) {
             MyApplication.handler.post(() -> {
                 try {
-                    if (binding.vfLoader != null)
+//                    if (binding.vfLoader != null)
                         binding.vfLoader.setDisplayedChild(0);
                     JSONObject object = new JSONObject(args[0].toString());
                     boolean success = object.getBoolean("success");
@@ -173,7 +173,7 @@ public class DriverInfoDialog {
                 } catch (Exception e) {
                     e.printStackTrace();
                     AvaCrashReporter.send(e, TAG + " class, sendLinkCallBack method");
-                    if (binding.vfLoader != null)
+//                    if (binding.vfLoader != null)
                         binding.vfLoader.setDisplayedChild(0);
                 }
             });
@@ -182,7 +182,7 @@ public class DriverInfoDialog {
         @Override
         public void onFailure(Runnable reCall, Exception e) {
             MyApplication.handler.post(() -> {
-                if (binding.vfLoader != null)
+//                if (binding.vfLoader != null)
                     binding.vfLoader.setDisplayedChild(0);
             });
         }

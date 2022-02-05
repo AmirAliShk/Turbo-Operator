@@ -59,14 +59,14 @@ public class ComplaintsHistoryDialog {
 
         if (historyOfWho.equals("driver")) {
 
-            if (binding.vfHeader != null)
+//            if (binding.vfHeader != null)
                 binding.vfHeader.setDisplayedChild(0);
 
             complaintDriverHistory();
 
         } else if (historyOfWho.equals("customer")) {
 
-            if (binding.vfHeader != null)
+//            if (binding.vfHeader != null)
                 binding.vfHeader.setDisplayedChild(1);
 
             if (binding.rgSearchType.getCheckedRadioButtonId() == R.id.rbTell) {
@@ -112,7 +112,7 @@ public class ComplaintsHistoryDialog {
     }
 
     private void complaintCustomerHistory(String phone) {
-        if (binding.vfComplaintHistory != null)
+//        if (binding.vfComplaintHistory != null)
             binding.vfComplaintHistory.setDisplayedChild(0);
         RequestHelper.builder(EndPoints.COMPLAINT_CUSTOMER_HISTORY + phone)
                 .listener(historyCallBack)
@@ -120,7 +120,7 @@ public class ComplaintsHistoryDialog {
     }
 
     private void complaintDriverHistory() {
-        if (binding.vfComplaintHistory != null)
+//        if (binding.vfComplaintHistory != null)
             binding.vfComplaintHistory.setDisplayedChild(0);
         RequestHelper.builder(EndPoints.COMPLAINT_DRIVER_HISTORY + taxiCode)
                 .listener(historyCallBack)
@@ -137,7 +137,7 @@ public class ComplaintsHistoryDialog {
                     boolean success = listenObj.getBoolean("success");
                     String message = listenObj.getString("message");
                     if (success) {
-                        if (binding.vfComplaintHistory != null)
+//                        if (binding.vfComplaintHistory != null)
                             binding.vfComplaintHistory.setDisplayedChild(1);
                         JSONArray dataArr = listenObj.getJSONArray("data");
                         JSONObject dataObj = dataArr.getJSONObject(0);
@@ -159,29 +159,29 @@ public class ComplaintsHistoryDialog {
                             complaintsHistoryModels.add(model);
                         }
                         if (historyOfWho.equals("driver")) {
-                            if (binding.vfHeader != null)
+//                            if (binding.vfHeader != null)
                                 binding.vfHeader.setDisplayedChild(0);
                         } else if (historyOfWho.equals("customer")) {
-                            if (binding.vfHeader != null)
+//                            if (binding.vfHeader != null)
                                 binding.vfHeader.setDisplayedChild(1);
                         }
 
                         if (complaintsHistoryModels.size() == 0) {
-                            if (binding.vfComplaintHistory != null)
+//                            if (binding.vfComplaintHistory != null)
                                 binding.vfComplaintHistory.setDisplayedChild(2);
                         } else {
-                            if (binding.vfComplaintHistory != null)
+//                            if (binding.vfComplaintHistory != null)
                                 binding.vfComplaintHistory.setDisplayedChild(1);
 
                             mAdapter = new ComplaintsHistoryAdapter(complaintsHistoryModels);
                             binding.listComplaintsHistory.setAdapter(mAdapter);
                         }
                     } else {
-                        if (binding.vfComplaintHistory != null)
+//                        if (binding.vfComplaintHistory != null)
                             binding.vfComplaintHistory.setDisplayedChild(3);
                     }
                 } catch (Exception e) {
-                    if (binding.vfComplaintHistory != null)
+//                    if (binding.vfComplaintHistory != null)
                         binding.vfComplaintHistory.setDisplayedChild(3);
                     e.printStackTrace();
                     AvaCrashReporter.send(e, TAG + " class, historyCallBack method");
@@ -192,7 +192,7 @@ public class ComplaintsHistoryDialog {
         @Override
         public void onFailure(Runnable reCall, Exception e) {
             MyApplication.handler.post(() -> {
-                if (binding.vfComplaintHistory != null)
+//                if (binding.vfComplaintHistory != null)
                     binding.vfComplaintHistory.setDisplayedChild(3);
             });
         }

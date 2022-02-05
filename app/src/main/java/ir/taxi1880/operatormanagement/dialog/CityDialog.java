@@ -36,7 +36,7 @@ public class CityDialog {
     }
 
     private CityAdapter cityAdapter;
-    private Listener listener;
+//    private Listener listener;
     String title;
     private static Dialog dialog;
 
@@ -56,7 +56,7 @@ public class CityDialog {
         wlp.windowAnimations = R.style.ExpandAnimation;
         dialog.getWindow().setAttributes(wlp);
         dialog.setCancelable(true);
-        this.listener = listener;
+//        this.listener = listener;
 
         binding.txtTitle.setText(title);
         binding.llSelectCity.setOnClickListener(view -> {

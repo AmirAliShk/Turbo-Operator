@@ -35,6 +35,7 @@ public class HireDialog {
     public interface Listener {
         void onClose(boolean b);
     }
+
     Listener listener;
     private int hireType;
     static Dialog dialog;
@@ -91,9 +92,8 @@ public class HireDialog {
     }
 
     private void setHire(String name, String phoneNumber, String comment, int hireType, int cityCode) {
-        if (binding.vfLoader != null) {
+//        if (binding.vfLoader != null)
             binding.vfLoader.setDisplayedChild(1);
-        }
         RequestHelper.builder(EndPoints.HIRE)
                 .addParam("phoneNumber", phoneNumber)
                 .addParam("cityCode", cityCode)
@@ -142,14 +142,14 @@ public class HireDialog {
                                 .cancelable(false)
                                 .show();
                     }
-                    if (binding.vfLoader != null) {
+//                    if (binding.vfLoader != null)
                         binding.vfLoader.setDisplayedChild(0);
-                    }
+
                 } catch (Exception e) {
                     e.printStackTrace();
-                    if (binding.vfLoader != null) {
+//                    if (binding.vfLoader != null) {
                         binding.vfLoader.setDisplayedChild(0);
-                    }
+
                     AvaCrashReporter.send(e, TAG + " class, setHire onResponse method");
                 }
             });
@@ -158,9 +158,8 @@ public class HireDialog {
         @Override
         public void onFailure(Runnable reCall, Exception e) {
             MyApplication.handler.post(() -> {
-                if (binding.vfLoader != null) {
                     binding.vfLoader.setDisplayedChild(0);
-                }
+
             });
         }
     };
@@ -194,7 +193,7 @@ public class HireDialog {
                             hireTypeModels.add(hireTypeModel);
                             hireTypes.add(obj.getString("name"));
                         }
-                        if (binding.spHireType != null) {
+//                        if (binding.spHireType != null)
                             binding.spHireType.setAdapter(new SpinnerAdapter(MyApplication.currentActivity, R.layout.item_spinner_right, hireTypes));
                             binding.spHireType.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
                                 @Override
@@ -208,7 +207,7 @@ public class HireDialog {
                                 public void onNothingSelected(AdapterView<?> parent) {
                                 }
                             });
-                        }
+
                     } else {
                         new GeneralDialog()
                                 .title("هشدار")

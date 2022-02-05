@@ -68,10 +68,10 @@ public class DriverTurnoverDialog {
             }
 
             if (driverTurnoverModels.size() == 0) {
-                if (binding.vfFinancial != null)
+//                if (binding.vfFinancial != null)
                     binding.vfFinancial.setDisplayedChild(1);
             } else {
-                if (binding.vfFinancial != null)
+//                if (binding.vfFinancial != null)
                     binding.vfFinancial.setDisplayedChild(0);
                 adapter = new DriverTurnoverAdapter(driverTurnoverModels);
                 binding.listDriverTurnover.setAdapter(adapter);

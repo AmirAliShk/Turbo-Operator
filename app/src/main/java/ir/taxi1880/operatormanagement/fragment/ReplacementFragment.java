@@ -116,7 +116,7 @@ public class ReplacementFragment extends Fragment {
     };
 
     private void getOnlineOperator() {
-        if (binding.loader != null)
+//        if (binding.loader != null)
             binding.loader.setVisibility(View.VISIBLE);
 
         RequestHelper.builder(EndPoints.GET_SHIFT_OPERATOR)
@@ -134,11 +134,11 @@ public class ReplacementFragment extends Fragment {
                     JSONArray operatorArr = new JSONArray(args[0].toString());
                     MyApplication.prefManager.setOperatorList(operatorArr.toString());
 
-                    if (binding.loader != null)
+//                    if (binding.loader != null)
                         binding.loader.setVisibility(View.GONE);
 
                     new OperatorDialog().show((op) -> {
-                        if (binding.txtOperator != null)
+//                        if (binding.txtOperator != null)
                             binding.txtOperator.setText(op.getOperatorName());
                         opId = op.getOperatorId();
                     });

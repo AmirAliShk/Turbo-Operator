@@ -71,11 +71,11 @@ public class PlayLastConversationDialog {
         if (file.exists()) {
             initVoice(Uri.fromFile(file));
             playVoice();
-            if (binding.vfDownload != null)
+//            if (binding.vfDownload != null)
                 binding.vfDownload.setDisplayedChild(1);
         } else {
             startDownload(binding.vfDownload, binding.progressDownload, binding.textProgress, urlString, voiceName);
-            if (binding.vfDownload != null)
+//            if (binding.vfDownload != null)
                 binding.vfDownload.setDisplayedChild(0);
         }
 
@@ -120,11 +120,11 @@ public class PlayLastConversationDialog {
             if (file1.exists()) {
                 initVoice(Uri.fromFile(file1));
                 playVoice();
-                if (binding.vfDownload != null)
+//                if (binding.vfDownload != null)
                     binding.vfDownload.setDisplayedChild(1);
             } else {
                 startDownload(binding.vfDownload, binding.progressDownload, binding.textProgress, url, voiceName1);
-                if (binding.vfDownload != null)
+//                if (binding.vfDownload != null)
                     binding.vfDownload.setDisplayedChild(0);
             }
         });
@@ -239,7 +239,7 @@ public class PlayLastConversationDialog {
         try {
             if (mediaPlayer != null)
                 mediaPlayer.start();
-            if (binding.vfPlayPause != null)
+//            if (binding.vfPlayPause != null)
                 binding.vfPlayPause.setDisplayedChild(1);
         } catch (Exception e) {
             e.printStackTrace();
@@ -256,7 +256,7 @@ public class PlayLastConversationDialog {
 
             binding.skbTimer.setProgress(0);
 
-            if (binding.vfPlayPause != null)
+//            if (binding.vfPlayPause != null)
                 binding.vfPlayPause.setDisplayedChild(0);
         } catch (Exception e) {
             e.printStackTrace();

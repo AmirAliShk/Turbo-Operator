@@ -64,9 +64,8 @@ public class ErrorRegistrationDialog {
 
     private void setMistake(String ServiceId, String phone, String mobile, String address, String customerName, String voipId, String desc,
                             int cityCode, String stationCode, int userCodeContact, String conTime, String conDate, String price, String destinationStation, String destinationAddress) {
-        if (binding.vfLoader != null) {
-            binding.vfLoader.setDisplayedChild(1);
-        }
+//        if (binding.vfLoader != null)
+        binding.vfLoader.setDisplayedChild(1);
         LoadingDialog.makeCancelableLoader();
         RequestHelper.builder(EndPoints.MISTAKE)
                 .addParam("serviceId", ServiceId)
@@ -124,9 +123,9 @@ public class ErrorRegistrationDialog {
                                 .show();
                     }
 
-                    if (binding.vfLoader != null) {
+//                    if (binding.vfLoader != null)
                         binding.vfLoader.setDisplayedChild(0);
-                    }
+
 
                     LoadingDialog.dismissCancelableDialog();
                 } catch (Exception e) {
@@ -141,9 +140,9 @@ public class ErrorRegistrationDialog {
         public void onFailure(Runnable reCall, Exception e) {
             MyApplication.handler.post(() -> {
                 LoadingDialog.dismissCancelableDialog();
-                if (binding.vfLoader != null) {
+//                if (binding.vfLoader != null)
                     binding.vfLoader.setDisplayedChild(0);
-                }
+
             });
         }
     };

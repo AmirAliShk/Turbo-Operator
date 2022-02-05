@@ -47,7 +47,7 @@ public class SearchStationInfoDialog {
     String stationCode = "0";
     String address = "0";
     boolean firstTime = false;
-    private Listener listener;
+
 
     public interface Listener {
         void stationCode(String stationCode);
@@ -70,7 +70,6 @@ public class SearchStationInfoDialog {
         dialog.getWindow().setAttributes(wlp);
         dialog.setCancelable(false);
         this.city = city;
-        this.listener = listener;
 
         initWaitingTimeSpinner();
         binding.imgSearch.setOnClickListener(view -> {
@@ -181,7 +180,7 @@ public class SearchStationInfoDialog {
     }
 
     private void getStationInfo(int city, String stationCode, String address) {
-        if (binding.vfStationInfo != null)
+//        if (binding.vfStationInfo != null)
             binding.vfStationInfo.setDisplayedChild(1);
         KeyBoardHelper.hideKeyboard();
         RequestHelper.builder(EndPoints.STATION_INFO)
@@ -240,10 +239,10 @@ public class SearchStationInfoDialog {
                         }
 
                         if (stationInfoModels.size() == 0) {
-                            if (binding.vfStationInfo != null)
+//                            if (binding.vfStationInfo != null)
                                 binding.vfStationInfo.setDisplayedChild(4);
                         } else {
-                            if (binding.txtStationCode == null) return;
+//                            if (binding.txtStationCode == null) return;
                             stationInfoAdapter = new StationInfoAdapter(stationInfoModels);
                             binding.listStationInfo.setAdapter(stationInfoAdapter);
 
@@ -271,7 +270,7 @@ public class SearchStationInfoDialog {
                 } catch (JSONException e) {
                     e.printStackTrace();
                     AvaCrashReporter.send(e, TAG + " class, getStationInfo method");
-                    if (binding.vfStationInfo != null)
+//                    if (binding.vfStationInfo != null)
                         binding.vfStationInfo.setDisplayedChild(3);
                 }
             });
@@ -280,7 +279,7 @@ public class SearchStationInfoDialog {
         @Override
         public void onFailure(Runnable reCall, Exception e) {
             MyApplication.handler.post(() -> {
-                if (binding.vfStationInfo != null)
+//                if (binding.vfStationInfo != null)
                     binding.vfStationInfo.setDisplayedChild(3);
             });
         }

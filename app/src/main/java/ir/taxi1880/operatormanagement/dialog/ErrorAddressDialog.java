@@ -76,9 +76,9 @@ public class ErrorAddressDialog {
     }
 
     private void editAddress(String serviceId, String address) {
-        if (binding.vfLoader != null) {
+//        if (binding.vfLoader != null) {
             binding.vfLoader.setDisplayedChild(1);
-        }
+
         LoadingDialog.makeCancelableLoader();
         RequestHelper.builder(EndPoints.EDIT_ADDRESS)
                 .addParam("serviceId", serviceId)
@@ -125,9 +125,9 @@ public class ErrorAddressDialog {
                                 .show();
                     }
 
-                    if (binding.vfLoader != null) {
+//                    if (binding.vfLoader != null)
                         binding.vfLoader.setDisplayedChild(0);
-                    }
+
 
                     LoadingDialog.dismissCancelableDialog();
                 } catch (Exception e) {
@@ -142,7 +142,7 @@ public class ErrorAddressDialog {
         public void onFailure(Runnable reCall, Exception e) {
             MyApplication.handler.post(() -> {
                 LoadingDialog.dismissCancelableDialog();
-                if (binding.vfLoader != null)
+//                if (binding.vfLoader != null)
                     binding.vfLoader.setDisplayedChild(0);
             });
         }

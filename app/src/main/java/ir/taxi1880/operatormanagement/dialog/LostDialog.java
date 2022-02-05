@@ -83,9 +83,7 @@ public class LostDialog {
     }
 
     private void setLostObject(String serviceId, String carCode, String passengerPhone, String passengerName, String address, String description) {
-        if (binding.vfLoader != null) {
-            binding.vfLoader.setDisplayedChild(1);
-        }
+        binding.vfLoader.setDisplayedChild(1);
         LoadingDialog.makeCancelableLoader();
         RequestHelper.builder(EndPoints.INSERT_LOST_OBJECT)
                 .addParam("carCode", carCode)
@@ -135,9 +133,8 @@ public class LostDialog {
                                 .show();
                     }
 
-                    if (binding.vfLoader != null) {
                         binding.vfLoader.setDisplayedChild(0);
-                    }
+
 
                     LoadingDialog.dismissCancelableDialog();
                 } catch (Exception e) {
@@ -152,7 +149,6 @@ public class LostDialog {
         public void onFailure(Runnable reCall, Exception e) {
             MyApplication.handler.post(() -> {
                 LoadingDialog.dismissCancelableDialog();
-                if (binding.vfLoader != null)
                     binding.vfLoader.setDisplayedChild(0);
             });
         }
@@ -171,8 +167,6 @@ public class LostDialog {
                 typeServiceModels.add(typeServiceModel);
                 serviceList.add(serviceObj.getString("KTypeSharh"));
             }
-            if (binding.spType == null)
-                return;
 
             binding.spType.setEnabled(true);
 

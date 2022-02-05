@@ -68,8 +68,8 @@ public class RecentCallsDialog {
         this.dismissInterface = dismissInterface;
 
         if (fromPassengerCalls) {
-            if (binding.vfHeader != null)
-                binding.vfHeader.setDisplayedChild(1);
+//            if (binding.vfHeader != null)
+            binding.vfHeader.setDisplayedChild(1);
             if (binding.rgSearchType.getCheckedRadioButtonId() == R.id.rbTell) {
                 if (tell.length() == 10 && !tell.startsWith("0")) {
                     tell = "0" + tell;
@@ -78,15 +78,15 @@ public class RecentCallsDialog {
                     tell = "051" + tell;
                     getRecentCalls("/src", tell, "/4");
                 } else {
-                    if (binding.vfDownload != null)
-                        binding.vfDownload.setDisplayedChild(2);
+//                    if (binding.vfDownload != null)
+                    binding.vfDownload.setDisplayedChild(2);
                 }
             } else if (binding.rgSearchType.getCheckedRadioButtonId() == R.id.rbMobile) {
                 getRecentCalls("/src", mobile.startsWith("0") ? mobile : "0" + mobile, "/4");
             }
         } else {
-            if (binding.vfHeader != null)
-                binding.vfHeader.setDisplayedChild(0);
+//            if (binding.vfHeader != null)
+            binding.vfHeader.setDisplayedChild(0);
             getRecentCalls("/dst", sip + "", "/1");
         }
 
@@ -99,8 +99,8 @@ public class RecentCallsDialog {
                 this.tell = "051" + this.tell;
                 getRecentCalls("/src", this.tell, "/4");
             } else {
-                if (binding.vfDownload != null)
-                    binding.vfDownload.setDisplayedChild(2);
+//                if (binding.vfDownload != null)
+                binding.vfDownload.setDisplayedChild(2);
             }
         });
 
@@ -125,8 +125,8 @@ public class RecentCallsDialog {
     }
 
     public void getRecentCalls(String type, String num, String dateInterval) {
-        if (binding.vfDownload != null)
-            binding.vfDownload.setDisplayedChild(0);
+//        if (binding.vfDownload != null)
+        binding.vfDownload.setDisplayedChild(0);
         RequestHelper.builder(EndPoints.RECENT_CALLS + num.trim() + type + dateInterval)
                 .listener(recentCallsCallBack)
                 .get();
@@ -142,8 +142,8 @@ public class RecentCallsDialog {
                     boolean success = listenObj.getBoolean("success");
                     String message = listenObj.getString("message");
                     if (success) {
-                        if (binding.vfDownload != null)
-                            binding.vfDownload.setDisplayedChild(1);
+//                        if (binding.vfDownload != null)
+                        binding.vfDownload.setDisplayedChild(1);
                         JSONArray dataArr = listenObj.getJSONArray("data");
                         for (int i = 0; i < dataArr.length(); i++) {
                             JSONObject dataObj = dataArr.getJSONObject(i);
@@ -165,17 +165,17 @@ public class RecentCallsDialog {
                         }
 
                         if (recentCallsModels.size() == 0) {
-                            if (binding.vfDownload != null)
-                                binding.vfDownload.setDisplayedChild(2);
+//                            if (binding.vfDownload != null)
+                            binding.vfDownload.setDisplayedChild(2);
                         } else {
-                            if (binding.vfDownload != null)
-                                binding.vfDownload.setDisplayedChild(1);
+//                            if (binding.vfDownload != null)
+                            binding.vfDownload.setDisplayedChild(1);
                             mAdapter = new RecentCallsAdapterK(recentCallsModels);
                             binding.listRecentCalls.setAdapter(mAdapter);
                         }
                     } else {
-                        if (binding.vfDownload != null)
-                            binding.vfDownload.setDisplayedChild(3);
+//                        if (binding.vfDownload != null)
+                        binding.vfDownload.setDisplayedChild(3);
                     }
 //                    "id": "6044cfee3214a60468e2a298",
 //                     "src": "09376148583",
@@ -189,8 +189,8 @@ public class RecentCallsDialog {
 //                     "endtime": "2021-03-07T13:06:54.890Z"
 
                 } catch (Exception e) {
-                    if (binding.vfDownload != null)
-                        binding.vfDownload.setDisplayedChild(3);
+//                    if (binding.vfDownload != null)
+                    binding.vfDownload.setDisplayedChild(3);
                     e.printStackTrace();
                     AvaCrashReporter.send(e, TAG + " class, recentCallsCallBack method");
                 }
@@ -200,17 +200,15 @@ public class RecentCallsDialog {
         @Override
         public void onFailure(Runnable reCall, Exception e) {
             MyApplication.handler.post(() -> {
-                if (binding.vfDownload != null)
-                    binding.vfDownload.setDisplayedChild(3);
+//                if (binding.vfDownload != null)
+                binding.vfDownload.setDisplayedChild(3);
             });
             super.onFailure(reCall, e);
         }
     };
 
     private void dismiss() {
-        Log.i("Taf","Hi before True");
         dismissInterface.onDismiss(true);
-        Log.i("Taf","Hi after True");
         try {
             if (dialog != null) {
                 dialog.dismiss();

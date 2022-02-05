@@ -25,7 +25,7 @@ public class DescriptionDialog {
         void fixedDescription(String fixedDescription);
     }
 
-    private Listener listener;
+//    private Listener listener;
 
     static Dialog dialog;
 
@@ -45,7 +45,7 @@ public class DescriptionDialog {
         wlp.windowAnimations = R.style.ExpandAnimation;
         dialog.getWindow().setAttributes(wlp);
         dialog.setCancelable(true);
-        this.listener = listener;
+//        this.listener = listener;
 
         binding.llDescription.setOnClickListener(view -> {
             return;

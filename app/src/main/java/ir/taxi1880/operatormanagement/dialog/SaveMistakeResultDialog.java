@@ -45,7 +45,6 @@ public class SaveMistakeResultDialog {
     int mistakesId;
     LocalBroadcastManager broadcaster;
     private boolean singleInstance = true;
-    View view;
     int reasonId;
 
     public interface MistakesResult {
@@ -244,7 +243,7 @@ public class SaveMistakeResultDialog {
 
     private void sendResult(String culprit, String result, int listenId, String sipNumber) {
         LoadingDialog.makeCancelableLoader();
-        if (binding.vfLoader != null)
+//        if (binding.vfLoader != null)
             binding.vfLoader.setDisplayedChild(1);
 //        api/operator/v3/support/v3/listen
         RequestHelper.builder(EndPoints.V2_LISTEN)
@@ -287,13 +286,13 @@ public class SaveMistakeResultDialog {
                                     })
                                     .show();
                         }
-                        if (binding.vfLoader != null)
+//                        if (binding.vfLoader != null)
                             binding.vfLoader.setDisplayedChild(0);
                     }
                 } catch (Exception e) {
                     LoadingDialog.dismissCancelableDialog();
                     mistakesResult.onSuccess(false);
-                    if (binding.vfLoader != null)
+//                    if (binding.vfLoader != null)
                         binding.vfLoader.setDisplayedChild(0);
                     e.printStackTrace();
                     AvaCrashReporter.send(e, TAG + " class, sendResult method");
@@ -306,7 +305,7 @@ public class SaveMistakeResultDialog {
             MyApplication.handler.post(() -> {
                 LoadingDialog.dismissCancelableDialog();
                 mistakesResult.onSuccess(false);
-                if (binding.vfLoader != null)
+//                if (binding.vfLoader != null)
                     binding.vfLoader.setDisplayedChild(0);
             });
         }
