@@ -192,10 +192,10 @@ public class EditPassengerAddressDialog {
                 cityModels.add(cityModel);
                 cityList.add(i + 1, cityObj.getString("cityname"));
             }
-            if (spCity == null) return;
-            spCity.setAdapter(new SpinnerAdapter(MyApplication.currentActivity, R.layout.item_spinner, cityList));
-            spCity.setSelection(pos);
-            spCity.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+//            if (binding.spCity == null) return;
+            binding.spCity.setAdapter(new SpinnerAdapter(MyApplication.currentActivity, R.layout.item_spinner, cityList));
+            binding.spCity.setSelection(pos);
+            binding.spCity.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
                 @Override
                 public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
 //                    if (spCity != null)
