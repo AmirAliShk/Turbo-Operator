@@ -65,11 +65,15 @@ public class ComplaintCallFragment extends Fragment {
         binding.txtDriverName.setText(StringHelper.toPersianDigits(complaintDetailsModel.getDriverName() + " " + complaintDetailsModel.getDriverLastName()));
         binding.txtCountCallPassenger.setText(StringHelper.toPersianDigits(complaintDetailsModel.getCountCallCustomer() + " بار"));
 
-        binding.vfCallDriver.setOnClickListener(view -> new NumbersDialog()
-                .show(complaintDetailsModel.getDriverMobile(), complaintDetailsModel.getDriverMobile2()));
+        binding.vfCallDriver.setOnClickListener(view -> {
+            new NumbersDialog()
+                    .show(complaintDetailsModel.getDriverMobile().substring(1), complaintDetailsModel.getDriverMobile2().substring(1));
+        });
 
-        binding.vfCallCustomer.setOnClickListener(view -> new NumbersDialog()
-                .show(complaintDetailsModel.getCustomerMobileNumber(), complaintDetailsModel.getCustomerPhoneNumber()));
+        binding.vfCallCustomer.setOnClickListener(view -> {
+            new NumbersDialog()
+                    .show(complaintDetailsModel.getCustomerMobileNumber(), complaintDetailsModel.getCustomerPhoneNumber());
+        });
 
         binding.imgMissedCallCustomer.setOnClickListener(view -> {
             if (binding.vfMissedCallCustomer != null)

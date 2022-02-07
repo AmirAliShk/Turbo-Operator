@@ -17,14 +17,17 @@
         <entry key="..\:/AndroidProject/1880 parsian/operatorAssistance/app/src/main/res/layout/dialog_pricing.xml" value="0.209375" />
         <entry key="..\:/AndroidProject/1880 parsian/operatorAssistance/app/src/main/res/layout/dialog_request.xml" value="0.209375" />
         <entry key="..\:/AndroidProject/1880 parsian/operatorAssistance/app/src/main/res/layout/dialog_reserve.xml" value="0.209375" />
+        <entry key="..\:/AndroidProject/1880 parsian/operatorAssistance/app/src/main/res/layout/dialog_reward_trip.xml" value="0.2" />
         <entry key="..\:/AndroidProject/1880 parsian/operatorAssistance/app/src/main/res/layout/dialog_search_filter.xml" value="0.5" />
         <entry key="..\:/AndroidProject/1880 parsian/operatorAssistance/app/src/main/res/layout/dialog_search_station_info.xml" value="0.209375" />
         <entry key="..\:/AndroidProject/1880 parsian/operatorAssistance/app/src/main/res/layout/dialog_station_info.xml" value="0.209375" />
         <entry key="..\:/AndroidProject/1880 parsian/operatorAssistance/app/src/main/res/layout/dialog_trip_option.xml" value="0.209375" />
+        <entry key="..\:/AndroidProject/1880 parsian/operatorAssistance/app/src/main/res/layout/fragment_complaint_save_result.xml" value="0.209375" />
         <entry key="..\:/AndroidProject/1880 parsian/operatorAssistance/app/src/main/res/layout/fragment_driver_trip_support.xml" value="0.209375" />
         <entry key="..\:/AndroidProject/1880 parsian/operatorAssistance/app/src/main/res/layout/fragment_driver_trip_support_details.xml" value="0.209375" />
         <entry key="..\:/AndroidProject/1880 parsian/operatorAssistance/app/src/main/res/layout/fragment_passenger_trip_support.xml" value="0.209375" />
         <entry key="..\:/AndroidProject/1880 parsian/operatorAssistance/app/src/main/res/layout/fragment_passenger_trip_support_details.xml" value="0.209375" />
+        <entry key="..\:/AndroidProject/1880 parsian/operatorAssistance/app/src/main/res/layout/fragment_pending_mistakes.xml" value="0.209375" />
         <entry key="..\:/AndroidProject/1880 parsian/operatorAssistance/app/src/main/res/layout/item_trip.xml" value="0.209375" />
         <entry key="..\:/AndroidProject/operatorAssistance/app/src/main/res/drawable/ic_call_dialog_disable.xml" value="0.22552083333333334" />
         <entry key="..\:/AndroidProject/operatorAssistance/app/src/main/res/layout/activity_trip_register.xml" value="0.2" />

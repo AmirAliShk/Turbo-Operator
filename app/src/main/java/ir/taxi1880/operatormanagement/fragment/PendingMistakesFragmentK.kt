@@ -69,7 +69,7 @@ class PendingMistakesFragmentK : Fragment() {
     ): View? {
         binding = FragmentPendingMistakesBinding.inflate(inflater, container, false)
         TypefaceUtil.overrideFonts(binding.root, MyApplication.IraSanSMedume)
-//        TypefaceUtil.overrideFonts(binding.txtEmpty)
+        TypefaceUtil.overrideFonts(binding.txtEmpty)
 
         dataBase = DataBase(MyApplication.context)
         binding.llMissedCall.setOnClickListener { missCall() }
