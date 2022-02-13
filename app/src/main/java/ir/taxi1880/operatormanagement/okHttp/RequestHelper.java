@@ -60,7 +60,6 @@ public class RequestHelper implements okhttp3.Callback {
     private boolean ignore422 = false;
     private boolean doNotSendHeader = false;
     private Headers.Builder headers = new Headers.Builder();
-    private String bodyStr; //This defined when we had failed response from Sv In 422 error
 
     public static abstract class Callback {
         public void onReloadPress(boolean v) {
@@ -328,8 +327,7 @@ public class RequestHelper implements okhttp3.Callback {
                         e.printStackTrace();
                         AvaCrashReporter.send(e, TAG + " class, onResponse method");
                     }
-                    this.bodyStr = bodyStr;
-                    requestFailed(response.code(), new Exception(response.message() + bodyStr));
+                    requestFailed(response.code(), new Exception(bodyStr));
                 }
 
             } catch (final IOException e) {
@@ -406,33 +404,43 @@ public class RequestHelper implements okhttp3.Callback {
             case -3:
                 showError("آدرس وارد شده نا معتبر میباشد لطفا با پشتیبانی تماس حاصل نمایید");
                 break;
-            case 400:
-                showError("خطای 400 : مشکلی در ارسال داده به وجود آمده است لطفا پس از چند لحظه مجدد تلاش نمایید در صورت عدم برطرف شدن، لطفا با پشتیبانی تماس حاصل نمایید.");
-                break;
-            case 401:
-//        DBIO.setFail(MyApplication.context, url);
-                showError("خطای 401 : عدم دسترسی به اینترنت لطفا پس از بررسی ارتباط دستگاه خود به اینترنت و اطمینان از ارتباط، مجدد تلاش نمایید.");
-                break;
-            case 403:
-                showError("خطای 403 : عدم مجوز دسترسی به شبکه لطفا با پشتیبانی تماس حاصل نمایید.");
-                break;
-            case 404:
-//        DBIO.setFail(MyApplication.context, url);
-                showError("خطای 404 : برای چنین درخواستی پاسخی وجود ندارد لطفا با پشتیبانی تماس حاصل نمایید.");
-                break;
-            case 422://error entity
-                if (ignore422) {
-                    showMessage();
-                } else {
-                    newRequestFailed(e, bodyStr);
-//                   showError("خطای 422 : متاسفانه اطلاعات ارسالی ناقص است لطفا با پشتیبانی تماس بگیرد");
-                }
-                break;
-            case 500:
-                showError("خطای 500 : مشکلی در پردازش داده به وجود آمده است لطفا پس از چند لحظه مجدد تلاش نمایید در صورت عدم برطرف شدن، لطفا با پشتیبانی تماس حاصل نمایید.");
-                break;
+//            case 400:
+//                showError("خطای 400 : مشکلی در ارسال داده به وجود آمده است لطفا پس از چند لحظه مجدد تلاش نمایید در صورت عدم برطرف شدن، لطفا با پشتیبانی تماس حاصل نمایید.");
+//                break;
+//            case 401:
+////        DBIO.setFail(MyApplication.context, url);
+//                showError("خطای 401 : عدم دسترسی به اینترنت لطفا پس از بررسی ارتباط دستگاه خود به اینترنت و اطمینان از ارتباط، مجدد تلاش نمایید.");
+//                break;
+//            case 403:
+//                showError("خطای 403 : عدم مجوز دسترسی به شبکه لطفا با پشتیبانی تماس حاصل نمایید.");
+//                break;
+//            case 404:
+////        DBIO.setFail(MyApplication.context, url);
+//                showError("خطای 404 : برای چنین درخواستی پاسخی وجود ندارد لطفا با پشتیبانی تماس حاصل نمایید.");
+//                break;
+//            case 422://error entity
+//                if (ignore422) {
+//                    showMessage();
+//                } else {
+//                    showError("خطای 422 : متاسفانه اطلاعات ارسالی ناقص است لطفا با پشتیبانی تماس بگیرد");
+//                }
+//                break;
+//            case 500:
+//                showError("خطای 500 : مشکلی در پردازش داده به وجود آمده است لطفا پس از چند لحظه مجدد تلاش نمایید در صورت عدم برطرف شدن، لطفا با پشتیبانی تماس حاصل نمایید.");
+//                break;
             default:
-                showError("خطای " + code + " : خطایی تعریف نشده در سیستم به وجود آمده لطفا با پشتیبانی تماس حاصل نمایید.");
+//                showError("خطای " + code + " : خطایی تعریف نشده در سیستم به وجود آمده لطفا با پشتیبانی تماس حاصل نمایید.");
+                JSONObject error = new JSONObject();
+                try {
+                    error = new JSONObject(e.getMessage());
+                } catch (JSONException jsonException) {
+                    jsonException.printStackTrace();
+                }
+                try {
+                    showError(error.getString("message"));
+                } catch (JSONException jsonException) {
+                    jsonException.printStackTrace();
+                }
                 break;
         }
     }
