@@ -151,7 +151,7 @@ class RecentCallsAdapterK() : RecyclerView.Adapter<RecentCallsAdapterK.RecentCal
                 }
 
                 override fun onStartTrackingTouch(seekBar: IndicatorSeekBar?) {
-                    TODO("Not yet implemented")
+//                    TODO("Not yet implemented")
                 }
 
                 override fun onStopTrackingTouch(seekBar: IndicatorSeekBar?) {
