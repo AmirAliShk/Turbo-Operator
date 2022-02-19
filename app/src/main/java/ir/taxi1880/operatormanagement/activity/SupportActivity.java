@@ -184,7 +184,7 @@ public class SupportActivity extends AppCompatActivity {
         });
 
         binding.imgOpenDriverSupport.setOnClickListener(view -> {
-            new PendingMistakesFragmentK().pauseVoice();
+            PendingMistakesFragmentK.Companion.pauseVoice();
             FragmentHelper.toFragment(MyApplication.currentActivity, new DriverTripSupportFragment()).replace();
         });
 

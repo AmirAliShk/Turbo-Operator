@@ -42,16 +42,16 @@ import java.util.*
 
 class PendingMistakesFragmentK : Fragment() {
 
-    private lateinit var binding: FragmentPendingMistakesBinding
     private lateinit var dataBase: DataBase
     private lateinit var broadcaster: LocalBroadcastManager
     private lateinit var model: AllMistakesModel
-    private var mediaPlayer: MediaPlayer? = null
-    private var timer: Timer? = null
     private var TOTAL_VOICE_DURATION: Int = 0
 
     companion object {
         val TAG: String = PendingMistakesFragmentK::class.java.simpleName
+        private var mediaPlayer: MediaPlayer? = null
+        private lateinit var binding: FragmentPendingMistakesBinding
+        private var timer: Timer? = null
 
         class RefreshTokenAsyncTask :
             AsyncTask<Void?, Void?, Boolean?>() {
@@ -60,6 +60,32 @@ class PendingMistakesFragmentK : Fragment() {
                 return null
             }
         }
+
+        fun pauseVoice() {
+            try {
+                if (mediaPlayer != null) mediaPlayer?.pause()
+
+                binding.skbTimer.setProgress(0f)
+                binding.vfPlayPause.displayedChild = 0
+            } catch (e: Exception) {
+                e.printStackTrace()
+                AvaCrashReporter.send(e, "$TAG class, pauseVoice method")
+            }
+            cancelTimer()
+        }
+
+        private fun cancelTimer() {
+            try {
+                if (timer == null) return
+                timer?.cancel()
+                timer = null
+            } catch (e: Exception) {
+                e.printStackTrace();
+                AvaCrashReporter.send(e, "$TAG class, cancelTimer method");
+            }
+
+        }
+
     }
 
     override fun onCreateView(
@@ -224,31 +250,6 @@ class PendingMistakesFragmentK : Fragment() {
         timer = Timer()
         val task = UpdateSeekBar()
         timer?.scheduleAtFixedRate(task, 500, 1000)
-    }
-
-    fun pauseVoice() {
-        try {
-            if (mediaPlayer != null) mediaPlayer?.pause()
-
-            binding.skbTimer.setProgress(0f)
-            binding.vfPlayPause.displayedChild = 0
-        } catch (e: Exception) {
-            e.printStackTrace()
-            AvaCrashReporter.send(e, "$TAG class, pauseVoice method")
-        }
-        cancelTimer()
-    }
-
-    private fun cancelTimer() {
-        try {
-            if (timer == null) return
-            timer?.cancel()
-            timer = null
-        } catch (e: Exception) {
-            e.printStackTrace();
-            AvaCrashReporter.send(e, "$TAG class, cancelTimer method");
-        }
-
     }
 
     inner class UpdateSeekBar : TimerTask() {
