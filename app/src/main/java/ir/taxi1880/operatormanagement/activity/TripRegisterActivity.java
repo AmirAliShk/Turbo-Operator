@@ -457,20 +457,6 @@ public class TripRegisterActivity extends AppCompatActivity {
                 }
             }
         });
-
-        binding.sameNameOrigin.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Toast.makeText(MyApplication.currentActivity, "خیابان با دو اسم موجود است", Toast.LENGTH_SHORT).show();
-            }
-        });
-
-        binding.sameNameDest.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Toast.makeText(MyApplication.currentActivity, "خیابان با دو اسم موجود است", Toast.LENGTH_SHORT).show();
-            }
-        });
     }
 
     private void onPressDownload() {
@@ -619,12 +605,6 @@ public class TripRegisterActivity extends AppCompatActivity {
                 originAddressLength = 0;
                 binding.edtOriginAddress.getText().clear();
             }
-
-            if (s.toString().equals("سلام"))
-                binding.sameNameOrigin.setVisibility(View.VISIBLE);
-                else
-                binding.sameNameOrigin.setVisibility(View.GONE);
-
 //            String result = s.toString().replaceAll(" {2}", " ");
 //            if (!s.toString().equals(result)) { // it remove the extra space in the text
 //                binding.edtOriginAddress.setText(result);
@@ -654,12 +634,6 @@ public class TripRegisterActivity extends AppCompatActivity {
                 destAddressLength = 0;
                 binding.edtDestinationAddress.getText().clear();
             }
-
-            if (s.toString().equals("سلام"))
-                binding.sameNameDest.setVisibility(View.VISIBLE);
-            else
-                binding.sameNameDest.setVisibility(View.GONE);
-
 //            String result = s.toString().replaceAll(" {2}", " ");
 //            if (!s.toString().equals(result)) { // it remove the extra space in the text
 //                binding.edtDestinationAddress.setText(result);
