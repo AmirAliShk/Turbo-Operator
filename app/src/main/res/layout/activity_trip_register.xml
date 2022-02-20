@@ -572,7 +572,7 @@
                         android:layout_height="match_parent" />
 
                     <RelativeLayout
-                        android:layout_width="match_parent"
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content">
 
                         <AutoCompleteTextView
@@ -592,17 +592,33 @@
                             android:textColor="?attr/colorValue" />
 
                         <ImageView
+                            android:id="@+id/sameNameOrigin"
+                            android:layout_width="20dp"
+                            android:layout_height="match_parent"
+                            android:layout_gravity="center"
+                            android:layout_toRightOf="@+id/clearOriginAddress"
+                            android:gravity="left"
+                            android:src="@drawable/ic_error"
+                            android:visibility="gone"/>
+
+                        <ImageView
                             android:id="@+id/clearOriginAddress"
                             android:layout_width="40dp"
                             android:layout_height="match_parent"
-                            android:layout_alignParentLeft="true"
                             android:layout_gravity="center"
+                            android:layout_alignParentLeft="true"
                             android:gravity="left"
                             android:padding="5dp"
                             android:src="@drawable/ic_reject"
-                            app:tint="#000" />
+                            app:tint="#000"
+                            />
+
+
+
 
                     </RelativeLayout>
+
+
 
                     <ImageView
                         android:layout_width="5dp"
@@ -709,6 +725,17 @@
                             android:padding="5dp"
                             android:src="@drawable/ic_reject"
                             app:tint="#000" />
+
+                        <ImageView
+                            android:id="@+id/sameNameDest"
+                            android:layout_width="20dp"
+                            android:layout_height="match_parent"
+                            android:layout_gravity="center"
+                            android:layout_toRightOf="@+id/clearDestinationAddress"
+                            android:gravity="left"
+                            android:visibility="gone"
+                            android:src="@drawable/ic_error" />
+
 
                     </RelativeLayout>
 
