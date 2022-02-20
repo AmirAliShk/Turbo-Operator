@@ -47,6 +47,7 @@ import ir.taxi1880.operatormanagement.app.DataHolder;
 import ir.taxi1880.operatormanagement.app.EndPoints;
 import ir.taxi1880.operatormanagement.app.Keys;
 import ir.taxi1880.operatormanagement.app.MyApplication;
+import ir.taxi1880.operatormanagement.dataBase.DataBase;
 import ir.taxi1880.operatormanagement.databinding.ActivityTripRegisterBinding;
 import ir.taxi1880.operatormanagement.dialog.AddressListDialog;
 import ir.taxi1880.operatormanagement.dialog.CallDialog;
@@ -67,6 +68,7 @@ import ir.taxi1880.operatormanagement.model.AddressArr;
 import ir.taxi1880.operatormanagement.model.AddressesModel;
 import ir.taxi1880.operatormanagement.model.CallModel;
 import ir.taxi1880.operatormanagement.model.CityModel;
+import ir.taxi1880.operatormanagement.model.SameNameStreetsModel;
 import ir.taxi1880.operatormanagement.model.TypeServiceModel;
 import ir.taxi1880.operatormanagement.okHttp.RequestHelper;
 import ir.taxi1880.operatormanagement.push.AvaCrashReporter;
@@ -113,6 +115,8 @@ public class TripRegisterActivity extends AppCompatActivity {
     String passengerId;
     int moshId = 0;
 
+    DataBase dataBase;
+
     ArrayList<AddressesModel> originAddresses;
     ArrayList<AddressesModel> destinationAddresses;
 
@@ -135,6 +139,12 @@ public class TripRegisterActivity extends AppCompatActivity {
                 window.setStatusBarColor(getResources().getColor(R.color.colorPrimaryDark));
             }
         }
+
+        SameNameStreetsModel model = new SameNameStreetsModel(10, "مشهد", "نسترن", "سجاد");
+        SameNameStreetsModel model2 = new SameNameStreetsModel(10, "مشهد", "نسترن", "قاسم آباد");
+        dataBase = new DataBase(MyApplication.currentActivity);
+        dataBase.insertSameNameStreets(model);
+        dataBase.insertSameNameStreets(model2);
 
         binding = ActivityTripRegisterBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
@@ -608,6 +618,18 @@ public class TripRegisterActivity extends AppCompatActivity {
 //            if (binding.edtOriginAddress.isFocused()) {
 //                originAddressId = "0";
 //            }
+            if (!(count == 0)) {
+                Log.i("TAF", charSequence.toString());
+                if (charSequence.toString().contains(" ")) {
+                    Log.i("TAF1", charSequence.toString());
+                    if (dataBase.isStreetNameWithSameName(charSequence.toString()))
+                        binding.sameNameOrigin.setVisibility(View.VISIBLE);
+                    else
+                        binding.sameNameOrigin.setVisibility(View.GONE);
+
+                }
+            }
+
             removeExtraSpace(binding.edtOriginAddress);
         }
 
@@ -619,11 +641,6 @@ public class TripRegisterActivity extends AppCompatActivity {
                 originAddressLength = 0;
                 binding.edtOriginAddress.getText().clear();
             }
-
-            if (s.toString().equals("سلام"))
-                binding.sameNameOrigin.setVisibility(View.VISIBLE);
-                else
-                binding.sameNameOrigin.setVisibility(View.GONE);
 
 //            String result = s.toString().replaceAll(" {2}", " ");
 //            if (!s.toString().equals(result)) { // it remove the extra space in the text
@@ -644,6 +661,20 @@ public class TripRegisterActivity extends AppCompatActivity {
 //            if (binding.edtDestinationAddress.isFocused()) {
 //                destinationAddressId = "0";
 //            }
+            if (!(count == 0)) {
+                Log.i("TAF", charSequence.toString());
+                if (charSequence.toString().contains(" ")) {
+                    Log.i("TAF1", charSequence.toString());
+                    if (dataBase.isStreetNameWithSameName(charSequence.toString().trim())) {
+                        Log.i("TAF1", charSequence.toString());
+                        binding.sameNameDest.setVisibility(View.VISIBLE);
+                    }
+                    else
+                        binding.sameNameDest.setVisibility(View.GONE);
+
+                }
+            }
+
             removeExtraSpace(binding.edtDestinationAddress);
         }
 
@@ -654,11 +685,6 @@ public class TripRegisterActivity extends AppCompatActivity {
                 destAddressLength = 0;
                 binding.edtDestinationAddress.getText().clear();
             }
-
-            if (s.toString().equals("سلام"))
-                binding.sameNameDest.setVisibility(View.VISIBLE);
-            else
-                binding.sameNameDest.setVisibility(View.GONE);
 
 //            String result = s.toString().replaceAll(" {2}", " ");
 //            if (!s.toString().equals(result)) { // it remove the extra space in the text

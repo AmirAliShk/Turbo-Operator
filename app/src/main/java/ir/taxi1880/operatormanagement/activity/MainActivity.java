@@ -66,12 +66,6 @@ public class MainActivity extends AppCompatActivity implements NotificationFragm
         mainViewPagerAdapter = new MainViewPagerAdapter(this);
         binding.vpMain.setAdapter(mainViewPagerAdapter);
 
-        SameNameStreetsModel model  = new SameNameStreetsModel(10 ,"مشهد", "نسترن", "سجاد");
-        SameNameStreetsModel model2  = new SameNameStreetsModel(10 ,"مشهد", "نسترن", "قاسم آباد");
-        DataBase dataBase = new DataBase(MyApplication.currentActivity);
-        dataBase.insertSameNameStreets(model);
-        dataBase.insertSameNameStreets(model2);
-
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             binding.imgTheme.setVisibility(View.VISIBLE);
         } else {

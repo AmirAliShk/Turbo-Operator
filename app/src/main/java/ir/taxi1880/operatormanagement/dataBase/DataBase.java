@@ -341,6 +341,13 @@ public class DataBase extends SQLiteOpenHelper {
         return sameNameStreetsModel;
     }
 
+    public boolean isStreetNameWithSameName(String searchPhrase) {
+        SQLiteDatabase sqLiteDatabase = this.getReadableDatabase();
+        @SuppressLint("Recycle") Cursor res = sqLiteDatabase.rawQuery("select * from " + SAME_NAME_STREETS_TABLE + " where " + COLUMN_STREETS_NAME_WITH_SAME_NAME + " LIKE '%"+searchPhrase+"%'", null);
+        if (res.getCount() == 0) return false;
+        else return true;
+    }
+
 
 // ****************************************************** City Table ******************************************************
 
