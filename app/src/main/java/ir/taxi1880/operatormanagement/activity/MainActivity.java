@@ -19,6 +19,7 @@ import ir.taxi1880.operatormanagement.adapter.MainViewPagerAdapter;
 import ir.taxi1880.operatormanagement.app.Constant;
 import ir.taxi1880.operatormanagement.app.DataHolder;
 import ir.taxi1880.operatormanagement.app.MyApplication;
+import ir.taxi1880.operatormanagement.dataBase.DataBase;
 import ir.taxi1880.operatormanagement.databinding.ActivityMainBinding;
 import ir.taxi1880.operatormanagement.dialog.GeneralDialog;
 import ir.taxi1880.operatormanagement.fragment.AccountFragment;
@@ -29,6 +30,7 @@ import ir.taxi1880.operatormanagement.helper.KeyBoardHelper;
 import ir.taxi1880.operatormanagement.helper.StringHelper;
 import ir.taxi1880.operatormanagement.helper.ThemeHelper;
 import ir.taxi1880.operatormanagement.helper.TypefaceUtil;
+import ir.taxi1880.operatormanagement.model.SameNameStreetsModel;
 import ir.taxi1880.operatormanagement.push.AvaCrashReporter;
 
 public class MainActivity extends AppCompatActivity implements NotificationFragment.RefreshNotificationCount {
@@ -63,6 +65,12 @@ public class MainActivity extends AppCompatActivity implements NotificationFragm
 
         mainViewPagerAdapter = new MainViewPagerAdapter(this);
         binding.vpMain.setAdapter(mainViewPagerAdapter);
+
+        SameNameStreetsModel model  = new SameNameStreetsModel(10 ,"مشهد", "نسترن", "سجاد");
+        SameNameStreetsModel model2  = new SameNameStreetsModel(10 ,"مشهد", "نسترن", "قاسم آباد");
+        DataBase dataBase = new DataBase(MyApplication.currentActivity);
+        dataBase.insertSameNameStreets(model);
+        dataBase.insertSameNameStreets(model2);
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             binding.imgTheme.setVisibility(View.VISIBLE);
