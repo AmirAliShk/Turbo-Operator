@@ -12,7 +12,6 @@ import android.view.Window;
 import android.view.WindowManager;
 import android.view.inputmethod.EditorInfo;
 import android.widget.AdapterView;
-import android.widget.RelativeLayout;
 import android.widget.Toast;
 
 import org.json.JSONArray;
@@ -43,11 +42,9 @@ public class SearchStationInfoDialog {
     StationInfoModel stationInfoModel;
     private static Dialog dialog;
     int city;
-    RelativeLayout rlSearchType;
     String stationCode = "0";
     String address = "0";
     boolean firstTime = false;
-
 
     public interface Listener {
         void stationCode(String stationCode);
@@ -86,20 +83,18 @@ public class SearchStationInfoDialog {
                 address = binding.edtStationCode.getText().toString() + "";
             }
 
-            getStationInfo(city, stationCode, address);
             KeyBoardHelper.hideKeyboard();
+            getStationInfo(city, stationCode, address);
         });
 
         binding.imgClear.setOnClickListener(view -> {
             binding.edtStationCode.setText("");
-                binding.vfStationInfo.setDisplayedChild(0);
+            binding.vfStationInfo.setDisplayedChild(0);
         });
 
         binding.llCLose.setOnClickListener(view -> dismiss());
 
-        binding.rlSearchType.setOnClickListener(view -> {
-            binding.spSearchType.performClick();
-        });
+        binding.rlSearchType.setOnClickListener(view -> binding.spSearchType.performClick());
 
         binding.edtStationCode.setOnEditorActionListener((v, actionId, event) -> {
             if (actionId == EditorInfo.IME_ACTION_DONE) {
@@ -116,6 +111,7 @@ public class SearchStationInfoDialog {
                     address = binding.edtStationCode.getText().toString() + "";
                 }
 
+                KeyBoardHelper.hideKeyboard();
                 getStationInfo(city, stationCode, address);
 
                 return true;
@@ -144,7 +140,6 @@ public class SearchStationInfoDialog {
         }
 
         dialog.show();
-
     }
 
     private void initWaitingTimeSpinner() {
@@ -180,11 +175,9 @@ public class SearchStationInfoDialog {
     }
 
     private void getStationInfo(int city, String stationCode, String address) {
-//        if (binding.vfStationInfo != null)
-            binding.vfStationInfo.setDisplayedChild(1);
+        binding.vfStationInfo.setDisplayedChild(1);
         KeyBoardHelper.hideKeyboard();
         RequestHelper.builder(EndPoints.STATION_INFO)
-//                .addPath(StringHelper.toEnglishDigits(stationCode) + "")
                 .addPath(city + "")
                 .addPath(stationCode + "")
                 .addPath(address + "")
@@ -198,7 +191,7 @@ public class SearchStationInfoDialog {
             MyApplication.handler.post(() -> {
                 try {
                     MyApplication.handler.postDelayed(KeyBoardHelper::hideKeyboard, 100);
-                        binding.vfStationInfo.setDisplayedChild(2);
+                    binding.vfStationInfo.setDisplayedChild(2);
                     boolean isCountrySide = false;
                     String stationName = "";
                     stationInfoModels = new ArrayList<>();
@@ -239,10 +232,13 @@ public class SearchStationInfoDialog {
                         }
 
                         if (stationInfoModels.size() == 0) {
-//                            if (binding.vfStationInfo != null)
+                            if (!address.equals("0") && address.contains(" ")) {
+                                address = address.substring(0, address.lastIndexOf(" "));
+                                getStationInfo(city, stationCode, address);
+                                Log.i(TAG, "onResponse: " + address);
+                            } else
                                 binding.vfStationInfo.setDisplayedChild(4);
                         } else {
-//                            if (binding.txtStationCode == null) return;
                             stationInfoAdapter = new StationInfoAdapter(stationInfoModels);
                             binding.listStationInfo.setAdapter(stationInfoAdapter);
 
@@ -258,7 +254,6 @@ public class SearchStationInfoDialog {
                                 binding.llSuburbs.setVisibility(View.GONE);
                             }
                         }
-
                     } else {
                         new GeneralDialog()
                                 .title("هشدار")
@@ -270,8 +265,7 @@ public class SearchStationInfoDialog {
                 } catch (JSONException e) {
                     e.printStackTrace();
                     AvaCrashReporter.send(e, TAG + " class, getStationInfo method");
-//                    if (binding.vfStationInfo != null)
-                        binding.vfStationInfo.setDisplayedChild(3);
+                    binding.vfStationInfo.setDisplayedChild(3);
                 }
             });
         }
@@ -279,8 +273,7 @@ public class SearchStationInfoDialog {
         @Override
         public void onFailure(Runnable reCall, Exception e) {
             MyApplication.handler.post(() -> {
-//                if (binding.vfStationInfo != null)
-                    binding.vfStationInfo.setDisplayedChild(3);
+                binding.vfStationInfo.setDisplayedChild(3);
             });
         }
     };

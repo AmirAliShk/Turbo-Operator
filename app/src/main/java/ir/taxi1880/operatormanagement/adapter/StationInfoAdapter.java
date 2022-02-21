@@ -93,7 +93,8 @@ public class StationInfoAdapter extends BaseAdapter {
 
             if (stationInfoModel.getAddressOrNot().equals("stationCode")) {
                 llStationCode.setVisibility(View.GONE);
-            }
+            } else
+                llStationCode.setVisibility(View.VISIBLE);
 
         } catch (Exception e) {
             e.printStackTrace();
