@@ -21,6 +21,7 @@ import android.widget.AdapterView;
 import android.widget.AutoCompleteTextView;
 import android.widget.EditText;
 import android.widget.RadioButton;
+import android.widget.RelativeLayout;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -620,15 +621,18 @@ public class TripRegisterActivity extends AppCompatActivity {
 //            }
             if (!(count == 0)) {
                 Log.i("TAF", charSequence.toString());
-                if (charSequence.toString().contains(" ")) {
-                    Log.i("TAF1", charSequence.toString());
-                    if (dataBase.isStreetNameWithSameName(charSequence.toString()))
-                        binding.sameNameOrigin.setVisibility(View.VISIBLE);
-                    else
-                        binding.sameNameOrigin.setVisibility(View.GONE);
 
+                if (dataBase.isStreetNameWithSameName(charSequence.toString().trim())) {
+                    Log.i("TAF1", charSequence.toString());
+                    binding.sameNameOrigin.setVisibility(View.VISIBLE);
+                } else {
+                    binding.sameNameOrigin.setVisibility(View.GONE);
                 }
+
             }
+            else
+                binding.sameNameOrigin.setVisibility(View.GONE);
+
 
             removeExtraSpace(binding.edtOriginAddress);
         }
@@ -663,17 +667,16 @@ public class TripRegisterActivity extends AppCompatActivity {
 //            }
             if (!(count == 0)) {
                 Log.i("TAF", charSequence.toString());
-                if (charSequence.toString().contains(" ")) {
-                    Log.i("TAF1", charSequence.toString());
-                    if (dataBase.isStreetNameWithSameName(charSequence.toString().trim())) {
-                        Log.i("TAF1", charSequence.toString());
-                        binding.sameNameDest.setVisibility(View.VISIBLE);
-                    }
-                    else
-                        binding.sameNameDest.setVisibility(View.GONE);
 
+                if (dataBase.isStreetNameWithSameName(charSequence.toString().trim())) {
+                    Log.i("TAF1", charSequence.toString());
+                    binding.sameNameDest.setVisibility(View.VISIBLE);
+                } else {
+                    binding.sameNameDest.setVisibility(View.GONE);
                 }
-            }
+
+            } else
+                binding.sameNameOrigin.setVisibility(View.GONE);
 
             removeExtraSpace(binding.edtDestinationAddress);
         }
@@ -1490,6 +1493,8 @@ public class TripRegisterActivity extends AppCompatActivity {
 //    binding.edtDiscount.setEnabled(true);
         binding.edtOriginAddress.setEnabled(true);
         binding.edtDestinationAddress.setEnabled(true);
+        binding.relEdtOrigin.setEnabled(true);
+        binding.relEdtDest.setEnabled(true);
         binding.txtDescription.setEnabled(true);
         binding.chbTraffic.setEnabled(true);
         binding.llTrafficBg.setEnabled(true);
@@ -1518,6 +1523,8 @@ public class TripRegisterActivity extends AppCompatActivity {
 //    binding.edtDiscount.setEnabled(false);
         binding.edtOriginAddress.setEnabled(false);
         binding.edtDestinationAddress.setEnabled(false);
+        binding.relEdtOrigin.setEnabled(false);
+        binding.relEdtDest.setEnabled(false);
         binding.txtDescription.setEnabled(false);
         binding.chbTraffic.setEnabled(false);
         binding.llTrafficBg.setEnabled(false);
