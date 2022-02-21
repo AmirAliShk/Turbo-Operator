@@ -30,7 +30,6 @@ import ir.taxi1880.operatormanagement.helper.KeyBoardHelper;
 import ir.taxi1880.operatormanagement.helper.StringHelper;
 import ir.taxi1880.operatormanagement.helper.ThemeHelper;
 import ir.taxi1880.operatormanagement.helper.TypefaceUtil;
-import ir.taxi1880.operatormanagement.model.SameNameStreetsModel;
 import ir.taxi1880.operatormanagement.push.AvaCrashReporter;
 
 public class MainActivity extends AppCompatActivity implements NotificationFragment.RefreshNotificationCount {

@@ -21,7 +21,6 @@ import android.widget.AdapterView;
 import android.widget.AutoCompleteTextView;
 import android.widget.EditText;
 import android.widget.RadioButton;
-import android.widget.RelativeLayout;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -56,6 +55,7 @@ import ir.taxi1880.operatormanagement.dialog.CityDialog;
 import ir.taxi1880.operatormanagement.dialog.DescriptionDialog;
 import ir.taxi1880.operatormanagement.dialog.GeneralDialog;
 import ir.taxi1880.operatormanagement.dialog.LoadingDialog;
+import ir.taxi1880.operatormanagement.dialog.SameNameStreetsDialog;
 import ir.taxi1880.operatormanagement.dialog.TripOptionDialog;
 import ir.taxi1880.operatormanagement.fragment.PassengerTripSupportFragment;
 import ir.taxi1880.operatormanagement.helper.AppVersionHelper;
@@ -120,6 +120,8 @@ public class TripRegisterActivity extends AppCompatActivity {
 
     ArrayList<AddressesModel> originAddresses;
     ArrayList<AddressesModel> destinationAddresses;
+    ArrayList<SameNameStreetsModel> originSameNameStreet;
+    ArrayList<SameNameStreetsModel> destSameNameStreet;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -141,11 +143,23 @@ public class TripRegisterActivity extends AppCompatActivity {
             }
         }
 
-        SameNameStreetsModel model = new SameNameStreetsModel(10, "مشهد", "نسترن", "سجاد");
-        SameNameStreetsModel model2 = new SameNameStreetsModel(10, "مشهد", "نسترن", "قاسم آباد");
+        SameNameStreetsModel model = new SameNameStreetsModel("نسترن", "سجاد");
+        SameNameStreetsModel model2 = new SameNameStreetsModel( "نسترن", "قاسم آباد");
+        SameNameStreetsModel model3 = new SameNameStreetsModel( "هجرت", "سجاد");
+        SameNameStreetsModel model4 = new SameNameStreetsModel( "هجرت", "قاسم آباد");
+        SameNameStreetsModel model5 = new SameNameStreetsModel( "محمد", "سجاد");
+        SameNameStreetsModel model6 = new SameNameStreetsModel( "محمد", "قاسم آباد");
+        SameNameStreetsModel model7 = new SameNameStreetsModel( "رضا", "سجاد");
+        SameNameStreetsModel model8 = new SameNameStreetsModel( "رضا", "قاسم آباد");
         dataBase = new DataBase(MyApplication.currentActivity);
         dataBase.insertSameNameStreets(model);
         dataBase.insertSameNameStreets(model2);
+        dataBase.insertSameNameStreets(model3);
+        dataBase.insertSameNameStreets(model4);
+        dataBase.insertSameNameStreets(model5);
+        dataBase.insertSameNameStreets(model6);
+        dataBase.insertSameNameStreets(model7);
+        dataBase.insertSameNameStreets(model8);
 
         binding = ActivityTripRegisterBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
@@ -469,19 +483,9 @@ public class TripRegisterActivity extends AppCompatActivity {
             }
         });
 
-        binding.sameNameOrigin.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Toast.makeText(MyApplication.currentActivity, "خیابان با دو اسم موجود است", Toast.LENGTH_SHORT).show();
-            }
-        });
+        binding.sameNameOrigin.setOnClickListener(view -> new SameNameStreetsDialog().show(originSameNameStreet));
 
-        binding.sameNameDest.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Toast.makeText(MyApplication.currentActivity, "خیابان با دو اسم موجود است", Toast.LENGTH_SHORT).show();
-            }
-        });
+        binding.sameNameDest.setOnClickListener(view -> new SameNameStreetsDialog().show(destSameNameStreet));
     }
 
     private void onPressDownload() {
@@ -619,19 +623,24 @@ public class TripRegisterActivity extends AppCompatActivity {
 //            if (binding.edtOriginAddress.isFocused()) {
 //                originAddressId = "0";
 //            }
+//            binding.sameNameOrigin.setVisibility(View.GONE);
+            Log.i("TAF_Count", String.valueOf(count));
+
             if (!(count == 0)) {
                 Log.i("TAF", charSequence.toString());
-
-                if (dataBase.isStreetNameWithSameName(charSequence.toString().trim())) {
+                if (charSequence.toString().contains(" ")) {
                     Log.i("TAF1", charSequence.toString());
-                    binding.sameNameOrigin.setVisibility(View.VISIBLE);
-                } else {
-                    binding.sameNameOrigin.setVisibility(View.GONE);
+                    if (dataBase.isStreetNameWithSameName(charSequence.toString().trim())) {
+                        Log.i("TAF2", charSequence.toString());
+                        originSameNameStreet = new ArrayList<>();
+                        originSameNameStreet.add(dataBase.getStreetNameWithSameName(charSequence.toString()));
+                        binding.sameNameOrigin.setVisibility(View.VISIBLE);
+                    } else {
+                        binding.sameNameOrigin.setVisibility(View.GONE);
+                    }
                 }
 
-            }
-            else
-                binding.sameNameOrigin.setVisibility(View.GONE);
+            } else binding.sameNameOrigin.setVisibility(View.GONE);
 
 
             removeExtraSpace(binding.edtOriginAddress);
@@ -665,18 +674,26 @@ public class TripRegisterActivity extends AppCompatActivity {
 //            if (binding.edtDestinationAddress.isFocused()) {
 //                destinationAddressId = "0";
 //            }
+
+//            binding.sameNameDest.setVisibility(View.GONE);
+
             if (!(count == 0)) {
                 Log.i("TAF", charSequence.toString());
-
-                if (dataBase.isStreetNameWithSameName(charSequence.toString().trim())) {
+                if (charSequence.toString().contains(" ")) {
                     Log.i("TAF1", charSequence.toString());
-                    binding.sameNameDest.setVisibility(View.VISIBLE);
-                } else {
-                    binding.sameNameDest.setVisibility(View.GONE);
+                    if (dataBase.isStreetNameWithSameName(charSequence.toString().trim())) {
+                        Log.i("TAF2", charSequence.toString());
+                        binding.sameNameDest.setVisibility(View.VISIBLE);
+                        destSameNameStreet = new ArrayList<>();
+                        destSameNameStreet.add(dataBase.getStreetNameWithSameName(charSequence.toString()));
+                        Log.i("taf_destSAme",destSameNameStreet.toString());
+                    } else {
+                        binding.sameNameDest.setVisibility(View.GONE);
+                    }
                 }
 
             } else
-                binding.sameNameOrigin.setVisibility(View.GONE);
+                binding.sameNameDest.setVisibility(View.GONE);
 
             removeExtraSpace(binding.edtDestinationAddress);
         }

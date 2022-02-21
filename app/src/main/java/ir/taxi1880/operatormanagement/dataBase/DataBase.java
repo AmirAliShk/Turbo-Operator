@@ -312,13 +312,11 @@ public class DataBase extends SQLiteOpenHelper {
         try {
             SQLiteDatabase sqLiteDatabase = this.getWritableDatabase();
             ContentValues contentValues = new ContentValues();
-            contentValues.put(COLUMN_CITY_CODE_SN, sameNameStreetsModel.getCityCode());
-            contentValues.put(COLUMN_CITY_NAME_SN, sameNameStreetsModel.getCityName());
-            contentValues.put(COLUMN_STREETS_NAME_WITH_SAME_NAME, sameNameStreetsModel.getSameNameStreetsName());
+            contentValues.put(COLUMN_STREETS_NAME_WITH_SAME_NAME, sameNameStreetsModel.getSameNameStreet());
             contentValues.put(COLUMN_AROUND_STREET, sameNameStreetsModel.getAroundStreet());
             sqLiteDatabase.insertWithOnConflict(SAME_NAME_STREETS_TABLE, COLUMN_CITY_ID, contentValues, SQLiteDatabase.CONFLICT_REPLACE);
 
-            Toast.makeText(MyApplication.currentActivity, "databaseUpdated", Toast.LENGTH_SHORT).show();
+//            Toast.makeText(MyApplication.currentActivity, "databaseUpdated", Toast.LENGTH_SHORT).show();
 
         } catch (Exception e) {
             e.printStackTrace();
@@ -328,24 +326,29 @@ public class DataBase extends SQLiteOpenHelper {
 
     public SameNameStreetsModel getStreetNameWithSameName(String searchPhrase) {
         SQLiteDatabase sqLiteDatabase = this.getReadableDatabase();
-        @SuppressLint("Recycle") Cursor res = sqLiteDatabase.rawQuery("select * from " + SAME_NAME_STREETS_TABLE + " where " + COLUMN_STREETS_NAME_WITH_SAME_NAME + " LIKE " + searchPhrase, null);
-        if (res.getCount() == 0) return null;
+        @SuppressLint("Recycle") Cursor res = sqLiteDatabase.rawQuery("select * from " + SAME_NAME_STREETS_TABLE + " where " + COLUMN_STREETS_NAME_WITH_SAME_NAME + " LIKE '%" + searchPhrase + "%'", null);
+        if (res.getCount() == 0) {
+            Log.i("TAF_getCountget", res.getCount() + "");
+            return null;
+        }
+        else {
+            Log.i("TAF_getCountget", res.getCount() + "");
+            SameNameStreetsModel sameNameStreetsModel = new SameNameStreetsModel(
+                    res.getString(res.getColumnIndex(COLUMN_STREETS_NAME_WITH_SAME_NAME)),
+                    res.getString(res.getColumnIndex(COLUMN_AROUND_STREET)));
 
-        res.moveToFirst();
-        SameNameStreetsModel sameNameStreetsModel = new SameNameStreetsModel(
-                res.getInt(res.getColumnIndex(COLUMN_CITY_CODE_SN)),
-                res.getString(res.getColumnIndex(COLUMN_CITY_NAME_SN)),
-                res.getString(res.getColumnIndex(COLUMN_STREETS_NAME_WITH_SAME_NAME)),
-                res.getString(res.getColumnIndex(COLUMN_AROUND_STREET)));
-
-        return sameNameStreetsModel;
+            return sameNameStreetsModel;
+        }
     }
 
     public boolean isStreetNameWithSameName(String searchPhrase) {
         SQLiteDatabase sqLiteDatabase = this.getReadableDatabase();
-        @SuppressLint("Recycle") Cursor res = sqLiteDatabase.rawQuery("select * from " + SAME_NAME_STREETS_TABLE + " where " + COLUMN_STREETS_NAME_WITH_SAME_NAME + " LIKE '%"+searchPhrase+"%'", null);
+        @SuppressLint("Recycle") Cursor res = sqLiteDatabase.rawQuery("select * from " + SAME_NAME_STREETS_TABLE + " where " + COLUMN_STREETS_NAME_WITH_SAME_NAME + " LIKE '%" + searchPhrase + "%'", null);
         if (res.getCount() == 0) return false;
-        else return true;
+        else {
+            Log.i("TAF_getCount", res.getCount() + "");
+            return true;
+        }
     }
 
 
