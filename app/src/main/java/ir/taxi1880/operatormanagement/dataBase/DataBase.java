@@ -324,21 +324,24 @@ public class DataBase extends SQLiteOpenHelper {
         }
     }
 
-    public SameNameStreetsModel getStreetNameWithSameName(String searchPhrase) {
+    public ArrayList<SameNameStreetsModel> getStreetNameWithSameName(String searchPhrase) {
+        ArrayList<SameNameStreetsModel> models = new ArrayList<>();
         SQLiteDatabase sqLiteDatabase = this.getReadableDatabase();
         @SuppressLint("Recycle") Cursor res = sqLiteDatabase.rawQuery("select * from " + SAME_NAME_STREETS_TABLE + " where " + COLUMN_STREETS_NAME_WITH_SAME_NAME + " LIKE '%" + searchPhrase + "%'", null);
         if (res.getCount() == 0) {
-            Log.i("TAF_getCountget", res.getCount() + "");
             return null;
         }
-        else {
-            Log.i("TAF_getCountget", res.getCount() + "");
+
+        res.moveToFirst();
+        while (!res.isAfterLast()) {
             SameNameStreetsModel sameNameStreetsModel = new SameNameStreetsModel(
                     res.getString(res.getColumnIndex(COLUMN_STREETS_NAME_WITH_SAME_NAME)),
                     res.getString(res.getColumnIndex(COLUMN_AROUND_STREET)));
-
-            return sameNameStreetsModel;
+            models.add(sameNameStreetsModel);
+            res.moveToNext();
         }
+        return models;
+
     }
 
     public boolean isStreetNameWithSameName(String searchPhrase) {

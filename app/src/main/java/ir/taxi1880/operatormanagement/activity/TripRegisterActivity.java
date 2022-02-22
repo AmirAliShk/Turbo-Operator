@@ -633,7 +633,8 @@ public class TripRegisterActivity extends AppCompatActivity {
                     if (dataBase.isStreetNameWithSameName(charSequence.toString().trim())) {
                         Log.i("TAF2", charSequence.toString());
                         originSameNameStreet = new ArrayList<>();
-                        originSameNameStreet.add(dataBase.getStreetNameWithSameName(charSequence.toString()));
+                        originSameNameStreet = dataBase.getStreetNameWithSameName(charSequence.toString().trim());
+//                        Log.i("TAF252", dataBase.getStreetNameWithSameName(charSequence.toString().trim()).toString());
                         binding.sameNameOrigin.setVisibility(View.VISIBLE);
                     } else {
                         binding.sameNameOrigin.setVisibility(View.GONE);
@@ -685,7 +686,7 @@ public class TripRegisterActivity extends AppCompatActivity {
                         Log.i("TAF2", charSequence.toString());
                         binding.sameNameDest.setVisibility(View.VISIBLE);
                         destSameNameStreet = new ArrayList<>();
-                        destSameNameStreet.add(dataBase.getStreetNameWithSameName(charSequence.toString()));
+                        destSameNameStreet = dataBase.getStreetNameWithSameName(charSequence.toString().trim());
                         Log.i("taf_destSAme",destSameNameStreet.toString());
                     } else {
                         binding.sameNameDest.setVisibility(View.GONE);

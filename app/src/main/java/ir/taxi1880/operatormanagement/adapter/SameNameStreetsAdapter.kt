@@ -6,6 +6,7 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import ir.taxi1880.operatormanagement.app.MyApplication
 import ir.taxi1880.operatormanagement.databinding.ItemSameNameStreetsBinding
+import ir.taxi1880.operatormanagement.helper.TypefaceUtil
 import ir.taxi1880.operatormanagement.model.SameNameStreetsModel
 
 class SameNameStreetsAdapter(sameNameStreetsList: ArrayList<SameNameStreetsModel>) :
@@ -25,6 +26,7 @@ class SameNameStreetsAdapter(sameNameStreetsList: ArrayList<SameNameStreetsModel
             parent,
             false
         )
+        TypefaceUtil.overrideFonts(binding.root)
         return SameNameStreetsHolder(binding)
     }
 
