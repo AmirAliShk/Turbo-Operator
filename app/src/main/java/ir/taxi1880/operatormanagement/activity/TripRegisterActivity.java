@@ -24,6 +24,7 @@ import android.widget.ImageView;
 import android.widget.RadioButton;
 import android.widget.Toast;
 
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 
@@ -40,6 +41,8 @@ import org.linphone.core.RegistrationState;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
+import java.util.stream.Collectors;
 
 import ir.taxi1880.operatormanagement.R;
 import ir.taxi1880.operatormanagement.adapter.AddressAdapter;
@@ -143,35 +146,6 @@ public class TripRegisterActivity extends AppCompatActivity {
                 window.setStatusBarColor(getResources().getColor(R.color.colorPrimaryDark));
             }
         }
-
-        SameNameStreetsModel model = new SameNameStreetsModel("نسترن", "سجاد");
-        SameNameStreetsModel model2 = new SameNameStreetsModel("نسترن", "قاسم آباد");
-        SameNameStreetsModel model3 = new SameNameStreetsModel("هجرت", "سجاد");
-        SameNameStreetsModel model4 = new SameNameStreetsModel("هجرت", "قاسم آباد");
-        SameNameStreetsModel model5 = new SameNameStreetsModel("محمد", "سجاد");
-        SameNameStreetsModel model6 = new SameNameStreetsModel("محمد", "قاسم آباد");
-        SameNameStreetsModel model7 = new SameNameStreetsModel("رضا", "سجاد");
-        SameNameStreetsModel model8 = new SameNameStreetsModel("رضا", "بلوار رضا");
-        SameNameStreetsModel model9 = new SameNameStreetsModel("امام", "امام خمینی");
-        SameNameStreetsModel model10 = new SameNameStreetsModel("امام", "امام رضا");
-        SameNameStreetsModel model11 = new SameNameStreetsModel("امام رضا", "مشهد");
-        SameNameStreetsModel model12 = new SameNameStreetsModel("امام رضا", "شاندیز");
-        SameNameStreetsModel model13 = new SameNameStreetsModel("امام رضا", "طرقبه");
-
-        dataBase = new DataBase(MyApplication.currentActivity);
-        dataBase.insertSameNameStreets(model);
-        dataBase.insertSameNameStreets(model2);
-        dataBase.insertSameNameStreets(model3);
-        dataBase.insertSameNameStreets(model4);
-        dataBase.insertSameNameStreets(model5);
-        dataBase.insertSameNameStreets(model6);
-        dataBase.insertSameNameStreets(model7);
-        dataBase.insertSameNameStreets(model8);
-        dataBase.insertSameNameStreets(model9);
-        dataBase.insertSameNameStreets(model10);
-        dataBase.insertSameNameStreets(model11);
-        dataBase.insertSameNameStreets(model12);
-        dataBase.insertSameNameStreets(model13);
 
         binding = ActivityTripRegisterBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
@@ -629,6 +603,7 @@ public class TripRegisterActivity extends AppCompatActivity {
         public void beforeTextChanged(CharSequence charSequence, int start, int count, int after) {
         }
 
+        @RequiresApi(api = Build.VERSION_CODES.N)
         @Override
         public void onTextChanged(CharSequence charSequence, int start, int before, int count) {
             originAddressChangeCounter = originAddressChangeCounter + 1;
@@ -657,6 +632,7 @@ public class TripRegisterActivity extends AppCompatActivity {
         public void beforeTextChanged(CharSequence charSequence, int start, int count, int after) {
         }
 
+        @RequiresApi(api = Build.VERSION_CODES.N)
         @Override
         public void onTextChanged(CharSequence charSequence, int start, int before, int count) {
             destAddressChangeCounter = destAddressChangeCounter + 1;
@@ -678,22 +654,36 @@ public class TripRegisterActivity extends AppCompatActivity {
         }
     };
 
+    @RequiresApi(api = Build.VERSION_CODES.N)
     private void searchInDataBaseForSameNameStreet(String addressType, int count, CharSequence ImportChar, ArrayList<SameNameStreetsModel> sameNameStreets, ImageView sameNamePic) {
         if (!(count == 0)) {
             if (ImportChar.toString().contains(" ")) {
                 if (sameNameStreets != null) {
                     sameNameStreets.clear();
                 }
-                sameNameStreets = new ArrayList<>();
                 String[] splitAddress = ImportChar.toString().split(" ");
-                for (int i = 0; i < splitAddress.length; i++) {
-                    if (dataBase.isStreetNameWithSameName(splitAddress[i].trim())) {
-//                        Log.i("taf_splitAddress[i]",splitAddress[i].trim());
-//                        sameNameStreets = dataBase.getStreetNameWithSameName(splitAddress[i].trim());
+                for (String address : splitAddress) {
+                    if (dataBase.isStreetNameWithSameName(address.trim())) {
                         if (addressType.equals("origin")) {
-                            originSameNameStreets = searchEachWordForTheSame(splitAddress[i].trim(), sameNameStreets);
+                            if (originSameNameStreets == null) {
+                                originSameNameStreets = new ArrayList<>();
+                            }
+                            originSameNameStreets.addAll(dataBase.getStreetNameWithSameName(address.trim()));
+                            List<SameNameStreetsModel> sortedList = originSameNameStreets
+                                    .stream() // get stream for unique SET
+                                    .distinct()// rank comparing
+                                    .collect(Collectors.toList());
+                            originSameNameStreets = (ArrayList<SameNameStreetsModel>) sortedList;
                         } else {
-                            destSameNameStreets = searchEachWordForTheSame(splitAddress[i].trim(), sameNameStreets);
+                            if (destSameNameStreets == null) {
+                                destSameNameStreets = new ArrayList<>();
+                            }
+                            destSameNameStreets.addAll(dataBase.getStreetNameWithSameName(address.trim()));
+                            List<SameNameStreetsModel> sortedList = destSameNameStreets
+                                    .stream() // get stream for unique SET
+                                    .distinct()// rank comparing
+                                    .collect(Collectors.toList());
+                            destSameNameStreets = (ArrayList<SameNameStreetsModel>) sortedList;
                         }
                         sameNamePic.setVisibility(View.VISIBLE);
                     } else {
@@ -704,48 +694,6 @@ public class TripRegisterActivity extends AppCompatActivity {
 
         } else sameNamePic.setVisibility(View.GONE);
 
-    }
-
-    private ArrayList<SameNameStreetsModel> searchEachWordForTheSame(String address, ArrayList<SameNameStreetsModel> sameNameStreets) {
-        String[] splitAddress = address.split(" ");
-        ArrayList<SameNameStreetsModel> model = new ArrayList<>();
-        ArrayList<SameNameStreetsModel> lastModel = new ArrayList<>();
-        for (int i = 0; i < splitAddress.length; i++) {
-//            Log.i("taf_for", i + "");
-//            Log.i("taf_for", dataBase.getStreetNameWithSameName(splitAddress[i]) + "")
-            if (model.isEmpty()) {
-                model.addAll(dataBase.getStreetNameWithSameName(splitAddress[i]));
-                lastModel = model;
-                Log.i("taf_isEmpty", lastModel.toString());
-            } else {
-                for (int j = 0; j < model.size(); j++) {
-                    if (model.get(j).getSameNameStreet().equals(lastModel.get(j).getSameNameStreet())
-                            && model.get(j).getAroundStreet().equals(lastModel.get(j).getAroundStreet())) {
-                        Log.i("taf_continue", lastModel.toString());
-                        continue;
-
-                    }
-                    Log.i("taf_isn'tEmpty_before", lastModel.toString());
-                    model.addAll(dataBase.getStreetNameWithSameName(splitAddress[i]));
-                    lastModel = model;
-                    Log.i("taf_isn'tEmpty_after", lastModel.toString());
-                }
-            }
-        }
-        sameNameStreets.addAll(model);
-//        Log.i("taf_for_model", model + "");
-        return sameNameStreets;
-//        Set<SameNameStreetsModel> setWithoutFrequent = ((ArrayList<SameNameStreetsModel>) model)
-//                .stream()
-//                .collect(Collectors.toCollection(() ->
-//                        new TreeSet<>(Comparator.comparing(SameNameStreetsModel::getSameNameStreet))));
-//
-//        List<SameNameStreetsModel> sortedList = setWithoutFrequent
-//                .stream() // get stream for unique SET
-//                .sorted(Comparator.comparing(SameNameStreetsModel::getSameNameStreet)) // rank comparing
-//                .collect(Collectors.toList());
-
-//        destSameNameStreet = (ArrayList)sortedList;
     }
 
     private void removeExtraSpace(AutoCompleteTextView ACTextView) {

@@ -354,6 +354,11 @@ public class DataBase extends SQLiteOpenHelper {
         }
     }
 
+    public void clearStreetNameWithSameNameTable() {
+        SQLiteDatabase sqLiteDatabase = this.getWritableDatabase();
+        sqLiteDatabase.delete(SAME_NAME_STREETS_TABLE, null, null);
+    }
+
 
 // ****************************************************** City Table ******************************************************
 
