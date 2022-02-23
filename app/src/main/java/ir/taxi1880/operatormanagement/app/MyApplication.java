@@ -30,7 +30,6 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
-import java.util.Objects;
 
 import ir.taxi1880.operatormanagement.R;
 import ir.taxi1880.operatormanagement.helper.TypefaceUtil;
@@ -55,6 +54,7 @@ public class MyApplication extends Application {
     public static final String DIR_MAIN_FOLDER = Environment.getExternalStorageDirectory().getAbsolutePath() + "/TurboOperator/";
     public static final String VOICE_FOLDER_NAME = "Voice/";
     public static final String image_path_save = DIR_MAIN_FOLDER + "Image/";
+    public static final String UPDATE_FOLDER_NAME = "Update/";
     public static final String SOUND = "android.resource://ir.taxi1880.operatormanagement/";
 
     @Override
@@ -66,13 +66,13 @@ public class MyApplication extends Application {
 
         prefManager = new PrefManager(context);
 
+        new File(DIR_MAIN_FOLDER + UPDATE_FOLDER_NAME).mkdirs();
         File file = new File(DIR_MAIN_FOLDER + VOICE_FOLDER_NAME + ".nomedia");
         try {
             if (!file.getParentFile().exists())
                 file.getParentFile().mkdirs();
             if (!file.exists())
                 file.createNewFile();
-//            file.createNewFile();
         } catch (IOException e) {
             e.printStackTrace();
             AvaCrashReporter.send(e, TAG + " class, onCreate method ");

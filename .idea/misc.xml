@@ -111,6 +111,7 @@
         <entry key="app/src/main/res/layout/dialog_complaint_registreation.xml" value="0.34010416666666665" />
         <entry key="app/src/main/res/layout/dialog_complaints_history.xml" value="0.34010416666666665" />
         <entry key="app/src/main/res/layout/dialog_description.xml" value="0.34010416666666665" />
+        <entry key="app/src/main/res/layout/dialog_download_update.xml" value="0.3101851851851852" />
         <entry key="app/src/main/res/layout/dialog_driver_info.xml" value="0.34010416666666665" />
         <entry key="app/src/main/res/layout/dialog_driver_lock.xml" value="0.34010416666666665" />
         <entry key="app/src/main/res/layout/dialog_driver_station_registration.xml" value="0.34010416666666665" />
@@ -128,7 +129,7 @@
         <entry key="app/src/main/res/layout/dialog_numbers.xml" value="0.34010416666666665" />
         <entry key="app/src/main/res/layout/dialog_operator.xml" value="0.34010416666666665" />
         <entry key="app/src/main/res/layout/dialog_overlay_permission.xml" value="0.3484375" />
-        <entry key="app/src/main/res/layout/dialog_paly_last_conversation.xml" value="0.17447916666666666" />
+        <entry key="app/src/main/res/layout/dialog_paly_last_conversation.xml" value="0.34010416666666665" />
         <entry key="app/src/main/res/layout/dialog_pending_mistakes_options.xml" value="0.34010416666666665" />
         <entry key="app/src/main/res/layout/dialog_pricing.xml" value="0.34010416666666665" />
         <entry key="app/src/main/res/layout/dialog_recent_calls.xml" value="0.34010416666666665" />
@@ -137,7 +138,7 @@
         <entry key="app/src/main/res/layout/dialog_reward_trip.xml" value="0.20903954802259886" />
         <entry key="app/src/main/res/layout/dialog_save_mistake_result.xml" value="0.34010416666666665" />
         <entry key="app/src/main/res/layout/dialog_search_filter.xml" value="0.34010416666666665" />
-        <entry key="app/src/main/res/layout/dialog_search_station_info.xml" value="0.2916666666666667" />
+        <entry key="app/src/main/res/layout/dialog_search_station_info.xml" value="0.34010416666666665" />
         <entry key="app/src/main/res/layout/dialog_select_city.xml" value="0.34010416666666665" />
         <entry key="app/src/main/res/layout/dialog_station_info.xml" value="0.34010416666666665" />
         <entry key="app/src/main/res/layout/dialog_support.xml" value="0.34010416666666665" />
@@ -213,7 +214,7 @@
     </option>
   </component>
   <component name="ExternalStorageConfigurationManager" enabled="true" />
-  <component name="ProjectRootManager" version="2" languageLevel="JDK_11" default="true" project-jdk-name="11" project-jdk-type="JavaSDK">
+  <component name="ProjectRootManager" version="2" languageLevel="JDK_1_8" project-jdk-name="11" project-jdk-type="JavaSDK">
     <output url="file://$PROJECT_DIR$/build/classes" />
   </component>
 </project>

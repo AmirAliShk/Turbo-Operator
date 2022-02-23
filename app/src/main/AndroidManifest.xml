@@ -38,7 +38,8 @@
         android:theme="@style/AppThemeLite"
         android:usesCleartextTraffic="true">
 
-        <activity android:name=".activity.SupportActivity"
+        <activity
+            android:name=".activity.SupportActivity"
             android:windowSoftInputMode="adjustResize|stateHidden" />
 
         <activity
@@ -93,6 +94,16 @@
             android:name=".receiver.PushReceiver"
             android:enabled="true"
             android:exported="false" />
+
+        <provider
+            android:name="androidx.core.content.FileProvider"
+            android:authorities="ir.taxi1880.operatormanagement"
+            android:exported="false"
+            android:grantUriPermissions="true">
+            <meta-data
+                android:name="android.support.FILE_PROVIDER_PATHS"
+                android:resource="@xml/paths" />
+        </provider>
         <!--
      The API key for Google Maps-based APIs is defined as a string resource.
      (See the file "res/values/google_maps_api.xml").
@@ -104,6 +115,7 @@
         <meta-data
             android:name="com.google.android.geo.API_KEY"
             android:value="AIzaSyBUEbFU7vJuezWX6NM97vpRaa0T-DaJS7c" />
+
     </application>
 
 </manifest>

@@ -5,8 +5,6 @@ import static ir.taxi1880.operatormanagement.app.MyApplication.context;
 import android.annotation.SuppressLint;
 import android.app.NotificationManager;
 import android.content.Context;
-import android.content.Intent;
-import android.net.Uri;
 import android.os.Build;
 import android.provider.Settings;
 
@@ -19,6 +17,7 @@ import ir.taxi1880.operatormanagement.app.Constant;
 import ir.taxi1880.operatormanagement.app.EndPoints;
 import ir.taxi1880.operatormanagement.app.MyApplication;
 import ir.taxi1880.operatormanagement.dataBase.DataBase;
+import ir.taxi1880.operatormanagement.dialog.DownloadUpdateDialog;
 import ir.taxi1880.operatormanagement.dialog.GeneralDialog;
 import ir.taxi1880.operatormanagement.fragment.LoginFragment;
 import ir.taxi1880.operatormanagement.helper.AppVersionHelper;
@@ -210,24 +209,14 @@ public class GetAppInfo {
             generalDialog.title("به روز رسانی");
             generalDialog.cancelable(false);
             generalDialog.message("برای برنامه نسخه جدیدی موجود است لطفا برنامه را به روز رسانی کنید");
-            generalDialog.firstButton("به روز رسانی", () -> {
-                Intent i = new Intent(Intent.ACTION_VIEW);
-                i.setData(Uri.parse(url));
-                MyApplication.currentActivity.startActivity(i);
-                MyApplication.currentActivity.finish();
-            });
+            generalDialog.firstButton("به روز رسانی", () -> new DownloadUpdateDialog().show(url));
             generalDialog.secondButton("بستن برنامه", () -> MyApplication.currentActivity.finish());
             generalDialog.show();
         } else {
             generalDialog.title("به روز رسانی");
             generalDialog.cancelable(false);
             generalDialog.message("برای برنامه نسخه جدیدی موجود است در صورت تمایل میتوانید برنامه را به روز رسانی کنید");
-            generalDialog.firstButton("به روز رسانی", () -> {
-                Intent i = new Intent(Intent.ACTION_VIEW);
-                i.setData(Uri.parse(url));
-                MyApplication.currentActivity.startActivity(i);
-                MyApplication.currentActivity.finish();
-            });
+            generalDialog.firstButton("به روز رسانی", () -> new DownloadUpdateDialog().show(url));
             generalDialog.secondButton("فعلا نه", this::startVoipService);
             generalDialog.show();
         }
