@@ -20,10 +20,10 @@ import android.view.WindowManager;
 import android.widget.AdapterView;
 import android.widget.AutoCompleteTextView;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.RadioButton;
 import android.widget.Toast;
 
-import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 
@@ -40,11 +40,6 @@ import org.linphone.core.RegistrationState;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Comparator;
-import java.util.List;
-import java.util.Set;
-import java.util.TreeSet;
-import java.util.stream.Collectors;
 
 import ir.taxi1880.operatormanagement.R;
 import ir.taxi1880.operatormanagement.adapter.AddressAdapter;
@@ -126,8 +121,8 @@ public class TripRegisterActivity extends AppCompatActivity {
 
     ArrayList<AddressesModel> originAddresses;
     ArrayList<AddressesModel> destinationAddresses;
-    ArrayList<SameNameStreetsModel> originSameNameStreet;
-    ArrayList destSameNameStreet;
+    ArrayList<SameNameStreetsModel> originSameNameStreets;
+    ArrayList<SameNameStreetsModel> destSameNameStreets;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -500,9 +495,9 @@ public class TripRegisterActivity extends AppCompatActivity {
             }
         });
 
-        binding.sameNameOrigin.setOnClickListener(view -> new SameNameStreetsDialog().show(originSameNameStreet));
+        binding.sameNameOrigin.setOnClickListener(view -> new SameNameStreetsDialog().show(originSameNameStreets));
 
-        binding.sameNameDest.setOnClickListener(view -> new SameNameStreetsDialog().show(destSameNameStreet));
+        binding.sameNameDest.setOnClickListener(view -> new SameNameStreetsDialog().show(destSameNameStreets));
     }
 
     private void onPressDownload() {
@@ -640,26 +635,8 @@ public class TripRegisterActivity extends AppCompatActivity {
 //            if (binding.edtOriginAddress.isFocused()) {
 //                originAddressId = "0";
 //            }
-//            binding.sameNameOrigin.setVisibility(View.GONE);
-            Log.i("TAF_Count", String.valueOf(count));
 
-            if (!(count == 0)) {
-                if (charSequence.toString().contains(" ")) {
-                    originSameNameStreet = new ArrayList<>();
-                    String[] splitAddress = charSequence.toString().split(" ");
-                    for (int i = 0; i < splitAddress.length; i++) {
-                        if (dataBase.isStreetNameWithSameName(splitAddress[i].trim())) {
-                            Log.i("taf_splitAddress[i]",splitAddress[i].trim());
-                            originSameNameStreet = dataBase.getStreetNameWithSameName(splitAddress[i].trim());
-                            binding.sameNameOrigin.setVisibility(View.VISIBLE);
-                        } else {
-                            binding.sameNameOrigin.setVisibility(View.GONE);
-                        }
-                    }
-                }
-
-            } else binding.sameNameOrigin.setVisibility(View.GONE);
-
+            searchInDataBaseForSameNameStreet("origin", count, charSequence, originSameNameStreets, binding.sameNameOrigin);
 
             removeExtraSpace(binding.edtOriginAddress);
         }
@@ -672,12 +649,6 @@ public class TripRegisterActivity extends AppCompatActivity {
                 originAddressLength = 0;
                 binding.edtOriginAddress.getText().clear();
             }
-
-//            String result = s.toString().replaceAll(" {2}", " ");
-//            if (!s.toString().equals(result)) { // it remove the extra space in the text
-//                binding.edtOriginAddress.setText(result);
-//                binding.edtOriginAddress.setSelection(result.length());
-//            }
         }
     };
 
@@ -692,27 +663,7 @@ public class TripRegisterActivity extends AppCompatActivity {
 //            if (binding.edtDestinationAddress.isFocused()) {
 //                destinationAddressId = "0";
 //            }
-
-//            binding.sameNameDest.setVisibility(View.GONE);
-
-            if (!(count == 0)) {
-                if (charSequence.toString().contains(" ")) {
-                    destSameNameStreet = new ArrayList<>();
-                    String[] splitAddress = charSequence.toString().split(" ");
-                    for (int i = 0; i < splitAddress.length; i++) {
-                        if (dataBase.isStreetNameWithSameName(splitAddress[i].trim())) {
-                            Log.i("taf_splitAddress[i]",splitAddress[i].trim());
-//                            destSameNameStreet = dataBase.getStreetNameWithSameName(splitAddress[i].trim());
-                            binding.sameNameDest.setVisibility(View.VISIBLE);
-                            searchEachWordForTheSame(splitAddress[i].trim());
-                        } else {
-                            binding.sameNameDest.setVisibility(View.GONE);
-                        }
-                    }
-                }
-
-            } else
-                binding.sameNameDest.setVisibility(View.GONE);
+            searchInDataBaseForSameNameStreet("dest", count, charSequence, destSameNameStreets, binding.sameNameDest);
 
             removeExtraSpace(binding.edtDestinationAddress);
         }
@@ -724,26 +675,66 @@ public class TripRegisterActivity extends AppCompatActivity {
                 destAddressLength = 0;
                 binding.edtDestinationAddress.getText().clear();
             }
-
-//            String result = s.toString().replaceAll(" {2}", " ");
-//            if (!s.toString().equals(result)) { // it remove the extra space in the text
-//                binding.edtDestinationAddress.setText(result);
-//                binding.edtDestinationAddress.setSelection(result.length());
-//            }
         }
     };
 
-    private void searchEachWordForTheSame(String address) {
+    private void searchInDataBaseForSameNameStreet(String addressType, int count, CharSequence ImportChar, ArrayList<SameNameStreetsModel> sameNameStreets, ImageView sameNamePic) {
+        if (!(count == 0)) {
+            if (ImportChar.toString().contains(" ")) {
+                if (sameNameStreets != null) {
+                    sameNameStreets.clear();
+                }
+                sameNameStreets = new ArrayList<>();
+                String[] splitAddress = ImportChar.toString().split(" ");
+                for (int i = 0; i < splitAddress.length; i++) {
+                    if (dataBase.isStreetNameWithSameName(splitAddress[i].trim())) {
+//                        Log.i("taf_splitAddress[i]",splitAddress[i].trim());
+//                        sameNameStreets = dataBase.getStreetNameWithSameName(splitAddress[i].trim());
+                        if (addressType.equals("origin")) {
+                            originSameNameStreets = searchEachWordForTheSame(splitAddress[i].trim(), sameNameStreets);
+                        } else {
+                            destSameNameStreets = searchEachWordForTheSame(splitAddress[i].trim(), sameNameStreets);
+                        }
+                        sameNamePic.setVisibility(View.VISIBLE);
+                    } else {
+                        sameNamePic.setVisibility(View.GONE);
+                    }
+                }
+            }
+
+        } else sameNamePic.setVisibility(View.GONE);
+
+    }
+
+    private ArrayList<SameNameStreetsModel> searchEachWordForTheSame(String address, ArrayList<SameNameStreetsModel> sameNameStreets) {
         String[] splitAddress = address.split(" ");
         ArrayList<SameNameStreetsModel> model = new ArrayList<>();
+        ArrayList<SameNameStreetsModel> lastModel = new ArrayList<>();
         for (int i = 0; i < splitAddress.length; i++) {
-            Log.i("taf_for", i + "");
-            Log.i("taf_for", dataBase.getStreetNameWithSameName(splitAddress[i]) + "");
-            model.addAll(dataBase.getStreetNameWithSameName(splitAddress[i]));
-        }
-        destSameNameStreet.addAll(model);
-        Log.i("taf_for_model", model + "");
+//            Log.i("taf_for", i + "");
+//            Log.i("taf_for", dataBase.getStreetNameWithSameName(splitAddress[i]) + "")
+            if (model.isEmpty()) {
+                model.addAll(dataBase.getStreetNameWithSameName(splitAddress[i]));
+                lastModel = model;
+                Log.i("taf_isEmpty", lastModel.toString());
+            } else {
+                for (int j = 0; j < model.size(); j++) {
+                    if (model.get(j).getSameNameStreet().equals(lastModel.get(j).getSameNameStreet())
+                            && model.get(j).getAroundStreet().equals(lastModel.get(j).getAroundStreet())) {
+                        Log.i("taf_continue", lastModel.toString());
+                        continue;
 
+                    }
+                    Log.i("taf_isn'tEmpty_before", lastModel.toString());
+                    model.addAll(dataBase.getStreetNameWithSameName(splitAddress[i]));
+                    lastModel = model;
+                    Log.i("taf_isn'tEmpty_after", lastModel.toString());
+                }
+            }
+        }
+        sameNameStreets.addAll(model);
+//        Log.i("taf_for_model", model + "");
+        return sameNameStreets;
 //        Set<SameNameStreetsModel> setWithoutFrequent = ((ArrayList<SameNameStreetsModel>) model)
 //                .stream()
 //                .collect(Collectors.toCollection(() ->
@@ -755,7 +746,6 @@ public class TripRegisterActivity extends AppCompatActivity {
 //                .collect(Collectors.toList());
 
 //        destSameNameStreet = (ArrayList)sortedList;
-
     }
 
     private void removeExtraSpace(AutoCompleteTextView ACTextView) {

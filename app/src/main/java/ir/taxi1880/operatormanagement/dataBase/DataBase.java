@@ -349,7 +349,7 @@ public class DataBase extends SQLiteOpenHelper {
         @SuppressLint("Recycle") Cursor res = sqLiteDatabase.rawQuery("select * from " + SAME_NAME_STREETS_TABLE + " where " + COLUMN_STREETS_NAME_WITH_SAME_NAME + " LIKE '%" + searchPhrase + "%'", null);
         if (res.getCount() == 0) return false;
         else {
-            Log.i("TAF_getCount", res.getCount() + "");
+//            Log.i("TAF_getCount", res.getCount() + "");
             return true;
         }
     }
