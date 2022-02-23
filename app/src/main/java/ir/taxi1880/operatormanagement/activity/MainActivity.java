@@ -19,7 +19,6 @@ import ir.taxi1880.operatormanagement.adapter.MainViewPagerAdapter;
 import ir.taxi1880.operatormanagement.app.Constant;
 import ir.taxi1880.operatormanagement.app.DataHolder;
 import ir.taxi1880.operatormanagement.app.MyApplication;
-import ir.taxi1880.operatormanagement.dataBase.DataBase;
 import ir.taxi1880.operatormanagement.databinding.ActivityMainBinding;
 import ir.taxi1880.operatormanagement.dialog.GeneralDialog;
 import ir.taxi1880.operatormanagement.fragment.AccountFragment;
