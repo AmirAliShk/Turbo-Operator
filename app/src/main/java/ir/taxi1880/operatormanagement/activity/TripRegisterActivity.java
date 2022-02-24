@@ -39,6 +39,7 @@ import org.linphone.core.CoreListenerStub;
 import org.linphone.core.ProxyConfig;
 import org.linphone.core.RegistrationState;
 
+import java.nio.file.StandardWatchEventKinds;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -120,12 +121,13 @@ public class TripRegisterActivity extends AppCompatActivity {
     String passengerId;
     int moshId = 0;
 
-    DataBase dataBase;
 
     ArrayList<AddressesModel> originAddresses;
     ArrayList<AddressesModel> destinationAddresses;
     ArrayList<SameNameStreetsModel> originSameNameStreets;
     ArrayList<SameNameStreetsModel> destSameNameStreets;
+
+    DataBase dataBase;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -146,7 +148,7 @@ public class TripRegisterActivity extends AppCompatActivity {
                 window.setStatusBarColor(getResources().getColor(R.color.colorPrimaryDark));
             }
         }
-
+        dataBase = new DataBase(MyApplication.context);
         binding = ActivityTripRegisterBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
@@ -611,7 +613,7 @@ public class TripRegisterActivity extends AppCompatActivity {
 //                originAddressId = "0";
 //            }
 
-            searchInDataBaseForSameNameStreet("origin", count, charSequence, originSameNameStreets, binding.sameNameOrigin);
+            searchInDataBaseForSameNameStreet("origin", start, count, charSequence, originSameNameStreets, binding.sameNameOrigin);
 
             removeExtraSpace(binding.edtOriginAddress);
         }
@@ -639,7 +641,10 @@ public class TripRegisterActivity extends AppCompatActivity {
 //            if (binding.edtDestinationAddress.isFocused()) {
 //                destinationAddressId = "0";
 //            }
-            searchInDataBaseForSameNameStreet("dest", count, charSequence, destSameNameStreets, binding.sameNameDest);
+            Log.i("taf_count", count + "");
+            Log.i("taf_start", start + "");
+            Log.i("taf_before", before + "");
+            searchInDataBaseForSameNameStreet("dest", count, start, charSequence, destSameNameStreets, binding.sameNameDest);
 
             removeExtraSpace(binding.edtDestinationAddress);
         }
@@ -653,17 +658,30 @@ public class TripRegisterActivity extends AppCompatActivity {
             }
         }
     };
-
+    boolean state = false;
     @RequiresApi(api = Build.VERSION_CODES.N)
-    private void searchInDataBaseForSameNameStreet(String addressType, int count, CharSequence ImportChar, ArrayList<SameNameStreetsModel> sameNameStreets, ImageView sameNamePic) {
-        if (!(count == 0)) {
+    private void searchInDataBaseForSameNameStreet(String addressType, int count, int start, CharSequence ImportChar, ArrayList<SameNameStreetsModel> sameNameStreets, ImageView sameNamePic) {
+
+        if (count == 0 && start == 0) {
+            state = false;
+            sameNamePic.setVisibility(View.GONE);
+        } else {
+            Log.i("taf_addressType-1", ImportChar.toString());
             if (ImportChar.toString().contains(" ")) {
+                Log.i("taf_addressType-2", ImportChar.toString());
+
                 if (sameNameStreets != null) {
                     sameNameStreets.clear();
                 }
                 String[] splitAddress = ImportChar.toString().split(" ");
+                Log.i("taf_splitAddress", Arrays.toString(splitAddress));
+
+
                 for (String address : splitAddress) {
                     if (dataBase.isStreetNameWithSameName(address.trim())) {
+                        state = true;
+                        sameNamePic.setVisibility(View.VISIBLE);
+                        Log.i("taf_isStreetNameWith", String.valueOf(dataBase.isStreetNameWithSameName(address.trim())));
                         if (addressType.equals("origin")) {
                             if (originSameNameStreets == null) {
                                 originSameNameStreets = new ArrayList<>();
@@ -673,6 +691,7 @@ public class TripRegisterActivity extends AppCompatActivity {
                                     .stream() // get stream for unique SET
                                     .distinct()// rank comparing
                                     .collect(Collectors.toList());
+                            Log.i("taf_originSameName", String.valueOf(dataBase.getStreetNameWithSameName(address.trim())));
                             originSameNameStreets = (ArrayList<SameNameStreetsModel>) sortedList;
                         } else {
                             if (destSameNameStreets == null) {
@@ -683,16 +702,18 @@ public class TripRegisterActivity extends AppCompatActivity {
                                     .stream() // get stream for unique SET
                                     .distinct()// rank comparing
                                     .collect(Collectors.toList());
+                            Log.i("taf_destSameName", String.valueOf(dataBase.getStreetNameWithSameName(address.trim())));
                             destSameNameStreets = (ArrayList<SameNameStreetsModel>) sortedList;
                         }
-                        sameNamePic.setVisibility(View.VISIBLE);
                     } else {
-                        sameNamePic.setVisibility(View.GONE);
+                        if (state)
+                            sameNamePic.setVisibility(View.VISIBLE);
+                        else
+                            sameNamePic.setVisibility(View.GONE);
                     }
                 }
             }
-
-        } else sameNamePic.setVisibility(View.GONE);
+        }
 
     }
 
