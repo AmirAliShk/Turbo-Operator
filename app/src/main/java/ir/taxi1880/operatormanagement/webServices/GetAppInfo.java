@@ -45,42 +45,6 @@ public class GetAppInfo {
                         .setAddToBackStack(false)
                         .add();
             } else {
-
-                if (dataBase != null)
-                    dataBase.clearStreetNameWithSameNameTable();
-                else
-                    dataBase = new DataBase(MyApplication.currentActivity);
-                dataBase.clearStreetNameWithSameNameTable();
-
-
-                SameNameStreetsModel model = new SameNameStreetsModel("نسترن", "سجاد");
-                SameNameStreetsModel model2 = new SameNameStreetsModel("نسترن", "قاسم آباد");
-                SameNameStreetsModel model3 = new SameNameStreetsModel("هجرت", "سجاد");
-                SameNameStreetsModel model4 = new SameNameStreetsModel("هجرت", "قاسم آباد");
-                SameNameStreetsModel model5 = new SameNameStreetsModel("محمد", "سجاد");
-                SameNameStreetsModel model6 = new SameNameStreetsModel("محمد", "قاسم آباد");
-                SameNameStreetsModel model7 = new SameNameStreetsModel("رضا", "سجاد");
-                SameNameStreetsModel model8 = new SameNameStreetsModel("رضا", "بلوار رضا");
-                SameNameStreetsModel model9 = new SameNameStreetsModel("امام", "امام خمینی");
-                SameNameStreetsModel model10 = new SameNameStreetsModel("امام", "امام رضا");
-                SameNameStreetsModel model11 = new SameNameStreetsModel("امام رضا", "مشهد");
-                SameNameStreetsModel model12 = new SameNameStreetsModel("امام رضا", "شاندیز");
-                SameNameStreetsModel model13 = new SameNameStreetsModel("امام رضا", "طرقبه");
-
-                dataBase.insertSameNameStreets(model);
-                dataBase.insertSameNameStreets(model2);
-                dataBase.insertSameNameStreets(model3);
-                dataBase.insertSameNameStreets(model4);
-                dataBase.insertSameNameStreets(model5);
-                dataBase.insertSameNameStreets(model6);
-                dataBase.insertSameNameStreets(model7);
-                dataBase.insertSameNameStreets(model8);
-                dataBase.insertSameNameStreets(model9);
-                dataBase.insertSameNameStreets(model10);
-                dataBase.insertSameNameStreets(model11);
-                dataBase.insertSameNameStreets(model12);
-                dataBase.insertSameNameStreets(model13);
-
                 JSONObject deviceInfo = new JSONObject();
                 @SuppressLint("HardwareIds") String android_id = Settings.Secure.getString(MyApplication.currentActivity.getContentResolver(), Settings.Secure.ANDROID_ID);
                 deviceInfo.put("MODEL", Build.MODEL);
@@ -143,6 +107,7 @@ public class GetAppInfo {
                     String ReasonsLock = object.getString("ReasonsLock");
                     String serviceCountToday = object.getString("serviceCountToday");
                     String serviceCountMonth = object.getString("serviceCountMonth");
+                    String sameNameStreetWhichCity = object.getString("citySpecificAddressItems");
                     int activeInQueue = object.getInt("activeInQueue");
                     int customerSupport = object.getInt("customerSupport");
                     int accessComplaint = object.getInt("accessComplaint");
@@ -173,6 +138,28 @@ public class GetAppInfo {
                         cityModel.setCity(cityObj.getString("cityname"));
                         cityModel.setCityLatin(cityObj.getString("latinName"));
                         dataBase.insertCity(cityModel);
+                    }
+
+//                    if (dataBase != null)
+//                    dataBase.clearStreetNameWithSameNameTable();
+//                else
+//                    dataBase = new DataBase(MyApplication.currentActivity);
+                    dataBase.clearStreetNameWithSameNameTable();
+                    JSONArray sameNameStreetWhichCityArr = new JSONArray(sameNameStreetWhichCity);
+                    for (int sc = 0; sc < sameNameStreetWhichCityArr.length(); sc++) {
+                        JSONObject sameNameStreetWhichCityObj = sameNameStreetWhichCityArr.getJSONObject(sc);
+                        JSONArray sameNameStreetArr = sameNameStreetWhichCityObj.getJSONArray("specificAddressItems");
+                        for (int s = 0; s < sameNameStreetArr.length(); s++) {
+                            JSONObject sameNameStreetObj = sameNameStreetArr.getJSONObject(s);
+                            SameNameStreetsModel sameNameStreetsModel = new SameNameStreetsModel(
+                                    sameNameStreetWhichCityObj.getInt("CityId"),
+                                    sameNameStreetWhichCityObj.getString("CityName"),
+                                    sameNameStreetObj.getString("streetName"),
+                                    sameNameStreetObj.getString("description")
+                            );
+                            dataBase.insertSameNameStreets(sameNameStreetsModel);
+                        }
+
                     }
                     MyApplication.prefManager.setActivateStatus(activeInQueue == 1);
 

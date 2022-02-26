@@ -613,7 +613,7 @@ public class TripRegisterActivity extends AppCompatActivity {
 //                originAddressId = "0";
 //            }
 
-            searchInDataBaseForSameNameStreet("origin", start, count, charSequence, originSameNameStreets, binding.sameNameOrigin);
+            searchInDataBaseForSameNameStreet("origin", cityCode ,start, count, charSequence, originSameNameStreets, binding.sameNameOrigin);
 
             removeExtraSpace(binding.edtOriginAddress);
         }
@@ -644,7 +644,7 @@ public class TripRegisterActivity extends AppCompatActivity {
             Log.i("taf_count", count + "");
             Log.i("taf_start", start + "");
             Log.i("taf_before", before + "");
-            searchInDataBaseForSameNameStreet("dest", count, start, charSequence, destSameNameStreets, binding.sameNameDest);
+            searchInDataBaseForSameNameStreet("dest", cityCode,count, start, charSequence, destSameNameStreets, binding.sameNameDest);
 
             removeExtraSpace(binding.edtDestinationAddress);
         }
@@ -661,7 +661,7 @@ public class TripRegisterActivity extends AppCompatActivity {
 
 
     @RequiresApi(api = Build.VERSION_CODES.N)
-    private void searchInDataBaseForSameNameStreet(String addressType, int count, int start, CharSequence ImportChar, ArrayList<SameNameStreetsModel> sameNameStreets, ImageView sameNamePic) {
+    private void searchInDataBaseForSameNameStreet(String addressType, int cityCode ,int count, int start, CharSequence ImportChar, ArrayList<SameNameStreetsModel> sameNameStreets, ImageView sameNamePic) {
         if (count == 0 && start == 0) {
             sameNamePic.setVisibility(View.GONE);
         } else {
@@ -673,9 +673,9 @@ public class TripRegisterActivity extends AppCompatActivity {
 
                 for (String address : splitAddress) {
                     if (address.length() <= 1) continue;
-                    if (dataBase.isStreetNameWithSameName(address.trim())) {
+                    if (dataBase.isStreetNameWithSameName(address.trim(),cityCode)) {
                         sameNamePic.setVisibility(View.VISIBLE);
-                        sameNameStreets.addAll(dataBase.getStreetNameWithSameName(address.trim()));
+                        sameNameStreets.addAll(dataBase.getStreetNameWithSameName(address.trim(),cityCode));
                         List<SameNameStreetsModel> sortedList = sameNameStreets
                                 .stream() // get stream for unique SET
                                 .distinct()// rank comparing

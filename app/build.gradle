@@ -7,7 +7,7 @@ android {
         applicationId "ir.taxi1880.operatormanagement"
         minSdkVersion 16
         targetSdkVersion 28
-        versionCode 57
+        versionCode 58
         versionName "8.7.9"
         multiDexEnabled true
 
