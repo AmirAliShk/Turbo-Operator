@@ -4,7 +4,7 @@
     android:id="@+id/rlParent"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:gravity="center"
+    android:gravity="top"
     android:layoutDirection="rtl"
     android:paddingLeft="25dp"
     android:paddingRight="25dp">
@@ -13,6 +13,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="30dp"
+        android:layout_marginRight="@dimen/_10sdp"
+        android:layout_marginLeft="@dimen/_10sdp"
         android:background="@drawable/bg_dialogue1"
         android:paddingLeft="@dimen/_10sdp"
         android:paddingTop="@dimen/_10sdp"
@@ -42,16 +44,16 @@
                     android:gravity="center_vertical"
                     android:text="نام خیابان :"
                     android:textColor="?attr/colorTitle"
-                    android:textSize="@dimen/_16sdp" />
+                    android:textSize="@dimen/_14sdp" />
 
                 <TextView
                     android:id="@+id/txtSameNameStreetItem"
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
-                    android:layout_weight="2.5"
+                    android:layout_weight="3"
                     android:gravity="center_vertical"
                     android:textColor="?attr/colorValue"
-                    android:textSize="@dimen/_18ssp"
+                    android:textSize="@dimen/_16ssp"
                     android:textStyle="bold"
                     android:text="خیام"/>
 
@@ -73,16 +75,16 @@
                     android:gravity="center_vertical"
                     android:text="توضیحات :"
                     android:textColor="?attr/colorTitle"
-                    android:textSize="@dimen/_16sdp" />
+                    android:textSize="@dimen/_14sdp" />
 
                 <TextView
                     android:id="@+id/txtAroundStreet"
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
-                    android:layout_weight="2.5"
+                    android:layout_weight="3"
                     android:gravity="center_vertical"
                     android:textColor="?attr/colorValue"
-                    android:textSize="@dimen/_18ssp"
+                    android:textSize="@dimen/_16ssp"
                     android:textStyle="bold"
                     android:text=" 1تا 60 خیام جنوبی "/>
 
@@ -95,10 +97,10 @@
 
     <ImageView
         android:id="@+id/imgStatus"
-        android:layout_width="wrap_content"
+        android:layout_width="@dimen/_40sdp"
         android:layout_height="wrap_content"
         android:layout_alignParentRight="true"
-        android:layout_marginRight="@dimen/_10sdp"
+        android:layout_marginRight="@dimen/_15sdp"
         android:padding="5dp"
         android:src="@drawable/ic_attentionn"
         android:elevation="@dimen/_3sdp"/>
