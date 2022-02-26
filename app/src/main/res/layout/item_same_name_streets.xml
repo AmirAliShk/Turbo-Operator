@@ -7,20 +7,17 @@
     android:gravity="center"
     android:layoutDirection="rtl"
     android:paddingLeft="25dp"
-    android:paddingTop="15dp"
-    android:paddingRight="25dp"
-    android:paddingBottom="15dp">
+    android:paddingRight="25dp">
 
     <ViewFlipper
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="30dp"
-        android:layout_marginBottom="5dp"
-        android:background="@drawable/bg_dialogue"
-        android:paddingLeft="15dp"
-        android:paddingTop="15dp"
-        android:paddingRight="20dp"
-        android:paddingBottom="15dp">
+        android:background="@drawable/bg_dialogue1"
+        android:paddingLeft="@dimen/_10sdp"
+        android:paddingTop="@dimen/_10sdp"
+        android:paddingRight="@dimen/_50sdp"
+        android:paddingBottom="@dimen/_10sdp">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -41,7 +38,7 @@
                 <TextView
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
-                    android:layout_weight="1"
+                    android:layout_weight="1.5"
                     android:gravity="center_vertical"
                     android:text="نام خیابان :"
                     android:textColor="?attr/colorTitle"
@@ -51,7 +48,7 @@
                     android:id="@+id/txtSameNameStreetItem"
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
-                    android:layout_weight="2"
+                    android:layout_weight="2.5"
                     android:gravity="center_vertical"
                     android:textColor="?attr/colorValue"
                     android:textSize="@dimen/_18ssp"
@@ -72,7 +69,7 @@
                 <TextView
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
-                    android:layout_weight="1"
+                    android:layout_weight="1.5"
                     android:gravity="center_vertical"
                     android:text="توضیحات :"
                     android:textColor="?attr/colorTitle"
@@ -82,7 +79,7 @@
                     android:id="@+id/txtAroundStreet"
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
-                    android:layout_weight="2"
+                    android:layout_weight="2.5"
                     android:gravity="center_vertical"
                     android:textColor="?attr/colorValue"
                     android:textSize="@dimen/_18ssp"
@@ -101,8 +98,9 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentRight="true"
-        android:layout_marginLeft="25dp"
+        android:layout_marginRight="@dimen/_10sdp"
         android:padding="5dp"
-        android:src="@drawable/ic_attentionn"/>
+        android:src="@drawable/ic_attentionn"
+        android:elevation="@dimen/_3sdp"/>
 
 </RelativeLayout>
