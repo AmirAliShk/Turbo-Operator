@@ -659,6 +659,7 @@ public class TripRegisterActivity extends AppCompatActivity {
         }
     };
     boolean state = false;
+
     @RequiresApi(api = Build.VERSION_CODES.N)
     private void searchInDataBaseForSameNameStreet(String addressType, int count, int start, CharSequence ImportChar, ArrayList<SameNameStreetsModel> sameNameStreets, ImageView sameNamePic) {
 
@@ -678,9 +679,10 @@ public class TripRegisterActivity extends AppCompatActivity {
 
 
                 for (String address : splitAddress) {
+                    if (address.length() <= 2) continue;
                     if (dataBase.isStreetNameWithSameName(address.trim())) {
-                        state = true;
                         sameNamePic.setVisibility(View.VISIBLE);
+                        state = true;
                         Log.i("taf_isStreetNameWith", String.valueOf(dataBase.isStreetNameWithSameName(address.trim())));
                         if (addressType.equals("origin")) {
                             if (originSameNameStreets == null) {
@@ -704,12 +706,20 @@ public class TripRegisterActivity extends AppCompatActivity {
                                     .collect(Collectors.toList());
                             Log.i("taf_destSameName", String.valueOf(dataBase.getStreetNameWithSameName(address.trim())));
                             destSameNameStreets = (ArrayList<SameNameStreetsModel>) sortedList;
+
                         }
                     } else {
-                        if (state)
-                            sameNamePic.setVisibility(View.VISIBLE);
-                        else
-                            sameNamePic.setVisibility(View.GONE);
+                        Log.i("taf_state", String.valueOf(String.valueOf(state)));
+//                        if (state)
+//                            sameNamePic.setVisibility(View.VISIBLE);
+//                        else
+//                           sameNamePic.setVisibility(View.GONE);
+                        if (destSameNameStreets != null) {
+                            if (destSameNameStreets.isEmpty()) {
+                                sameNamePic.setVisibility(View.GONE);
+                            } else
+                                sameNamePic.setVisibility(View.VISIBLE);
+                        }
                     }
                 }
             }
