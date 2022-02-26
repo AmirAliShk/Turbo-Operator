@@ -316,7 +316,7 @@ public class DataBase extends SQLiteOpenHelper {
             contentValues.put(COLUMN_CITY_NAME_SN, sameNameStreetsModel.getCityName());
             contentValues.put(COLUMN_STREETS_NAME_WITH_SAME_NAME, sameNameStreetsModel.getSameNameStreet());
             contentValues.put(COLUMN_AROUND_STREET, sameNameStreetsModel.getAroundStreet());
-            sqLiteDatabase.insertWithOnConflict(SAME_NAME_STREETS_TABLE, COLUMN_CITY_ID, contentValues, SQLiteDatabase.CONFLICT_REPLACE);
+            sqLiteDatabase.insert(SAME_NAME_STREETS_TABLE, null, contentValues);
 
 //            Toast.makeText(MyApplication.currentActivity, "databaseUpdated", Toast.LENGTH_SHORT).show();
 
