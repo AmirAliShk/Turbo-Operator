@@ -124,8 +124,8 @@ public class TripRegisterActivity extends AppCompatActivity {
 
     ArrayList<AddressesModel> originAddresses;
     ArrayList<AddressesModel> destinationAddresses;
-    ArrayList<SameNameStreetsModel> originSameNameStreets;
-    ArrayList<SameNameStreetsModel> destSameNameStreets;
+    ArrayList<SameNameStreetsModel> originSameNameStreets = new ArrayList<>();
+    ArrayList<SameNameStreetsModel> destSameNameStreets = new ArrayList<>();
 
     DataBase dataBase;
 
@@ -658,64 +658,37 @@ public class TripRegisterActivity extends AppCompatActivity {
             }
         }
     };
-    boolean state = false;
+
 
     @RequiresApi(api = Build.VERSION_CODES.N)
     private void searchInDataBaseForSameNameStreet(String addressType, int count, int start, CharSequence ImportChar, ArrayList<SameNameStreetsModel> sameNameStreets, ImageView sameNamePic) {
-
         if (count == 0 && start == 0) {
-            state = false;
             sameNamePic.setVisibility(View.GONE);
         } else {
-            Log.i("taf_addressType-1", ImportChar.toString());
             if (ImportChar.toString().contains(" ")) {
-                Log.i("taf_addressType-2", ImportChar.toString());
-
                 if (sameNameStreets != null) {
                     sameNameStreets.clear();
                 }
                 String[] splitAddress = ImportChar.toString().split(" ");
-                Log.i("taf_splitAddress", Arrays.toString(splitAddress));
-
 
                 for (String address : splitAddress) {
-                    if (address.length() <= 2) continue;
+                    if (address.length() <= 1) continue;
                     if (dataBase.isStreetNameWithSameName(address.trim())) {
                         sameNamePic.setVisibility(View.VISIBLE);
-                        state = true;
-                        Log.i("taf_isStreetNameWith", String.valueOf(dataBase.isStreetNameWithSameName(address.trim())));
-                        if (addressType.equals("origin")) {
-                            if (originSameNameStreets == null) {
-                                originSameNameStreets = new ArrayList<>();
-                            }
-                            originSameNameStreets.addAll(dataBase.getStreetNameWithSameName(address.trim()));
-                            List<SameNameStreetsModel> sortedList = originSameNameStreets
-                                    .stream() // get stream for unique SET
-                                    .distinct()// rank comparing
-                                    .collect(Collectors.toList());
-                            Log.i("taf_originSameName", String.valueOf(dataBase.getStreetNameWithSameName(address.trim())));
-                            originSameNameStreets = (ArrayList<SameNameStreetsModel>) sortedList;
-                        } else {
-                            if (destSameNameStreets == null) {
-                                destSameNameStreets = new ArrayList<>();
-                            }
-                            destSameNameStreets.addAll(dataBase.getStreetNameWithSameName(address.trim()));
-                            List<SameNameStreetsModel> sortedList = destSameNameStreets
-                                    .stream() // get stream for unique SET
-                                    .distinct()// rank comparing
-                                    .collect(Collectors.toList());
-                            Log.i("taf_destSameName", String.valueOf(dataBase.getStreetNameWithSameName(address.trim())));
-                            destSameNameStreets = (ArrayList<SameNameStreetsModel>) sortedList;
+                        sameNameStreets.addAll(dataBase.getStreetNameWithSameName(address.trim()));
+                        List<SameNameStreetsModel> sortedList = sameNameStreets
+                                .stream() // get stream for unique SET
+                                .distinct()// rank comparing
+                                .collect(Collectors.toList());
+                        sameNameStreets = (ArrayList<SameNameStreetsModel>) sortedList;
 
-                        }
+                        if (addressType.equals("origin"))
+                            originSameNameStreets = sameNameStreets;
+                        else
+                            destSameNameStreets = sameNameStreets;
                     } else {
-                        Log.i("taf_state", String.valueOf(String.valueOf(state)));
-//                        if (state)
-//                            sameNamePic.setVisibility(View.VISIBLE);
-//                        else
-//                           sameNamePic.setVisibility(View.GONE);
-                        if (destSameNameStreets != null) {
-                            if (destSameNameStreets.isEmpty()) {
+                        if (sameNameStreets != null) {
+                            if (sameNameStreets.isEmpty()) {
                                 sameNamePic.setVisibility(View.GONE);
                             } else
                                 sameNamePic.setVisibility(View.VISIBLE);

@@ -50,6 +50,7 @@ public class GetAppInfo {
                     dataBase.clearStreetNameWithSameNameTable();
                 else
                     dataBase = new DataBase(MyApplication.currentActivity);
+                dataBase.clearStreetNameWithSameNameTable();
 
 
                 SameNameStreetsModel model = new SameNameStreetsModel("نسترن", "سجاد");
