@@ -22,7 +22,7 @@ import ir.taxi1880.operatormanagement.app.EndPoints;
 import ir.taxi1880.operatormanagement.app.MyApplication;
 import ir.taxi1880.operatormanagement.databinding.FragmentPassengerTripSupportDetailsBinding;
 import ir.taxi1880.operatormanagement.dialog.CallDialog;
-import ir.taxi1880.operatormanagement.dialog.ComplaintRegistrationDialog;
+import ir.taxi1880.operatormanagement.dialog.DriverComplaintRegistrationDialog;
 import ir.taxi1880.operatormanagement.dialog.DriverLockDialog;
 import ir.taxi1880.operatormanagement.dialog.ErrorAddressDialog;
 import ir.taxi1880.operatormanagement.dialog.ErrorRegistrationDialog;
@@ -131,7 +131,7 @@ public class PassengerTripSupportDetailsFragment extends Fragment {
 
         binding.btnLost.setOnClickListener(view -> new LostDialog().show(serviceId + "", passengerName, passengerPhone, taxiCode, false));
 
-        binding.btnComplaintRegistration.setOnClickListener(view -> new ComplaintRegistrationDialog().show(serviceId + "", voipId));
+        binding.btnComplaintRegistration.setOnClickListener(view -> new DriverComplaintRegistrationDialog().show(serviceId + "", voipId));
 
         binding.btnErrorRegistration.setOnClickListener(view -> {
 //        String cityName= new DataBase(MyApplication.context).getCityName2(cityCode);

@@ -82,6 +82,7 @@
         <ScrollView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:layout_marginVertical="@dimen/_5sdp"
             android:fillViewport="true"
             android:scrollbars="none">
 
@@ -101,12 +102,6 @@
                     android:gravity="center"
                     android:orientation="horizontal"
                     android:padding="5dp">
-
-                    <!--                    <ImageView-->
-                    <!--                        android:id="@+id/imgStatus"-->
-                    <!--                        android:layout_width="15dp"-->
-                    <!--                        android:layout_height="15dp"-->
-                    <!--                        android:background="@drawable/circle_blue" />-->
 
                     <TextView
                         android:id="@+id/txtStatus"
@@ -503,7 +498,7 @@
                             android:layout_height="wrap_content"
                             android:layout_gravity="right"
                             android:minWidth="70dp"
-                            android:text="زمان رسیدن به مسافر" />
+                            android:text="@string/timeArriveToPassenger" />
 
                         <TextView
                             android:id="@+id/txtTimeToCome"
@@ -526,7 +521,7 @@
                             android:layout_height="match_parent"
                             android:layout_weight="1"
                             android:gravity="center_vertical"
-                            android:text="اپراتور ایستگاه مبدا" />
+                            android:text="@string/originStationOperator" />
 
                         <TextView
                             android:id="@+id/txtUserCodeOrigin"
@@ -542,7 +537,7 @@
                             android:layout_height="match_parent"
                             android:layout_weight="1"
                             android:gravity="center_vertical"
-                            android:text="اپراتور ایستگاه مقصد" />
+                            android:text="@string/destStationOperator" />
 
                         <TextView
                             android:id="@+id/txtUserCodeDestination"
@@ -574,7 +569,7 @@
                         android:layout_marginBottom="5dp"
                         android:paddingLeft="10dp"
                         android:paddingRight="10dp"
-                        android:text="اطلاعات راننده"
+                        android:text="@string/driverInfo"
                         android:textAppearance="?android:attr/textAppearanceMedium"
                         android:textColor="?attr/colorIcon1" />
 
@@ -847,12 +842,12 @@
                     android:orientation="horizontal">
 
                     <Button
-                        android:id="@+id/btnComplaintRegistration"
+                        android:id="@+id/btnDriverComplaintRegistration"
                         style="@style/button"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
-                        android:text="@string/complaintRegistration" />
+                        android:text="@string/driverComplaintRegistration" />
 
                     <Button
                         android:id="@+id/btnLost"
@@ -922,6 +917,14 @@
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
                         android:text="@string/disposal" />
+
+                    <Button
+                        android:id="@+id/btnPassengerComplaintRegistration"
+                        style="@style/button"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="@string/passengerComplaintRegistration" />
 
                 </LinearLayout>
 
