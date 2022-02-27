@@ -26,6 +26,7 @@ import ir.taxi1880.operatormanagement.helper.FragmentHelper;
 import ir.taxi1880.operatormanagement.helper.ScreenHelper;
 import ir.taxi1880.operatormanagement.helper.ServiceHelper;
 import ir.taxi1880.operatormanagement.model.CityModel;
+import ir.taxi1880.operatormanagement.model.SameNameStreetsModel;
 import ir.taxi1880.operatormanagement.okHttp.RequestHelper;
 import ir.taxi1880.operatormanagement.push.AvaCrashReporter;
 import ir.taxi1880.operatormanagement.services.LinphoneService;
@@ -105,6 +106,7 @@ public class GetAppInfo {
                     String ReasonsLock = object.getString("ReasonsLock");
                     String serviceCountToday = object.getString("serviceCountToday");
                     String serviceCountMonth = object.getString("serviceCountMonth");
+                    String sameNameStreetWhichCity = object.getString("citySpecificAddressItems");
                     int activeInQueue = object.getInt("activeInQueue");
                     int customerSupport = object.getInt("customerSupport");
                     int accessComplaint = object.getInt("accessComplaint");
@@ -135,6 +137,28 @@ public class GetAppInfo {
                         cityModel.setCity(cityObj.getString("cityname"));
                         cityModel.setCityLatin(cityObj.getString("latinName"));
                         dataBase.insertCity(cityModel);
+                    }
+
+//                    if (dataBase != null)
+//                    dataBase.clearStreetNameWithSameNameTable();
+//                else
+//                    dataBase = new DataBase(MyApplication.currentActivity);
+                    dataBase.clearStreetNameWithSameNameTable();
+                    JSONArray sameNameStreetWhichCityArr = new JSONArray(sameNameStreetWhichCity);
+                    for (int sc = 0; sc < sameNameStreetWhichCityArr.length(); sc++) {
+                        JSONObject sameNameStreetWhichCityObj = sameNameStreetWhichCityArr.getJSONObject(sc);
+                        JSONArray sameNameStreetArr = sameNameStreetWhichCityObj.getJSONArray("specificAddressItems");
+                        for (int s = 0; s < sameNameStreetArr.length(); s++) {
+                            JSONObject sameNameStreetObj = sameNameStreetArr.getJSONObject(s);
+                            SameNameStreetsModel sameNameStreetsModel = new SameNameStreetsModel(
+                                    sameNameStreetWhichCityObj.getInt("CityId"),
+                                    sameNameStreetWhichCityObj.getString("CityName"),
+                                    sameNameStreetObj.getString("streetName"),
+                                    sameNameStreetObj.getString("description")
+                            );
+                            dataBase.insertSameNameStreets(sameNameStreetsModel);
+                        }
+
                     }
                     MyApplication.prefManager.setActivateStatus(activeInQueue == 1);
 

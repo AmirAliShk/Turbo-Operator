@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/rlParent"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:gravity="top"
+    android:layoutDirection="rtl"
+    android:paddingLeft="25dp"
+    android:paddingRight="25dp">
+
+    <ViewFlipper
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="30dp"
+        android:layout_marginRight="@dimen/_10sdp"
+        android:layout_marginLeft="@dimen/_10sdp"
+        android:background="@drawable/bg_dialogue1"
+        android:paddingLeft="@dimen/_10sdp"
+        android:paddingTop="@dimen/_10sdp"
+        android:paddingRight="@dimen/_50sdp"
+        android:paddingBottom="@dimen/_10sdp">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center|center_vertical"
+            android:orientation="vertical">
+
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="10dp" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1.5"
+                    android:gravity="center_vertical"
+                    android:text="نام خیابان :"
+                    android:textColor="?attr/colorTitle"
+                    android:textSize="@dimen/_14sdp" />
+
+                <TextView
+                    android:id="@+id/txtSameNameStreetItem"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="3"
+                    android:gravity="center_vertical"
+                    android:textColor="?attr/colorValue"
+                    android:textSize="@dimen/_16ssp"
+                    android:textStyle="bold"
+                    android:text="خیام"/>
+
+            </LinearLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="10dp" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1.5"
+                    android:gravity="center_vertical"
+                    android:text="توضیحات :"
+                    android:textColor="?attr/colorTitle"
+                    android:textSize="@dimen/_14sdp" />
+
+                <TextView
+                    android:id="@+id/txtAroundStreet"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="3"
+                    android:gravity="center_vertical"
+                    android:textColor="?attr/colorValue"
+                    android:textSize="@dimen/_16ssp"
+                    android:textStyle="bold"
+                    android:text=" 1تا 60 خیام جنوبی "/>
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+
+    </ViewFlipper>
+
+    <ImageView
+        android:id="@+id/imgStatus"
+        android:layout_width="@dimen/_40sdp"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_marginRight="@dimen/_15sdp"
+        android:padding="5dp"
+        android:src="@drawable/ic_attentionn"
+        android:elevation="@dimen/_3sdp"/>
+
+</RelativeLayout>

@@ -20,9 +20,11 @@ import android.view.WindowManager;
 import android.widget.AdapterView;
 import android.widget.AutoCompleteTextView;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.RadioButton;
 import android.widget.Toast;
 
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 
@@ -37,8 +39,11 @@ import org.linphone.core.CoreListenerStub;
 import org.linphone.core.ProxyConfig;
 import org.linphone.core.RegistrationState;
 
+import java.nio.file.StandardWatchEventKinds;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
+import java.util.stream.Collectors;
 
 import ir.taxi1880.operatormanagement.R;
 import ir.taxi1880.operatormanagement.adapter.AddressAdapter;
@@ -47,6 +52,7 @@ import ir.taxi1880.operatormanagement.app.DataHolder;
 import ir.taxi1880.operatormanagement.app.EndPoints;
 import ir.taxi1880.operatormanagement.app.Keys;
 import ir.taxi1880.operatormanagement.app.MyApplication;
+import ir.taxi1880.operatormanagement.dataBase.DataBase;
 import ir.taxi1880.operatormanagement.databinding.ActivityTripRegisterBinding;
 import ir.taxi1880.operatormanagement.dialog.AddressListDialog;
 import ir.taxi1880.operatormanagement.dialog.CallDialog;
@@ -54,6 +60,7 @@ import ir.taxi1880.operatormanagement.dialog.CityDialog;
 import ir.taxi1880.operatormanagement.dialog.DescriptionDialog;
 import ir.taxi1880.operatormanagement.dialog.GeneralDialog;
 import ir.taxi1880.operatormanagement.dialog.LoadingDialog;
+import ir.taxi1880.operatormanagement.dialog.SameNameStreetsDialog;
 import ir.taxi1880.operatormanagement.dialog.TripOptionDialog;
 import ir.taxi1880.operatormanagement.fragment.PassengerTripSupportFragment;
 import ir.taxi1880.operatormanagement.helper.AppVersionHelper;
@@ -67,6 +74,7 @@ import ir.taxi1880.operatormanagement.model.AddressArr;
 import ir.taxi1880.operatormanagement.model.AddressesModel;
 import ir.taxi1880.operatormanagement.model.CallModel;
 import ir.taxi1880.operatormanagement.model.CityModel;
+import ir.taxi1880.operatormanagement.model.SameNameStreetsModel;
 import ir.taxi1880.operatormanagement.model.TypeServiceModel;
 import ir.taxi1880.operatormanagement.okHttp.RequestHelper;
 import ir.taxi1880.operatormanagement.push.AvaCrashReporter;
@@ -113,8 +121,13 @@ public class TripRegisterActivity extends AppCompatActivity {
     String passengerId;
     int moshId = 0;
 
+
     ArrayList<AddressesModel> originAddresses;
     ArrayList<AddressesModel> destinationAddresses;
+    ArrayList<SameNameStreetsModel> originSameNameStreets = new ArrayList<>();
+    ArrayList<SameNameStreetsModel> destSameNameStreets = new ArrayList<>();
+
+    DataBase dataBase;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -135,7 +148,7 @@ public class TripRegisterActivity extends AppCompatActivity {
                 window.setStatusBarColor(getResources().getColor(R.color.colorPrimaryDark));
             }
         }
-
+        dataBase = new DataBase(MyApplication.context);
         binding = ActivityTripRegisterBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
@@ -457,6 +470,10 @@ public class TripRegisterActivity extends AppCompatActivity {
                 }
             }
         });
+
+        binding.sameNameOrigin.setOnClickListener(view -> new SameNameStreetsDialog().show(originSameNameStreets));
+
+        binding.sameNameDest.setOnClickListener(view -> new SameNameStreetsDialog().show(destSameNameStreets));
     }
 
     private void onPressDownload() {
@@ -588,12 +605,16 @@ public class TripRegisterActivity extends AppCompatActivity {
         public void beforeTextChanged(CharSequence charSequence, int start, int count, int after) {
         }
 
+        @RequiresApi(api = Build.VERSION_CODES.N)
         @Override
         public void onTextChanged(CharSequence charSequence, int start, int before, int count) {
             originAddressChangeCounter = originAddressChangeCounter + 1;
 //            if (binding.edtOriginAddress.isFocused()) {
 //                originAddressId = "0";
 //            }
+
+            searchInDataBaseForSameNameStreet("origin", cityCode, start, count, charSequence, originSameNameStreets, binding.sameNameOrigin);
+
             removeExtraSpace(binding.edtOriginAddress);
         }
 
@@ -605,11 +626,6 @@ public class TripRegisterActivity extends AppCompatActivity {
                 originAddressLength = 0;
                 binding.edtOriginAddress.getText().clear();
             }
-//            String result = s.toString().replaceAll(" {2}", " ");
-//            if (!s.toString().equals(result)) { // it remove the extra space in the text
-//                binding.edtOriginAddress.setText(result);
-//                binding.edtOriginAddress.setSelection(result.length());
-//            }
         }
     };
 
@@ -618,12 +634,18 @@ public class TripRegisterActivity extends AppCompatActivity {
         public void beforeTextChanged(CharSequence charSequence, int start, int count, int after) {
         }
 
+        @RequiresApi(api = Build.VERSION_CODES.N)
         @Override
         public void onTextChanged(CharSequence charSequence, int start, int before, int count) {
             destAddressChangeCounter = destAddressChangeCounter + 1;
 //            if (binding.edtDestinationAddress.isFocused()) {
 //                destinationAddressId = "0";
 //            }
+            Log.i("taf_count", count + "");
+            Log.i("taf_start", start + "");
+            Log.i("taf_before", before + "");
+            searchInDataBaseForSameNameStreet("dest", cityCode, count, start, charSequence, destSameNameStreets, binding.sameNameDest);
+
             removeExtraSpace(binding.edtDestinationAddress);
         }
 
@@ -634,13 +656,49 @@ public class TripRegisterActivity extends AppCompatActivity {
                 destAddressLength = 0;
                 binding.edtDestinationAddress.getText().clear();
             }
-//            String result = s.toString().replaceAll(" {2}", " ");
-//            if (!s.toString().equals(result)) { // it remove the extra space in the text
-//                binding.edtDestinationAddress.setText(result);
-//                binding.edtDestinationAddress.setSelection(result.length());
-//            }
         }
     };
+
+
+    @RequiresApi(api = Build.VERSION_CODES.N)
+    private void searchInDataBaseForSameNameStreet(String addressType, int cityCode, int count, int start, CharSequence ImportChar, ArrayList<SameNameStreetsModel> sameNameStreets, ImageView sameNamePic) {
+        if (count == 0 && start == 0) {
+            sameNamePic.setVisibility(View.GONE);
+        } else {
+            if (ImportChar.toString().contains(" ")) {
+                if (sameNameStreets != null) {
+                    sameNameStreets.clear();
+                }
+                String[] splitAddress = ImportChar.toString().split(" ");
+
+                for (String address : splitAddress) {
+                    if (address.length() <= 1) continue;
+                    if (dataBase.isStreetNameWithSameName(address.trim(), cityCode)) {
+                        sameNamePic.setVisibility(View.VISIBLE);
+                        sameNameStreets.addAll(dataBase.getStreetNameWithSameName(address.trim(), cityCode));
+                        List<SameNameStreetsModel> sortedList = sameNameStreets
+                                .stream() // get stream for unique SET
+                                .distinct()// rank comparing
+                                .collect(Collectors.toList());
+                        sameNameStreets = (ArrayList<SameNameStreetsModel>) sortedList;
+
+                        if (addressType.equals("origin"))
+                            originSameNameStreets = sameNameStreets;
+                        else
+                            destSameNameStreets = sameNameStreets;
+                    } else {
+                        if (sameNameStreets != null) {
+                            if (sameNameStreets.isEmpty()) {
+                                sameNamePic.setVisibility(View.GONE);
+                            } else
+                                sameNamePic.setVisibility(View.VISIBLE);
+                        }
+                    }
+                }
+            }
+        }
+
+    }
 
     private void removeExtraSpace(AutoCompleteTextView ACTextView) {
         InputFilter filter = (source, start, end, dest, dstart, dend) -> {
@@ -1078,45 +1136,36 @@ public class TripRegisterActivity extends AppCompatActivity {
     };
 
     private void getPassengerOriginAddress() {
-        binding.vfPassengerOriginAddress.setDisplayedChild(1);
-        MyApplication.handler.postDelayed(() ->
-        {
-            if (originAddresses.size() == 0) {
-                MyApplication.Toast("آدرسی موجود نیست", Toast.LENGTH_SHORT);
-            } else {
-                new AddressListDialog().show(true, passengerId, originAddresses, (address, stationCode, addressId) -> {
-                    originAddress = address;
-                    binding.edtOriginAddress.setText(originAddress);
-                    originAddressLength = originAddress.length();
-                    originAddressChangeCounter = 0;
-                    originStation = stationCode;
-                    originAddressId = addressId;
-                    setCursorPosition();
-                });
-            }
-            binding.vfPassengerOriginAddress.setDisplayedChild(0);
-        }, 500);
+        if (originAddresses.size() == 0) {
+            MyApplication.Toast("آدرسی موجود نیست", Toast.LENGTH_SHORT);
+        } else {
+            new AddressListDialog().show(true, passengerId, originAddresses, (address, stationCode, addressId) -> {
+                originAddress = address;
+                binding.edtOriginAddress.setText(originAddress);
+                originAddressLength = originAddress.length();
+                originAddressChangeCounter = 0;
+                originStation = stationCode;
+                originAddressId = addressId;
+                setCursorPosition();
+            });
+        }
+
     }
 
     private void getPassengerDestAddress() {
-        binding.vfPassengerDestAddress.setDisplayedChild(1);
-        MyApplication.handler.postDelayed(() ->
-        {
-            if (destinationAddresses.size() == 0) {
-                MyApplication.Toast("آدرسی موجود نیست", Toast.LENGTH_SHORT);
-            } else {
-                new AddressListDialog().show(false, passengerId, destinationAddresses, (address, stationCode, addressId) -> {
-                    destinationAddress = address;
-                    binding.edtDestinationAddress.setText(destinationAddress);
-                    destAddressLength = destinationAddress.length();
-                    destAddressChangeCounter = 0;
-                    destinationStation = stationCode;
-                    destinationAddressId = addressId;
-                    setCursorPosition();
-                });
-            }
-            binding.vfPassengerDestAddress.setDisplayedChild(0);
-        }, 500);
+        if (destinationAddresses.size() == 0) {
+            MyApplication.Toast("آدرسی موجود نیست", Toast.LENGTH_SHORT);
+        } else {
+            new AddressListDialog().show(false, passengerId, destinationAddresses, (address, stationCode, addressId) -> {
+                destinationAddress = address;
+                binding.edtDestinationAddress.setText(destinationAddress);
+                destAddressLength = destinationAddress.length();
+                destAddressChangeCounter = 0;
+                destinationStation = stationCode;
+                destinationAddressId = addressId;
+                setCursorPosition();
+            });
+        }
     }
 
     private void callInsertService() {
@@ -1438,6 +1487,8 @@ public class TripRegisterActivity extends AppCompatActivity {
 //    binding.edtDiscount.setEnabled(true);
         binding.edtOriginAddress.setEnabled(true);
         binding.edtDestinationAddress.setEnabled(true);
+        binding.relEdtOrigin.setEnabled(true);
+        binding.relEdtDest.setEnabled(true);
         binding.txtDescription.setEnabled(true);
         binding.chbTraffic.setEnabled(true);
         binding.llTrafficBg.setEnabled(true);
@@ -1466,6 +1517,8 @@ public class TripRegisterActivity extends AppCompatActivity {
 //    binding.edtDiscount.setEnabled(false);
         binding.edtOriginAddress.setEnabled(false);
         binding.edtDestinationAddress.setEnabled(false);
+        binding.relEdtOrigin.setEnabled(false);
+        binding.relEdtDest.setEnabled(false);
         binding.txtDescription.setEnabled(false);
         binding.chbTraffic.setEnabled(false);
         binding.llTrafficBg.setEnabled(false);

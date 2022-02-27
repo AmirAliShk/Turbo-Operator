@@ -7,23 +7,28 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 
+import ir.taxi1880.operatormanagement.app.MyApplication;
 import ir.taxi1880.operatormanagement.model.AllMistakesModel;
 import ir.taxi1880.operatormanagement.model.CityModel;
+import ir.taxi1880.operatormanagement.model.SameNameStreetsModel;
 import ir.taxi1880.operatormanagement.push.AvaCrashReporter;
 
 public class DataBase extends SQLiteOpenHelper {
 
     public static final String TAG = DataBase.class.getSimpleName();
     // TODO when you change the entitys structure, please increase the version of dataBase.
-    private static int VERSION = 6;
+    private static int VERSION = 7;
     //TODO Do not change names any way
     private static String DB_NAME = "operators";
     private static String TRIP_TABLE = "Trip";
     private static String CITY_TABLE = "City";
     private static String MISTAKES_TABLE = "Mistakes";
+
+    private static String SAME_NAME_STREETS_TABLE = "SameNameStreet";
 
     //**************************** Trip Column ****************************
     private static String COLUMN_TRIP_ID = "tripId";
@@ -73,7 +78,13 @@ public class DataBase extends SQLiteOpenHelper {
     private static String COLUMN_MISTAKES_REASONS = "mistakeReason";
     private static String COLUMN_MISTAKES_PRICE = "price";
 
-    //******************************************************************************************
+    //************************************ SameStreetName Column ***************************************
+
+    private static String COLUMN_CITY_Id_SN_Local = "localCityID";
+    private static String COLUMN_CITY_CODE_SN = "cityCode";
+    private static String COLUMN_CITY_NAME_SN = "cityName";
+    private static String COLUMN_STREETS_NAME_WITH_SAME_NAME = "streetsNameWithSameName";
+    private static String COLUMN_AROUND_STREET = "aroundStreet";
 
     public DataBase(Context context) {
         super(context, DB_NAME, null, VERSION);
@@ -84,6 +95,7 @@ public class DataBase extends SQLiteOpenHelper {
         createTripTable(sqLiteDatabase);
         createCityTable(sqLiteDatabase);
         createMistakesTable(sqLiteDatabase);
+        createSameNameStreetsTable(sqLiteDatabase);
     }
 
     @Override
@@ -281,6 +293,83 @@ public class DataBase extends SQLiteOpenHelper {
         sqLiteDatabase.delete(TRIP_TABLE, COLUMN_TRIP_ID + "<>" + tripId, null);
         Log.e("TAG", "deleteRemainingRecord: " + tripId);
     }
+
+
+    // ****************************************************** City Table ******************************************************
+    public void createSameNameStreetsTable(SQLiteDatabase database) {
+        database.execSQL("CREATE TABLE " + SAME_NAME_STREETS_TABLE +
+                " (" + COLUMN_CITY_Id_SN_Local + " INTEGER PRIMARY KEY AutoIncrement," +
+                COLUMN_CITY_CODE_SN + " TEXT," +
+                COLUMN_CITY_NAME_SN + " TEXT," +
+                COLUMN_STREETS_NAME_WITH_SAME_NAME + " TEXT," +
+                COLUMN_AROUND_STREET + " TEXT)"
+        );
+
+        Toast.makeText(MyApplication.currentActivity, "databaseCrated", Toast.LENGTH_SHORT).show();
+    }
+
+    public void insertSameNameStreets(SameNameStreetsModel sameNameStreetsModel) {
+        try {
+            SQLiteDatabase sqLiteDatabase = this.getWritableDatabase();
+            ContentValues contentValues = new ContentValues();
+            contentValues.put(COLUMN_CITY_CODE_SN, sameNameStreetsModel.getCityId());
+            contentValues.put(COLUMN_CITY_NAME_SN, sameNameStreetsModel.getCityName());
+            contentValues.put(COLUMN_STREETS_NAME_WITH_SAME_NAME, sameNameStreetsModel.getSameNameStreet());
+            contentValues.put(COLUMN_AROUND_STREET, sameNameStreetsModel.getAroundStreet());
+            sqLiteDatabase.insert(SAME_NAME_STREETS_TABLE, null, contentValues);
+
+//            Toast.makeText(MyApplication.currentActivity, "databaseUpdated", Toast.LENGTH_SHORT).show();
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            AvaCrashReporter.send(e, TAG + " class, insertSameNameStreet method");
+        }
+    }
+
+    public ArrayList<SameNameStreetsModel> getStreetNameWithSameName(String searchPhrase , int cityCode) {
+        ArrayList<SameNameStreetsModel> models = new ArrayList<>();
+        SQLiteDatabase sqLiteDatabase = this.getReadableDatabase();
+        @SuppressLint("Recycle") Cursor res = sqLiteDatabase.rawQuery(
+                "select * from " + SAME_NAME_STREETS_TABLE + " where " + COLUMN_STREETS_NAME_WITH_SAME_NAME +
+                        " LIKE '%" + searchPhrase + "%' AND " + COLUMN_CITY_CODE_SN + "="+ cityCode
+                , null);
+        if (res.getCount() == 0) {
+            return null;
+        }
+
+        res.moveToFirst();
+        while (!res.isAfterLast()) {
+            SameNameStreetsModel sameNameStreetsModel = new SameNameStreetsModel(
+                    res.getInt(res.getColumnIndex(COLUMN_CITY_CODE_SN)),
+                    res.getString(res.getColumnIndex(COLUMN_CITY_NAME_SN)),
+                    res.getString(res.getColumnIndex(COLUMN_STREETS_NAME_WITH_SAME_NAME)),
+                    res.getString(res.getColumnIndex(COLUMN_AROUND_STREET)));
+            models.add(sameNameStreetsModel);
+            res.moveToNext();
+        }
+        return models;
+
+    }
+
+    public boolean isStreetNameWithSameName(String searchPhrase , int cityCode) {
+        SQLiteDatabase sqLiteDatabase = this.getReadableDatabase();
+        @SuppressLint("Recycle") Cursor res = sqLiteDatabase.rawQuery(
+                "select * from " + SAME_NAME_STREETS_TABLE + " where " + COLUMN_STREETS_NAME_WITH_SAME_NAME +
+                        " LIKE '%" + searchPhrase + "%' AND " + COLUMN_CITY_CODE_SN + "="+ cityCode
+                , null);        if (res.getCount() == 0) {
+            return false;
+
+        } else {
+            Log.i("TAF_getCount_dataBase", res.getCount() + "");
+            return true;
+        }
+    }
+
+    public void clearStreetNameWithSameNameTable() {
+        SQLiteDatabase sqLiteDatabase = this.getWritableDatabase();
+        sqLiteDatabase.delete(SAME_NAME_STREETS_TABLE, null, null);
+    }
+
 
 // ****************************************************** City Table ******************************************************
 
