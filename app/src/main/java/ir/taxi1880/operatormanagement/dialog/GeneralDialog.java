@@ -145,7 +145,7 @@ public class GeneralDialog {
             tempDialog = dialog;
         }
         tempDialog.getWindow().requestFeature(Window.FEATURE_NO_TITLE);
-        binding = DialogGeneralBinding.inflate(LayoutInflater.from(dialog.getContext()));
+        binding = DialogGeneralBinding.inflate(LayoutInflater.from(tempDialog.getContext()));
         tempDialog.setContentView(binding.getRoot());
         tempDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         WindowManager.LayoutParams wlp = tempDialog.getWindow().getAttributes();

@@ -326,12 +326,12 @@ public class DataBase extends SQLiteOpenHelper {
         }
     }
 
-    public ArrayList<SameNameStreetsModel> getStreetNameWithSameName(String searchPhrase , int cityCode) {
+    public ArrayList<SameNameStreetsModel> getStreetNameWithSameName(String searchPhrase, int cityCode) {
         ArrayList<SameNameStreetsModel> models = new ArrayList<>();
         SQLiteDatabase sqLiteDatabase = this.getReadableDatabase();
         @SuppressLint("Recycle") Cursor res = sqLiteDatabase.rawQuery(
                 "select * from " + SAME_NAME_STREETS_TABLE + " where " + COLUMN_STREETS_NAME_WITH_SAME_NAME +
-                        " LIKE '%" + searchPhrase + "%' AND " + COLUMN_CITY_CODE_SN + "="+ cityCode
+                        " LIKE '" + searchPhrase + "%' AND " + COLUMN_CITY_CODE_SN + "=" + cityCode
                 , null);
         if (res.getCount() == 0) {
             return null;
@@ -351,16 +351,56 @@ public class DataBase extends SQLiteOpenHelper {
 
     }
 
-    public boolean isStreetNameWithSameName(String searchPhrase , int cityCode) {
+    public boolean isStreetNameWithSameName(String searchPhrase, int cityCode) {
         SQLiteDatabase sqLiteDatabase = this.getReadableDatabase();
         @SuppressLint("Recycle") Cursor res = sqLiteDatabase.rawQuery(
                 "select * from " + SAME_NAME_STREETS_TABLE + " where " + COLUMN_STREETS_NAME_WITH_SAME_NAME +
-                        " LIKE '%" + searchPhrase + "%' AND " + COLUMN_CITY_CODE_SN + "="+ cityCode
-                , null);        if (res.getCount() == 0) {
+                        " LIKE '" + searchPhrase + "%' AND " + COLUMN_CITY_CODE_SN + "=" + cityCode
+                , null);
+        if (res.getCount() == 0)
             return false;
-
-        } else {
+        else {
             Log.i("TAF_getCount_dataBase", res.getCount() + "");
+            return true;
+        }
+    }
+
+    public ArrayList<SameNameStreetsModel> getStreetNameWithSameNameEqualAndLessThree(String searchPhrase, int cityCode) {
+        ArrayList<SameNameStreetsModel> models = new ArrayList<>();
+        SQLiteDatabase sqLiteDatabase = this.getReadableDatabase();
+        @SuppressLint("Recycle") Cursor res = sqLiteDatabase.rawQuery(
+                "select * from " + SAME_NAME_STREETS_TABLE + " where " + COLUMN_STREETS_NAME_WITH_SAME_NAME +
+                        " = '" + searchPhrase + "' AND " + COLUMN_CITY_CODE_SN + "=" + cityCode
+                , null);
+        if (res.getCount() == 0) {
+            return null;
+        }
+
+        res.moveToFirst();
+        while (!res.isAfterLast()) {
+            SameNameStreetsModel sameNameStreetsModel = new SameNameStreetsModel(
+                    res.getInt(res.getColumnIndex(COLUMN_CITY_CODE_SN)),
+                    res.getString(res.getColumnIndex(COLUMN_CITY_NAME_SN)),
+                    res.getString(res.getColumnIndex(COLUMN_STREETS_NAME_WITH_SAME_NAME)),
+                    res.getString(res.getColumnIndex(COLUMN_AROUND_STREET)));
+            models.add(sameNameStreetsModel);
+            res.moveToNext();
+        }
+        return models;
+
+    }
+
+
+    public boolean isStreetNameWithSameNameEqualAndLessThree(String searchPhrase, int cityCode) {
+        SQLiteDatabase sqLiteDatabase = this.getReadableDatabase();
+        @SuppressLint("Recycle") Cursor res = sqLiteDatabase.rawQuery(
+                "select * from " + SAME_NAME_STREETS_TABLE + " where " + COLUMN_STREETS_NAME_WITH_SAME_NAME +
+                        " = '" + searchPhrase +  "' AND " + COLUMN_CITY_CODE_SN + "=" + cityCode
+                , null);
+        if (res.getCount() == 0)
+            return false;
+        else {
+            Log.i("TAF:", "_getCount_dataBase_Less"+res.getCount() + "");
             return true;
         }
     }

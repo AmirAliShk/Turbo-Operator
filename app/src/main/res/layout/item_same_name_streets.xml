@@ -55,7 +55,7 @@
                     android:textColor="?attr/colorValue"
                     android:textSize="@dimen/_16ssp"
                     android:textStyle="bold"
-                    android:text="خیام"/>
+                    />
 
             </LinearLayout>
 
@@ -85,8 +85,7 @@
                     android:gravity="center_vertical"
                     android:textColor="?attr/colorValue"
                     android:textSize="@dimen/_16ssp"
-                    android:textStyle="bold"
-                    android:text=" 1تا 60 خیام جنوبی "/>
+                    android:textStyle="bold"/>
 
             </LinearLayout>
 

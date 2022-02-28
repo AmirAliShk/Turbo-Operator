@@ -120,6 +120,11 @@ public class StringHelper {
         return str;
     }
 
+    public static String removingNumberInString(String v) {
+        return v.replaceAll("[0-9]","");
+    }
+
+
     public static boolean isNumeric(String str) {
         if (str == null) return false;
 
