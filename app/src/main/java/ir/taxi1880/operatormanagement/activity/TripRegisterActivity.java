@@ -612,8 +612,13 @@ public class TripRegisterActivity extends AppCompatActivity {
 //            if (binding.edtOriginAddress.isFocused()) {
 //                originAddressId = "0";
 //            }
-
-            searchInDataBaseForSameNameStreet("origin", cityCode, start, count, StringHelper.toEnglishDigits(charSequence.toString()), originSameNameStreets, binding.sameNameOrigin);
+            if (!charSequence.toString().contains(" ")) {
+                Log.i("taf", "________before add space" + charSequence);
+                charSequence = charSequence + " ";
+                Log.i("taf", "________after add space" + charSequence);
+            }
+            searchInDataBaseForSameNameStreet("origin", cityCode, start, count, StringHelper.toEnglishDigits(charSequence.toString()),
+                    originSameNameStreets, binding.sameNameOrigin);
 
             removeExtraSpace(binding.edtOriginAddress);
         }
@@ -641,7 +646,14 @@ public class TripRegisterActivity extends AppCompatActivity {
 //            if (binding.edtDestinationAddress.isFocused()) {
 //                destinationAddressId = "0";
 //            }
-            searchInDataBaseForSameNameStreet("dest", cityCode, count, start, StringHelper.toEnglishDigits(charSequence.toString()), destSameNameStreets, binding.sameNameDest);
+            if (!charSequence.toString().contains(" ")) {
+                Log.i("taf", "________before add space" + charSequence);
+                charSequence = charSequence + " ";
+                Log.i("taf", "________after add space" + charSequence);
+            }
+
+            searchInDataBaseForSameNameStreet("dest", cityCode, count, start, StringHelper.toEnglishDigits(charSequence.toString()),
+                    destSameNameStreets, binding.sameNameDest);
 
             removeExtraSpace(binding.edtDestinationAddress);
         }
@@ -673,13 +685,13 @@ public class TripRegisterActivity extends AppCompatActivity {
                 for (String address : splitAddress) {
                     if (address.length() <= 3) {
                         if (dataBase.isStreetNameWithSameNameEqualAndLessThree(address.trim(), cityCode)) {
-                            getDataFromDataBase(addressType, dataBase.getStreetNameWithSameNameEqualAndLessThree(address.trim(),cityCode), sameNameStreets, sameNamePic);
+                            getDataFromDataBase(addressType, dataBase.getStreetNameWithSameNameEqualAndLessThree(address.trim(), cityCode), sameNameStreets, sameNamePic);
                         } else {
                             setViewForSameNameStreets(sameNameStreets, sameNamePic);
                         }
                     } else {
                         if (dataBase.isStreetNameWithSameName(address.trim(), cityCode)) {
-                            getDataFromDataBase(addressType, dataBase.getStreetNameWithSameName(address.trim(),cityCode),
+                            getDataFromDataBase(addressType, dataBase.getStreetNameWithSameName(address.trim(), cityCode),
                                     sameNameStreets, sameNamePic);
                         } else {
                             setViewForSameNameStreets(sameNameStreets, sameNamePic);

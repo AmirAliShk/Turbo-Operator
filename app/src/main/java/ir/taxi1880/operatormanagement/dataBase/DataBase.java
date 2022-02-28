@@ -304,8 +304,6 @@ public class DataBase extends SQLiteOpenHelper {
                 COLUMN_STREETS_NAME_WITH_SAME_NAME + " TEXT," +
                 COLUMN_AROUND_STREET + " TEXT)"
         );
-
-        Toast.makeText(MyApplication.currentActivity, "databaseCrated", Toast.LENGTH_SHORT).show();
     }
 
     public void insertSameNameStreets(SameNameStreetsModel sameNameStreetsModel) {
