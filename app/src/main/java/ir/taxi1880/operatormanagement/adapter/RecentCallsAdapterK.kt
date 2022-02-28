@@ -1,5 +1,9 @@
 package ir.taxi1880.operatormanagement.adapter
 
+import android.content.ClipData
+import android.content.ClipboardManager
+import android.content.Context
+import android.content.Context.CLIPBOARD_SERVICE
 import android.media.MediaPlayer
 import android.net.Uri
 import android.os.AsyncTask
@@ -8,6 +12,8 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.core.content.ContextCompat
+import androidx.core.content.ContextCompat.getSystemService
 import androidx.recyclerview.widget.RecyclerView
 import com.downloader.Error
 import com.downloader.OnDownloadListener
@@ -29,7 +35,6 @@ import java.io.File
 import java.net.MalformedURLException
 import java.net.URL
 import java.util.*
-import kotlin.math.log
 
 class RecentCallsAdapterK() : RecyclerView.Adapter<RecentCallsAdapterK.RecentCallsHolder>() {
 
@@ -103,6 +108,11 @@ class RecentCallsAdapterK() : RecyclerView.Adapter<RecentCallsAdapterK.RecentCal
         holder.binding.txtDate.text = DateHelper.parseFormatToString(recentCall.txtDate)
         holder.binding.txtTime.text = DateHelper.parseFormat(recentCall.txtDate)
 
+        holder.binding.txtPassengerTell.setOnLongClickListener {
+            copyToClipboard("operatorImportCall", recentCall.phone)
+            return@setOnLongClickListener true
+        }
+
         if (recentCall.phone == null) {
             holder.binding.llPhone.visibility = View.GONE
         } else {
@@ -172,6 +182,20 @@ class RecentCallsAdapterK() : RecyclerView.Adapter<RecentCallsAdapterK.RecentCal
     override fun getItemCount(): Int {
         return recentCallsList.size
     }
+
+    private fun copyToClipboard(label: String, ClipboardText: String) {
+        val clipboard = getSystemService(
+            MyApplication.context,
+            ClipboardManager::class.java
+        ) as ClipboardManager
+        val clip = ClipData.newPlainText(label, ClipboardText)
+        clipboard.setPrimaryClip(clip)
+
+
+        Toast.makeText(MyApplication.context, "شماره کپی شد" , Toast.LENGTH_LONG).show()
+
+    }
+
 
     private fun startDownload(urlString: String, fileName: String) {
         try {
