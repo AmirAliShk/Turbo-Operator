@@ -613,7 +613,7 @@ public class TripRegisterActivity extends AppCompatActivity {
 //                originAddressId = "0";
 //            }
 
-            searchInDataBaseForSameNameStreet("origin", cityCode, start, count, charSequence, originSameNameStreets, binding.sameNameOrigin);
+            searchInDataBaseForSameNameStreet("origin", cityCode, start, count, StringHelper.toEnglishDigits(charSequence.toString()), originSameNameStreets, binding.sameNameOrigin);
 
             removeExtraSpace(binding.edtOriginAddress);
         }
@@ -641,7 +641,7 @@ public class TripRegisterActivity extends AppCompatActivity {
 //            if (binding.edtDestinationAddress.isFocused()) {
 //                destinationAddressId = "0";
 //            }
-            searchInDataBaseForSameNameStreet("dest", cityCode, count, start, charSequence, destSameNameStreets, binding.sameNameDest);
+            searchInDataBaseForSameNameStreet("dest", cityCode, count, start, StringHelper.toEnglishDigits(charSequence.toString()), destSameNameStreets, binding.sameNameDest);
 
             removeExtraSpace(binding.edtDestinationAddress);
         }
@@ -656,7 +656,6 @@ public class TripRegisterActivity extends AppCompatActivity {
         }
     };
 
-
     @RequiresApi(api = Build.VERSION_CODES.N)
     private void searchInDataBaseForSameNameStreet(String addressType, int cityCode, int count, int start, CharSequence ImportChar, ArrayList<SameNameStreetsModel> sameNameStreets, ImageView sameNamePic) {
         if (count == 0 && start == 0) {
@@ -666,8 +665,8 @@ public class TripRegisterActivity extends AppCompatActivity {
                 if (sameNameStreets != null) sameNameStreets.clear();
                 else return;
 
-                String ImportWithoutNumber = StringHelper.toEnglishDigits(StringHelper.removingNumberInString(ImportChar.toString()));
-                Log.i("taf", StringHelper.removingNumberInString(ImportWithoutNumber));
+                String ImportWithoutNumber = StringHelper.removingNumberInString(ImportChar.toString());
+                Log.i("taf", ImportWithoutNumber);
 
                 String[] splitAddress = ImportWithoutNumber.split(" ");
 
