@@ -39,7 +39,6 @@ import org.linphone.core.CoreListenerStub;
 import org.linphone.core.ProxyConfig;
 import org.linphone.core.RegistrationState;
 
-import java.nio.file.StandardWatchEventKinds;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -120,7 +119,6 @@ public class TripRegisterActivity extends AppCompatActivity {
     private int mDisplayedQuality = -1;
     String passengerId;
     int moshId = 0;
-
 
     ArrayList<AddressesModel> originAddresses;
     ArrayList<AddressesModel> destinationAddresses;
@@ -1654,7 +1652,6 @@ public class TripRegisterActivity extends AppCompatActivity {
                 callModel.setVoipId(message.getString("voipId"));
                 return callModel;
             }
-
         } catch (Exception e) {
             e.printStackTrace();
             AvaCrashReporter.send(e, TAG + " class, parseNotification method ,info : " + info);

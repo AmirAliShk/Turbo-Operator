@@ -201,8 +201,8 @@ public class GetAppInfo {
                         return;
                     }
 
-                    if (updateAvailable == 1) {
-                        updatePart(forceUpdate, updateUrl);
+                    if (true) {
+                        updatePart(1, updateUrl);
                         return;
                     }
 
