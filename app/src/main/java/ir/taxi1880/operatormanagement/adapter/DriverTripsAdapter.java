@@ -31,7 +31,9 @@ import static ir.taxi1880.operatormanagement.app.MyApplication.context;
 public class DriverTripsAdapter extends RecyclerView.Adapter<DriverTripsAdapter.TripViewHolder> {
 
     ArrayList<TripModel> tripModels;
-
+    int clickedPosition;
+    String cancelTitle;
+    String cancelColor;
     public DriverTripsAdapter(ArrayList<TripModel> tripModels) {
         this.tripModels = tripModels;
     }
@@ -62,21 +64,42 @@ public class DriverTripsAdapter extends RecyclerView.Adapter<DriverTripsAdapter.
         holder.txtDestStationCode.setText(StringHelper.toPersianDigits(tripModel.getDestStation() + ""));
         holder.txtPrice.setText(StringHelper.toPersianDigits(StringHelper.setComma(tripModel.getPrice() + "")));
 
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            Drawable bg_dialog_header = AppCompatResources.getDrawable(context, R.drawable.bg_dialog_header);
-            holder.llHeaderStatus.setBackground(bg_dialog_header);
-            DrawableCompat.setTint(bg_dialog_header, Color.parseColor(tripModel.getStatusColor()));
+        if (cancelTitle != null && cancelColor != null) {
+            if (clickedPosition == position)
+                setTitleAndColor(holder, cancelTitle, cancelColor);
+            else
+                setTitleAndColor(holder, tripModel.getStatusText(), tripModel.getStatusColor());
         } else {
-            holder.llHeaderStatus.setBackgroundColor(Color.parseColor(tripModel.getStatusColor()));
+            setTitleAndColor(holder, tripModel.getStatusText(), tripModel.getStatusColor());
         }
-        holder.txtStatus.setText(tripModel.getStatusText());
+
+
 
         holder.itemView.setOnClickListener(view -> {
+            clickedPosition = position;
             Bundle bundle = new Bundle();
             bundle.putInt("id", Integer.parseInt(tripModel.getServiceId()));
-            FragmentHelper.toFragment(MyApplication.currentActivity, new DriverTripSupportDetailsFragment()).setArguments(bundle).add();
+            FragmentHelper.toFragment(MyApplication.currentActivity, new DriverTripSupportDetailsFragment(new DriverTripSupportDetailsFragment.SetOnBackCancelServiceListener() {
+                @Override
+                public void onBackCancelService(String title, String color) {
+                    cancelTitle = title;
+                    cancelColor = color;
+                    setTitleAndColor(holder, cancelTitle, cancelColor);
+                }
+            })).setArguments(bundle).add();
             KeyBoardHelper.hideKeyboard();
         });
+    }
+
+    private void setTitleAndColor(TripViewHolder viewHolder, String title, String color) {
+        viewHolder.txtStatus.setText(title);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            Drawable bg_dialog_header = AppCompatResources.getDrawable(MyApplication.currentActivity, R.drawable.bg_dialog_header);
+            viewHolder.llHeaderStatus.setBackground(bg_dialog_header);
+            DrawableCompat.setTint(bg_dialog_header, Color.parseColor(color));
+        } else {
+            viewHolder.llHeaderStatus.setBackgroundColor(Color.parseColor(color));
+        }
     }
 
     @Override

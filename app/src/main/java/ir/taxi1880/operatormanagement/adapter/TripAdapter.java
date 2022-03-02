@@ -29,7 +29,7 @@ import ir.taxi1880.operatormanagement.model.TripModel;
 public class TripAdapter extends RecyclerView.Adapter<TripAdapter.TripViewHolder> {
 
     ArrayList<TripModel> tripModels;
-    int cancelPosition;
+    int clickedPosition;
     String cancelTitle;
     String cancelColor;
 
@@ -63,7 +63,7 @@ public class TripAdapter extends RecyclerView.Adapter<TripAdapter.TripViewHolder
         holder.txtDestStationCode.setText(StringHelper.toPersianDigits(tripModel.getDestStation() + ""));
         holder.txtPrice.setText(StringHelper.toPersianDigits(StringHelper.setComma(tripModel.getPrice() + "")));
         if (cancelTitle != null && cancelColor != null) {
-            if (cancelPosition == position)
+            if (clickedPosition == position)
                 setTitleAndColor(holder, cancelTitle, cancelColor);
             else
                 setTitleAndColor(holder, tripModel.getStatusText(), tripModel.getStatusColor());
@@ -73,13 +73,12 @@ public class TripAdapter extends RecyclerView.Adapter<TripAdapter.TripViewHolder
 
 
         holder.itemView.setOnClickListener(view -> {
+            clickedPosition = position;
             Bundle bundle = new Bundle();
             bundle.putString("id", tripModel.getServiceId());
-            bundle.putInt("position", position);
             FragmentHelper.toFragment(MyApplication.currentActivity, new PassengerTripSupportDetailsFragment(new PassengerTripSupportDetailsFragment.SetOnBackCancelServiceListener() {
                 @Override
                 public void onBackCancelService(String title, String color) {
-                    cancelPosition = position;
                     cancelTitle = title;
                     cancelColor = color;
                     setTitleAndColor(holder, cancelTitle, cancelColor);

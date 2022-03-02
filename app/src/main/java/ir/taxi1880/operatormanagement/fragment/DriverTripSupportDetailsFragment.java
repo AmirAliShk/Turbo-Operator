@@ -65,6 +65,17 @@ public class DriverTripSupportDetailsFragment extends Fragment {
     String destinationStation;
     String destination;
 
+    public SetOnBackCancelServiceListener setOnBackCancelServiceListener;
+
+
+    public DriverTripSupportDetailsFragment(SetOnBackCancelServiceListener setOnBackCancelServiceListener) {
+        this.setOnBackCancelServiceListener = setOnBackCancelServiceListener;
+    }
+
+    public interface SetOnBackCancelServiceListener {
+        void onBackCancelService(String title, String color);
+    }
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         binding = FragmentDriverTripSupportDetailsBinding.inflate(inflater, container, false);
@@ -193,10 +204,7 @@ public class DriverTripSupportDetailsFragment extends Fragment {
     }
 
     private void tripDetails() {
-        if (binding.vfTripDetails != null) {
-            binding.vfTripDetails.setDisplayedChild(0);
-        }
-
+        binding.vfTripDetails.setDisplayedChild(0);
         RequestHelper.builder(EndPoints.SERVICE_DETAIL)
                 .addParam("serviceId", serviceId)
                 .listener(onGetTripDetails)
@@ -280,9 +288,6 @@ public class DriverTripSupportDetailsFragment extends Fragment {
                         if (Finished == 1) { // finished
                             disableControllerButtonFinishedState();
                         }
-
-                        if (binding.txtCustomerName == null) return;
-
                         binding.txtUserCodeDestination.setText(StringHelper.toPersianDigits(stationRegisterUser + ""));
                         binding.txtUserCodeOrigin.setText(StringHelper.toPersianDigits(destStationRegisterUser + ""));
                         binding.txtCustomerName.setText(StringHelper.toPersianDigits(passengerName));
@@ -326,8 +331,7 @@ public class DriverTripSupportDetailsFragment extends Fragment {
 
                         binding.txtStatus.setText(statusText);
 
-                        if (binding.vfTripDetails != null)
-                            binding.vfTripDetails.setDisplayedChild(1);
+                        binding.vfTripDetails.setDisplayedChild(1);
                     } else {
                         new GeneralDialog()
                                 .title("هشدار")
@@ -340,9 +344,8 @@ public class DriverTripSupportDetailsFragment extends Fragment {
                     e.printStackTrace();
                     AvaCrashReporter.send(e, TAG + " class, onGetTripDetails method");
                     MyApplication.handler.post(() -> {
-                        if (binding.vfTripDetails != null) {
-                            binding.vfTripDetails.setDisplayedChild(2);
-                        }
+                        binding.vfTripDetails.setDisplayedChild(2);
+
                     });
                 }
             });
@@ -351,15 +354,13 @@ public class DriverTripSupportDetailsFragment extends Fragment {
         @Override
         public void onFailure(Runnable reCall, Exception e) {
             MyApplication.handler.post(() -> {
-                if (binding.vfTripDetails != null) {
-                    binding.vfTripDetails.setDisplayedChild(2);
-                }
+                binding.vfTripDetails.setDisplayedChild(2);
+
             });
         }
     };
 
     private void disableControllerButtonWaitingState() {
-        if (binding.btnDriverLocation == null) return;
         binding.btnDriverLocation.setEnabled(false);
         binding.btnReFollow.setEnabled(false);
         binding.btnComplaintRegistration.setEnabled(false);
@@ -368,7 +369,6 @@ public class DriverTripSupportDetailsFragment extends Fragment {
     }
 
     private void disableControllerButtonCancelState(boolean isBefore) {
-        if (binding.btnDriverLocation == null) return;
         binding.btnDriverLocation.setEnabled(false);
         binding.btnReFollow.setEnabled(false);
         binding.btnCancelTrip.setEnabled(false);
@@ -381,7 +381,6 @@ public class DriverTripSupportDetailsFragment extends Fragment {
     }
 
     private void disableControllerButtonFinishedState() {
-        if (binding.btnCancelTrip == null) return;
 //    MyApplication.prefManager.setLastCallerId("");// set empty, because I don't want save this permanently .
         binding.btnReFollow.setEnabled(false);
     }
@@ -414,7 +413,13 @@ public class DriverTripSupportDetailsFragment extends Fragment {
                                     .title("تایید شد")
                                     .message(message)
                                     .cancelable(false)
-                                    .firstButton("باشه", null)
+                                    .firstButton("باشه", () -> {
+                                        binding.txtStatus.setText("کنسل شده توسط " + MyApplication.prefManager.getOperatorName() + " پشتیبانی مسافر");
+                                        setBackgroundTitleColor("#d50d0d");
+                                        setOnBackCancelServiceListener.onBackCancelService(
+                                                "کنسل شده توسط پشتیبانی مسافر",
+                                                "#d50d0d");
+                                    })
                                     .show();
                         } else {
                             new GeneralDialog()
@@ -445,6 +450,17 @@ public class DriverTripSupportDetailsFragment extends Fragment {
             MyApplication.handler.post(LoadingDialog::dismissCancelableDialog);
         }
     };
+
+    private void setBackgroundTitleColor(String color) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            Drawable bg_blue_border_edge = AppCompatResources.getDrawable(context, R.drawable.bg_blue_border_edge);
+            binding.llHeaderStatus.setBackground(bg_blue_border_edge);
+            DrawableCompat.setTint(bg_blue_border_edge, Color.parseColor(color));
+        } else {
+            binding.llHeaderStatus.setBackgroundColor(Color.parseColor(color));
+        }
+    }
+
 
     private void trackingAgain() {
         LoadingDialog.makeCancelableLoader();
