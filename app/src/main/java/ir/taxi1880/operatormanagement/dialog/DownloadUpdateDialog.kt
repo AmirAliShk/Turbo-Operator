@@ -1,5 +1,6 @@
 package ir.taxi1880.operatormanagement.dialog
 
+import android.annotation.SuppressLint
 import android.app.Dialog
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
@@ -51,6 +52,7 @@ class DownloadUpdateDialog {
         dialog.show()
     }
 
+    @SuppressLint("SetTextI18n")
     private fun startDownload(url: String) {
         PRDownloader.download(
             url,
@@ -60,8 +62,7 @@ class DownloadUpdateDialog {
             .build()
             .setOnProgressListener {
                 binding.updateProgress.progress = ((it.currentBytes * 100) / it.totalBytes).toInt()
-                binding.updateProgress.max = it.totalBytes.toInt()
-                binding.textProgress.text = "${(it.currentBytes * 100) / it.totalBytes} %"
+                binding.textProgress.text = "${((it.currentBytes * 100) / it.totalBytes).toInt()} %"
             }
             .start(object : OnDownloadListener {
                 override fun onDownloadComplete() {
