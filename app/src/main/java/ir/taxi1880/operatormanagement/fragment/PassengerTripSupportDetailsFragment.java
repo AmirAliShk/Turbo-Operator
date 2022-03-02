@@ -328,14 +328,7 @@ public class PassengerTripSupportDetailsFragment extends Fragment {
                             String date = DateHelper.strPersianTree(DateHelper.parseDate(dateToCome));
                             binding.txtTimeToCome.setText(StringHelper.toPersianDigits(date) + " ساعت " + StringHelper.toPersianDigits(timeToCome.substring(0, 5)));
                         }
-                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                            Drawable bg_blue_border_edge = AppCompatResources.getDrawable(context, R.drawable.bg_blue_border_edge);
-                            binding.llHeaderStatus.setBackground(bg_blue_border_edge);
-                            DrawableCompat.setTint(bg_blue_border_edge, Color.parseColor(statusColor));
-                        } else {
-                            binding.llHeaderStatus.setBackgroundColor(Color.parseColor(statusColor));
-                        }
-
+                        setBackgroundTitleColor(statusColor);
                         binding.txtStatus.setText(statusText);
 
                         if (binding.vfTripDetails != null)
@@ -427,6 +420,16 @@ public class PassengerTripSupportDetailsFragment extends Fragment {
 
     }
 
+    private void setBackgroundTitleColor(String color) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            Drawable bg_blue_border_edge = AppCompatResources.getDrawable(context, R.drawable.bg_blue_border_edge);
+            binding.llHeaderStatus.setBackground(bg_blue_border_edge);
+            DrawableCompat.setTint(bg_blue_border_edge, Color.parseColor(color));
+        } else {
+            binding.llHeaderStatus.setBackgroundColor(Color.parseColor(color));
+        }
+    }
+
     RequestHelper.Callback onCancelService = new RequestHelper.Callback() {
         @Override
         public void onResponse(Runnable reCall, Object... args) {
@@ -441,12 +444,16 @@ public class PassengerTripSupportDetailsFragment extends Fragment {
                         JSONObject dataObj = object.getJSONObject("data");
                         boolean status = dataObj.getBoolean("status");
                         if (status) {
-//              MyApplication.prefManager.setLastCallerId("");// set empty, because I don't want save this permanently .
+//              MyApplication.prefManager.setLastCallerId("");// set empty, because I don't want save this permanently
+
                             new GeneralDialog()
                                     .title("تایید شد")
                                     .message(message)
                                     .cancelable(false)
-                                    .firstButton("باشه", null)
+                                    .firstButton("باشه", () -> {
+                                        binding.txtStatus.setText("کنسل شده توسط " + MyApplication.prefManager.getOperatorName() + " پشتیبانی مسافر");
+                                        setBackgroundTitleColor("#d50d0d");
+                                    })
                                     .show();
                         } else {
                             new GeneralDialog()
