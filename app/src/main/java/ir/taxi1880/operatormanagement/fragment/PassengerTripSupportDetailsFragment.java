@@ -18,6 +18,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import ir.taxi1880.operatormanagement.R;
+import ir.taxi1880.operatormanagement.adapter.TripAdapter;
 import ir.taxi1880.operatormanagement.app.EndPoints;
 import ir.taxi1880.operatormanagement.app.MyApplication;
 import ir.taxi1880.operatormanagement.databinding.FragmentPassengerTripSupportDetailsBinding;
@@ -67,6 +68,17 @@ public class PassengerTripSupportDetailsFragment extends Fragment {
     String serviceDetails;
     String passengerId;
     String originId;
+    Bundle bundle;
+    public SetOnBackCancelServiceListener setOnBackCancelServiceListener;
+
+
+    public PassengerTripSupportDetailsFragment(SetOnBackCancelServiceListener setOnBackCancelServiceListener) {
+        this.setOnBackCancelServiceListener = setOnBackCancelServiceListener;
+    }
+
+    public interface SetOnBackCancelServiceListener {
+        void onBackCancelService(String Title, String color);
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -203,10 +215,7 @@ public class PassengerTripSupportDetailsFragment extends Fragment {
     }
 
     private void tripDetails() {
-        if (binding.vfTripDetails != null) {
-            binding.vfTripDetails.setDisplayedChild(0);
-        }
-
+        binding.vfTripDetails.setDisplayedChild(0);
         RequestHelper.builder(EndPoints.SERVICE_DETAIL)
                 .addParam("serviceId", serviceId)
                 .listener(onGetTripDetails)
@@ -293,9 +302,6 @@ public class PassengerTripSupportDetailsFragment extends Fragment {
                         if (Finished == 1) { // finished
                             disableControllerButtonFinishedState();
                         }
-
-                        if (binding.txtCustomerName == null) return;
-
                         binding.txtUserCodeOrigin.setText(StringHelper.toPersianDigits(stationRegisterUser + ""));
                         binding.txtUserCodeDestination.setText(StringHelper.toPersianDigits(destStationRegisterUser + ""));
                         binding.txtCustomerName.setText(StringHelper.toPersianDigits(passengerName));
@@ -331,8 +337,7 @@ public class PassengerTripSupportDetailsFragment extends Fragment {
                         setBackgroundTitleColor(statusColor);
                         binding.txtStatus.setText(statusText);
 
-                        if (binding.vfTripDetails != null)
-                            binding.vfTripDetails.setDisplayedChild(1);
+                        binding.vfTripDetails.setDisplayedChild(1);
                     } else {
                         new GeneralDialog()
                                 .title("هشدار")
@@ -345,9 +350,8 @@ public class PassengerTripSupportDetailsFragment extends Fragment {
                     e.printStackTrace();
                     AvaCrashReporter.send(e, TAG + " class, onGetTripDetails method");
                     MyApplication.handler.post(() -> {
-                        if (binding.vfTripDetails != null) {
-                            binding.vfTripDetails.setDisplayedChild(2);
-                        }
+                        binding.vfTripDetails.setDisplayedChild(2);
+
                     });
                 }
             });
@@ -356,15 +360,13 @@ public class PassengerTripSupportDetailsFragment extends Fragment {
         @Override
         public void onFailure(Runnable reCall, Exception e) {
             MyApplication.handler.post(() -> {
-                if (binding.vfTripDetails != null) {
-                    binding.vfTripDetails.setDisplayedChild(2);
-                }
+                binding.vfTripDetails.setDisplayedChild(2);
+
             });
         }
     };
 
     private void disableControllerButtonWaitingState() {
-        if (binding.btnDriverLocation == null) return;
         binding.btnDriverLocation.setEnabled(false);
         binding.btnReFollow.setEnabled(false);
         binding.btnComplaintRegistration.setEnabled(false);
@@ -373,7 +375,6 @@ public class PassengerTripSupportDetailsFragment extends Fragment {
     }
 
     private void disableControllerButtonCancelState(boolean isBefore) {
-        if (binding.btnDriverLocation == null) return;
         binding.btnDriverLocation.setEnabled(false);
         binding.btnReFollow.setEnabled(false);
         binding.btnCancelTrip.setEnabled(false);
@@ -388,7 +389,6 @@ public class PassengerTripSupportDetailsFragment extends Fragment {
     }
 
     private void disableControllerButtonFinishedState() {
-        if (binding.btnCancelTrip == null) return;
 //    MyApplication.prefManager.setLastCallerId("");// set empty, because I don't want save this permanently .
         binding.btnReFollow.setEnabled(false);
         binding.btnDriverLocation.setEnabled(false);
@@ -453,6 +453,9 @@ public class PassengerTripSupportDetailsFragment extends Fragment {
                                     .firstButton("باشه", () -> {
                                         binding.txtStatus.setText("کنسل شده توسط " + MyApplication.prefManager.getOperatorName() + " پشتیبانی مسافر");
                                         setBackgroundTitleColor("#d50d0d");
+                                        setOnBackCancelServiceListener.onBackCancelService(
+                                                "کنسل شده توسط پشتیبانی مسافر",
+                                                "#d50d0d");
                                     })
                                     .show();
                         } else {

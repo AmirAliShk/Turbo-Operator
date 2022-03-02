@@ -29,6 +29,9 @@ import ir.taxi1880.operatormanagement.model.TripModel;
 public class TripAdapter extends RecyclerView.Adapter<TripAdapter.TripViewHolder> {
 
     ArrayList<TripModel> tripModels;
+    int cancelPosition;
+    String cancelTitle;
+    String cancelColor;
 
     public TripAdapter(ArrayList<TripModel> tripModels) {
         this.tripModels = tripModels;
@@ -59,21 +62,29 @@ public class TripAdapter extends RecyclerView.Adapter<TripAdapter.TripViewHolder
         holder.txtStationCode.setText(StringHelper.toPersianDigits(tripModel.getStationCode() + ""));
         holder.txtDestStationCode.setText(StringHelper.toPersianDigits(tripModel.getDestStation() + ""));
         holder.txtPrice.setText(StringHelper.toPersianDigits(StringHelper.setComma(tripModel.getPrice() + "")));
-
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            Drawable bg_dialog_header = AppCompatResources.getDrawable(MyApplication.currentActivity, R.drawable.bg_dialog_header);
-            holder.llHeaderStatus.setBackground(bg_dialog_header);
-            DrawableCompat.setTint(bg_dialog_header, Color.parseColor(tripModel.getStatusColor()));
+        if (cancelTitle != null && cancelColor != null) {
+            if (cancelPosition == position)
+                setTitleAndColor(holder, cancelTitle, cancelColor);
+            else
+                setTitleAndColor(holder, tripModel.getStatusText(), tripModel.getStatusColor());
         } else {
-            holder.llHeaderStatus.setBackgroundColor(Color.parseColor(tripModel.getStatusColor()));
+            setTitleAndColor(holder, tripModel.getStatusText(), tripModel.getStatusColor());
         }
 
-        holder.txtStatus.setText(tripModel.getStatusText());
 
         holder.itemView.setOnClickListener(view -> {
             Bundle bundle = new Bundle();
             bundle.putString("id", tripModel.getServiceId());
-            FragmentHelper.toFragment(MyApplication.currentActivity, new PassengerTripSupportDetailsFragment()).setArguments(bundle).add();
+            bundle.putInt("position", position);
+            FragmentHelper.toFragment(MyApplication.currentActivity, new PassengerTripSupportDetailsFragment(new PassengerTripSupportDetailsFragment.SetOnBackCancelServiceListener() {
+                @Override
+                public void onBackCancelService(String title, String color) {
+                    cancelPosition = position;
+                    cancelTitle = title;
+                    cancelColor = color;
+                    setTitleAndColor(holder, cancelTitle, cancelColor);
+                }
+            })).setArguments(bundle).add();
             KeyBoardHelper.hideKeyboard();
         });
     }
@@ -81,6 +92,19 @@ public class TripAdapter extends RecyclerView.Adapter<TripAdapter.TripViewHolder
     @Override
     public int getItemCount() {
         return tripModels.size();
+    }
+
+
+    private void setTitleAndColor(TripViewHolder viewHolder, String title, String color) {
+        viewHolder.txtStatus.setText(title);
+//                    isFromCancelService = false;
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            Drawable bg_dialog_header = AppCompatResources.getDrawable(MyApplication.currentActivity, R.drawable.bg_dialog_header);
+            viewHolder.llHeaderStatus.setBackground(bg_dialog_header);
+            DrawableCompat.setTint(bg_dialog_header, Color.parseColor(color));
+        } else {
+            viewHolder.llHeaderStatus.setBackgroundColor(Color.parseColor(color));
+        }
     }
 
     public class TripViewHolder extends RecyclerView.ViewHolder {

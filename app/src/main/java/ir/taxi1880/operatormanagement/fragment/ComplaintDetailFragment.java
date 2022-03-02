@@ -68,7 +68,12 @@ public class ComplaintDetailFragment extends Fragment {
 
             Bundle bundle = new Bundle();
             bundle.putString("id", complaintDetailsModel.getServiceId() + "");
-            FragmentHelper.toFragment(MyApplication.currentActivity, new PassengerTripSupportDetailsFragment()).setArguments(bundle).replace();
+            FragmentHelper.toFragment(MyApplication.currentActivity, new PassengerTripSupportDetailsFragment(new PassengerTripSupportDetailsFragment.SetOnBackCancelServiceListener() {
+                @Override
+                public void onBackCancelService(String Title, String color) {
+
+                }
+            })).setArguments(bundle).replace();
         });
 
         binding.btnSaveResult.setOnClickListener(view -> {
