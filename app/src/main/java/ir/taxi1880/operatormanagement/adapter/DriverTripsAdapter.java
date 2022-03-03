@@ -26,14 +26,12 @@ import ir.taxi1880.operatormanagement.helper.StringHelper;
 import ir.taxi1880.operatormanagement.helper.TypefaceUtil;
 import ir.taxi1880.operatormanagement.model.TripModel;
 
-import static ir.taxi1880.operatormanagement.app.MyApplication.context;
-
 public class DriverTripsAdapter extends RecyclerView.Adapter<DriverTripsAdapter.TripViewHolder> {
 
     ArrayList<TripModel> tripModels;
     int clickedPosition;
-    String cancelTitle;
-    String cancelColor;
+    String returnTitle;
+    String returnColor;
     public DriverTripsAdapter(ArrayList<TripModel> tripModels) {
         this.tripModels = tripModels;
     }
@@ -64,9 +62,9 @@ public class DriverTripsAdapter extends RecyclerView.Adapter<DriverTripsAdapter.
         holder.txtDestStationCode.setText(StringHelper.toPersianDigits(tripModel.getDestStation() + ""));
         holder.txtPrice.setText(StringHelper.toPersianDigits(StringHelper.setComma(tripModel.getPrice() + "")));
 
-        if (cancelTitle != null && cancelColor != null) {
+        if (returnTitle != null && returnColor != null) {
             if (clickedPosition == position)
-                setTitleAndColor(holder, cancelTitle, cancelColor);
+                setTitleAndColor(holder, returnTitle, returnColor);
             else
                 setTitleAndColor(holder, tripModel.getStatusText(), tripModel.getStatusColor());
         } else {
@@ -79,12 +77,12 @@ public class DriverTripsAdapter extends RecyclerView.Adapter<DriverTripsAdapter.
             clickedPosition = position;
             Bundle bundle = new Bundle();
             bundle.putInt("id", Integer.parseInt(tripModel.getServiceId()));
-            FragmentHelper.toFragment(MyApplication.currentActivity, new DriverTripSupportDetailsFragment(new DriverTripSupportDetailsFragment.SetOnBackCancelServiceListener() {
+            FragmentHelper.toFragment(MyApplication.currentActivity, new DriverTripSupportDetailsFragment(new DriverTripSupportDetailsFragment.SetOnBackPressedServiceListener() {
                 @Override
                 public void onBackCancelService(String title, String color) {
-                    cancelTitle = title;
-                    cancelColor = color;
-                    setTitleAndColor(holder, cancelTitle, cancelColor);
+                    returnTitle = title;
+                    returnColor = color;
+                    setTitleAndColor(holder, returnTitle, returnColor);
                 }
             })).setArguments(bundle).add();
             KeyBoardHelper.hideKeyboard();

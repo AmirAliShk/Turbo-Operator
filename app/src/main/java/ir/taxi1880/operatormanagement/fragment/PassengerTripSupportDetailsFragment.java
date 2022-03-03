@@ -294,14 +294,6 @@ public class PassengerTripSupportDetailsFragment extends Fragment {
                             );
                         }
 
-                        if (status == 1 && !taxiCode.equals("null") && statusText.contains("اعزام شده")) {
-                            setOnBackPressedServiceListener.onBackCancelService(
-                                    "اعزام شده",
-                                    "#ffd600"
-                            );
-                        }
-
-
                         if (status == 6 && taxiCode.equals("null")) { // cancel before driver
                             disableControllerButtonCancelState(true);
                             if (statusText.contains("توسط پشتیباني مسافر")) {
@@ -328,6 +320,16 @@ public class PassengerTripSupportDetailsFragment extends Fragment {
                             }
 
                         }
+
+
+                        if (status == 1 && !taxiCode.equals("null") && statusText.contains("اعزام شده")) {
+                            setOnBackPressedServiceListener.onBackCancelService(
+                                    "اعزام شده",
+                                    "#ffd600"
+                            );
+                        }
+
+
 
                         if (Finished == 1) { // finished
                             disableControllerButtonFinishedState();

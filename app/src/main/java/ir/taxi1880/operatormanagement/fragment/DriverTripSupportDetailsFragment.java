@@ -65,14 +65,14 @@ public class DriverTripSupportDetailsFragment extends Fragment {
     String destinationStation;
     String destination;
 
-    public SetOnBackCancelServiceListener setOnBackCancelServiceListener;
+    public SetOnBackPressedServiceListener setOnBackPressedServiceListener;
 
 
-    public DriverTripSupportDetailsFragment(SetOnBackCancelServiceListener setOnBackCancelServiceListener) {
-        this.setOnBackCancelServiceListener = setOnBackCancelServiceListener;
+    public DriverTripSupportDetailsFragment(SetOnBackPressedServiceListener setOnBackPressedServiceListener) {
+        this.setOnBackPressedServiceListener = setOnBackPressedServiceListener;
     }
 
-    public interface SetOnBackCancelServiceListener {
+    public interface SetOnBackPressedServiceListener {
         void onBackCancelService(String title, String color);
     }
 
@@ -275,18 +275,50 @@ public class DriverTripSupportDetailsFragment extends Fragment {
 
                         if (status == 0) { // waiting
                             disableControllerButtonWaitingState();
+                            setOnBackPressedServiceListener.onBackCancelService(
+                                    "اعزام نشده",
+                                    "#2962ff"
+                            );
                         }
 
                         if (status == 6 && taxiCode.equals("null")) { // cancel before driver
                             disableControllerButtonCancelState(true);
+                            if (statusText.contains("توسط پشتیباني مسافر")) {
+                                setOnBackPressedServiceListener.onBackCancelService(
+                                        "کنسل شده توسط پشتیباني مسافر",
+                                        "#d50d0d");
+                            }
                         }
 
                         if (status == 6 && !taxiCode.equals("null")) { // cancel after driver
                             disableControllerButtonCancelState(false);
+                            if (statusText.contains("توسط راننده")) {
+                                setOnBackPressedServiceListener.onBackCancelService(
+                                        "کنسل شده توسط راننده",
+                                        "#d50d0d"
+                                );
+                            }
+
+                            if (statusText.contains("توسط پشتیباني مسافر")) {
+                                setOnBackPressedServiceListener.onBackCancelService(
+                                        "کنسل شده توسط پشتیباني مسافر",
+                                        "#d50d0d");
+                            }
                         }
 
+
+                        if (status == 1 && !taxiCode.equals("null") && statusText.contains("اعزام شده")) {
+                            setOnBackPressedServiceListener.onBackCancelService(
+                                    "اعزام شده",
+                                    "#ffd600"
+                            );
+                        }
                         if (Finished == 1) { // finished
                             disableControllerButtonFinishedState();
+                            setOnBackPressedServiceListener.onBackCancelService(
+                                    "اتمام یافته",
+                                    "#2da642"
+                            );
                         }
                         binding.txtUserCodeDestination.setText(StringHelper.toPersianDigits(stationRegisterUser + ""));
                         binding.txtUserCodeOrigin.setText(StringHelper.toPersianDigits(destStationRegisterUser + ""));
@@ -416,7 +448,7 @@ public class DriverTripSupportDetailsFragment extends Fragment {
                                     .firstButton("باشه", () -> {
                                         binding.txtStatus.setText("کنسل شده توسط " + MyApplication.prefManager.getOperatorName() + " پشتیبانی مسافر");
                                         setBackgroundTitleColor("#d50d0d");
-                                        setOnBackCancelServiceListener.onBackCancelService(
+                                        setOnBackPressedServiceListener.onBackCancelService(
                                                 "کنسل شده توسط پشتیبانی مسافر",
                                                 "#d50d0d");
                                     })
