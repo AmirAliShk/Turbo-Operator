@@ -30,8 +30,8 @@ public class TripAdapter extends RecyclerView.Adapter<TripAdapter.TripViewHolder
 
     ArrayList<TripModel> tripModels;
     int clickedPosition;
-    String cancelTitle;
-    String cancelColor;
+    String returnTitle;
+    String returnColor;
 
     public TripAdapter(ArrayList<TripModel> tripModels) {
         this.tripModels = tripModels;
@@ -62,9 +62,9 @@ public class TripAdapter extends RecyclerView.Adapter<TripAdapter.TripViewHolder
         holder.txtStationCode.setText(StringHelper.toPersianDigits(tripModel.getStationCode() + ""));
         holder.txtDestStationCode.setText(StringHelper.toPersianDigits(tripModel.getDestStation() + ""));
         holder.txtPrice.setText(StringHelper.toPersianDigits(StringHelper.setComma(tripModel.getPrice() + "")));
-        if (cancelTitle != null && cancelColor != null) {
+        if (returnTitle != null && returnColor != null) {
             if (clickedPosition == position)
-                setTitleAndColor(holder, cancelTitle, cancelColor);
+                setTitleAndColor(holder, returnTitle, returnColor);
             else
                 setTitleAndColor(holder, tripModel.getStatusText(), tripModel.getStatusColor());
         } else {
@@ -76,12 +76,12 @@ public class TripAdapter extends RecyclerView.Adapter<TripAdapter.TripViewHolder
             clickedPosition = position;
             Bundle bundle = new Bundle();
             bundle.putString("id", tripModel.getServiceId());
-            FragmentHelper.toFragment(MyApplication.currentActivity, new PassengerTripSupportDetailsFragment(new PassengerTripSupportDetailsFragment.SetOnBackCancelServiceListener() {
+            FragmentHelper.toFragment(MyApplication.currentActivity, new PassengerTripSupportDetailsFragment(new PassengerTripSupportDetailsFragment.SetOnBackPressedServiceListener() {
                 @Override
                 public void onBackCancelService(String title, String color) {
-                    cancelTitle = title;
-                    cancelColor = color;
-                    setTitleAndColor(holder, cancelTitle, cancelColor);
+                    returnTitle = title;
+                    returnColor = color;
+                    setTitleAndColor(holder, returnTitle, returnColor);
                 }
             })).setArguments(bundle).add();
             KeyBoardHelper.hideKeyboard();

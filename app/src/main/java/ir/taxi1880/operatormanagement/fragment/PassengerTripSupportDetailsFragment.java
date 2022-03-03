@@ -18,7 +18,6 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import ir.taxi1880.operatormanagement.R;
-import ir.taxi1880.operatormanagement.adapter.TripAdapter;
 import ir.taxi1880.operatormanagement.app.EndPoints;
 import ir.taxi1880.operatormanagement.app.MyApplication;
 import ir.taxi1880.operatormanagement.databinding.FragmentPassengerTripSupportDetailsBinding;
@@ -69,14 +68,14 @@ public class PassengerTripSupportDetailsFragment extends Fragment {
     String passengerId;
     String originId;
     Bundle bundle;
-    public SetOnBackCancelServiceListener setOnBackCancelServiceListener;
+    public SetOnBackPressedServiceListener setOnBackPressedServiceListener;
 
 
-    public PassengerTripSupportDetailsFragment(SetOnBackCancelServiceListener setOnBackCancelServiceListener) {
-        this.setOnBackCancelServiceListener = setOnBackCancelServiceListener;
+    public PassengerTripSupportDetailsFragment(SetOnBackPressedServiceListener setOnBackPressedServiceListener) {
+        this.setOnBackPressedServiceListener = setOnBackPressedServiceListener;
     }
 
-    public interface SetOnBackCancelServiceListener {
+    public interface SetOnBackPressedServiceListener {
         void onBackCancelService(String Title, String color);
     }
 
@@ -289,19 +288,56 @@ public class PassengerTripSupportDetailsFragment extends Fragment {
 
                         if (status == 0) { // waiting
                             disableControllerButtonWaitingState();
+                            setOnBackPressedServiceListener.onBackCancelService(
+                                    "اعزام نشده",
+                                    "#2962ff"
+                            );
                         }
+
+                        if (status == 1 && !taxiCode.equals("null") && statusText.contains("اعزام شده")) {
+                            setOnBackPressedServiceListener.onBackCancelService(
+                                    "اعزام شده",
+                                    "#ffd600"
+                            );
+                        }
+
 
                         if (status == 6 && taxiCode.equals("null")) { // cancel before driver
                             disableControllerButtonCancelState(true);
+                            if (statusText.contains("توسط پشتیباني مسافر")) {
+                                setOnBackPressedServiceListener.onBackCancelService(
+                                        "کنسل شده توسط پشتیباني مسافر",
+                                        "#d50d0d");
+                            }
+
                         }
 
                         if (status == 6 && !taxiCode.equals("null")) { // cancel after driver
                             disableControllerButtonCancelState(false);
+                            if (statusText.contains("توسط راننده")) {
+                                setOnBackPressedServiceListener.onBackCancelService(
+                                        "کنسل شده توسط راننده",
+                                        "#d50d0d"
+                                );
+                            }
+
+                            if (statusText.contains("توسط پشتیباني مسافر")) {
+                                setOnBackPressedServiceListener.onBackCancelService(
+                                        "کنسل شده توسط پشتیباني مسافر",
+                                        "#d50d0d");
+                            }
+
                         }
 
                         if (Finished == 1) { // finished
                             disableControllerButtonFinishedState();
+                            setOnBackPressedServiceListener.onBackCancelService(
+                                    "اتمام یافته",
+                                    "#2da642"
+                            );
                         }
+
+
                         binding.txtUserCodeOrigin.setText(StringHelper.toPersianDigits(stationRegisterUser + ""));
                         binding.txtUserCodeDestination.setText(StringHelper.toPersianDigits(destStationRegisterUser + ""));
                         binding.txtCustomerName.setText(StringHelper.toPersianDigits(passengerName));
@@ -453,7 +489,7 @@ public class PassengerTripSupportDetailsFragment extends Fragment {
                                     .firstButton("باشه", () -> {
                                         binding.txtStatus.setText("کنسل شده توسط " + MyApplication.prefManager.getOperatorName() + " پشتیبانی مسافر");
                                         setBackgroundTitleColor("#d50d0d");
-                                        setOnBackCancelServiceListener.onBackCancelService(
+                                        setOnBackPressedServiceListener.onBackCancelService(
                                                 "کنسل شده توسط پشتیبانی مسافر",
                                                 "#d50d0d");
                                     })
