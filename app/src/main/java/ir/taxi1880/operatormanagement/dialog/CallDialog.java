@@ -94,6 +94,12 @@ public class CallDialog {
             dismiss();
         });
 
+        binding.llStationGuideWhenTalking.setOnClickListener(view -> {
+            new SearchStationInfoDialog().show(stationCode -> {
+            }, 0, false, "", false);
+            dismiss();
+        });
+
         binding.llCallDialog.setOnClickListener(view -> {
             return;
         });
@@ -171,6 +177,7 @@ public class CallDialog {
 
         binding.llEndCall2.setOnClickListener(view -> {
             try {
+                binding.llStationGuide.setVisibility(View.VISIBLE);
                 Call call = core.getCallByRemoteAddress2(callAddress);
                 if (call != null) {
                     call.terminate();

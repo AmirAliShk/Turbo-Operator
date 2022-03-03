@@ -276,6 +276,38 @@
 
                     </LinearLayout>
 
+                    <LinearLayout
+                        android:id="@+id/llStationGuideWhenTalking"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="@dimen/_10sdp"
+                        android:background="@drawable/bg_dialog"
+                        android:elevation="@dimen/_3sdp"
+                        android:gravity="center"
+                        android:orientation="horizontal"
+                        android:padding="@dimen/_8sdp">
+
+                        <ImageView
+                            android:layout_width="@dimen/_50sdp"
+                            android:layout_height="@dimen/_50sdp"
+                            android:layout_gravity="center"
+                            android:background="@drawable/bg_circle_dialogue"
+                            android:padding="@dimen/_13sdp"
+                            android:src="@drawable/ic_station_guide" />
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:gravity="center"
+                            android:text="راهنمای ایستگاه"
+                            android:textAppearance="?android:attr/textAppearanceSmall"
+                            android:textColor="?attr/colorValue"
+                            android:textSize="@dimen/_15ssp"
+                            android:textStyle="bold" />
+
+                    </LinearLayout>
+
+
                 </LinearLayout>
 
                 <ViewFlipper

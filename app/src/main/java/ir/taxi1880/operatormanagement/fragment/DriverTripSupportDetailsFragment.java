@@ -90,6 +90,12 @@ public class DriverTripSupportDetailsFragment extends Fragment {
 
         tripDetails();
 
+        if (MyApplication.prefManager.getConnectedCall()) {
+            binding.imgEndCall.setImageResource(R.drawable.ic_call_dialog_enable);
+        } else {
+            binding.imgEndCall.setImageResource(R.drawable.ic_call_dialog_disable);
+        }
+
         binding.rlEndCall.setOnClickListener(view -> {
             KeyBoardHelper.hideKeyboard();
             if (MyApplication.prefManager.getConnectedCall()) {
@@ -108,8 +114,7 @@ public class DriverTripSupportDetailsFragment extends Fragment {
 
                     @Override
                     public void onCallEnded() {
-                        if (binding.imgEndCall != null)
-                            binding.imgEndCall.setBackgroundResource(0);
+                        binding.imgEndCall.setImageResource(R.drawable.ic_call_dialog_disable);
                     }
                 }, true);
             } else {
@@ -275,45 +280,46 @@ public class DriverTripSupportDetailsFragment extends Fragment {
 
                         if (status == 0) { // waiting
                             disableControllerButtonWaitingState();
-                            setOnBackPressedServiceListener.onBackCancelService(
-                                    "اعزام نشده",
-                                    "#2962ff"
-                            );
+//                            setOnBackPressedServiceListener.onBackCancelService(
+//                                    "اعزام نشده",
+//                                    "#2962ff"
+//                            );
                         }
 
                         if (status == 6 && taxiCode.equals("null")) { // cancel before driver
                             disableControllerButtonCancelState(true);
-                            if (statusText.contains("توسط پشتیباني مسافر")) {
-                                setOnBackPressedServiceListener.onBackCancelService(
-                                        "کنسل شده توسط پشتیباني مسافر",
-                                        "#d50d0d");
-                            }
+//                            if (statusText.contains("توسط پشتیباني مسافر")) {
+//                                setOnBackPressedServiceListener.onBackCancelService(
+//                                        "کنسل شده توسط پشتیباني مسافر",
+//                                        "#d50d0d");
+//                            }
                         }
 
                         if (status == 6 && !taxiCode.equals("null")) { // cancel after driver
                             disableControllerButtonCancelState(false);
-                            if (statusText.contains("توسط راننده")) {
+//                            if (statusText.contains("توسط راننده")) {
+//                                setOnBackPressedServiceListener.onBackCancelService(
+//                                        "کنسل شده توسط راننده",
+//                                        "#d50d0d"
+//                                );
+//                            }
+//
+//                            if (statusText.contains("توسط پشتیباني مسافر")) {
+//                                setOnBackPressedServiceListener.onBackCancelService(
+//                                        "کنسل شده توسط پشتیباني مسافر",
+//                                        "#d50d0d");
+//                            }
+                        }
+
+
+                        if (status == 1 && !taxiCode.equals("null") && !(Finished ==1)) {
+//                            if (statusText.contains("اعزام شده"))
                                 setOnBackPressedServiceListener.onBackCancelService(
-                                        "کنسل شده توسط راننده",
-                                        "#d50d0d"
+                                        "اعزام شده",
+                                        "#ffd600"
                                 );
-                            }
-
-                            if (statusText.contains("توسط پشتیباني مسافر")) {
-                                setOnBackPressedServiceListener.onBackCancelService(
-                                        "کنسل شده توسط پشتیباني مسافر",
-                                        "#d50d0d");
-                            }
                         }
-
-
-                        if (status == 1 && !taxiCode.equals("null") && statusText.contains("اعزام شده")) {
-                            setOnBackPressedServiceListener.onBackCancelService(
-                                    "اعزام شده",
-                                    "#ffd600"
-                            );
-                        }
-                        if (Finished == 1) { // finished
+                        if (status == 1 && Finished == 1) { // finished
                             disableControllerButtonFinishedState();
                             setOnBackPressedServiceListener.onBackCancelService(
                                     "اتمام یافته",

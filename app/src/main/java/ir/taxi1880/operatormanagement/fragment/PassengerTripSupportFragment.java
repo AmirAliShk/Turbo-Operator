@@ -166,9 +166,8 @@ public class PassengerTripSupportFragment extends Fragment {
         });
 
         binding.txtCancel.setOnClickListener(view -> {
-            if (binding.vfTrip != null) {
                 binding.vfTrip.setDisplayedChild(3);
-            }
+
         });
 
         binding.imgBack.setOnClickListener(view -> {
@@ -214,9 +213,8 @@ public class PassengerTripSupportFragment extends Fragment {
         String stationCode = "0";
         String destinationAddress = "0";
 
-        if (binding.vfTrip != null) {
             binding.vfTrip.setDisplayedChild(1);
-        }
+
 //        {post} /api/operator/v3/support/trip/v1/search
 //
 //        params:
@@ -308,14 +306,11 @@ public class PassengerTripSupportFragment extends Fragment {
                         }
 
                         tripAdapter = new TripAdapter(tripModels);
-                        if (binding.recycleTrip != null)
                             binding.recycleTrip.setAdapter(tripAdapter);
 
                         if (tripModels.size() == 0) {
-                            if (binding.vfTrip != null)
                                 binding.vfTrip.setDisplayedChild(0);
                         } else {
-                            if (binding.vfTrip != null)
                                 binding.vfTrip.setDisplayedChild(2);
                         }
                     } else {
@@ -337,9 +332,8 @@ public class PassengerTripSupportFragment extends Fragment {
         public void onFailure(Runnable reCall, Exception e) {
             MyApplication.handler.post(() -> {
 //       e = {"message":"Unprocessable Entity","data":[{"field":"stationCode","message":"کد ایستگاه صحیح نیست"}],"success":false}
-                if (binding.vfTrip != null) {
                     binding.vfTrip.setDisplayedChild(3);
-                }
+
             });
         }
     };

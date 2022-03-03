@@ -16,6 +16,9 @@ import androidx.fragment.app.Fragment;
 
 import org.json.JSONException;
 import org.json.JSONObject;
+import org.linphone.core.Call;
+import org.linphone.core.Core;
+import org.linphone.core.CoreListenerStub;
 
 import ir.taxi1880.operatormanagement.R;
 import ir.taxi1880.operatormanagement.app.EndPoints;
@@ -37,11 +40,13 @@ import ir.taxi1880.operatormanagement.helper.StringHelper;
 import ir.taxi1880.operatormanagement.helper.TypefaceUtil;
 import ir.taxi1880.operatormanagement.okHttp.RequestHelper;
 import ir.taxi1880.operatormanagement.push.AvaCrashReporter;
+import ir.taxi1880.operatormanagement.services.LinphoneService;
 
 public class PassengerTripSupportDetailsFragment extends Fragment {
     public static final String TAG = PassengerTripSupportDetailsFragment.class.getSimpleName();
     FragmentPassengerTripSupportDetailsBinding binding;
     int serviceId;
+    Core core;
     String passengerPhone;
     String customerMobile;
     String passengerName;
@@ -93,6 +98,12 @@ public class PassengerTripSupportDetailsFragment extends Fragment {
 
         tripDetails();
 
+        if (MyApplication.prefManager.getConnectedCall()) {
+            binding.imgEndCall.setImageResource(R.drawable.ic_call_dialog_enable);
+        } else {
+            binding.imgEndCall.setImageResource(R.drawable.ic_call_dialog_disable);
+        }
+
         binding.rlEndCall.setOnClickListener(view -> {
             KeyBoardHelper.hideKeyboard();
             if (MyApplication.prefManager.getConnectedCall()) {
@@ -111,8 +122,7 @@ public class PassengerTripSupportDetailsFragment extends Fragment {
 
                     @Override
                     public void onCallEnded() {
-                        if (binding.imgEndCall != null)
-                            binding.imgEndCall.setBackgroundResource(0);
+                        binding.imgEndCall.setImageResource(R.drawable.ic_call_dialog_disable);
                     }
                 }, true);
             } else {
@@ -288,41 +298,42 @@ public class PassengerTripSupportDetailsFragment extends Fragment {
 
                         if (status == 0) { // waiting
                             disableControllerButtonWaitingState();
-                            setOnBackPressedServiceListener.onBackCancelService(
-                                    "اعزام نشده",
-                                    "#2962ff"
-                            );
+//                            setOnBackPressedServiceListener.onBackCancelService(
+//                                    "اعزام نشده",
+//                                    "#2962ff"
+//                            );
                         }
 
                         if (status == 6 && taxiCode.equals("null")) { // cancel before driver
                             disableControllerButtonCancelState(true);
-                            if (statusText.contains("توسط پشتیباني مسافر")) {
-                                setOnBackPressedServiceListener.onBackCancelService(
-                                        "کنسل شده توسط پشتیباني مسافر",
-                                        "#d50d0d");
-                            }
+//                            if (statusText.contains("توسط پشتیباني مسافر")) {
+//                                setOnBackPressedServiceListener.onBackCancelService(
+//                                        "کنسل شده توسط پشتیباني مسافر",
+//                                        "#d50d0d");
+//                            }
 
                         }
 
                         if (status == 6 && !taxiCode.equals("null")) { // cancel after driver
                             disableControllerButtonCancelState(false);
-                            if (statusText.contains("توسط راننده")) {
-                                setOnBackPressedServiceListener.onBackCancelService(
-                                        "کنسل شده توسط راننده",
-                                        "#d50d0d"
-                                );
-                            }
-
-                            if (statusText.contains("توسط پشتیباني مسافر")) {
-                                setOnBackPressedServiceListener.onBackCancelService(
-                                        "کنسل شده توسط پشتیباني مسافر",
-                                        "#d50d0d");
-                            }
+//                            if (statusText.contains("توسط راننده")) {
+//                                setOnBackPressedServiceListener.onBackCancelService(
+//                                        "کنسل شده توسط راننده",
+//                                        "#d50d0d"
+//                                );
+//                            }
+//
+//                            if (statusText.contains("توسط پشتیباني مسافر")) {
+//                                setOnBackPressedServiceListener.onBackCancelService(
+//                                        "کنسل شده توسط پشتیباني مسافر",
+//                                        "#d50d0d");
+//                            }
 
                         }
 
 
-                        if (status == 1 && !taxiCode.equals("null") && statusText.contains("اعزام شده")) {
+                        if (status == 1 && !taxiCode.equals("null") && !(Finished == 1)) {
+//                            if (statusText.contains("اعزام شده"))
                             setOnBackPressedServiceListener.onBackCancelService(
                                     "اعزام شده",
                                     "#ffd600"
@@ -330,8 +341,7 @@ public class PassengerTripSupportDetailsFragment extends Fragment {
                         }
 
 
-
-                        if (Finished == 1) { // finished
+                        if (status == 1 && Finished == 1) { // finished
                             disableControllerButtonFinishedState();
                             setOnBackPressedServiceListener.onBackCancelService(
                                     "اتمام یافته",
