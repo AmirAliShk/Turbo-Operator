@@ -76,13 +76,10 @@ public class TripAdapter extends RecyclerView.Adapter<TripAdapter.TripViewHolder
             clickedPosition = position;
             Bundle bundle = new Bundle();
             bundle.putString("id", tripModel.getServiceId());
-            FragmentHelper.toFragment(MyApplication.currentActivity, new PassengerTripSupportDetailsFragment(new PassengerTripSupportDetailsFragment.SetOnBackPressedServiceListener() {
-                @Override
-                public void onBackCancelService(String title, String color) {
-                    returnTitle = title;
-                    returnColor = color;
-                    setTitleAndColor(holder, returnTitle, returnColor);
-                }
+            FragmentHelper.toFragment(MyApplication.currentActivity, new PassengerTripSupportDetailsFragment((title, color) -> {
+                returnTitle = title;
+                returnColor = color;
+                setTitleAndColor(holder, returnTitle, returnColor);
             })).setArguments(bundle).add();
             KeyBoardHelper.hideKeyboard();
         });

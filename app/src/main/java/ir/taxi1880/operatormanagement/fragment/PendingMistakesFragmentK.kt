@@ -64,7 +64,7 @@ class PendingMistakesFragmentK : Fragment() {
         fun pauseVoice() {
             try {
                 if (mediaPlayer != null) mediaPlayer?.pause()
-
+                if (!this::binding.isInitialized) return
                 binding.skbTimer.setProgress(0f)
                 binding.vfPlayPause.displayedChild = 0
             } catch (e: Exception) {
@@ -92,7 +92,7 @@ class PendingMistakesFragmentK : Fragment() {
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         binding = FragmentPendingMistakesBinding.inflate(inflater, container, false)
         TypefaceUtil.overrideFonts(binding.root, MyApplication.IraSanSMedume)
         TypefaceUtil.overrideFonts(binding.txtEmpty)
@@ -141,7 +141,7 @@ class PendingMistakesFragmentK : Fragment() {
                     override fun onSuccess(success: Boolean) {
                         MyApplication.handler.postDelayed({
                             getMistakesFromDB()
-                             binding.vfVoiceStatus.displayedChild = 0
+                            binding.vfVoiceStatus.displayedChild = 0
                         }, 200)
                     }
 
@@ -150,6 +150,7 @@ class PendingMistakesFragmentK : Fragment() {
                     }
                 })
         }
+
         return binding.root
     }
 
@@ -227,7 +228,7 @@ class PendingMistakesFragmentK : Fragment() {
             binding.skbTimer.max = TOTAL_VOICE_DURATION.toFloat()
         } catch (e: Exception) {
             e.printStackTrace()
-            AvaCrashReporter.send(e,"$TAG class, initVoice method")
+            AvaCrashReporter.send(e, "$TAG class, initVoice method")
         }
     }
 
@@ -397,8 +398,7 @@ class PendingMistakesFragmentK : Fragment() {
                 }
             }
             binding.vfPending.displayedChild = 1
-        } else
-        {
+        } else {
             binding.vfPending.displayedChild = 2
         }
     }
@@ -463,9 +463,9 @@ class PendingMistakesFragmentK : Fragment() {
         try {
             pauseVoice()
             cancelTimer()
-        }catch (e:Exception)
-        {e.printStackTrace()
-            AvaCrashReporter.send(e,"$TAG class, onDestroy method")
+        } catch (e: Exception) {
+            e.printStackTrace()
+            AvaCrashReporter.send(e, "$TAG class, onDestroy method")
 
         }
     }

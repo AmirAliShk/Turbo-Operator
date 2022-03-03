@@ -23,7 +23,7 @@ public class EndPoints {
     public static final String CALL_VOICE_APIPort = "1884";
     public static final String HAWKEYE_APIPort = "1890";
 
-    public static final String ACRA_PATH = "http://turbotaxi.ir:6061/api/v1/crashReport";
+    public static final String ACRA_PATH = "http://turbotaxi.ir:6061/api/crashReport";
 
     public static final String WEBSERVICE_PATH = IP + ":" + APIPort + "/api/operator/v3/";
     public static final String OPERATOR_MISTAKE_WEBSERVICE_PATH = IP + ":" + APIPort + "/api/operator/v3/mistake";
@@ -92,7 +92,7 @@ public class EndPoints {
     public static final String MISTAKE = SUPPORT_TRIP_WEBSERVICE_PATH + "v1/mistake";
     public static final String CANCEL = SUPPORT_TRIP_WEBSERVICE_PATH + "cancel";
     public static final String MAKE_DISPOSAL = SUPPORT_TRIP_WEBSERVICE_PATH + "makeDisposal";
-//    public static final String PASSENGER_INFO = SUPPORT_WEBSERVICE_PATH + "passengerInfo";
+    //    public static final String PASSENGER_INFO = SUPPORT_WEBSERVICE_PATH + "passengerInfo";
     public static final String SERVICE_DETAIL = SUPPORT_WEBSERVICE_PATH + "serviceDetail";
     public static final String LAST_DRIVER_POSITION = SUPPORT_WEBSERVICE_PATH + "lastDriverPosition";
     public static final String INSERT_COMPLAINT = SUPPORT_WEBSERVICE_PATH + "insertComplaint";

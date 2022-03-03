@@ -16,10 +16,6 @@ import android.widget.Toast;
 
 import org.acra.ACRA;
 import org.acra.BuildConfig;
-import org.acra.config.CoreConfigurationBuilder;
-import org.acra.config.HttpSenderConfigurationBuilder;
-import org.acra.data.StringFormat;
-import org.acra.sender.HttpSender;
 import org.linphone.core.AccountCreator;
 import org.linphone.core.Core;
 import org.linphone.core.ProxyConfig;
@@ -27,9 +23,7 @@ import org.linphone.core.TransportType;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.HashMap;
 import java.util.Locale;
-import java.util.Map;
 
 import ir.taxi1880.operatormanagement.R;
 import ir.taxi1880.operatormanagement.helper.TypefaceUtil;
@@ -99,21 +93,21 @@ public class MyApplication extends Application {
     }
 
     private void initACRA() {
-        CoreConfigurationBuilder builder = new CoreConfigurationBuilder(this)
-                .setBuildConfigClass(BuildConfig.class)
-                .setReportFormat(StringFormat.JSON);
-
-        Map<String, String> authHeaderMap = new HashMap<>();
-        authHeaderMap.put("Authorization", MyApplication.prefManager.getAuthorization());
-        authHeaderMap.put("id_token", MyApplication.prefManager.getIdToken());
-
-        builder.getPluginConfigurationBuilder(HttpSenderConfigurationBuilder.class)
-                .setUri(EndPoints.ACRA_PATH)
-                .setHttpMethod(HttpSender.Method.POST)
-                .setHttpHeaders(authHeaderMap)
-                .setEnabled(true);
+//        CoreConfigurationBuilder builder = new CoreConfigurationBuilder(this)
+//                .setBuildConfigClass(BuildConfig.class)
+//                .setReportFormat(StringFormat.JSON);
+//
+//        Map<String, String> authHeaderMap = new HashMap<>();
+//        authHeaderMap.put("Authorization", MyApplication.prefManager.getAuthorization());
+//        authHeaderMap.put("id_token", MyApplication.prefManager.getIdToken());
+//
+//        builder.getPluginConfigurationBuilder(HttpSenderConfigurationBuilder.class)
+//                .setUri(EndPoints.ACRA_PATH)
+//                .setHttpMethod(HttpSender.Method.POST)
+//                .setHttpHeaders(authHeaderMap)
+//                .setEnabled(true);
 //        if (!BuildConfig.DEBUG)
-        ACRA.init(this, builder);
+        ACRA.init(this);
     }
 
     public static void avaStart() {
