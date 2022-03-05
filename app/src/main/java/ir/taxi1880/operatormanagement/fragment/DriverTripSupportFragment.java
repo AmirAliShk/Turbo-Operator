@@ -471,7 +471,10 @@ public class DriverTripSupportFragment extends Fragment {
                         JSONObject registrationObj = dataObj.getJSONObject("registration");
                         int status = registrationObj.getInt("status");
                         int station = registrationObj.getInt("station");
-                        int dist = registrationObj.getInt("dist");
+                        int dist;
+                        if (registrationObj.getString("dist").equals("null")) dist = 0;
+                        else dist = registrationObj.getInt("dist");
+
                         int turn = registrationObj.getInt("turn");
                         String futureTime = registrationObj.getString("futureTime");
                         String activeTime = registrationObj.getString("activeTime");

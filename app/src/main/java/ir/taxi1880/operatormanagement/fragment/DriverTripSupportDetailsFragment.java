@@ -452,10 +452,10 @@ public class DriverTripSupportDetailsFragment extends Fragment {
                                     .message(message)
                                     .cancelable(false)
                                     .firstButton("باشه", () -> {
-                                        binding.txtStatus.setText("کنسل شده توسط " + MyApplication.prefManager.getOperatorName() + " پشتیبانی مسافر");
+                                        binding.txtStatus.setText("کنسل شده توسط " + MyApplication.prefManager.getOperatorName() + " پشتیبانی راننده");
                                         setBackgroundTitleColor("#d50d0d");
                                         setOnBackPressedServiceListener.onBackCancelService(
-                                                "کنسل شده توسط پشتیبانی مسافر",
+                                                "کنسل شده توسط پشتیبانی راننده",
                                                 "#d50d0d");
                                     })
                                     .show();
