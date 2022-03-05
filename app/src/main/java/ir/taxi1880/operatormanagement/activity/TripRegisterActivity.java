@@ -101,7 +101,7 @@ public class TripRegisterActivity extends AppCompatActivity {
     private int serviceType;
     private int serviceCount;
     private boolean isEnableView = false;
-    private boolean isTellValidable = false; // it means the entered number is a telephone number(5133710000) not mobile number
+    private boolean isTellValidate = false; // it means the entered number is a telephone number(5133710000) not mobile number
     RipplePulseLayout mRipplePulseLayout;
     ArrayList<CityModel> cityModels;
     Core core;
@@ -321,7 +321,7 @@ public class TripRegisterActivity extends AppCompatActivity {
                 binding.edtTell.requestFocus();
                 return;
             }
-            if (getMobileNumber().isEmpty() && !isTellValidable) {
+            if (getMobileNumber().isEmpty() && !isTellValidate) {
                 binding.edtMobile.setError("شماره همراه را وارد کنید");
                 binding.edtMobile.requestFocus();
                 return;
@@ -469,9 +469,15 @@ public class TripRegisterActivity extends AppCompatActivity {
             }
         });
 
-        binding.sameNameOrigin.setOnClickListener(view -> new SameNameStreetsDialog().show(originSameNameStreets));
+        binding.sameNameOrigin.setOnClickListener(view -> {
+            KeyBoardHelper.hideKeyboard();
+            new SameNameStreetsDialog().show(originSameNameStreets);
+        });
 
-        binding.sameNameDest.setOnClickListener(view -> new SameNameStreetsDialog().show(destSameNameStreets));
+        binding.sameNameDest.setOnClickListener(view -> {
+            KeyBoardHelper.hideKeyboard();
+            new SameNameStreetsDialog().show(destSameNameStreets);
+        });
     }
 
     private void onPressDownload() {
@@ -481,13 +487,7 @@ public class TripRegisterActivity extends AppCompatActivity {
             return;
         }
 
-//    if (getMobileNumber().isEmpty() && !isTellValidable && binding.edtMobile != null) {
-//      binding.edtMobile.setError("شماره تلفن همراه را وارد نمایید");
-//      binding.edtMobile.requestFocus();
-//      return;
-//    }
-
-        String mobile = isTellValidable && getMobileNumber().isEmpty() ? "0" : getMobileNumber();
+        String mobile = isTellValidate && getMobileNumber().isEmpty() ? "0" : getMobileNumber();
 
         getPassengerInfo(StringHelper.toEnglishDigits(getTellNumber()), StringHelper.toEnglishDigits(mobile), StringHelper.toEnglishDigits(queue));
     }
@@ -577,12 +577,12 @@ public class TripRegisterActivity extends AppCompatActivity {
                 binding.edtTell.setText(PhoneNumberValidation.removePrefix(editable.toString()));
 
             if (PhoneNumberValidation.isValid(editable.toString())) {
-                isTellValidable = false;
+                isTellValidate = false;
                 binding.edtMobile.setText(editable.toString());
             } else {
 //          clearData();
 //          binding.edtMobile.setText("");
-                isTellValidable = true;
+                isTellValidate = true;
                 binding.edtFamily.setText("");
                 originAddressChangeCounter = 0;
                 binding.edtOriginAddress.setText("");
@@ -1005,24 +1005,21 @@ public class TripRegisterActivity extends AppCompatActivity {
                         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
                             AddressAdapter originArrayAdapter = new AddressAdapter(MyApplication.context, android.R.layout.simple_dropdown_item_1line, R.id.lbl_address, originAutoAddresses);
                             binding.edtOriginAddress.setAdapter(originArrayAdapter);
-                            binding.edtOriginAddress.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-                                @Override
-                                public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                            binding.edtOriginAddress.setOnItemClickListener((parent, view, position, id) -> {
 //                                originAddress = binding.edtOriginAddress.getText().toString().trim();
-                                    originAddress = originArrayAdapter.getAddress(position).getAddress();
-                                    originAddressLength = originAddress.length();
-                                    originAddressChangeCounter = 0;
-                                    binding.edtOriginAddress.setText(originAddress);
+                                originAddress = originArrayAdapter.getAddress(position).getAddress();
+                                originAddressLength = originAddress.length();
+                                originAddressChangeCounter = 0;
+                                binding.edtOriginAddress.setText(originAddress);
 
-                                    for (int i = 0; i < originAddresses.size(); i++) {
-                                        if (originAddresses.get(i).getAddress().equals(originAddress)) {
-                                            originStation = originAddresses.get(i).getStation();
-                                            originAddressId = originAddresses.get(i).getAddressId();
-                                        }
+                                for (int i = 0; i < originAddresses.size(); i++) {
+                                    if (originAddresses.get(i).getAddress().equals(originAddress)) {
+                                        originStation = originAddresses.get(i).getStation();
+                                        originAddressId = originAddresses.get(i).getAddressId();
                                     }
-
-                                    setCursorPosition();
                                 }
+
+                                setCursorPosition();
                             });
                         }
 
@@ -1069,7 +1066,6 @@ public class TripRegisterActivity extends AppCompatActivity {
                         clipboard.setPrimaryClip(clip);
                         MyApplication.prefManager.setLastCallerId(getTellNumber().startsWith("51") ? getTellNumber().substring(2) : getTellNumber());
 
-
                         if (status == 2) {
                             String msg = " مسافر " + callTimeInterval + " دقیقه پیش سفری درخواست داده است " + "\n" + " وضعیت سفر : " + tripState;
                             binding.vfPassengerInfo.setDisplayedChild(0);
@@ -1099,7 +1095,6 @@ public class TripRegisterActivity extends AppCompatActivity {
                             KeyBoardHelper.hideKeyboard();
                             new CityDialog().show(position -> binding.spCity.setSelection(position + 1), true);
                         }
-
 
                         if (moshId == 0) {
                             binding.txtNewPassenger.setVisibility(View.VISIBLE);
@@ -1142,8 +1137,6 @@ public class TripRegisterActivity extends AppCompatActivity {
                                     binding.chbAlways.setChecked(true);
                                     break;
                             }
-
-
                         }
                     }
                     MyApplication.handler.postDelayed(() -> binding.vfPassengerInfo.setDisplayedChild(0), 500);
@@ -1196,7 +1189,7 @@ public class TripRegisterActivity extends AppCompatActivity {
     }
 
     private void callInsertService() {
-        String mobile = isTellValidable && getMobileNumber().isEmpty() ? "0" : getMobileNumber();
+        String mobile = isTellValidate && getMobileNumber().isEmpty() ? "0" : getMobileNumber();
         String tell = getTellNumber();
         String name = binding.edtFamily.getText().toString().trim();
         originAddress = StringHelper.toEnglishDigits(binding.edtOriginAddress.getText().toString().trim());
@@ -1490,7 +1483,7 @@ public class TripRegisterActivity extends AppCompatActivity {
         originAddressChangeCounter = 0;
         destAddressChangeCounter = 0;
         isEnableView = false;
-        isTellValidable = false;
+        isTellValidate = false;
         binding.edtTell.requestFocus();
         binding.txtLockPassenger.setVisibility(View.GONE);
         binding.txtNewPassenger.setVisibility(View.GONE);

@@ -4,15 +4,9 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:layout_marginLeft="15dp"
-    android:layout_marginRight="15dp"
-    android:gravity="top"
+    android:layout_margin="@dimen/_12sdp"
+    android:gravity="center"
     android:orientation="vertical">
-
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_weight="1" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/SameNameStreetList"
@@ -22,18 +16,14 @@
         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
         tools:listitem="@layout/item_same_name_streets" />
 
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_weight="1" />
-
     <ImageView
         android:id="@+id/imgClose"
-        android:layout_width="80dp"
-        android:layout_height="80dp"
+        android:layout_width="@dimen/_60sdp"
+        android:layout_height="@dimen/_80sdp"
         android:layout_gravity="center"
+        android:layout_marginTop="@dimen/_7sdp"
+        android:layout_marginBottom="@dimen/_30sdp"
         android:padding="25dp"
-        android:src="@drawable/ic_false"
-        android:layout_marginBottom="@dimen/_30sdp"/>
+        android:src="@drawable/ic_false" />
 
 </LinearLayout>

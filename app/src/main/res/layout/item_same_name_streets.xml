@@ -1,20 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/rlParent"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:gravity="top"
     android:layoutDirection="rtl"
-    android:paddingLeft="25dp"
-    android:paddingRight="25dp">
+    android:paddingHorizontal="@dimen/_20sdp">
 
     <ViewFlipper
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="30dp"
-        android:layout_marginRight="@dimen/_10sdp"
-        android:layout_marginLeft="@dimen/_10sdp"
+        android:layout_marginHorizontal="@dimen/_10sdp"
+        android:layout_marginTop="@dimen/_20sdp"
         android:background="@drawable/bg_dialogue1"
         android:paddingLeft="@dimen/_10sdp"
         android:paddingTop="@dimen/_10sdp"
@@ -26,7 +23,6 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center|center_vertical"
             android:orientation="vertical">
-
 
             <View
                 android:layout_width="match_parent"
@@ -54,8 +50,7 @@
                     android:gravity="center_vertical"
                     android:textColor="?attr/colorValue"
                     android:textSize="@dimen/_16ssp"
-                    android:textStyle="bold"
-                    />
+                    android:textStyle="bold" />
 
             </LinearLayout>
 
@@ -85,12 +80,11 @@
                     android:gravity="center_vertical"
                     android:textColor="?attr/colorValue"
                     android:textSize="@dimen/_16ssp"
-                    android:textStyle="bold"/>
+                    android:textStyle="bold" />
 
             </LinearLayout>
 
         </LinearLayout>
-
 
     </ViewFlipper>
 
@@ -100,8 +94,8 @@
         android:layout_height="wrap_content"
         android:layout_alignParentRight="true"
         android:layout_marginRight="@dimen/_15sdp"
+        android:elevation="@dimen/_3sdp"
         android:padding="5dp"
-        android:src="@drawable/ic_attentionn"
-        android:elevation="@dimen/_3sdp"/>
+        android:src="@drawable/ic_attentionn" />
 
 </RelativeLayout>
