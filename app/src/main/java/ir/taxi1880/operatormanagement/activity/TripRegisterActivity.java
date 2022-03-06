@@ -610,9 +610,7 @@ public class TripRegisterActivity extends AppCompatActivity {
 //                originAddressId = "0";
 //            }
             if (!charSequence.toString().contains(" ")) {
-                Log.i("taf", "________before add space" + charSequence);
                 charSequence = charSequence + " ";
-                Log.i("taf", "________after add space" + charSequence);
             }
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
                 searchInDataBaseForSameNameStreet("origin", cityCode, start, count, StringHelper.toEnglishDigits(charSequence.toString()),
@@ -645,9 +643,7 @@ public class TripRegisterActivity extends AppCompatActivity {
 //                destinationAddressId = "0";
 //            }
             if (!charSequence.toString().contains(" ")) {
-                Log.i("taf", "________before add space" + charSequence);
                 charSequence = charSequence + " ";
-                Log.i("taf", "________after add space" + charSequence);
             }
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
                 searchInDataBaseForSameNameStreet("dest", cityCode, count, start, StringHelper.toEnglishDigits(charSequence.toString()),
@@ -677,7 +673,6 @@ public class TripRegisterActivity extends AppCompatActivity {
                 else return;
 
                 String ImportWithoutNumber = StringHelper.removingNumberInString(ImportChar.toString());
-                Log.i("taf", ImportWithoutNumber);
 
                 String[] splitAddress = ImportWithoutNumber.split(" ");
 

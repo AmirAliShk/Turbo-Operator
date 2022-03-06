@@ -7,11 +7,9 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
-import android.widget.Toast;
 
 import java.util.ArrayList;
 
-import ir.taxi1880.operatormanagement.app.MyApplication;
 import ir.taxi1880.operatormanagement.model.AllMistakesModel;
 import ir.taxi1880.operatormanagement.model.CityModel;
 import ir.taxi1880.operatormanagement.model.SameNameStreetsModel;
@@ -358,7 +356,6 @@ public class DataBase extends SQLiteOpenHelper {
         if (res.getCount() == 0)
             return false;
         else {
-            Log.i("TAF_getCount_dataBase", res.getCount() + "");
             return true;
         }
     }
@@ -398,7 +395,6 @@ public class DataBase extends SQLiteOpenHelper {
         if (res.getCount() == 0)
             return false;
         else {
-            Log.i("TAF:", "_getCount_dataBase_Less"+res.getCount() + "");
             return true;
         }
     }

@@ -23,7 +23,7 @@ public class EndPoints {
     public static final String CALL_VOICE_APIPort = "1884";
     public static final String HAWKEYE_APIPort = "1890";
 
-    public static final String ACRA_PATH = "http://turbotaxi.ir:6061/api/crashReport";
+    public static final String ACRA_PATH = "http://turbotaxi.ir:6061/api/v1/crashReport";
 
     public static final String WEBSERVICE_PATH = IP + ":" + APIPort + "/api/operator/v3/";
     public static final String OPERATOR_MISTAKE_WEBSERVICE_PATH = IP + ":" + APIPort + "/api/operator/v3/mistake";

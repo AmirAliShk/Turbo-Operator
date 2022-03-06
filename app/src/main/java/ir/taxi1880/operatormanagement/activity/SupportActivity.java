@@ -513,7 +513,6 @@ public class SupportActivity extends AppCompatActivity {
                     if (status) {
                         String JArr = rawContent.getJSONArray("data").toString();
                         MyApplication.prefManager.setMistakeReason(JArr);
-                        Log.i("TAF", MyApplication.prefManager.getMistakeReason());
                     }
                 } catch (Exception e) {
                     e.printStackTrace();

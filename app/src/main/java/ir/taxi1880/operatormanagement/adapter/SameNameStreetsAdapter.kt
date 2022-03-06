@@ -1,6 +1,5 @@
 package ir.taxi1880.operatormanagement.adapter
 
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
@@ -31,7 +30,6 @@ class SameNameStreetsAdapter(sameNameStreetsList: ArrayList<SameNameStreetsModel
     }
 
     override fun onBindViewHolder(holder: SameNameStreetsHolder, position: Int) {
-        Log.i("taf_adapter",sameNameStreetsArr[position].sameNameStreet)
         val sameNameStreetItem = sameNameStreetsArr[position]
         holder.binding.txtSameNameStreetItem.text = sameNameStreetItem.sameNameStreet
         holder.binding.txtAroundStreet.text = sameNameStreetItem.aroundStreet
