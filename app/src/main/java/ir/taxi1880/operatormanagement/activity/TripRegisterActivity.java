@@ -603,7 +603,6 @@ public class TripRegisterActivity extends AppCompatActivity {
         public void beforeTextChanged(CharSequence charSequence, int start, int count, int after) {
         }
 
-        @RequiresApi(api = Build.VERSION_CODES.N)
         @Override
         public void onTextChanged(CharSequence charSequence, int start, int before, int count) {
             originAddressChangeCounter = originAddressChangeCounter + 1;
@@ -615,8 +614,10 @@ public class TripRegisterActivity extends AppCompatActivity {
                 charSequence = charSequence + " ";
                 Log.i("taf", "________after add space" + charSequence);
             }
-            searchInDataBaseForSameNameStreet("origin", cityCode, start, count, StringHelper.toEnglishDigits(charSequence.toString()),
-                    originSameNameStreets, binding.sameNameOrigin);
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+                searchInDataBaseForSameNameStreet("origin", cityCode, start, count, StringHelper.toEnglishDigits(charSequence.toString()),
+                        originSameNameStreets, binding.sameNameOrigin);
+            }
 
             removeExtraSpace(binding.edtOriginAddress);
         }
@@ -637,7 +638,6 @@ public class TripRegisterActivity extends AppCompatActivity {
         public void beforeTextChanged(CharSequence charSequence, int start, int count, int after) {
         }
 
-        @RequiresApi(api = Build.VERSION_CODES.N)
         @Override
         public void onTextChanged(CharSequence charSequence, int start, int before, int count) {
             destAddressChangeCounter = destAddressChangeCounter + 1;
@@ -649,9 +649,10 @@ public class TripRegisterActivity extends AppCompatActivity {
                 charSequence = charSequence + " ";
                 Log.i("taf", "________after add space" + charSequence);
             }
-
-            searchInDataBaseForSameNameStreet("dest", cityCode, count, start, StringHelper.toEnglishDigits(charSequence.toString()),
-                    destSameNameStreets, binding.sameNameDest);
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+                searchInDataBaseForSameNameStreet("dest", cityCode, count, start, StringHelper.toEnglishDigits(charSequence.toString()),
+                        destSameNameStreets, binding.sameNameDest);
+            }
 
             removeExtraSpace(binding.edtDestinationAddress);
         }
