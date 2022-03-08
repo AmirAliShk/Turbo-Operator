@@ -39,7 +39,7 @@ class SameNameStreetsPageFragment(position: Int) : Fragment() {
                 if (citySameNameStreetsJArr.getJSONObject(pos).getString("CityId") ==
                     citySameNameStreetsJArr.getJSONObject(i).getString("CityId")
                 ) {
-                    val sameNameStreetsJArr = citySameNameStreetsJArr.getJSONObject(i).getJSONArray("specificAddressItems");
+                    val sameNameStreetsJArr = citySameNameStreetsJArr.getJSONObject(i).getJSONArray("specificAddressItems")
                     for (j in 0 until sameNameStreetsJArr.length()) {
                         val sameNameStreetsModel = SameNameStreetsModel(
                             citySameNameStreetsJArr.getJSONObject(i).getInt("CityId"),
