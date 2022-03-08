@@ -5,7 +5,7 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import ir.taxi1880.operatormanagement.app.MyApplication
-import ir.taxi1880.operatormanagement.databinding.ItemSameNameStreetsBinding
+import ir.taxi1880.operatormanagement.databinding.ItemSameNameStreetsAlertBinding
 import ir.taxi1880.operatormanagement.helper.TypefaceUtil
 import ir.taxi1880.operatormanagement.model.SameNameStreetsModel
 
@@ -17,11 +17,11 @@ class SameNameStreetsAdapter(sameNameStreetsList: ArrayList<SameNameStreetsModel
         this.sameNameStreetsArr = sameNameStreetsList
     }
 
-    class SameNameStreetsHolder(val binding: ItemSameNameStreetsBinding) :
+    class SameNameStreetsHolder(val binding: ItemSameNameStreetsAlertBinding) :
         RecyclerView.ViewHolder(binding.root)
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): SameNameStreetsHolder {
-        val binding = ItemSameNameStreetsBinding.inflate(
+        val binding = ItemSameNameStreetsAlertBinding.inflate(
             LayoutInflater.from(MyApplication.currentActivity),
             parent,
             false

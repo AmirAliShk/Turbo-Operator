@@ -143,6 +143,7 @@ public class GetAppInfo {
 //                    dataBase.clearStreetNameWithSameNameTable();
 //                else
 //                    dataBase = new DataBase(MyApplication.currentActivity);
+                    MyApplication.prefManager.setSameNameStreets(sameNameStreetWhichCity);
                     dataBase.clearStreetNameWithSameNameTable();
                     JSONArray sameNameStreetWhichCityArr = new JSONArray(sameNameStreetWhichCity);
                     for (int sc = 0; sc < sameNameStreetWhichCityArr.length(); sc++) {
