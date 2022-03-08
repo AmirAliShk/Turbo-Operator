@@ -1,16 +1,19 @@
 package ir.taxi1880.operatormanagement.fragment
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import ir.taxi1880.operatormanagement.adapter.SameNameStreetListAdapter
+import ir.taxi1880.operatormanagement.adapter.SameNameStreetsViewPagerAdapter
 import ir.taxi1880.operatormanagement.app.MyApplication
 import ir.taxi1880.operatormanagement.databinding.FragmentSameNameStreetsPageBinding
 import ir.taxi1880.operatormanagement.helper.TypefaceUtil
 import ir.taxi1880.operatormanagement.model.SameNameStreetsModel
 import org.json.JSONArray
+import kotlin.math.log
 
 class SameNameStreetsPageFragment(position: Int) : Fragment() {
 
@@ -34,7 +37,7 @@ class SameNameStreetsPageFragment(position: Int) : Fragment() {
         if (menuVisible) {
             sameNameStreetModels = ArrayList()
 
-            val citySameNameStreetsJArr = JSONArray(MyApplication.prefManager.sameNameStreets)
+            val citySameNameStreetsJArr = SameNameStreetsViewPagerAdapter(this).checkExitSameNameStreetInCity()
             for (i in 0 until citySameNameStreetsJArr.length()) {
                 if (citySameNameStreetsJArr.getJSONObject(pos).getString("CityId") ==
                     citySameNameStreetsJArr.getJSONObject(i).getString("CityId")
@@ -48,6 +51,7 @@ class SameNameStreetsPageFragment(position: Int) : Fragment() {
                             sameNameStreetsJArr.getJSONObject(j).getString("description"),
                         )
                         sameNameStreetModels.add(sameNameStreetsModel)
+                        Log.i("taf_same",sameNameStreetModels.toString())
                         val adapter = SameNameStreetListAdapter(sameNameStreetModels)
                         binding.listSameNameStreet.adapter = adapter
 

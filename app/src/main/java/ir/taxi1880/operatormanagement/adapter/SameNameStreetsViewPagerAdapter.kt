@@ -22,7 +22,7 @@ class SameNameStreetsViewPagerAdapter(fragment: Fragment) : FragmentStateAdapter
         return SameNameStreetsPageFragment(position);
     }
 
-    private fun checkExitSameNameStreetInCity(): JSONArray {
+    fun checkExitSameNameStreetInCity(): JSONArray {
         val citySameNameStreetJArr = JSONArray(MyApplication.prefManager.sameNameStreets)
         val selectedCity = JSONArray()
         for (i in 0 until citySameNameStreetJArr.length()) {
@@ -36,7 +36,7 @@ class SameNameStreetsViewPagerAdapter(fragment: Fragment) : FragmentStateAdapter
             val specificAddressItems = JSONArray()
             for (j in 0 until sameNameStreetsJArr.length()) {
                 val localJObj = JSONObject()
-//                localJObj.put("_id",sameNameStreetsJArr.getJSONObject(j).getString("_id")) // error with no value for _id
+                localJObj.put("_id",sameNameStreetsJArr.getJSONObject(j).getString("_id"))
                 localJObj.put(
                     "streetName",
                     sameNameStreetsJArr.getJSONObject(j).getString("streetName")
