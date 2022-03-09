@@ -23,6 +23,8 @@ import ir.taxi1880.operatormanagement.R;
 import ir.taxi1880.operatormanagement.adapter.RecentCallsAdapterK;
 import ir.taxi1880.operatormanagement.app.MyApplication;
 import ir.taxi1880.operatormanagement.databinding.DialogCallBinding;
+import ir.taxi1880.operatormanagement.fragment.SameNameStreetsFragment;
+import ir.taxi1880.operatormanagement.helper.FragmentHelper;
 import ir.taxi1880.operatormanagement.helper.KeyBoardHelper;
 import ir.taxi1880.operatormanagement.helper.TypefaceUtil;
 import ir.taxi1880.operatormanagement.push.AvaCrashReporter;
@@ -87,6 +89,11 @@ public class CallDialog {
         if (isFromSupport) {
             binding.vfCall.setDisplayedChild(1);
         }
+
+        binding.llSameNameStreet.setOnClickListener(view -> {
+            FragmentHelper.toFragment(MyApplication.currentActivity , new SameNameStreetsFragment()).replace();
+            dismiss();
+        });
 
         binding.llStationGuide.setOnClickListener(view -> {
             new SearchStationInfoDialog().show(stationCode -> {

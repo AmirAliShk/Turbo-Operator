@@ -77,7 +77,17 @@ public class PrefManager {
     private static final String ACTIVE_IN_DRIVER_SUPPORT = "activeInDriverSupport";
     private static final String KEY_ENABLE_DARK_MODE = "KEY_ENABLE_DARK_MODE";
     private static final String MISTAKE_REASON = "mistakeReason";
+    private static final String SAME_NAME_STREETS_STR = "sameNameStreets";
 
+
+    public String getSameNameStreets() {
+        return pref.getString(SAME_NAME_STREETS_STR,"");
+    }
+
+    public void setSameNameStreets(String v) {
+        editor.putString(SAME_NAME_STREETS_STR, v);
+        editor.commit();
+    }
     public boolean isDarkMode() {
         return pref.getBoolean(KEY_ENABLE_DARK_MODE, false);
     }

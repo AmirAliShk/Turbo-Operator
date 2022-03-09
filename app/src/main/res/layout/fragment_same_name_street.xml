@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#AB000000"
+    android:clickable="true"
+    android:layoutDirection="rtl"
+    android:orientation="vertical">
+
+    <ViewFlipper
+        android:id="@+id/vfMenu"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginHorizontal="@dimen/_10sdp"
+        android:layout_marginTop="@dimen/_25sdp"
+        android:layout_weight="1"
+        android:background="@drawable/bg_body">
+
+        <!--        <com.wang.avi.AVLoadingIndicatorView-->
+        <!--            android:layout_width="@dimen/_30sdp"-->
+        <!--            android:layout_height="@dimen/_30sdp"-->
+        <!--            android:layout_gravity="center"-->
+        <!--            app:indicatorColor="@color/color_Red" />-->
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <com.google.android.material.tabs.TabLayout
+                android:id="@+id/tabLayout"
+                android:layout_width="match_parent"
+                app:tabIndicatorColor="?attr/colorIcon1"
+                android:layout_height="@dimen/_50sdp" />
+
+            <androidx.viewpager2.widget.ViewPager2
+                android:id="@+id/VPager"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent" />
+
+        </LinearLayout>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:text="هنگام دریافت لیست از سرور به خطا خوردیم \n لطفا مجدد امتحان کنید"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:textColor="@color/colorBlack" />
+
+    </ViewFlipper>
+
+    <ImageView
+        android:id="@+id/imgClose"
+        android:layout_width="@dimen/_35sdp"
+        android:layout_height="@dimen/_35sdp"
+        android:layout_alignParentLeft="true"
+        android:layout_gravity="center"
+        android:layout_marginVertical="@dimen/_15sdp"
+        android:padding="@dimen/_5sdp"
+        android:src="@drawable/ic_close_black_24dp" />
+
+</LinearLayout>

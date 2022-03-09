@@ -14,7 +14,7 @@
         android:layout_height="wrap_content"
         android:divider="@null"
         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-        tools:listitem="@layout/item_same_name_streets" />
+        tools:listitem="@layout/item_same_name_streets_alert" />
 
     <ImageView
         android:id="@+id/imgClose"
