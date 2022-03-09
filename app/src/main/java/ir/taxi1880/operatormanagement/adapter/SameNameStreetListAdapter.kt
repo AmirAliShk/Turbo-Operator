@@ -17,7 +17,7 @@ class SameNameStreetListAdapter(list: ArrayList<SameNameStreetsModel>) :
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): SameNameStreetHolder {
         val binding = ItemSameNameStreetInFragmentBinding.inflate(
-            LayoutInflater.from(MyApplication.context),
+            LayoutInflater.from(MyApplication.currentActivity),
             parent,
             false
         )

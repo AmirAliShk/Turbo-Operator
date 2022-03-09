@@ -2,6 +2,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:orientation="vertical"
+    android:layoutDirection="rtl"
     android:layout_height="wrap_content">
 
     <LinearLayout
@@ -20,18 +21,23 @@
 
             <TextView
                 android:id="@+id/txtSameNameStreet"
-                android:layout_width="match_parent"
+                android:layout_width="0dp"
                 android:layout_height="match_parent"
-                android:layout_weight="0.5"
+                android:layout_weight="0.2"
                 android:gravity="center_vertical"
                 android:paddingRight="@dimen/_10sdp"
                 android:textColor="@color/colorBlack"
                 android:textSize="@dimen/_14sdp"
                 android:textStyle="bold" />
 
+            <ImageView
+                android:layout_width="1dp"
+                android:layout_height="match_parent"
+                android:background="?attr/colorIcon1" />
+
             <TextView
                 android:id="@+id/txtAroundStreet"
-                android:layout_width="match_parent"
+                android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="0.5"
                 android:gravity="center_vertical"
