@@ -104,13 +104,9 @@ public class DriverTripSupportFragment extends Fragment {
         }));
 
         binding.imgSearchType.setOnClickListener(view -> new SearchFilterDialog().show("driver", searchCase -> {
-            if (binding.edtSearchTrip == null) return;
-            if (binding.vfTrip != null) {
-                binding.vfTrip.setDisplayedChild(0);
-            }
-            if (binding.vfDriverInfo != null) {
-                binding.vfDriverInfo.setVisibility(View.GONE);
-            }
+            binding.vfTrip.setDisplayedChild(0);
+            binding.vfDriverInfo.setVisibility(View.GONE);
+
             int imageType = R.drawable.ic_call;
             switch (searchCase) {
                 case 6: // driver mobile
@@ -135,18 +131,14 @@ public class DriverTripSupportFragment extends Fragment {
                     break;
             }
             binding.imgSearchType.setImageResource(imageType);
-            if (binding.edtSearchTrip != null)
-                binding.edtSearchTrip.setText("");
+            binding.edtSearchTrip.setText("");
             this.searchCase = searchCase;
         }));
 
         binding.imgClear.setOnLongClickListener(view -> {
-            if (binding.vfTrip != null) {
-                binding.vfTrip.setDisplayedChild(0);
-                binding.vfDriverInfo.setVisibility(View.GONE);
-            }
-            if (binding.edtSearchTrip != null)
-                binding.edtSearchTrip.setText("");
+            binding.vfTrip.setDisplayedChild(0);
+            binding.vfDriverInfo.setVisibility(View.GONE);
+            binding.edtSearchTrip.setText("");
             return true;
         });
 
@@ -170,8 +162,7 @@ public class DriverTripSupportFragment extends Fragment {
 
                     @Override
                     public void onCallEnded() {
-                        if (binding.imgEndCall != null)
-                            binding.imgEndCall.setImageResource(R.drawable.ic_call_dialog_disable);
+                        binding.imgEndCall.setImageResource(R.drawable.ic_call_dialog_disable);
                     }
                 }, true);
             } else {
@@ -196,9 +187,7 @@ public class DriverTripSupportFragment extends Fragment {
         });
 
         binding.txtCancel.setOnClickListener(view -> {
-            if (binding.vfTrip != null) {
-                binding.vfTrip.setDisplayedChild(3);
-            }
+            binding.vfTrip.setDisplayedChild(3);
         });
 
         binding.imgDriverLocation.setOnClickListener(view -> {
@@ -232,10 +221,7 @@ public class DriverTripSupportFragment extends Fragment {
     }
 
     public void onSearchPress() {
-        if (binding.vfDriverInfo != null) {
-            binding.vfDriverInfo.setVisibility(View.GONE);
-        }
-
+        binding.vfDriverInfo.setVisibility(View.GONE);
         searchText = StringHelper.toEnglishDigits(binding.edtSearchTrip.getText().toString());
         if (searchText.isEmpty()) {
             MyApplication.Toast("موردی را برای جستو جو وارد کنید", Toast.LENGTH_SHORT);
@@ -275,10 +261,7 @@ public class DriverTripSupportFragment extends Fragment {
         String stationCode = "0";
         String destinationAddress = "0";
 
-        if (binding.vfTrip != null) {
-            binding.vfTrip.setDisplayedChild(1);
-        }
-
+        binding.vfTrip.setDisplayedChild(1);
         switch (searchCase) {
             case 6: // search by driver mobile
                 driverPhone = searchText;
@@ -359,15 +342,12 @@ public class DriverTripSupportFragment extends Fragment {
                         }
 
                         tripAdapter = new DriverTripsAdapter(tripModels);
-                        if (binding.recycleTrip != null)
-                            binding.recycleTrip.setAdapter(tripAdapter);
+                        binding.recycleTrip.setAdapter(tripAdapter);
 
                         if (tripModels.size() == 0) {
-                            if (binding.vfTrip != null)
-                                binding.vfTrip.setDisplayedChild(0);
+                            binding.vfTrip.setDisplayedChild(0);
                         } else {
-                            if (binding.vfTrip != null)
-                                binding.vfTrip.setDisplayedChild(2);
+                            binding.vfTrip.setDisplayedChild(2);
                         }
                     } else {
                         new GeneralDialog()
@@ -380,9 +360,8 @@ public class DriverTripSupportFragment extends Fragment {
                 } catch (JSONException e) {
                     e.printStackTrace();
                     AvaCrashReporter.send(e, TAG + " class, onGetTripList onResponse method2");
-                    if (binding.vfTrip != null) {
-                        binding.vfTrip.setDisplayedChild(3);
-                    }
+                    binding.vfTrip.setDisplayedChild(3);
+
                 }
             });
         }
@@ -391,22 +370,17 @@ public class DriverTripSupportFragment extends Fragment {
         public void onFailure(Runnable reCall, Exception e) {
             MyApplication.handler.post(() -> {
 //       e = {"message":"Unprocessable Entity","data":[{"field":"stationCode","message":"کد ایستگاه صحیح نیست"}],"success":false}
-                if (binding.vfTrip != null) {
-                    binding.vfTrip.setDisplayedChild(3);
-                }
+                binding.vfTrip.setDisplayedChild(3);
+
             });
         }
 
     };
 
     private void getDriverInfo(String searchText, int searchCase) {
-        if (binding.vfTrip != null) {
-            binding.vfTrip.setDisplayedChild(1);
-        }
-        if (binding.vfDriverInfo != null) {
-            binding.vfDriverInfo.setVisibility(View.VISIBLE);
-            binding.vfDriverInfo.setDisplayedChild(0);
-        }
+        binding.vfTrip.setDisplayedChild(1);
+        binding.vfDriverInfo.setVisibility(View.VISIBLE);
+        binding.vfDriverInfo.setDisplayedChild(0);
 
         switch (searchCase) {
             case 6: // driver mobile
@@ -439,10 +413,8 @@ public class DriverTripSupportFragment extends Fragment {
                     String message = object.getString("message");
 
                     if (success) {
-                        if (binding.vfDriverInfo != null) {
-                            binding.vfDriverInfo.setVisibility(View.VISIBLE);
-                            binding.vfDriverInfo.setDisplayedChild(1);
-                        }
+                        binding.vfDriverInfo.setVisibility(View.VISIBLE);
+                        binding.vfDriverInfo.setDisplayedChild(1);
 
                         JSONObject dataObj = object.getJSONObject("data");
                         JSONObject infoObj = dataObj.getJSONObject("info");
@@ -485,10 +457,8 @@ public class DriverTripSupportFragment extends Fragment {
 
                         String statusMessage = "";
 
-                        if (binding.txtDriverName != null)
-                            binding.txtDriverName.setText(driverName);
-                        if (binding.txtDriverCode != null)
-                            binding.txtDriverCode.setText(StringHelper.toPersianDigits(taxiCode + ""));
+                        binding.txtDriverName.setText(driverName);
+                        binding.txtDriverCode.setText(StringHelper.toPersianDigits(taxiCode + ""));
 
                         if (isLock == 1) {
                             statusMessage = "راننده قفل میباشد.";
@@ -515,26 +485,22 @@ public class DriverTripSupportFragment extends Fragment {
                                     break;
                             }
                         }
-                        if (binding.txtDriverQueue != null)
-                            binding.txtDriverQueue.setText(statusMessage);
+                        binding.txtDriverQueue.setText(statusMessage);
                     } else {
-                        if (binding.vfDriverInfo != null) {
-                            binding.vfDriverInfo.setVisibility(View.GONE);
-                        }
-
-                        new GeneralDialog()
-                                .title("هشدار")
-                                .message(message)
-                                .cancelable(false)
-                                .firstButton("باشه", null)
-                                .show();
+                        binding.vfDriverInfo.setVisibility(View.GONE);
                     }
+
+                    new GeneralDialog()
+                            .title("هشدار")
+                            .message(message)
+                            .cancelable(false)
+                            .firstButton("باشه", null)
+                            .show();
+
                 } catch (JSONException e) {
                     e.printStackTrace();
                     AvaCrashReporter.send(e, TAG + " class, onGetDriverInfo onResponse method");
-                    if (binding.vfDriverInfo != null) {
-                        binding.vfDriverInfo.setVisibility(View.GONE);
-                    }
+                    binding.vfDriverInfo.setVisibility(View.GONE);
                     MyApplication.Toast("خطا در دریافت اطلاعات راننده", Toast.LENGTH_SHORT);
                 }
             });
@@ -543,8 +509,7 @@ public class DriverTripSupportFragment extends Fragment {
         @Override
         public void onFailure(Runnable reCall, Exception e) {
             MyApplication.handler.post(() -> {
-                if (binding.vfDriverInfo != null)
-                    binding.vfDriverInfo.setVisibility(View.GONE);
+                binding.vfDriverInfo.setVisibility(View.GONE);
                 MyApplication.Toast("خطا در دریافت اطلاعات راننده", Toast.LENGTH_SHORT);
             });
         }
@@ -554,8 +519,7 @@ public class DriverTripSupportFragment extends Fragment {
         @Override
         public void onCallStateChanged(Core core, final Call call, Call.State state, String message) {
             if (state == Call.State.End) {
-                if (binding.imgCallQuality != null)
-                    binding.imgCallQuality.setVisibility(View.INVISIBLE);
+                binding.imgCallQuality.setVisibility(View.INVISIBLE);
                 binding.imgEndCall.setImageResource(R.drawable.ic_call_dialog_disable);
                 if (mCallQualityUpdater != null) {
                     LinphoneService.removeFromUIThreadDispatcher(mCallQualityUpdater);
@@ -585,10 +549,8 @@ public class DriverTripSupportFragment extends Fragment {
         } else if (quality >= 1) { // Very low quality
             imageRes = (R.drawable.ic_quality_1);
         }
-        if (binding.imgCallQuality != null) {
-            binding.imgCallQuality.setVisibility(View.VISIBLE);
-            binding.imgCallQuality.setImageResource(imageRes);
-        }
+        binding.imgCallQuality.setVisibility(View.VISIBLE);
+        binding.imgCallQuality.setImageResource(imageRes);
         mDisplayedQuality = iQuality;
     }
 
@@ -616,8 +578,7 @@ public class DriverTripSupportFragment extends Fragment {
     }
 
     public void getRegistrationReport(String driverCode) {
-        if (binding.vfStationInfo != null)
-            binding.vfStationInfo.setDisplayedChild(1);
+        binding.vfStationInfo.setDisplayedChild(1);
         RequestHelper.builder(EndPoints.DRIVER_STATION_REGISTRATION + "/" + driverCode)
                 .listener(onGetRegistrationReport)
                 .get();
@@ -635,8 +596,7 @@ public class DriverTripSupportFragment extends Fragment {
                         JSONArray data = listenObj.getJSONArray("data");
                         if (data.length() == 0) {
                             MyApplication.Toast("موردی ثبت نشده", Toast.LENGTH_SHORT);
-                            if (binding.vfStationInfo != null)
-                                binding.vfStationInfo.setDisplayedChild(0);
+                            binding.vfStationInfo.setDisplayedChild(0);
                             return;
                         }
                         new DriverStationRegistrationDialog().show(data);
@@ -648,13 +608,11 @@ public class DriverTripSupportFragment extends Fragment {
                                 .firstButton("باشه", null)
                                 .show();
                     }
-                    if (binding.vfStationInfo != null)
-                        binding.vfStationInfo.setDisplayedChild(0);
+                    binding.vfStationInfo.setDisplayedChild(0);
                 } catch (Exception e) {
                     e.printStackTrace();
                     AvaCrashReporter.send(e, TAG + " class, onGetRegistrationReport onResponse method");
-                    if (binding.vfStationInfo != null)
-                        binding.vfStationInfo.setDisplayedChild(0);
+                    binding.vfStationInfo.setDisplayedChild(0);
                 }
             });
         }
@@ -662,15 +620,13 @@ public class DriverTripSupportFragment extends Fragment {
         @Override
         public void onFailure(Runnable reCall, Exception e) {
             MyApplication.handler.post(() -> {
-                if (binding.vfStationInfo != null)
-                    binding.vfStationInfo.setDisplayedChild(0);
+                binding.vfStationInfo.setDisplayedChild(0);
             });
         }
     };
 
     public void getFinancial(String taxiCode, String carCode) {
-        if (binding.vfFinancial != null)
-            binding.vfFinancial.setDisplayedChild(1);
+        binding.vfFinancial.setDisplayedChild(1);
 
         RequestHelper.builder(EndPoints.DRIVER_FINANCIAL)
                 .ignore422Error(true)
@@ -693,8 +649,7 @@ public class DriverTripSupportFragment extends Fragment {
                         JSONArray dataArr = listenObj.getJSONArray("data");
                         if (dataArr.length() == 0) {
                             MyApplication.Toast("موردی ثبت نشده", Toast.LENGTH_SHORT);
-                            if (binding.vfFinancial != null)
-                                binding.vfFinancial.setDisplayedChild(0);
+                            binding.vfFinancial.setDisplayedChild(0);
                             return;
                         }
                         new DriverTurnoverDialog().show(dataArr);
@@ -706,13 +661,11 @@ public class DriverTripSupportFragment extends Fragment {
                                 .firstButton("باشه", null)
                                 .show();
                     }
-                    if (binding.vfFinancial != null)
-                        binding.vfFinancial.setDisplayedChild(0);
+                    binding.vfFinancial.setDisplayedChild(0);
                 } catch (Exception e) {
                     e.printStackTrace();
                     AvaCrashReporter.send(e, TAG + " class, onGetFinancial onResponse method");
-                    if (binding.vfFinancial != null)
-                        binding.vfFinancial.setDisplayedChild(0);
+                    binding.vfFinancial.setDisplayedChild(0);
                 }
             });
         }
@@ -720,8 +673,7 @@ public class DriverTripSupportFragment extends Fragment {
         @Override
         public void onFailure(Runnable reCall, Exception e) {
             MyApplication.handler.post(() -> {
-                if (binding.vfFinancial != null)
-                    binding.vfFinancial.setDisplayedChild(0);
+                binding.vfFinancial.setDisplayedChild(0);
             });
         }
     };
