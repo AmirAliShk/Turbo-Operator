@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.text.Editable;
 import android.text.InputType;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -606,6 +607,7 @@ public class DriverTripSupportFragment extends Fragment {
                                     float newQuality = mCurrentCall.getCurrentQuality();
                                     updateQualityOfSignalIcon(newQuality);
 
+
                                     if (MyApplication.prefManager.getConnectedCall())
                                         LinphoneService.dispatchOnUIThreadAfter(this, 1000);
                                 }
@@ -734,7 +736,18 @@ public class DriverTripSupportFragment extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
+        setDriverNumber();
         startCallQuality();
+    }
+
+    void setDriverNumber() {
+        final Call mCurrentCall = LinphoneService.getCore().getCurrentCall();
+        if (mCurrentCall != null) {
+            String driverNumber = mCurrentCall.getRemoteAddress().getUsername();
+            binding.edtSearchTrip.setText(driverNumber);
+            onSearchPress();
+        }
+
     }
 
     @Override
