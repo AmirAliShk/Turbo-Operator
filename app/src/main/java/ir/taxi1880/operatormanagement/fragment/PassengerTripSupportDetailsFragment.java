@@ -16,9 +16,7 @@ import androidx.fragment.app.Fragment;
 
 import org.json.JSONException;
 import org.json.JSONObject;
-import org.linphone.core.Call;
 import org.linphone.core.Core;
-import org.linphone.core.CoreListenerStub;
 
 import ir.taxi1880.operatormanagement.R;
 import ir.taxi1880.operatormanagement.app.EndPoints;
@@ -27,7 +25,7 @@ import ir.taxi1880.operatormanagement.databinding.FragmentPassengerTripSupportDe
 import ir.taxi1880.operatormanagement.dialog.CallDialog;
 import ir.taxi1880.operatormanagement.dialog.ComplaintRegistrationDialog;
 import ir.taxi1880.operatormanagement.dialog.DriverLockDialog;
-import ir.taxi1880.operatormanagement.dialog.ErrorAddressDialog;
+import ir.taxi1880.operatormanagement.dialog.EditAddressDialog;
 import ir.taxi1880.operatormanagement.dialog.ErrorRegistrationDialog;
 import ir.taxi1880.operatormanagement.dialog.GeneralDialog;
 import ir.taxi1880.operatormanagement.dialog.LoadingDialog;
@@ -40,7 +38,6 @@ import ir.taxi1880.operatormanagement.helper.StringHelper;
 import ir.taxi1880.operatormanagement.helper.TypefaceUtil;
 import ir.taxi1880.operatormanagement.okHttp.RequestHelper;
 import ir.taxi1880.operatormanagement.push.AvaCrashReporter;
-import ir.taxi1880.operatormanagement.services.LinphoneService;
 
 public class PassengerTripSupportDetailsFragment extends Fragment {
     public static final String TAG = PassengerTripSupportDetailsFragment.class.getSimpleName();
@@ -177,7 +174,7 @@ public class PassengerTripSupportDetailsFragment extends Fragment {
             FragmentHelper.toFragment(MyApplication.currentActivity, new DriverLocationFragment()).setArguments(bundle1).add();
         });
 
-        binding.btnEditAddress.setOnClickListener(view -> new ErrorAddressDialog().show(passengerAddress, serviceId + "", address -> binding.txtCustomerAddress.setText(address)));
+        binding.btnEditAddress.setOnClickListener(view -> new EditAddressDialog().show(passengerAddress, serviceId , address -> binding.txtCustomerAddress.setText(address)));
 
         binding.btnRewardTip.setOnClickListener(view -> {
             String liveNumber = MyApplication.prefManager.getLastCallerId();

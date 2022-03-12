@@ -20,9 +20,9 @@ import ir.taxi1880.operatormanagement.helper.TypefaceUtil;
 import ir.taxi1880.operatormanagement.okHttp.RequestHelper;
 import ir.taxi1880.operatormanagement.push.AvaCrashReporter;
 
-public class ErrorAddressDialog {
+public class EditAddressDialog {
 
-    private static final String TAG = ErrorAddressDialog.class.getSimpleName();
+    private static final String TAG = EditAddressDialog.class.getSimpleName();
 
     public interface Listener {
         void address(String address);
@@ -32,7 +32,7 @@ public class ErrorAddressDialog {
     static Dialog dialog;
     Listener listener;
 
-    public void show(String passengerAddress, String serviceId, Listener listener) {
+    public void show(String passengerAddress, int serviceId, Listener listener) {
         if (MyApplication.currentActivity == null || MyApplication.currentActivity.isFinishing())
             return;
         dialog = new Dialog(MyApplication.currentActivity);
@@ -75,7 +75,7 @@ public class ErrorAddressDialog {
         dialog.show();
     }
 
-    private void editAddress(String serviceId, String address) {
+    private void editAddress(int serviceId, String address) {
 //        if (binding.vfLoader != null) {
             binding.vfLoader.setDisplayedChild(1);
 

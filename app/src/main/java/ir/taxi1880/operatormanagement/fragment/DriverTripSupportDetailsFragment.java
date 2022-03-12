@@ -24,7 +24,7 @@ import ir.taxi1880.operatormanagement.databinding.FragmentDriverTripSupportDetai
 import ir.taxi1880.operatormanagement.dialog.CallDialog;
 import ir.taxi1880.operatormanagement.dialog.ComplaintRegistrationDialog;
 import ir.taxi1880.operatormanagement.dialog.DriverLockDialog;
-import ir.taxi1880.operatormanagement.dialog.ErrorAddressDialog;
+import ir.taxi1880.operatormanagement.dialog.EditAddressDialog;
 import ir.taxi1880.operatormanagement.dialog.ErrorRegistrationDialog;
 import ir.taxi1880.operatormanagement.dialog.GeneralDialog;
 import ir.taxi1880.operatormanagement.dialog.LoadingDialog;
@@ -177,7 +177,7 @@ public class DriverTripSupportDetailsFragment extends Fragment {
             FragmentHelper.toFragment(MyApplication.currentActivity, new DriverLocationFragment()).setArguments(bundle1).add();
         });
 
-        binding.btnEditAddress.setOnClickListener(view -> new ErrorAddressDialog().show(passengerAddress, serviceId + "", address -> binding.txtCustomerAddress.setText(address)));
+        binding.btnEditAddress.setOnClickListener(view -> new EditAddressDialog().show(passengerAddress, serviceId , address -> binding.txtCustomerAddress.setText(address)));
 
         binding.btnArchiveAddress.setOnClickListener(view -> new GeneralDialog()
                 .title("بایگانی آدرس")
