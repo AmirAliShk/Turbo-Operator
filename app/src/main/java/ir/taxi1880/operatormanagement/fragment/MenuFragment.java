@@ -14,6 +14,8 @@ import ir.taxi1880.operatormanagement.app.MyApplication;
 import ir.taxi1880.operatormanagement.databinding.FragmentMenuBinding;
 import ir.taxi1880.operatormanagement.dialog.GeneralDialog;
 import ir.taxi1880.operatormanagement.dialog.RequestDialog;
+import ir.taxi1880.operatormanagement.fragment.complaint.ComplaintFragment;
+import ir.taxi1880.operatormanagement.fragment.mistake.OperatorMistakesFragment;
 import ir.taxi1880.operatormanagement.helper.FragmentHelper;
 import ir.taxi1880.operatormanagement.helper.TypefaceUtil;
 

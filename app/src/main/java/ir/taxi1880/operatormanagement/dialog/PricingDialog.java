@@ -1,6 +1,6 @@
 package ir.taxi1880.operatormanagement.dialog;
 
-import static ir.taxi1880.operatormanagement.fragment.ComplaintDetailFragment.complaintDetailsModel;
+import static ir.taxi1880.operatormanagement.fragment.complaint.ComplaintDetailFragment.complaintDetailsModel;
 
 import android.app.Dialog;
 import android.graphics.Color;

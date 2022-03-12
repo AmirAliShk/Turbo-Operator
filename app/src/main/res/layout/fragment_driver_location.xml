@@ -7,7 +7,7 @@
     android:background="@color/colorPrimaryLighter"
     android:clickable="true"
     android:layoutDirection="rtl"
-    tools:context=".fragment.DriverLocationFragment">
+    tools:context=".fragment.driverSupport.DriverLocationFragment">
 
     <RelativeLayout
         android:id="@+id/rlActionBar"

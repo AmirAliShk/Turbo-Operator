@@ -15,7 +15,7 @@ import ir.taxi1880.operatormanagement.model.SameNameStreetsModel
 import org.json.JSONArray
 import kotlin.math.log
 
-class SameNameStreetsPageFragment(position: Int) : Fragment() {
+class SameNameStreetsRecycleFragment(position: Int) : Fragment() {
 
     lateinit var binding: FragmentSameNameStreetsPageBinding
     lateinit var sameNameStreetModels: ArrayList<SameNameStreetsModel>
@@ -51,7 +51,6 @@ class SameNameStreetsPageFragment(position: Int) : Fragment() {
                             sameNameStreetsJArr.getJSONObject(j).getString("description"),
                         )
                         sameNameStreetModels.add(sameNameStreetsModel)
-                        Log.i("taf_same",sameNameStreetModels.toString())
                         val adapter = SameNameStreetListAdapter(sameNameStreetModels)
                         binding.listSameNameStreet.adapter = adapter
 

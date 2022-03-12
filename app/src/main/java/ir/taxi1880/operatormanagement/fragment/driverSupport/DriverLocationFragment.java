@@ -1,4 +1,4 @@
-package ir.taxi1880.operatormanagement.fragment;
+package ir.taxi1880.operatormanagement.fragment.driverSupport;
 
 import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;

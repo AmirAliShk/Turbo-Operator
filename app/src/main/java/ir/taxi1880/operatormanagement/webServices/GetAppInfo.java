@@ -19,7 +19,7 @@ import ir.taxi1880.operatormanagement.app.MyApplication;
 import ir.taxi1880.operatormanagement.dataBase.DataBase;
 import ir.taxi1880.operatormanagement.dialog.DownloadUpdateDialog;
 import ir.taxi1880.operatormanagement.dialog.GeneralDialog;
-import ir.taxi1880.operatormanagement.fragment.LoginFragment;
+import ir.taxi1880.operatormanagement.fragment.login.LoginFragment;
 import ir.taxi1880.operatormanagement.helper.AppVersionHelper;
 import ir.taxi1880.operatormanagement.helper.ContinueProcessing;
 import ir.taxi1880.operatormanagement.helper.FragmentHelper;

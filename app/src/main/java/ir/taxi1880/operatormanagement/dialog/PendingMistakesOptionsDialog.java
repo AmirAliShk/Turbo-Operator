@@ -5,20 +5,16 @@ import android.app.Dialog;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.Toast;
 
-import com.downloader.PRDownloader;
-
 import ir.taxi1880.operatormanagement.R;
-import ir.taxi1880.operatormanagement.adapter.RecentCallsAdapterK;
 import ir.taxi1880.operatormanagement.app.MyApplication;
 import ir.taxi1880.operatormanagement.databinding.DialogPendingMistakesOptionsBinding;
-import ir.taxi1880.operatormanagement.fragment.PassengerTripSupportFragment;
+import ir.taxi1880.operatormanagement.fragment.passengerSupport.PassengerTripSupportFragment;
 import ir.taxi1880.operatormanagement.helper.FragmentHelper;
 import ir.taxi1880.operatormanagement.helper.TypefaceUtil;
 import ir.taxi1880.operatormanagement.push.AvaCrashReporter;

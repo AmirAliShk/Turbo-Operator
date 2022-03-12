@@ -1,6 +1,6 @@
-package ir.taxi1880.operatormanagement.fragment;
+package ir.taxi1880.operatormanagement.fragment.complaint;
 
-import static ir.taxi1880.operatormanagement.fragment.ComplaintDetailFragment.complaintDetailsModel;
+import static ir.taxi1880.operatormanagement.fragment.complaint.ComplaintDetailFragment.complaintDetailsModel;
 
 import android.media.MediaPlayer;
 import android.net.Uri;

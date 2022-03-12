@@ -1,4 +1,4 @@
-package ir.taxi1880.operatormanagement.fragment;
+package ir.taxi1880.operatormanagement.fragment.passengerSupport;
 
 import static ir.taxi1880.operatormanagement.app.MyApplication.context;
 
@@ -16,11 +16,12 @@ import androidx.fragment.app.Fragment;
 
 import org.json.JSONException;
 import org.json.JSONObject;
+import org.linphone.core.Core;
 
 import ir.taxi1880.operatormanagement.R;
 import ir.taxi1880.operatormanagement.app.EndPoints;
 import ir.taxi1880.operatormanagement.app.MyApplication;
-import ir.taxi1880.operatormanagement.databinding.FragmentDriverTripSupportDetailsBinding;
+import ir.taxi1880.operatormanagement.databinding.FragmentPassengerTripSupportDetailsBinding;
 import ir.taxi1880.operatormanagement.dialog.CallDialog;
 import ir.taxi1880.operatormanagement.dialog.ComplaintRegistrationDialog;
 import ir.taxi1880.operatormanagement.dialog.DriverLockDialog;
@@ -29,6 +30,8 @@ import ir.taxi1880.operatormanagement.dialog.ErrorRegistrationDialog;
 import ir.taxi1880.operatormanagement.dialog.GeneralDialog;
 import ir.taxi1880.operatormanagement.dialog.LoadingDialog;
 import ir.taxi1880.operatormanagement.dialog.LostDialog;
+import ir.taxi1880.operatormanagement.dialog.RewardTripDialog;
+import ir.taxi1880.operatormanagement.fragment.driverSupport.DriverLocationFragment;
 import ir.taxi1880.operatormanagement.helper.DateHelper;
 import ir.taxi1880.operatormanagement.helper.FragmentHelper;
 import ir.taxi1880.operatormanagement.helper.KeyBoardHelper;
@@ -37,10 +40,11 @@ import ir.taxi1880.operatormanagement.helper.TypefaceUtil;
 import ir.taxi1880.operatormanagement.okHttp.RequestHelper;
 import ir.taxi1880.operatormanagement.push.AvaCrashReporter;
 
-public class DriverTripSupportDetailsFragment extends Fragment {
-    public static final String TAG = DriverTripSupportDetailsFragment.class.getSimpleName();
-    FragmentDriverTripSupportDetailsBinding binding;
+public class PassengerTripSupportDetailsFragment extends Fragment {
+    public static final String TAG = PassengerTripSupportDetailsFragment.class.getSimpleName();
+    FragmentPassengerTripSupportDetailsBinding binding;
     int serviceId;
+    Core core;
     String passengerPhone;
     String customerMobile;
     String passengerName;
@@ -60,32 +64,34 @@ public class DriverTripSupportDetailsFragment extends Fragment {
     String callTime;
     String cityName;
     int cityCode;
-    String serviceDetails;
     String price;
     String destinationStation;
     String destination;
-
+    String serviceDetails;
+    String passengerId;
+    String originId;
+    Bundle bundle;
     public SetOnBackPressedServiceListener setOnBackPressedServiceListener;
 
 
-    public DriverTripSupportDetailsFragment(SetOnBackPressedServiceListener setOnBackPressedServiceListener) {
+    public PassengerTripSupportDetailsFragment(SetOnBackPressedServiceListener setOnBackPressedServiceListener) {
         this.setOnBackPressedServiceListener = setOnBackPressedServiceListener;
     }
 
     public interface SetOnBackPressedServiceListener {
-        void onBackCancelService(String title, String color);
+        void onBackCancelService(String Title, String color);
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        binding = FragmentDriverTripSupportDetailsBinding.inflate(inflater, container, false);
+        binding = FragmentPassengerTripSupportDetailsBinding.inflate(inflater, container, false);
         TypefaceUtil.overrideFonts(binding.getRoot(), MyApplication.IraSanSMedume);
         TypefaceUtil.overrideFonts(binding.txtTitle);
         TypefaceUtil.overrideFonts(binding.txtNull);
 
         Bundle bundle = getArguments();
         if (bundle != null) {
-            serviceId = bundle.getInt("id");
+            serviceId = Integer.parseInt(bundle.getString("id"));
         }
 
         tripDetails();
@@ -136,26 +142,19 @@ public class DriverTripSupportDetailsFragment extends Fragment {
                     }
                 }, false);
             }
-            //    Call call = LinphoneService.getCore().getCurrentCall();
-            //    call.terminate();
+//    Call call = LinphoneService.getCore().getCurrentCall();
+//    call.terminate();
         });
-
-        binding.btnResendService.setOnClickListener(view -> new GeneralDialog()
-                .message("آیا میخواهید سرویس را مجدد ارسال کنید؟")
-                .firstButton("بله", this::resendCancelService)
-                .secondButton("خیر ", null)
-                .show());
 
         binding.btnDriverLock.setOnClickListener(view -> new DriverLockDialog().show(taxiCode));
 
-        binding.btnLost.setOnClickListener(view -> new LostDialog().show(serviceId + "", passengerName, passengerPhone, taxiCode, true));
+        binding.btnLost.setOnClickListener(view -> new LostDialog().show(serviceId + "", passengerName, passengerPhone, taxiCode, false));
 
         binding.btnComplaintRegistration.setOnClickListener(view -> new ComplaintRegistrationDialog().show(serviceId + "", voipId));
 
         binding.btnErrorRegistration.setOnClickListener(view -> {
 //        String cityName= new DataBase(MyApplication.context).getCityName2(cityCode);
-            new ErrorRegistrationDialog()
-                    .show(serviceId + "", passengerPhone, customerMobile, passengerAddress, passengerName, voipId, cityCode, stationCode, userId, callTime, callDate, price, destinationStation, destination);
+            new ErrorRegistrationDialog().show(serviceId + "", passengerPhone, customerMobile, passengerAddress, passengerName, voipId, cityCode, stationCode, userId, callTime, callDate, price, destinationStation, destination);
         });
 
         binding.btnReFollow.setOnClickListener(view -> new GeneralDialog()
@@ -173,11 +172,25 @@ public class DriverTripSupportDetailsFragment extends Fragment {
             bundle1.putString("time", lastPositionTime);
             bundle1.putString("date", lastPositionDate);
             bundle1.putString("taxiCode", taxiCode);
-            bundle1.putBoolean("isFromDriverSupport", false);
             FragmentHelper.toFragment(MyApplication.currentActivity, new DriverLocationFragment()).setArguments(bundle1).add();
         });
 
         binding.btnEditAddress.setOnClickListener(view -> new EditAddressDialog().show(passengerAddress, serviceId , address -> binding.txtCustomerAddress.setText(address)));
+
+        binding.btnRewardTip.setOnClickListener(view -> {
+            String liveNumber = MyApplication.prefManager.getLastCallerId();
+            if (liveNumber.equals(passengerPhone) || liveNumber.equals(customerMobile)) {
+                new RewardTripDialog().show(serviceId, reward -> {
+                    int rewardInt = Integer.parseInt(reward);
+                    int priceInt = Integer.parseInt(price);
+                    int total = priceInt + rewardInt;
+                    price = total + "";
+                    binding.txtPrice.setText(price.equals("null") ? " " : StringHelper.toPersianDigits(StringHelper.setComma(price)));
+                });
+            } else {
+                MyApplication.Toast("سرویس به این مشتری تعلق ندارد", 2);
+            }
+        });
 
         binding.btnArchiveAddress.setOnClickListener(view -> new GeneralDialog()
                 .title("بایگانی آدرس")
@@ -224,11 +237,14 @@ public class DriverTripSupportDetailsFragment extends Fragment {
                     JSONObject tripObject = new JSONObject(args[0].toString());
                     boolean success = tripObject.getBoolean("success");
                     String message = tripObject.getString("message");
+//                    JSONObject data = tripObject.getJSONObject("data");
 
                     if (success) {
                         JSONObject data = tripObject.getJSONObject("data");
                         serviceDetails = tripObject.getJSONObject("data").toString();
                         serviceId = data.getInt("serviceId");
+                        passengerId = data.getString("passengerId");
+                        originId = data.getString("originId");
                         int status = data.getInt("Status");
                         callDate = data.getString("callDate");
                         callTime = data.getString("callTime");
@@ -293,6 +309,7 @@ public class DriverTripSupportDetailsFragment extends Fragment {
 //                                        "کنسل شده توسط پشتیباني مسافر",
 //                                        "#d50d0d");
 //                            }
+
                         }
 
                         if (status == 6 && !taxiCode.equals("null")) { // cancel after driver
@@ -309,16 +326,19 @@ public class DriverTripSupportDetailsFragment extends Fragment {
 //                                        "کنسل شده توسط پشتیباني مسافر",
 //                                        "#d50d0d");
 //                            }
+
                         }
 
 
-                        if (status == 1 && !taxiCode.equals("null") && !(Finished ==1)) {
+                        if (status == 1 && !taxiCode.equals("null") && !(Finished == 1)) {
 //                            if (statusText.contains("اعزام شده"))
-                                setOnBackPressedServiceListener.onBackCancelService(
-                                        "اعزام شده",
-                                        "#ffd600"
-                                );
+                            setOnBackPressedServiceListener.onBackCancelService(
+                                    "اعزام شده",
+                                    "#ffd600"
+                            );
                         }
+
+
                         if (status == 1 && Finished == 1) { // finished
                             disableControllerButtonFinishedState();
                             setOnBackPressedServiceListener.onBackCancelService(
@@ -326,8 +346,10 @@ public class DriverTripSupportDetailsFragment extends Fragment {
                                     "#2da642"
                             );
                         }
-                        binding.txtUserCodeDestination.setText(StringHelper.toPersianDigits(stationRegisterUser + ""));
-                        binding.txtUserCodeOrigin.setText(StringHelper.toPersianDigits(destStationRegisterUser + ""));
+
+
+                        binding.txtUserCodeOrigin.setText(StringHelper.toPersianDigits(stationRegisterUser + ""));
+                        binding.txtUserCodeDestination.setText(StringHelper.toPersianDigits(destStationRegisterUser + ""));
                         binding.txtCustomerName.setText(StringHelper.toPersianDigits(passengerName));
                         binding.txtDate.setText(StringHelper.toPersianDigits(callDate));
                         binding.txtTime.setText(StringHelper.toPersianDigits(callTime));
@@ -352,21 +374,13 @@ public class DriverTripSupportDetailsFragment extends Fragment {
                         binding.txtPlaque.setText(plak.equals("null") ? " " : StringHelper.toPersianDigits(plak));
                         binding.txtServiceFixedComment.setText(customerFixedDes.equals("null") ? " " : StringHelper.toPersianDigits(customerFixedDes));
                         binding.txtDestAddress.setText(StringHelper.toPersianDigits(destination));
-                        binding.txtDestStation.setText(StringHelper.toPersianDigits(destinationStation));
 
+                        binding.txtDestStation.setText(StringHelper.toPersianDigits(destinationStation));
                         if (!dateToCome.isEmpty()) {
                             String date = DateHelper.strPersianTree(DateHelper.parseDate(dateToCome));
                             binding.txtTimeToCome.setText(StringHelper.toPersianDigits(date) + " ساعت " + StringHelper.toPersianDigits(timeToCome.substring(0, 5)));
                         }
-
-                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                            Drawable bg_blue_border_edge = AppCompatResources.getDrawable(context, R.drawable.bg_blue_border_edge);
-                            binding.llHeaderStatus.setBackground(bg_blue_border_edge);
-                            DrawableCompat.setTint(bg_blue_border_edge, Color.parseColor(statusColor));
-                        } else {
-                            binding.llHeaderStatus.setBackgroundColor(Color.parseColor(statusColor));
-                        }
-
+                        setBackgroundTitleColor(statusColor);
                         binding.txtStatus.setText(statusText);
 
                         binding.vfTripDetails.setDisplayedChild(1);
@@ -410,6 +424,8 @@ public class DriverTripSupportDetailsFragment extends Fragment {
         binding.btnDriverLocation.setEnabled(false);
         binding.btnReFollow.setEnabled(false);
         binding.btnCancelTrip.setEnabled(false);
+        binding.btnRewardTip.setEnabled(false);
+        binding.btnDisposal.setEnabled(false);
         if (isBefore) {
             binding.btnComplaintRegistration.setEnabled(false);
             binding.btnDriverLock.setEnabled(false);
@@ -421,15 +437,43 @@ public class DriverTripSupportDetailsFragment extends Fragment {
     private void disableControllerButtonFinishedState() {
 //    MyApplication.prefManager.setLastCallerId("");// set empty, because I don't want save this permanently .
         binding.btnReFollow.setEnabled(false);
+        binding.btnDriverLocation.setEnabled(false);
+        binding.btnRewardTip.setEnabled(false);
+        binding.btnCancelTrip.setEnabled(false);
+        binding.btnDisposal.setEnabled(false);
     }
 
     private void cancelService() {
-        LoadingDialog.makeCancelableLoader();
-        RequestHelper.builder(EndPoints.CANCEL)
-                .addParam("serviceId", serviceId)
-                .addParam("scope", "driver")
-                .listener(onCancelService)
-                .post();
+
+        String driverMessage = "اپراتور گرامی، این تماس از سمت راننده میباشد و امکان لغو سرویس میسر نیست.\n" +
+                "اگر راننده خود را به عنوان مسافر معرفی کرده و درخواست لغو سفرش را دارد، با همین موضوع ثبت خطا کنید.";
+
+        if (MyApplication.prefManager.getLastCallerId().trim().equals(driverMobile.trim()) || MyApplication.prefManager.getLastCallerId().trim().equals(carMobile.trim())) {
+            new GeneralDialog()
+                    .title("هشدار")
+                    .message(driverMessage)
+                    .cancelable(false)
+                    .firstButton("باشه", null)
+                    .show();
+        } else {
+            LoadingDialog.makeCancelableLoader();
+            RequestHelper.builder(EndPoints.CANCEL)
+                    .addParam("serviceId", serviceId)
+                    .addParam("scope", "passenger")
+                    .listener(onCancelService)
+                    .post();
+        }
+
+    }
+
+    private void setBackgroundTitleColor(String color) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            Drawable bg_blue_border_edge = AppCompatResources.getDrawable(context, R.drawable.bg_blue_border_edge);
+            binding.llHeaderStatus.setBackground(bg_blue_border_edge);
+            DrawableCompat.setTint(bg_blue_border_edge, Color.parseColor(color));
+        } else {
+            binding.llHeaderStatus.setBackgroundColor(Color.parseColor(color));
+        }
     }
 
     RequestHelper.Callback onCancelService = new RequestHelper.Callback() {
@@ -446,16 +490,17 @@ public class DriverTripSupportDetailsFragment extends Fragment {
                         JSONObject dataObj = object.getJSONObject("data");
                         boolean status = dataObj.getBoolean("status");
                         if (status) {
-//              MyApplication.prefManager.setLastCallerId("");// set empty, because I don't want save this permanently .
+//              MyApplication.prefManager.setLastCallerId("");// set empty, because I don't want save this permanently
+
                             new GeneralDialog()
                                     .title("تایید شد")
                                     .message(message)
                                     .cancelable(false)
                                     .firstButton("باشه", () -> {
-                                        binding.txtStatus.setText("کنسل شده توسط " + MyApplication.prefManager.getOperatorName() + " پشتیبانی راننده");
+                                        binding.txtStatus.setText("کنسل شده توسط " + MyApplication.prefManager.getOperatorName() + " پشتیبانی مسافر");
                                         setBackgroundTitleColor("#d50d0d");
                                         setOnBackPressedServiceListener.onBackCancelService(
-                                                "کنسل شده توسط پشتیبانی راننده",
+                                                "کنسل شده توسط پشتیبانی مسافر",
                                                 "#d50d0d");
                                     })
                                     .show();
@@ -488,17 +533,6 @@ public class DriverTripSupportDetailsFragment extends Fragment {
             MyApplication.handler.post(LoadingDialog::dismissCancelableDialog);
         }
     };
-
-    private void setBackgroundTitleColor(String color) {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            Drawable bg_blue_border_edge = AppCompatResources.getDrawable(context, R.drawable.bg_blue_border_edge);
-            binding.llHeaderStatus.setBackground(bg_blue_border_edge);
-            DrawableCompat.setTint(bg_blue_border_edge, Color.parseColor(color));
-        } else {
-            binding.llHeaderStatus.setBackgroundColor(Color.parseColor(color));
-        }
-    }
-
 
     private void trackingAgain() {
         LoadingDialog.makeCancelableLoader();
@@ -545,6 +579,7 @@ public class DriverTripSupportDetailsFragment extends Fragment {
                                 .show();
                     }
 
+
                     LoadingDialog.dismissCancelableDialog();
                 } catch (Exception e) {
                     e.printStackTrace();
@@ -563,11 +598,11 @@ public class DriverTripSupportDetailsFragment extends Fragment {
     private void archiveAddress() {
         LoadingDialog.makeCancelableLoader();
         RequestHelper.builder(EndPoints.DELETE_ADDRESS)
-                .addParam("phoneNumber", passengerPhone)
-                .addParam("adrs", passengerAddress)
-                .addParam("mobile", customerMobile)
+                .addParam("passengerId", passengerId)
+                .addParam("addressId", originId)
+                .addParam("type", "origin")
                 .listener(onArchiveAddress)
-                .put();
+                .delete();
     }
 
     RequestHelper.Callback onArchiveAddress = new RequestHelper.Callback() {

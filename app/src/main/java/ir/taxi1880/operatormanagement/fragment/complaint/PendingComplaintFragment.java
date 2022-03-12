@@ -1,4 +1,4 @@
-package ir.taxi1880.operatormanagement.fragment;
+package ir.taxi1880.operatormanagement.fragment.complaint;
 
 import static ir.taxi1880.operatormanagement.app.Keys.KEY_COUNT_PENDING_COMPLAINT;
 import static ir.taxi1880.operatormanagement.app.Keys.VALUE_COUNT_PENDING_COMPLAINT;

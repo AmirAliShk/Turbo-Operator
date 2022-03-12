@@ -12,9 +12,8 @@ import com.google.android.material.tabs.TabLayout;
 
 import ir.taxi1880.operatormanagement.R;
 import ir.taxi1880.operatormanagement.app.MyApplication;
-import ir.taxi1880.operatormanagement.fragment.AllComplaintFragment;
-import ir.taxi1880.operatormanagement.fragment.PendingComplaintFragment;
-import ir.taxi1880.operatormanagement.helper.ResourceHelper;
+import ir.taxi1880.operatormanagement.fragment.complaint.AllComplaintFragment;
+import ir.taxi1880.operatormanagement.fragment.complaint.PendingComplaintFragment;
 import ir.taxi1880.operatormanagement.helper.TypefaceUtil;
 
 public class ComplaintViewPagerAdapter extends FragmentStateAdapter {

@@ -8,7 +8,7 @@
     android:clickable="true"
     android:layoutDirection="rtl"
     android:orientation="vertical"
-    tools:context=".fragment.PassengerTripSupportDetailsFragment">
+    tools:context=".fragment.passengerSupport.PassengerTripSupportDetailsFragment">
 
     <RelativeLayout
         android:id="@+id/rlActionBar"

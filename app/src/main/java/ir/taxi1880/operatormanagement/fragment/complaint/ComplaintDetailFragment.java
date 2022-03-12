@@ -1,6 +1,6 @@
-package ir.taxi1880.operatormanagement.fragment;
+package ir.taxi1880.operatormanagement.fragment.complaint;
 
-import static ir.taxi1880.operatormanagement.fragment.ComplaintTripDetailsFragment.pauseVoice;
+import static ir.taxi1880.operatormanagement.fragment.complaint.ComplaintTripDetailsFragment.pauseVoice;
 
 import android.annotation.SuppressLint;
 import android.os.Bundle;
@@ -23,6 +23,7 @@ import ir.taxi1880.operatormanagement.customView.NonSwipeableViewPager;
 import ir.taxi1880.operatormanagement.databinding.FragmentComplaintDetailBinding;
 import ir.taxi1880.operatormanagement.dialog.ComplaintOptionsDialog;
 import ir.taxi1880.operatormanagement.dialog.GeneralDialog;
+import ir.taxi1880.operatormanagement.fragment.passengerSupport.PassengerTripSupportDetailsFragment;
 import ir.taxi1880.operatormanagement.helper.FragmentHelper;
 import ir.taxi1880.operatormanagement.helper.TypefaceUtil;
 import ir.taxi1880.operatormanagement.model.ComplaintDetailsModel;

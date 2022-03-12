@@ -9,7 +9,7 @@
     android:clickable="true"
     android:layoutDirection="rtl"
     android:orientation="vertical"
-    tools:context="ir.taxi1880.operatormanagement.fragment.LoginFragment">
+    tools:context="ir.taxi1880.operatormanagement.fragment.login.LoginFragment">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"

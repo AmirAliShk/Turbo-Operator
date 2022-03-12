@@ -1,4 +1,4 @@
-package ir.taxi1880.operatormanagement.fragment;
+package ir.taxi1880.operatormanagement.fragment.mistake;
 
 import static ir.taxi1880.operatormanagement.app.Keys.KEY_PENDING_MISTAKE_COUNT;
 import static ir.taxi1880.operatormanagement.app.Keys.PENDING_MISTAKE_COUNT;

@@ -4,8 +4,8 @@ import android.content.Intent;
 
 import ir.taxi1880.operatormanagement.activity.MainActivity;
 import ir.taxi1880.operatormanagement.app.MyApplication;
-import ir.taxi1880.operatormanagement.fragment.CheckVerificationFragment;
-import ir.taxi1880.operatormanagement.fragment.LoginFragment;
+import ir.taxi1880.operatormanagement.fragment.login.CheckVerificationFragment;
+import ir.taxi1880.operatormanagement.fragment.login.LoginFragment;
 
 import static ir.taxi1880.operatormanagement.app.MyApplication.avaStart;
 

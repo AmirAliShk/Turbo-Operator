@@ -13,7 +13,7 @@ import android.widget.Toast;
 import ir.taxi1880.operatormanagement.R;
 import ir.taxi1880.operatormanagement.app.MyApplication;
 import ir.taxi1880.operatormanagement.databinding.DialogTripOptionBinding;
-import ir.taxi1880.operatormanagement.fragment.PassengerTripSupportFragment;
+import ir.taxi1880.operatormanagement.fragment.passengerSupport.PassengerTripSupportFragment;
 import ir.taxi1880.operatormanagement.helper.FragmentHelper;
 import ir.taxi1880.operatormanagement.helper.KeyBoardHelper;
 import ir.taxi1880.operatormanagement.helper.TypefaceUtil;

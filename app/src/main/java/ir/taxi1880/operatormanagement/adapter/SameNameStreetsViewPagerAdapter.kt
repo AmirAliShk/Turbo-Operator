@@ -1,6 +1,5 @@
 package ir.taxi1880.operatormanagement.adapter
 
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.widget.TextView
@@ -8,7 +7,7 @@ import androidx.fragment.app.Fragment
 import androidx.viewpager2.adapter.FragmentStateAdapter
 import ir.taxi1880.operatormanagement.R
 import ir.taxi1880.operatormanagement.app.MyApplication
-import ir.taxi1880.operatormanagement.fragment.SameNameStreetsPageFragment
+import ir.taxi1880.operatormanagement.fragment.SameNameStreetsRecycleFragment
 import ir.taxi1880.operatormanagement.helper.TypefaceUtil
 import org.json.JSONArray
 import org.json.JSONObject
@@ -19,7 +18,7 @@ class SameNameStreetsViewPagerAdapter(fragment: Fragment) : FragmentStateAdapter
     }
 
     override fun createFragment(position: Int): Fragment {
-        return SameNameStreetsPageFragment(position);
+        return SameNameStreetsRecycleFragment(position);
     }
 
     fun checkExitSameNameStreetInCity(): JSONArray {
