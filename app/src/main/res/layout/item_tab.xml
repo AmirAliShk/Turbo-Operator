@@ -11,7 +11,7 @@
         android:id="@+id/txtTabTitle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textColor="@color/colorBlack"
+        android:textColor="?attr/colorValue"
         android:textAppearance="?android:attr/textAppearanceSmall" />
 
 </LinearLayout>

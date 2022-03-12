@@ -213,13 +213,13 @@
                             android:layout_gravity="center"
                             android:background="@drawable/bg_circle_dialogue"
                             android:padding="@dimen/_13sdp"
-                            android:src="@drawable/ic_light" />
+                            android:src="@drawable/ic_samenamestreet" />
 
                         <TextView
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:gravity="center"
-                            android:text="خیابان با نام مشابه"
+                            android:text="موارد خاص خیابان"
                             android:textAppearance="?android:attr/textAppearanceSmall"
                             android:textColor="?attr/colorValue"
                             android:textSize="@dimen/_15ssp"
