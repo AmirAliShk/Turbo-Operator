@@ -116,30 +116,19 @@ class PassengerComplaintRegistrationDialog {
                     val success = `object`.getBoolean("success")
                     val message = `object`.getString("message")
                     if (success) {
-                        val dataObj = `object`.getJSONObject("data")
-                        val status = dataObj.getBoolean("result")
-                        if (status) {
-                            GeneralDialog()
-                                .title("تایید شد")
-                                .message(message)
-                                .cancelable(false)
-                                .firstButton("باشه", null)
-                                .show()
-                            DataHolder.getInstance().voipId = "0"
-                        } else {
-                            GeneralDialog()
-                                .title("خطا")
-                                .message(message)
-                                .cancelable(false)
-                                .firstButton("باشه", null)
-                                .show()
-                        }
+                        GeneralDialog()
+                            .title("تایید شد")
+                            .message(message)
+                            .cancelable(false)
+                            .firstButton("باشه", null)
+                            .show()
+                        DataHolder.getInstance().voipId = "0"
                     } else {
                         GeneralDialog()
                             .title("خطا")
                             .message(message)
                             .cancelable(false)
-                            .firstButton("باشه", null)
+                            .secondButton("باشه", null)
                             .show()
                     }
 
