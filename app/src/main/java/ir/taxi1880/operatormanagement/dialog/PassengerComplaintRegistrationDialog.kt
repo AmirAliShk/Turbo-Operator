@@ -64,14 +64,14 @@ class PassengerComplaintRegistrationDialog {
         val typeServiceModels = ArrayList<TypeServiceModel>()
         val serviceList = ArrayList<String>()
         try {
-            val serviceArr = JSONArray(MyApplication.prefManager.complaint)
+            val serviceArr = JSONArray(MyApplication.prefManager.passengerComplaint)
             for (i in 0 until serviceArr.length()) {
                 val serviceObj = serviceArr.getJSONObject(i)
                 val typeServiceModel = TypeServiceModel()
-                typeServiceModel.name = serviceObj.getString("ShektypeSharh")
-                typeServiceModel.id = serviceObj.getInt("sheKtypeId")
+                typeServiceModel.name = serviceObj.getString("subject")
+                typeServiceModel.id = serviceObj.getInt("id")
                 typeServiceModels.add(typeServiceModel)
-                serviceList.add(serviceObj.getString("ShektypeSharh"))
+                serviceList.add(serviceObj.getString("subject"))
             }
             binding.spComplaintType.isEnabled = true
             binding.spComplaintType.adapter =
@@ -100,11 +100,10 @@ class PassengerComplaintRegistrationDialog {
     private fun setComplaint(serviceId: String) {
         binding.vfLoader.displayedChild = 1
         LoadingDialog.makeCancelableLoader()
-        RequestHelper.builder(EndPoints.INSERT_COMPLAINT)
+        RequestHelper.builder(EndPoints.INSERT_PASSENGER_COMPLAINT)
             .addParam("serviceId", serviceId)
-            .addParam("complaintType", complaintType)
+            .addParam("reasonId", complaintType)
             .addParam("voipId", DataHolder.getInstance().voipId)
-            .addParam("description", " ")
             .listener(onSetComplaint)
             .post()
     }

@@ -95,7 +95,8 @@ public class EndPoints {
 //    public static final String PASSENGER_INFO = SUPPORT_WEBSERVICE_PATH + "passengerInfo";
     public static final String SERVICE_DETAIL = SUPPORT_WEBSERVICE_PATH + "serviceDetail";
     public static final String LAST_DRIVER_POSITION = SUPPORT_WEBSERVICE_PATH + "lastDriverPosition";
-    public static final String INSERT_COMPLAINT = SUPPORT_WEBSERVICE_PATH + "insertComplaint";
+    public static final String INSERT_DRIVER_COMPLAINT = SUPPORT_WEBSERVICE_PATH + "insertComplaint";
+    public static final String INSERT_PASSENGER_COMPLAINT = SUPPORT_WEBSERVICE_PATH + "complaint/customer";
     public static final String INSERT_LOST_OBJECT = SUPPORT_WEBSERVICE_PATH + "insertLostObject";
     public static final String LOCK_TAXI = SUPPORT_WEBSERVICE_PATH + "lockTaxi";
     public static final String AGAIN_TRACKING = SUPPORT_WEBSERVICE_PATH + "againTracking";

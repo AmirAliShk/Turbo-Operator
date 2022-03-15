@@ -76,7 +76,7 @@ public class DriverComplaintRegistrationDialog {
             binding.vfLoader.setDisplayedChild(1);
 
         LoadingDialog.makeCancelableLoader();
-        RequestHelper.builder(EndPoints.INSERT_COMPLAINT)
+        RequestHelper.builder(EndPoints.INSERT_DRIVER_COMPLAINT)
                 .addParam("serviceId", serviceId)
                 .addParam("complaintType", complaintType)
                 .addParam("voipId", DataHolder.getInstance().getVoipId())
@@ -149,7 +149,7 @@ public class DriverComplaintRegistrationDialog {
         ArrayList<TypeServiceModel> typeServiceModels = new ArrayList<>();
         ArrayList<String> serviceList = new ArrayList<String>();
         try {
-            JSONArray serviceArr = new JSONArray(MyApplication.prefManager.getComplaint());
+            JSONArray serviceArr = new JSONArray(MyApplication.prefManager.getDriverComplaint());
             for (int i = 0; i < serviceArr.length(); i++) {
                 JSONObject serviceObj = serviceArr.getJSONObject(i);
                 TypeServiceModel typeServiceModel = new TypeServiceModel();

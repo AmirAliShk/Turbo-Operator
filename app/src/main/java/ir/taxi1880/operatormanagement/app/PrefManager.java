@@ -59,7 +59,8 @@ public class PrefManager {
     private static final String KEY_APP_STATUS = "AppStatus";
     private static final String CUSTOMER_SUPPORT = "customerSupport";
     private static final String ACCESS_COMPLAINT = "accessComplaint";
-    private static final String COMPLAINT_TYPE = "ComplaintType";
+    private static final String DRIVER_COMPLAINT_TYPE = "DriverComplaintType";
+    private static final String PASSENGER_COMPLAINT_TYPE = "PassengerComplaintType";
     private static final String OBJECTS_TYPE = "objectsType";
     private static final String REASONS_LOCK = "ReasonsLock";
     private static final String LAST_CALLER_ID = "lastCallerId";
@@ -213,12 +214,21 @@ public class PrefManager {
         return pref.getBoolean(KEY_APP_STATUS, false);
     }
 
-    public String getComplaint() {
-        return pref.getString(COMPLAINT_TYPE, "");
+    public String getDriverComplaint() {
+        return pref.getString(DRIVER_COMPLAINT_TYPE, "");
     }
 
-    public void setComplaint(String complaint) {
-        editor.putString(COMPLAINT_TYPE, complaint);
+    public void setDriverComplaint(String complaint) {
+        editor.putString(DRIVER_COMPLAINT_TYPE, complaint);
+        editor.commit();
+    }
+
+    public String getPassengerComplaint() {
+        return pref.getString(PASSENGER_COMPLAINT_TYPE, "");
+    }
+
+    public void setPassengerComplaint(String complaint) {
+        editor.putString(PASSENGER_COMPLAINT_TYPE, complaint);
         editor.commit();
     }
 

@@ -100,7 +100,8 @@ public class GetAppInfo {
                     String city = object.getString("city");
                     int pushId = object.getInt("pushId");
                     String pushToken = object.getString("pushToken");
-                    String complaintType = object.getString("ComplaintType");
+                    String driverComplaintType = object.getString("ComplaintType");
+                    String passengerComplaintType = object.getString("complaintReason");
                     String objectsType = object.getString("objectsType");
                     String ReasonsLock = object.getString("ReasonsLock");
                     String serviceCountToday = object.getString("serviceCountToday");
@@ -117,7 +118,8 @@ public class GetAppInfo {
 
                     MyApplication.prefManager.setAccessDriverSupport(accessDriverSupport);
                     MyApplication.prefManager.setUserCode(userId);
-                    MyApplication.prefManager.setComplaint(complaintType);
+                    MyApplication.prefManager.setDriverComplaint(driverComplaintType);
+                    MyApplication.prefManager.setPassengerComplaint(passengerComplaintType);
                     MyApplication.prefManager.setObjectsType(objectsType);
                     MyApplication.prefManager.setReasonsLock(ReasonsLock);
                     MyApplication.prefManager.setDailyScore(dayScore);

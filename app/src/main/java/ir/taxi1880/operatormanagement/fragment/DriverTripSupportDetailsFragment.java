@@ -368,6 +368,7 @@ public class DriverTripSupportDetailsFragment extends Fragment {
         binding.btnDriverComplaintRegistration.setEnabled(false);
         binding.btnLost.setEnabled(false);
         binding.btnDriverLock.setEnabled(false);
+        binding.btnPassengerComplaintRegistration.setEnabled(false);
     }
 
     private void disableControllerButtonCancelState(boolean isBefore) {
