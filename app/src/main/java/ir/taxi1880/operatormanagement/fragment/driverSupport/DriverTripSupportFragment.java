@@ -487,14 +487,13 @@ public class DriverTripSupportFragment extends Fragment {
                         binding.txtDriverQueue.setText(statusMessage);
                     } else {
                         binding.vfDriverInfo.setVisibility(View.GONE);
+                        new GeneralDialog()
+                                .title("هشدار")
+                                .message(message)
+                                .cancelable(false)
+                                .firstButton("باشه", null)
+                                .show();
                     }
-
-                    new GeneralDialog()
-                            .title("هشدار")
-                            .message(message)
-                            .cancelable(false)
-                            .firstButton("باشه", null)
-                            .show();
 
                 } catch (JSONException e) {
                     e.printStackTrace();
