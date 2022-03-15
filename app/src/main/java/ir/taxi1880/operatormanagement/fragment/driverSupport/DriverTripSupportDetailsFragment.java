@@ -22,13 +22,14 @@ import ir.taxi1880.operatormanagement.app.EndPoints;
 import ir.taxi1880.operatormanagement.app.MyApplication;
 import ir.taxi1880.operatormanagement.databinding.FragmentDriverTripSupportDetailsBinding;
 import ir.taxi1880.operatormanagement.dialog.CallDialog;
-import ir.taxi1880.operatormanagement.dialog.ComplaintRegistrationDialog;
+import ir.taxi1880.operatormanagement.dialog.DriverComplaintRegistrationDialog;
 import ir.taxi1880.operatormanagement.dialog.DriverLockDialog;
 import ir.taxi1880.operatormanagement.dialog.EditAddressDialog;
 import ir.taxi1880.operatormanagement.dialog.ErrorRegistrationDialog;
 import ir.taxi1880.operatormanagement.dialog.GeneralDialog;
 import ir.taxi1880.operatormanagement.dialog.LoadingDialog;
 import ir.taxi1880.operatormanagement.dialog.LostDialog;
+import ir.taxi1880.operatormanagement.dialog.PassengerComplaintRegistrationDialog;
 import ir.taxi1880.operatormanagement.helper.DateHelper;
 import ir.taxi1880.operatormanagement.helper.FragmentHelper;
 import ir.taxi1880.operatormanagement.helper.KeyBoardHelper;
@@ -150,7 +151,7 @@ public class DriverTripSupportDetailsFragment extends Fragment {
 
         binding.btnLost.setOnClickListener(view -> new LostDialog().show(serviceId + "", passengerName, passengerPhone, taxiCode, true));
 
-        binding.btnComplaintRegistration.setOnClickListener(view -> new ComplaintRegistrationDialog().show(serviceId + "", voipId));
+        binding.btnDriverComplaintRegistration.setOnClickListener(view -> new DriverComplaintRegistrationDialog().show(serviceId + "", voipId));
 
         binding.btnErrorRegistration.setOnClickListener(view -> {
 //        String cityName= new DataBase(MyApplication.context).getCityName2(cityCode);
@@ -202,6 +203,8 @@ public class DriverTripSupportDetailsFragment extends Fragment {
                 .firstButton("بله", this::makeDisposal)
                 .secondButton("خیر", null)
                 .show());
+
+        binding.btnPassengerComplaintRegistration.setOnClickListener(view -> new PassengerComplaintRegistrationDialog().show(String.valueOf(serviceId)));
 
         binding.imgBack.setOnClickListener(view -> MyApplication.currentActivity.onBackPressed());
 
@@ -401,9 +404,10 @@ public class DriverTripSupportDetailsFragment extends Fragment {
     private void disableControllerButtonWaitingState() {
         binding.btnDriverLocation.setEnabled(false);
         binding.btnReFollow.setEnabled(false);
-        binding.btnComplaintRegistration.setEnabled(false);
+        binding.btnDriverComplaintRegistration.setEnabled(false);
         binding.btnLost.setEnabled(false);
         binding.btnDriverLock.setEnabled(false);
+        binding.btnPassengerComplaintRegistration.setEnabled(false);
     }
 
     private void disableControllerButtonCancelState(boolean isBefore) {
@@ -411,7 +415,7 @@ public class DriverTripSupportDetailsFragment extends Fragment {
         binding.btnReFollow.setEnabled(false);
         binding.btnCancelTrip.setEnabled(false);
         if (isBefore) {
-            binding.btnComplaintRegistration.setEnabled(false);
+            binding.btnDriverComplaintRegistration.setEnabled(false);
             binding.btnDriverLock.setEnabled(false);
             binding.btnLost.setEnabled(false);
         }

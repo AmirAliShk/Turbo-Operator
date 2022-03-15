@@ -31,7 +31,8 @@
 
     <string name="cancelTrip">لغو سفر</string>
     <string name="errorRegistration">ثبت خطا</string>
-    <string name="complaintRegistration">ثبت شکایت</string>
+    <string name="driverComplaintRegistration">ثبت شکایت از راننده</string>
+    <string name="passengerComplaintRegistration">ثبت شکایت از مسافر</string>
     <string name="lost">ثبت اشیا گمشده</string>
     <string name="lockDriver">قفل راننده</string>
     <string name="disposal">در اختیار</string>
@@ -147,5 +148,9 @@
     <string name="stationName">نام ایستگاه</string>
     <string name="logout">خروج از حساب</string>
     <string name="setting">تنظیمات</string>
+    <string name="driverInfo">اطلاعات راننده</string>
+    <string name="destStationOperator">اپراتور ایستگاه مقصد</string>
+    <string name="originStationOperator">اپراتور ایستگاه مبدا</string>
+    <string name="timeArriveToPassenger">زمان رسیدن به مسافر</string>
 
 </resources>

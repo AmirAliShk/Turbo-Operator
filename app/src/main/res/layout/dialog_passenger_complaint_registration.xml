@@ -32,7 +32,7 @@
                 android:background="@drawable/bg_dialog_header"
                 android:gravity="center"
                 android:padding="@dimen/_8sdp"
-                android:text="@string/complaintRegistration" />
+                android:text="@string/passengerComplaintRegistration" />
 
             <LinearLayout
                 android:layout_width="match_parent"

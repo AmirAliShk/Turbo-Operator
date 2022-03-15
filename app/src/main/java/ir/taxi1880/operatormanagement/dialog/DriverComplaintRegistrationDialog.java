@@ -10,7 +10,6 @@ import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.AdapterView;
-import android.widget.Spinner;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -23,17 +22,17 @@ import ir.taxi1880.operatormanagement.adapter.SpinnerAdapter;
 import ir.taxi1880.operatormanagement.app.DataHolder;
 import ir.taxi1880.operatormanagement.app.EndPoints;
 import ir.taxi1880.operatormanagement.app.MyApplication;
-import ir.taxi1880.operatormanagement.databinding.DialogComplaintRegistreationBinding;
+import ir.taxi1880.operatormanagement.databinding.DialogDriverComplaintRegistreationBinding;
 import ir.taxi1880.operatormanagement.helper.KeyBoardHelper;
 import ir.taxi1880.operatormanagement.helper.TypefaceUtil;
 import ir.taxi1880.operatormanagement.model.TypeServiceModel;
 import ir.taxi1880.operatormanagement.okHttp.RequestHelper;
 import ir.taxi1880.operatormanagement.push.AvaCrashReporter;
 
-public class ComplaintRegistrationDialog {
+public class DriverComplaintRegistrationDialog {
 
-    private static final String TAG = ComplaintRegistrationDialog.class.getSimpleName();
-    DialogComplaintRegistreationBinding binding;
+    private static final String TAG = DriverComplaintRegistrationDialog.class.getSimpleName();
+    DialogDriverComplaintRegistreationBinding binding;
 
 //    private Spinner spComplaintType;
     private int complaintType;
@@ -44,7 +43,7 @@ public class ComplaintRegistrationDialog {
         if (MyApplication.currentActivity == null || MyApplication.currentActivity.isFinishing())
             return;
         dialog = new Dialog(MyApplication.currentActivity);
-        binding = DialogComplaintRegistreationBinding.inflate(LayoutInflater.from(dialog.getContext()));
+        binding = DialogDriverComplaintRegistreationBinding.inflate(LayoutInflater.from(dialog.getContext()));
         dialog.getWindow().requestFeature(Window.FEATURE_NO_TITLE);
         dialog.getWindow().getAttributes().windowAnimations = R.style.ExpandAnimation;
         dialog.setContentView(binding.getRoot());
@@ -77,7 +76,7 @@ public class ComplaintRegistrationDialog {
             binding.vfLoader.setDisplayedChild(1);
 
         LoadingDialog.makeCancelableLoader();
-        RequestHelper.builder(EndPoints.INSERT_COMPLAINT)
+        RequestHelper.builder(EndPoints.INSERT_DRIVER_COMPLAINT)
                 .addParam("serviceId", serviceId)
                 .addParam("complaintType", complaintType)
                 .addParam("voipId", DataHolder.getInstance().getVoipId())
@@ -150,7 +149,7 @@ public class ComplaintRegistrationDialog {
         ArrayList<TypeServiceModel> typeServiceModels = new ArrayList<>();
         ArrayList<String> serviceList = new ArrayList<String>();
         try {
-            JSONArray serviceArr = new JSONArray(MyApplication.prefManager.getComplaint());
+            JSONArray serviceArr = new JSONArray(MyApplication.prefManager.getDriverComplaint());
             for (int i = 0; i < serviceArr.length(); i++) {
                 JSONObject serviceObj = serviceArr.getJSONObject(i);
                 TypeServiceModel typeServiceModel = new TypeServiceModel();

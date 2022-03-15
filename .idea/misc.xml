@@ -108,7 +108,7 @@
         <entry key="app/src/main/res/layout/dialog_cancelable_loder.xml" value="0.34010416666666665" />
         <entry key="app/src/main/res/layout/dialog_change_driver_queue.xml" value="0.18" />
         <entry key="app/src/main/res/layout/dialog_complaint_options.xml" value="0.34010416666666665" />
-        <entry key="app/src/main/res/layout/dialog_complaint_registreation.xml" value="0.34010416666666665" />
+        <entry key="app/src/main/res/layout/dialog_complaint_registreation.xml" value="0.29444444444444445" />
         <entry key="app/src/main/res/layout/dialog_complaints_history.xml" value="0.34010416666666665" />
         <entry key="app/src/main/res/layout/dialog_description.xml" value="0.34010416666666665" />
         <entry key="app/src/main/res/layout/dialog_download_update.xml" value="0.3101851851851852" />
@@ -130,6 +130,7 @@
         <entry key="app/src/main/res/layout/dialog_operator.xml" value="0.34010416666666665" />
         <entry key="app/src/main/res/layout/dialog_overlay_permission.xml" value="0.3484375" />
         <entry key="app/src/main/res/layout/dialog_paly_last_conversation.xml" value="0.34010416666666665" />
+        <entry key="app/src/main/res/layout/dialog_passenger_complaint_registration.xml" value="0.3484375" />
         <entry key="app/src/main/res/layout/dialog_pending_mistakes_options.xml" value="0.34010416666666665" />
         <entry key="app/src/main/res/layout/dialog_pricing.xml" value="0.34010416666666665" />
         <entry key="app/src/main/res/layout/dialog_recent_calls.xml" value="0.34010416666666665" />
@@ -158,7 +159,7 @@
         <entry key="app/src/main/res/layout/fragment_driver_location.xml" value="0.34010416666666665" />
         <entry key="app/src/main/res/layout/fragment_driver_trip_details.xml" value="0.2" />
         <entry key="app/src/main/res/layout/fragment_driver_trip_support.xml" value="0.3484375" />
-        <entry key="app/src/main/res/layout/fragment_driver_trip_support_details.xml" value="0.3484375" />
+        <entry key="app/src/main/res/layout/fragment_driver_trip_support_details.xml" value="0.32685185185185184" />
         <entry key="app/src/main/res/layout/fragment_home.xml" value="0.34010416666666665" />
         <entry key="app/src/main/res/layout/fragment_login.xml" value="0.34010416666666665" />
         <entry key="app/src/main/res/layout/fragment_menu.xml" value="0.34010416666666665" />
