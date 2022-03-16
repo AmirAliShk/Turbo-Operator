@@ -30,6 +30,7 @@ import ir.taxi1880.operatormanagement.dialog.ErrorRegistrationDialog;
 import ir.taxi1880.operatormanagement.dialog.GeneralDialog;
 import ir.taxi1880.operatormanagement.dialog.LoadingDialog;
 import ir.taxi1880.operatormanagement.dialog.LostDialog;
+import ir.taxi1880.operatormanagement.dialog.PassengerComplaintRegistrationDialog;
 import ir.taxi1880.operatormanagement.dialog.RewardTripDialog;
 import ir.taxi1880.operatormanagement.fragment.driverSupport.DriverLocationFragment;
 import ir.taxi1880.operatormanagement.helper.DateHelper;
@@ -215,6 +216,8 @@ public class PassengerTripSupportDetailsFragment extends Fragment {
                 .firstButton("بله", this::makeDisposal)
                 .secondButton("خیر", null)
                 .show());
+
+        binding.btnPassengerComplaintRegistration.setOnClickListener(view -> new PassengerComplaintRegistrationDialog().show(String.valueOf(serviceId)));
 
         binding.imgBack.setOnClickListener(view -> MyApplication.currentActivity.onBackPressed());
 

@@ -70,7 +70,8 @@
     <ViewFlipper
         android:id="@+id/vfTripDetails"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:layout_marginVertical="@dimen/_7sdp">
 
         <com.wang.avi.AVLoadingIndicatorView
             android:layout_width="50dp"
@@ -930,8 +931,15 @@
                         android:layout_weight="1"
                         android:text="@string/rewardForTrip" />
 
-                </LinearLayout>
+                    <Button
+                        android:id="@+id/btnPassengerComplaintRegistration"
+                        style="@style/button"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="@string/passengerComplaintRegistration" />
 
+                </LinearLayout>
 
             </LinearLayout>
 
