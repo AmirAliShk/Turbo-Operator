@@ -26,10 +26,7 @@ import ir.taxi1880.operatormanagement.dialog.GeneralDialog
 import ir.taxi1880.operatormanagement.dialog.PendingMistakesOptionsDialog
 import ir.taxi1880.operatormanagement.dialog.SaveMistakeResultDialog
 import ir.taxi1880.operatormanagement.dialog.SaveMistakeResultDialog.MistakesResult
-import ir.taxi1880.operatormanagement.helper.DateHelper
-import ir.taxi1880.operatormanagement.helper.FileHelper
-import ir.taxi1880.operatormanagement.helper.StringHelper
-import ir.taxi1880.operatormanagement.helper.TypefaceUtil
+import ir.taxi1880.operatormanagement.helper.*
 import ir.taxi1880.operatormanagement.model.AllMistakesModel
 import ir.taxi1880.operatormanagement.okHttp.AuthenticationInterceptor
 import ir.taxi1880.operatormanagement.okHttp.RequestHelper
@@ -40,7 +37,7 @@ import java.net.MalformedURLException
 import java.net.URL
 import java.util.*
 
-class PendingMistakesFragmentK : Fragment() {
+class PendingMistakesFragmentK : Fragment(), VoiceHelper.OnVoiceListener {
 
     private lateinit var dataBase: DataBase
     private lateinit var broadcaster: LocalBroadcastManager
@@ -61,30 +58,30 @@ class PendingMistakesFragmentK : Fragment() {
             }
         }
 
-        fun pauseVoice() {
-            try {
-                if (mediaPlayer != null) mediaPlayer?.pause()
-                if (!this::binding.isInitialized) return
-                binding.skbTimer.setProgress(0f)
-                binding.vfPlayPause.displayedChild = 0
-            } catch (e: Exception) {
-                e.printStackTrace()
-                AvaCrashReporter.send(e, "$TAG class, pauseVoice method")
-            }
-            cancelTimer()
-        }
-
-        private fun cancelTimer() {
-            try {
-                if (timer == null) return
-                timer?.cancel()
-                timer = null
-            } catch (e: Exception) {
-                e.printStackTrace();
-                AvaCrashReporter.send(e, "$TAG class, cancelTimer method");
-            }
-
-        }
+//        fun pauseVoice() {
+//            try {
+//                if (mediaPlayer != null) mediaPlayer?.pause()
+//                if (!this::binding.isInitialized) return
+//                binding.skbTimer.setProgress(0f)
+//                binding.vfPlayPause.displayedChild = 0
+//            } catch (e: Exception) {
+//                e.printStackTrace()
+//                AvaCrashReporter.send(e, "$TAG class, pauseVoice method")
+//            }
+//            cancelTimer()
+//        }
+//
+//        private fun cancelTimer() {
+//            try {
+//                if (timer == null) return
+//                timer?.cancel()
+//                timer = null
+//            } catch (e: Exception) {
+//                e.printStackTrace();
+//                AvaCrashReporter.send(e, "$TAG class, cancelTimer method");
+//            }
+//
+//        }
 
     }
 
@@ -99,34 +96,45 @@ class PendingMistakesFragmentK : Fragment() {
 
         dataBase = DataBase(MyApplication.context)
         binding.llMissedCall.setOnClickListener { missCall() }
-        binding.imgPause.setOnClickListener { pauseVoice() }
+        binding.imgPause.setOnClickListener {
+            VoiceHelper.getInstance().pauseVoice()
+        }
         binding.imgPlay.setOnClickListener {
             binding.vfPlayPause.displayedChild = 1
-            Log.i("URL", "show: ${EndPoints.CALL_VOICE}${dataBase.mistakesRow.voipId}")
             val voiceName = "${dataBase.mistakesRow.id}.mp3"
-            val file =
-                File("${MyApplication.DIR_MAIN_FOLDER}${MyApplication.VOICE_FOLDER_NAME}$voiceName")
+            VoiceHelper.getInstance()
+                .autoplay(
+                    "${EndPoints.CALL_VOICE}${dataBase.mistakesRow.voipId}",
+                    voiceName,
+                    dataBase.mistakesRow.voipId
+                )
+//            Log.i("URL", "show: ${EndPoints.CALL_VOICE}${dataBase.mistakesRow.voipId}")
 
-            val voipId = dataBase.mistakesRow.voipId
-            when {
-                file.exists() -> {
-                    initVoice(Uri.fromFile(file))
-                    playVoice()
-                }
-                voipId == "0" -> {
-                    binding.vfVoiceStatus.displayedChild = 1
-                    binding.vfPlayPause.displayedChild = 0
-                }
-                else -> {
-                    startDownload(
-                        "${EndPoints.CALL_VOICE}${dataBase.mistakesRow.voipId}",
-                        voiceName
-                    )
-                }
-            }
+//            val voiceName = "${dataBase.mistakesRow.id}.mp3"
+//            val file =
+//                File("${MyApplication.DIR_MAIN_FOLDER}${MyApplication.VOICE_FOLDER_NAME}$voiceName")
+//
+//            val voipId = dataBase.mistakesRow.voipId
+//            when {
+//                file.exists() -> {
+//                    VoiceHelper.getInstance().initVoice(Uri.fromFile(file))
+//                    initVoice(Uri.fromFile(file))
+//                    playVoice()
+//                }
+//                voipId == "0" -> {
+//                    binding.vfVoiceStatus.displayedChild = 1
+//                    binding.vfPlayPause.displayedChild = 0
+//                }
+//                else -> {
+//                    startDownload(
+//                        "${EndPoints.CALL_VOICE}${dataBase.mistakesRow.voipId}",
+//                        voiceName
+//                    )
+//                }
+//            }
         }
         binding.btnOptions.setOnClickListener {
-            pauseVoice()
+            VoiceHelper.getInstance().pauseVoice()
             val tell = dataBase.mistakesRow.tell
             val mobile = dataBase.mistakesRow.mobile
             PendingMistakesOptionsDialog()
@@ -135,7 +143,7 @@ class PendingMistakesFragmentK : Fragment() {
 
         binding.btnSaveResult.setOnClickListener {
             binding.vfSaveResult.displayedChild = 1
-            pauseVoice()
+            VoiceHelper.getInstance().pauseVoice()
             SaveMistakeResultDialog()
                 .show(model.id, object : MistakesResult {
                     override fun onSuccess(success: Boolean) {
@@ -154,125 +162,119 @@ class PendingMistakesFragmentK : Fragment() {
         return binding.root
     }
 
-    private fun startDownload(urlString: String, fileName: String) {
-        try {
-            val url = URL(urlString)
-            val dirPath = "${MyApplication.DIR_MAIN_FOLDER}${MyApplication.VOICE_FOLDER_NAME}"
-            File(dirPath).mkdirs()
-            val file = File(dirPath)
+//    private fun startDownload(urlString: String, fileName: String) {
+//        try {
+//            val url = URL(urlString)
+//            val dirPath = "${MyApplication.DIR_MAIN_FOLDER}${MyApplication.VOICE_FOLDER_NAME}"
+//            File(dirPath).mkdirs()
+//            val file = File(dirPath)
+//
+//            if (file.isDirectory) {
+//                val children = file.list()
+//                for (i in children.indices) {
+//                    File(file, children[i]).delete()
+//                }
+//            }
+//
+//
+////      File file = new File(dirPathTemp + fileName);
+////      int downloadId = FindDownloadId.execte(urlString);
+////      if (file.exists() && downloadId != -1) {
+////        PRDownloader.resume(downloadId);
+////      } else {
+////        downloadId =
+//            PRDownloader.download(url.toString(), dirPath, fileName)
+//                .setHeader("Authorization", MyApplication.prefManager.authorization)
+//                .setHeader("id_token", MyApplication.prefManager.idToken)
+//                .build()
+//                .setOnStartOrResumeListener {}
+//                .setOnPauseListener {}
+//                .setOnCancelListener {}
+//                .start(object : OnDownloadListener {
+//                    override fun onDownloadComplete() {
+////                    FinishedDownload.execute(urlString);
+//                        val file = File(dirPath + fileName)
+//                        MyApplication.handler.postDelayed({
+//                            initVoice(Uri.fromFile(file))
+//                            playVoice()
+//                        }, 500)
+//                    }
+//
+//                    override fun onError(error: Error) {
+//                        Log.e("pendingMistakeFragment", "onError: " + error.responseCode + "")
+//                        Log.e("pendingMistakeFragment", "onError: " + error.serverErrorMessage + "")
+//                        FileHelper.deleteFile(dirPath, fileName)
+//                        if (error.responseCode == 401) RefreshTokenAsyncTask().execute()
+//                        if (error.responseCode == 404) binding.vfVoiceStatus.displayedChild = 1
+//                    }
+//                })
+//
+////        StartDownload.execute(downloadId, url.toString(), dirPathTemp + fileName);
+//        } catch (e: MalformedURLException) {
+//            e.printStackTrace()
+//            AvaCrashReporter.send(e, "$TAG class, startDownload method")
+//        } catch (e: Exception) {
+//            e.printStackTrace()
+//            AvaCrashReporter.send(e, "$TAG class, startDownload method1")
+//        }
+//
+//    }
 
-            if (file.isDirectory) {
-                val children = file.list()
-                for (i in children.indices) {
-                    File(file, children[i]).delete()
-                }
-            }
+//    private fun initVoice(uri: Uri) {
+//        try {
+//            mediaPlayer = MediaPlayer.create(MyApplication.context, uri)
+//            mediaPlayer?.setOnCompletionListener {
+//                binding.vfPlayPause.displayedChild = 0
+//            }
+//            TOTAL_VOICE_DURATION = mediaPlayer?.duration!!
+//            binding.skbTimer.max = TOTAL_VOICE_DURATION.toFloat()
+//        } catch (e: Exception) {
+//            e.printStackTrace()
+//            AvaCrashReporter.send(e, "$TAG class, initVoice method")
+//        }
+//    }
 
-//      File file = new File(dirPathTemp + fileName);
-//      int downloadId = FindDownloadId.execte(urlString);
-//      if (file.exists() && downloadId != -1) {
-//        PRDownloader.resume(downloadId);
-//      } else {
-//        downloadId =
+//    private fun playVoice() {
+//        try {
+//            if (mediaPlayer != null)
+//                mediaPlayer?.start()
+//            binding.vfPlayPause.displayedChild = 2
+//        } catch (e: Exception) {
+//            e.printStackTrace()
+//            AvaCrashReporter.send(e, "$TAG class, playVoice method")
+//        }
+//        startTimer()
+//
+//    }
 
-//      File file = new File(dirPathTemp + fileName);
-//      int downloadId = FindDownloadId.execte(urlString);
-//      if (file.exists() && downloadId != -1) {
-//        PRDownloader.resume(downloadId);
-//      } else {
-//        downloadId =
-            PRDownloader.download(url.toString(), dirPath, fileName)
-                .setHeader("Authorization", MyApplication.prefManager.authorization)
-                .setHeader("id_token", MyApplication.prefManager.idToken)
-                .build()
-                .setOnStartOrResumeListener {}
-                .setOnPauseListener {}
-                .setOnCancelListener {}
-                .start(object : OnDownloadListener {
-                    override fun onDownloadComplete() {
-//                    FinishedDownload.execute(urlString);
-                        val file = File(dirPath + fileName)
-                        MyApplication.handler.postDelayed({
-                            initVoice(Uri.fromFile(file))
-                            playVoice()
-                        }, 500)
-                    }
+//    private fun startTimer() {
+//        Log.i("pendingMistakeFragment", "startTimer: ")
+//        if (timer != null) return
+//        timer = Timer()
+//        val task = UpdateSeekBar()
+//        timer?.scheduleAtFixedRate(task, 500, 1000)
+//    }
 
-                    override fun onError(error: Error) {
-                        Log.e("pendingMistakeFragment", "onError: " + error.responseCode + "")
-                        Log.e("pendingMistakeFragment", "onError: " + error.serverErrorMessage + "")
-                        FileHelper.deleteFile(dirPath, fileName)
-                        if (error.responseCode == 401) RefreshTokenAsyncTask().execute()
-                        if (error.responseCode == 404) binding.vfVoiceStatus.displayedChild = 1
-                    }
-                })
-
-//        StartDownload.execute(downloadId, url.toString(), dirPathTemp + fileName);
-        } catch (e: MalformedURLException) {
-            e.printStackTrace()
-            AvaCrashReporter.send(e, "$TAG class, startDownload method")
-        } catch (e: Exception) {
-            e.printStackTrace()
-            AvaCrashReporter.send(e, "$TAG class, startDownload method1")
-        }
-
-    }
-
-    private fun initVoice(uri: Uri) {
-        try {
-            mediaPlayer = MediaPlayer.create(MyApplication.context, uri)
-            mediaPlayer?.setOnCompletionListener {
-                binding.vfPlayPause.displayedChild = 0
-            }
-            TOTAL_VOICE_DURATION = mediaPlayer?.duration!!
-            binding.skbTimer.max = TOTAL_VOICE_DURATION.toFloat()
-        } catch (e: Exception) {
-            e.printStackTrace()
-            AvaCrashReporter.send(e, "$TAG class, initVoice method")
-        }
-    }
-
-    private fun playVoice() {
-        try {
-            if (mediaPlayer != null)
-                mediaPlayer?.start()
-            binding.vfPlayPause.displayedChild = 2
-        } catch (e: Exception) {
-            e.printStackTrace()
-            AvaCrashReporter.send(e, "$TAG class, playVoice method")
-        }
-        startTimer()
-
-    }
-
-    private fun startTimer() {
-        Log.i("pendingMistakeFragment", "startTimer: ")
-        if (timer != null) return
-        timer = Timer()
-        val task = UpdateSeekBar()
-        timer?.scheduleAtFixedRate(task, 500, 1000)
-    }
-
-    inner class UpdateSeekBar : TimerTask() {
-        override fun run() {
-            if (mediaPlayer != null) {
-                try {
-                    MyApplication.handler.post {
-                        Log.i(
-                            "pendingMistakeFragment",
-                            "onStopTrackingTouch run: " + mediaPlayer?.currentPosition
-                        )
-                        binding.skbTimer.setProgress(mediaPlayer?.currentPosition!!.toFloat())
-                    }
-                } catch (e: java.lang.Exception) {
-                    e.printStackTrace()
-                    AvaCrashReporter.send(
-                        e, "$TAG class, UpdateSeekBar method"
-                    )
-                }
-            }
-        }
-    }
+//    inner class UpdateSeekBar : TimerTask() {
+//        override fun run() {
+//            if (mediaPlayer != null) {
+//                try {
+//                    MyApplication.handler.post {
+//                        Log.i(
+//                            "pendingMistakeFragment",
+//                            "onStopTrackingTouch run: " + mediaPlayer?.currentPosition
+//                        )
+//                        binding.skbTimer.setProgress(mediaPlayer?.currentPosition!!.toFloat())
+//                    }
+//                } catch (e: java.lang.Exception) {
+//                    e.printStackTrace()
+//                    AvaCrashReporter.send(
+//                        e, "$TAG class, UpdateSeekBar method"
+//                    )
+//                }
+//            }
+//        }
+//    }
 
     override fun setMenuVisibility(menuVisible: Boolean) {
         super.setMenuVisibility(menuVisible)
@@ -448,21 +450,56 @@ class PendingMistakesFragmentK : Fragment() {
         }
     }
 
+    override fun onDuringInit() {
+        binding.vfPlayPause.displayedChild = 0
+//        Log.i("taf_onDuringInit","0")
+    }
+
+    override fun onEndOfInit(maxDuration: Int) {
+        binding.skbTimer.max = maxDuration.toFloat()
+    }
+
+    override fun onPlayVoice() {
+        binding.vfPlayPause.displayedChild = 2
+    }
+
+    override fun onTimerTask(currentDuration: Int) {
+        binding.skbTimer.setProgress(currentDuration.toFloat())
+    }
+
+    override fun onDownload401Error() {
+        RefreshTokenAsyncTask().execute()
+    }
+
+    override fun onDownload404Error() {
+        binding.vfVoiceStatus.displayedChild = 1
+    }
+
+    override fun onPauseVoice() {
+        if (binding.vfVoiceStatus == null) return
+        binding.skbTimer.setProgress(0f)
+        binding.vfPlayPause.displayedChild = 0
+    }
+
+    override fun onVoipIdEqual0() {
+        binding.vfVoiceStatus.displayedChild = 1
+        binding.vfPlayPause.displayedChild = 0
+    }
+
     override fun onPause() {
         super.onPause()
-        pauseVoice()
-    }
+        VoiceHelper.getInstance().pauseVoice()    }
 
     override fun onStop() {
         super.onStop()
-        pauseVoice()
+//        pauseVoice()
     }
 
     override fun onDestroy() {
         super.onDestroy()
         try {
-            pauseVoice()
-            cancelTimer()
+//            pauseVoice()
+//            cancelTimer()
         } catch (e: Exception) {
             e.printStackTrace()
             AvaCrashReporter.send(e, "$TAG class, onDestroy method")

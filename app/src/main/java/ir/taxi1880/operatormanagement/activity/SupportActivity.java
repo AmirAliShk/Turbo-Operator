@@ -51,6 +51,7 @@ import ir.taxi1880.operatormanagement.helper.FragmentHelper;
 import ir.taxi1880.operatormanagement.helper.KeyBoardHelper;
 import ir.taxi1880.operatormanagement.helper.ThemeHelper;
 import ir.taxi1880.operatormanagement.helper.TypefaceUtil;
+import ir.taxi1880.operatormanagement.helper.VoiceHelper;
 import ir.taxi1880.operatormanagement.okHttp.RequestHelper;
 import ir.taxi1880.operatormanagement.push.AvaCrashReporter;
 import ir.taxi1880.operatormanagement.services.LinphoneService;
@@ -184,7 +185,7 @@ public class SupportActivity extends AppCompatActivity {
         });
 
         binding.imgOpenDriverSupport.setOnClickListener(view -> {
-            PendingMistakesFragmentK.Companion.pauseVoice();
+            VoiceHelper.getInstance().pauseVoice();
             FragmentHelper.toFragment(MyApplication.currentActivity, new DriverTripSupportFragment()).replace();
         });
 
