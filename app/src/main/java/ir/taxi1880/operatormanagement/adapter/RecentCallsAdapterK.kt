@@ -25,9 +25,11 @@ import com.warkiz.widget.SeekParams
 import ir.taxi1880.operatormanagement.app.EndPoints
 import ir.taxi1880.operatormanagement.app.MyApplication
 import ir.taxi1880.operatormanagement.databinding.ItemRecentCallsBinding
+import ir.taxi1880.operatormanagement.fragment.OnVoiceListener
 import ir.taxi1880.operatormanagement.helper.DateHelper
 import ir.taxi1880.operatormanagement.helper.FileHelper
 import ir.taxi1880.operatormanagement.helper.TypefaceUtil
+import ir.taxi1880.operatormanagement.helper.VoiceHelper
 import ir.taxi1880.operatormanagement.model.RecentCallsModel
 import ir.taxi1880.operatormanagement.okHttp.AuthenticationInterceptor
 import ir.taxi1880.operatormanagement.push.AvaCrashReporter
@@ -61,32 +63,32 @@ class RecentCallsAdapterK() : RecyclerView.Adapter<RecentCallsAdapterK.RecentCal
             }
         }
 
-        fun pauseVoice() {
-            MyApplication.handler.post {
-                try {
-                    mediaPlayer?.pause()
-                    if (::requireHolder.isInitialized) {
-                        requireHolder.binding.skbTimer.setProgress(0f)
-                        requireHolder.binding.vfPlayPause.displayedChild = 0
-                    }
-                } catch (e: java.lang.Exception) {
-                    e.printStackTrace()
-                    AvaCrashReporter.send(e, "$TAG class, pauseVoice method")
-                }
-                cancelTimer()
-            }
-        }
-
-        private fun cancelTimer() {
-            try {
-                if (timer == null) return
-                timer!!.cancel()
-                timer = null
-            } catch (e: java.lang.Exception) {
-                e.printStackTrace()
-                AvaCrashReporter.send(e, "$TAG class, cancelTimer method")
-            }
-        }
+//        fun pauseVoice() {
+//            MyApplication.handler.post {
+//                try {
+//                    mediaPlayer?.pause()
+//                    if (::requireHolder.isInitialized) {
+//                        requireHolder.binding.skbTimer.setProgress(0f)
+//                        requireHolder.binding.vfPlayPause.displayedChild = 0
+//                    }
+//                } catch (e: java.lang.Exception) {
+//                    e.printStackTrace()
+//                    AvaCrashReporter.send(e, "$TAG class, pauseVoice method")
+//                }
+//                cancelTimer()
+//            }
+//        }
+//
+//        private fun cancelTimer() {
+//            try {
+//                if (timer == null) return
+//                timer!!.cancel()
+//                timer = null
+//            } catch (e: java.lang.Exception) {
+//                e.printStackTrace()
+//                AvaCrashReporter.send(e, "$TAG class, cancelTimer method")
+//            }
+//        }
     }
 
     class RecentCallsHolder(val binding: ItemRecentCallsBinding) :
@@ -126,27 +128,77 @@ class RecentCallsAdapterK() : RecyclerView.Adapter<RecentCallsAdapterK.RecentCal
 
         holder.binding.imgPlay.setOnClickListener {
             requireHolder = holder
-            if (mediaPlayer != null && mediaPlayer?.isPlaying!!) {
-                pauseVoice()
-            }
+//            if (mediaPlayer != null && mediaPlayer?.isPlaying!!) {
+//                pauseVoice()
+//            }
             holder.binding.vfPlayPause.displayedChild = 1
             Log.i("URL", "show: ${EndPoints.CALL_VOICE}${recentCall.voipId}")
             val voiceName = "${recentCall.voipId}.mp3"
-            val file =
-                File("${MyApplication.DIR_MAIN_FOLDER}${MyApplication.VOICE_FOLDER_NAME}$voiceName")
-            val voipId = recentCall.voipId
-            when {
-                file.exists() -> {
-                    initVoice(Uri.fromFile(file))
-                    playVoice()
-                }
-                voipId.equals("0") -> {
-                    MyApplication.Toast("صوتی برای این تماس وجود ندارد", Toast.LENGTH_SHORT)
-                }
-                else -> {
-                    startDownload("${EndPoints.CALL_VOICE}${recentCall.voipId}", voiceName)
-                }
-            }
+
+            VoiceHelper.getInstance()
+                .autoplay("${EndPoints.CALL_VOICE}${recentCall.voipId}", voiceName,
+                    recentCall.voipId,
+                    object : OnVoiceListener {
+                        override fun onDuringInit() {
+                            requireHolder.binding.vfPlayPause.displayedChild = 0
+                        }
+
+                        override fun onEndOfInit(maxDuration: Int) {
+                            requireHolder.binding.skbTimer.max = maxDuration.toFloat()
+                        }
+
+                        override fun onPlayVoice() {
+                            requireHolder.binding.vfPlayPause.displayedChild = 2
+                        }
+
+                        override fun onTimerTask(currentDuration: Int) {
+                            requireHolder.binding.skbTimer.setProgress(
+                                currentDuration.toFloat()
+                            )
+                            val timeRemaining =
+                                currentDuration / 1000
+                            val strTimeRemaining = String.format(
+                                Locale("en_US"),
+                                "%02d:%02d",
+                                timeRemaining / 60,
+                                timeRemaining % 60
+                            )
+                            requireHolder.binding.txtTimeRemaining.text = strTimeRemaining
+                        }
+
+                        override fun onDownload401Error() {
+                            RefreshTokenAsyncTask().execute()
+                        }
+
+                        override fun onDownload404Error() {
+                            requireHolder.binding.vfVoiceStatus.displayedChild = 1
+                        }
+
+                        override fun onPauseVoice() {
+                            requireHolder.binding.skbTimer.setProgress(0f)
+                            requireHolder.binding.vfPlayPause.displayedChild = 0
+                        }
+
+                        override fun onVoipIdEqual0() {
+                            MyApplication.Toast("صوتی برای این تماس وجود ندارد", Toast.LENGTH_SHORT)
+                        }
+                    }
+                )
+//            val file =
+//                File("${MyApplication.DIR_MAIN_FOLDER}${MyApplication.VOICE_FOLDER_NAME}$voiceName")
+//            val voipId = recentCall.voipId
+//            when {
+//                file.exists() -> {
+//                    initVoice(Uri.fromFile(file))
+//                    playVoice()
+//                }
+//                voipId.equals("0") -> {
+//                    MyApplication.Toast("صوتی برای این تماس وجود ندارد", Toast.LENGTH_SHORT)
+//                }
+//                else -> {
+//                    startDownload("${EndPoints.CALL_VOICE}${recentCall.voipId}", voiceName)
+//                }
+//            }
 
             holder.binding.skbTimer.onSeekChangeListener = object : OnSeekChangeListener {
                 override fun onSeeking(seekParams: SeekParams?) {
@@ -161,7 +213,6 @@ class RecentCallsAdapterK() : RecyclerView.Adapter<RecentCallsAdapterK.RecentCal
                 }
 
                 override fun onStartTrackingTouch(seekBar: IndicatorSeekBar?) {
-//                    TODO("Not yet implemented")
                 }
 
                 override fun onStopTrackingTouch(seekBar: IndicatorSeekBar?) {
@@ -175,7 +226,7 @@ class RecentCallsAdapterK() : RecyclerView.Adapter<RecentCallsAdapterK.RecentCal
         }
         holder.binding.imgPause.setOnClickListener {
             requireHolder = holder
-            pauseVoice()
+            VoiceHelper.getInstance().pauseVoice()
         }
     }
 
@@ -192,146 +243,144 @@ class RecentCallsAdapterK() : RecyclerView.Adapter<RecentCallsAdapterK.RecentCal
         clipboard.setPrimaryClip(clip)
 
 
-        Toast.makeText(MyApplication.context, "شماره کپی شد" , Toast.LENGTH_LONG).show()
+        Toast.makeText(MyApplication.context, "شماره کپی شد", Toast.LENGTH_LONG).show()
 
     }
 
 
-    private fun startDownload(urlString: String, fileName: String) {
-        try {
-            val url = URL(urlString)
-            val dirPath = MyApplication.DIR_MAIN_FOLDER + MyApplication.VOICE_FOLDER_NAME
-
-            File(dirPath).mkdirs()
-
-            val file = File(dirPath)
-            if (file.isDirectory) {
-                val children = file.list()
-                for (i in children.indices) {
-                    File(file, children[i]).delete()
-                }
-            }
-
-//      File file = new File(dirPathTemp + fileName);
-//      int downloadId = FindDownloadId.execte(urlString);
-//      if (file.exists() && downloadId != -1) {
-//        PRDownloader.resume(downloadId);
-//      } else {
-//        downloadId =
-            PRDownloader.download(url.toString(), dirPath, fileName)
-                .setHeader("Authorization", MyApplication.prefManager.authorization)
-                .setHeader("id_token", MyApplication.prefManager.idToken)
-                .build()
-                .setOnStartOrResumeListener {}
-                .setOnPauseListener { isDownloading = false }
-                .setOnCancelListener { isDownloading = false }
-                .setOnProgressListener { progress: Progress ->
-                    isDownloading = true
-                    Log.i("TAG", "startDownload: $progress")
-                }
-                .start(object : OnDownloadListener {
-                    override fun onDownloadComplete() {
-                        isDownloading = false
-//                            FileHelper.moveFile(dirPathTemp, fileName, dirPath);
-                        val fileDown = File(dirPath + fileName)
-                        MyApplication.handler.postDelayed({
-//                            if (view != null) {
-                            initVoice(Uri.fromFile(fileDown))
-                            playVoice()
-//                            }
-                        }, 200)
-                    }
-
-                    override fun onError(error: Error) {
-                        isDownloading = false
-                        Log.e("PlayConversationDialog", "onError: " + error.responseCode + "")
-                        Log.e("getServerErrorMessage", "onError: " + error.serverErrorMessage + "")
-                        Log.e(
-                            "getConnectionException",
-                            "onError: " + error.connectionException + ""
-                        )
-                        FileHelper.deleteFile(dirPath, fileName)
-                        if (error.responseCode == 401) RefreshTokenAsyncTask().execute()
-                        if (error.responseCode == 404) requireHolder.binding.vfVoiceStatus.displayedChild =
-                            1
-                    }
-                })
-
-//        StartDownload.execute(downloadId, url.toString(), dirPathTemp + fileName);
-        } catch (e: MalformedURLException) {
-            e.printStackTrace()
-            AvaCrashReporter.send(e, "$TAG class, startDownload method")
-        } catch (e: Exception) {
-            e.printStackTrace()
-            AvaCrashReporter.send(e, "$TAG class, startDownload method2")
-        }
-    }
-
-    private fun initVoice(uri: Uri?) {
-        try {
-//            if (view != null) {
-            mediaPlayer = MediaPlayer.create(MyApplication.context, uri)
-            mediaPlayer?.setOnCompletionListener { mp: MediaPlayer? ->
-//                if (requireHolder.binding.vfPlayPause != null) {
-                requireHolder.binding.vfPlayPause.displayedChild = 0
+//    private fun startDownload(urlString: String, fileName: String) {
+//        try {
+//            val url = URL(urlString)
+//            val dirPath = MyApplication.DIR_MAIN_FOLDER + MyApplication.VOICE_FOLDER_NAME
+//
+//            File(dirPath).mkdirs()
+//
+//            val file = File(dirPath)
+//            if (file.isDirectory) {
+//                val children = file.list()
+//                for (i in children.indices) {
+//                    File(file, children[i]).delete()
 //                }
-            }
-            TOTAL_VOICE_DURATION = mediaPlayer?.duration!!
-            requireHolder.binding.skbTimer.max = TOTAL_VOICE_DURATION.toFloat()
+//            }
+//
+////      File file = new File(dirPathTemp + fileName);
+////      int downloadId = FindDownloadId.execte(urlString);
+////      if (file.exists() && downloadId != -1) {
+////        PRDownloader.resume(downloadId);
+////      } else {
+////        downloadId =
+//            PRDownloader.download(url.toString(), dirPath, fileName)
+//                .setHeader("Authorization", MyApplication.prefManager.authorization)
+//                .setHeader("id_token", MyApplication.prefManager.idToken)
+//                .build()
+//                .setOnStartOrResumeListener {}
+//                .setOnPauseListener { }
+//                .setOnCancelListener { }
+//                .setOnProgressListener { progress: Progress ->
+//
+//                    Log.i("TAG", "startDownload: $progress")
+//                }
+//                .start(object : OnDownloadListener {
+//                    override fun onDownloadComplete() {
+////                            FileHelper.moveFile(dirPathTemp, fileName, dirPath);
+//                        val fileDown = File(dirPath + fileName)
+//                        MyApplication.handler.postDelayed({
+////                            if (view != null) {
+//                            initVoice(Uri.fromFile(fileDown))
+//                            playVoice()
+////                            }
+//                        }, 200)
+//                    }
+//
+//                    override fun onError(error: Error) {
+//                        Log.e("PlayConversationDialog", "onError: " + error.responseCode + "")
+//                        Log.e("getServerErrorMessage", "onError: " + error.serverErrorMessage + "")
+//                        Log.e(
+//                            "getConnectionException",
+//                            "onError: " + error.connectionException + ""
+//                        )
+//                        FileHelper.deleteFile(dirPath, fileName)
+//                        if (error.responseCode == 401) RefreshTokenAsyncTask().execute()
+//                        if (error.responseCode == 404) requireHolder.binding.vfVoiceStatus.displayedChild =
+//                            1
+//                    }
+//                })
+//
+////        StartDownload.execute(downloadId, url.toString(), dirPathTemp + fileName);
+//        } catch (e: MalformedURLException) {
+//            e.printStackTrace()
+//            AvaCrashReporter.send(e, "$TAG class, startDownload method")
+//        } catch (e: Exception) {
+//            e.printStackTrace()
+//            AvaCrashReporter.send(e, "$TAG class, startDownload method2")
+//        }
+//    }
 
-        } catch (e: java.lang.Exception) {
-            e.printStackTrace()
-            AvaCrashReporter.send(e, "$TAG, initVoice method")
-        }
-    }
+//    private fun initVoice(uri: Uri?) {
+//        try {
+////            if (view != null) {
+//            mediaPlayer = MediaPlayer.create(MyApplication.context, uri)
+//            mediaPlayer?.setOnCompletionListener { mp: MediaPlayer? ->
+////                if (requireHolder.binding.vfPlayPause != null) {
+//                requireHolder.binding.vfPlayPause.displayedChild = 0
+////                }
+//            }
+//            TOTAL_VOICE_DURATION = mediaPlayer?.duration!!
+//            requireHolder.binding.skbTimer.max = TOTAL_VOICE_DURATION.toFloat()
+//
+//        } catch (e: java.lang.Exception) {
+//            e.printStackTrace()
+//            AvaCrashReporter.send(e, "$TAG, initVoice method")
+//        }
+//    }
 
-    private fun playVoice() {
-        try {
-            mediaPlayer?.start()
-            requireHolder.binding.vfPlayPause.displayedChild = 2
-            startTimer()
-        } catch (e: java.lang.Exception) {
-            e.printStackTrace()
-            AvaCrashReporter.send(e, "$TAG, playVoice")
-        }
-    }
+//    private fun playVoice() {
+//        try {
+//            mediaPlayer?.start()
+//            requireHolder.binding.vfPlayPause.displayedChild = 2
+//            startTimer()
+//        } catch (e: java.lang.Exception) {
+//            e.printStackTrace()
+//            AvaCrashReporter.send(e, "$TAG, playVoice")
+//        }
+//    }
 
-    private fun startTimer() {
-        if (timer != null) return
+//    private fun startTimer() {
+//        if (timer != null) return
+//
+//        timer = Timer()
+//        val task = UpdateSeekBar()
+//        timer!!.scheduleAtFixedRate(task, 500, 1000)
+//    }
 
-        timer = Timer()
-        val task = UpdateSeekBar()
-        timer!!.scheduleAtFixedRate(task, 500, 1000)
-    }
-
-    inner class UpdateSeekBar : TimerTask() {
-        override fun run() {
-            if (mediaPlayer != null) {
-                try {
-                    MyApplication.handler.post {
-                        requireHolder.binding.skbTimer.setProgress(
-                            mediaPlayer?.currentPosition!!.toFloat()
-                        )
-                        val timeRemaining =
-                            mediaPlayer?.currentPosition!! / 1000
-                        val strTimeRemaining = String.format(
-                            Locale("en_US"),
-                            "%02d:%02d",
-                            timeRemaining / 60,
-                            timeRemaining % 60
-                        )
-//                        if (txtTimeRemaining != null)
-                        requireHolder.binding.txtTimeRemaining.text = strTimeRemaining
-                    }
-                } catch (e: java.lang.Exception) {
-                    e.printStackTrace()
-                    AvaCrashReporter.send(
-                        e,
-                        "$TAG class, UpdateSeekBar method "
-                    )
-                }
-            }
-        }
-    }
+//    inner class UpdateSeekBar : TimerTask() {
+//        override fun run() {
+//            if (mediaPlayer != null) {
+//                try {
+//                    MyApplication.handler.post {
+//                        requireHolder.binding.skbTimer.setProgress(
+//                            mediaPlayer?.currentPosition!!.toFloat()
+//                        )
+//                        val timeRemaining =
+//                            mediaPlayer?.currentPosition!! / 1000
+//                        val strTimeRemaining = String.format(
+//                            Locale("en_US"),
+//                            "%02d:%02d",
+//                            timeRemaining / 60,
+//                            timeRemaining % 60
+//                        )
+////                        if (txtTimeRemaining != null)
+//                        requireHolder.binding.txtTimeRemaining.text = strTimeRemaining
+//                    }
+//                } catch (e: java.lang.Exception) {
+//                    e.printStackTrace()
+//                    AvaCrashReporter.send(
+//                        e,
+//                        "$TAG class, UpdateSeekBar method "
+//                    )
+//                }
+//            }
+//        }
+//    }
 
 }

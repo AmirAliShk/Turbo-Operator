@@ -24,6 +24,7 @@ import ir.taxi1880.operatormanagement.app.EndPoints;
 import ir.taxi1880.operatormanagement.app.MyApplication;
 import ir.taxi1880.operatormanagement.databinding.DialogRecentCallsBinding;
 import ir.taxi1880.operatormanagement.helper.TypefaceUtil;
+import ir.taxi1880.operatormanagement.helper.VoiceHelper;
 import ir.taxi1880.operatormanagement.model.RecentCallsModel;
 import ir.taxi1880.operatormanagement.okHttp.RequestHelper;
 import ir.taxi1880.operatormanagement.push.AvaCrashReporter;
@@ -91,7 +92,7 @@ public class RecentCallsDialog {
         }
 
         binding.rbTell.setOnClickListener(view -> {
-            RecentCallsAdapterK.Companion.pauseVoice();
+            VoiceHelper.getInstance().pauseVoice();
             if (this.tell.length() == 10 && !this.tell.startsWith("0")) {
                 this.tell = "0" + this.tell;
                 getRecentCalls("/src", this.tell, "/4");
@@ -105,7 +106,7 @@ public class RecentCallsDialog {
         });
 
         binding.rbMobile.setOnClickListener(view -> {
-            RecentCallsAdapterK.Companion.pauseVoice();
+            VoiceHelper.getInstance().pauseVoice();
             if (binding.rgSearchType.getCheckedRadioButtonId() == R.id.rbMobile) {
                 getRecentCalls("/src", mobile.startsWith("0") ? mobile : "0" + mobile, "/4");
             }
@@ -117,7 +118,7 @@ public class RecentCallsDialog {
             public void onDismiss(DialogInterface dialogInterface) {
                 PRDownloader.cancelAll();
                 PRDownloader.shutDown();
-                RecentCallsAdapterK.Companion.pauseVoice();
+                VoiceHelper.getInstance().pauseVoice();
             }
         });
 

@@ -39,6 +39,9 @@ public class VoiceHelper{
     public void autoplay(String webUrl, String voiceName, String voipId , OnVoiceListener onVoiceListener ) {
         instance.onVoiceListener =  onVoiceListener;
         instance.file = new File(MyApplication.DIR_MAIN_FOLDER + MyApplication.VOICE_FOLDER_NAME + voiceName);
+        if (instance.mediaPlayer != null && instance.mediaPlayer.isPlaying()) {
+            pauseVoice();
+        }
         if (instance.file.exists()) {
             initVoice(Uri.fromFile(instance.file));
             playVoice();
