@@ -2,18 +2,13 @@ package ir.taxi1880.operatormanagement.fragment.mistake
 
 import android.content.Intent
 import android.media.MediaPlayer
-import android.net.Uri
 import android.os.AsyncTask
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.localbroadcastmanager.content.LocalBroadcastManager
-import com.downloader.Error
-import com.downloader.OnDownloadListener
-import com.downloader.PRDownloader
 import com.warkiz.widget.IndicatorSeekBar
 import com.warkiz.widget.OnSeekChangeListener
 import com.warkiz.widget.SeekParams
@@ -26,18 +21,20 @@ import ir.taxi1880.operatormanagement.dialog.GeneralDialog
 import ir.taxi1880.operatormanagement.dialog.PendingMistakesOptionsDialog
 import ir.taxi1880.operatormanagement.dialog.SaveMistakeResultDialog
 import ir.taxi1880.operatormanagement.dialog.SaveMistakeResultDialog.MistakesResult
-import ir.taxi1880.operatormanagement.helper.*
+import ir.taxi1880.operatormanagement.fragment.OnVoiceListener
+import ir.taxi1880.operatormanagement.helper.DateHelper
+import ir.taxi1880.operatormanagement.helper.StringHelper
+import ir.taxi1880.operatormanagement.helper.TypefaceUtil
+import ir.taxi1880.operatormanagement.helper.VoiceHelper
 import ir.taxi1880.operatormanagement.model.AllMistakesModel
 import ir.taxi1880.operatormanagement.okHttp.AuthenticationInterceptor
 import ir.taxi1880.operatormanagement.okHttp.RequestHelper
 import ir.taxi1880.operatormanagement.push.AvaCrashReporter
 import org.json.JSONObject
-import java.io.File
-import java.net.MalformedURLException
-import java.net.URL
 import java.util.*
 
-class PendingMistakesFragmentK : Fragment(), VoiceHelper.OnVoiceListener {
+
+class PendingMistakesFragmentK : Fragment() {
 
     private lateinit var dataBase: DataBase
     private lateinit var broadcaster: LocalBroadcastManager
@@ -106,8 +103,39 @@ class PendingMistakesFragmentK : Fragment(), VoiceHelper.OnVoiceListener {
                 .autoplay(
                     "${EndPoints.CALL_VOICE}${dataBase.mistakesRow.voipId}",
                     voiceName,
-                    dataBase.mistakesRow.voipId
-                )
+                    dataBase.mistakesRow.voipId, object : OnVoiceListener {
+                        override fun onDuringInit() {
+                            binding.vfPlayPause.displayedChild = 0
+                        }
+
+                        override fun onEndOfInit(maxDuration: Int) {
+                            binding.skbTimer.max = maxDuration.toFloat()
+                        }
+
+                        override fun onPlayVoice() {
+                            binding.vfPlayPause.displayedChild = 2
+                        }
+
+                        override fun onTimerTask(currentDuration: Int) {
+                            binding.skbTimer.setProgress(currentDuration.toFloat())
+
+                        }
+                        override fun onDownload401Error() {
+                            RefreshTokenAsyncTask().execute()
+                        }
+                        override fun onDownload404Error() {
+                            binding.vfVoiceStatus.displayedChild = 1
+                        }
+                        override fun onPauseVoice() {
+                            if (binding.vfVoiceStatus == null) return
+                            binding.skbTimer.setProgress(0f)
+                            binding.vfPlayPause.displayedChild = 0
+                        }
+                        override fun onVoipIdEqual0() {
+                            binding.vfVoiceStatus.displayedChild = 1
+                            binding.vfPlayPause.displayedChild = 0
+                        }
+                    })
 //            Log.i("URL", "show: ${EndPoints.CALL_VOICE}${dataBase.mistakesRow.voipId}")
 
 //            val voiceName = "${dataBase.mistakesRow.id}.mp3"
@@ -448,42 +476,6 @@ class PendingMistakesFragmentK : Fragment(), VoiceHelper.OnVoiceListener {
                 }
             }
         }
-    }
-
-    override fun onDuringInit() {
-        binding.vfPlayPause.displayedChild = 0
-//        Log.i("taf_onDuringInit","0")
-    }
-
-    override fun onEndOfInit(maxDuration: Int) {
-        binding.skbTimer.max = maxDuration.toFloat()
-    }
-
-    override fun onPlayVoice() {
-        binding.vfPlayPause.displayedChild = 2
-    }
-
-    override fun onTimerTask(currentDuration: Int) {
-        binding.skbTimer.setProgress(currentDuration.toFloat())
-    }
-
-    override fun onDownload401Error() {
-        RefreshTokenAsyncTask().execute()
-    }
-
-    override fun onDownload404Error() {
-        binding.vfVoiceStatus.displayedChild = 1
-    }
-
-    override fun onPauseVoice() {
-        if (binding.vfVoiceStatus == null) return
-        binding.skbTimer.setProgress(0f)
-        binding.vfPlayPause.displayedChild = 0
-    }
-
-    override fun onVoipIdEqual0() {
-        binding.vfVoiceStatus.displayedChild = 1
-        binding.vfPlayPause.displayedChild = 0
     }
 
     override fun onPause() {

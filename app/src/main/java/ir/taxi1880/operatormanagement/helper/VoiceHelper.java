@@ -15,9 +15,10 @@ import java.util.Timer;
 import java.util.TimerTask;
 
 import ir.taxi1880.operatormanagement.app.MyApplication;
+import ir.taxi1880.operatormanagement.fragment.OnVoiceListener;
 import ir.taxi1880.operatormanagement.push.AvaCrashReporter;
 
-public class VoiceHelper {
+public class VoiceHelper{
     public static String TAG = VoiceHelper.class.getSimpleName();
     private static VoiceHelper instance;
     private MediaPlayer mediaPlayer;
@@ -26,27 +27,8 @@ public class VoiceHelper {
 
     private int totalVoiceDuration = 0;
 
-    private VoiceHelper() {}
-
     OnVoiceListener onVoiceListener;
-
-    public interface OnVoiceListener {
-        void onDuringInit();
-
-        void onEndOfInit(int maxDuration);
-
-        void onPlayVoice();
-
-        void onTimerTask(int currentDuration);
-
-        void onDownload401Error();
-
-        void onDownload404Error();
-
-        void onPauseVoice();
-
-        void onVoipIdEqual0();
-    }
+    private VoiceHelper() {}
 
     public static VoiceHelper getInstance() {
         if (instance == null) {
@@ -54,8 +36,8 @@ public class VoiceHelper {
         }
         return instance;
     }
-
-    public void autoplay(String webUrl, String voiceName, String voipId) {
+    public void autoplay(String webUrl, String voiceName, String voipId , OnVoiceListener onVoiceListener ) {
+        instance.onVoiceListener =  onVoiceListener;
         instance.file = new File(MyApplication.DIR_MAIN_FOLDER + MyApplication.VOICE_FOLDER_NAME + voiceName);
         if (instance.file.exists()) {
             initVoice(Uri.fromFile(instance.file));
