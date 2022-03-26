@@ -34,10 +34,12 @@ import ir.taxi1880.operatormanagement.app.MyApplication;
 import ir.taxi1880.operatormanagement.databinding.FragmentComplaintCallBinding;
 import ir.taxi1880.operatormanagement.dialog.GeneralDialog;
 import ir.taxi1880.operatormanagement.dialog.NumbersDialog;
+import ir.taxi1880.operatormanagement.fragment.OnVoiceListener;
 import ir.taxi1880.operatormanagement.helper.DateHelper;
 import ir.taxi1880.operatormanagement.helper.FileHelper;
 import ir.taxi1880.operatormanagement.helper.StringHelper;
 import ir.taxi1880.operatormanagement.helper.TypefaceUtil;
+import ir.taxi1880.operatormanagement.helper.VoiceHelper;
 import ir.taxi1880.operatormanagement.okHttp.AuthenticationInterceptor;
 import ir.taxi1880.operatormanagement.okHttp.RequestHelper;
 import ir.taxi1880.operatormanagement.push.AvaCrashReporter;
@@ -46,7 +48,6 @@ public class ComplaintCallFragment extends Fragment {
 
     public static final String TAG = ComplaintCallFragment.class.getSimpleName();
     FragmentComplaintCallBinding binding;
-    MediaPlayer mediaPlayer;
 
     @Nullable
     @Override
@@ -87,200 +88,206 @@ public class ComplaintCallFragment extends Fragment {
             missedCall(1);
         });
 
-        binding.imgPause.setOnClickListener(view -> pauseVoice());
+        binding.imgPause.setOnClickListener(view -> VoiceHelper.getInstance().pauseVoice());
 
         binding.imgPlay.setOnClickListener(view -> {
-            if (binding.vfPlayPause != null)
-                binding.vfPlayPause.setDisplayedChild(1);
+            binding.vfPlayPause.setDisplayedChild(1);
 
             Log.i("URL", "show: " + EndPoints.CALL_VOICE + complaintDetailsModel.getComplaintVoipId());
             String voiceName = complaintDetailsModel.getComplaintId() + ".mp3";
-            File file = new File(MyApplication.DIR_MAIN_FOLDER + MyApplication.VOICE_FOLDER_NAME + voiceName);
-            String voipId = complaintDetailsModel.getComplaintVoipId();
-            if (file.exists()) {
-                initVoice(Uri.fromFile(file));
-                playVoice();
-            } else if (voipId.equals("0")) {
-                if (binding.vfVoiceStatus != null)
-                    binding.vfVoiceStatus.setDisplayedChild(1);
-                if (binding.vfPlayPause != null)
-                    binding.vfPlayPause.setDisplayedChild(0);
-            } else {
-                startDownload(EndPoints.CALL_VOICE + complaintDetailsModel.getComplaintVoipId(), voiceName);
-            }
+
+
+            VoiceHelper.getInstance().autoplay(
+                    EndPoints.CALL_VOICE + complaintDetailsModel.getComplaintVoipId(),
+                    voiceName,
+                    complaintDetailsModel.getComplaintVoipId(),
+                    new OnVoiceListener() {
+                        @Override
+                        public void onDuringInit() {
+                            binding.vfPlayPause.setDisplayedChild(0);
+                        }
+
+                        @Override
+                        public void onEndOfInit(int maxDuration) {
+                            binding.skbTimer.setMax(maxDuration);
+                        }
+
+                        @Override
+                        public void onPlayVoice() {
+                            binding.vfPlayPause.setDisplayedChild(2);
+                        }
+
+                        @Override
+                        public void onTimerTask(int currentDuration) {
+                            binding.skbTimer.setProgress(currentDuration);
+                        }
+
+                        @Override
+                        public void onDownload401Error() {
+                            new RefreshTokenAsyncTask().execute();
+                        }
+
+                        @Override
+                        public void onDownload404Error() {
+                            binding.vfVoiceStatus.setDisplayedChild(1);
+                        }
+
+                        @Override
+                        public void onPauseVoice() {
+                            binding.skbTimer.setProgress(0);
+                            binding.vfPlayPause.setDisplayedChild(0);
+                        }
+
+                        @Override
+                        public void onVoipIdEqual0() {
+                            binding.vfVoiceStatus.setDisplayedChild(1);
+                            binding.vfPlayPause.setDisplayedChild(0);
+                        }
+                    });
         });
 
         return binding.getRoot();
     }
 
-    long lastTime = 0;
+//    long lastTime = 0;
+//
+//    private void startDownload(final String urlString, final String fileName) {
+//        try {
+//            URL url = new URL(urlString);
+//
+//            String dirPath = MyApplication.DIR_MAIN_FOLDER + MyApplication.VOICE_FOLDER_NAME;
+//
+//            new File(dirPath).mkdirs();
+//            File file = new File(dirPath);
+//            if (file.isDirectory()) {
+//                String[] children = file.list();
+//                for (int i = 0; i < children.length; i++) {
+//                    new File(file, children[i]).delete();
+//                }
+//            }
+////      File file = new File(dirPathTemp + fileName);
+////      int downloadId = FindDownloadId.execte(urlString);
+////      if (file.exists() && downloadId != -1) {
+////        PRDownloader.resume(downloadId);
+////      } else {
+////        downloadId =
+//            PRDownloader.download(url.toString(), dirPath, fileName)
+//                    .setHeader("Authorization", MyApplication.prefManager.getAuthorization())
+//                    .setHeader("id_token", MyApplication.prefManager.getIdToken())
+//                    .build()
+//                    .setOnStartOrResumeListener(() -> {
+//                    })
+//                    .setOnPauseListener(() -> {
+//                    })
+//                    .setOnCancelListener(() -> {
+//                    })
+//                    .start(new OnDownloadListener() {
+//
+//                        @Override
+//                        public void onDownloadComplete() {
+////                    FinishedDownload.execute(urlString);
+//                            File file = new File(dirPath + fileName);
+//                            MyApplication.handler.postDelayed(() -> {
+//                                initVoice(Uri.fromFile(file));
+//                                playVoice();
+//                            }, 500);
+//                        }
+//
+//                        @Override
+//                        public void onError(Error error) {
+//                            Log.e("PlayConversationDialog", "onError: " + error.getResponseCode() + "");
+//                            Log.e("PlayConversationDialog", "onError: " + error.getServerErrorMessage() + "");
+//                            FileHelper.deleteFile(dirPath, fileName);
+//                            if (error.getResponseCode() == 401)
+//                                new RefreshTokenAsyncTask().execute();
+//                            if (error.getResponseCode() == 404)
+//                                binding.vfVoiceStatus.setDisplayedChild(1);
+//                        }
+//                    });
+//
+////        StartDownload.execute(downloadId, url.toString(), dirPathTemp + fileName);
+//        } catch (MalformedURLException e) {
+//            e.printStackTrace();
+//            AvaCrashReporter.send(e, TAG + " class, startDownload method");
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//            AvaCrashReporter.send(e, TAG + " class, startDownload method");
+//        }
+//    }
 
-    private void startDownload(final String urlString, final String fileName) {
-        try {
-            URL url = new URL(urlString);
-
-            String dirPath = MyApplication.DIR_MAIN_FOLDER + MyApplication.VOICE_FOLDER_NAME;
-
-            new File(dirPath).mkdirs();
-            File file = new File(dirPath);
-            if (file.isDirectory()) {
-                String[] children = file.list();
-                for (int i = 0; i < children.length; i++) {
-                    new File(file, children[i]).delete();
-                }
-            }
-//      File file = new File(dirPathTemp + fileName);
-//      int downloadId = FindDownloadId.execte(urlString);
-//      if (file.exists() && downloadId != -1) {
-//        PRDownloader.resume(downloadId);
-//      } else {
-//        downloadId =
-            PRDownloader.download(url.toString(), dirPath, fileName)
-                    .setHeader("Authorization", MyApplication.prefManager.getAuthorization())
-                    .setHeader("id_token", MyApplication.prefManager.getIdToken())
-                    .build()
-                    .setOnStartOrResumeListener(() -> {
-                    })
-                    .setOnPauseListener(() -> {
-                    })
-                    .setOnCancelListener(() -> {
-                    })
-                    .start(new OnDownloadListener() {
-
-                        @Override
-                        public void onDownloadComplete() {
-//                    FinishedDownload.execute(urlString);
-                            File file = new File(dirPath + fileName);
-                            MyApplication.handler.postDelayed(() -> {
-                                initVoice(Uri.fromFile(file));
-                                playVoice();
-                            }, 500);
-                        }
-
-                        @Override
-                        public void onError(Error error) {
-                            Log.e("PlayConversationDialog", "onError: " + error.getResponseCode() + "");
-                            Log.e("PlayConversationDialog", "onError: " + error.getServerErrorMessage() + "");
-                            FileHelper.deleteFile(dirPath, fileName);
-                            if (error.getResponseCode() == 401)
-                                new RefreshTokenAsyncTask().execute();
-                            if (error.getResponseCode() == 404)
-                                binding.vfVoiceStatus.setDisplayedChild(1);
-                        }
-                    });
-
-//        StartDownload.execute(downloadId, url.toString(), dirPathTemp + fileName);
-        } catch (MalformedURLException e) {
-            e.printStackTrace();
-            AvaCrashReporter.send(e, TAG + " class, startDownload method");
-        } catch (Exception e) {
-            e.printStackTrace();
-            AvaCrashReporter.send(e, TAG + " class, startDownload method");
-        }
-    }
-
-    private void initVoice(Uri uri) {
-        try {
-            mediaPlayer = MediaPlayer.create(MyApplication.context, uri);
-            mediaPlayer.setOnCompletionListener(mp -> {
-                if (binding.vfPlayPause != null) {
-                    binding.vfPlayPause.setDisplayedChild(0);
-                }
-            });
-            TOTAL_VOICE_DURATION = mediaPlayer.getDuration();
-
-            binding.skbTimer.setMax(TOTAL_VOICE_DURATION);
-
-        } catch (Exception e) {
-            e.printStackTrace();
-            AvaCrashReporter.send(e, TAG + " class, initVoice method");
-        }
-    }
-
-    private void playVoice() {
-        try {
-            if (mediaPlayer != null)
-                mediaPlayer.start();
-            if (binding.vfPlayPause != null)
-                binding.vfPlayPause.setDisplayedChild(2);
-        } catch (Exception e) {
-            e.printStackTrace();
-            AvaCrashReporter.send(e, TAG + " class, playVoice method");
-        }
-
-        startTimer();
-    }
-
-    public void pauseVoice() {
-        try {
-            if (mediaPlayer != null)
-                mediaPlayer.pause();
-
-            binding.skbTimer.setProgress(0);
-
-            if (binding.vfPlayPause != null)
-                binding.vfPlayPause.setDisplayedChild(0);
-        } catch (Exception e) {
-            e.printStackTrace();
-            AvaCrashReporter.send(e, TAG + " class, pauseVoice method");
-        }
-        cancelTimer();
-    }
-
-    private int TOTAL_VOICE_DURATION;
-
-    private Timer timer;
-
-    private void startTimer() {
-        Log.i("PlayConversationDialog", "startTimer: ");
-        if (timer != null) {
-            return;
-        }
-        timer = new Timer();
-        UpdateSeekBar task = new UpdateSeekBar();
-        timer.scheduleAtFixedRate(task, 500, 1000);
-
-    }
+//    private void initVoice(Uri uri) {
+//        try {
+//            mediaPlayer = MediaPlayer.create(MyApplication.context, uri);
+//            mediaPlayer.setOnCompletionListener(mp -> {
+//                if (binding.vfPlayPause != null) {
+//                    binding.vfPlayPause.setDisplayedChild(0);
+//                }
+//            });
+//            TOTAL_VOICE_DURATION = mediaPlayer.getDuration();
+//
+//            binding.skbTimer.setMax(TOTAL_VOICE_DURATION);
+//
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//            AvaCrashReporter.send(e, TAG + " class, initVoice method");
+//        }
+//    }
+//
+//    private void playVoice() {
+//        try {
+//            if (mediaPlayer != null)
+//                mediaPlayer.start();
+//            if (binding.vfPlayPause != null)
+//                binding.vfPlayPause.setDisplayedChild(2);
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//            AvaCrashReporter.send(e, TAG + " class, playVoice method");
+//        }
+//
+//        startTimer();
+//    }
+//
+//    public void pauseVoice() {
+//        try {
+//            if (mediaPlayer != null)
+//                mediaPlayer.pause();
+//
+//            binding.skbTimer.setProgress(0);
+//
+//            if (binding.vfPlayPause != null)
+//                binding.vfPlayPause.setDisplayedChild(0);
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//            AvaCrashReporter.send(e, TAG + " class, pauseVoice method");
+//        }
+//        cancelTimer();
+//    }
+//
+//    private int TOTAL_VOICE_DURATION;
+//
+//    private Timer timer;
+//
+//    private void startTimer() {
+//        Log.i("PlayConversationDialog", "startTimer: ");
+//        if (timer != null) {
+//            return;
+//        }
+//        timer = new Timer();
+//        UpdateSeekBar task = new UpdateSeekBar();
+//        timer.scheduleAtFixedRate(task, 500, 1000);
+//
+//    }
 
     @Override
     public void onDestroyView() {
         try {
-            pauseVoice();
-            cancelTimer();
+            VoiceHelper.getInstance().pauseVoice();
         } catch (Exception e) {
             e.printStackTrace();
             AvaCrashReporter.send(e, TAG + " class, onDestroyView method");
         }
         super.onDestroyView();
     }
-
-    private void cancelTimer() {
-        try {
-            if (timer == null) return;
-            timer.cancel();
-            timer = null;
-        } catch (Exception e) {
-            e.printStackTrace();
-            AvaCrashReporter.send(e, TAG + " class, cancelTimer method");
-        }
-    }
-
-    private class UpdateSeekBar extends TimerTask {
-        public void run() {
-            if (mediaPlayer != null) {
-                try {
-                    MyApplication.handler.post(() -> {
-                        Log.i("PlayConversationDialog", "onStopTrackingTouch run: " + mediaPlayer.getCurrentPosition());
-                        binding.skbTimer.setProgress(mediaPlayer.getCurrentPosition());
-                    });
-                } catch (Exception e) {
-                    e.printStackTrace();
-                    AvaCrashReporter.send(e, TAG + " class, UpdateSeekBar class");
-                }
-            }
-        }
-    }
-
     static class RefreshTokenAsyncTask extends AsyncTask<Void, Void, Boolean> {
         @Override
         protected Boolean doInBackground(Void... voids) {

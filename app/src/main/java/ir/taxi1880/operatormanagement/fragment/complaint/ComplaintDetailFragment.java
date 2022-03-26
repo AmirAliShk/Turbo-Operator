@@ -1,6 +1,5 @@
 package ir.taxi1880.operatormanagement.fragment.complaint;
 
-import static ir.taxi1880.operatormanagement.fragment.complaint.ComplaintTripDetailsFragment.pauseVoice;
 
 import android.annotation.SuppressLint;
 import android.os.Bundle;
@@ -26,6 +25,7 @@ import ir.taxi1880.operatormanagement.dialog.GeneralDialog;
 import ir.taxi1880.operatormanagement.fragment.passengerSupport.PassengerTripSupportDetailsFragment;
 import ir.taxi1880.operatormanagement.helper.FragmentHelper;
 import ir.taxi1880.operatormanagement.helper.TypefaceUtil;
+import ir.taxi1880.operatormanagement.helper.VoiceHelper;
 import ir.taxi1880.operatormanagement.model.ComplaintDetailsModel;
 import ir.taxi1880.operatormanagement.okHttp.RequestHelper;
 import ir.taxi1880.operatormanagement.push.AvaCrashReporter;
@@ -117,7 +117,7 @@ public class ComplaintDetailFragment extends Fragment {
         binding.btnNext.setOnClickListener(view -> {
             if (binding.vfNextStep != null)
                 binding.vfNextStep.setDisplayedChild(1);
-            pauseVoice();
+            VoiceHelper.getInstance().pauseVoice();
             new GeneralDialog()
                     .message("آیا میخواهید به مرحله بعد بروید؟")
                     .cancelable(false)

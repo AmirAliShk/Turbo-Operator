@@ -18,7 +18,7 @@ import ir.taxi1880.operatormanagement.app.MyApplication;
 import ir.taxi1880.operatormanagement.fragment.OnVoiceListener;
 import ir.taxi1880.operatormanagement.push.AvaCrashReporter;
 
-public class VoiceHelper{
+public class VoiceHelper {
     public static String TAG = VoiceHelper.class.getSimpleName();
     private static VoiceHelper instance;
     private MediaPlayer mediaPlayer;
@@ -28,7 +28,9 @@ public class VoiceHelper{
     private int totalVoiceDuration = 0;
 
     OnVoiceListener onVoiceListener;
-    private VoiceHelper() {}
+
+    private VoiceHelper() {
+    }
 
     public static VoiceHelper getInstance() {
         if (instance == null) {
@@ -36,8 +38,13 @@ public class VoiceHelper{
         }
         return instance;
     }
-    public void autoplay(String webUrl, String voiceName, String voipId , OnVoiceListener onVoiceListener ) {
-        instance.onVoiceListener =  onVoiceListener;
+
+    public MediaPlayer staticMd() {
+        return instance.mediaPlayer;
+    }
+
+    public void autoplay(String webUrl, String voiceName, String voipId, OnVoiceListener onVoiceListener) {
+        instance.onVoiceListener = onVoiceListener;
         instance.file = new File(MyApplication.DIR_MAIN_FOLDER + MyApplication.VOICE_FOLDER_NAME + voiceName);
         if (instance.mediaPlayer != null && instance.mediaPlayer.isPlaying()) {
             pauseVoice();
@@ -46,7 +53,7 @@ public class VoiceHelper{
             initVoice(Uri.fromFile(instance.file));
             playVoice();
         } else if (voipId.equals("0")) {
-            onVoiceListener.onVoipIdEqual0();
+            instance.onVoiceListener.onVoipIdEqual0();
         } else {
             startDownload(webUrl, voiceName);
         }
@@ -58,11 +65,11 @@ public class VoiceHelper{
 //            if (binding.vfPlayPause != null) {
 //                binding.vfPlayPause.setDisplayedChild(0);
 //            }
-            onVoiceListener.onDuringInit();
+            instance.onVoiceListener.onDuringInit();
         });
         totalVoiceDuration = instance.mediaPlayer.getDuration();
         Log.i("taF",totalVoiceDuration+"");
-        onVoiceListener.onEndOfInit(totalVoiceDuration);
+        instance.onVoiceListener.onEndOfInit(totalVoiceDuration);
 //        binding.skbTimer.setMax(TOTAL_VOICE_DURATION);
     }
 
@@ -70,7 +77,7 @@ public class VoiceHelper{
         try {
             if (instance.mediaPlayer != null)
                 instance.mediaPlayer.start();
-            onVoiceListener.onPlayVoice();
+            instance.onVoiceListener.onPlayVoice();
 //            if (binding.vfPlayPause != null)
 //                binding.vfPlayPause.setDisplayedChild(2);
         } catch (Exception e) {
@@ -142,10 +149,10 @@ public class VoiceHelper{
                             Log.e(TAG, "onError: " + error.getServerErrorMessage() + "");
                             FileHelper.deleteFile(dirPath, fileName);
                             if (error.getResponseCode() == 401)
-                                onVoiceListener.onDownload401Error();
+                                instance.onVoiceListener.onDownload401Error();
 //                                RefreshTokenAsyncTask.execute();
                             if (error.getResponseCode() == 404)
-                                onVoiceListener.onDownload404Error();
+                                instance.onVoiceListener.onDownload404Error();
 //                                binding.vfVoiceStatus.setDisplayedChild(1);
                         }
                     });
@@ -166,7 +173,7 @@ public class VoiceHelper{
                 try {
                     MyApplication.handler.post(() -> {
                         Log.i(TAG, "onStopTrackingTouch run: " + instance.mediaPlayer.getCurrentPosition());
-                        onVoiceListener.onTimerTask(instance.mediaPlayer.getCurrentPosition());
+                        instance.onVoiceListener.onTimerTask(instance.mediaPlayer.getCurrentPosition());
 //                        binding.skbTimer.setProgress(mediaPlayer.getCurrentPosition());
                     });
                 } catch (Exception e) {
@@ -181,7 +188,7 @@ public class VoiceHelper{
         try {
             if (instance.mediaPlayer != null) {
                 instance.mediaPlayer.pause();
-                onVoiceListener.onPauseVoice();
+                instance.onVoiceListener.onPauseVoice();
             }
 //            binding.skbTimer.setProgress(0);
 //            binding.vfPlayPause.setDisplayedChild(0);
@@ -192,8 +199,7 @@ public class VoiceHelper{
         cancelTimer();
     }
 
-    private
-    void cancelTimer() {
+    private void cancelTimer() {
         try {
             if (instance.timer == null) return;
             instance.timer.cancel();

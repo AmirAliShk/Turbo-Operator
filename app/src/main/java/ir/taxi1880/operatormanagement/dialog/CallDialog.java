@@ -20,7 +20,6 @@ import org.linphone.core.Core;
 import org.linphone.core.CoreListenerStub;
 
 import ir.taxi1880.operatormanagement.R;
-import ir.taxi1880.operatormanagement.adapter.RecentCallsAdapterK;
 import ir.taxi1880.operatormanagement.app.MyApplication;
 import ir.taxi1880.operatormanagement.databinding.DialogCallBinding;
 import ir.taxi1880.operatormanagement.fragment.SameNameStreetsFragment;
