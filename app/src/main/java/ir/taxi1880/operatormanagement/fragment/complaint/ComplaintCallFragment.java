@@ -2,8 +2,6 @@ package ir.taxi1880.operatormanagement.fragment.complaint;
 
 import static ir.taxi1880.operatormanagement.fragment.complaint.ComplaintDetailFragment.complaintDetailsModel;
 
-import android.media.MediaPlayer;
-import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
@@ -16,27 +14,21 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
-import com.downloader.Error;
-import com.downloader.OnDownloadListener;
-import com.downloader.PRDownloader;
+import com.downloader.Progress;
+import com.warkiz.widget.IndicatorSeekBar;
+import com.warkiz.widget.OnSeekChangeListener;
+import com.warkiz.widget.SeekParams;
 
 import org.json.JSONException;
 import org.json.JSONObject;
-
-import java.io.File;
-import java.net.MalformedURLException;
-import java.net.URL;
-import java.util.Timer;
-import java.util.TimerTask;
 
 import ir.taxi1880.operatormanagement.app.EndPoints;
 import ir.taxi1880.operatormanagement.app.MyApplication;
 import ir.taxi1880.operatormanagement.databinding.FragmentComplaintCallBinding;
 import ir.taxi1880.operatormanagement.dialog.GeneralDialog;
 import ir.taxi1880.operatormanagement.dialog.NumbersDialog;
-import ir.taxi1880.operatormanagement.fragment.OnVoiceListener;
+import ir.taxi1880.operatormanagement.OnVoiceListener;
 import ir.taxi1880.operatormanagement.helper.DateHelper;
-import ir.taxi1880.operatormanagement.helper.FileHelper;
 import ir.taxi1880.operatormanagement.helper.StringHelper;
 import ir.taxi1880.operatormanagement.helper.TypefaceUtil;
 import ir.taxi1880.operatormanagement.helper.VoiceHelper;
@@ -102,6 +94,31 @@ public class ComplaintCallFragment extends Fragment {
                     complaintDetailsModel.getComplaintVoipId(),
                     new OnVoiceListener() {
                         @Override
+                        public void onFileExist() {
+
+                        }
+
+                        @Override
+                        public void onStartDownload() {
+
+                        }
+
+                        @Override
+                        public void onProgressDownload(Progress progress) {
+
+                        }
+
+                        @Override
+                        public void onDownloadCompleted() {
+
+                        }
+
+                        @Override
+                        public void onDownloadError() {
+
+                        }
+
+                        @Override
                         public void onDuringInit() {
                             binding.vfPlayPause.setDisplayedChild(0);
                         }
@@ -143,6 +160,27 @@ public class ComplaintCallFragment extends Fragment {
                             binding.vfPlayPause.setDisplayedChild(0);
                         }
                     });
+
+            binding.skbTimer.setOnSeekChangeListener(new OnSeekChangeListener() {
+                @Override
+                public void onSeeking(SeekParams seekParams) {
+
+                }
+
+                @Override
+                public void onStartTrackingTouch(IndicatorSeekBar seekBar) {
+
+                }
+
+                @Override
+                public void onStopTrackingTouch(IndicatorSeekBar seekBar) {
+                    if (VoiceHelper.getInstance().staticMd() != null) {
+                        if (seekBar != null) {
+                            VoiceHelper.getInstance().staticMd().seekTo(seekBar.getProgress());
+                        }
+                    }
+                }
+            });
         });
 
         return binding.getRoot();

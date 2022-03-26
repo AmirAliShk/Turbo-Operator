@@ -4,11 +4,14 @@ import android.content.Intent
 import android.media.MediaPlayer
 import android.os.AsyncTask
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.SeekBar
 import androidx.fragment.app.Fragment
 import androidx.localbroadcastmanager.content.LocalBroadcastManager
+import com.downloader.Progress
 import com.warkiz.widget.IndicatorSeekBar
 import com.warkiz.widget.OnSeekChangeListener
 import com.warkiz.widget.SeekParams
@@ -21,7 +24,7 @@ import ir.taxi1880.operatormanagement.dialog.GeneralDialog
 import ir.taxi1880.operatormanagement.dialog.PendingMistakesOptionsDialog
 import ir.taxi1880.operatormanagement.dialog.SaveMistakeResultDialog
 import ir.taxi1880.operatormanagement.dialog.SaveMistakeResultDialog.MistakesResult
-import ir.taxi1880.operatormanagement.fragment.OnVoiceListener
+import ir.taxi1880.operatormanagement.OnVoiceListener
 import ir.taxi1880.operatormanagement.helper.DateHelper
 import ir.taxi1880.operatormanagement.helper.StringHelper
 import ir.taxi1880.operatormanagement.helper.TypefaceUtil
@@ -31,7 +34,6 @@ import ir.taxi1880.operatormanagement.okHttp.AuthenticationInterceptor
 import ir.taxi1880.operatormanagement.okHttp.RequestHelper
 import ir.taxi1880.operatormanagement.push.AvaCrashReporter
 import org.json.JSONObject
-import java.util.*
 
 
 class PendingMistakesFragmentK : Fragment() {
@@ -76,7 +78,8 @@ class PendingMistakesFragmentK : Fragment() {
                 .autoplay(
                     "${EndPoints.CALL_VOICE}${dataBase.mistakesRow.voipId}",
                     voiceName,
-                    dataBase.mistakesRow.voipId, object : OnVoiceListener {
+                    dataBase.mistakesRow.voipId, object :
+                        OnVoiceListener {
                         override fun onDuringInit() {
                             binding.vfPlayPause.displayedChild = 0
                         }
@@ -92,6 +95,22 @@ class PendingMistakesFragmentK : Fragment() {
                         override fun onTimerTask(currentDuration: Int) {
                             binding.skbTimer.setProgress(currentDuration.toFloat())
 
+                        }
+
+                        override fun onFileExist() {
+
+                        }
+
+                        override fun onStartDownload() {
+                        }
+
+                        override fun onProgressDownload(progress: Progress?) {
+                        }
+
+                        override fun onDownloadCompleted() {
+                        }
+
+                        override fun onDownloadError() {
                         }
 
                         override fun onDownload401Error() {
@@ -112,7 +131,20 @@ class PendingMistakesFragmentK : Fragment() {
                             binding.vfPlayPause.displayedChild = 0
                         }
                     })
-//
+
+            binding.skbTimer.onSeekChangeListener = object : OnSeekChangeListener {
+
+                override fun onSeeking(seekParams: SeekParams?) {
+                }
+
+                override fun onStartTrackingTouch(seekBar: IndicatorSeekBar?) {
+
+                }
+
+                override fun onStopTrackingTouch(seekBar: IndicatorSeekBar?) {
+                    seekBar?.let { VoiceHelper.getInstance().staticMd()?.seekTo(it.progress) }
+                }
+            }
         }
 
         binding.btnOptions.setOnClickListener {
@@ -123,21 +155,7 @@ class PendingMistakesFragmentK : Fragment() {
                 .show(tell, mobile)
         }
 
-        binding.skbTimer.onSeekChangeListener = object : OnSeekChangeListener {
-            override fun onSeeking(seekParams: SeekParams?) {
-            }
 
-            override fun onStartTrackingTouch(seekBar: IndicatorSeekBar?) {
-            }
-
-            override fun onStopTrackingTouch(seekBar: IndicatorSeekBar?) {
-                if (VoiceHelper.getInstance().staticMd() != null) {
-                    if (seekBar != null) {
-                        VoiceHelper.getInstance().staticMd()?.seekTo(seekBar.progress)
-                    }
-                }
-            }
-        }
         binding.btnSaveResult.setOnClickListener {
             binding.vfSaveResult.displayedChild = 1
             VoiceHelper.getInstance().pauseVoice()

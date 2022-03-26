@@ -2,22 +2,14 @@ package ir.taxi1880.operatormanagement.adapter
 
 import android.content.ClipData
 import android.content.ClipboardManager
-import android.content.Context
-import android.content.Context.CLIPBOARD_SERVICE
-import android.media.MediaPlayer
-import android.net.Uri
 import android.os.AsyncTask
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
-import androidx.core.content.ContextCompat
 import androidx.core.content.ContextCompat.getSystemService
 import androidx.recyclerview.widget.RecyclerView
-import com.downloader.Error
-import com.downloader.OnDownloadListener
-import com.downloader.PRDownloader
 import com.downloader.Progress
 import com.warkiz.widget.IndicatorSeekBar
 import com.warkiz.widget.OnSeekChangeListener
@@ -25,17 +17,12 @@ import com.warkiz.widget.SeekParams
 import ir.taxi1880.operatormanagement.app.EndPoints
 import ir.taxi1880.operatormanagement.app.MyApplication
 import ir.taxi1880.operatormanagement.databinding.ItemRecentCallsBinding
-import ir.taxi1880.operatormanagement.fragment.OnVoiceListener
+import ir.taxi1880.operatormanagement.OnVoiceListener
 import ir.taxi1880.operatormanagement.helper.DateHelper
-import ir.taxi1880.operatormanagement.helper.FileHelper
 import ir.taxi1880.operatormanagement.helper.TypefaceUtil
 import ir.taxi1880.operatormanagement.helper.VoiceHelper
 import ir.taxi1880.operatormanagement.model.RecentCallsModel
 import ir.taxi1880.operatormanagement.okHttp.AuthenticationInterceptor
-import ir.taxi1880.operatormanagement.push.AvaCrashReporter
-import java.io.File
-import java.net.MalformedURLException
-import java.net.URL
 import java.util.*
 
 class RecentCallsAdapterK() : RecyclerView.Adapter<RecentCallsAdapterK.RecentCallsHolder>() {
@@ -131,6 +118,22 @@ class RecentCallsAdapterK() : RecyclerView.Adapter<RecentCallsAdapterK.RecentCal
                             requireHolder.binding.txtTimeRemaining.text = strTimeRemaining
                         }
 
+                        override fun onFileExist() {
+
+                        }
+
+                        override fun onStartDownload() {
+                        }
+
+                        override fun onProgressDownload(progress: Progress?) {
+                        }
+
+                        override fun onDownloadCompleted() {
+                        }
+
+                        override fun onDownloadError() {
+                        }
+
                         override fun onDownload401Error() {
                             RefreshTokenAsyncTask().execute()
                         }
@@ -166,11 +169,7 @@ class RecentCallsAdapterK() : RecyclerView.Adapter<RecentCallsAdapterK.RecentCal
                 }
 
                 override fun onStopTrackingTouch(seekBar: IndicatorSeekBar?) {
-                    if (VoiceHelper.getInstance().staticMd() != null) {
-                        if (seekBar != null) {
-                            VoiceHelper.getInstance().staticMd()?.seekTo(seekBar.progress)
-                        }
-                    }
+                    seekBar?.let { VoiceHelper.getInstance().staticMd()?.seekTo(it.progress) }
                 }
             }
         }

@@ -11,11 +11,12 @@ import com.downloader.PRDownloader;
 import java.io.File;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.Calendar;
 import java.util.Timer;
 import java.util.TimerTask;
 
 import ir.taxi1880.operatormanagement.app.MyApplication;
-import ir.taxi1880.operatormanagement.fragment.OnVoiceListener;
+import ir.taxi1880.operatormanagement.OnVoiceListener;
 import ir.taxi1880.operatormanagement.push.AvaCrashReporter;
 
 public class VoiceHelper {
@@ -52,25 +53,22 @@ public class VoiceHelper {
         if (instance.file.exists()) {
             initVoice(Uri.fromFile(instance.file));
             playVoice();
+            instance.onVoiceListener.onFileExist();
         } else if (voipId.equals("0")) {
             instance.onVoiceListener.onVoipIdEqual0();
         } else {
             startDownload(webUrl, voiceName);
+            instance.onVoiceListener.onStartDownload();
         }
     }
 
     private void initVoice(Uri uri) {
         instance.mediaPlayer = MediaPlayer.create(MyApplication.context, uri);
         instance.mediaPlayer.setOnCompletionListener(mp -> {
-//            if (binding.vfPlayPause != null) {
-//                binding.vfPlayPause.setDisplayedChild(0);
-//            }
             instance.onVoiceListener.onDuringInit();
         });
         totalVoiceDuration = instance.mediaPlayer.getDuration();
-        Log.i("taF",totalVoiceDuration+"");
         instance.onVoiceListener.onEndOfInit(totalVoiceDuration);
-//        binding.skbTimer.setMax(TOTAL_VOICE_DURATION);
     }
 
     private void playVoice() {
@@ -78,8 +76,7 @@ public class VoiceHelper {
             if (instance.mediaPlayer != null)
                 instance.mediaPlayer.start();
             instance.onVoiceListener.onPlayVoice();
-//            if (binding.vfPlayPause != null)
-//                binding.vfPlayPause.setDisplayedChild(2);
+
         } catch (Exception e) {
             e.printStackTrace();
             AvaCrashReporter.send(e, TAG + " class, playVoice method");
@@ -130,6 +127,10 @@ public class VoiceHelper {
                     })
                     .setOnCancelListener(() -> {
                     })
+                    .setOnProgressListener(progress -> {
+                        instance.onVoiceListener.onProgressDownload(progress);
+                    })
+
                     .start(new OnDownloadListener() {
 
                         @Override
@@ -148,6 +149,7 @@ public class VoiceHelper {
                             Log.e(TAG, "onError: " + error.getResponseCode() + "");
                             Log.e(TAG, "onError: " + error.getServerErrorMessage() + "");
                             FileHelper.deleteFile(dirPath, fileName);
+                            instance.onVoiceListener.onDownloadError();
                             if (error.getResponseCode() == 401)
                                 instance.onVoiceListener.onDownload401Error();
 //                                RefreshTokenAsyncTask.execute();

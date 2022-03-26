@@ -166,7 +166,7 @@ public class DeterminationPageFragment extends Fragment {
                 return;
             }
 
-            new PlayLastConversationDialog().show(dataBase.getTopAddress().getId(), EndPoints.CALL_VOICE + dataBase.getTopAddress().getVoipId());
+            new PlayLastConversationDialog().show(dataBase.getTopAddress().getId(), EndPoints.CALL_VOICE + dataBase.getTopAddress().getVoipId(),dataBase.getTopAddress().getVoipId());
         });
         binding.imgNextAddress.setOnClickListener(v -> {
             if (dataBase.getRemainingAddress() > 1) {

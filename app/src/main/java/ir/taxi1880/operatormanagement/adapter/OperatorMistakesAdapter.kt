@@ -1,17 +1,13 @@
 package ir.taxi1880.operatormanagement.adapter
 
 import android.graphics.Color
-import android.media.MediaPlayer
-import android.net.Uri
 import android.os.AsyncTask
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import com.downloader.Error
-import com.downloader.OnDownloadListener
-import com.downloader.PRDownloader
+import com.downloader.Progress
 import com.warkiz.widget.IndicatorSeekBar
 import com.warkiz.widget.OnSeekChangeListener
 import com.warkiz.widget.SeekParams
@@ -20,16 +16,14 @@ import ir.taxi1880.operatormanagement.app.EndPoints
 import ir.taxi1880.operatormanagement.app.MyApplication
 import ir.taxi1880.operatormanagement.databinding.ItemOperatorMistakeListBinding
 import ir.taxi1880.operatormanagement.dialog.GeneralDialog
-import ir.taxi1880.operatormanagement.fragment.OnVoiceListener
+import ir.taxi1880.operatormanagement.OnVoiceListener
+import ir.taxi1880.operatormanagement.fragment.mistake.PendingMistakesFragmentK
 import ir.taxi1880.operatormanagement.helper.*
 import ir.taxi1880.operatormanagement.model.OperatorMistakeModel
 import ir.taxi1880.operatormanagement.okHttp.AuthenticationInterceptor
 import ir.taxi1880.operatormanagement.okHttp.RequestHelper
 import ir.taxi1880.operatormanagement.push.AvaCrashReporter
 import org.json.JSONObject
-import java.io.File
-import java.net.MalformedURLException
-import java.net.URL
 
 class OperatorMistakesAdapter() : RecyclerView.Adapter<OperatorMistakesAdapter.OpMistakeHolder>() {
 
@@ -158,6 +152,22 @@ class OperatorMistakesAdapter() : RecyclerView.Adapter<OperatorMistakesAdapter.O
                     override fun onTimerTask(currentDuration: Int) {
                     }
 
+                    override fun onFileExist() {
+
+                    }
+
+                    override fun onStartDownload() {
+                    }
+
+                    override fun onProgressDownload(progress: Progress?) {
+                    }
+
+                    override fun onDownloadCompleted() {
+                    }
+
+                    override fun onDownloadError() {
+                    }
+
                     override fun onDownload401Error() {
                         RefreshTokenAsyncTask().execute()
                     }
@@ -178,22 +188,20 @@ class OperatorMistakesAdapter() : RecyclerView.Adapter<OperatorMistakesAdapter.O
                 }
             )
 
+            holder.binding.skbTimer.onSeekChangeListener = object : OnSeekChangeListener {
 
+                override fun onSeeking(seekParams: SeekParams?) {
+                }
+
+                override fun onStartTrackingTouch(seekBar: IndicatorSeekBar?) {
+
+                }
+
+                override fun onStopTrackingTouch(seekBar: IndicatorSeekBar?) {
+                    seekBar?.let { VoiceHelper.getInstance().staticMd()?.seekTo(it.progress) }
+                }
+            }
         }
-
-        holder.binding.skbTimer.onSeekChangeListener = object : OnSeekChangeListener {
-            override fun onSeeking(seekParams: SeekParams?) {
-            }
-
-            override fun onStartTrackingTouch(seekBar: IndicatorSeekBar?) {
-            }
-
-            override fun onStopTrackingTouch(seekBar: IndicatorSeekBar?) {
-                seekBar?.let { VoiceHelper.getInstance().staticMd()?.seekTo(it.progress) }
-            }
-
-        }
-
         holder.binding.imgPause.setOnClickListener {
             VoiceHelper.getInstance().pauseVoice()
         }
