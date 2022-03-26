@@ -41,7 +41,6 @@ import ir.taxi1880.operatormanagement.push.AvaCrashReporter;
 public class ComplaintTripDetailsFragment extends Fragment {
     public static final String TAG = ComplaintTripDetailsFragment.class.getSimpleName();
     FragmentComplaintTripDetailsBinding binding;
-    static MediaPlayer mediaPlayer;
     static IndicatorSeekBar skbTimer;
     static ViewFlipper vfPlayPause;
 

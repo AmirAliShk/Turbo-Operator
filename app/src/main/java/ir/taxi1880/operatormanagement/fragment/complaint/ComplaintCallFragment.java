@@ -77,14 +77,13 @@ public class ComplaintCallFragment extends Fragment {
         });
 
         binding.imgMissedCallCustomer.setOnClickListener(view -> {
-            if (binding.vfMissedCallCustomer != null)
-                binding.vfMissedCallCustomer.setDisplayedChild(1);
+            binding.vfMissedCallCustomer.setDisplayedChild(1);
             missedCall(2);
         });
 
         binding.imgMissedCallDriver.setOnClickListener(view -> {
-            if (binding.vfMissedCallDriver != null)
-                binding.vfMissedCallDriver.setDisplayedChild(1);
+
+            binding.vfMissedCallDriver.setDisplayedChild(1);
             missedCall(1);
         });
 
@@ -149,135 +148,6 @@ public class ComplaintCallFragment extends Fragment {
         return binding.getRoot();
     }
 
-//    long lastTime = 0;
-//
-//    private void startDownload(final String urlString, final String fileName) {
-//        try {
-//            URL url = new URL(urlString);
-//
-//            String dirPath = MyApplication.DIR_MAIN_FOLDER + MyApplication.VOICE_FOLDER_NAME;
-//
-//            new File(dirPath).mkdirs();
-//            File file = new File(dirPath);
-//            if (file.isDirectory()) {
-//                String[] children = file.list();
-//                for (int i = 0; i < children.length; i++) {
-//                    new File(file, children[i]).delete();
-//                }
-//            }
-////      File file = new File(dirPathTemp + fileName);
-////      int downloadId = FindDownloadId.execte(urlString);
-////      if (file.exists() && downloadId != -1) {
-////        PRDownloader.resume(downloadId);
-////      } else {
-////        downloadId =
-//            PRDownloader.download(url.toString(), dirPath, fileName)
-//                    .setHeader("Authorization", MyApplication.prefManager.getAuthorization())
-//                    .setHeader("id_token", MyApplication.prefManager.getIdToken())
-//                    .build()
-//                    .setOnStartOrResumeListener(() -> {
-//                    })
-//                    .setOnPauseListener(() -> {
-//                    })
-//                    .setOnCancelListener(() -> {
-//                    })
-//                    .start(new OnDownloadListener() {
-//
-//                        @Override
-//                        public void onDownloadComplete() {
-////                    FinishedDownload.execute(urlString);
-//                            File file = new File(dirPath + fileName);
-//                            MyApplication.handler.postDelayed(() -> {
-//                                initVoice(Uri.fromFile(file));
-//                                playVoice();
-//                            }, 500);
-//                        }
-//
-//                        @Override
-//                        public void onError(Error error) {
-//                            Log.e("PlayConversationDialog", "onError: " + error.getResponseCode() + "");
-//                            Log.e("PlayConversationDialog", "onError: " + error.getServerErrorMessage() + "");
-//                            FileHelper.deleteFile(dirPath, fileName);
-//                            if (error.getResponseCode() == 401)
-//                                new RefreshTokenAsyncTask().execute();
-//                            if (error.getResponseCode() == 404)
-//                                binding.vfVoiceStatus.setDisplayedChild(1);
-//                        }
-//                    });
-//
-////        StartDownload.execute(downloadId, url.toString(), dirPathTemp + fileName);
-//        } catch (MalformedURLException e) {
-//            e.printStackTrace();
-//            AvaCrashReporter.send(e, TAG + " class, startDownload method");
-//        } catch (Exception e) {
-//            e.printStackTrace();
-//            AvaCrashReporter.send(e, TAG + " class, startDownload method");
-//        }
-//    }
-
-//    private void initVoice(Uri uri) {
-//        try {
-//            mediaPlayer = MediaPlayer.create(MyApplication.context, uri);
-//            mediaPlayer.setOnCompletionListener(mp -> {
-//                if (binding.vfPlayPause != null) {
-//                    binding.vfPlayPause.setDisplayedChild(0);
-//                }
-//            });
-//            TOTAL_VOICE_DURATION = mediaPlayer.getDuration();
-//
-//            binding.skbTimer.setMax(TOTAL_VOICE_DURATION);
-//
-//        } catch (Exception e) {
-//            e.printStackTrace();
-//            AvaCrashReporter.send(e, TAG + " class, initVoice method");
-//        }
-//    }
-//
-//    private void playVoice() {
-//        try {
-//            if (mediaPlayer != null)
-//                mediaPlayer.start();
-//            if (binding.vfPlayPause != null)
-//                binding.vfPlayPause.setDisplayedChild(2);
-//        } catch (Exception e) {
-//            e.printStackTrace();
-//            AvaCrashReporter.send(e, TAG + " class, playVoice method");
-//        }
-//
-//        startTimer();
-//    }
-//
-//    public void pauseVoice() {
-//        try {
-//            if (mediaPlayer != null)
-//                mediaPlayer.pause();
-//
-//            binding.skbTimer.setProgress(0);
-//
-//            if (binding.vfPlayPause != null)
-//                binding.vfPlayPause.setDisplayedChild(0);
-//        } catch (Exception e) {
-//            e.printStackTrace();
-//            AvaCrashReporter.send(e, TAG + " class, pauseVoice method");
-//        }
-//        cancelTimer();
-//    }
-//
-//    private int TOTAL_VOICE_DURATION;
-//
-//    private Timer timer;
-//
-//    private void startTimer() {
-//        Log.i("PlayConversationDialog", "startTimer: ");
-//        if (timer != null) {
-//            return;
-//        }
-//        timer = new Timer();
-//        UpdateSeekBar task = new UpdateSeekBar();
-//        timer.scheduleAtFixedRate(task, 500, 1000);
-//
-//    }
-
     @Override
     public void onDestroyView() {
         try {
@@ -288,6 +158,7 @@ public class ComplaintCallFragment extends Fragment {
         }
         super.onDestroyView();
     }
+
     static class RefreshTokenAsyncTask extends AsyncTask<Void, Void, Boolean> {
         @Override
         protected Boolean doInBackground(Void... voids) {

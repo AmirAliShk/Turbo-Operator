@@ -12,6 +12,7 @@ import ir.taxi1880.operatormanagement.app.EndPoints
 import ir.taxi1880.operatormanagement.app.MyApplication
 import ir.taxi1880.operatormanagement.databinding.FragmentOperatorMistakeListBinding
 import ir.taxi1880.operatormanagement.helper.TypefaceUtil
+import ir.taxi1880.operatormanagement.helper.VoiceHelper
 import ir.taxi1880.operatormanagement.model.OperatorMistakeModel
 import ir.taxi1880.operatormanagement.okHttp.RequestHelper
 import ir.taxi1880.operatormanagement.push.AvaCrashReporter
@@ -111,5 +112,10 @@ class OperatorMistakesFragment : Fragment() {
         binding.imgRefresh.setOnClickListener { getOperatorMistakes() }
         binding.imgRefreshFail.setOnClickListener { getOperatorMistakes() }
         return binding.root
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        VoiceHelper.getInstance().pauseVoice()
     }
 }

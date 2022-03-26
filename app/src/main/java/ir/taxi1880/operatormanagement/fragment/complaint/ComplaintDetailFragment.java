@@ -54,9 +54,8 @@ public class ComplaintDetailFragment extends Fragment {
 
         setupViewPager(vpRegisterDriver);
 
-        if (binding.indicator != null) {
-            binding.indicator.setCurrentStep(complaintDetailsModel.getStatus());
-        }
+        binding.indicator.setCurrentStep(complaintDetailsModel.getStatus());
+
 
         refreshStep(complaintDetailsModel.getStatus());
 
@@ -64,8 +63,7 @@ public class ComplaintDetailFragment extends Fragment {
                 .show(complaintDetailsModel.getCustomerPhoneNumber(), complaintDetailsModel.getCustomerMobileNumber(), complaintDetailsModel.getTaxicode()));
 
         binding.btnTripDetails.setOnClickListener(view -> {
-            if (binding.vfTripDetails != null)
-                binding.vfTripDetails.setDisplayedChild(1);
+            binding.vfTripDetails.setDisplayedChild(1);
 
             Bundle bundle = new Bundle();
             bundle.putString("id", complaintDetailsModel.getServiceId() + "");
@@ -107,25 +105,21 @@ public class ComplaintDetailFragment extends Fragment {
                     .cancelable(false)
                     .firstButton("بله", this::complaintSaveResult)
                     .secondButton("خیر", () -> {
-                        if (binding.vfNextStep != null) {
-                            binding.vfNextStep.setDisplayedChild(2);
-                        }
+                        binding.vfNextStep.setDisplayedChild(2);
+
                     })
                     .show();
         });
 
         binding.btnNext.setOnClickListener(view -> {
-            if (binding.vfNextStep != null)
-                binding.vfNextStep.setDisplayedChild(1);
+            binding.vfNextStep.setDisplayedChild(1);
             VoiceHelper.getInstance().pauseVoice();
             new GeneralDialog()
                     .message("آیا میخواهید به مرحله بعد بروید؟")
                     .cancelable(false)
                     .firstButton("بله", this::updateStatus)
                     .secondButton("خیر", () -> {
-                        if (binding.vfNextStep != null) {
-                            binding.vfNextStep.setDisplayedChild(0);
-                        }
+                        binding.vfNextStep.setDisplayedChild(0);
                     })
                     .show();
         });
@@ -138,23 +132,20 @@ public class ComplaintDetailFragment extends Fragment {
     private void refreshStep(int statusId) {
         switch (statusId) {
             case 1: //accepted request
-                if (binding.indicator != null)
-                    binding.indicator.setCurrentStep(statusId - 1);
+                binding.indicator.setCurrentStep(statusId - 1);
                 vpRegisterDriver.setCurrentItem(statusId - 1);
                 statusParam = 2;
                 break;
             case 2: //waiting for call
-                if (binding.indicator != null)
-                    binding.indicator.setCurrentStep(statusId - 1);
+
+                binding.indicator.setCurrentStep(statusId - 1);
                 vpRegisterDriver.setCurrentItem(statusId - 1);
                 statusParam = 3;
                 break;
             case 3: //waiting for saveResult
-                if (binding.indicator != null)
-                    binding.indicator.setCurrentStep(statusId - 1);
-                if (binding.vfNextStep != null) {
-                    binding.vfNextStep.setDisplayedChild(2);
-                }
+                binding.indicator.setCurrentStep(statusId - 1);
+                binding.vfNextStep.setDisplayedChild(2);
+
                 vpRegisterDriver.setCurrentItem(statusId - 1);
                 statusParam = 4;
                 break;
@@ -208,11 +199,11 @@ public class ComplaintDetailFragment extends Fragment {
                                     .show();
 
                             if (statusModel == 3) {
-                                if (binding.vfNextStep != null)
-                                    binding.vfNextStep.setDisplayedChild(2);
+
+                                binding.vfNextStep.setDisplayedChild(2);
                             } else {
-                                if (binding.vfNextStep != null)
-                                    binding.vfNextStep.setDisplayedChild(0);
+
+                                binding.vfNextStep.setDisplayedChild(0);
                             }
                         } else {
                             if (statusParam == 4) {
@@ -229,22 +220,20 @@ public class ComplaintDetailFragment extends Fragment {
                         }
 
                         if (statusModel == 3) {
-                            if (binding.vfNextStep != null)
-                                binding.vfNextStep.setDisplayedChild(2);
+                            binding.vfNextStep.setDisplayedChild(2);
                         } else {
-                            if (binding.vfNextStep != null)
-                                binding.vfNextStep.setDisplayedChild(0);
+
+                            binding.vfNextStep.setDisplayedChild(0);
                         }
                     }
                 } catch (JSONException e) {
                     e.printStackTrace();
                     AvaCrashReporter.send(e, TAG + " class, updateStatus callBAck");
                     if (statusModel == 3) {
-                        if (binding.vfNextStep != null)
-                            binding.vfNextStep.setDisplayedChild(2);
+                        binding.vfNextStep.setDisplayedChild(2);
                     } else {
-                        if (binding.vfNextStep != null)
-                            binding.vfNextStep.setDisplayedChild(0);
+
+                        binding.vfNextStep.setDisplayedChild(0);
                     }
                 }
             });
@@ -255,19 +244,18 @@ public class ComplaintDetailFragment extends Fragment {
             MyApplication.handler.post(() ->
             {
                 if (statusModel == 3) {
-                    if (binding.vfNextStep != null)
-                        binding.vfNextStep.setDisplayedChild(2);
+
+                    binding.vfNextStep.setDisplayedChild(2);
                 } else {
-                    if (binding.vfNextStep != null)
-                        binding.vfNextStep.setDisplayedChild(0);
+                    binding.vfNextStep.setDisplayedChild(0);
                 }
             });
         }
     };
 
     private void complaintSaveResult() {
-        if (binding.vfNextStep != null)
-            binding.vfNextStep.setDisplayedChild(1);
+
+        binding.vfNextStep.setDisplayedChild(1);
         RequestHelper.builder(EndPoints.COMPLAINT_FINISH)
                 .addParam("complaintId", complaintDetailsModel.getComplaintId())
                 .addParam("typeResult", DataHolder.getInstance().getComplaintResult())
@@ -309,8 +297,8 @@ public class ComplaintDetailFragment extends Fragment {
                                     .secondButton("برگشت", null)
                                     .show();
 
-                            if (binding.vfNextStep != null)
-                                binding.vfNextStep.setDisplayedChild(2);
+
+                            binding.vfNextStep.setDisplayedChild(2);
                         } else {
                             new GeneralDialog()
                                     .message(message)
@@ -318,8 +306,7 @@ public class ComplaintDetailFragment extends Fragment {
                                     .firstButton("تایید", () -> MyApplication.currentActivity.onBackPressed())
                                     .show();
                         }
-                        if (binding.vfNextStep != null)
-                            binding.vfNextStep.setDisplayedChild(2);
+                        binding.vfNextStep.setDisplayedChild(2);
                     }
                 } catch (Exception e) {
                     e.printStackTrace();
@@ -331,8 +318,7 @@ public class ComplaintDetailFragment extends Fragment {
         @Override
         public void onFailure(Runnable reCall, Exception e) {
             MyApplication.handler.post(() -> {
-                if (binding.vfNextStep != null)
-                    binding.vfNextStep.setDisplayedChild(2);
+                binding.vfNextStep.setDisplayedChild(2);
             });
         }
     };

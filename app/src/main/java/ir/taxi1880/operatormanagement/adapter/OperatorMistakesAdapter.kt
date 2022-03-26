@@ -12,15 +12,16 @@ import androidx.recyclerview.widget.RecyclerView
 import com.downloader.Error
 import com.downloader.OnDownloadListener
 import com.downloader.PRDownloader
+import com.warkiz.widget.IndicatorSeekBar
+import com.warkiz.widget.OnSeekChangeListener
+import com.warkiz.widget.SeekParams
 import ir.taxi1880.operatormanagement.R
 import ir.taxi1880.operatormanagement.app.EndPoints
 import ir.taxi1880.operatormanagement.app.MyApplication
 import ir.taxi1880.operatormanagement.databinding.ItemOperatorMistakeListBinding
 import ir.taxi1880.operatormanagement.dialog.GeneralDialog
-import ir.taxi1880.operatormanagement.helper.DateHelper
-import ir.taxi1880.operatormanagement.helper.FileHelper
-import ir.taxi1880.operatormanagement.helper.StringHelper
-import ir.taxi1880.operatormanagement.helper.TypefaceUtil
+import ir.taxi1880.operatormanagement.fragment.OnVoiceListener
+import ir.taxi1880.operatormanagement.helper.*
 import ir.taxi1880.operatormanagement.model.OperatorMistakeModel
 import ir.taxi1880.operatormanagement.okHttp.AuthenticationInterceptor
 import ir.taxi1880.operatormanagement.okHttp.RequestHelper
@@ -36,8 +37,6 @@ class OperatorMistakesAdapter() : RecyclerView.Adapter<OperatorMistakesAdapter.O
     private var opMistakesA: ArrayList<OperatorMistakeModel> = ArrayList()
     lateinit var aHolder: OpMistakeHolder
 
-    var mediaPlayer: MediaPlayer? = null
-
     constructor(opMistakes: ArrayList<OperatorMistakeModel>) : this() {
         opMistakesA = opMistakes
     }
@@ -49,8 +48,6 @@ class OperatorMistakesAdapter() : RecyclerView.Adapter<OperatorMistakesAdapter.O
                 return null
             }
         }
-
-        var TOTAL_VOICE_DURATION: Float? = null
     }
 
     class OpMistakeHolder(val binding: ItemOperatorMistakeListBinding) :
@@ -135,48 +132,70 @@ class OperatorMistakesAdapter() : RecyclerView.Adapter<OperatorMistakesAdapter.O
 
         holder.binding.imgplay.setOnClickListener {
             aHolder = OpMistakeHolder(holder.binding)
-            if (mediaPlayer?.isPlaying == true) {
-                pauseVoice()
-            }
+            VoiceHelper.getInstance().pauseVoice()
             holder.binding.vfPlayPause.displayedChild = 1
 
             Log.i("URL", "show: ${EndPoints.CALL_VOICE}${opMistake.voipId}")
             val voiceName = "${opMistake.voipId}.mp3"
-            val file =
-                File(MyApplication.DIR_MAIN_FOLDER + MyApplication.VOICE_FOLDER_NAME + voiceName)
 
-            val voipId = opMistake.voipId
-            when {
-                file.exists() -> {
-                    initVoice(Uri.fromFile(file))
-                    playVoice()
+            VoiceHelper.getInstance().autoplay(
+                EndPoints.CALL_VOICE + opMistake.voipId,
+                voiceName,
+                opMistake.voipId,
+                object : OnVoiceListener {
+                    override fun onDuringInit() {
+                        aHolder.binding.vfPlayPause.displayedChild = 0
+                    }
+
+                    override fun onEndOfInit(maxDuration: Int) {
+                        aHolder.binding.skbTimer.max = maxDuration.toFloat()
+                    }
+
+                    override fun onPlayVoice() {
+                        aHolder.binding.vfPlayPause.displayedChild = 2
+                    }
+
+                    override fun onTimerTask(currentDuration: Int) {
+                    }
+
+                    override fun onDownload401Error() {
+                        RefreshTokenAsyncTask().execute()
+                    }
+
+                    override fun onDownload404Error() {
+                        aHolder.binding.vfVoiceStatus.displayedChild = 1
+                    }
+
+                    override fun onPauseVoice() {
+                        aHolder.binding.skbTimer.setProgress(0f)
+                        aHolder.binding.vfPlayPause.displayedChild = 0
+                    }
+
+                    override fun onVoipIdEqual0() {
+                        holder.binding.vfVoiceStatus.displayedChild = 1
+                        holder.binding.vfPlayPause.displayedChild = 0
+                    }
                 }
-                voipId == "0" -> {
-                    holder.binding.vfVoiceStatus.displayedChild = 1
-                    holder.binding.vfPlayPause.displayedChild = 0
-                }
-                else -> {
-                    startDownload(EndPoints.CALL_VOICE + opMistake.voipId, voiceName)
-                }
+            )
+
+
+        }
+
+        holder.binding.skbTimer.onSeekChangeListener = object : OnSeekChangeListener {
+            override fun onSeeking(seekParams: SeekParams?) {
+            }
+
+            override fun onStartTrackingTouch(seekBar: IndicatorSeekBar?) {
+            }
+
+            override fun onStopTrackingTouch(seekBar: IndicatorSeekBar?) {
+                seekBar?.let { VoiceHelper.getInstance().staticMd()?.seekTo(it.progress) }
             }
 
         }
 
-//        holder.binding.skbTimer.onSeekChangeListener = object : OnSeekChangeListener {
-//            override fun onSeeking(seekParams: SeekParams?) {
-//            }
-//
-//            override fun onStartTrackingTouch(seekBar: IndicatorSeekBar?) {
-//            }
-//
-//            override fun onStopTrackingTouch(seekBar: IndicatorSeekBar?) {
-//                seekBar?.let { mediaPlayer?.seekTo(it.progress) }
-//            }
-//
-//        }
-
         holder.binding.imgPause.setOnClickListener {
-            pauseVoice()
+            VoiceHelper.getInstance().pauseVoice()
         }
     }
 
@@ -219,132 +238,5 @@ class OperatorMistakesAdapter() : RecyclerView.Adapter<OperatorMistakesAdapter.O
             }
         }
     }
-
-    private fun startDownload(urlString: String, fileName: String) {
-        try {
-            val url = URL(urlString)
-            val dirPath = MyApplication.DIR_MAIN_FOLDER + MyApplication.VOICE_FOLDER_NAME
-            File(dirPath).mkdirs()
-            val file = File(dirPath)
-            if (file.isDirectory) {
-                val children = file.list();
-                for (i in children.indices) {
-                    File(file, children[i]).delete()
-                }
-            }
-            PRDownloader.download(url.toString(), dirPath, fileName)
-                .setHeader("Authorization", MyApplication.prefManager.authorization)
-                .setHeader("id_token", MyApplication.prefManager.idToken)
-                .build()
-                .setOnStartOrResumeListener { }.setOnPauseListener { }.setOnCancelListener { }
-                .start(object : OnDownloadListener {
-                    override fun onDownloadComplete() {
-                        val file = File(dirPath + fileName)
-                        MyApplication.handler.postDelayed({
-                            initVoice(Uri.fromFile(file))
-                            playVoice()
-                        }, 500)
-                    }
-
-                    override fun onError(error: Error?) {
-                        Log.e("pendingMistakeFragment", "onError: ${error?.responseCode}")
-                        Log.e("pendingMistakeFragment", "onError: ${error?.serverErrorMessage}")
-                        FileHelper.deleteFile(dirPath, fileName)
-                        if (error?.responseCode == 401) {
-                            RefreshTokenAsyncTask().execute()
-                        }
-                        if (error?.responseCode == 404) {
-                            aHolder.binding.vfVoiceStatus.displayedChild = 1
-                        }
-                    }
-
-                })
-        } catch (e: MalformedURLException) {
-            e.printStackTrace()
-            AvaCrashReporter.send(e, "$TAG class, startDownload method")
-        } catch (e: Exception) {
-            e.printStackTrace()
-            AvaCrashReporter.send(e, "$TAG class, startDownload method2")
-        }
-    }
-
-    //    private var timer: Timer? = null
-    private fun initVoice(uri: Uri?) {
-        try {
-            mediaPlayer = MediaPlayer.create(MyApplication.currentActivity, uri)
-            mediaPlayer?.setOnCompletionListener {
-                aHolder.binding.vfPlayPause.displayedChild = 0
-            }
-            Companion.TOTAL_VOICE_DURATION = mediaPlayer?.duration?.toFloat()
-            aHolder.binding.skbTimer.max = Companion.TOTAL_VOICE_DURATION as Float
-        } catch (e: Exception) {
-            e.printStackTrace()
-            AvaCrashReporter.send(e, "$TAG class, initVoice method")
-        }
-    }
-
-    private fun playVoice() {
-        try {
-            mediaPlayer?.start()
-            aHolder.binding.vfPlayPause.displayedChild = 2
-        } catch (e: Exception) {
-            e.printStackTrace()
-            AvaCrashReporter.send(e, "$TAG class, playVoice method")
-        }
-
-//        startTimer()
-    }
-
-//    private fun startTimer() {
-//        Log.i("operatorMistakeAdapter", "startTimer: ")
-//        timer = Timer()
-//        val task = UpdateSeekBar()
-//        timer?.scheduleAtFixedRate(task, 500, 1000)
-//
-//    }
-
-    private fun pauseVoice() {
-        try {
-            mediaPlayer?.pause()
-            aHolder.binding.skbTimer.setProgress(0f)
-            aHolder.binding.vfPlayPause.displayedChild = 0
-        } catch (e: Exception) {
-            e.printStackTrace()
-            AvaCrashReporter.send(e, "$TAG class, pauseVoice method")
-        }
-//        cancelTimer()
-    }
-
-//    private fun cancelTimer() {
-//        try {
-//            timer?.cancel()
-//            timer = null
-//        } catch (e: Exception) {
-//
-//        }
-//    }
-
-//    private inner class UpdateSeekBar : TimerTask() {
-//        override fun run() {
-//            try {
-//                MyApplication.handler.post {
-//                    Log.i(
-//                        "pendingMistakeFragment",
-//                        "onStopTrackingTouch run: " + mediaPlayer?.currentPosition
-//                    )
-//                    mediaPlayer?.currentPosition?.toFloat()?.let {
-//                        aHolder.binding.skbTimer.setProgress(
-//                            it
-//                        )
-//                    }
-//
-//                }
-//            } catch (e: Exception) {
-//                e.printStackTrace()
-//            }
-//        }
-//
-//    }
-
 
 }
