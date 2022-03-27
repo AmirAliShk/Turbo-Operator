@@ -9,7 +9,7 @@
         android:id="@+id/blrView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="?attr/colorBgDialogTransparent"/>
+        android:background="?attr/colorBgDialogTransparent" />
 
     <LinearLayout
         android:id="@+id/llLastConversationDialog"
@@ -38,17 +38,17 @@
         </LinearLayout>
 
         <ViewFlipper
-            android:id="@+id/vfDownload"
+            android:id="@+id/vfManageVoice"
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
             <!--downloading-->
-            <LinearLayout
+            <ViewFlipper
+                android:id="@+id/vfDownload"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:gravity="center"
-                android:orientation="vertical">
+                android:gravity="center">
 
                 <com.wang.avi.AVLoadingIndicatorView
                     android:id="@+id/avl"
@@ -58,29 +58,36 @@
                     app:indicatorColor="?attr/colorButton1"
                     app:indicatorName="BallBeatIndicator" />
 
-                <ProgressBar
-                    android:id="@+id/progressDownload"
-                    style="?android:attr/progressBarStyleHorizontal"
+                <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="15dp"
-                    android:layout_marginRight="15dp"
-                    android:indeterminate="false"
-                    android:progress="20"
-                    android:visibility="gone" />
+                    android:layout_gravity="center"
+                    android:orientation="vertical"
+                    android:gravity="center">
 
-                <TextView
-                    android:id="@+id/textProgress"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_centerInParent="true"
-                    android:text="0%"
-                    android:textAppearance="?android:attr/textAppearanceSmall"
-                    android:textColor="?attr/colorpinkPurple"
-                    android:textStyle="bold"
-                    android:visibility="gone" />
+                    <ProgressBar
+                        android:id="@+id/progressDownload"
+                        style="?android:attr/progressBarStyleHorizontal"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="15dp"
+                        android:layout_marginRight="15dp"
+                        android:indeterminate="false"
+                        android:progress="20" />
 
-            </LinearLayout>
+                    <TextView
+                        android:id="@+id/textProgress"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerInParent="true"
+                        android:text="0%"
+                        android:textAppearance="?android:attr/textAppearanceSmall"
+                        android:textColor="?attr/colorpinkPurple"
+                        android:textStyle="bold" />
+
+                </LinearLayout>
+
+            </ViewFlipper>
 
             <LinearLayout
                 android:layout_width="match_parent"

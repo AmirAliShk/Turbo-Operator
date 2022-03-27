@@ -10,6 +10,7 @@ public interface OnVoiceListener {
         void onProgressDownload(Progress progress);
 
         void onDownloadCompleted();
+
         void onDownloadError();
 
         void onDownload401Error();

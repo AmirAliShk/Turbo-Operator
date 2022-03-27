@@ -46,7 +46,6 @@ public class PlayLastConversationDialog {
     public static final String TAG = PlayLastConversationDialog.class.getSimpleName();
     static Dialog dialog;
     DialogPalyLastConversationBinding binding;
-    MediaPlayer mediaPlayer;
     String url;
     int idTrip;
 
@@ -77,16 +76,17 @@ public class PlayLastConversationDialog {
                 new OnVoiceListener() {
                     @Override
                     public void onFileExist() {
-                        binding.vfDownload.setDisplayedChild(1);
+                        binding.vfManageVoice.setDisplayedChild(1);
                     }
 
                     @Override
                     public void onStartDownload() {
-                        binding.vfDownload.setDisplayedChild(0);
+                        binding.vfManageVoice.setDisplayedChild(0);
                     }
 
                     @Override
                     public void onProgressDownload(Progress progress) {
+                        binding.vfDownload.setDisplayedChild(0);
                         int percent = (int) ((progress.currentBytes / (double) progress.totalBytes) * 100);
                         Log.i("PlayConversationDialog", "onProgress: " + percent);
 
@@ -99,12 +99,12 @@ public class PlayLastConversationDialog {
 
                     @Override
                     public void onDownloadCompleted() {
-                        binding.vfDownload.setDisplayedChild(1);
+                        binding.vfManageVoice.setDisplayedChild(1);
                     }
 
                     @Override
                     public void onDownloadError() {
-                        binding.vfDownload.setDisplayedChild(2);
+                        binding.vfManageVoice.setDisplayedChild(2);
                     }
 
                     @Override
@@ -157,7 +157,7 @@ public class PlayLastConversationDialog {
 //            initVoice(Uri.fromFile(file));
 //            playVoice();
 //        } else {
-//            startDownload(binding.vfDownload, binding.progressDownload, binding.textProgress, urlString, voiceName);
+//            startDownload(binding.vfManageVoice, binding.progressDownload, binding.textProgress, urlString, voiceName);
 //        }
 
         dialog.setOnDismissListener(dialogInterface -> onDestroy());
@@ -177,9 +177,9 @@ public class PlayLastConversationDialog {
 
             @Override
             public void onStopTrackingTouch(IndicatorSeekBar seekBar) {
-                if (mediaPlayer != null) {
+                if (VoiceHelper.getInstance().staticMd() != null) {
                     if (seekBar != null) {
-                        mediaPlayer.seekTo(seekBar.getProgress());
+                        VoiceHelper.getInstance().staticMd().seekTo(seekBar.getProgress());
                     }
                 }
             }
@@ -197,17 +197,17 @@ public class PlayLastConversationDialog {
             String voiceName1 = idTrip + ".mp3";
             VoiceHelper.getInstance().autoplay(
                     url,
-                    voiceName,
+                    voiceName1,
                     voipId,
                     new OnVoiceListener() {
                         @Override
                         public void onFileExist() {
-                            binding.vfDownload.setDisplayedChild(1);
+                            binding.vfManageVoice.setDisplayedChild(1);
                         }
 
                         @Override
                         public void onStartDownload() {
-                            binding.vfDownload.setDisplayedChild(0);
+                            binding.vfManageVoice.setDisplayedChild(0);
                         }
 
                         @Override
@@ -224,12 +224,12 @@ public class PlayLastConversationDialog {
 
                         @Override
                         public void onDownloadCompleted() {
-                            binding.vfDownload.setDisplayedChild(1);
+                            binding.vfManageVoice.setDisplayedChild(1);
                         }
 
                         @Override
                         public void onDownloadError() {
-                            binding.vfDownload.setDisplayedChild(2);
+                            binding.vfManageVoice.setDisplayedChild(2);
                         }
 
                         @Override
@@ -282,12 +282,12 @@ public class PlayLastConversationDialog {
 //            if (file1.exists()) {
 //                initVoice(Uri.fromFile(file1));
 //                playVoice();
-////                if (binding.vfDownload != null)
-//                    binding.vfDownload.setDisplayedChild(1);
+////                if (binding.vfManageVoice != null)
+//                    binding.vfManageVoice.setDisplayedChild(1);
 //            } else {
-//                startDownload(binding.vfDownload, binding.progressDownload, binding.textProgress, url, voiceName1);
-////                if (binding.vfDownload != null)
-//                    binding.vfDownload.setDisplayedChild(0);
+//                startDownload(binding.vfManageVoice, binding.progressDownload, binding.textProgress, url, voiceName1);
+////                if (binding.vfManageVoice != null)
+//                    binding.vfManageVoice.setDisplayedChild(0);
 //            }
         });
 
@@ -300,9 +300,9 @@ public class PlayLastConversationDialog {
 
     long lastTime = 0;
 
-//    private void startDownload(ViewFlipper vfDownload, ProgressBar progressBar, TextView textProgress, final String urlString, final String fileName) {
-//        if (vfDownload != null)
-//            vfDownload.setDisplayedChild(0);
+//    private void startDownload(ViewFlipper vfManageVoice, ProgressBar progressBar, TextView textProgress, final String urlString, final String fileName) {
+//        if (vfManageVoice != null)
+//            vfManageVoice.setDisplayedChild(0);
 //
 //        try {
 //            URL url = new URL(urlString);
@@ -350,7 +350,7 @@ public class PlayLastConversationDialog {
 //                        @Override
 //                        public void onDownloadComplete() {
 ////                    FinishedDownload.execute(urlString);
-//                            vfDownload.setDisplayedChild(1);
+//                            vfManageVoice.setDisplayedChild(1);
 //                            File file = new File(dirPath + fileName);
 //                            MyApplication.handler.postDelayed(() -> {
 //                                initVoice(Uri.fromFile(file));
@@ -362,7 +362,7 @@ public class PlayLastConversationDialog {
 //                        public void onError(Error error) {
 //                            Log.e("PlayConversationDialog", "onError: " + error.getResponseCode() + "");
 //                            Log.e("PlayConversationDialog", "onError: " + error.getServerErrorMessage() + "");
-//                            vfDownload.setDisplayedChild(2);
+//                            vfManageVoice.setDisplayedChild(2);
 //                            FileHelper.deleteFile(dirPath, fileName);
 //                            if (error.getResponseCode() == 401)
 //                                new RefreshTokenAsyncTask().execute();

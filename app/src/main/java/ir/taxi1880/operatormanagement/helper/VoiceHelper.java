@@ -137,7 +137,7 @@ public class VoiceHelper {
                         public void onDownloadComplete() {
 //                    FinishedDownload.execute(urlString);
                             File file = new File(dirPath + fileName);
-
+                            instance.onVoiceListener.onDownloadCompleted();
                             MyApplication.handler.postDelayed(() -> {
                                 initVoice(Uri.fromFile(file));
                                 playVoice();
