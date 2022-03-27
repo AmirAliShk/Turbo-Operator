@@ -26,6 +26,8 @@ public class VoiceHelper {
     private Timer timer;
     private File file;
 
+    private boolean isPlaying = false;
+
     private int totalVoiceDuration = 0;
 
     OnVoiceListener onVoiceListener;
@@ -73,8 +75,10 @@ public class VoiceHelper {
 
     private void playVoice() {
         try {
-            if (instance.mediaPlayer != null)
+            if (!instance.isPlaying && instance.mediaPlayer != null && !instance.mediaPlayer.isPlaying()) {
                 instance.mediaPlayer.start();
+                instance.isPlaying = true;
+            }
             instance.onVoiceListener.onPlayVoice();
 
         } catch (Exception e) {
@@ -188,7 +192,8 @@ public class VoiceHelper {
 
     public void pauseVoice() {
         try {
-            if (instance.mediaPlayer != null) {
+            if (instance.isPlaying && instance.mediaPlayer != null) {
+                instance.isPlaying = false;
                 instance.mediaPlayer.pause();
                 instance.onVoiceListener.onPauseVoice();
             }
