@@ -12,6 +12,7 @@ import java.io.IOException;
 import java.net.Proxy;
 import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.Objects;
 import java.util.concurrent.TimeUnit;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -430,14 +431,9 @@ public class RequestHelper implements okhttp3.Callback {
 //                break;
             default:
 //                showError("خطای " + code + " : خطایی تعریف نشده در سیستم به وجود آمده لطفا با پشتیبانی تماس حاصل نمایید.");
-                JSONObject error = new JSONObject();
                 try {
-                    error = new JSONObject(e.getMessage());
-                } catch (JSONException jsonException) {
-                    jsonException.printStackTrace();
-                }
-                try {
-                    showError(error.getString("message"));
+                    JSONObject error= new JSONObject(Objects.requireNonNull(e.getMessage()));
+                    showError(error.getJSONArray("data").getJSONObject(0).getString("message"));
                 } catch (JSONException jsonException) {
                     jsonException.printStackTrace();
                 }
