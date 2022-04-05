@@ -74,7 +74,6 @@ public class PassengerTripSupportDetailsFragment extends Fragment {
     Bundle bundle;
     public SetOnBackPressedServiceListener setOnBackPressedServiceListener;
 
-
     public PassengerTripSupportDetailsFragment(SetOnBackPressedServiceListener setOnBackPressedServiceListener) {
         this.setOnBackPressedServiceListener = setOnBackPressedServiceListener;
     }
@@ -176,7 +175,7 @@ public class PassengerTripSupportDetailsFragment extends Fragment {
             FragmentHelper.toFragment(MyApplication.currentActivity, new DriverLocationFragment()).setArguments(bundle1).add();
         });
 
-        binding.btnEditAddress.setOnClickListener(view -> new EditAddressDialog().show(passengerAddress, serviceId , address -> binding.txtCustomerAddress.setText(address)));
+        binding.btnEditAddress.setOnClickListener(view -> new EditAddressDialog().show(passengerAddress, serviceId, address -> binding.txtCustomerAddress.setText(address)));
 
         binding.btnRewardTip.setOnClickListener(view -> {
             String liveNumber = MyApplication.prefManager.getLastCallerId();
@@ -209,13 +208,20 @@ public class PassengerTripSupportDetailsFragment extends Fragment {
                 .secondButton("خیر", null)
                 .show());
 
-        binding.btnDisposal.setOnClickListener(view -> new GeneralDialog()
-                .title("تبدیل به در اختیار")
-                .message("آیا از در اختیار کردن این سفر اطمینان دارید؟")
-                .cancelable(false)
-                .firstButton("بله", this::makeDisposal)
-                .secondButton("خیر", null)
-                .show());
+        binding.btnDisposal.setOnClickListener(view -> {
+            String liveNumber = MyApplication.prefManager.getLastCallerId();
+            if (liveNumber.equals(passengerPhone) || liveNumber.equals(customerMobile)) {
+                new GeneralDialog()
+                        .title("تبدیل به در اختیار")
+                        .message("آیا از در اختیار کردن این سفر اطمینان دارید؟")
+                        .cancelable(false)
+                        .firstButton("بله", this::makeDisposal)
+                        .secondButton("خیر", null)
+                        .show();
+            } else {
+                MyApplication.Toast("سرویس به این مشتری تعلق ندارد.", 2);
+            }
+        });
 
         binding.btnPassengerComplaintRegistration.setOnClickListener(view -> new PassengerComplaintRegistrationDialog().show(String.valueOf(serviceId)));
 
