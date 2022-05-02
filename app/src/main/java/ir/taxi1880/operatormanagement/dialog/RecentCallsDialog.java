@@ -100,7 +100,6 @@ public class RecentCallsDialog {
                 this.tell = "051" + this.tell;
                 getRecentCalls("/src", this.tell, "/4");
             } else {
-//                if (binding.vfDownload != null)
                 binding.vfDownload.setDisplayedChild(2);
             }
         });
